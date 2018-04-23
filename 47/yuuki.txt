@@ -1,0 +1,244 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第3章: ハニーポットを作ろう vol.0 ～ハニーポットってなぁに？～ ---
+
+著者：黒崎ゆうき
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　こんにちわ。今回が初投稿となります、黒崎ゆうきと申します。
+　近年、コンピュータウィルスの感染手口もとても巧妙なものになり、アンチウ
+ィルスソフトなしではコンピュータの使用は怖いものとなっています。ですが、
+実際にマルウェアを収集したり、感染したり、解析をしてみることもコンピュー
+タを学ぶ上で大切なことだと思います。
+　そこで、今回はハニーポットの概念や種類に加え、構築を行いたいと思います。
+
+
+■0x02.) ハニーポットとは
+
+　ハニーポットとは、和訳すると「蜜壷」の意味があります。「攻撃者にとって
+何かしら有益な情報があると見せかけ攻撃を誘う」もののことと解釈できます。
+有名な事例として、天文学者クリフォード・ストールの著書『カッコウはコンピ
+ュータに卵を産む』にある「SDIネット」というものが挙げられるます。
+　攻撃者による攻撃の傾向や、どのようなツールを用いたのかといった情報を収
+集するために用いられる、攻撃されることに意味があるシステムの事を指します。
+ですが、実際に脆弱性があるシステムをネットワーク内に稼動させたらどうでし
+ょうか？そのコンピュータを経由して、他のコンピュータに悪意を及ぼす可能性
+があります。そのため、目的に応じて、様々な種類のハニーポットが設計されて
+います。
+
+
+■0x03.) ハニーポットの種類
+
+●高対話型ハニーポット（High-Interaction Honeypots）
+
+　実際に脆弱性を持たせた「本物の」システムを稼動させ、攻撃を誘うもののこ
+とを高対話型ハニーポットといいます。
+　「本物の」システムを使うことにより、「本物の」情報を手に入れることがで
+きるため、沢山情報を得ることができます。ですが、実際に脆弱性を残したシス
+テムを稼動させることにより、管理が大変難しく、他のコンピュータに被害を及
+ぼす可能性があります。そのため、個人レベルで構築するにはあまり実用性はな
+いかもしれません。
+
+●低対話型ハニーポット（Low-Interaction Honeypots）
+
+　高対話型ハニーポットは「本物の」システムを稼動させるものでしたが、低対
+話型ハニーポットは、「本物のような」脆弱性を持ったシステムをエミュレート
+し、監視を行うものです。決して「本物の」システムではないため、収集できる
+情報は限られますが、エミュレートしている範囲に機能が制限されるため、高対
+話型ハニーポットよりも安全に稼動をさせることができます。
+
+●仮想ハニーポット（Virtual Honeypots）
+
+　仮想マシン（VMware,VirtualBOX,Xenなど）でで構築されたハニーポットのこと
+を指します。仮想マシンは、一度電源を落とせば、汚染されていないシステムへ
+戻すことが容易なため、管理面では大変有効な方法であるといえます。ですが、
+最近のボットやマルウェアは賢いですから、自分自身が仮想マシン上に身を置い
+たことをと察すると、自らを消去しようとするものなどがあります。いかに、攻
+撃者やマルウェアに仮想マシンだと悟られないようにするか、という大変難しい
+技術が必要になります。
+
+　代表的なハニーポットの種類は上記3つです。それぞれに、メリット、デメリッ
+トがあるため実際に行いたいことに合わせて使用するハニーポットを決定しなけ
+ればなりません。
+
+　今回私が構築するハニーポットは安全面を考慮し、個人でも管理ができそうな
+「低対話型ハニーポット」を選択しました。
+
+
+■0x03.) Nepenthesの構築
+
+　OSはCentOS5.3を使います。FirewallはDisableとしました。その上でNepenthes
+を稼動させることを今回の目標とします。
+　Snortを同時に稼動させ、不正アクセスの検知を行おうかと考えましたが、今回
+はNepenthesのみで稼動を行ってみて、その他の拡張は次回からの課題にしたいと
+思ったためです。
+
+　CentOS上でNepenthesを動作させる上で必要なモジュールがいくつかあります。
+まず、以下のモジュールがインストールされていることを確認します。
+
+----- terminal
+# rpm -qa | grep curl
+# rpm -qa | grep pcre
+# rpm -qa | grep pcap
+-----
+
+　足りないモジュールは以下のコマンドで入手します。
+
+----- terminal
+# yum install [モジュール名]
+-----
+
+　さらに、libadnsも必要になるので、GNU adnsからtarボールをダウンロードして
+makeします。
+
+GNU adns：http://www.chiark.greenend.org.uk/~ian/adns/
+
+----- terminal
+# wget http://www.chiark.greenend.org.uk/~ian/adns/adns.tar.gz
+# tar zxvf adns.tar.gz
+# cd adns
+# ./configure
+# make
+# make install 
+-----
+
+　これで準備が整ったので、Nepenthesのインストールをします。Nepenthesは以
+下のサイトから入手し、インストールしてください。
+
+Nepenthes公式：http://nepenthes.carnivore.it/
+
+　また、SorceForgeからもtarボールを入手することができます（私はこちらを使
+用しました）。
+
+----- terminal (SorceForgeの場合)
+# wget http://nchc.dl.sourceforge.net/sourceforge/nepenthes/nepenthes.*.tar.gz
+# tar zxvf nepenthes*
+# cd nepenthes*
+# ./configure
+# make
+# make install 
+-----
+
+　これで、/opt配下にNepenthesがインストールされます。
+
+■0x04.) Nepenthesが使用するポートについて
+
+　Nepenthesは脆弱性を持ったシステムをエミュレートするため、外部から接続を
+受け付けなければ攻撃は成功しません。つまり、ポートを開放しなければならな
+いということです。
+
+　Linuxではデフォルトで複数のポートを使用している場合があります。以下のよ
+うにして確認することが出来ます。
+
+----- terminal
+# netstat -a
+-----
+
+　この際に、Nepenthesが解放するポートと重複しないように、ポート番号を変え
+るか、サービスを停止するかしてください。私は、SSH以外のサービスを全て停止
+してNepenthesを稼動させるようにしました。
+
+　以下がNepenthes稼動前と稼動後のポートの様子です。
+
+----- terminal
+# netstat -a          *Nepenthes稼動前
+Active Internet connections (servers and established)
+Proto Recv-Q Send-Q Local Address               Foreign Address             State
+tcp        0      0 *:ssh                       *:*                         LISTEN
+
+
+# netstat -a          *Nepenthes稼動後
+Active Internet connections (servers and established)
+Proto Recv-Q Send-Q Local Address               Foreign Address             State
+tcp        0      0 *:blackjack                 *:*                         LISTEN
+tcp        0      0 *:imaps                     *:*                         LISTEN
+tcp        0      0 *:pop3s                     *:*                         LISTEN
+tcp        0      0 *:ariliamulti               *:*                         LISTEN
+tcp        0      0 *:epmap                     *:*                         LISTEN
+tcp        0      0 *:commplex-main             *:*                         LISTEN
+tcp        0      0 *:nameserver                *:*                         LISTEN
+tcp        0      0 *:netbios-ssn               *:*                         LISTEN
+tcp        0      0 *:tip2                      *:*                         LISTEN
+tcp        0      0 *:pop3                      *:*                         LISTEN
+tcp        0      0 *:imap                      *:*                         LISTEN
+tcp        0      0 *:http                      *:*                         LISTEN
+tcp        0      0 *:ndmp                      *:*                         LISTEN
+tcp        0      0 *:6129                      *:*                         LISTEN
+tcp        0      0 *:smtps                     *:*                         LISTEN
+tcp        0      0 *:sgi-esphttp               *:*                         LISTEN
+tcp        0      0 *:27347                     *:*                         LISTEN
+tcp        0      0 *:17300                     *:*                         LISTEN
+tcp        0      0 *:ftp                       *:*                         LISTEN
+tcp        0      0 *:ctx-bridge                *:*                         LISTEN
+tcp        0      0 *:zephyr-clt                *:*                         LISTEN
+tcp        0      0 *:eklogin                   *:*                         LISTEN
+tcp        0      0 *:urbisnet                  *:*                         LISTEN
+tcp        0      0 *:smtp                      *:*                         LISTEN
+tcp        0      0 *:bintec-admin              *:*                         LISTEN
+tcp        0      0 *:https                     *:*                         LISTEN
+tcp        0      0 *:imap3                     *:*                         LISTEN
+tcp        0      0 *:microsoft-ds              *:*                         LISTEN
+tcp        0      0 *:1023                      *:*                         LISTEN
+tcp        0      0 *:ssh                       *:*                         LISTEN
+-----
+
+　リモートログインを行うために起動させてあるSSHを除き、その他はNepenthes
+が空けたポートです。
+
+　同じセグメントからnmapでポートスキャンをかけた結果が以下のとおりです。
+
+----- OpenPort
+PORT      STATE    SERVICE
+21/tcp    open     ftp
+22/tcp    open     ssh
+25/tcp    filtered smtp
+42/tcp    open     nameserver
+80/tcp    open     http
+110/tcp   open     pop3
+135/tcp   open     msrpc
+139/tcp   open     netbios-ssn
+143/tcp   open     imap
+443/tcp   open     https
+445/tcp   open     microsoft-ds
+465/tcp   open     smtps
+993/tcp   open     imaps
+995/tcp   open     pop3s
+1023/tcp  open     netvenuechat
+1025/tcp  open     NFS-or-IIS
+2103/tcp  open     zephyr-clt
+2105/tcp  open     eklogin
+2107/tcp  open     unknown
+3372/tcp  open     msdtc
+5000/tcp  open     upnp
+6129/tcp  open     unknown
+10000/tcp open     snet-sensor-mgmt
+-----
+
+　WAN側からNmapを使ってスキャンをかけようとすると、私の環境では上手くでき
+なかったです（スキャンを開始すると、グローバルIPが変えられてしまう。）そ
+のため、ポート解放をチェックするサイトにて上記オープンポートをスキャンし
+ました。
+
+　これで、Nepenthesが稼動し、WAN側からもコネクションを受け付けるようにな
+ったのでこのまま稼動させておけば "/opt/Nepenthes/var/binary"へマルウェア
+が格納されます（ファイル名はマルウェアのハッシュ値）。
+
+■0x05.) 終わりに
+
+　今回は、ハニーポットとは何か？という説明を行い、実際にハニーポットを構
+築し稼動を行いました。ISP側で不正なコネクションの規制をしていなければ、上
+記ディレクトリにマルウェアを採取できます。しかし、一週間程稼動を行った私
+のシステムでは、ISP側で規制が行われているようで、残念ながらマルウェアを採
+取することができませんでした。
+　次回からは環境の変更を行い、実際にマルウェアを採取したり、Snortをインス
+トールして、不正アクセスの検知を行いたいと思います。
+　最後までお付き合いいただきありがとうございました。
+
+
+

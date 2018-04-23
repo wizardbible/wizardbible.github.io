@@ -1,0 +1,552 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: リバースエンジニアリング実践 khallengeへのチャレンジ その3-2 ---
+
+著者：Green boy 4
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　Green boy 4です。38号に続き、F-Secure Reverse-Engineering Challenge2007
+(khallenge 2007)の解析を行ないます。今回もLevel3を引き続き解析していきた
+いと思います。2007年にやったものなのに、2008年中に解説し終えられるか若干
+不安になってきましたが、一歩一歩説明していきますので、気長に見ていただけ
+ると幸いです。
+
+　また解析に入る前にお知らせがあります。IDA Proの最新版である5.2ですが、
+機能限定で、Freeの評価版が出ていました。
+
+http://www.hex-rays.com/idapro/idadowndemo.htm
+
+　Freeといっても今回程度の解析であればそれなりに利用可能なので、興味のあ
+る方はダウンロードして試してみるとよいでしょう。では、Level3の解析を再開
+したいと思います。
+
+
+■0x02.) 前回のおさらい
+
+　私の時間がない病により執筆ペースが隔月（というよりクォーターに近い？）
+になっているせいで、おそらく覚えてない方がほとんどだと思うので、軽くおさ
+らいします。Level3はjmp命令を多用した難読化が行なわれていたため、静的解析
+では眺めていても非常にわかりづらかったので、トレースログをとって、jmp命令
+を除いてからリバースエンジニアリングすることにより、1文字目の解読に成功し
+たところまで実施しました。
+
+----- 1文字目を比較しているコード付近のトレースログ（jmp命令省略版）
+004116C8 Main     MOV DWORD PTR DS:[EBX+78],0
+0040F9F0 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+0040F9F6 Main     ADD DWORD PTR DS:[EBX+78],EAX
+004141CB Main     MOV EAX,DWORD PTR DS:[EBX+78]
+004141D1 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162C53 -> 入力文字の１文字目"S"
+004141D3 Main     MOV BYTE PTR DS:[EBX+64],AL
+0040EA55 Main     MOV DWORD PTR DS:[EBX+78],4
+0040F2AB Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+0040F2B1 Main     ADD DWORD PTR DS:[EBX+78],EAX
+0040E43A Main     MOV EAX,DWORD PTR DS:[EBX+78]             ; EAX=00162C28
+0040E440 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162C53 -> 本当のKeyの１文字目"S"
+0040E442 Main     MOV BYTE PTR DS:[EBX+68],AL
+0041288E Main     XOR EAX,EAX                               ; EAX=00000000
+00412890 Main     MOV CL,BYTE PTR DS:[EBX+68]               ; ECX=00162C53
+00412896 Main     CMP BYTE PTR DS:[EBX+64],CL               ; "S"と入力文字を比較している
+0041289C Main     JNZ SHORT FSC_Leve.0041289F
+-----
+
+　現時点で与えている文字列は「S123456789abcdef」です。これで、0041289Cの
+比較はクリアできることになります。また、前回の解析から、以下のことが得ら
+れています。
+
+o 文字数は16文字
+o 正規文字列は「S???????????????」（要はまだ1文字目しかわかっていない）
+o 00162C24に入力値の1文字目、00162C28に本当のKeyの1文字目が読み込まれた
+
+　ではおさらいも済んだので、その後の解析を実施してみます。
+
+
+■0x03.) 2文字目の特定
+
+　現在、0041289CのJNZで停止しています（してない人は、ここにブレークポイン
+トを張って実行後、キーに「S123456789abcdef」を与えてください）。もし、こ
+のチェックルーチンが2文字以降の比較にも使われていれば、再度実行しても、こ
+の場所で停止してくれるはずです。念のためCtrl+F12でトレースしながら結果を
+見てみましょう。すると、ブレークせずに、そのままプログラムが終了してしま
+いました。ということは、1文字目の比較処理は、少なくとも2文字目の比較時に
+は使われていないということになります。最悪のケースは、16文字分全てが別々
+のルーチンで処理される可能性も出てきました。ちょっとめんどくさいことにな
+ってきたかもしれません。と言ってここで挫折しては技術力アップにはつながら
+ないので、根気よく見ていくことにします。では、今取ったトレースログを見て
+いきましょう。
+
+----- 0041289c以降のトレースログ（jmp命令省略版）
+Address  Thread   Command                                   ; Registers and comments
+0041289E Main     INC EAX                                   ; EAX=00000001 -> フラグ？
+0041289F Main     MOV BYTE PTR DS:[EBX+64],AL
+00413EA0 Main     AND BYTE PTR DS:[EBX+64],1
+00413EA7 Main     XOR BYTE PTR DS:[EBX+64],1                ; 1 xor 1 = 0で0クリアしている
+0041148F Main     MOV DWORD PTR DS:[EBX+78],0               ; [EBX+78も0クリア]
+00411FCC Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+00411FD2 Main     ADD DWORD PTR DS:[EBX+78],EAX
+00410B2C Main     MOV AL,BYTE PTR DS:[EBX+64]               ; EAX=00162C00
+00410B32 Main     MOV ECX,DWORD PTR DS:[EBX+78]             ; ECX=00162C24
+00410B38 Main     MOV BYTE PTR DS:[ECX],AL                  ; [00162C24]に0をセット
+0040F964 Main     MOV DWORD PTR DS:[EBX+78],0
+00413154 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+0041315A Main     ADD DWORD PTR DS:[EBX+78],EAX
+004117A0 Main     MOV EAX,DWORD PTR DS:[EBX+78]
+004117A6 Main     MOV EAX,DWORD PTR DS:[EAX]                ; EAX=00000000
+004117A8 Main     MOV DWORD PTR DS:[EBX+64],EAX             ; [EBX+64]に0をセット
+0040E7F3 Main     CMP DWORD PTR DS:[EBX+64],0
+0040E7FD Main     JE SHORT FSC_Leve.0040E804                ; [EBX+64]が0だったらジャンプ
+-----
+
+　ぱっと見た感じ、文字が合っていたかどうかのフラグを立て、それを判定する
+処理に見えます。ただ、自分で入力した文字列がここには出てきていないような
+ので、このあたりを詳しく解析するのは、時間の無駄である可能性があります。
+よって、ここはざっと見ただけで飛ばしました。もし今後、ここの解析を飛ばし
+たことで問題が起こり、先に進めないようなら、その時改めて解析することにし
+ましょう。では次の処理を見てみます。
+
+----- 0041289c以降のトレースログ（jmp命令省略版）
+0040E804 Main     JMP FSC_Leve.0040FD77                     ; 40E7FDの飛び先
+0040FD77 Main     MOV DWORD PTR DS:[EBX+64],1
+00413EB4 Main     MOV DWORD PTR DS:[EBX+78],0
+004127A1 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+004127A7 Main     ADD DWORD PTR DS:[EBX+78],EAX
+004134D8 Main     MOV EAX,DWORD PTR DS:[EBX+64]             ; EAX=00000001
+004134DE Main     MOV ECX,DWORD PTR DS:[EBX+78]
+004134E4 Main     MOV DWORD PTR DS:[ECX],EAX                : 162C24に1を書き込み。文字数？
+004140DA Main     MOV DWORD PTR DS:[EBX+78],0
+00412241 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+00412247 Main     ADD DWORD PTR DS:[EBX+78],EAX
+0040F19E Main     MOV EAX,DWORD PTR DS:[EBX+78]
+0040F1A4 Main     MOV EAX,DWORD PTR DS:[EAX]                ; EAX=00000001 -> 検査対象の文字の位置であり、配列の添え字？（入力文字列がKey[]という配列に入っていたとすると、Key[1]）
+0040F1A6 Main     MOV DWORD PTR DS:[EBX+64],EAX
+00411B02 Main     MOV DWORD PTR DS:[EBX+78],-4
+004133E6 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+004133EC Main     ADD DWORD PTR DS:[EBX+78],EAX
+00412EE6 Main     MOV EAX,DWORD PTR DS:[EBX+78]             ; EAX=00162C20
+00412EEC Main     MOV EAX,DWORD PTR DS:[EAX]                ; EAX=0012FB70 -> 入力した仮文字列の先頭をポイントしているアドレス
+00412EEE Main     MOV DWORD PTR DS:[EBX+68],EAX
+00413D46 Main     MOV EAX,DWORD PTR DS:[EBX+68]
+00413D4C Main     ADD DWORD PTR DS:[EBX+64],EAX
+0040E704 Main     MOV EAX,DWORD PTR DS:[EBX+64]             ; EAX=0012FB71 -> 入力文字の２文字目にポインタを移動
+0040E70A Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=0012FB31 -> 入力文字の２文字目の中身（つまり1）をALに取得
+0040E70C Main     MOV BYTE PTR DS:[EBX+64],AL
+0040F1B2 Main     MOV DWORD PTR DS:[EBX+78],0
+0040E7D1 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+0040E7D7 Main     ADD DWORD PTR DS:[EBX+78],EAX
+00412DC0 Main     MOV AL,BYTE PTR DS:[EBX+64]               ; EAX=00162C31
+00412DC6 Main     MOV ECX,DWORD PTR DS:[EBX+78]
+00412DCC Main     MOV BYTE PTR DS:[ECX],AL                  ; 00162C24に入力文字の２文字目の中身（0x31、つまり1）を記録
+004108C2 Main     MOV DWORD PTR DS:[EBX+64],61              ; 正規の文字列の２文字目？
+0041007D Main     MOV DWORD PTR DS:[EBX+78],4
+004139F8 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+004139FE Main     ADD DWORD PTR DS:[EBX+78],EAX
+0041475D Main     MOV AL,BYTE PTR DS:[EBX+64]               ; EAX=00162C61
+00414763 Main     MOV ECX,DWORD PTR DS:[EBX+78]             ; ECX=00162C28
+00414769 Main     MOV BYTE PTR DS:[ECX],AL                  ; 00162C28に0x61(a)を書き込み
+0040F696 Main     MOV DWORD PTR DS:[EBX+78],0               ; ここから下の処理が、「おさらい」の項とまるで同じ
+00411DFC Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+00411E02 Main     ADD DWORD PTR DS:[EBX+78],EAX
+0041287A Main     MOV EAX,DWORD PTR DS:[EBX+78]
+00412880 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162C31
+00412882 Main     MOV BYTE PTR DS:[EBX+64],AL               ; [EBX+64]に入力文字の２文字目を入れている
+0040F65E Main     MOV DWORD PTR DS:[EBX+78],4
+00410165 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+0041016B Main     ADD DWORD PTR DS:[EBX+78],EAX
+0040F5F2 Main     MOV EAX,DWORD PTR DS:[EBX+78]             ; EAX=00162C28
+0040F5F8 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162C61
+0040F5FA Main     MOV BYTE PTR DS:[EBX+68],AL
+004108A5 Main     XOR EAX,EAX                               ; EAX=00000000
+004108A7 Main     MOV CL,BYTE PTR DS:[EBX+68]               ; ECX=00162C61
+004108AD Main     CMP BYTE PTR DS:[EBX+64],CL               ; CL=0x61(a)と[EBX+64]を比較。[EBX+64]には0x31(1)が入っている
+004108B3 Main     JNZ SHORT FSC_Leve.004108B6
+-----
+
+　おさらいの項の、1文字目の比較ルーチンと比較してみてください！後半の処理
+がかなり酷似していませんか？同じ場所を実行してはいないものの、チェックル
+ーチンの中身としては、同じものを使っているようです。よって、2文字目は「a」
+のようです。では、Ctrl+F2でプロセスをリスタート後、Ctrl+Gで004108ADに移動
+し、F2でブレークポイントを張ってF9で実行し、「Sa23456789abcdef」を与えて
+みましょう。すると、「a」同士を比較しているのが見えるはずです。1文字目、
+2文字目の比較結果から、00162C24に入力文字列が、00162C28には本物のKey文字
+列が入るようです。これが解析を楽にしてくれる糸口になってくれるとよいので
+すが。
+
+　ではCtrl+F12でトレース実行して、3文字目以降の比較処理を見るために、そ
+のログを確認してみましょう。
+
+
+■0x04.) 4文字目の特定
+
+　ログを確認したところ、前項までに確認したような内容と同じような処理が行
+なわれ、今度は4文字目を比較していそうなことがわかりました。
+
+----- 4文字目の比較処理付近のトレースログ（jmp命令省略版）
+00410476 Main     MOV DWORD PTR DS:[EBX+78],0
+004146B7 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+004146BD Main     ADD DWORD PTR DS:[EBX+78],EAX
+0040ED10 Main     MOV EAX,DWORD PTR DS:[EBX+78]
+0040ED16 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162C33 -> 0x33は「3」にあたる。入力文字の4文字目
+0040ED18 Main     MOV BYTE PTR DS:[EBX+64],AL
+0040FF07 Main     MOV DWORD PTR DS:[EBX+78],4
+0040F43A Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+0040F440 Main     ADD DWORD PTR DS:[EBX+78],EAX
+00411F0A Main     MOV EAX,DWORD PTR DS:[EBX+78]             ; EAX=00162C28
+00411F10 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162C6A -> 0x6Aは「j」。正規の4文字目と思われる文字
+00411F12 Main     MOV BYTE PTR DS:[EBX+68],AL
+0041079E Main     XOR EAX,EAX                               ; EAX=00000000
+004107A0 Main     MOV CL,BYTE PTR DS:[EBX+68]               ; ECX=00162C6A
+004107A6 Main     CMP BYTE PTR DS:[EBX+64],CL               ; jと3を比較
+004107AC Main     JNZ SHORT FSC_Leve.004107AF
+-----
+
+　なぜ3文字目ではなく、先に4文字目から比較しているのかという疑問はさて
+おき、順調に3つの文字列がわかりました。ここまでを整理すると、正規文字列
+は「Sa?j????????????」であることまでわかっています。
+
+　では、004107A6にブレークポイントを設定して実行し、「Sa2j456789abcdef」
+を与えて004107A6まで実行後、Ctrl+F12でとレースログを取って、次の処理を見
+てみましょう。
+
+
+■0x05.) 5文字目＋7文字目のチェックをクリアする
+
+　さて、ここまでは順調でしたが、ちょっとここで困ったことになりました。条
+件ジャンプ（JEやJNZなど）やcmp命令を頼りにログを検索したところ、以前と同
+じような処理が見つかったことは見つかったのですが、なんと0xBA（本物のKeyと
+思われる文字列）と0x6A（入力文字と思われる文字列）を比較しています。
+
+----- どこかの文字列を比較している処理付近のトレースログ（jmp命令省略版）
+004119ED Main     MOV DWORD PTR DS:[EBX+78],0
+0041127A Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+00411280 Main     ADD DWORD PTR DS:[EBX+78],EAX
+0041436E Main     MOV EAX,DWORD PTR DS:[EBX+78]
+00414374 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162C6A -> 入力文字列と思われる文字
+00414376 Main     MOV BYTE PTR DS:[EBX+64],AL
+00412111 Main     MOV DWORD PTR DS:[EBX+78],4
+004119C9 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+004119CF Main     ADD DWORD PTR DS:[EBX+78],EAX
+004133C0 Main     MOV EAX,DWORD PTR DS:[EBX+78]             ; EAX=00162C28
+004133C6 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162CBA -> 正規の文字列と思われる文字
+004133C8 Main     MOV BYTE PTR DS:[EBX+68],AL
+0040E7A2 Main     XOR EAX,EAX                               ; EAX=00000000
+0040E7A4 Main     MOV CL,BYTE PTR DS:[EBX+68]               ; ECX=00162CBA
+0040E7AA Main     CMP BYTE PTR DS:[EBX+64],CL               ; 0xBAと0x6Aを比較
+0040E7B0 Main     JNZ SHORT FSC_Leve.0040E7B3
+-----
+
+　入力文字列の方の0x6Aは4文字目の「j」にあたる仮定したとしても、0xBAは半
+角カタカナの「コ」にあたります。パスワードやKeyとして使われる数字ではあり
+ませんし、このプログラムの出どころから考えて、ヨーロッパの人々がこのよう
+な機種依存文字を使うとは思えません。これは、これより前の処理を詳細に解析
+する必要がありそうです。では、それ以前のトレースログを見てみましょう。
+
+
+----- 4文字目の比較命令（cmp）以降のトレースログ（jmp命令省略版）
+004107AC Main     JNZ SHORT FSC_Leve.004107AF
+004107AE Main     INC EAX                                   ; EAX=00000001
+004107AF Main     MOV BYTE PTR DS:[EBX+64],AL
+0041317A Main     AND BYTE PTR DS:[EBX+64],1
+00413181 Main     XOR BYTE PTR DS:[EBX+64],1
+00413D36 Main     MOV DWORD PTR DS:[EBX+78],0
+00410214 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+0041021A Main     ADD DWORD PTR DS:[EBX+78],EAX
+0040E74A Main     MOV AL,BYTE PTR DS:[EBX+64]               ; EAX=00162C00
+0040E750 Main     MOV ECX,DWORD PTR DS:[EBX+78]             ; ECX=00162C24
+0040E756 Main     MOV BYTE PTR DS:[ECX],AL
+00412808 Main     MOV DWORD PTR DS:[EBX+78],0
+00413F92 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+00413F98 Main     ADD DWORD PTR DS:[EBX+78],EAX
+0041055E Main     MOV EAX,DWORD PTR DS:[EBX+78]
+00410564 Main     MOV EAX,DWORD PTR DS:[EAX]                ; EAX=00000000
+00410566 Main     MOV DWORD PTR DS:[EBX+64],EAX
+00413921 Main     CMP DWORD PTR DS:[EBX+64],0
+0041392B Main     JE SHORT FSC_Leve.00413932
+-----
+
+　ここまでは、2文字目の処理の最初で見たものと同様です。ということは、ここ
+から0040E7AAのCMP命令までの間に、何らかのトリックが存在することは間違いあ
+りません。ではその次をさらに見てみましょう。
+
+----- 0041392BのJE命令の飛び先以降の処理（jmp命令省略版）
+00413932 Main     JMP FSC_Leve.0040F53C                     ; 0041392BのJEからここへジャンプ
+0040F53C Main     MOV DWORD PTR DS:[EBX+64],4
+0040EA65 Main     MOV DWORD PTR DS:[EBX+78],0
+0040E3EC Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+0040E3F2 Main     ADD DWORD PTR DS:[EBX+78],EAX
+00410AB1 Main     MOV EAX,DWORD PTR DS:[EBX+64]             ; EAX=00000004
+00410AB7 Main     MOV ECX,DWORD PTR DS:[EBX+78]
+00410ABD Main     MOV DWORD PTR DS:[ECX],EAX
+00412EFA Main     MOV DWORD PTR DS:[EBX+78],0
+0041240C Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+00412412 Main     ADD DWORD PTR DS:[EBX+78],EAX
+0040F20E Main     MOV EAX,DWORD PTR DS:[EBX+78]
+0040F214 Main     MOV EAX,DWORD PTR DS:[EAX]                ; EAX=00000004 -> 検査対象文字の位置（文字列の配列の添え字）？
+0040F216 Main     MOV DWORD PTR DS:[EBX+64],EAX
+00413CA4 Main     MOV DWORD PTR DS:[EBX+78],-4
+00413C5A Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+00413C60 Main     ADD DWORD PTR DS:[EBX+78],EAX
+0040F716 Main     MOV EAX,DWORD PTR DS:[EBX+78]             ; EAX=00162C20
+0040F71C Main     MOV EAX,DWORD PTR DS:[EAX]                ; EAX=0012FB70 -> 配列の先頭アドレス
+0040F71E Main     MOV DWORD PTR DS:[EBX+68],EAX
+00413556 Main     MOV EAX,DWORD PTR DS:[EBX+68]
+0041355C Main     ADD DWORD PTR DS:[EBX+64],EAX
+0040E920 Main     MOV EAX,DWORD PTR DS:[EBX+64]             ; EAX=0012FB74 -> 配列の先頭アドレス+4（Key[4]）
+0040E926 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=0012FB34 -> Key[4]（5文字目）は4なので、0x34がALに読み込まれた
+0040E928 Main     MOV BYTE PTR DS:[EBX+64],AL
+-----
+
+　ここまでの処理を見てください。5文字目を読み込んでいるのがわかります。と
+いうことは、5文字目が関係していそうなことはわかります。では、ここからどの
+ような処理がさらにされているのかを見てみましょう。
+
+----- 0040E928以降の処理（jmp命令省略版）
+004135B0 Main     MOV DWORD PTR DS:[EBX+78],0
+00411624 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+0041162A Main     ADD DWORD PTR DS:[EBX+78],EAX
+00411CCC Main     MOV AL,BYTE PTR DS:[EBX+64]               ; EAX=00162C34
+00411CD2 Main     MOV ECX,DWORD PTR DS:[EBX+78]
+00411CD8 Main     MOV BYTE PTR DS:[ECX],AL
+004106B6 Main     MOV DWORD PTR DS:[EBX+64],6
+00413BFE Main     MOV DWORD PTR DS:[EBX+78],4
+0040F374 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+0040F37A Main     ADD DWORD PTR DS:[EBX+78],EAX
+004147D7 Main     MOV EAX,DWORD PTR DS:[EBX+64]             ; EAX=00000006
+004147DD Main     MOV ECX,DWORD PTR DS:[EBX+78]             ; ECX=00162C28
+004147E3 Main     MOV DWORD PTR DS:[ECX],EAX
+00412046 Main     MOV DWORD PTR DS:[EBX+78],4
+00412346 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+0041234C Main     ADD DWORD PTR DS:[EBX+78],EAX
+00414585 Main     MOV EAX,DWORD PTR DS:[EBX+78]             ; EAX=00162C28
+0041458B Main     MOV EAX,DWORD PTR DS:[EAX]                ; EAX=00000006 -> 配列の添え字？
+0041458D Main     MOV DWORD PTR DS:[EBX+64],EAX
+00410131 Main     MOV DWORD PTR DS:[EBX+78],-4
+004102DC Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+004102E2 Main     ADD DWORD PTR DS:[EBX+78],EAX
+00411991 Main     MOV EAX,DWORD PTR DS:[EBX+78]             ; EAX=00162C20
+00411997 Main     MOV EAX,DWORD PTR DS:[EAX]                ; EAX=0012FB70 -> 配列の先頭アドレス
+00411999 Main     MOV DWORD PTR DS:[EBX+68],EAX
+0041167E Main     MOV EAX,DWORD PTR DS:[EBX+68]
+00411684 Main     ADD DWORD PTR DS:[EBX+64],EAX
+0040F4A8 Main     MOV EAX,DWORD PTR DS:[EBX+64]             ; EAX=0012FB76 -> 配列の先頭アドレス+6（Key[6]）
+0040F4AE Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=0012FB36 -> Key[6]（＝7文字目）は0x36(6)
+0040F4B0 Main     MOV BYTE PTR DS:[EBX+64],AL
+00410226 Main     MOV DWORD PTR DS:[EBX+78],4
+0040E6DE Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+0040E6E4 Main     ADD DWORD PTR DS:[EBX+78],EAX
+0040FFD7 Main     MOV AL,BYTE PTR DS:[EBX+64]               ; EAX=00162C36
+0040FFDD Main     MOV ECX,DWORD PTR DS:[EBX+78]
+0040FFE3 Main     MOV BYTE PTR DS:[ECX],AL
+004134EC Main     MOV DWORD PTR DS:[EBX+78],0
+0040E428 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+0040E42E Main     ADD DWORD PTR DS:[EBX+78],EAX
+0041025C Main     MOV EAX,DWORD PTR DS:[EBX+78]
+00410262 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162C34
+00410264 Main     MOV BYTE PTR DS:[EBX+64],AL               ; [EBX+64]に0x34を代入（Key[4]＝5文字目）
+00413470 Main     MOV DWORD PTR DS:[EBX+78],4
+00411C38 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+00411C3E Main     ADD DWORD PTR DS:[EBX+78],EAX
+004103F2 Main     MOV EAX,DWORD PTR DS:[EBX+78]             ; EAX=00162C28
+004103F8 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162C36
+004103FA Main     MOV BYTE PTR DS:[EBX+68],AL               ; [EBX+68]に0x36を代入（Key[6]＝7文字目）
+00413376 Main     MOV AL,BYTE PTR DS:[EBX+68]               ; ALに0x36を代入
+0041337C Main     ADD BYTE PTR DS:[EBX+64],AL               ; 0x34([EBX+64]の値)+0x36(ALレジスタ)で[EBX+64]は0x6Aとなる
+004135A0 Main     MOV DWORD PTR DS:[EBX+78],0
+00410D57 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+00410D5D Main     ADD DWORD PTR DS:[EBX+78],EAX
+004148B9 Main     MOV AL,BYTE PTR DS:[EBX+64]               ; EAX=00162C6A
+004148BF Main     MOV ECX,DWORD PTR DS:[EBX+78]             ; ECX=00162C24
+004148C5 Main     MOV BYTE PTR DS:[ECX],AL                  ; 0x6A(Key[4]+Key[6])を[00162C24]に代入
+0040E4DC Main     MOV DWORD PTR DS:[EBX+64],0BA             ; 本物のKey(Key[4]+Key[6]=0xBA)
+004104AA Main     MOV DWORD PTR DS:[EBX+78],4
+0040F3E0 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+0040F3E6 Main     ADD DWORD PTR DS:[EBX+78],EAX
+004131E8 Main     MOV EAX,DWORD PTR DS:[EBX+64]             ; EAX=000000BA
+004131EE Main     MOV ECX,DWORD PTR DS:[EBX+78]             ; ECX=00162C28
+004131F4 Main     MOV DWORD PTR DS:[ECX],EAX
+-----
+
+　ちょっと長いですが、辛抱強く見てください。先ほど、Key[4]（5文字目）が参
+照されたことがわかりましたが、それにKey[6]（7文字目）を加えて、それを0xBA
+と比較しています。つまり、Key[4]+Key[6]=0xBAという式になります。つまり、
+5文字目と7文字目を足した値が0xBAになるような組み合わせを考えれば、先ほど
+のCMP命令をクリアできそうです。いろいろ組み合わせが考えられますが、仮に5
+文字目を「a」(0x61)と仮定し、それを基準に7文字目を算出してみます。0xBA-
+0x61=0x59(Y)となります。よって5文字目を「a」と7文字目を「Y」に置き換える
+ことになります。では、プロセスをリスタート後、0040E7AAにブレークポイント
+を張って、「Sa2ja5Y789abcdef」を与えてみます。すると、0040E7AAでブレーク
+した時点で0xBA同士を比較していることがわかり、ここのチェックをクリアでき
+ることがわかりました。
+
+　では、この時点からのトレースログを取り、またこれ以降の処理を見てみるこ
+とにします。
+
+
+■0x06.) 5文字目＋6文字目のチェックをクリアする
+
+　先ほどと処理的には同じなので、かいつまんで説明します。
+
+----- Key[4]（5文字目）を取り出す処理（jmp命令省略版）
+0040F988 Main     MOV EAX,DWORD PTR DS:[EBX+78]
+0040F98E Main     MOV EAX,DWORD PTR DS:[EAX]                ; EAX=00000004 -> 配列の添え字
+0040F990 Main     MOV DWORD PTR DS:[EBX+64],EAX
+0040E872 Main     MOV DWORD PTR DS:[EBX+78],-4
+004149D7 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+004149DD Main     ADD DWORD PTR DS:[EBX+78],EAX
+0040F4BC Main     MOV EAX,DWORD PTR DS:[EBX+78]             ; EAX=00162C20
+0040F4C2 Main     MOV EAX,DWORD PTR DS:[EAX]                ; EAX=0012FB70 -> 配列の先頭アドレス
+0040F4C4 Main     MOV DWORD PTR DS:[EBX+68],EAX
+00413C34 Main     MOV EAX,DWORD PTR DS:[EBX+68]
+00413C3A Main     ADD DWORD PTR DS:[EBX+64],EAX
+00412B01 Main     MOV EAX,DWORD PTR DS:[EBX+64]             ; EAX=0012FB74 -> 配列の先頭+4（Key[4]）
+00412B07 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=0012FB61 -> Key[4]はa(0x61)なので、ALに0x61が入る
+00412B09 Main     MOV BYTE PTR DS:[EBX+64],AL               ; [EBX+64]に0x61を代入
+-----
+
+----- Key[5]（6文字目）を取り出す処理（jmp命令省略版）
+00412B31 Main     MOV EAX,DWORD PTR DS:[EBX+78]             ; EAX=00162C28
+00412B37 Main     MOV EAX,DWORD PTR DS:[EAX]                ; EAX=00000005 -> 配列の添え字
+00412B39 Main     MOV DWORD PTR DS:[EBX+64],EAX
+00413638 Main     MOV DWORD PTR DS:[EBX+78],-4
+0040E98E Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+0040E994 Main     ADD DWORD PTR DS:[EBX+78],EAX
+00412012 Main     MOV EAX,DWORD PTR DS:[EBX+78]             ; EAX=00162C20
+00412018 Main     MOV EAX,DWORD PTR DS:[EAX]                ; EAX=0012FB70 -> 配列の先頭アドレス
+0041201A Main     MOV DWORD PTR DS:[EBX+68],EAX
+00413604 Main     MOV EAX,DWORD PTR DS:[EBX+68]
+0041360A Main     ADD DWORD PTR DS:[EBX+64],EAX
+00411E48 Main     MOV EAX,DWORD PTR DS:[EBX+64]             ; EAX=0012FB75 -> 配列の先頭アドレス+5(Key[5])
+00411E4E Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=0012FB35 -> Key[5]（6文字目）は0x35
+00411E50 Main     MOV BYTE PTR DS:[EBX+64],AL               ; [EBX+64]に0x35を代入
+-----
+
+　入力文字は0x61(Key[4])+0x35(Key[5])=0x96となります。正規と思われる文字
+は以下のコードにおいて00411A48のcmp命令で0xCEと比較していたことから、本物
+のKeyはKey[4]+Key[5]=0xCEとなります。
+
+----- 比較処理付近のログ（jmp命令省略版）
+0041099D Main     MOV DWORD PTR DS:[EBX+78],0
+00412131 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+00412137 Main     ADD DWORD PTR DS:[EBX+78],EAX
+00410DD1 Main     MOV EAX,DWORD PTR DS:[EBX+78]
+00410DD7 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162C96 -> 仮のKey[4]+Key[5]
+00410DD9 Main     MOV BYTE PTR DS:[EBX+64],AL
+00413066 Main     MOV DWORD PTR DS:[EBX+78],4
+0041221D Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+00412223 Main     ADD DWORD PTR DS:[EBX+78],EAX
+00411391 Main     MOV EAX,DWORD PTR DS:[EBX+78]             ; EAX=00162C28
+00411397 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162CCE -> 本物のKey[4]+Key[5]
+00411399 Main     MOV BYTE PTR DS:[EBX+68],AL
+00411A40 Main     XOR EAX,EAX                               ; EAX=00000000
+00411A42 Main     MOV CL,BYTE PTR DS:[EBX+68]               ; ECX=00162CCE
+00411A48 Main     CMP BYTE PTR DS:[EBX+64],CL
+00411A4E Main     JNZ SHORT FSC_Leve.00411A51
+-----
+
+　とりあえず、現在はKey[4]=0x61(a)としていますので、Key[5]は0xCE-0x61=0x
+6D(m)でいけそうです。プロセスをリスタート後、00411A48にブレークポイントを
+張り、Key[5]（6文字目）を「m」に変え、「Sa2jamY789abcdef」として0041A48ま
+で実行してみましょう。今度は0xCE同士を比較することになったと思います。ブ
+レークした時点から、再度Ctrl+F12でトレースログをとりながら実行してみまし
+ょう。
+
+
+■0x07.) 6文字目＋7文字目のチェックをクリアする
+
+　今度も前2項と同様の処理内容でしたが、6文字目と7文字目を足したものを0xE0
+と比較していることがわかりました。以下は最後の部分だけを抜き出しています。
+
+----- 比較処理付近のログ（jmp命令省略版）
+00413670 Main     MOV DWORD PTR DS:[EBX+78],0
+00410803 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+00410809 Main     ADD DWORD PTR DS:[EBX+78],EAX
+00410CF6 Main     MOV EAX,DWORD PTR DS:[EBX+78]
+00410CFC Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162CC6 -> 仮のKey[5]+Key[6]（0x6D(m)+0x59(Y)=0xC6)
+00410CFE Main     MOV BYTE PTR DS:[EBX+64],AL
+0040F594 Main     MOV DWORD PTR DS:[EBX+78],4
+00412EC4 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+00412ECA Main     ADD DWORD PTR DS:[EBX+78],EAX
+00413C90 Main     MOV EAX,DWORD PTR DS:[EBX+78]             ; EAX=00162C28
+00413C96 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162CE0 -> 本当のKey[5]+Key[6]
+00413C98 Main     MOV BYTE PTR DS:[EBX+68],AL
+00411AC3 Main     XOR EAX,EAX                               ; EAX=00000000
+00411AC5 Main     MOV CL,BYTE PTR DS:[EBX+68]               ; ECX=00162CE0
+00411ACB Main     CMP BYTE PTR DS:[EBX+64],CL
+00411AD1 Main     JNZ SHORT FSC_Leve.00411AD4
+
+　よって、Key[5]+Key[6]=0xE0となります。
+
+
+■0x08.) 5文字目、6文字目、7文字目の特定
+
+　とりあえず、仮の文字列を与えて、何とかここまでクリアしてきましたが、こ
+このチェックは以下の条件を同時に満たす文字列を算出しない限り、先には進め
+なさそうです。では、ここまでの条件を再度整理してみましょう。
+
+5文字目+7文字目=0xBA
+5文字目+6文字目=0xCE
+6文字目+7文字目=0xE0
+
+　上記の条件を同時に満たせば、ここをクリアできます。ただし先ほどまでのよ
+うに、仮の文字を与えて、その差を微調整していくようなやり方だと非常に時間
+がかかってしまいます。どうすればよいでしょうか？ここで5文字目をx6文字目を
+y、7文字目をzにそれぞれ置き換えてみます。
+
+x+z=0xBA   ... 式1
+x+y=0xCE   ... 式2
+y+z=0xE0   ... 式3
+
+　どこかで見たようなものになりませんか？右辺こそ16進数になっていますが、
+形は中学時代にやったはずの三元一次連立方程式です。これで解けそうですね。
+
+
+----- 計算
+式3のyを右辺に移行
+z=0xE0-y
+
+式3を式1に当てはめ、zにあたる部分を右辺に移行
+x+(0xE0-y)=0xBA
+x=0xBA-0xE0+y
+
+上記を式2に当てはめ、yを求める
+(0xBA-0xE0+y)+y=0xCE
+2y=0xCE-0xBA+0xE0
+2y=0xF4
+y=0x7A
+
+yを求められたので、式2にそれを当てはめ、xを求める
+x+0x7A=0xCE
+x=0xCE-0x7A
+x=0x54
+
+xを求めたので、それを式1に当てはめ、zを求める
+z=0xBA-0x54
+z=0x66
+-----
+
+　よって、以下のような結果になりました。
+x=5文字目=Key[4]=54(T)
+y=6文字目=Key[5]=7A(z)
+z=7文字目=Key[6]=66(f)
+
+　これらの文字列を反映した結果、「Sa2jTzf789abcdef」という文字列になりま
+した。これを与えれば、00411ACBのCMP命令まではクリアできます。
+
+
+■0x09.) 所感
+
+　さて、いかがでしたでしょうか？今回は、見るべきコードが多くて、大変だっ
+たと思います。また、中学校の数学を思い出さなければならなかったので、それ
+も大変だったかもしれません。また今回は私自身、時間が取れず、説明を省略し
+て書いてしまっているところもあり、わかりづらい文章になってしまっているか
+もしれません。すみません。
+
+　まだまだ先は長いですが、徐々に説明していきたいと思います。それでは、ま
+た。
+
+
+

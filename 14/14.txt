@@ -1,0 +1,2128 @@
+[-]=======================================================================[-]
+
+                      Wizard Bible vol.14 (2004,12,26)
+
+[-]=======================================================================[-]
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+  ---- 第０章：目次 ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○第１章：謝罪　～TVのチカラ編～                                  MaD 著
+
+○第２章：マニアックJavaプログラミング第一回:wait()とnotify()    金床 著
+
+○第３章：Windows Raw Socket Programming                   Kenji Aiko 著
+
+○第４章：熱暴走したHDDを冷やしてデータ救出する実験とその結果    黒猫 著
+
+○第５章：詐欺師の技術を盗め　～考える楽しみをもう一度～     IPUSIRON 著
+
+○第６章：警察の脆弱性                                            MaD 著
+
+○第７章：お知らせ
+
+○第８章：著者プロフィール
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第１章: 謝罪　～TVのチカラ編～ ---
+
+著者：MaD
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　街にはジングルベルが流れ、アベックがいちゃつく姿を見ながら「一人きりの
+クリスマス～♪」を脳みその中でループさせてイラつく時期がやってきました。
+とりあえず新宿中で手をつないで歩いてる見つけたら後ろから刺してまえ＞ALL。
+
+　さて、ウイザードバイブルの連載もいよいよ687684253回目となりました。
+　今年最後のお題は「謝罪」ということで締めたいと思います。
+
+
+■0x02.) 幕開け
+
+　事件は次のひつもん掲示板のスッドレへの投稿から始まります。
+
+http://ruffnex.oc.to/ipusiron/cgi/forum/patio.cgi?mode=past&no=99&p=3
+
+---------------------
+Re: 質問スレッド　～その２～ ( No.261 )
+
+日時： 2004/11/24 05:35
+名前： めるぽ
+
+突然ですが、名簿や企業情報の売買って実際どうなんでしょう・・・。
+小遣い稼ぎ？失踪ﾁｮﾒﾁｮﾒ当たり前の裏社会？興信所関係っぽい収集業者もあるよ
+うですが。
+ここならその世界に詳しい方がいらっしゃる様な気がします。どのようなもので
+しょうか～??
+先日、テレ朝の失踪者捜索番組で失踪者がその家業に手を染めてたみたいな内容
+で、「ハッカーの教科書」とその著者にインタビューしてました。
+顔の一部までしか映ってませんでしたが、あの人が(ry
+いぇべっに私が売ろぅとかそんなぁれな；
+---------------------
+
+　これをIPUSIRON氏が密かに見ていたようです。
+
+　それで上京したIPUSIRON氏から話しをふられました。
+
+いぷ：「質問掲示板で、ハッカーの教科書がテレビに映っていたと投稿されてい
+たようですね」
+
+まど：「ふーん。よかったね。ご飯はない食べようか？」
+
+いぷ：「お腹空いてないからまだいいです。……その番組で、その著者、つまり、
+ぼくが出ているということらしいのですけど、ぼくは知らないんですよね」
+
+まど：「ふーん。カッコイイじゃん。なに食べよーかなー」
+
+いぷ：「まどさんは、なにか知らないですか？」
+
+まど：「あんまし知らない。。。お腹へったー！」
+
+いぷ：「あんましとはどういうことですか？」
+
+まど：「あんましとは、ちょっとだけ知っているかもしれないという表現を指し
+ます」
+
+いぷ：「どういうことですか？　テレ朝なら知っている人が何人かいますから聞
+いてみようかと思っています」
+
+まど：「あ″ー、このデブ！　やめろよー！　ちゃんと話すからー！」
+
+いぷ：「デブは余計です。どういうことですか？」
+
+
+■0x03.) 成り行き
+
+テレ：「インターネットで個人情報漏洩事件がありまして、それについてインタ
+ビューさせていただきたいのです」
+
+まど：「ぼくはなにも知りません。無実です。××××とか知りません。話した
+こともありません。悪いのは××××です。死刑にしてください」
+
+テレ：「まだ、なにも話していませんが（汗）。その事件ではなくて、違う会社
+で事件らしきことが起こりまして、それについてハッカーと呼ばれる方に少し助
+言をいただきながらインタビューに応じていただきたいのです（ごにょごにょ）」
+
+まど：「あー、ビックリしたー。そんな事件なら関係ないからどうでもいいです
+よ。スキルは松・竹・梅と各種ありますが、どれにしますか？」
+
+テレ：「いや、スキルではなくて、ある人物を探していますので、そうしたコミ
+ュニティの情報に詳しい方です」
+
+まど：「なるほど。どんなことを話せばいいのですか？」
+
+テレ：「（ごにょごにょ）」
+
+まど：「なるほど。該当者はいますけど、どういう事件にせよ確信の部分は誰も
+話さないと思いますよ。特に時期が時期だし（笑）」
+
+テレ：「それで構いません。調査をするにあたっての基礎情報も知りたいですし」
+
+まど：「でしたら、その筋に詳しい方を紹介しますよ。セッティングしておきます」
+
+テレ：「有難うございます。宜しくお願い致します」
+
+　そんなわけで、某顧客情報漏洩事件とはカブっていない情報屋を選んでみた。
+　連絡を入れると快く承諾してくれたので話しは決まった。名前は秘密。
+　ぼくもクーリエで密かに番組の裏側を録音したかったので同行することとなった。
+
+【編注】クーリエについてはWizard Bible vol.14の第４章を参照。
+http://akademeia.info/wizardbible/12/12.txt
+
+
+■0x04.) 収録当日
+
+　収録当日、麻布に向かった。
+　……時間になったのだが、情報屋が来ない（汗）。
+　……電話するが留守録（大汗）。
+　そんな感じで一人でスタジオに向かう。
+
+テレ：「収録の時間です。情報屋という方はどなたでしょうか？」
+
+まど：「あぁ、俺だ。俺だよ俺！　なんでも聞けや（爆死）」
+
+テレ：「はい、ではインタビューの準備をさせていただきます」
+
+まど：「おぅ！　その前にワシの本を紹介してくれや。話しはそれからや」
+
+テレ：「はい、わかりました。先にお名前をお聞かせいただけますか？」
+
+まど：「名前は『IPUSIRON』で通っている。「イプロン」と読む。だが、名前は
+出すなよ。あと首から下だけしか撮影すなよ」
+
+テレ：「はい、ではインタビューを開始させていただきます」
+
+　……色々、質問され、インタビューが終わったヽ(;´Д`)ノ。
+　どうしようかと思ったが、どれもこれも許容範囲の内容ばかり。
+　冷静に考えてみたら、自分が昔やってたことなのでだし、現在もそうした連中
+と書籍の取材で接触はしているんだから『漏れって詳しいじゃん！　さすがだよ
+な！』という感じで、激しい勢いで質問に即答してゆきますた。
+
+　そんなわけで収録は完了。
+　情報屋は遅れて到着。「君も詳しいやろけど、元プロが話しをしたようで出番
+がないみたいよ」ということで片づけた（笑）。
+
+　……「どうせ誰も見ないやろから、どうでもええわ」ということで、少しヒヤ
+ヒヤしながら静かな日々を送っていたのだが、それがある発言でドツボにはまり
+ました。
+
+
+■0x05.) 「個人情報が一件20万円で売買されている」という件
+
+　また、ひつもん掲示板で引っ張られていた。
+
+http://ruffnex.oc.to/ipusiron/cgi/forum/patio.cgi?mode=view&no=248&p=2
+
+---------------------
+Re: 質問スレッド　～その３～ ( No.4 )
+日時： 2004/12/10 12:13
+名前： nanasi
+TVでこのまえ個人情報一件で20万円になるとか言ってましたがそんなになるので
+すか？？
+実は私も個人情報を色々持っているのですが・・ｗ
+---------------------
+
+　ないない。個人情報一件で20万円になるわけない。
+　おれは、そんなこといってないよ。
+
+テレ：「こういう情報っていくらくらいになるんでしょうか？」
+
+まど：「ピンキリや。リスト売りで買い叩かれて一件20円になるのはよくある話
+しやね。探偵の調査依頼のようなアプローチでピンポイントとなる調査なら20万
+円なんて軽いもんやけどな。ワシなら相手見て引っ張るわけや。ワシの仕事はそ
+こいらやったからな」
+
+テレ：「つまり、価格はあってないようなものということでしょうか？」
+
+まど：「ちゃう。リストになったデータの相場価格は常にあるよ。でもな、買う
+側は見ただけでご馳走さまいう感じや。一応、項目に目を通して金額を足下見な
+がら提示するわけや。基本的には数十円から高くても数百円いうとこや。たとえ
+ば、クレカの情報があるかないかでも大きく変わる。当然、さばく先も変わるし
+な。それでも一件で20万円はまずないという話しをしとんねや（チンピラ風に喋
+る）」
+
+テレ：「つまり、リストのデータはそんなに高くないということですね？」
+
+まど：「当たり前や。リストになっとるわけやろ？　単なるデジタルデータや。
+かかわった奴が全員コピーしとるがな。売りにきたガキが『どこにも売っていま
+せん』とかヌカすけど、そんな情報は広まりまくってて当然。こちとら信用して
+ない。ワシやったらそういってあちこちに売ってまうからな（笑）。そんな大層
+なもんではないというこっちゃ」
+
+テレ：「では、高額の取り引きは無理なのでしょうか？」
+
+まど：「これな、コネクションの問題なんや。リストの場合、名簿屋に売ると損
+やで。売る相手を選んで交渉することになる。つまり、そのリストを抜き出した
+会社と同じ規模のライバル会社や。そこらが一番高く売れる。それでも一件で20
+万円はまずないで」
+
+　……実際、こんな話し、裏でもなんでもなくて、少し頭をヒネれば誰でも考え
+るような単なる概論。そこまではいったのだが、なんか名簿の価格について思い
+きり勘違いされているよな気もする。まぁ関係ないからいいけど。
+
+　そんなわけでIPUSIRON様、本当にご迷惑をおかけしました。
+　深くお詫び申し上げます。
+　生まれてきてごめんなさい。
+
+
+■0x06.) 追伸
+
+　あと「元泥棒」とか「元詐欺師」などでインタビューがある場合は、ぼくに連
+絡をください。「IPUSIRON」ていう名前でいつでもインタビュー受けます。
+　取材費３万円でいいです。読売の場合は１万円で３回でいいです。
+　かなり詳しいです。
+
+　でわでわ。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第２章: マニアックJavaプログラミング第一回:wait()とnotify() ---
+
+著者：金床
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　Javaの魅力のひとつに、マルチスレッドのサポートがあげられます。標準クラ
+スライブラリにしっかりとスレッドが組み込まれているので、作り上げたマルチ
+スレッドプログラムはプラットフォームを問わずに動作します。これはCやC++な
+どではなかなか実現できない、Javaの特権の一つと言えるでしょう。スレッド関
+連のクラスライブラリもなかなかに使いやすく出来ており、また、動作も非常に
+安定している印象を受けます。
+　今回はマニアックJavaプログラミングと題し、オブジェクトプールの作成を行
+います。
+
+
+■0x02.) オブジェクトプールとは
+
+　さて、オブジェクトプールとは何でしょうか。オブジェクトプールとは、何か
+しらの働きをするオブジェクトがプログラム中で大量に必要とされる場合に、毎
+回新しくそのオブジェクトを作成するのではなく、いくつかのオブジェクトを繰
+り返して使う、いわば使い回しをする際の、オブジェクトをため込んでおく部分
+のことです。代表的な例として、データベースとのコネクションを使い回すコネ
+クションプールがあげられます。これは最近ではウェブアプリケーションなどで
+良く使われています。ユーザのリクエストが届く度に新たにデータベースに接続
+するのではなく、あらかじめいくつかの接続済みのコネクションを用意しておき、
+データベースへの接続が必要とされた場合にそのうちの一つを渡して利用し、利
+用後にはまたプールに返却して、次の利用に備えるわけです。
+
+
+■0x03.) インターフェースの決定
+
+　それでは実際にオブジェクトプールの作成を開始しましょう。まずは、どのよ
+うなインターフェースを備えるべきか考えます。真っ先に思いつくのは、オブジ
+ェクトプールからオブジェクトを取得するメソッドと、オブジェクトを返却する
+メソッドの2つでしょう。それぞれをgetObject()、returnObject()と名付けます。
+また、オブジェクトプールの初期化の際にプールの中身を設定するためのメソッ
+ドをaddToPool()として用意します。これら3つのメソッドは、コード中でどのよ
+うに使用されることになるでしょうか。まずは、初期化の部分のコードを想像し
+てみます。ここでは、オブジェクトプールの中身はdoSomething()メソッドを持つ
+MSomeObjectクラスのインスタンスになると仮定します。
+
+-----
+
+    //オブジェクトプールを作成する
+MObjectPool objectPool = new MObjectPool();
+
+    //プールの中身を設定する
+    //20個のMSomeObjectクラスのインスタンス
+for( int i = 0; i < 20; ++i )
+    {
+    objectPool.addToPool( new MSomeObject() );
+    }
+
+-----
+
+　シンプルな形で想像してみると、初期化を行う部分のソースコードはこのよう
+な感じになるでしょう。この処理は、プログラム全体の流れの中でも、おそらく
+初期の段階で実行されることになるでしょう。
+
+　次に、実際にオブジェクトプールからオブジェクトが借り出され、使用され、
+そして返却される部分のソースコードを想像してみましょう。おそらく次のよう
+になるのではないでしょうか。
+
+-----
+
+    //オブジェクトをプールより取得する
+MSomeObject someObject = ( MSomeObject )objectPool.getObject();
+
+    //オブジェクトを使用する
+someObject.doSomething();
+
+    //オブジェクトを返却する
+objectPool.returnObject( someObject );
+
+-----
+
+　こんな感じでしょうか。こちらもとてもシンプルな形です。さてここで、さら
+に想像力を働かせてみましょう。getObject()を呼び出してオブジェクトを取得す
+る際に、オブジェクトプールの中身が全て借り出されていて、中身が無い状態だ
+としたら、このプログラムはどのように動作するのでしょうか。これは、当然な
+がらオブジェクトプールの実装によります。貸し出せるオブジェクトが無い状態
+でgetObject()が呼び出された場合の実装として、次のようないくつかのパターン
+が考えられます。
+
+1. 別のスレッドによりオブジェクトが返却されるまで待機する
+2. nullを返す
+3. 例外を送出する
+
+　2や3の実装は非常に簡単ですが、このような実装ではオブジェクトプールを作
+る意味が薄れてしまいますので（笑）、今回はもちろん1を選択することにします。
+
+　では、いよいよgetObject()メソッドの中身の実装に入りましょう。
+
+
+■0x04.) getObject()の実装
+
+　オブジェクトプールの内部ではオブジェクトをコレクションの形で管理する必
+要があります。ここではSetでもListでも好きなものを使うことができますが、こ
+こでは「先に返却されたオブジェクトほど、先に貸し出される」という方針を採
+りたいと思いますので、コレクションにはキューを使用することにします。Java
+ではキューを実現するためにjava.util.LinkedListクラスを使用することができ
+ます。ここではobjectQueueという名前でLinkedListクラスを使用することにしま
+しょう。
+
+-----
+
+private LinkedList objectQueue = new LinkedList();
+
+-----
+
+　getObject()メソッドが呼び出されると、まずこのキューの中身が空でないかど
+うかをチェックし、空でなければ、キューの先頭のオブジェクトを貸し出します。
+この部分のソースコードは次のようになります。
+
+-----
+
+if( !objectQueue.isEmpty() )
+    {
+    Object o = objectQueue.getFirst();
+    objectQueue.removeFirst();
+    return o;
+    }
+
+-----
+
+　ここで、何か違和感を感じましたか？そうです。このメソッドは複数のスレッ
+ドから並列的に呼び出される可能性がありますので、スレッドセーフな実装を行
+わなければなりません。ここでまず思いつくのはsynchronized句を使ってメソッ
+ド全体を保護する方法です。ソースコードは次のような感じになります。
+
+-----
+
+public synchronized Object getObject()
+{
+if( !objectQueue.isEmpty() )
+    {
+    Object o = objectQueue.getFirst();
+    objectQueue.removeFirst();
+    return o;
+    }
+}
+
+-----
+
+　これでスレッドセーフになりました。しかし、これではロックがオブジェクト
+プール全体に対して行われてしまいます。良く考えてみると、ここではobjectQu
+eueに対してのみスレッドセーフであればよいので、次のように変更してみましょ
+う。
+
+-----
+
+public Object getObject()
+{
+synchronized( objectQueue )
+    {
+    if( !objectQueue.isEmpty() )
+        {
+        Object o = objectQueue.getFirst();
+        objectQueue.removeFirst();
+        return o;
+        }
+    }
+}
+
+-----
+
+　これでもスレッドセーフです。このように、ロックの対象はできるだけ絞る方
+が良いでしょう。
+　さて、このソースコードはまだまだ不完全です。そうです、キューが空の場合
+の実装が全く抜けてしまっています。以前決めたように、キューが空の場合には、
+スレッドの実行を一時停止して、他のスレッドがオブジェクトを返却してくれる
+まで待機することにしたのでした。スレッドの一時停止にはwait()メソッドを利
+用します。wait()メソッドはObjectクラスに所属するメソッドで、これはつまり、
+あらゆるクラスがwait()メソッドを持っていることを意味します。では、wait()
+を使ってスレッドを待機させてみましょう。
+
+-----
+
+public Object getObject()
+{
+synchronized( objectQueue )
+    {
+    if( !objectQueue.isEmpty() )
+        {
+        Object o = objectQueue.getFirst();
+        objectQueue.removeFirst();
+        return o;
+        }
+    wait();
+    }
+}
+
+-----
+
+　これで良いでしょうか。実はこのソースコードは3つ問題点を抱えています。
+　まず1つは、「wait()を呼び出す際にはそのオブジェクトのロックを取得してい
+る必要がある」という暗黙の約束を守っていないことです。このままコードを実
+行すれば、IllegalMonitorStateExceptionが送出されることでしょう。このコー
+ドではただ単に「wait();」と記述していますので、実際に呼び出されるのはObj
+ectPoolクラスのインスタンスのwait()メソッドということになります。ですから、
+wait()を呼び出す段階でこのインスタンスのロックを取得していなければなりま
+せん。
+　2つめは、一時停止したスレッドが再度呼び起こされた場合の処理が全く抜けて
+いることです。wait()で一時停止したスレッドは、再度呼び起こされた際に、次
+の行から実行を再開します。つまり、このメソッド内の処理はループさせる必要
+があるということです。
+　最後に、wait()メソッドはInterruptedExceptionを送出する可能性があるので、
+これをcatchする必要があります。
+
+　以上の3つの点を考慮すると、ソースコードは次のようになります。
+
+-----
+
+public Object getObject()
+{
+while( true )
+    {
+    synchronized( objectQueue )
+        {
+        if( !objectQueue.isEmpty() )
+            {
+            Object o = objectQueue.getFirst();
+            objectQueue.removeFirst();
+            return o;
+            }
+        }
+    synchronized( this )
+        {
+        try
+            {
+            wait();
+            }
+        catch( InterruptedException e )
+            {
+            e.printStackTrace();
+            return null;
+            }
+        }
+    }
+}
+
+-----
+
+　これで、とりあえずは動作するgetObject()メソッドが完成しました。しかし、
+実はここからが真の「マニアック」な部分になります。
+
+　Javaにおけるwait()メソッドは、スレッドが動作を一時停止するという意味を
+持ちますが、「あるインスタンスを目印として」一時停止する、という意味で、
+とても特徴的なものになっています。ここで、この「あるインスタンス」をター
+ゲットインスタンスと呼ぶことにします。ターゲットインスタンスは、鳥が止ま
+る木の枝に例えることができます。動作を続けていたスレッド（空を飛び続けて
+きた鳥）がターゲットインスタンス（木の枝）に対してwait()メソッドを呼び出
+す（木の枝に留まる）ことで、動作を一時停止します。このスレッドを再度動作
+させる（鳥を飛び立たせる）には、ターゲットインスタンス（木の枝）に対して
+notify()やnotifyAll()を呼び出す（枝を揺する）必要があります。
+
+　Javaにおいてはひとつのターゲットインスタンス（木の枝）に対して一時停止
+することのできるスレッドの数（留まることのできる小鳥の数）には上限が無い
+ことになっています。notify()を呼び出した場合にはランダムに一つのスレッド
+が呼び起こされます。notifyAll()を呼び出した場合には全てのスレッドが呼び起
+こされます。
+　オブジェクトプールには色々なスレッドがオブジェクトを取得しにやってきま
+すが、公平であるためには、当然ながら「先に待っているスレッドに、先にオブ
+ジェクトを貸してあげる」必要があります。このため、今回作成しているオブジ
+ェクトプールでは、notify()を使用してランダムに一つのスレッドを呼び起こす
+方法は不向きです。では、notifyAll()を使用するのが良い方法でしょうか？実は、
+こちらもあまり良い方法ではないのです。
+　notifyAll()は、待機しているスレッドを全て再開させます。つまり、枝を大き
+く揺らし、留まっている鳥を全部飛び立たせることになるわけです。しかしこの
+時新たに利用できるオブジェクトはたった一つですので、一つのスレッドだけが
+無事動作を再開させることができ、残りのスレッドは再び全て動作を停止するこ
+とになってしまいます。例えば100個のスレッドが待機している状態を考えてみま
+しょう。1つのオブジェクトがオブジェクトプールに返却されるとnotifyAll()が
+呼び出され、100個全てのスレッドが動作を再開します。このとき運良く一番始め
+に動作を再開したスレッドが無事このオブジェクトを取得します。そして残りの
+99個のスレッドは動作を再開したもののオブジェクトを取得できずに、再び待機
+するのです。これはあまりにもナンセンスな実装だと言わざるを得ません。また、
+この方法では「先に待っているスレッドに、先にオブジェクトを貸してあげる」
+という方法も採ることができません。
+　そこで、別の解決策を考えます。実は、一本の木の枝に全ての鳥を留まらせて
+しまうのがそもそもの間違いなのです。そうではなく、最初からたくさんの枝を
+用意しておき、それぞれに一匹ずつ鳥を留まらせます。そうすれば、枝を選んで
+notify()を呼び出すことで、好きな鳥を選んで飛び立たせることができるのです。
+枝の順番を管理しておけば「先に待っているスレッドに、先にオブジェクトを貸
+してあげる」ことも実現可能になりますし、99匹を飛び立たせて、また同じ枝に
+留まらせるような無駄も避けることができます。
+　枝に当たるインスタンス、つまりwait()を呼び出す対象となるインスタンスは、
+どんなクラスのものでも大丈夫です。そこで、ここではオブジェクトを取得しに
+来るスレッドインスタンスそのものを枝に見立ててみることにしましょう。「先
+に待っているスレッドに、先にオブジェクトを貸してあげる」ために、枝をキュ
+ーとして管理します。
+
+-----
+
+private LinkedList threadQueue = new LinkedList();
+
+-----
+
+　オブジェクトを取得しにきたスレッドがオブジェクトを取得できない場合には、
+そのスレッドのインスタンスに対してwait()を呼び出すようにします。そして、
+このいわば「鳥が留まっている木の枝」である、スレッドのインスタンスをキュ
+ーに格納します。ソースコードの実装を行う際にはwait()を呼び出してしまうと
+その時点でプログラムの動作が止まってしまいますので、最初にスレッドをキュ
+ーに格納し、その後wait()を呼び出すようにします。
+
+-----
+
+    //スレッドインスタンスを取得
+Thread currentThread = Thread.currentThread();
+
+synchronized( threadQueue )
+    {
+        //キューに格納
+    threadQueue.addLast( currentThread );
+    }
+
+synchronized( currentThread )
+    {
+    try
+        {
+        currentThread.wait();
+        }
+    catch( InterruptedException e )
+        {
+        e.printStackTrace();
+        return null;
+        }
+    }
+
+-----
+
+　必要がある箇所ではsynchronized句を使って同期を取っていることに注意して
+下さい。さて、これでgetObject()メソッドが完成です。ソースコードは次のよう
+になります。
+
+-----
+
+public Object getObject()
+{
+while( true )
+    {
+    synchronized( objectQueue )
+        {
+        if( !objectQueue.isEmpty() )
+            {
+            Object o = objectQueue.getFirst();
+            objectQueue.removeFirst();
+            return o;
+            }
+        }
+
+    Thread currentThread = Thread.currentThread();
+    
+    synchronized( threadQueue )
+        {
+        threadQueue.addLast( currentThread );
+        }
+    
+    synchronized( currentThread )
+        {
+        try
+            {
+            currentThread.wait();
+            }
+        catch( InterruptedException e )
+            {
+            e.printStackTrace();
+            return null;
+            }
+        }
+    }
+}
+
+-----
+
+
+■0x05.) returnObject()の実装
+
+　次に、使い終わったオブジェクトをオブジェクトプールに返却する際に呼び出
+される、returnObject()メソッドの実装に取りかかります。ここでは一つのオブ
+ジェクトを返却するので、引数にはObject型の引数を一つ取ります。まず、返却
+されたオブジェクトをオブジェクトキューに格納します。
+
+-----
+
+public void returnObject( Object o )
+{
+synchronized( objectQueue )
+    {
+    objectQueue.addLast( o );
+    }
+}
+
+-----
+
+　オブジェクトの取得をするために待機しているスレッドがあれば、そのスレッ
+ドを再開させる必要があります。待機しているスレッドを格納したキューが空で
+ないかどうか確認し、空でないならば、キューの先頭のスレッドを再開させます。
+ソースコードは次のようになります。
+
+-----
+
+public void returnObject( Object o )
+{
+synchronized( objectQueue )
+    {
+    objectQueue.addLast( o );
+    }
+
+Thread wakenedThread = null;
+synchronized( threadQueue )
+    {
+    if( threadQueue.isEmpty() )
+        {
+        return;
+        }
+    wakenedThread = ( Thread )threadQueue.getFirst();
+    threadQueue.removeFirst();
+    }
+
+synchronized( wakenedThread )
+    {
+    wakenedThread.notify();
+    }
+}
+
+-----
+
+　returnObject()メソッドはこれで完成です。
+
+
+■0x06.) おわりに
+
+　クラス全体のソースコードは次のようになります。このクラスは僕が管理して
+いるパッケージ、「net.jumperz.util」内に納めることにしました。
+
+-----
+
+package net.jumperz.util;
+
+import java.util.*;
+
+public class MObjectPool
+{
+private LinkedList objectQueue = new LinkedList();
+private LinkedList threadQueue = new LinkedList();
+//---------------------------------------------------------------
+public void addToPool( Object o )
+{
+objectQueue.addLast( o );
+}
+//---------------------------------------------------------------
+public Object getObject()
+{
+while( true )
+    {
+    synchronized( objectQueue )
+        {
+        if( !objectQueue.isEmpty() )
+            {
+            Object o = objectQueue.getFirst();
+            objectQueue.removeFirst();
+            return o;
+            }
+        }
+
+    Thread currentThread = Thread.currentThread();
+    
+    synchronized( threadQueue )
+        {
+        threadQueue.addLast( currentThread );
+        }
+    
+    synchronized( currentThread )
+        {
+        try
+            {
+            currentThread.wait();
+            }
+        catch( InterruptedException e )
+            {
+            e.printStackTrace();
+            return null;
+            }
+        }
+    }
+}
+//---------------------------------------------------------------
+public void returnObject( Object o )
+{
+synchronized( objectQueue )
+    {
+    objectQueue.addLast( o );
+    }
+
+Thread wakenedThread = null;
+synchronized( threadQueue )
+    {
+    if( threadQueue.isEmpty() )
+        {
+        return;
+        }
+    wakenedThread = ( Thread )threadQueue.getFirst();
+    threadQueue.removeFirst();
+    }
+
+synchronized( wakenedThread )
+    {
+    wakenedThread.notify();
+    }
+}
+//---------------------------------------------------------------
+}
+
+-----
+
+　たったこれだけのソースコードで、最低限の機能しか持たないながらも、オブ
+ジェクトプールを作成することができました。このオブジェクトプールは「先に
+返却されたオブジェクトほど、先に貸し出される」「先に待っているスレッドに、
+先にオブジェクトを貸してあげる」という2つの方針を実現できるものとなってい
+ます。実はインターネットや書籍などで見かけるデータベースのコネクションプ
+ールなどのサンプルでは、このうち後者の方針は無視されがちです。それという
+のも、スレッドを再開させる際にnotify()ではなくnotifyAll()を使用するものが
+殆どだからです。
+　実は、Javaのチュートリアルなどをはじめ、「スレッドを再開させるには、no
+tify()ではなく、notifyAll()を使用するようにしましょう」と記述されているも
+のが多いのが現状です。これは「一本の木の枝に100匹の鳥を留まらせる」方式の
+コーディングを前提に考えているためです。僕は個人的にこのような風潮は完全
+に間違った物だと感じています。スレッドを再開させるには、notifyAll()ではな
+く、notify()を使いましょう。もちろん、待機させるスレッドはそれぞれのター
+ゲットインスタンスにつき一個だけです。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第３章: Windows Raw Socket Programming ---
+
+著者：Kenji Aiko
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　「WindowsもついにRawSocketが使えるようになったかぁ」とWindowsの進化に少
+し感動したのが、つい最近のようですが、Windows2000/XPはご存知、RawSocketを
+微妙にサポートしています。「微妙に」というあいまいな言葉を使ったのにはわ
+けがあって、サポートしてるわりにはなんかやりたいことが実現できなかったり、
+原因不明かつ意味不明な動作で正常に動作しなかったりと、まだまだ個人的に気
+に食わないところがあるからです。でもMSは「サポートしてます」といっている
+ので、とりあえず、今回はサポートしているということにして、このテキストを
+読んでください（笑）。
+
+　動作確認は、VC++.NETとWindowsXPで行っていますが、Windows2000でもOKだと
+思います。ただWindows9x系ではWinsock2ではなくRawSocketをサポートしてない
+らしいので無理かもしれません。コンパイラに関しては、何でもOKです。多分Bo
+rland C++ Compiler 5.5でもOKだと思います。
+
+　一応、読者対象としては、ソケットを利用したネットワークプログラミングを
+行ったことがあることを前提としています。しかし、まぁ大して難しいことをや
+っているわけでもないので、気合と根性と少し優れた検索能力があれば、なんと
+かなるはずです(^^;。
+
+
+■0x02.) 実行！
+
+　さて、いきなりですがソースコードとEXEファイルをDLして実行してください。
+
+http://ruffnex.oc.to/kenji/socket/source.zip
+
+　EXEファイルも一緒に添付されているので、まぁとりあえず実行してください。
+「どんなプログラムかもわからんようなEXEファイルなんて実行できません」とい
+う方は以下のソース解説を読んだのち実行してください。
+
+　実行すると、Windowが表示され、上部の入力欄にIPアドレスが表示されます。
+もし表示されない場合は入力してください。そして開始ボタンをクリックすると、
+プログラムがネットワークパケットを取得し始めます。パケットの取得を確認す
+るために、適当なホームページをブラウザで閲覧してみてください。ネットワー
+ク上でパケットが流れると、ずらずらっと16進数で、流れたパケットが表示され
+ます。
+
+　動作をみてだいたい分かりますが、一応スニッファもどきです。「もどき」と
+いうのは受信パケットしか取得してくれないからです。送信パケットまで取得し
+たい場合はWinpcapなどを利用するのが良いと思います。
+
+　では、ソースの解説へ移ることにしましょう。
+
+
+■0x03.) ソースコード解説（ウォーミングアップ篇）
+
+　まずはウォーミングアップ程度にちゃっちゃと読んでしまいましょう。Windows
+プログラミングとしては基本的なことで、大したことはやってません。
+
+-----　recv_sniffer.cpp
+int APIENTRY _tWinMain(HINSTANCE hInstance,
+                       HINSTANCE hPrevInstance,
+                       LPTSTR    lpCmdLine,
+                       int       nCmdShow)
+{
+    HWND hWnd = FindWindow(
+        _T("#32770"),
+        _T("RecvSniffer"));
+    if(IsWindow(hWnd))
+    {
+        SendMessage(hWnd, ESM_POKECODEANDLOOKUP, 0, 0);
+        return 0;
+    }
+    DialogBox(hInstance, MAKEINTRESOURCE(IDD_DIALOG1), NULL, Dlg_Proc);
+    return 0;
+}
+-----
+
+　まず実行されると最初にWinMain関数から処理されます。なので、プログラムの
+二重起動防止処理はこの部分に書くのが適切でしょう。二重起動防止の処理はい
+ろいろとありますが、私が一番利用するのは、FindWindowや共有データセグメン
+トです。
+
+　二重起動防止に関しては「CreateSemaphore」を利用する方法や「CreateMutex」
+を利用する方法や「共有データセグメント」を利用する方法や「FindWindow」を
+利用する方法や、もうありとあらゆる方法が存在します。個人的には、どの方法
+も似たようなものなので、何を使ってもあまり関係ないと思います。二重起動防
+止で検索すると、たくさんのサイトがヒットするので、どのくらい方法があるの
+か調べるのも面白いかもしれません。
+
+　プログラムの内容は「RecvSniffer」というタイトル名のWindowが存在すれば
+FindWindowからハンドルが戻ってきて、IsWindowが「真」を返すので、二重起動
+ということで、SendMessageでESM_POKECODEANDLOOKUPメッセージを送って終了し
+ます。もしIsWindowが「偽」を返したら、FindWindowが失敗し、NULLを返したと
+いうことなので「RecvSniffer」というタイトル名のWindowは存在しないというこ
+とで、DialogBox関数でWindowを生成します。
+
+-----
+BOOL CALLBACK Dlg_Proc(HWND   hWnd,
+                       UINT   uMsg,
+                       WPARAM wParam,
+                       LPARAM lParam)
+{
+    static DATA data;
+
+    switch (uMsg)
+    {
+    // Window作成時の処理、初期化などを担当
+    case WM_INITDIALOG:
+        Init_Dlg(hWnd, data);
+        break;
+-----
+
+　Windowが生成されると、まずWM_INITDIALOGメッセージがきて、それ以下が実行
+されますので、Init_Dlg関数が実行されることになります。ここで定義されてい
+るdata構造体は、ソースの上部で以下のように定義されています。
+
+-----
+typedef struct{
+    HWND    hWnd;          // Windowハンドル
+    HANDLE  LoggingThread; // ログをとるスレッドのハンドル
+    BOOL    ThreadFlag;    // スレッドの起動終了を管理するフラグ
+    TCHAR   IPAdress[32];  // 自分のIPアドレス
+    SOCKET  sock;          // ソケット
+}DATA, *PDATA;
+-----
+
+　この構造体は、プログラム全体に渡って利用されるデータの集まりです。hWnd
+にはWindowハンドルを、LoggingThreadにはパケットを取得するスレッド（後に生
+成する）のハンドルを、ThreadFlagにはLoggingThreadハンドルのスレッドが生き
+ているか死んでいるかを表す値を、IPAdressには自PCのIPアドレスを、sockには
+パケット取得を受け持っているソケットハンドルをそれぞれ設定します。とりあ
+えずは、Init_Dlg関数でこの構造体を初期化します。
+
+-----
+BOOL Init_Dlg(HWND  hWnd,
+              DATA &data)
+{
+    data.hWnd = hWnd;
+    data.ThreadFlag = FALSE;
+    TCHAR buf[1024];
+    ZeroMemory(buf, sizeof(buf));
+    if(GetIPaddress(data.hWnd, buf, sizeof(buf)))
+    {
+        return TRUE;
+    }
+-----
+
+　Init_Dlg関数の途中までです。data構造体は参照渡しでこの関数に渡されてい
+ますので、そのままこの関数内で利用することができます。data.hWndにはWindow
+のハンドルを設定、data.ThreadFlagはあとでパケット取得スレッドを起動させる
+ためのフラグです。とりあえずまだスレッドは起動させていないので、FALSEとし
+ておきます。GetIPaddress関数は、その名の通り実行されたPCのIPアドレスを取
+得する関数です。
+
+　以下、一度Init_Dlgの解説を中断してGetIPaddressの解説へ進みます。
+
+-----
+BOOL GetIPaddress(HWND   hWnd,
+                  PTCHAR buf,
+                  DWORD  size)
+{
+    WSADATA wsaData;
+    if(WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
+    {
+    （エラー処理「省略」）
+    }
+-----
+
+　まずは、WSAStartupにてソケットを初期化しています。WinSockのバージョンは
+現時点で（多分）最新版である2.2を使います。ソースコード内ではエラー処理も
+ちゃんと書いていますが、ここでは、説明のためにエラー処理のソースは省略し
+ます。
+
+-----
+    SOCKET sock;
+    if((sock = WSASocket(AF_INET, SOCK_RAW, IPPROTO_IP,
+        NULL, 0, WSA_FLAG_OVERLAPPED)) == INVALID_SOCKET)
+    {
+    （エラー処理「省略」）
+    }
+-----
+
+　ソケット生成です。ポイントは、まずWSASocket関数を利用するということ、そ
+して引数に、SOCK_RAWやIPPROTO_IPといった値を設定することです。この辺がRa
+wSocketっぽくて良い感じです。
+　WSASocket関数に関しては、次のURLを参照してください。
+
+http://msdn.microsoft.com/library/default.asp?url=/library/en-us/winsock/winsock/wsasocket_2.asp
+
+　RawSocket用のソケットを戻り値として返してくれるようです。
+
+-----
+    DWORD dWord;
+    if(WSAIoctl(sock, SIO_ADDRESS_LIST_QUERY, NULL, 0,
+        buf, size - 1, &dWord, NULL, NULL) == SOCKET_ERROR)
+    {
+    （エラー処理「省略」）
+    }
+-----
+
+　WSAIoctl関数についてはMSDNの次のURLを参照してください。
+
+http://msdn.microsoft.com/library/default.asp?url=/library/en-us/winsock/winsock/wsaioctl_2.asp
+
+　第二引数に「SIO_ADDRESS_LIST_QUERY」を指定すると、bufにIPアドレスのリス
+トを格納してくれます。MSDNを見ると他にもいろいろと使用方法があります。な
+かなか面白い使い方ができそうです。
+
+-----
+    EndConnect(sock);
+    return FALSE;
+}
+-----
+
+　最後にEndConnectという分かりやすい関数を呼び出していますが、これは自前
+の関数で、ソケットを閉じる関数です。ソースの下の方に定義されています。
+
+-----
+void EndConnect(SOCKET sock)
+{
+    shutdown(sock, SD_BOTH);
+    closesocket(sock);
+    WSACleanup();
+}
+-----
+
+　EndConnectを呼び出すと、shutdown、closesocket、WSACleanupというお決まり
+のパターンでソケットが閉じられます。
+
+　さて、GetIPaddress関数が終了したこの瞬間は、つまりWSAIoctl関数がGetIPa
+ddress関数に渡した引数bufの領域にIPアドレスのリストを格納してくれてる状態
+です。正確には、まだIPアドレスのリストなので、IPアドレスを取得しているわ
+けじゃないのですが、まぁ同じことです。この状態で処理がInit_Dlgへ戻ります。
+
+-----
+    SOCKET_ADDRESS_LIST *slist = (SOCKET_ADDRESS_LIST *)buf;
+
+    if((slist->iAddressCount) > 0)
+    {
+        TCHAR text[16];
+        wsprintf(text, _T("%s"),
+            inet_ntoa(((SOCKADDR_IN *)
+            slist->Address[0].lpSockaddr)->sin_addr));
+        Edit_SetText(GetDlgItem(hWnd, IDC_EDIT2), text);
+    }
+-----
+
+　さて、再びInit_Dlg関数へ戻ってきました。GetIPaddressを呼び出したあとの
+処理を続けます。とりあえずGetIPaddressへ渡したbuf配列には、IPアドレスのリ
+ストが入っていますので、それをSOCKET_ADDRESS_LIST型のポインタslistとして
+新しく作成します。SOCKET_ADDRESS_LIST型はMSDNで以下のように定義されていま
+す。
+
+-----
+typedef struct _SOCKET_ADDRESS_LIST {
+  INT  iAddressCount; 
+  SOCKET_ADDRESS  Address[1]; 
+} SOCKET_ADDRESS_LIST, FAR * LPSOCKET_ADDRESS_LIST;
+-----
+
+　なんかよくわからん構造体ですが、Address[1];と定義されてるってことは、一
+個しかIPアドレスを保存できないわけで、「全然アドレス『リスト』になってへ
+んやん」と突っ込めます。ちなみにMSは結構突っ込みどころ満載な企業です。も
+しかするとそこが人気の秘密かもしれません。しかも、どうせ1個しか保存できん
+のにiAddressCountとかいうカウンタまでついてます。「これ意味ないじゃん！」。
+でも多分これは今後、MSがWinSockのバージョンアップを重ね、この構造体もさら
+に改良を重ねていくのだろうということだと思います。多分(^^;
+
+　ということで、slist->iAddressCountは0より大きくなり（1となり）Edit_Set
+Textによって、見事、取得したIPアドレスがWindow上部のエディットボックスに
+表示されることとなります。これでInit_Dlg関数は終了です。
+
+　では、次はWM_COMMANDの部分を見ていくことにします。
+
+-----
+    case WM_COMMAND:
+        switch (LOWORD(wParam))
+        {
+        case IDOK:
+            StartandStop_Logging(data);
+            break;
+        case IDCANCEL:
+            EndProgram(data);
+            break;
+        }
+-----
+
+　今度はWM_COMMANDメッセージの部分、つまりは何かしらのユーザーからのメッ
+セージを受け取ったときに実行する処理についてです。まぁまずはWindowの仕組
+みとして、IDCANCELメッセージが来たときにプログラムを終了させなければなり
+ませんので、そのための関数を自前で作っています。EndProgram関数です。
+
+-----
+void EndProgram(DATA &data)
+{
+    if(data.ThreadFlag)
+    {
+        data.ThreadFlag = FALSE;
+        EndConnect(data.sock);
+    }
+    EndDialog(data.hWnd, NULL);
+}
+-----
+
+　一応data構造体を参照渡ししており、パケットログ取得のスレッドが生きてい
+たらその接続を終了させて、プログラム自体を終了させています。
+
+
+■0x04.) ソースコード解説（メイン処理篇）
+
+　いよいよ楽しみなところに入ってきました。StartandStop_Logging関数です。
+この関数は「開始」ボタン（「終了」ボタンとも言える）をクリックしたときの
+処理を受け持ちます。まさに本プログラムのメイン部分です。ちょっと前にでて
+きたdata構造体を確認しながら読んでいきましょう。
+
+-----
+BOOL StartandStop_Logging(DATA &data)
+{
+    if(data.ThreadFlag == TRUE)
+    {
+        data.ThreadFlag = FALSE;
+        EndConnect(data.sock);
+        return FALSE;
+    }
+-----
+
+　まず、data.ThreadFlagはパケットログをとるスレッドの起動終了を管理するフ
+ラグです。最初にボタンが押されたときはFALSEです。もしTRUEならば、スレッド
+が「起動中」ということなので、そのスレッドを停止させます。逆にFALSEならば、
+スレッドが「停止中」ということなので、スレッドを開始させます。これは、ボ
+タンのキャプションが「開始」であるか「終了」であるかに起因しています。つ
+まり、ボタンのキャプションが「開始」だったならば、FALSEとなっており、「終
+了」だったならTRUEとなっているわけです。よって「終了」ボタンが押されたら、
+if文以下のプログラムが実行され、スレッドを停止させることになります。
+
+-----
+    ZeroMemory(data.IPAdress, sizeof(data.IPAdress));
+    Edit_GetText(GetDlgItem(data.hWnd, IDC_EDIT2), 
+        data.IPAdress, sizeof(data.IPAdress) - 1);
+    if((data.sock = MakingSocket(data.hWnd, data.IPAdress, 0)) == -1)
+　　（エラー処理）
+-----
+
+　さて、次に進むと、いきなりZeroMemory関数でdata.IPAdressはクリアされます。
+これは自らのIPアドレスを格納するフィールドです。そしてそのフィールドにID
+C_EDIT2（Windowの上部のエディットボックス）の値が格納されます。つまりIPア
+ドレスが格納されるわけです。IDC_EDIT2には、プログラム起動直後に実行される
+Init_Dlg関数内で、IPアドレスが設定されていました。それを今度はEdit_GetText
+を使って取得してくるわけです。
+
+　取得したらそのIPアドレスを引数としてMakingSocketという自前の関数を呼び
+出します。この関数は、接続に関する決まりごとをやりつつ、bind関数を呼び出
+しポートを見張るように設定します。MakingSocketの引数には、Windowハンドル、
+IPアドレス、見張るべきポートを指定します。そして戻り値にそのソケットを返
+します。一応、MakingSocket関数の戻り値がパケット取得のためのソケットとな
+ります。
+
+-----
+SOCKET MakingSocket(HWND   hWnd,
+                    PTCHAR IPorHost,
+                    USHORT Port)
+{
+
+　　....（ネットワークプログラムの決まりごとなので省略）....
+
+    DWORD dWord;
+    UINT optval=1;
+    if(WSAIoctl(sock, SIO_RCVALL, &optval, sizeof(optval),
+        NULL, 0, &dWord, NULL, NULL) == SOCKET_ERROR)
+    （エラー処理）
+
+    return sock;
+}
+-----
+
+　SIO_RCVALLについて、MSDNでは以下のような説明になっています。
+
+http://msdn.microsoft.com/library/default.asp?url=/library/en-us/winsock/winsock/wsaioctl_2.asp
+
+-----　MSDNから引用
+SIO_RCVALL
+　Enables a socket to receive all IP packets on the network. The socket handle passed to the WSAIoctl function must be of AF_INET address family, SOCK_RAW socket type, and IPPROTO_IP protocol.
+-----
+
+　「ソケットがネットワーク上のIPパケットをすべて受け取ることを可能にしま
+す。WSAIoctl関数には、ソケットハンドル、AF_INET、SOCK_RAW、IPPROTO_IPを指
+定しなければなりません。」とあります。
+
+　そしてさらに、
+
+-----
+　Once the socket is bound and the ioctl set, calls to the WSARecv or recv functions return IP datagrams passing through the given interface. Note that you must supply a sufficiently large buffer.
+-----
+
+　「一度ソケットをioctlでセットしたならば、WSARecvやrecv関数を呼び出して、
+ネットワークインターフェースを通るIPパケットを取得することができます。そ
+の場合、十分に大きいバッファを供給しなければならないことに注意してくださ
+い。」と続きます。
+
+　ではStartandStop_Logging関数へ戻ります。
+
+-----
+    data.ThreadFlag = TRUE;
+    if((data.LoggingThread = CreateThread(NULL, 0, 
+        LogThread, (LPVOID)&data, 0, NULL)) == NULL)
+    {
+　　（エラー処理）
+    }
+-----
+
+　いよいよここでスレッドを生成します。ロギングを行うソケットが生成済みな
+ので、あとはスレッド起動してそのスレッドにソケットを監視させます。
+　data.ThreadFlagをTRUEにし、data.LoggingThreadのハンドルを設定します。ス
+レッドとして利用する関数は、LogThread関数です。
+
+-----
+    CloseHandle(data.LoggingThread);
+    return FALSE;
+}
+-----
+
+　スレッドを生成したら、あとは「終了」ボタンが押されるまでユーザーからの
+レスポンスを待つだけです。この時点で、data構造体のすべてのデータが埋まり
+ました。
+
+-----
+    HWND    hWnd;          // Windowハンドル
+    HANDLE  LoggingThread; // ログをとるスレッドのハンドル
+    BOOL    ThreadFlag;    // スレッドの起動終了を管理するフラグ
+    TCHAR   IPAdress[32];  // 自分のIPアドレス
+    SOCKET  sock;          // ソケット
+-----
+
+　現時点でこのプログラムは2つのスレッドによって管理されています。ひとつは
+ソケットからパケットのログを監視するスレッド。もうひとつはユーザーからの
+メッセージ（例えば「終了」ボタンが押されるとか）を監視するスレッドです。
+しかし、2つのスレッドがあっても、それぞれは同じdata構造体の値を参照し、そ
+れに従って処理を続けることになります。
+
+　では、パケットロギングを行うスレッドを追ってみることにします。
+
+-----
+DWORD WINAPI LogThread(LPVOID pData)
+{
+    DATA *data = (DATA *)pData;
+
+    Button_SetText(GetDlgItem(data->hWnd, IDOK), _T("終了"));
+    Edit_Enable(GetDlgItem(data->hWnd, IDC_EDIT2), FALSE);
+
+    PUCHAR recvData  = new UCHAR[MAX_RECV_SIZE];
+    PTCHAR PrintData = new TCHAR[MAX_PRINT_SIZE];
+-----
+
+　パケットロギングを行う関数LogThreadは、まず最初にdata構造体へのポインタ
+を取得します。その後、ボタンのテキストを「終了」へ変更し、IDC_EDIT2への入
+力を拒否します。さらに、受信するデータを格納するメモリ領域を確保します。
+recvDataは受信するデータを格納するメモリ領域で、PrintDataはテキストとして
+出力するデータを格納するメモリ領域です。
+
+-----
+    while(data->ThreadFlag)
+    {
+        Sleep(10);
+        
+        WSABUF wsb;
+        wsb.buf = (PTCHAR)recvData;
+        wsb.len = MAX_RECV_SIZE;
+        ZeroMemory(wsb.buf, wsb.len);
+
+        DWORD Len, Flags = 0;
+        if(WSARecv(data->sock, &wsb, 1, &Len, &Flags,
+            NULL, NULL) == SOCKET_ERROR)
+        {
+            break;
+        }
+-----
+
+　いよいよログ監視のループに入ります。ループの脱出条件はdata構造体のThre
+adFlagフラグのFALSE、もしくはエラー時のみです。この値をFALSEにするのは、
+基本的にユーザー側を監視しているスレッドです。従ってこちら側のスレッドは、
+ユーザーから終了のメッセージを受け取るまで延々とパケットを監視し続けます。
+
+　実際パケットデータを監視するためには、WSABUF型の構造体を定義し、格納メ
+モリのポインタとその長さをセットし、WSARecvへ渡さなければなりません。する
+と結果的にwsb.bufへ、つまりrecvDataへ監視したデータを格納されることになり
+ます。
+
+-----
+        MyPrintBuffer(recvData, Len, PrintData, MAX_PRINT_SIZE);
+        HWND hEdit      = GetDlgItem(data->hWnd, IDC_EDIT1);
+        DWORD Edit_Len  = Edit_GetTextLength(hEdit) * sizeof(TCHAR);
+        PTCHAR EditData = new TCHAR[Edit_Len + MAX_PRINT_SIZE];
+        Edit_GetText(hEdit, EditData, Edit_Len + 1);
+        lstrcat(EditData, PrintData);
+        Edit_SetText(hEdit, EditData);
+        Edit_Scroll(hEdit, Edit_GetLineCount(hEdit), 0); 
+        delete[]EditData;
+    }
+-----
+
+　この部分は主に取得したパケットデータの整形と出力にあります。MyPrintBuf
+fer関数は、受信したデータを出力用のデータへ変換しPrintDataへ格納します。
+PrintDataには出力用のデータは入っているわけですが、それを出力する前に、す
+でにIDC_EDIT1エディットボックスには、前回出力したデータが表示されている可
+能性がありますので、それを取得しなければなりません。前回までの取得データ
+をEditDataへ格納し、lstrcatでその後にPrintDataを追加します。そしてEditDa
+taを再び表示することによって、エディットボックスにデータが追加されたカタ
+チとなります。最後にEdit_Scrollで、エディットボックスを最下行までスクロー
+ルさせて、表示（データの更新）完了となります。whileループなので再びパケッ
+トログの取得へと戻ります。
+
+-----
+    // whileを抜ける理由は2つ
+    // 1. data->ThreadFlagがFALSEになったか？
+    // 2. WSARecvが失敗したか？
+    // よって2.となった場合は、フラグをここでFALSEにする
+    if(data->ThreadFlag != FALSE)
+    {
+        data->ThreadFlag = FALSE;
+    }
+-----
+
+　さて、この位置に処理がきているということは、whileループを抜けてきたこと
+になります。その理由を検査しています。まず、「ThreadFlagがFALSEになった」
+ならば、当然ThreadFlagはFALSEです。いやホント当たり前ですけどね。しかし、
+WSARecvが失敗したことによってwhileループを抜けていたら、「ThreadFlagがTRUE
+のまま」whileを抜けたことになります。よってここで、ThreadFlagをFALSEにし
+ているわけです。
+
+-----
+    delete[]recvData;
+    delete[]PrintData;
+
+    // ボタンのテキストを「開始」に変更、その他。
+    Button_SetText(GetDlgItem(data->hWnd, IDOK), _T("開始"));
+    Edit_Enable(GetDlgItem(data->hWnd, IDC_EDIT2), TRUE);
+    
+    return 0;
+}
+-----
+
+　最後に後始末をしてスレッド終了となります。さて、では、最後にこのLogThr
+eadで利用していたMyPrintBufferを見ていくことにします。
+
+-----
+BOOL MyPrintBuffer(PUCHAR buf,
+                   DWORD  Len,
+                   PTCHAR PrintData,
+                   DWORD  size)
+{
+    ZeroMemory(PrintData, size);
+-----
+
+　ポイントは、bufに受信したパケットデータが入っていて、それをテキストとし
+て出力できるデータへ変換しPrintDataへ格納することです。
+
+-----
+    // 一行に16バイト分表示させる
+    DWORD x = (Len / 16) + 1;
+    DWORD y = (Len % 16);
+-----
+
+　まずは、受信したデータを16で割った商と余りを、それぞれxとyへ代入します。
+例えば、230バイト受信したとしてbufに230バイト分のデータが入っていたとしま
+す。Lenは当然230という値です。230/16は商14、余り6、です。しかし16列×14行
+用意したのでは足りません。余り6の分だけ余ってしまいます。なので、16列×15
+行を用意しなければならなくなります。つまり16個を1列と考えて、商+1行分確保
+しなくてはならなくなります。そのための+1です。
+
+-----
+    DWORD i, j;
+    for(i=0; i < x; i++)
+    {    
+        // 最後の一行は16バイトに満たないかもしれないので
+        // 満たない場合は、余りを代入
+        DWORD max = ((i == (x - 1)) ? y : 16);
+        
+        // パケットデータを文字列（数値）に変換
+        for(j=0; j < max; j++)
+        {    
+            TCHAR strNum[4];
+            wsprintf(strNum, "%02x ", buf[(i*16)+j]);
+            lstrcat(PrintData, strNum);
+        }
+-----
+
+　xには商+1の値が入っています。もし「i == (x - 1)」であるならば、それはつ
+まり、最後の一行であることを意味しているので、maxに余りyを代入することに
+なります。それ以外ならば16を代入します。そしてパケットデータを文字列へ変
+換していきます。
+
+-----
+        // 16バイトに満たなかった場合に、空白で埋める
+        if(max != 16 && max != 0)
+        {
+            TCHAR space[16 * 3];
+            memset(space, ' ', sizeof(space));
+            
+            space[((16 - max) * 3)] = '\0';
+            lstrcat(PrintData, space);
+        }
+-----
+
+　加算した一行によって、余りまですべてを収めることはできましたが、今度は、
+最後の一行が16個ではなく、余り6個分しかないので、「16 - 6 = 10」の残り10
+個を空白で埋めなければなりません。その処理を行っています。ちなみに変数max
+が0がもしくは16であった場合は、その限りではありません。
+
+-----
+        TCHAR strStr[20];
+        ZeroMemory(strStr, sizeof(strStr));
+
+        // 出力可能な文字ならばそのまま出力し、不可能ならば'.'を出力
+        for(j=0; j < max; j++)
+        {
+            strStr[j] = (isprint(buf[(i*16)+j]) ? buf[(i*16)+j] : '.');
+        }
+        
+        strStr[j] = '\r', strStr[j+1] = '\n';
+        lstrcat(PrintData, strStr);
+    }
+-----
+
+　16バイト分のデータ1行の最後に、文字として表示できるものは表示させるよう
+にします。
+
+-----
+    // 最後に改行を追加
+    lstrcat(PrintData, _T("\r\n"));
+    return FALSE;
+}
+-----
+
+　最後に改行をいれて、無事終了です。
+
+
+■0x04.) さいごに
+
+　さて、いかがだったでしょうか。実は、このツールはTCP/IPの教科書のCD-ROM
+に入っている受信パケットスニッファです。本当は、このツールのソースコード
+的な解説も本書の中で行いたかったのですが、いろいろと問題がありできなかっ
+たので、WizardBibleに投稿するというカタチになりました。楽しんでいただけた
+なら幸いです。
+
+　では、また会う日まで...
+
+
+■0x05.) 参考サイト
+
+・「サッポロワークス」（http://homepage2.nifty.com/spw/tips/PacketDump.html）
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第４章: 熱暴走したHDDを冷やしてデータ救出する実験とその結果 ---
+
+著者：黒猫
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　WizardBible読者のみなさま、大変お久しぶりです。Vol.4以来逃亡していた黒
+猫です。それでもお声をかけてくださったIPUSIRONさんには厚く御礼申し上げま
+す。
+
+  小生は先日、日をおかずに2基のIDE内蔵HDDが熱暴走でアクセス不能になるとい
+う体験をしました。そのうち1基は完全に壊れてしまいましたが、もう1基はデー
+タ救出には成功しました。そのときの体験を記してみます。
+
+
+■0x02.)状況
+
+　データ救出には成功した1基は「以前からときどき『ガコッ』『ガリガリ』とい
+う、やや不安な音がするものの、だましだまし使えていたので油断していたらつ
+いに『ガコッ』『ガコッ』という音が連続して聞こえ、認識不可能になったもの」
+です。便宜上、こちらをIBM120GBと呼ぶことにします。
+
+　データ救出にも失敗してしまったもう1基は「全く前兆がなく、PCをつけっぱな
+しにして外出して帰ってきたらすでに『ガコガコ』という激しい音がして認識不
+可能になっていたのもので、こちらは便宜上Maxotr200GBと呼ぶことにします。
+  どちらもIDE内蔵HDDです。
+
+
+■0x03.)情報収集
+
+　小生は自作でPCを組んで以来5年になりますが、幸運なことに先日まで1基もHDD
+が壊れたことはありませんでした。ですので先日のトラブルが初めてになります。
+　「なんとか復旧できないか」と思い、あちこちの掲示板を見てみると「熱で壊
+れたHDDを冷やして接続したらなんとかなった」という書き込みを見つけましたの
+で「ダメでもともと」と思い、試してみることにしました。
+
+
+■0x04.)成功例、IBM120GBの報告
+
+  掲示板には「HDDごと冷凍庫で冷やす」「結露対策に新聞紙を巻く」「PCにつな
+げる」「HDD内部が暖まる10～15分の間ならPCが認識するので、その間にデータを
+救出する」という手順が書かれていました。
+
+　しかし、小生はHDDを冷凍庫で凍らせると「内部のモーター等が結露した場合に
+対処できないのではないか」と考え、別な方法をとることにしました。
+以下に小生のとった方法を記します。
+
+1：スーパー等で「冷凍食品を買ったとき用に持って帰れる、ナイロン製の薄い袋」
+を入手する。
+
+2：ナイロン製の袋でHDDをくるむ。
+　まず防水を考え、この方法をとりました。ナイロン清野袋を選んだのは無料で
+入手できる上に冷凍食品をくるむためにあるので、結露による水分の遮断に最適
+だと考えたからです。
+
+3：袋にくるんだHDDの両側に、小型の（アイスノン）をテープで固定する。
+　これも、小分けされたアイスクリーム等をボックスで買ったときに内部に入っ
+ている小型の保冷剤（以下アイスノンと呼びます）で、無料で自宅にたくさんあ
+ります。
+  これをHDDの両面にテープで固定しました。
+
+4：少し時間をおいて、HDD内部まで冷えるのを待つ。
+  特に時間ははかりませんでしたが、だいたい5分ぐらいだったと思います。
+
+5：PCに接続して起動する。
+  やはり『ガコッ』『ガコッ』という音は止まりませんでしたが、PC側でHDDを認
+識してくれました。
+  すぐにデータを他の正常なHDDに転送し、データ救出をしました。
+
+　この手順を踏んだところ、1回に付き15分ほどで認識しなくなりましたので、1
+回ですべてのデータを救出することはできませんでした。そこで、この手順を数
+回踏むことで、すべてのデータを救出することができました。
+
+
+■0x04.)失敗例、Maxtor200GBの報告
+
+1：成功例と同じ手順を踏む。
+　成功例と同じ手順を踏むことで同様にデータ救出ができるかと思いましたが、
+こちらはうまくいきませんでした。
+　PCに接続した時点でBIOSがMaxtor200GBを認識しません。深刻なトラブルのよう
+です。
+
+2：HDDごと冷凍してからPCにつなぐ。
+　アイスノンでは内部まで冷やすのが難しかったのかと考え、危険を冒してHDDを
+一晩冷凍し、念のため外側にアイスノンを成功例と同様に固定して接続しました。
+　最初はBIOSレベルでも認識しなかったのですが「内部まで完全に凍り付いてい
+るのかも知れない」と考え、5分おきに起動を繰り返すと、3回目でバイオスレベ
+ルで認識しました。このあたりでかすかな期待を抱きました（笑）。
+
+3：BIOSレベルで認識させることに成功しても、Windowsが起動しない。
+　Maxtor200GBを接続して起動すると、なぜかWindowsが起動しません（OSはWind
+ows2000です）。外すときちんと起動するので、明らかにMaxtor200GBがWindowsの
+起動を邪魔していることになります。
+
+4：IDEをUSB外付けに変換するケースを購入してHDDを接続し、Windows起動後に
+HDDを接続する
+　「BIOSレベルで認識することには成功した」「つまりHDDはある程度まで生きて
+いるが、起動を邪魔するだけだ」「では起動後に接続できる環境を作れば認識す
+るかも知れない」と推測し、IDEをUSB外付けに変換するケース（商品名C35U2W・
+メーカーはCENTURY）を5000円前後で購入し、上述の計画を試してみました。
+
+　結果、Windows画面上に「大容量HDDが接続されました」と出たので成功したと
+思ったのですが、そのメッセージがいつまでも消えません。15分以上待ってもダ
+メでした。15分以上待つとMaxtor200GBが温まってしまいHDDとしての機能を失う
+ことがわかっていたので、それ以上待つのはあきらめました。
+  この時点でMaxtor200GBのデータ救出はあきらめました。
+
+
+■0x05.)今回の実験の考察
+
+　今回「データ救出の成功と失敗」を分けたものは何だったのでしょうか？
+　小生は「HDDの損傷具合」にあるのではないかと思っています。
+　IBM120GBは「認識しなくなった瞬間」を見ていたため、比較的損傷具合が低い
+うちに手を打つことができたのに対し、Maxtor200GBは「気が付いたら認識しなく
+なっていた」ということで、気が付かないうちに損傷がどんどん進んでいたもの
+と小生は考えます。
+　結果として「熱暴走したHDDを冷やしてデータ救出することは可能であるが、損
+傷具合が低いものに限られる」「HDDがおかしくなったら早めに手を打つ必要があ
+る」という、非常に良くある結論で今回の実験は幕を閉じました。
+　読者の皆様も、HDDの損傷にはくれぐれも気をつけてください。
+
+
+■0x05.)おまけ「認識しなくなったUSB外付けHDDからIDEを取り出して復活させる」
+
+　悪いことは重なるもので、このときと前後して、外付けUSB2.0HDDがやはり認識
+しなくなってしまいました。メーカーのサポートセンターに電話をすると「USB2.0
+ドライバの入れ替え」等を勧められましたが、結局ダメでした。
+　小生は数台のUSB2.0外付けHDDを持っていますが、認識しなくなったのは1基だ
+けですので、PC側に問題があるのではなく外付けUSB2.0外付けHDD1基だけが不調
+になったものと考えられます。
+　そこで、外付けUSB2.0HDDのプラスチックケースを壊してみると、内部にはIDE
+のHDDがあり、電源とUSBカードとおぼしきカードと接続されていました。ですの
+でIDEHDDを外して直接PCに接続したところ、正常に作動しました。
+　今回の「外付けUSB2.0HDDのトラブル」は、どうやら「ケース内のUSBカードの
+不具合」と考えられます。
+
+　このように、PCパーツのトラブルが起こったときは「情報収集」からはじめて
+「なぜか」「どうすればいいか」を考えることにより、復旧できることがありま
+す。自分の能力にあわせて、できるところまでがんばってみましょう（注1）。
+
+【注1】今回、小生がデータ救出に失敗したMaxtor200GBもWindowsで認識する一歩
+手前まで行ったのですから、小生にもう少しハードの知識があればデータ救出は
+可能だったかも知れません。しかし、小生はHDDのねじをあけてプラッターを取り
+出す等まではできないので、この時点であきらめてしまいました。小生がもう少
+し意欲的だったなら、これを機会にHDDの内部構造まで調べてデータ救出実験を勧
+めることができたかも知れません。しかし、小生は現在自分が持っている能力に
+合わせて、それ以上はあきらめてしまいました。
+
+
+■0x05.)結論（まとめ）
+
+1：熱暴走したHDDは、冷やすと一時的に復活することがある。
+
+2：復活するかしないかは、HDDの損傷具合にかかっている。
+
+3：損傷したと思われる部分を推測し、そこを回避することがトラブル解決のコツ
+である。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第５章: 詐欺師の技術を盗め　～考える楽しみをもう一度～ ---
+
+著者：IPUSIRON
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　ソーシャルエンジニアリングの原点は詐欺行為にあるといっても過言ではない。
+技術や見た目も重要だが、一番重要なのは話術である。相手を話術で納得させ、
+自分の手のひらの上で転がすかのように操るわけである。詐欺師はこの話術を悪
+用するわけだが、詐欺師じゃない我々であっても場面によっては大いに役に立つ
+はずである。
+　今回は偉人たちの頭の回転の早さを紹介する。最後に、相手を説得する話術・
+詭弁・雄弁・弁論術を身に付けるために、即実践ということで、宿題を出してい
+る。頭をひねって厳密性で攻めるか、話術ですり抜けながら相手を翻弄するかは
+自由である。自分のスタンスで挑戦してもらいたい。
+
+
+■0x02.) 偉人たちも詐欺師だった？
+
+　歴史上有名な偉人たちも詭弁を用いることもあったようだ。詭弁といってもマ
+イナス面ではなく、咄嗟の機転の利いた嘘である。
+
+●釈迦（釈尊）
+　ある日、釈尊はインドのコーサラ国の首都の舎衛城【シャエイジョウ】で、一
+人の狂女に出会った。その女はキサーゴータミーといい、死んでしまった愛児の
+亡骸を抱いて、右往左往していた。子供の死が彼女を狂わせていたわけである。
+　その女は「どなたか、この子を生き返す薬をください･･･」と叫んでいたが、周
+りの者は「死者につける薬はない」と嘲笑していた。
+　そのとき、釈尊はその女に向かってこういった。
+「私がその薬を作ってあげよう」
+「だから、あなたに薬の材料を持って来てもらいたい。これまで死者を出したこ
+とのない家へ行って、ケシ粒をもらってくるんだ。それで私が薬を作るからね」
+　女は町をかけずりまわり、死者を出したことのない家を捜し求めた。しかし、
+どの家もこれまで死者を出したところばかり。つまり、死はどこにでも誰にでも
+訪れるわけである。これに気づいた女は自然と落ち着いていた。
+
+●夏目漱石
+　夏目漱石（本名：金之助）は小説家になる前は、学校で英語の先生をしていた。
+その頃の話である。
+　教室に、片手を懐に入れたまま講義を聴いている生徒がいた。漱石は彼に向か
+って、「ちゃんと両手を出して聴きなさい」と叱った。
+　すると、側にいた学生が漱石に次のようにいった。
+「先生、彼は片腕しかないのです」
+　これは漱石の明らかな軽率な判断だったが、こう応じて切り抜けた。
+「それは知らなかった。すまん。しかし、私もない頭をしぼって講義をしている
+んだから、君もない手を出して聴いてくれ」
+
+●曹操
+　曹操は三国志で有名な武将であり、魏の国のトップでもあった。
+　彼が若い頃の話である。遠征の最中、兵士が息が上がりへばってきたときのこ
+とである。このまま放置しては兵士の士気が下がり、目的地にも予定通り到達で
+きることも危ぶまれてしまう。そのとき、曹操はこういった。
+「あの山を越えたら梅の木の森があるぞ！そこで休憩しようではないか」
+これは曹操が咄嗟についた嘘である。しかし、これを聞いた兵士たちは、梅を想
+像して、自然に唾液が口の中に溢れ出し、先ほどいっていた喉が乾くという文句
+も出なくなったわけだ。結果として、目的地に予定通りに到着。その戦争では無
+事成功を収めたという。
+
+●アブドゥル・ハミト二世
+　アブドゥル・ハミト二世は、オスマン・トルコ帝国の第34代目の皇帝（スルタ
+ン）である。皇帝は写真を合法化したいと思っていた。というのも、イスラム教
+の神学者たちは、聖法に反するものとして、写真即ち偶像を禁止していたのであ
+る。
+　皇帝は写真を合法化して、自己の配下の秘密警察の密偵活動の道具として利用
+したかったのである。そこで、皇帝は次のような詭弁によって、写真を合法化し
+てしまった。
+「写真は光と影からなる。しかし、光と影のいずれも偶像ではない。ゆえに、写
+真は偶像ではない」
+
+
+■0x03.) 宿題
+
+　過去の偉人たちの詭弁はこの辺にしておいて、皆さんにも考える楽しみを知っ
+てもらおうと宿題を出そうかと思う。宿題の中の幾つかは有名なものも含まれま
+すが、じっくり自ら考えてみて欲しい。いざ文章にして相手を説得しようとする
+と、今までわかったつもりであって本当はよくわかってないということも判明す
+るはずである。
+
+　宿題の解答・議論用として、スレッドを建てておくことにする。決してケンカ
+腰で討論するのではなく、意見を出し合い皆さんがそれぞれ理論補強していく様
+を望んでいる。
+　自分にとって明らかなことであっても、相手は明らかではないこともあるはず
+である。なるべくわかりやすく、極端にいえば小学生にも理解できる程度に噛み
+砕きつつ投稿するのが理想的である。
+
+http://ruffnex.oc.to/ipusiron/cgi/forum/patio.cgi?mode=view&no=263
+
+　論理学的に議論を展開するのもOK、詐欺師のように詭弁で説得するのもOK。好
+きな方法で宿題の状況を打破してもらいたい。
+
+●宿題1
+　学校の廊下に「この廊下に張り紙を禁ずる　校長」という張り紙が貼り出され
+た。この張り紙は正当であるか？
+　正当でなければ、どのようにして自分の張り紙を貼ることができるだろうか。
+また、校長は張り紙を禁止するためにはどのような対処をすれば完璧か。
+
+●宿題2
+　「例外のない規則はない」という規則は成り立つか？
+
+●宿題3
+　ある酒場で隣に座っていた男が、「白馬は馬ではない！」と力説していた。彼
+によれば、馬というのは形に名付けられたものであり、白というのは色に名付け
+たものという。色に名付けたものは形に名付けたものではない。だから、白馬は
+馬ではないといっているわけだ。
+　この男に「白馬は馬である」と説得するにはどうしたらよいか答えよ。
+
+●宿題4
+　自然数というのは、1,2,3,･･･,n,n+1,･･･というものである。そして、偶数とい
+うのは2,4,6,8,･･･,2n,2(n+1),･･･というものである。
+　自然数から偶数を取り除くと奇数になる。つまり、偶数と奇数を合わせれば自
+然数になる。
+　それを踏まえて、自然数の個数と偶数の個数を比較したらどちらが多いでしょ
+うか？　またその理由も答えよ。
+
+●宿題5
+　「2度あることは3度ある」と「3度目の正直」という矛盾したことわざが存在す
+る。それにも関わらず、現在でもことわざを多用される。これはなぜか？
+　そして、矛盾あることわざを権威あるものとする根拠は何か？
+
+
+■0x04.) おわりに
+
+　他にもアキレスと亀のパラドックスや論理学で有名なパラドックスを宿題に出
+したかったが、今回はこの程度にしておくことにする。
+
+　好評だったら、第2段があるかもしれない（笑）。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第６章: 警察の脆弱性 ---
+
+著者：MaD
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　皆さんは、日頃、留置場を利用していますか？　してるわけないっつーの！
+あっそ。
+
+　さて、今回は、不正アクセス法案により、アルデミアを見ている方々にとって
+も逮捕が身近なものとなりましたので「警察の脆弱性」について、知人の親戚の
+子供の友人から聞いたお話を紹介します。
+　一部ではリアルな表現も含まれるかもしれませんが、筆者は一切関係ありませ
+ん。
+
+
+■0x02.) 共犯と単独犯、逮捕と取り調べの違い
+
+　一般的に、事件が起こり、これが複数の犯罪者で行われた場合、いうまでもあ
+りませんが「共犯による犯行」と呼びます。
+　共犯による事件での被疑者逮捕は、一人を逮捕して、次に二人目を逮捕すると
+いうやり方ではなく、同時刻にそれぞれのポイントで被疑者を一斉に逮捕すると
+いうことがセオリーとなってます。これは、被疑者をいきなり逮捕して、それぞ
+れを隣接した所轄に隔離して拘置することにより、口裏を合わせることをできな
+くするためです。
+
+　単独犯による犯罪の場合は、取り調べの最中に自分が不利と思える発言をしな
+いことにより、ある程度は刑を軽減する方向にもってゆけます。つまり、10件の
+犯行があったとしても、絶対にバレると思える事件を３件だけしか唄わないなど
+です。10件と３件では裁判官の判断が変わったものとなります。つまり、10件も
+しているのだったら常習犯だと見なします。すると、刑が高くつくのは当然のこ
+とです。
+　しかし、共犯の場合は、これが非常に困難となります。「黙秘権の自由がうん
+たらかんたら……」と、法律ヲタなトウシロがよく言う能書きは通用しません。
+　共犯の場合、刑事が行う基本の取り調べとして次のようなアプローチがありま
+す。
+
+「おい、相棒は全部唄ったぞ、おまえも全部唄わんと高くつくで～」
+
+　このように、マクドのお姉の「ポテトもいかがですか？」といったようなトラ
+ップを仕掛けてきます。しかし、共犯取り調べの場合では、こんな見え見えのト
+ラップであるのにもかかわらず、不安がつのり、脳みそオーバーフローとなり、
+たいていの被疑者は全てを唄ってしまうわけで、その犯罪件数に合わせて量刑も
+高くつきます。
+
+「共犯同士が連絡を取り合えて、供述中に口裏を合わせられたらどうでしょうか？」
+
+　これができれば刑は軽くすることができます。
+　ここで、累犯達の間で実際に使われているテクニックを紹介しましょう。
+　これは、警察署というシステム上に立ち上がっている刑事dや管理官dといった
+デーモンのバグにエクスプロイトを打ち込んでオーバーフローさせてパスワード
+を奪取、そしてSMTPとPOP3といったサービスにある仕様上のバグを突きPGPをかけ
+たメールをステルスモードで送受信するという方法になります。書いてて意味わ
+からん(´Д`)。
+
+
+■0x03.) スイッチングハブの構造から見る警察の縦割り構造
+
+　リピータハブとスイッチングハブの違いは、読者の皆さんであれば筆者よりも
+知識豊富だと思います。一般的にスイッチングハブは、自分宛のパケットしか見
+れないということになっています。このスイッチングハブと同じ構造なのが「警
+察署の部署ごとの構造」となります。
+　一般の会社でもそうなのですが、ひとつの部署同士の連携というものは、部署
+ごとによる個々の社員としての責任や派閥といった概念が邪魔してなかなか連携
+が取りにくいものです。
+　警察署も例外ではありません。さらに日本の警察官は、個々のプライドが特に
+高く、なんというか大正時代から引きずってきたような「責任に対する男として
+のプライド」みたいなものがあるわけです。
+　一例を挙げるならば「自分はサ○ン事件突入は怖かったが、命令を維持するの
+が任務だから行ったよ。たまんねーよ！」と、以前の担当がボヤいていました。
+　警察も宗教と同じようなヘンコな世界ですので、そういう精神状態になるよう
+に鍛えられているようです。
+　当然ながら、自分の部署の恥ずかしい問題を周囲の部署に晒さないように、ま
+た、同じ部署であっても自分の恥ずかしい問題を周囲の同僚に晒さないように、
+といった考え方が尻の毛の先まですり込まれているわけです。
+　つまり、同じ所轄内であっても部署が違うだけで「伝わると思える情報が伝わ
+っていない」ということが時にはあるわけです。これをまず頭に入れておいてく
+ださい。
+
+
+■0x04.) 所轄システムのスキャン
+
+　例えば、共犯で事件を起こして、結果、逮捕されたとします。
+　この場合、共犯を個別の所轄に拘留して、48時間、最大で72時間以内にある程
+度の供述をさせなければなりません。この時間での取り調べは、逮捕状が出た本
+件のみに集中して、確実な自供をとることが基本となっており、それ以外につい
+ては拘留延長をして徹底的に取り調べればよいという甘い考えがあります。これ
+がまず第一の脆弱性です。
+　さらに、大きな脆弱性になりえる問題があります。それは、大きな事件、特殊
+な事件は例外として、一般的に在り来たりの事件の場合、たいてい三日目で、差
+し入れ、また、手紙を書いて郵送することが許可されます。
+　一応、断っておきますが、携帯電話で「はい、もっしー☆」なんて世界はあり
+えません。つまり、娑婆の人との連絡手段は「手紙」そして「接見」のみとなり
+ます。
+　いずれも必ず、管理課と呼ばれる留置場専門の担当官が、立ち会い、検閲を行
+います。
+　これらは被疑者であろうと、検察の許可が下りれば誰でも使える権利があるの
+です。
+　この手紙は、就寝時間までに留置場房内の本人の手元に置いておき、何度でも
+読み返せます。ちなみに、外部から差し入れができるものの中に郵便のためのセ
+ット一式があり、これを就寝時間外に房内で自由に書いて、担当管理官に郵送を
+依頼することができます。
+
+　この情報を元にして、暇なPCオタクの被疑者が、突然、あることを考えました。
+　自分から自分宛に手紙を差し出してみるテストというやつです。よく、ＰＣで
+メーラーの初期設定をした後で「送受信できるかやってみるテスト」といいつつ
+自分のSMTPから自分宛のPOP3にやりますよね？　あれのアナログ版です。
+　当然、次の手順で書きます。
+
+　（所轄住所）内管理課　（自分の氏名）
+
+　手紙は、検閲を通り、桜の印を押されて五日後に本人宛で届いてしまいました。
+　これ、管理内部では話題になったものの「単なるバカ」というレッテルを貼ら
+れただけで、先に書いた「スイッチングハブ事情」により刑事にはまったく伝わ
+っていなかったのです。この時点で、これがいかに危険であることであるかを理
+解していたのはＰＣオタクの被疑者だけでした。
+　そして、次に考えたのが「共犯への手紙の郵送」となります。
+
+
+■0x05.) 刑事の仕様によるバグを突いたエクスプロイト発射
+
+　まず、共犯の留置されている所轄と場所を正確に知らなければなりません。
+　この問題は、自分自身が実践すると疑われますが、同じ房内にいる被疑者から、
+その被疑者の担当刑事に聞き出させるとスムーズに事が運ぶのです。つまり、踏
+み台を使うということです。
+
+○ソースコード
+
+「夜食の自弁のコーヒー牛乳あげるから、共犯の留置されている所轄を調べのと
+きに担当に、それとなく聞いてよ。うまくいったらタマゴもつけるからさ」
+
+　刑事は担当が違っていても同じ所轄にある同じ刑事課にいるため、担当が違う
+被疑者の情報もある程度までは知っているという横のつながりを利用して、間接
+的に別の被疑者から共犯の所轄を聞きだせるわけです。
+　被疑者同士は、不思議な連帯感があるので、人選さえ間違わなければ唄うこと
+はまずありません。まぁ、シャブ中など信用が置けない被疑者には頼まない方が
+無難でしょう。
+　実際にやってみると、いずれの所轄でも簡単に聞き出すことができます。
+　……ということで、所轄が判明しました。
+
+
+■0x06.) 管理官の仕様によるバグを突いたエクスプロイト発射
+
+　所轄が分かれば、後は簡単。
+　留置場内ときたら、朝から晩まで手紙を書いているか、寝ているか、毛布の毛
+玉を取るくらいしかやることがないので、他の管轄に移管された被疑者や被告人
+などと「頑張れよ！」といった手紙を嵐のように送り合っているのです。
+
+○ソースコード
+
+「担当さん、すんませんけど、○○の所轄の住所を教えてください。あっちに知
+人がおるんですわ。手紙出してあげたいんで……」
+
+　このように明るく聞くだけで、律義に郵便番号から教えてくれます。
+　なぜでしょうか？　それは、多くの被疑者を拘留している管理にとって、どの
+被疑者が、どこの管轄に共犯の被疑者を拘置しているなどまで把握していないか
+らです。これは担当の刑事にとっては重要な問題であり、絶対に喋れない内容な
+のですが、他の課の刑事や管理管にとっては関係のない話だからです。システム
+が大きくなればなるほど脆弱性も広がるということです。
+　あとは、共犯に手紙が届くかどうかだけです。
+
+
+■0x07.) 文書PGP暗号化
+
+　手紙は送信・受信の際に検閲に引っ掛かるようなキーワードを入れると一発で
+検閲の段階で落とされます。また、一度でも検閲に引っ掛かるとマークされるだ
+けでなく、担当刑事にチクられるため万全を期して慎重に行動しなければなりま
+せん。
+　次のように、どうでもいいような内容の文面をダラダラと書きます。
+
+○ソースコード
+
+「おい、元気にやってるか？　こっちは相変わらず腹筋50回は毎日しとるさかい、
+君もやりなされ。……うだうだうだ……かなりしつこくうだうだ……」
+
+　管理官が検閲を行いますが、どうでもいいような内容がたくさん書かれている
+文面は読みたくありませんので、だんだんと斜め読みになります。人間とはそん
+なものです。
+　そして、最後の一枚の最後の文字の後に次のようにして暗号文を入れます。
+　書くときは、紙を一枚上に乗せて、そこに強く書いて、下の紙にペンの跡だけ
+残す典型的な手法となります。
+
+○ソースコード
+
+「○○の件と○○の件はシカト、あとはかまへん」
+
+　そして、そのインクの残った紙は、トイレでウンコを拭いて水に流します。
+　もちろん、方法はこれだけではありません。いくらでもあります。
+
+
+■0x08.) 文書をステルスモードで発射
+
+　あとはSMTPとPOP3をステルスで通り抜ければ完了となります。
+　当たり前ですが、なんら問題なく通過、仲間の被疑者の手元に桜の印が押され
+た手紙が届きました。完璧な自信がありましたし。
+　しかし、送った手紙を別の所轄にいる被疑者が受け取った場合に、暗号の内容
+が解読できるかという問題が残っていると皆さんは思うかもしれません。
+　しかし、修羅場という状況下では、それがわかるのです。
+　それは、朝から晩まで狭い部屋の中にいると退屈で仕方のが留置所生活。そこ
+に一緒に事件を起こした仲間から手紙が届いたということは、なにかしら隠され
+たメッセージがあるはずだと考えるものなのです。
+　それは、自分も同じ不安な立場にいて、同じことを仲間にだけコッソリと伝え
+たいわけですから当然のこと。なんとかして減刑するために口裏を合わせたい気
+持ちは同じだからです。
+　手紙は「絶対になにか隠されたメッセージが書かれているはず！」と穴が開く
+くらい読み返され、必死に解読を試みるわけです。
+
+
+■0x09.) 権限奪取！
+
+　仲間からレスポンスがきました。相手に届いたことが証明されました。
+　そして、彼らは確信の犯罪を唄わないまま、本来であれば懲役７年程度の実刑
+を打たれるところを懲役３年執行猶予５年を手にして、娑婆に戻り、現在では多
+くの事件が時効を迎えてうやむやになったそうです。
+　
+　……みんな、聞いた話です。
+
+　留置場とは、本当に暇なところです。
+　何もすることがないという点、また、いかに罪を軽くするかだけを一日中考え
+ている点で「時間はたっぷりある。こちらが考えついたことは、相手も同じくら
+い考えるはず！　復元方法も絶対に見つけるはずだ…」という発想のもとで作ら
+れた技術は、現在も通用しています。
+
+　……んなわけで、皆さん一年間ありがとう！
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+ --- 第７章：お知らせ ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○Wizard Bible（http://akademeia.info/wizardbible/）では随時、執筆ライタ
+ーを募集しています。
+　扱う内容のテーマは広義での「under ground」です。例えば、ハッキングから
+サリンガスの合成法などと幅広い内容を考えています。また、各種、特殊な職業
+や趣味を持った方のレクチャーなども含まれます。
+　一回きりでも構いません。また、必ず、毎回連載する義務もありませんのでで
+きる範囲で構いません。気軽に声をかけてください。もちろん一回書いたことが
+ある人も気軽に声をかけてください（全く気にしていない性格なので）。
+
+○Kenji AikoさんがQ&Aを作ってくれました。初めて参加する人でもわかりやすく
+書かれていますので、参考にしてください。
+
+http://akademeia.info/wizardbible/wbQandA.html
+
+○支援者、参加希望者用のスレッドを立てました。
+
+http://ruffnex.oc.to/ipusiron/cgi/forum/patio.cgi?mode=view&no=17
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+  ---- 第８章：著者プロフィール ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+　今回は各著者に最近のマイブームを紹介してもらいました。
+
+■金床
+●Job: プログラマー
+●Web: http://guardian.jumperz.net/, http://www.jumperz.net/
+●Mail: anvil@jumperz.net
+●Team（Group)：JUMPERZ.NET
+●マイブーム：
+　マイブームという言葉を目にした当初はすぐ死語化するのではと予想していた
+のですが、まだ生き残っていますね。それはさておき、最近ハマっているのはウ
+ェブアプリケーション開発で使うためのフレームワークの開発・改良です。僕の
+本業はウェブアプリ作成なんですが、気づいてみたら数年前にこさえたMVCのフレ
+ームワークをずっと使い続けているんですよね。ちまたではStrutsなどのオープ
+ンソースのフレームワークもだんだん使われ出したようですが、どれも基本的に
+は似ていて、当初の方向性が間違ってなかったなぁと思います。まぁ、必要とさ
+れる機能は必然的に似てくるので当然といえば当然なんですが。フレームワーク
+作成というのはオブジェクト指向言語を使う人にとっての最高の楽しみのひとつ
+だと思うので、思わず既存のものを使うのではなく、自作してしまいます。それ
+にしてもMVC型のフレームワークを使ったサーバーサイドJavaは素晴らしいですね。
+その堅牢性や柔軟性などに慣れてしまった今となっては、PHPやPerlでの開発には
+戻れそうにありません。ただ、サーバーの設定がめんどくさいという大きな欠点
+は未だに解消されませんが…。
+
+
+■Kenji Aiko 
+●Job: Student 
+●Web: http://ruffnex.oc.to/kenji/ 
+●Mail: kenji@ruffnex.oc.to 
+●Team（Group): N/A 
+●Comment: 
+　どうも、ケンジです。おかげさまで『TCP/IPの教科書』が発売されました。ネ
+ットワークに関して具体例をあげながら実践的に解説する本になっています。よ
+ろしければ読んでみてください。サポートに関しては、私のWEBページで行ってい
+ます。
+http://www.data-house.co.jp/book/7890.html
+http://ruffnex.oc.to/kenji/bktcpip/tcpip.html
+●マイブーム:
+　なるべく効率よく掃除する方法を考えること。いや、掃除とか洗濯とかそうい
+うあんまり面白くないことってあるじゃないですか。そういうことをなるべく速
+く済ませる方法を考えることです。あとゴミを捨てにいくついでに買い物に行く
+場合の最短ルートを考えることとか。要するに最小の労力で最大の効率を求める
+といったような、ものすごい理系な考え方ですが（笑）。ただ考えてる時間を行
+動に当てた方が実質的に時間短縮になるような気がしないでもありませんが。
+
+
+■黒猫
+●Job:勉強インストラクター（塾講師）
+●Web:知のくずかご（http://d.hatena.ne.jp/EdgarPoe/）
+●Mail:cherry_cherry_cherry@hotmail.com
+●Team（Group）:N/A
+●Comment:
+　ロートルのためUGについて行かれなくなり、現在は一般向けお笑いダイアリを
+書くことと、その合間に小中学生と遊んでいる毎日。
+　精神に障害があり「ノってる時はのめり込むが、ノらないときは一日中寝てい
+る」を繰り返している。ソーウツ病かな？これを執筆段階ではハイからローへ転
+換中。
+　ハイの時に3Dえっちゲームがやりたくて、PCをケース以外は全部交換。3DCGが
+ぐりぐり動くPCに換えたものの、そこで満足してしまいまだゲームをやっていな
+いという「手段と目的の混同」を体験中（笑）。
+※職業上、このことは秘密にしておいてください(笑)。
+●マイブーム：コミケでコスプレ
+　ヲタクもすなるコミケといふものに、我も行きてみむとて、行くつもりなり。
+だうせならば、オタクもすなるコスプレといふものに、われも挑戦してみむとて、
+準備中なり。12/29が楽しみな小生です。
+
+■MaD
+●Job:DATA HOUSE
+●Web:http://www.data-house.co.jp/
+●Mail:mad@data-house.co.jp
+●Team（Group）:h@cksection,ruffnex
+●Comment:
+　元ハカージャパソと危ない28号の百円ライター。趣味は、空き缶拾いと牛乳瓶
+のフタ集め。２ちゃんねるでは「矢崎マサユキ」、「白鶴・丸」、「大同曲芸人
+」、「泥棒・詐欺師」として通っている。ウソばかりつくので友達はいない。
+　現在は会社でヒッキーをしているが、将来はネットカフェの店員なるという目
+標に向かってまっしぐら。とぁっ！(`Д´)。
+
+
+■IPUSIRON
+●Job:サイト更新
+●Web:- Security Akademeia -（http://akademeia.info/）
+●Mail:ipusiron@ruffnex.oc.to
+●Team（Group）:hacksection
+●Comment:
+　1月20日に新刊発売予定です。内容はソーシャルエンジニアリングになっており
+ます。ソーシャルエンジニアリングを体系的にまとめたものはまだ日本の書籍に
+なかったと思います（ケビン・ミトニックの『詐術』は元々が洋書）。その1,2年
+以内にソーシャルエンジニアリングの大全も出したいと思っています。それのた
+めにも今度の新刊は売れて欲しいです。
+●マイブーム:
+　マイブームといっていいかわかりませんが、最近の読書傾向は巨大建造物の建
+築学、詭弁やレトリック、無線ICタグといったものです。
+　よくリアルで私が行う例え話をします。ここで、天井に手が届くのを到達点と
+します。ひとつのことに集中できる人（狭く深くの人）は本や椅子を一箇所に積
+み重ねて天井を目指します。一方、興味の赴くままに手を広げる人（広く浅くの
+人）は、部屋の端に本を積み重ねたり、その逆の端に台座を置いたりして、なか
+なか天井に手が届きません。どちらの方法が良い悪いというわけではありません
+が、私の場合は本やテーブルといった硬い物以外にもクッションやボールなどを
+用います。普通クッションやボールでは転倒して全然天井に到達できません。も
+ちろんそうですが、よく考えてみてください。ボール、玉、クッション、椅子な
+ど全部ごちゃまぜに部屋いっぱいに敷き詰めてしまえば崩れようがありません。
+これならば好きなどの分野にも触れることができ、なおかつ天井に到達できるわ
+けです。ただし、ひとつ欠点が･･･。それは寿命が足りないこと（萎）。

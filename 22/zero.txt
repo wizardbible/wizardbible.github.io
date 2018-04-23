@@ -1,0 +1,379 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第1章: mixiの招待プログラムなんか簡単に作れるぜ ---
+
+著者：Zer0real
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) オープニング
+
+　よぉ！　久しぶりだな。前回mixiハクりネタを書いたZer0realだ。なんか前回
+のやつがやけにウケたらしいから、また似たようなの書いてくれだとよ。あのな
+ぁ、お前らなぁ、プロなめてんのか？　こんな一円の得にもならないことをなん
+で俺がやらなきゃならねーんだよ。まぁIPUSIRONには最近ちょっとしたことで世
+話になったから、今回だけは特別に無料で書いてやるけどな。今回だけな。それ
+で、今日は何するかって？　まぁちゃっちゃとmixiの招待プログラムでも作って
+やるよ。
+
+
+■0x02.) 招待の流れ
+
+　なんかちょっと前になんとかっていうやつがmixiの自動招待プログラムとかを
+mixi内で公開して、アカ剥奪くらいそうになってたよな（藁）。バグ報告コミュ
+ニティにその内容が書かれたときは笑ったよ。それで、その後、招待を行うペー
+ジに数字入力の認証が追加されたわけだが、あの対処法はぶっちゃけていうと「
+mixiのプログラマがいかに低脳であるか」を証明しただけだったわけだ。
+
+　なぜかって？　当たり前じゃねーか。あんな画像の数字認証つけたところで、
+何の意味があるっていうんだ（藁）。mixiのプログラマはマジでアフォなのか？
+もし万が一これ読んでたら悪いことは言わないから「プログラマ止めろよ」とい
+いたいね。まぁこっちとしては低脳なプログラマが増えたらそのぶん仕事がやり
+やすくなるわけだが。
+
+　さて、話を戻そうか。
+　まず、招待するしないを扱っているプログラムはinvite.plだ。つまり「http:
+//mixi.jp/invite.pl」だな。これに普通に「GET」でアクセスすると、メールア
+ドレスを入力するところと、次の画面へというボタンが表示される。ここにまず
+は招待メールを送るメールアドレスを入力するわけだ。
+
+http://ruffnex.oc.to/zer0/1.jpg
+
+　次は名前、メッセージ、そして番号を入力する場所が出てくる。
+
+http://ruffnex.oc.to/zer0/2.jpg
+
+　さて、メッセージは任意だから無視するとして、名前と番号は絶対に入れなけ
+ればならない。以前の招待ページならば番号というのはなかったからあとは名前
+を入れて送信すればそれでOKだったわけだ。実に簡単だ。しかし、mixiプログラ
+マはそれに対応して番号を導入した。こうすることで彼らは「招待プログラムな
+んてもう作れないだろう」と思ったわけだ。確かに、このランダムに生成される
+数値の画像は予測することができないため、一見問題ないように見える。しかし、
+それは大きな誤りだ。
+
+
+■0x03.) 突破口を考える
+
+　いいか、確かに画像の数値はランダムだ。これを予測することはできない。し
+かし、画像を読み込むことはできるんだ。例えばmixiのアカウントを持ってなく
+てもmixiサーバにある画像を読み込むことはできるんだよ。
+
+http://img.mixi.jp/photo/member/63/19/1756319_4173093596.jpg
+
+　さて、これはもちろんランダムに生成される画像にも適応される。つまり、画
+像はに表示される数値はランダムだが、画像自体は誰でも見ることができるわけ
+だ。
+
+　さて、それで俺が考えたプログラムはこうだ。
+　まず、mixiアカウントを欲しがっているユーザにメールアドレスを入力させる。
+そして、そのメールアドレスをinvite.plへ渡す。すると、2番目の入力ページが
+返される。その入力ページには「名前」「番号」「メッセージ」を入力する欄が
+あり、そして数値が表示された画像があるわけだ。その画像のアドレスを取得し
+て、こちら側のCGIにて表示させる。
+
+　その時点でアカウントを欲しがっているユーザには数値が表示されている画像
+が見えているわけだ。よって、それを入力してもらう。あとは、CGIが仲介となっ
+て、その入力された数値をinvite.plへ渡せば、アカウントの発行は行われるわけ
+だ。
+
+　これは説明すると意外に分かりにくい。よってソースコードを見てくれ。
+
+【編注】この考え方はmixi以外でも通用する。覚えておくと意外な場面でも活用
+できるだろう。
+
+
+■0x04.) ソースコード
+
+　以下、全ソースコードだ。
+
+-----  mixi.cgi
+#!/usr/bin/perl
+
+use Socket;
+
+$g_cookiefile = 'cookie.cgi';
+
+$g_connection = 'Keep-Alive';
+$g_u_agent    = 'Mozilla/5.0 (X11; U; Linux i686; ja-JP; rv:0.9.8+)';
+$g_host       = 'mixi.jp';
+$g_referer    = 'http://mixi.jp/';
+
+$g_html_head  = << 'HTML_HEAD';
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="ja-JP">
+<head><meta http-equiv="Content-Type" content="text/html;charset=EUC-JP">
+<title>MIXI ACCOUNT GET PROGRAM</title></head>
+<body><p>ruffnex.oc.to</p>
+<div align="center"><h2>MIXI ACCOUNT GET PROGRAM</h2>
+HTML_HEAD
+
+$g_html_ftta  = << 'HTML_FTTA';
+</div></body>
+</html>
+HTML_FTTA
+
+&main_function;
+exit;
+
+sub main_function
+{
+    print "Content-Type: text/html\r\n\r\n";
+    &step3 if($ENV{'REQUEST_METHOD'} eq "POST");
+    &step2 if($ENV{'QUERY_STRING'} ne "");
+    &step1;
+}
+
+sub step1
+{
+    print $g_html_head;
+    print '<p>Input your mail address.</p>'. "\r\n";
+    print '<form action="mixi.cgi" method="get">'. "\r\n";
+    print '<input type="text" name="email" size="50">'. "\r\n";
+    print '<input type="submit" value="NEXT"></form>'. "\r\n";
+    print $g_html_ftta;
+    exit;
+
+}
+
+sub step2
+{
+    my ($key, $val) = split(/=/, $ENV{'QUERY_STRING'});
+    &step1 if($key ne "email");
+    my $mail = url_encode_decode($val, "decode");
+    my $cookie = &login_mixi("test\@test.com", "passwd");
+    &pg_error("step2 -> login_mixi") if($cookie == -1);
+    put_cookie($g_cookiefile, $cookie);
+
+    my ($pst_data, $pst_len);
+    $pst_data  = 'submit='. url_encode_decode("main", "encode"). '&';
+    $pst_data .= 'email='.  url_encode_decode($mail, "encode");
+    $pst_len   = length($pst_data);
+
+    my $content_data;
+    $content_data  = 'POST /invite.pl HTTP/1.1'.        "\r\n";
+    $content_data .= 'Connection: '.     $g_connection. "\r\n";
+    $content_data .= 'Cookie: '.         $cookie.       "\r\n";
+    $content_data .= 'User-Agent: '.     $g_u_agent.    "\r\n";
+    $content_data .= 'Host: '.           $g_host.       "\r\n";
+    $content_data .= 'Referer: '.        $g_referer.    "\r\n";
+    $content_data .= 'Content-length: '. $pst_len.      "\r\n";
+    $content_data .= "\r\n";
+    $content_data .= $pst_data;
+
+    &pg_error if( &connect_server("mixi.jp") == -1 );
+    print SOCKET $content_data;
+    my @rev_data = <SOCKET>;
+    close(SOCKET);
+
+    my $inv = "no", $pst = "no";
+    foreach(@rev_data){
+        $inv = $1 if(m/(invite_key.value=.[0-9a-f]+)/);
+        $pst = $1 if(m/(post_key.value=.[0-9a-f]+)/);
+    }
+    &pg_error("step2 -> not found invite_key") if($inv eq "no");
+    &pg_error("step2 -> not found post_key") if($pst eq "no");
+
+    my $invite_key = substr($inv, 18);
+    my $post_key   = substr($pst, 16);
+
+    print $g_html_head;
+    print '<p>Input the number below.</p>'. "\r\n";
+    print '<img src="http://mixi.jp/data/gif/'. $invite_key. '.gif" vspace=5>'. "\r\n";
+    print '<form action="mixi.cgi" method="post">'. "\r\n";
+    print '<input type="hidden" name="invite_key" value="'. $invite_key. '">'. "\r\n";
+    print '<input type="hidden" name="post_key" value="'. $post_key. '">'. "\r\n";
+    print '<input type="hidden" name="email" value="'. $mail. '">'. "\r\n";
+    print '<input type="text" name="num" size="10">'. "\r\n";
+    print '<input type="submit" value="SEND"></form>'. "\r\n";
+    print $g_html_ftta;
+    exit;
+}
+
+sub step3
+{
+    my %dd = &postdata_to_hash;
+
+    my ($pst_data, $pst_len);
+    $pst_data  = 'submit='.    url_encode_decode("non_member", "encode").   '&';
+    $pst_data .= 'email='.     url_encode_decode($dd{'email'}, "encode").   '&';
+    $pst_data .= 'last_name='. url_encode_decode("Hello", "encode").        '&';
+    $pst_data .= 'first_name='.url_encode_decode("Mixi", "encode").         '&';
+    $pst_data .= 'number='.    url_encode_decode($dd{'num'}, "encode").     '&';
+    $pst_data .= 'post_key='.  url_encode_decode($dd{'post_key'}, "encode").'&';
+    $pst_data .= 'invite_key='.url_encode_decode($dd{'invite_key'}, "encode");
+    $pst_len   = length($pst_data);
+
+    my $cookie = &get_cookie($g_cookiefile);
+    &pg_error("step3 -> get_cookie") if($cookie == -1);
+
+    my $content_data;
+    $content_data  = 'POST /invite.pl HTTP/1.1'.        "\r\n";
+    $content_data .= 'Connection: '.     $g_connection. "\r\n";
+    $content_data .= 'Cookie: '.         $cookie.       "\r\n";
+    $content_data .= 'User-Agent: '.     $g_u_agent.    "\r\n";
+    $content_data .= 'Host: '.           $g_host.       "\r\n";
+    $content_data .= 'Referer: '.        $g_referer.    "\r\n";
+    $content_data .= 'Content-length: '. $pst_len.      "\r\n";
+    $content_data .= "\r\n";
+    $content_data .= $pst_data;
+
+    &pg_error if(&connect_server("mixi.jp") == -1);
+    print SOCKET $content_data;
+    my @rev_data = <SOCKET>;
+    close(SOCKET);
+
+    my $flag = 0;
+    foreach(@rev_data){
+        $flag = 1 if(m/(mail_send\.gif)/);
+    }
+
+    print $g_html_head;
+    if($flag == 1){ print '<p>I sent mail to your address.</p>'; }
+    else          { print '<p>Sorry! I do not sent mail to your address.</p>'; }
+    print $g_html_ftta;
+    exit;
+}
+
+sub login_mixi
+{
+    my $login_email = $_[0], $login_passwd = $_[1];
+
+    my ($pst_data, $pst_len);
+    $pst_data   = 'next_url='. url_encode_decode("/home.pl", "encode").    '&';
+    $pst_data  .= 'email='.    url_encode_decode($login_email, "encode").  '&';
+    $pst_data  .= 'password='. url_encode_decode($login_passwd, "encode"). '&';
+    $pst_data  .= 'sticky=0';
+    $pst_len    = length($pst_data);
+
+    my $content_data;
+    $content_data  = 'POST /login.pl HTTP/1.1'.         "\r\n";
+    $content_data .= 'Connection: '.     $g_connection. "\r\n";
+    $content_data .= 'User-Agent: '.     $g_u_agent.    "\r\n";
+    $content_data .= 'Host: '.           $g_host.       "\r\n";
+    $content_data .= 'Referer: '.        $g_referer.    "\r\n";
+    $content_data .= 'Content-length: '. $pst_len.      "\r\n";
+    $content_data .= "\r\n";
+    $content_data .= $pst_data;
+
+    return -1 if( &connect_server("mixi.jp") == -1 );
+    print SOCKET $content_data;
+    my @rev_data = <SOCKET>;
+    close(SOCKET);
+
+    my ($bf_stamp, $bf_session, $cookie);
+    foreach(@rev_data){
+        $bf_stamp   = $1 if(m/(BF_STAMP=[0-9A-Za-z_]+)/);
+        $bf_session = $1 if(m/(BF_SESSION=[0-9A-Za-z_]+)/);
+        m/^\r\n$/ and last;
+    }
+
+    $cookie = $bf_stamp. ';'. $bf_session. ';';
+    return($cookie);
+}
+
+sub postdata_to_hash
+{
+    my $line;
+    read(STDIN, $line, $ENV{'CONTENT_LENGTH'});
+    my @data = split(/&/, $line);
+    my (%decode_data, $key, $val);
+    foreach(@data){
+        ($key, $val) = split(/=/, $_);
+        $val = &url_encode_decode($val, "decode");
+        $decode_data{$key} = $val;
+    }
+    return %decode_data;
+}
+
+sub url_encode_decode 
+{
+    my $url_str = $_[0], $url_flag = $_[1];
+    if($url_flag eq "encode"){
+        $url_str =~ s/([^\w ])/'%'. unpack('H2', $1)/eg;
+        $url_str =~ tr/ /+/;
+    }
+    if($url_flag eq "decode"){
+        $url_str =~ tr/+/ /;
+        $url_str =~ s/%([0-9A-Fa-f][0-9A-Fa-f])/pack('H2', $1)/eg;
+    }
+    return($url_str);
+}
+
+sub connect_server 
+{
+    my $host = $_[0];
+    my $port = getservbyname('http', 'tcp');
+    my $iaddr = inet_aton($host) or return -1;
+    my $sock_addr = pack_sockaddr_in($port, $iaddr);
+    socket(SOCKET, PF_INET, SOCK_STREAM, 0) or return -1;
+    connect(SOCKET, $sock_addr) or return -1;
+    select(SOCKET); $|=1; select(STDOUT);
+    return 0;
+}
+
+sub get_cookie
+{
+    my $file = $_[0];
+    open(FILE, $file) or return -1;
+    flock(FILE, 2);
+    my @data = <FILE>;
+    close(FILE);
+    chomp($data[0]);
+    return ($data[0]);
+}
+
+sub put_cookie
+{
+    my $cookie_file = $_[0], $cookie_data = $_[1];
+    open(FILE, ">$cookie_file") or return -1;
+    flock(FILE, 2);
+    print FILE "$cookie_data\n";
+    close(FILE);
+}
+
+sub pg_error
+{
+    my $error_str = $_[0];
+    print $g_html_head;
+    print '<p>Error: '. $error_str. '</p>'. "\r\n";
+    print $g_html_ftta;
+    exit;
+}
+-----
+
+　同じディレクトリにcookie.cgiというファイルを666で作成する。そして、mix
+i.cgiを701や705とかに設定してmixi.cgiにアクセスすればOKだ。
+
+
+■0x05.) 設置例
+
+　設置例はこれだ。
+
+http://ruffnex.oc.to/zer0/mixi.cgi
+
+　最後に「I sent mail to your address.」と表示されたら無事メールが送信さ
+れているというわけだ。まぁ、こんな感じだな。
+
+
+■0x06.) エンディング
+
+　さて、どこぞのオークションではmixiアカウントがいくらかで売れるらしいが、
+せこい商売してるやつもいるもんだな。かと思えば大した知識もなく番号認証な
+んてつけやがるアフォグラマもいるわけか。まぁ別に俺としてはどれだけアフォ
+なやつがいようが知ったこっちゃないがね。ただ、低脳にもほどがあるってのは、
+これを読んでる読者なら分かるだろ。どんな人間だろうとサルやチンパンジー相
+手に政治や経済について議論したいとは思わないぜ。俺のいいたいことはつまり
+そういうことだ。年齢や地位や名誉や財力などに関係なく、やっぱ世の中には低
+脳なやつがたくさんいるというわけだよ。そして、もし、そういうやつらをから
+かうのがお好きってんなら、コンピュータハッカーになることをお勧めするよ。
+なんたって、たった一回のひらめきで、そういう連中の化けの皮を剥ぎ落とすこ
+とができるんだからな。
+
+　「Knowledge is power.」
+
+　知識ってのは力なんだぜ。
+
+

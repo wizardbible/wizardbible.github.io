@@ -1,0 +1,136 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第４章: セキュリティツール基礎問題 ---
+
+著者：IPUSIRON
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　『ハッカー認定試験』という本がデータハウスから発売されるようです。これ
+にちなんで、Wizard Bibleのネタとして10問の問題を出してみました。総合的に
+扱っている前述の本とは異なり、今回載せた問題はあくまでセキュリティツール
+に関する問題だけにしています。ツールは、本来セキュリティの本質とはあまり
+関係ありません。しかしながら、あくまで調査・監査を行う際に知っておくと便
+利だと思います。よって、ツールだから厨房というようなパブロフの犬のような
+反応は止めにして、とりあえず挑戦してみてください。
+
+　今月の問題の解答・解説は来月のWizard Bibleに載せる予定です。
+　もし分からない問題があったとしても、いずれもWebや本で調べればすぐ分かる
+問題ばかりだと思います。来月まで待てない人は各々で調べてみるとよいでしょ
+う。
+
+■0x01.) 問題文
+
+●第１問
+
+　OSを識別するテクニックとして正しくないものを選べ。
+
+（１）アプリケーションバナーからOSを推測する
+（２）nmap利用によるOS推測
+（３）ettercap利用によるOS推測
+（４）Ethereal利用によるOS推測
+（５）Cain利用によるOS推測
+（６）Queso利用によるOS推測
+（７）Cheops利用によるOS推測
+
+●第２問
+
+　スニファーの存在を検知するツールとして正しくないものを選べ。
+
+（１）ifstatus
+（２）CPM
+（３）AntiSniff
+（４）PromiscDetect
+（５）Sniffer Detector
+（６）chrootkit
+（７）Sniff Killer
+（８）NEPED
+
+●第３問
+
+　脆弱性の評価、修正プログラムの適応状況をチェックするMSが提供しているフリーかつGUIのツールとして、MBSA（Microsoft Baseline Security Analyzer）が存在する。このMBSAのチェック対象として適切ではないものを選べ。
+
+（１）Windowsの脆弱性
+（２）サービスのチェック
+（３）パスワードの脆弱性
+（４）IISの脆弱性
+（５）SQLの脆弱性
+（６）修正プログラムのチェック
+
+●第４問
+
+　WindowsNT修復ディスクユーティリティである【　　】を/sオプションをつけて実行することで、主要なシステム構成情報のバックアップを作成することができる。
+
+（１）rdisk.exe
+（２）format.exe
+（３）sysedit.exe
+（４）wowexec.exe
+
+●第５問
+
+　WindowsNTリソースキットに含まれるPDCを調べるプログラムは何か。
+
+（１）scopy.exe
+（２）delprof.exe
+（３）timeserv.exe
+（４）nltest.exe
+
+●第６問
+
+　バッファオーバーフロー対策とは関係ない事柄を選べ。
+
+（１）libsafe
+（２）Exec Shield
+（３）StackGuard
+（４）Flow Shield
+（５）PointGuard
+
+●第７問
+
+　Windows Updateサイトでインストール履歴を確認することで、今までインストールした修正プログラムを調べることができる。しかし、何が足りないかはわからない。この足りない修正プログラムを調べるプログラムを選べ。
+
+（１）regedit32.exe
+（２）svchost.exe
+（３）spoolsv.exe
+（４）HFNetChk.exe
+
+●第８問
+
+　nbtstatはNetBIOSが開いているホストに対して利用できるわけだが、このNetBIOSが開いているホストを探さなくてはならない。わざわざ一つずつ試していくのではいくら時間があっても足りない。そのときに使用するのに適していないツールを次の選択肢から選べ。
+
+（１）NetBIOS Cracker
+（２）nbtscan
+（３）enum
+（４）Essential NetTools
+（５）LanScanner
+
+●第９問
+
+　Linuxにtcpdumpをインストールするときに必要となるライブラリを選べ。
+
+（１）linpcap
+（２）libpcap
+（３）winpcap
+（４）Net::Pcap
+
+●第１０問
+
+　Ethereal使用時、キャプチャしたデータから送信先が192.168.1.10のIPパケットを抜き出すときのディスプレイフィルターのルールを選べ。
+
+（１）ip.addr == 192.168.1.10
+（２）ip.src == 192.168.1.10
+（３）ip.dst == 192.168.1.10
+
+
+■0x03.) 最後に
+
+　今回は私が10問作って問題出しましたが、次回のWizard Bibleに自分も問題出
+したいという人がいましたら、是非気軽にメールください。もちろんいつも原稿
+を送ってくださっている著者の方でも結構です。多数の連絡お待ちしております。
+
+　では、また来月会いましょう。

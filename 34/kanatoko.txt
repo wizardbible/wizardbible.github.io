@@ -1,0 +1,193 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: XHRのリバースエンジニアリング ---
+
+著者：金床
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.)  はじめに
+
+　XHRとはXMLHttpRequestのことである。これを使うと、ウェブページ中に埋め込まれた次のようなJavaScriptのコードにより、比較的自由度の高いHTTP通信を行うことができる（このコードはIEでのみ動作する）。
+
+-----
+var request1 = new ActiveXObject("Microsoft.XMLHTTP");
+request1.open( 'GET', 'http://www.jumperz.net/index.php',false ); 
+request1.send( null );
+alert( request1.responseText );
+-----
+
+　しかしXHRが存在することで、ウェブアプリケーションにXSS脆弱性が存在する場合、XHRにTRACEメソッドを送信させることでXST（Cross Site Tracing）攻撃が可能となる。この場合、Basic認証の情報やHttpOnlyで発行されたCookieが攻撃者に奪われる可能性がある。そのためFirefoxやOperaの最近のバージョンではXHRを使用する際にメソッドとしてTRACEは指定できないようになっている。IEでも同様に比較的新しいバージョンではTRACEが禁止されている。
+
+　また、メソッドと同様に、XHRの送信先となるポート番号もセキュリティ制限の対象とすべきだ。例えば25番ポートに接続できてしまうと、XHRを悪用してスパムメールを送信されてしまう（ユーザのブラウザにスパムメールを送信させる）可能性が考えられる。つまり次のようなコードは失敗するべきと考えられる。
+
+-----
+request1.open( 'GET', 'http://www.jumperz.net:25/index.php',false ); 
+-----
+
+　さてこのように
+
+・TRACEメソッドは禁止
+・ポート番号について、例えば25番などは禁止
+
+　というセキュリティ制限がかけられているXHRだが、どうもIEについてはこの制限のかけ方がお粗末であるように思える。そこで今回はリバースエンジニアリング祭りをおこない、IEのXHR実装がどこでどのように行われているのかを調べてみた。
+
+
+■0x02.) メソッドの制限
+
+　TRACEメソッドを禁止するべき場所はopen関数の第1引数だ。この引数はずばりHTTPリクエストのメソッドを指定するもので、普通はGETやPOSTが指定される。HTTPのメソッドというのはアルファベットの大文字と相場が決まっているので（よい子は相場じゃなくてRFCを見てくだちい）、とりあえずまともなプログラマーなら[A-Z]{1,20}のような感じで入力をチェックし、その上で「TRACE」ではないことを確認するだろう。
+　しかしさすがマイクロソフト様。なんと次のようなおどろきのコードでTRACEが飛んでしまうのだ。
+
+-----
+request1.open( '\nTRACE', 'http://www.jumperz.net/index.php',false );
+-----
+
+　この場合、送信されるTCPのデータストリームの内容は最初に余分な1バイト（0x0D）が付いたTRACEメソッドのHTTPリクエストとなる。しかしApacheやIISはこれを受け付けてしまうため、XSTは成立してしまう。つまりこのIEのXHRにおけるTRACEの禁止は、簡単に回避されてしまうのだ。
+
+　さらにひどいことに、次のようなコードさえ動いてしまう。
+
+-----
+var method = "GET\x09/index.php\x09HTTP/1.0\r\nHost:hogehoge\r\nX-Foo:";
+request1.open( method, 'http://www.jumperz.net/index.php',true ); 
+request1.send( null );
+-----
+
+　このテクニックを使うとクライアントサイドでのHRSをはじめ、さまざまな問題が引き起こされるだろう。
+
+
+■0x03.) ポートの制限
+
+　FirefoxやOperaではXHRで接続可能なポートについても厳しく制限しており、スクリプトを含むページと同じポートにのみ接続可能のようだ。しかしIEではこの実装も奇妙であり、21番ポートや25番ポートには接続できないのだが、22番ポートや23番ポートには接続できてしまう。接続できたからといってそれほど深刻な問題が発生するわけではないのだが、メソッドの禁止の実装と同じく、どのように実装されているのかが気になるところである。
+
+
+■0x04.) 祭り開始
+
+　まずはIEにおけるXHRの実装がどのDLLで行われているのかを調べてみることにした。system32ディレクトリにおいて「grep -i xmlhttprequest *.dll」としてみると、msxml3.dllなどのいくつかのDLLファイルがヒットする。
+　TRACEの禁止が明示的に行われているようであれば「grep -i trace msxml3.dll」でヒットしそうに思えたが、これはヒットしない。またTRACEというのはよく使われる単語なので、「grep TRACE *.dll」などとしてしまうと大量のDLLファイルがヒットしてしまい、結局どのDLLにおいてTRACEの禁止が実装されているのかはわからない。
+
+　そこでDependency Walkerというツールを使ってmsxml3.dllが依存しているDLLをリストアップしてみることにした。リストアップされた中で、まずはwinhttp.dllというファイルが怪しいように思えた。しかしこのファイルの中身をTRACEで検索してみても「ERROR_SYSTEM_TRACE」という文字列がヒットするだけで、TRACEメソッドの制限が行われているわけではないようだ。そこで、次に怪しいと思われるwininet.dllを調べてみた。するとHttpOpenRequestという関数の中で、それらしい箇所を見つけることができた。
+
+-----
+7667421E   8B35 B4136676    MOV ESI,DWORD PTR DS:[<&SHLWAPI.StrCmpNIA>]            ; SHLWAPI.StrCmpNIA
+76674224   6A 05            PUSH 5
+76674226   68 58426776      PUSH WININET.76674258                                  ; ASCII "TRACE"
+7667422B   53               PUSH EBX
+7667422C   FFD6             CALL ESI
+7667422E   85C0             TEST EAX,EAX
+76674230   0F84 DBC30100    JE WININET.76690611
+76674236   6A 05            PUSH 5
+76674238   68 50426776      PUSH WININET.76674250                                  ; ASCII "TRACK"
+7667423D   53               PUSH EBX
+7667423E   FFD6             CALL ESI
+76674240   85C0             TEST EAX,EAX
+76674242  ^0F85 09F5FFFF    JNZ WININET.76673751
+76674248   E9 C4C30100      JMP WININET.76690611
+-----
+
+　このように、StrCmpNIAというAPIを使って何か（おそらくユーザが指定したメソッド）と「TRACE」という文字列を比べているのである。「ビンゴ！」というやつだ。
+
+　さて「これは何だ？」と思ったのは「TRACK」の部分である。TRACEと同様に、TRACKというメソッドも禁止しているのだ。そこでウェブを検索してみると、どうやらIISのオリジナル実装で、TRACEと同様の働きをするHTTPのメソッドということである。XSTではTRACEと同様にTRACKも問題になる、と指摘している文章を見つけることができた。TRACKというメソッドの存在は知らなかったので、これは勉強になった。
+
+　ここでStrCmpNIAの第3引数として「5」を指定している（PUSH 5の部分）ので、文字列の比較は5文字目までしか行われない。そのため面白いことに、ユーザが「TRACEAAAA」や「TRACKBBBB」のような文字列を指定した場合にも、これは禁止される。
+
+
+■0x05.) 一般の開発者を無視した実装
+
+　さて鋭い読者なら同様の疑問を持っているかと思うが、この実装には大きな問題が存在している。TRACEとTRACKの禁止は明らかにXST対策である。XST対策はIEのXHRの実装に対して行われるべきだが、実際にはwininet.dllの中で行われてしまっている。
+
+　wininet.dllというのはIE以外のソフトウェアからも利用されるライブラリであり、一般のアプリケーション開発者がHTTPクライアントを作る際にも利用する可能性が高い。これは例えば次のようなコード（本稿を書く際に使ったもの）で行われる。
+
+-----
+#include <windows.h>
+#include <wininet.h>
+#include <stdio.h>
+
+int main( int argc, char* argv[] )
+{
+HINTERNET hInternet;
+HINTERNET hSession;
+HINTERNET hReq;
+
+hInternet = InternetOpen(
+    "TEST",
+    INTERNET_OPEN_TYPE_DIRECT,
+    NULL,
+    NULL,
+    0 );
+
+hSession = InternetConnect(
+    hInternet,
+    "www.jumperz.net",
+    80,
+    NULL,
+    NULL,
+    INTERNET_SERVICE_HTTP,
+    0,
+    0 );
+
+hReq = HttpOpenRequest(
+    hSession,
+    "TRACE",
+    "/index.php",
+    NULL,
+    NULL,
+    NULL,
+    0,
+    NULL );
+
+if( hReq == NULL )
+    {
+    printf( "null" );
+    }
+
+InternetCloseHandle( hInternet );
+InternetCloseHandle( hSession );
+InternetCloseHandle( hReq );
+
+return 0;
+}
+-----
+
+　wininet.dllの中でTRACEとTRACKが禁止されてしまったため、一般の開発者が作成するIEとは関係のないHTTPクライアントアプリケーションも影響を受けてしまう。つまりこれらのアプリケーションからもTRACEやTRACKの送出が禁止されてしまうのだ。これは開発者を無視した暴挙であるように感じる。TRACEを送出するような専用のクライアントアプリケーションがそれほど多く存在しているとは思わないが、本来ならばmsxml3.dll内などで実装すべき処理である。
+
+
+■0x06.) ポートの制限
+
+　ポートの制限についても同様にwininet.dll内で行われていることがわかった。これは以下の箇所である（ちなみにこちらは少し古いマシンで調査したので、0x04で示したリストとはDLLのバージョンが異なる）。
+
+-----
+7020DDAA   0FB74424 04      MOVZX EAX,WORD PTR SS:[ESP+4]
+7020DDAF   83E8 00          SUB EAX,0
+7020DDB2   74 1E            JE SHORT WININET.7020DDD2
+7020DDB4   83E8 15          SUB EAX,15
+7020DDB7   74 19            JE SHORT WININET.7020DDD2
+7020DDB9   83E8 04          SUB EAX,4
+7020DDBC   74 14            JE SHORT WININET.7020DDD2
+7020DDBE   83E8 55          SUB EAX,55
+7020DDC1   74 0F            JE SHORT WININET.7020DDD2
+7020DDC3   83E8 09          SUB EAX,9
+7020DDC6   74 0A            JE SHORT WININET.7020DDD2
+7020DDC8   83E8 18          SUB EAX,18
+7020DDCB   74 05            JE SHORT WININET.7020DDD2
+7020DDCD   33C0             XOR EAX,EAX
+7020DDCF   C2 0400          RETN 4
+-----
+
+　7020DDB4の15は10進数で21である。EAXにはユーザが指定したポートが入っており、まず21を減算してそれが0であるかどうかを調べている。つまりユーザがFTPのポートである21を指定した場合にはここで引っかかる。つぎにさらに4を減算してそれが0であるかどうかを調べている。つまりSMTPのポートである25を指定した場合にはここで引っかかる。以下同様に比較が行われており、結果として禁止されているポートは21、25、110、119、143（FTP、SMTP、POP3、NNTP、IMAP）であることがわかった。
+
+　ちなみにこの箇所については、0x05で示したソースコードの80の部分（ポート番号）を接続可能なポート（22番など）と接続が禁止されているポート（21番など）に変更したexeをそれぞれOllyDbgでトレースしてログを取り、ログの内容を比較することで特定することができた。メソッドの制限はただ単に「TRACE」という文字列を検索するだけで見つけることができたが、こちらは少々手間がかかった。
+
+　このように、ポートについてもメソッドの場合と同じようにwininet.dll内に直接制限が設けられている。しかしHTTPクライアントが21番ポートなどに接続したい場合というのはあまり考えられないので、メソッドとは異なり、こちらの副作用はほとんどないと考えられる。
+
+
+■0x07.) 祭りの後のまとめ
+
+　今回はIEのXHRの挙動について、実装を行っている箇所をひとりリバースエンジニアリング祭りによって特定し、実際に読んでみることで、どのようにセキュリティ制限が行われているのか、またその影響などを把握することができた。開発者を無視して強引に（しかも不完全に）TRACEを禁止するというマイクロソフトの手法は衝撃的ですらある。筆者は元々WININETのようなMS依存のライブラリの利用は避けているが、これはやはり正解であったと思うことになった。
+
+　ところでKG先生主催のリバースエンジニアリング祭りが秋にも開催されるとのことなので、国内最高レベルのリバースエンジニアリング関連情報を提供するWizardBibleの読者・著者の皆様にはふるって参加していただきたい。筆者は今回ついにOllyDbgでのトレースログの取り方を覚え、また本稿のネタを調べるのに丸一晩かかったほどのハイスキルなので、参加しても学ぶべきことがあるか疑問だが、いちおう参加しようと思っている。
+
+
+

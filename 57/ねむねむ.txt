@@ -1,0 +1,245 @@
+﻿x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: Twitterアカウントの自動作成方法 ---
+
+著者：ねむねむ
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　近年、Twitterはインターネットという枠組みを超え社会的にも大きな影響を与
+えるまで普及しました。それに伴い、TwitterAPIを用いたユニークなbotやアプリ
+ケーション・クライアントが登場しました。一方で、APIを用いたスパムアカウン
+トやフォロワー販売業者なども現れました。特にここ数ヶ月、無差別フォローを
+行い悪意のあるアプリケーション認証・フィッシングサイトへのリンクをツイー
+トする手口が増えています。犯人はこれらの大量のアカウントを自動作成してい
+ると考えられます。
+
+　今回は現在のTwitterの仕様に関する問題点・アカウントの大量作成方法を紹介
+します。
+
+
+■0x02.) 自動作成の仕組み
+
+　現在、Twitterでは1つのIPアドレスで1日8個程度アカウントを作成することが
+可能です。8個程度作成すると新規登録フォームでその旨が表示されて登録できな
+くなり、1日程度経つかグローバルIPアドレスを変更すると再び新規登録すること
+が可能になります。これら1～8回の中での1回目、つまり1日の中で初回の新規登
+録では画像認証が表示されません。この仕様はほぼすべての国で共通であり1日1
+回までなら画像認証無しでアカウントの登録が可能です。今回はこれらの仕様を
+用いてアカウントの大量作成を行います。
+
+
+■0x03.) 登録フォームでのPOSTデータの内容
+
+　Twitterの新規アカウント登録フォーム(https://twitter.com/signup)では大ま
+かに以下のような内容をPOST送信しています。
+
+-----
+authenticity_token			ランダムに割り当てられるトークン
+user[name]				登録するユーザーのユーザー名
+user[email]				登録するユーザーのメールアドレス
+user[user_password]			登録するユーザーのパスワード
+user[screen_name]			登録するユーザーのscreen_name
+user[remember_me_on_signup]		ログイン状態維持の確認
+user[use_cookie_personalization]	Webサイトの閲覧をマーケティング使うことに対する許可
+asked_cookie_personalization_setting	上記のuser[use_cookie_personalization]を表示したかどうか判断するフラグ変数
+context、ad_id、ad_ref			用途不明の変数、常に空文字
+user[discoverable_by_email]		メールアドレスからIDを探し出せるようにするかどうかのチェック
+user[send_email_newsletter]		メールでTwitterに関する情報を受信するかどうかのチェック
+-----
+
+　これらのデータに加えて、アクセス時に与えられたCookieも同時に送信する必
+要があります。
+
+
+■0x04.) アカウント自動作成プログラム
+
+　上記のPOST内容を再現するためのプログラムを以下に示します。下記のプログ
+ラムを実行するためにはPythonとPython-Requestsモジュールを導入する必要があ
+ります。
+
+-----
+# coding:utf-8
+import requests
+import re
+
+user_name = "UserName" # ユーザー名
+screen_name = "Screen_name" # screen_name・ユーザーID
+password = "Password" # パスワード
+mailAddress = "mail@example.com" # メールアドレス
+
+url = 'https://twitter.com/signup'
+
+sess = requests.session()
+r = sess.get(url)
+cookie_Session = r.cookies["_twitter_sess"]
+cookie_GuestID = r.cookies["guest_id"]
+
+html = r.text
+r = re.compile('<input type="hidden" value=".{40}" name="authenticity_token"/>')
+match = r.search(html)
+authKey = ""
+if match:
+     authKey = match.group().strip('<input type="hidden" value="')
+     authKey = authKey.strip('" name="authenticity_token"/>')
+else:
+     print "NotFound Authenticity_Token"
+
+url = 'https://twitter.com/account/create'
+params = {}
+params['authenticity_token'] = authKey
+params['user[name]'] = user_name
+params['user[email]'] = mailAddress
+params['user[user_password]'] = password
+params['user[screen_name]'] = screen_name
+params['user[remember_me_on_signup]'] = '1'
+params['user[use_cookie_personalization]'] = '1'
+params['asked_cookie_personalization_setting'] = '1'
+params['context'] = ''
+params['ad_id'] = ''
+params['ad_ref'] = ''
+params['user[discoverable_by_email]'] = '1'
+params['user[send_email_newsletter]'] = '1'
+cookie = {'_twitter_sess' : cookie_Session, 'guest_id' : cookie_GuestID}
+r = sess.post(url,cookies=cookie, params=params)
+-----
+
+
+■0x05.) 大量自動作成を行うには
+
+　1つのIPアドレスで1日1回自動作成が可能であることは確認できましたが、1つ
+のIPアドレスに対して1日に1つだけしかアカウントを作成できません。串を用い
+れば複数IPアドレスを用意できますが大量自動作成には現実的ではありません。
+そこで今回は大量のグローバルIPアドレスを用意するためにAWS-EC2を用います。
+標準設定のEC2ではインスタンスを再起動するごとにグローバルIPアドレスが変更
+されます。今回は自動的にインスタンスを再起動するために「EC2APITools」を通
+じてインスタンスを操作します。
+
+
+■0x06.) 大量作成プログラムの実行方法
+
+　上記のプログラムにアカウント大量作成機能・メールアドレス認証機能・アプ
+リケーション認証機能などを追加しました。
+　ソースコードはGitHub(https://github.com/nemumu/mkTwitterAccount)で管理
+しています。リンクのリポジトリでは「乱数@example.com」で生成したメールア
+ドレスを登録する設定にしています。メールアドレスの取得実装は各自で行う必
+要があります。なお、説明の中では「EC2APITools」を利用してインスタンスを操
+作する媒体をクライアントとします。
+
+・クライアント環境：CentOS 6.5
+・インスタンス環境：AmazonLinuxAMI2013.09.2
+
+●クライアント側での準備
+
+　まず、AWSコンソールページのメニューから「Security&Credentials」を選択し、
+「PrivateKeyFile」と「X.509Certificate」を取得・ダウンロードしてクライア
+ントに保存します。
+
+-----
+(http://aws.amazon.com/developertools/351)から「EC2APITools」をダウンロードします。
+unzip ec2-api-tools.zip
+yum install -y java-1.7.0-openjdk
+vi ~/.bashrc
+
+export JAVA_HOME="/usr/lib/jvm/jre-1.7.0-openjdk.x86_64/"
+export EC2_HOME="[解凍したEC2APIToolsのディレクトリパス]"
+export PATH="${PATH}:${EC2_HOME}/bin"
+export EC2_PRIVATE_KEY="[PrivateKeyFileのパス]"
+export EC2_CERT="[X.509Certificateのパス]"
+# 上記までを追記する
+
+source ~/.bashrc
+ec2ver
+-----
+
+　ここでEC2APIToolsのバージョンが表示されるとEC2APIToolsのインストールは
+完了です。
+
+　次にAWSからインスタンスを作成し、秘密鍵をダウンロードしてクライアントに
+配置します。
+
+-----
+ec2-describe-instances -region [インスタンスのリージョン]
+-----
+
+　インスタンス情報が表示された場合は成功です。なにも表示されない場合はイ
+ンスタンスのリージョンを間違えている可能性があります。
+
+●インスタンス側での準備
+
+　次に、ダウンロードした認証鍵を用いてインスタンスにアクセスして設定を行
+います。
+
+-----
+sudo yum update -y
+sudo yum install -y git
+git clone git://github.com/nemumu/mkTwitterAccount.git
+-----
+
+　「AmazonLinux」では標準でPythonのrequestsモジュールが導入されており、別
+途導入する必要はありません。「AmazonLinux」以外の環境で実行する場合はreq
+uestsモジュールを導入する必要があります。
+
+●クライアント側でのプログラム実行
+
+　インスタンスからログアウトして停止状態にします。
+
+-----
+git clone git://github.com/nemumu/mkTwitterAccount.git
+cd mkTwitterAccount
+vi config.sh #インスタンス・試行回数の設定をします
+./control.sh
+-----
+
+　config.sh内の変数authURLにWebアプリケーション認証のURLを代入することで、
+自動的にアプリケーション認証を行います。このプログラムはインスタンス内で
+アカウント作成プログラムを実行し、実行が終了するとインスタンスを再起動さ
+せてグローバルIPアドレスを再取得するという流れをループさせることでアカウ
+ントの大量作成を可能にしています。
+
+●作成したアカウントのID・パスワードを取得する
+
+-----
+scp ec2-user@[インスタンスのIPアドレス]:createout.txt ~/mkTwitterAccount/createout.txt
+-----
+
+　取得したテキストファイルに作成したアカウントのIDとパスワードが書かれて
+います。
+
+
+■0x07.) どの位アカウントを作成することが可能か
+
+　AWS-EC2無料枠だと最大で1月750時間分の無料インスタンスが利用可能です。注
+意しなければならないのは、1時間以内にインスタンスを再起動した場合でも1時
+間分の料金が課金される点です。そのためEC2無料枠で1月に作成可能なアカウン
+ト数は最大で750個となります。これを毎月合計12ヶ月継続した場合は750×12=9
+000個程度作成できます。2014年3月時点のマイクロインスタンスの価格で計算す
+ると、約2円で1つのTwitterアカウントを作成することが可能です。AWS-EC2以外
+でもグローバルIPアドレスを大量に用意できる環境ならばアカウントの大量作成
+が可能です。
+
+
+■0x08.) さいごに
+
+　アプリケーション認証を行った後、TwitterAPI経由でツイートやフォローを行
+うと便利ですが、凍結を防ぐためにフォロー・ツイートを行う時は公式Webサイト
+経由で操作する形式の方が安全だと思います。現に、凍結を防ぐ目的で公式Webサ
+イトから操作を行っているスパムbotも多く存在します。先ほどのGitHubリポジト
+リには公式Webサイト経由でのツイート・フォローなどの操作機能は付属していま
+せんが、追加実装は可能です。今回はグローバルIPアドレスを用意するためにEC
+2を用いましたが、Session・Cookie管理が可能な環境なら第三者のIPアドレスを
+用いて一連の操作を行うことも可能であり、悪意のあるサイトへアクセスしただ
+けでその人のIPアドレスでTwitterアカウントを作成し、ツイート・フォローを行
+われてしまう危険性があります。倫理観や法律的観点を抜きにしてアカウントの
+大量作成という点だけ見るとAWS-EC2を用いるより他人のIPアドレスを用いてアカ
+ウントを作成した方がコスト面・時間単位での作成量共に軍配が上がると思いま
+す。もしかすると現在横行しているスパムアカウントはあなたのIPアドレスで作
+成・操作されたものかもしれません。上記の様な危険性が考えられるため、部分
+的に画像認証を表示しない現在のTwitterの仕様には問題があると思います。
+
+
+

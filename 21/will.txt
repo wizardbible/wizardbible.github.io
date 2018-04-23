@@ -1,0 +1,162 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第3章: Crackme Kracking 0x2 ---
+
+著者：Will
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) crackmeとは
+
+　簡単にいえば解析の練習用のソフトです。今回はcrackmes.deで配布されている
+crackmeを解析したいと思います。
+　なぜか解析中にそのファイルが削除されたので（バグが原因？）、勝手に再配
+布させていただきますｗ
+
+
+■0x02.) 用意
+
+●使用ソフト：
+
+・OllyDbg 1,10
+  本家:  http://www.ollydbg.de/
+　日本語化（予めOllyDbgは日本語化してあることを前提に書いています）
+　日本語化については下記のURL参照
+　Digital Travesia:　http://hp.vector.co.jp/authors/VA028184/
+
+●ターゲット
+
+・Cyclopsさん作成のcrackme
+　http://will.wbjapan.com/archive/other/crackme3.zip
+
+●かる～いやる気
+
+●アセンブリのコードが読める位の知識（そんなに要らない）
+
+
+■0x03.) 解析開始
+
+　まず上記のURLからcrackmeをダウンロードして普通に起動します。適当に入力
+してからボタンを押しても反応なしです。
+　まぁ気にせずにOllyでcrackmeを開いて右クリック→検索→全ての参照文字列を
+表示させます。文字列を探していくと上の方に"YOU GoT It!!!"といった文字列が
+見つかります。それをダブルクリックすると逆アセンブラ画面が表示されます。
+
+-----
+00403358   . 8BF4           MOV ESI,ESP
+0040335A   . 50             PUSH EAX
+0040335B   . 8D4D E4        LEA ECX,DWORD PTR SS:[EBP-1C]
+0040335E   . E8 77030000    CALL <JMP.&MFC42D.#880>
+00403363     50             PUSH EAX
+00403364     FF15 2C874100  CALL DWORD PTR DS:[<&MSVCRTD._strcmpi>]  ;  MSVCRTD._stricmp
+0040336A     83C4 08        ADD ESP,8
+0040336D     3BF4           CMP ESI,ESP
+0040336F   . E8 F6030000    CALL <JMP.&MSVCRTD._chkesp>
+00403374     85C0           TEST EAX,EAX
+00403376     75 14          JNZ SHORT crackme3.0040338C
+00403378   . 6A 00          PUSH 0
+0040337A   . 68 E8634100    PUSH crackme3.004163E8　;  ASCII "Cracked!!!"
+0040337F     68 D8634100    PUSH crackme3.004163D8  ;  ASCII "YOU GoT It!!!"
+00403384   . 8B4D F0        MOV ECX,DWORD PTR SS:[EBP-10]
+00403387   . E8 D2030000    CALL <JMP.&MFC42D.#3517>
+0040338C   > C645 FC 01     MOV BYTE PTR SS:[EBP-4],1
+00403390   . 8D4D E4        LEA ECX,DWORD PTR SS:[EBP-1C]
+00403393   . E8 3C030000    CALL <JMP.&MFC42D.#684>
+00403398   . C645 FC 00     MOV BYTE PTR SS:[EBP-4],0
+0040339C   . 8D4D E8        LEA ECX,DWORD PTR SS:[EBP-18]
+0040339F   . E8 30030000    CALL <JMP.&MFC42D.#684>
+004033A4   . C745 FC FFFFFF>MOV DWORD PTR SS:[EBP-4],-1
+004033AB   . 8D4D EC        LEA ECX,DWORD PTR SS:[EBP-14]
+004033AE   . E8 21030000    CALL <JMP.&MFC42D.#684>
+004033B3   . 8B4D F4        MOV ECX,DWORD PTR SS:[EBP-C]
+004033B6   . 64:890D 000000>MOV DWORD PTR FS:[0],ECX
+004033BD   . 5F             POP EDI
+004033BE   . 5E             POP ESI
+004033BF   . 5B             POP EBX
+004033C0   . 81C4 24010000  ADD ESP,124
+004033C6   . 3BEC           CMP EBP,ESP
+004033C8   . E8 9D030000    CALL <JMP.&MSVCRTD._chkesp>
+004033CD   . 8BE5           MOV ESP,EBP
+004033CF   . 5D             POP EBP
+004033D0   . C3             RETN
+-----
+
+　ここで、適当に00403358にブレークポイントを仕掛けます。そして実行させて
+適当に入力してからボタンを押してブレークポイントで止まったらステップ実行
+させます。
+　すると00403363でEAXに入力したNameに対応するパスらしきものが表示されます。
+試しにこのパスを入力してみると正解らしきメッセージが表示されました。本当
+は00403358より上のコードを見て、keygenを作らなければいけないようですが、
+邪魔くさいのでこのcrackmeをkeygen化してみましょう。
+
+　それでは次のコードを変更します。
+
+-----　変更前
+0040335A   . 50             PUSH EAX
+0040335B   . 8D4D E4        LEA ECX,DWORD PTR SS:[EBP-1C]
+0040335E   . E8 77030000    CALL <JMP.&MFC42D.#880>
+00403363     50             PUSH EAX
+00403364     FF15 2C874100  CALL DWORD PTR DS:[<&MSVCRTD._strcmpi>]  ;  MSVCRTD._stricmp
+0040336A     83C4 08        ADD ESP,8
+0040336D     3BF4           CMP ESI,ESP
+0040336F   . E8 F6030000    CALL <JMP.&MSVCRTD._chkesp>
+00403374     85C0           TEST EAX,EAX
+00403376     75 14          JNZ SHORT crackme3.0040338C
+-----
+
+-----　変更後
+00403363   83C4 04          ADD ESP,4
+00403366   6A 00            PUSH 0
+00403368   6A 00            PUSH 0
+0040336A   50               PUSH EAX
+0040336B   EB 17            JMP SHORT crackme3.00403384
+0040336D   3BF4             CMP ESI,ESP
+0040336F   E8 F6030000      CALL <JMP.&MSVCRTD._chkesp>
+00403374   85C0             TEST EAX,EAX
+00403376   75 14            JNZ SHORT crackme3.0040338C
+-----
+
+　簡単に説明してみます。
+　まず0040335Eのstrcmpiは比較命令なので必要ありません。よって上の2つの命
+令も必要ないので、いらない部分を書き換えます。
+　0040336AのADD ESP,8が消えてしまうので00403363をADD ESP,4に変更します。
+　そして00403366～0040336AでMessageBoxに必要な引数をpushしています。
+　最後に0040336BのJMPでMessageBox近くまで飛ばします。
+
+　変更が終わったら右クリック→実行ファイルへコピー→全ての変更箇所→全て
+コピー→変なエラーが出ても「はい」→そして保存します。
+
+　パッチにすると次のような感じになります。
+
+-----
+*== TARGET_FILE ================
+FILENAME crackme3.exe
+* FileSize: 114743 bytes
+* LastMod.: 2005/09/26 18:18:26
+*===============================
+00003363: 50 83
+00003364: FF C4
+00003365: 15 04
+00003366: 2C 6A
+00003367: 87 00
+00003368: 41 6A
+0000336A: 83 50
+0000336B: C4 EB
+0000336C: 08 17
+-----
+
+　ちなみにKeygen化した後は正しいパスを入力しても正解のメッセージは表示さ
+れません。
+
+　以上でKeygen化終了です。
+
+
+■0x04.) 終わりに
+
+　今回はめちゃ簡単ですね。本当は普通にKeygenを作ろうかと思いましたが、時
+間がなかったので…。今もあんまり時間がないのでこの辺で。
+　それでは。
+

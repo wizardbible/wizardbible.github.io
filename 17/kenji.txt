@@ -1,0 +1,428 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第14章: Windows Device Driver Programming Part 1 ---
+
+著者：Kenji Aiko
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　日本語サイトでデバイスドライバ作成を解説しているページがありません。ど
+んなに探してもありません。そんなにデバイスドライバって需要ないのですか？　
+そんなものですか？　個人的にはかなり興味あるんですが。ということで、今回
+はデバイスドライバ作成についてやっていきたいと思います。ここでひとつ断っ
+ておきますが、私はデバイスドライバに関してはほぼ知識ゼロです。全然知りま
+せん。全然わかりません。これは本当です。ちょっとテキストの誤植を大目にみ
+てもらおう思って書いておく保険じゃありません。なので、「わかりやすく」や
+「内容に間違いなく」といったことが保障できません。またデバイスドライバは
+カーネルモードで動作するためWindowsに致命的なダメージを与える可能性があり
+ます。今回、私はWindowsXP + WinXPDDKで解説していますが、ブルースクリーン
+なんて当たり前です。日常茶飯事です。なので、場合によっては「Windowsが起動
+しなくなりました」ということがありえるかもしれません。でも、そこは貴方の
+スキルでカバーしてください。決して私には頼らないでください。頼られてもた
+ぶんわかりません。ごめんなさい。もう信じるものは己（おのれ）のみです。自
+分のスキルがすべてです。それだけでなんとか生き抜いてください。すみません、
+ちょっと大げさでした。でも、どっちにしろデバイスドライバを作ろうとか思っ
+てる兵（つわもの）は自分のスキルしか信じてない人が多い気がします。あくま
+で気がするだけですが。なんだかいつになくグダグダな「はじめに」ですみませ
+ん(^^;。今回実験を行った私の環境は「WindowsXP」で、コンパイラは「WinDDK 
+XP版」です。では、さっそく始めることにしましょう。ようこそカーネルモード
+の世界へ。
+
+
+■0x02.) コンパイル
+
+　さっそくデバイスドライバを作成してみることにしますが、やはりデバイスド
+ライバというだけあって、コンパイルから実行方法までややこしいことが多いで
+す。よって、最初はソースコードを書くよりもWindowsシステムに関していろいろ
+とイジることの方が多くなります。その辺はどうかご了承ください。といってる
+そばからデバイスドライバのソースコードを見てもらうわけなのですが(^^;。
+　hello.cppはもっともシンプルなデバイスドライバのソースコードです。
+
+-----  hello.cpp
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include <wdm.h>
+
+NTSTATUS DriverEntry(PDRIVER_OBJECT, PUNICODE_STRING);
+
+#ifdef __cplusplus
+}
+#endif
+
+NTSTATUS DriverEntry(IN PDRIVER_OBJECT pDriverObject,
+                     IN PUNICODE_STRING pRegistryPath)
+{
+    return STATUS_SUCCESS;
+}
+-----
+
+　まぁ見てわかる通り何もしないプログラムのようです。デバイスドライバでは、
+DriverEntryからコードが始まります。要するにWinMainもしくはmain関数みたい
+なものです。では、これをコンパイルして実行してください。といっても、どう
+やってコンパイルするかわかりません。そもそもWinDDKをもってませんという人
+は以下のアドレスからDLしてください。私はWindowsXP環境なので「XP DDK」を使
+っています。CD-ROMイメージなのでCDに焼くか、仮想CDドライブソフト（Daemon
+ Toolsなど）を使ってインストールしてください。リンク切れてたらマイクロソ
+フトから注文してください。
+
+○DDK
+http://club.shelek.com/viewfiles.php?id=2
+
+○DAEMON Tools
+http://www.daemon-tools.cc/dtcc/portal/download.php?mode=ViewCategory&catid=5
+
+○DAEMON Tools Homepage
+http://www.daemon-tools.cc/dtcc/portal/index.php
+
+○Microsoft Windows Driver Development Kit
+http://www.microsoft.com/whdc/devtools/ddk/default.mspx
+
+　2年くらい前まではマイクロソフトのホームページで無償で提供されていたので
+すが、何故か突然やめてしまったので、現在では正規の入手方法はマイクロソフ
+トに直接注文するしかなくなりました。ちなみにDDK本体は無料なのですが、送料
+が25ドルくらいかかるらしいです。でも、ネット上を探してみれば意外と見つか
+りますので、わざわざ注文する必要もないかもしれません（編注1）。
+
+　さて、本題に戻ります。DDKをインストールしたら通常「C:\WinDDK」というフ
+ォルダが作成されます。その中に入ると「2600」というフォルダがあり、その中
+に実質的なWinDDKのファイル群があるわけです。この中のひとつに「src」という、
+いかにもサンプルプログラムが大量に入ってそうなフォルダが目に付きますが、
+ご想像の通りサンプルプログラムは初心者がみてもまず理解できないシロモノに
+なっていますので、最初の頃はほぼ無意味です。それでこれらはとりあえず置い
+といて、ひとつフォルダを上がって「2600」と同じ場所に「hello」というフォル
+ダを作ってください。そしてその中に「hello.cpp」を入れてください。これで、
+「C:\WinDDK\hello\hello.cpp」というファイルが存在することになります。そし
+て、さらにhelloフォルダ以下に、次の2つのファイルを作成してください。
+
+-----  MAKEFILE
+!INCLUDE $(NTMAKEENV)\makefile.def
+-----
+
+-----  SOURCES
+TARGETNAME=hello
+TARGETTYPE=DRIVER
+TARGETPATH=obj
+SOURCES=hello.cpp
+-----
+
+　さて、これで準備完了です。「C:\WinDDK\hello\hello.cpp」、「C:\WinDDK\h
+ello\MAKEFILE」、「C:\WinDDK\hello\SOURCES」の3つのファイルを作成したら、
+いよいよコンパイル（ビルド）となります。Windowsお馴染みのスタートメニュー
+から「スタート→プログラム→Development Kits→Windows DDK 2600→Build En
+vironments→Win XP Checked Build Environment」としてください。もしくはコ
+マンドプロンプトを起動して「C:\WINDDK\2600\bin\setenv.bat C:\WINDDK\2600
+ chk」と実行してください。すると、以下のような入力画面でコマンドプロンプ
+トが止まります。
+
+-----  コマンドプロンプト
+C:\Documents and Settings\kenji>C:\WINDDK\2600\bin\setenv.bat C:\WINDDK\2600 chk
+C:\WINDDK\2600>
+-----
+
+　ここで「cd C:\WINDDK\hello」と入力して場所を移動します。そして、buildと
+入力することでコンパイルされます。
+
+-----  コマンドプロンプト
+C:\WINDDK\2600>cd C:\WINDDK\hello
+C:\WINDDK\hello>build
+BUILD: Object root set to: ==> objchk
+BUILD: Adding /Y to COPYCMD so xcopy ops won't hang.
+BUILD: /i switch ignored
+BUILD: Compile and Link for i386
+BUILD: Loading C:\WINDDK\2600\build.dat...
+BUILD: Computing Include file dependencies:
+BUILD: Examining c:\winddk\hello directory for files to compile.
+    c:\winddk\hello - 1 source files (17 lines)
+BUILD: Compiling c:\winddk\hello directory
+Compiling - hello.cpp for i386
+BUILD: Linking c:\winddk\hello directory
+Linking Executable - objchk\i386\hello.sys for i386
+BUILD: Done
+
+    2 files compiled
+    1 executable built
+
+C:\WINDDK\hello>
+-----
+
+　無事コンパイルが完了すると、SOURCESファイル、MAKEFILEファイル、hello.c
+ppファイルの他に2つのフォルダと1つのログファイルが作成されます。そしてob
+jchk\i386フォルダ以下にある「C:\WINDDK\hello\objchk\i386\hello.sys」とい
+う拡張子が.sysのファイルが、デバイスドライバファイルです。これでコンパイ
+ルは無事完了となります。ちなみにこの例ではチェックビルドを行いましたが、
+フリービルドでも構いません。64ビット環境の方は、64ビットのチェック（また
+はフリー）ビルドを行ってください。では、このhello.sysファイルを実行するこ
+とにします。
+
+【編注1】WB10の「ブルースクリーンと仲良くなろうよ」という記事にもあるよう
+に、「Debugging Tools for Windows」というツールの中にDDK（Driver Develop
+ment Kit）が含まれていたと思います。
+http://www.microsoft.com/japan/whdc/devtools/debugging/default.mspx
+
+
+■0x03.) 実行
+
+　実際ビルドして作成されたhello.sysファイルですが、これいったいどうやって
+実行するのでしょうか？　というかそもそも.sysファイルって何だろうと思いま
+すが、それは私にも分かりません。ただドライバは一般的に.sysファイルみたい
+です。WindowsXPなら「C:\WINDOWS\system32\drivers」以下をみると.sysファイ
+ルがたくさんあるのがわかります。
+
+　さて、とりあえず実行したいわけですが、ドライバは通常Windows起動時にWin
+dows本体に組み込まれます。ドライバの中にはOSのboot時に実行されるものやシ
+ステム初期化時に実行されるものなど、もはやOSの一部となるような動作をする
+のが当たり前というか、そういう処理が必要なソフトウェアがそもそもドライバ
+を利用するわけです。なので、再起動が日常茶飯事になります。動作を確認する
+ためにはOSの再起動をしなければなりませんし、実行を解除するためにもやはり
+OSの再起動が必要となります。さらに通常のアプリケーションデバッガは意味を
+持ちませんので、OllyDbgやVC++についているデバッガも無意味です。なのでデバ
+ッグを行う際はSoftICEなどを使うことになるようです。
+
+　話がずれてきたので元に戻します。ドライバを実行するためにはレジストリを
+変更する必要があります。そしてその後再起動を行ないOSに組み込みます。とい
+うことで以下のようなファイルを作成します。
+
+-----  hello.reg
+REGEDIT4
+[HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\hello]
+"Start"=dword:1
+"Type"=dword:1
+"ErrorControl"=dword:1
+"DisplayName"="hello"
+-----
+
+　.regファイルはダブルクリックするとレジストリにデータを追加してくれます。
+ちなみに後で手動で消さなければならないので、「HKEY_LOCAL_MACHINE\System\
+CurrentControlSet\Services\hello」の位置は覚えておいてください。
+
+　hello.regをレジストリに追加して、さらにhello.sysファイルを「C:\WINDOWS\
+system32\drivers」以下にコピーします。これで準備完了です。Windowsを再起動
+してください。
+
+　Windowsが起動するとちゃんとhello.sysが実行されています。といってもその
+ままでは確認できないため、デバイスドライバを表示するツールを使うことにし
+ます。もし私と同じ環境である「WinXP DDK」を使っているならば「Device Tree
+ V2.6」というツールが「WinXP DDK」の中に入っていますのでそれを起動してく
+ださい。
+
+http://ruffnex.oc.to/kenji/windriver/pic1.png
+
+　もしXP以外のDDKを使っている場合は、「Sysinternals」というサイトから「W
+inObj」というドライバ閲覧ツールをDLしてください。WinObjを使ってhello.sys
+ドライバを確認したキャプチャー画像が以下です。
+
+http://ruffnex.oc.to/kenji/windriver/pic2.png
+
+○Sysinternals
+http://www.sysinternals.com/
+
+○WinObj
+http://www.sysinternals.com/ntw2k/freeware/winobj.shtml
+
+　これで無事ドライバがコンパイル実行できました。さて、実際実行されたドラ
+イバですが、一度実行してしまうとOS起動中は終了できません。いわばOSに組み
+込まれている状態ですので、終了させるためには再びレジストリを変更して、he
+llo.sysファイルを削除して、再起動する必要があります。つまりデバイスドライ
+バは、作成後、実行確認と終了時の2回の再起動を必要とするわけです。通常のア
+プリケーションプログラムのように、.exeファイルをダブルクリックして実行し、
+[×]ボタンで終了というように簡単にはいかないのです。なんともメンドクサイ
+ですが、これがデバイスドライバの開発みたいです。
+
+　では、ファイル名を指定して実行よりregedit.exeを起動して、実行時に登録し
+たレジストリ「HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\hello」
+を削除してください。さらに、「C:\WINDOWS\system32\drivers」以下にコピーし
+たhello.sysも削除してください。そして再起動してください。
+
+　再起動後、再び「Device Tree V2.6」を使ってドライバを確認してください。
+helloはもう起動していません。これで終了となります。
+
+
+■0x04.) サービス制御マネージャー
+
+　つまり、ドライバ開発の一連の流れは以下のようになります。
+
+1、ソースコードを書く
+2、SOURCESファイル、MAKEFILEファイルをそれぞれ作成する
+3、ソースコードのビルドを行う
+4、レジストリを変更し、.sysファイルをdriversファイルにコピーする
+5、再起動
+6、実行を確認
+7、レジストリを変更し、.sysファイルをdriversファイルから削除する
+8、再起動
+9、終了を確認
+
+　そして、実行時にエラーなどがあったらもちろん再度ソースを編集してビルド
+し、実行を確認しなければならないので、以後3から9を繰り返すことになります。
+
+　うーん、かなりメンドクサイです。特に2回の再起動はたえられません。一度実
+行を確認するだけで、2回も再起動を要するのはさすがにやる気でません。という
+ことで、これを何とか打開しようと筆者（つまり私）は考えました。まぁデバイ
+スドライバですので「一度実行してしまったら、再起動する限り終了できない」
+というのは分かります。でも実行するくらいは、ボタンひとつでやらせてくださ
+い。
+
+　ここで現れる救世主が「サービス制御マネージャー」です。これを利用すると、
+なんとボタンひとつでデバイスドライバが起動するツールが作れるらしいのです。
+ということで実際に作ってみました。
+
+http://ruffnex.oc.to/kenji/windriver/idriver.zip
+
+　ソースコードも添付してますので、興味があったらご覧ください。ソースコー
+ドの解説はしませんのでご了承ください。でも毎度のごとくコメントはたくさん
+つけてます。
+
+　起動すると以下のように表示されます。
+
+http://ruffnex.oc.to/kenji/windriver/install.png
+
+　.sysファイルを選択して「Install」ボタンをクリックするとWindowsにドライ
+バがインストールされます。「Device Tree V2.6」で確認してください。ちなみ
+に、インストールはすぐにできますが、「UnInstall」ボタンを押してもその瞬間
+からアンインストールはされません。あくまで再起動時（Windows終了時）にアン
+インストールが実行されます。あと、アンインストールしなければ次回OS起動時
+もドライバが実行されます。
+
+
+■0x05.) デバッグ
+
+　SoftICEを用意してもらえれば万事解決なのですが、さすがにそうもいかないの
+でデバッグ環境を整えることにします。というか、デバイスドライバって、CUIプ
+ログラムのようにテキストを表示する場所もなければ、Windows（GUI）プログラ
+ムのようにウィンドウを描画するわけでもないので、どこまで実行されているの
+か、どこにエラーがあるのかが、まったくもって分かりません。そもそもデバイ
+スドライバというものそれ自体がWindowsの内部でこっそりと動いているモノであ
+るわけですので、デバッグという観点から見たら、もう救いようがありません。
+よって、まずはそこから整えていくことにします。
+
+○Sysinternals
+http://www.sysinternals.com/
+
+○DebugView
+http://www.sysinternals.com/ntw2k/freeware/debugview.shtml
+
+　「Sysinternals」というサイトに「DebugView」なるツールがあります。まずは
+これをDLしてください。現在のバージョンは4.3です。これはドライバ開発者の中
+ではかなり有名なツールらしく、結構いろいろな人に使われているようです。さ
+て、このツール、その名の通りデバッグ情報を出力してくれるだけなのですが、
+OutputDebugStringからのデータだけでなく、DbgPrintからのデータも表示してく
+れるところがGOODです。つまりカーネルモードからのデバッグ情報も表示してく
+れるわけです。ちなみにDbgPrintはカーネルモードのOutputDebugStringみたいな
+もので、MSDNでは以下のように定義されています。
+
+○DbgPrint - MSDN
+http://msdn.microsoft.com/library/default.asp?url=/library/en-us/ddtools/hh/ddtools/DebugFns_5e11bbcc-adc2-46c0-b371-0e54c50bb2dc.xml.asp
+
+-----
+ULONG
+    DbgPrint(IN PCHAR  Format,
+             ...[arguments]
+    );
+-----
+
+　みてわかるとおり、使い方はprintfと同じです。では、これを利用してhello.
+cppを改良します。以下のプログラムをみてください。
+
+-----  Dhello.cpp
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include <wdm.h>
+
+NTSTATUS DriverEntry(PDRIVER_OBJECT, PUNICODE_STRING);
+
+#ifdef __cplusplus
+}
+#endif
+
+NTSTATUS DriverEntry(IN PDRIVER_OBJECT pDriverObject,
+                     IN PUNICODE_STRING pRegistryPath)
+{
+    DbgPrint("Hello World! from kernel mode.");
+    return STATUS_SUCCESS;
+}
+-----
+
+-----  MAKEFILE
+!INCLUDE $(NTMAKEENV)\makefile.def
+-----
+
+-----  SOURCES
+TARGETNAME=Dhello
+TARGETTYPE=DRIVER
+TARGETPATH=obj
+SOURCES=Dhello.cpp
+-----
+
+　簡単ですね。DbgPrintが追加されただけです。ではこれをビルドしてください。
+hello.sysの時は再起動しましたが、今回は「サービス制御マネージャー」の項で
+作成したツールを使ってください。
+
+　まずは、Dbgview.exeを起動します。これはいろいろと設定できるようですが、
+私の場合はDLした状態（デフォルト）のままでOKでしたので、何も変更しない状
+態で起動してください。起動すると以下のようなウィンドウが表示されます。
+
+http://ruffnex.oc.to/kenji/windriver/dbview.png
+
+　そして、起動した状態のまま、今度は「Driver Install Program」を使って、
+Dhello.sysをインストールしてください。無事インストールが完了したら、Dbgv
+iew.exeのウィンドウを開いてください。以下のように表示されます。
+
+http://ruffnex.oc.to/kenji/windriver/dbview2.png
+
+　これでとりあえずDbgPrintを使ってデバイスドライバからの出力が受けられる
+ようになりました。もっと大きなプログラムを作成するのならSoftICEのような有
+用なデバッガを用いて、本格的に処理を追っていかなければなりませんが、個人
+で作るような小さなプログラムならば、DbgPrintとDbgview.exeで十分でしょう。
+今後は「DbgPrint」と「Dbgview.exe」そして「サービス制御マネージャー」を利
+用して作成した「Driver Install Program」を使って、デバイスドライバ作成講
+座を進めていくことにします。
+
+　今回のサンプルプログラムである「hello」と「Dhello」は、ZIP圧縮して以下
+のアドレスにアップしました。参考にしてください。
+
+http://ruffnex.oc.to/kenji/windriver/driver1.zip
+
+
+■0x06.) さいごに
+
+　さて、いかがだったでしょうか。今回は「Windows Device Driver Programmin
+g Part 1」と題してお送りしましたが、「Part 2」があるかどうかは定かではあ
+りません。「デバイスドライバ作成講座を進めていくことにします」と言ってい
+るにも関わらず（笑）。というのも、こんなマニアックなことを書いてると「本
+当に誰も読んでくれないのでは？」という不安がよぎるからです。さすがにモチ
+ベーションが保てません(^^;。なので、こういう読者層が極度に狭いネタは自分
+のHPでこっそり公開しようかなぁと考えていますが、そんな時間もないですし「
+そもそもお前はたくさんの人に読んでもらえるようなモノを書けるのか？」とい
+われると、書けないです(^^;。なのでこのまま突き進んでいくことにします（笑）。
+ただ、せっかくデバドラ関連の記事を書いたので、今後はMACフレームレベルでの
+パケット取得方法や、カーネルモードプログラムのAPIフック方法などを解説して
+いけたらなと思います。さて、最後になりましたが、ここまで読んでくれて本当
+にありがとうございます。
+
+　では、また会う日まで...
+
+
+■0x07.) 参考サイト
+
+・Driver Development Part 1: Introduction to Drivers
+http://www.codeproject.com/system/driverdev.asp
+
+・Driver Development Part 2: Introduction to Implementing IOCTLs
+http://www.codeproject.com/system/driverdev2.asp
+
+・Driver Development Part 3: Introduction to driver contexts
+http://www.codeproject.com/win32/driverdev3.asp
+
+・Driver Development Part 4: Introduction to device stacks
+http://www.codeproject.com/system/driverdev4asp.asp
+
+・Driver Development Part 5: Introduction to the Transport Device Interface
+http://www.codeproject.com/useritems/driverdev5asp.asp

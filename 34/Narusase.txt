@@ -1,0 +1,162 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: ハニーポットを作ろう（連載第13回） ---
+
+著者：Narusase
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　前回はLinuxのコマンドなどを利用したHIDSもどきの作成について話しました。
+　今回は、nepenthesというハニーポットのインストールについて話したいと思い
+ます。
+
+
+■0x02.) nepenthesとは
+
+　nepenthesとはWindowsの20種類ほどの既知の脆弱性をエミュレートすることで
+マルウェアの検体を捕獲するローインタラクション型ハニーポットです。Nepent
+hesの名前の由来は、食虫植物の「うつぼかずら」から来ています。
+
+
+■0x03.) nepenthesのインストール
+
+　では早速、インストール方法の解説に入ります。
+
+　まずは、必要なパッケージをwgetを使って取得し、aptで導入可能なパッケージ
+をインストールしてしまいます。
+
+-----
+# cd /usr/local/src/
+# wget http://www.chiark.greenend.org.uk/~ian/adns/adns.tar.gz
+# wget http://curl.haxx.se/download/curl-7.16.0.tar.gz
+#
+# apt-get install openssl openssl-devel curl curl-devel
+# apt-get install pcre pcre-devel libcap libcap-devel
+# apt-get install libpcap subversion automake autoconf libtool
+-----
+
+　次に、adnsのインストールを行います。
+　このソフトウェアはAsynchronous DNSの略で非同期でDNSの解決を行うことがで
+きるライブラリです。
+
+-----
+# tar zxvf adns.tar.gz
+# cd adns-1.2
+# ./configure
+# make
+# make install
+-----
+
+　特に問題なくインストールできたはずです。
+
+　次は、curlのインストールを行います。
+　これは、環境によってはaptで導入したcurlでは動かない場合があるための措置
+です。nepenthesのコンフィグやコンパイルに失敗した場合のみインストールを行
+うことに注意してください。
+
+-----
+# cd ..
+# tar zxvf curl-7.16.0.tar.gz
+# cd curl-7.16.0
+# ./configure --prefix=/usr --with-ssl=/usr/share --enable-http --enable-ftp --enable-file --enable-telnet
+# make
+# make install
+-----
+
+　では、nepenthesを実行するためのユーザを追加追加します。
+　この時点で追加しておかないと、エラーなどが発生する場合がありますので忘
+れずに実行してください。
+
+-----
+# useradd -d /dev/null -s /sbin/nologin nepenthes
+-----
+
+　さて、本命のnepenthesのインストールです。今回、nepenthesはsvnを用いて最
+新のものを取得したいと思います。なお、svnコマンドの実行中に出てくる質問に
+は必ずpと入力してください。svnコマンドがうまくいかなかった場合は再度実行
+すれば大丈夫です。LD_LIBRARY_PATHに先ほど導入したadnsのパスを指定するのを
+忘れずに実行してください。
+
+-----
+# export LD_LIBRARY_PATH=/usr/local/lib/
+# 
+# cd /usr/local/src/
+# svn co https://svn.mwcollect.org/nepenthes/trunk/ nepenthes-dev
+# cd nepenthes-dev/
+# autoreconf -v -i
+# ./configure --prefix=/usr/local                                \
+--with-pcap-include=/usr/include/pcap --with-pcap-lib=/usr/lib \
+--with-pcre-include=/usr/include/pcre --with-pcre-lib=/usr/lib \
+--with-curl-include=/usr/include/curl --with-curl-lib=/usr/lib \
+--enable-pcap  --enable-capabilities --enable-dnsresolve-adns
+# make
+# make install
+-----
+
+　これでnepenthesのインストールは終了ですが、まだnepenthesに関連するログ
+ファイルが作成されておらず、所有権の設定もされていません。そこで、ここで
+設定を行っておきます。
+
+　まず、ディレクトリ・ファイルの作成です。
+
+-----
+# touch /usr/local/var/log/nepenthes.log
+# touch /usr/local/var/log/logged_downloads
+# touch /usr/local/var/log/logged_submissions
+-----
+
+　作成したディレクトリやファイルの属性の変更です。
+
+-----
+# chown -R nepenthes:nepenthes /usr/local/lib/nepenthes/
+# chown -R nepenthes:nepenthes /usr/local/var/binaries
+# chown -R nepenthes:nepenthes /usr/local/var/cache/nepenthes
+# chown -R nepenthes:nepenthes /usr/local/var/hexdumps
+# chown -R nepenthes:nepenthes /usr/local/var/log/nepenthes.log
+# chown -R nepenthes:nepenthes /usr/local/var/log/logged_downloads
+# chown -R nepenthes:nepenthes /usr/local/var/log/logged_submissions
+# chown -R nepenthes:nepenthes /usr/local/var/spool/nepenthes
+# chown -R nepenthes:nepenthes /usr/local/lib/nepenthes
+-----
+
+　これでnepenthesのインストールに関連する作業は終了しました。
+
+
+■0x04.) nepenthesの設定
+
+　nepenthesの設定が必要です。こちらはただ普通に動かす場合には、特に設定を
+する必要はありません。
+
+
+■0x05.) nepenthesの実行
+
+　nepenthesの実行には下記のコマンドを用います。
+
+-----　動作を確認する場合
+# nepenthes -u nepenthes -g nepenthes
+-----
+
+-----　常駐させる場合
+# nepenthes -u nepenthes -g nepenthes -D
+-----
+
+　デーモンとして常駐させる場合は「-D」のオプションを付けます。マルウェア
+の活動が活発なネットワークに接続されたサーバで実行すれば、1時間ほどで検体
+が捕獲できるはずです。検体は「/usr/local/var/binaries/」以下に検体自身の
+MD5された名前で保存されます。捕まえた検体は煮るなり焼くなり自由にしてくだ
+さい。
+
+
+■0x06.) おわりに
+
+　今回はnepenthesのインストールについて説明を行いました。
+　次回はClam Antivirusをインストールして、nepenthesで捕まえた検体がどんな
+素性のものか調べてみたいと思います。
+
+
+

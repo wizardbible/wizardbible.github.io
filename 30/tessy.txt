@@ -1,0 +1,353 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: TRUMAN解説 ---
+
+著者：tessy
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　チームチドリのtessyです。今回はmalware解析のためのツールであるTRUMANに
+ついて書かせていただこうと思います。以前に、第5回セキュそば勉強会(2006/3
+/4) で「sandnet」という内容で発表したのですが、説明不足な点がありましたの
+で、今回の解説で補足できればと思っています。
+
+　発表時の資料については以下のリンク先のページをご覧ください。
+
+http://www.t-dori.net/modules/news/article.php?storyid=11
+
+・セキュそば勉強会Wiki
+
+http://secusoba.info/
+
+
+■0x02.) malware（マルウェア）解析と現状
+
+　一般的にプログラムの挙動を解析する方法としては、ソースコードやプログラ
+ムを逆アセンブルし解析を行う「静的解析(Static Analysis)」とデバッガや仮想
+環境などを用い実際に動作させながらその挙動を解析する「動的解析(Active An
+alysis,Dynamic Analysis)」があります。
+
+　malwareのような悪意のある未知のプログラムを解析する場合、「静的解析」で
+は実際にプログラムを実行させないため、安全に解析ができるメリットがありま
+す。しかしソースコードなどは手に入らないことが普通ですし、最近は逆アセン
+ブル対策としてパッカーと呼ばれるツールを利用しプログラムファイルを圧縮・
+暗号化し解析を困難にしています。
+　一方で「動的解析」では実際に動作させながら解析を行うため、より詳しい挙
+動の解析が可能ですが、解析環境自体が汚染・攻撃される危険性が出てきます。
+そこでVMwareなどの仮想マシンを構築できるソフトウェアを利用する方法があり
+ます。すると実環境とは別に独立した解析環境を構築でき、容易に元の状態に戻
+すことができるため、malwareなどの解析の環境としては非常に便利です。しかし、
+こちらも最近は仮想環境上であることを検知し実行されないものや、デバッガの
+アタッチを検知し動作を停止するものなど解析を回避する流れが多くなっていま
+す。
+
+　こういった背景などから、実機環境で実行し挙動を監視した後、元通りに戻す
+環境が構築が望まれていました。
+
+　ちなみに、デバッガの検知、回避する技術について、同じ第5回セキュそば勉強
+会でチームチドリのyoggyによる「Anti-Debugging」という発表があるのでこちら
+の資料なども参考にしてみてください。
+
+
+■0x02.) TRUMAN概要
+
+　LURHQのセキュリティの研究員であるJoe Stewartさん（現在は合併してSecure
+Worksとなっている）がこういったニーズを満たすために開発したツールがTRUMAN
+です。
+
+・Joe Stewartさんサイト
+http://www.joestewart.org/
+
+・Truman - The Reusable Unknown Malware Analysis Net
+http://www.lurhq.com/truman/
+
+・TRUMANファイル
+http://www.lurhq.com/truman/truman-0.1.tar.gz
+
+　TRUMANは「The Reusable Unknown Malware Analysis Net」の略で、日本語で言
+うと「再利用可能なMalware解析用ネットワーク」ということになります。TRUMAN
+はサーバとクライアントで構成されPXE Linuxの技術を利用しmalwareの解析と環
+境の復元を行います。PXEとはPreboot eXecution Environmentの略で、Intelが提
+唱するネットワークブートの規格です。PXE Linuxはこの技術を利用しネットワー
+ク越しに起動するLinuxのことです。最近はCD/DVDなどのドライブの無いノートPC
+へのLinuxインストールや、ディスクレスのLinux端末、クラスタリングのシステム
+の構築などに使われています。
+
+　実際にはTRUMANクライアントでmalwareを実行させ、その前後のディスクイメー
+ジをPXE Linuxを利用しTRUMANサーバに取得します。このディスクイメージを比較
+し改変されたファイル、レジストリなどを抽出します。また同時に、TRUMANサー
+バはDNSやIRCなどの仮想サーバとしても動作しmalwareが外部のサーバへ通信する
+様子も取得することができます。解析が終わった後はmalware実行前のクリーンな
+環境に戻すことができます。
+
+　TRUMANサーバはDebian、TRUMANクライアントはWindows 2000を想定して作成さ
+れています。TRUMANファイル内のINSTALL.txtにインストール手順が書かれていま
+すが、以下に補足も含めてに構築手順を解説します。
+
+
+■0x03.) TRUMANサーバの構築
+
+　TRUMANサーバには2枚のNICとHD容量に余裕を持ったマシンを用意します。TRUM
+ANサーバは解析のたびにTRUMANクライアントのディスクイメージを保存していき
+ます。TRUMANクライアントのディスク容量によりますが、最低でもDebianシステ
+ム＋TRUMANクライアントHD容量×2の容量は必要です。保存しておく回数などを考
+慮してHD容量を選定してください。最近の機器では特に問題とはならないと思い
+ます。
+
+　Debianのインストール手順については割愛します。特別なパッケージの選択や
+設定は必要ありません。NICについては次の前提で話を進めていきます。
+
+・eth0を外部接続用
+・eth1をTRUMANクライアントとの接続用
+
+　TRUMANサーバはまずPXEサーバとなるためにDHCPサーバとTFTPサーバを準備しま
+す。PXEの起動時にクライアントはDHCPサーバを検索し、サーバに設定された起動
+イメージをTFTP経由でダウンロードして起動します。
+　そのほかにはTRUMANクライアントはWeb経由でmalwareをダウンロードしますの
+で、Apacheが、malwareの通信データを取得するためにtcpdump、ngrepなどを用意
+します。
+
+-----
+# apt-get install perl apache2 atftpd dhcpd xinetd tcpdump ngrep
+-----
+
+　PerlのNet::DNSモジュールもインストールしておきます。
+
+-----
+# perl -MCPAN install Net::DNS
+-----
+
+　TRUMANのファイルの中でwin32以外のディレクトリをルート直下からコピーしま
+す。
+
+-----
+# tar zxvf truman-0.1.tar.gz
+# cd truman-0.1
+# cp -r etc/ fauxserver/ forensics/ images/ mnt/ tftpboot/ usr/ /
+-----
+
+　DHCPの稼働するNICを指定します。「/etc/init.d/dhcp」と「/etc/default/dh
+cp」のINTERFACESを「INTERFACES="eth1"」に変更します。「/etc/services」に
+ddsaveとddrestoreのポートを追記します。
+
+-----
+       ddsave          45611/tcp               #TRUMAN ddsave
+       ddrestore       45612/tcp               #TRUMAN ddrestore
+-----
+
+　malwareの通信を外部に流さないようにしTRUMANサーバ内の仮想サーバにリダイ
+レクトさせるfwを起動させる設定をします。
+
+-----
+# update-rc.d fw defaults 99
+-----
+
+　xinetdをインストールするとinetdが起動しなくなっているため起動するように
+設定を変更します。元々のinetdはinetd.realに変更されていますので戻します。
+
+-----
+# mv /etc/init.d/inetd.real /etc/init.d/inetd
+-----
+
+　「/etc/xinetd.d/ddrestore」の中でddquietを使う設定になっていますがddを
+使用するように変更します。
+
+-----　変更前
+/bin/ddquiet
+-----
+
+-----　変更後
+/bin/dd
+-----
+
+　すべてを設定し、エラー無く起動できばサーバの構築は完了です。
+
+-----
+# /etc/init.d/dhcpd start
+# /etc/init.d/inetd start
+# /etc/init.d/apache start
+# /etc/init.d/xinetd restart
+-----
+
+
+■0x04.) TRUMANクライアントの構築
+
+　実はTRUMANクライアントの構築が一番大変です。Windows 2000で動作させる際
+には問題はあまりありませんが、PXE Linuxで起動させる際にNICとHDインーフェ
+ースなどのハードウェア構成で問題が起こることが多々あります。これはPXE Li
+nuxのイメージに入っているドライバが限られているためです。ドライバの入れ替
+えなどは時間がなく完全には検証しきれませんでした。HDについても注意が必要
+です。HDのイメージを取得しますので、あまり大きすぎないHDを推奨します。Wi
+ndows 2000のシステムの容量を考慮すると最低2GB程度は必要です。またインター
+フェースもIDEのものを選択してください。これもPXE Linuxで認識させるためで
+す。最近のハードウェアはSATAで大容量HDを搭載し最新のチップのNICであるため、
+TRUMANクライアントにはちょっと向いていません。少し古めの機器がいいのです
+が、この辺は試行錯誤をしてみてください。
+
+　TRUMANクライアントにはWindows 2000をインストールします。こちらの手順も
+割愛します。特別な設定は必要ありません。TRUMANパッケージのwin32のディレ
+クトリをCドライブの直下にコピーします。
+　またバッチファイル内で使用するコマンドを取得しておきます。
+
+・psshutdown.exe
+http://www.microsoft.com/technet/sysinternals/utilities/PsShutdown.mspx
+
+・sleepコマンドのsleep.exe
+http://www.vector.co.jp/soft/win95/util/se282254.html
+
+　これらもC:\WINNT\system32にコピーしておきます。
+
+　次にC:\zero.txtという空ファイルを作成します。C:の直下にget.batとget.re
+gがあるのを確認し、get.regを実行します。malwareを解析するバッチファイルg
+et.batを自動実行させるためのエントリがレジストリに追記されます。
+
+　これでTRUMANクライアントの環境構築は完了です。
+
+
+■0x05.) 解析前準備
+
+　環境が構築できましたら、クリーンな状態のTRUMANクライアントのイメージを
+TRUMANサーバ側に取得します。
+
+　TRUMANのメニューは以下のようになっています。
+
+1=save & restore               クライアント環境のイメージ取得とリストア
+2=normal boot                  通常のWindows2000を起動（解析時）
+3=save only                    クライアントのイメージ取得のみ
+4=resutore only                クライアント環境のリストアのみ
+5=maint                                メンテナンス用Linux起動
+
+　TRUMANクライアントを起動しTRUMANのメニューが出たら、まずは「3 Save Onl
+y」を選択します。環境が問題なく構築されていれば、ネットワーク経由でTRUMA
+NクライアントのイメージをTRUMANサーバ側に転送します。転送が終了すると再起
+動します。TRUMANクライアントのHD容量によりますが、これは結構時間がかかり
+ますので、もし起動しても1，2分で再起動するようであればうまく環境が構築さ
+れていません。5=maintのメンテナンスモードで起動しNICの認識など確認をして
+みてください。
+
+　ディスクイメージの取得ができたら、TRUMANサーバ側でリストア用イメージに
+名前を変更し、クリーンな状態のファイル、レジストリ情報を取得しておきます。
+
+-----
+# mv /images/ddsave.img /images/ddrestore.img
+# mount /images/ddrestore.img /mnt/orig
+# mount -o loop -r -t ntfs /images/ddrestore.img /mnt/orig/
+# cd /mnt/orig
+# ls -lR > /forensics/orig/orig.ls
+# dumphive /mnt/orig/WINNT/system32/config/default /forensics/orig/default.reg
+# dumphive /mnt/orig/WINNT/system32/config/software/forensics/orig/software.reg
+# dumphive /mnt/orig/WINNT/system32/config/system /forensics/orig/system.reg
+# cd ..
+# umount /mnt/orig/
+-----
+
+　ここまできてようやく解析環境の構築が終了です。
+
+
+■0x06.) malwareの解析手順
+
+　解析したいmalwareをTRUMANサーバの/forensics/queueに保存します。Windows
+で実行できるようにファイル名に.exeを追加しておきます。TRUMANサーバの仮想
+サーバを起動しておきます。
+
+-----
+# /fauxservers/start.sh
+-----
+
+　TRUMANクライアントを起動します。TRUMANのメニューが出たら「2=normal boo
+t」を選択します。ログインをするとバッチファイルが起動しmalwareをTRUMANサ
+ーバからダウンロードし実行します。TRUMANサーバではtcpdumpデータが出力され
+ているので、malwareの通信などを監視しながら待ちましょう。600秒待機の後、
+TRUMANクライアントはメモリデータの保存を実行します。メモリダンプデータは
+C:\memdump.imgに保存されます。これは後ほどの解析時に取り出されますので特
+になにもする必要がありません。Malware解析時にWindowsを操作するとそれがMa
+lwareの挙動として記録されてしまいますので、できれば何も操作しない方がいい
+でしょう。
+　Windows 2000が再起動します。
+
+　解析のためTRUMANクライアントのディスクイメージを取得します。TRUMANクラ
+イアントを起動しTRUMANのメニューから「1=save & restore」を選択します。ma
+lwareの実行されたディスクイメージの取得とリストアが行われます。これも結構
+時間がかかりますので気長に待ちましょう。TRUMANクライアントの環境が元に戻
+ったらTRUMANクライアントは電源を落としておきます。
+
+　TRUMANサーバ側で解析を実行します。解析のスクリプトが用意されていますの
+でそれを実行します。
+
+-----
+# /forensics/forensics.sh
+-----
+
+　クリーンなイメージと先ほど取得したイメージからファイルの差分、レジスト
+リの差分、通信データ（取得されているもののみ）、メモリデータ、ページファ
+イルの取得などが一括で処理されます。/forensic/[queueに置いたファイル名]-
+filesというディレクトリに解析データが保存されます。ファイル、レジストリの
+差分は普通のテキストファイルですし、通信データはpcap形式ですのでWireshar
+kなどで読み取ることができます。メモリダンプデータは付属のpmodump.plなどを
+利用すると可読できる形式に変換することができます。
+
+　そのほかにも様々なツールなどを利用してみてください。
+
+
+■0x07.) まとめ
+
+　このTRUMANは2006年1月にリリースされたもので旬なネタとは言い難いかもしれ
+ません。今回の記事を書くにあたり、久々にいじってみましたが、一つの解析に
+非常に時間がかかるため実用上はちょっと微妙かなと思いました。TRUMANはコン
+セプトとしてはおもしろいと思いますので、何か別な応用を考えてみるのもおも
+しろいのかもしれません。興味を持った方は冬休みの暇つぶしにでも試してみて
+ください。
+
+　最近ではCWSandboxなどのようにmalwreを自動で解析してくれるサービスなども
+出てきています。
+
+・CWSandbox
+http://www.cwsandbox.org/
+
+　あとTRUMANの解説については、kikuz0uさんがCentOSで構築した手順も公開され
+ています。こちらも参考にしてみてください。ネットワークのアドレスや構築す
+るOSの違いなどがありますので注意してください。
+
+http://pen-test.jpn.org/honey:truman
+
+
+■0x08.) その他おまけ
+
+　実はハード的にいろいろと問題が起きやすいのですが、VMwareを利用すると簡
+単に構築することができます。仮想環境で動作しないmalwareを解析したいという
+ニーズを満たすことができませんが、手頃なマシンが調達できない場合など手軽
+に動作を確認することができます。実は私もうまく動作させられるハードが用意
+できずVMWareで構築、動作検証を行いました。実際にうまく動作しないmalwareも
+いくつかありました。
+
+　私が構築した環境は以下の通りです。
+
+[TRUMANサーバ]
+・Debian 3.1r3
+・メモリ256MB
+・HDはIDEで8GB
+・NICを2つ（1つはNAT、1つはHostOnly）
+・音源デバイスは削除（必須ではない）
+・
+
+[TRUMANクライアント]
+・Windows2000 SP4
+・メモリ128MB
+・HDはIDEで2GB
+・NICを1つ（HostOnly)
+・音源デバイスは削除（必須ではない）
+
+[その他ポイント]
+HostOnlyネットワークのDHCPを停止
+
+　上記環境で2回の解析が保存できる環境ができました。ディスクの保存、リスト
+アはそれぞれ40分程度かかりました。VMwareを利用していますのでスナップショ
+ットを利用してリストアの部分を、イメージを直接マウントすることでイメージ
+保存の部分は簡単にできるかもしれません。
+
+

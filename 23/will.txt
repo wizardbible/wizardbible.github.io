@@ -1,0 +1,119 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第4章: C# Programming 0x1 ---
+
+著者：Will
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) 今回作成するソフト
+
+　前回の.NETアプリケーションを解析する時に使用した、Reflectorの文字列を日
+本語に変換するソフトを作成します。
+
+
+■0x02.) 用意
+
+●使用ソフト
+
+・Visual C# 2005 Express Edition（英語版）
+　インストール済みを前提に進めます。
+http://msdn.microsoft.com/vstudio/express/visualcsharp/
+
+・Stirling
+http://www.vector.co.jp/soft/win95/util/se079072.html
+　　　　　　　
+・ソースコード
+http://will.wbjapan.com/archive/programming/source/RDforNET.zip
+
+・かる～いやる気
+
+
+■0x03.) 前準備
+
+　まずはReflectorで逆コンパイルしたcrackme0xc内の文字列を参考にすると、
+「\u4e0d\u6b63\u306a\u30d1\u30b9\u3067\u3059」は「不正なパスです」だとい
+うことがわかります。
+　なお、.NETアプリケーションでは文字列はUNICODEで扱われているので、1文字
+ごとにわけると、「4e0d」「6b63」「306a」「30d1」「30b9」「3067」「3059」
+となります。これをStirlingのキャラクターセットをUNICODEにして、入力すれば
+それぞれに対応した文字が表示されるはずなのですが、表示されません。そこで、
+これらをリトルエンディアンとみて「4e0d」を「0d4e」を入力してみると「不」
+と表示されました。
+
+　このことから「\u」を区切り文字にして変換するソフトを作成すればいいので
+すがエスケープシーケンスやReflectorはASCII文字は普通に出力するなどの例外
+があるため、けっこう邪魔くさいことになってしまいます。
+　そこで今回は別の方法をとることにします。色々と調べた結果、文字列にUNIC
+ODEを直接指定してもOKなようなので、入力された文字列をソースコードに挿入、
+そしてコンパイルという方法で作成してみました。
+
+
+■0x04.) ソースコードの解説
+
+　以下の処理で元の文字列を取得します。ソースコードの説明はコメントを見て
+ください。
+
+-----
+private void decode_button_Click(object sender, EventArgs e)
+{
+    //System.CodeDom.Compiler.ICodeCompilerは廃止予定なので使用しない方ががよい
+    Microsoft.CSharp.CSharpCodeProvider CSharpcompiler = new Microsoft.CSharp.CSharpCodeProvider();
+    System.Diagnostics.Process process = null;
+    string source = null;
+
+    System.CodeDom.Compiler.CompilerParameters compilerParameters = new System.CodeDom.Compiler.CompilerParameters();
+    System.CodeDom.Compiler.CompilerResults compilerResults;
+
+    //コンパイラのオプション
+    compilerParameters.IncludeDebugInformation = false;
+    compilerParameters.CompilerOptions += "/target:winexe";//これを付けないとコンソールアプリケーションになる。
+    compilerParameters.GenerateExecutable = true;
+    compilerParameters.ReferencedAssemblies.AddRange(new string[]
+    {
+	"mscorlib.dll", "System.dll","System.Drawing.dll","System.Windows.Forms.dll",
+    });
+
+    System.IO.StreamReader str = new System.IO.StreamReader(Application.StartupPath + @"\source.txt", 
+                                                            System.Text.Encoding.GetEncoding(932));
+    for (int i = 0; i < 10; i++)
+    {
+        source += str.ReadLine();
+    }
+
+　　//挿入
+    source += "Clipboard.SetDataObject(\"" + string_textBox.Text + "\", true);";
+    source += str.ReadToEnd();
+    str.Close();
+
+    //コンパイル開始
+    compilerResults = CSharpcompiler.CompileAssemblyFromSource(compilerParameters, source);
+
+     if (compilerResults.Errors.Count == 0)
+    {
+        process = System.Diagnostics.Process.Start(compilerParameters.OutputAssembly);
+
+        //終了するまで待つ
+        process.WaitForExit();
+        IDataObject iData = Clipboard.GetDataObject();
+
+        if (iData.GetDataPresent(DataFormats.Text))
+        {
+            Result_textBox.Text = (string)iData.GetData(DataFormats.Text);
+        }
+
+        Clipboard.Clear();
+        process.Close();
+        process.Dispose();
+    }
+-----
+
+　ソースコードの内容としては入力された文字列をsource.txtのソースコードに
+挿入してコンパイルします。なお、コンパイルで生成されたアプリケーションは
+文字列をクリップボードに転送する処理をします。転送が終われば、転送された
+文字列をテキストボックスに表示して終わりです。
+
+

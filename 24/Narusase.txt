@@ -1,0 +1,306 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第5章: ハニーポットを作ろう（連載第8回） ---
+
+著者：Narusase
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　前回はhoneydの仮想ネットワーク機能について説明を行いました。
+　今回はhoneydのネットワーク周りの拡張的な機能に関して説明していきたいと
+思います。
+
+
+■0x02.) 仮想プロトコルスタック機能
+
+　honeydのユニークな機能として仮想プロトコルスタック機能の機能があります。
+honeydではpersonalityの設定を用いることでスキャンに対して各OSの仮想的なプ
+ロトコルスタックを用いて、フィンガープリントを返すことで、フィンガープリ
+ンティングによってハニーポットであるかどうかの判断をしにくくすることがで
+きます。
+　また、設定ファイルを書き換えることでフィンガープリントをカスタマイズす
+ることも可能です。
+
+　では、nmapを使って192.168.2.Xの仮想マシンをスキャンして実際に仮想プロト
+コルスタックがうまく動作しているか確認してみましょう（設定ファイルは前回
+を参考）。
+
+-----
+# nmap -O 192.168.2.2 -p 20-25
+
+Starting nmap 3.81 ( http://www.insecure.org/nmap/ ) at 2005-09-22 16:53 JST
+Interesting ports on 192.168.2.2:
+PORT   STATE  SERVICE
+20/tcp closed ftp-data
+21/tcp closed ftp
+22/tcp open   ssh
+23/tcp open   telnet
+24/tcp closed priv-mail
+25/tcp closed smtp
+Device type: router
+Running: Cisco IOS 11.X|12.X
+OS details: Cisco IOS 11.3 - 12.0(11)
+
+Nmap finished: 1 IP address (1 host up) scanned in 2.289 seconds
+
+nmap -O 192.168.2.3 -p 20-25
+
+Starting nmap 3.81 ( http://www.insecure.org/nmap/ ) at 2005-09-22 16:51 JST
+Warning:  OS detection will be MUCH less reliable because we did not find at
+least 1 open and 1 closed TCP port
+Interesting ports on 192.168.2.3:
+PORT   STATE SERVICE
+20/tcp open  ftp-data
+21/tcp open  ftp
+22/tcp open  ssh
+23/tcp open  telnet
+24/tcp open  priv-mail
+25/tcp open  smtp
+Device type: general purpose|specialized
+Running (JUST GUESSING) : Microsoft Windows NT/2K/XP|95/98/ME|PocketPC/CE
+(92%), NetBSD (87%)
+Aggressive OS guesses: Microsoft Windows XP Pro SP1 (92%), Microsoft Windows
+Millennium Edition (Me) (88%), Microsoft Windows Millennium Edition (Me),
+Windows 2000 Pro or Advanced Server, or Windows XP (88%), Microsoft Windows
+2000 Advanced Server SP3 (88%), Microsoft Windows 2000 Pro SP2 or Windows XP
+SP1 (88%), Microsoft Windows 2000 Pro SP4 (88%), Microsoft Windows 2000 SP2
+(88%), Microsoft Windows 2000 SP3 (88%), Microsoft Windows XP Home Edition
+(German) SP1 (88%), Microsoft Windows XP Pro (German) SP1 (88%)
+No exact OS matches for host (test conditions non-ideal).
+
+Nmap finished: 1 IP address (1 host up) scanned in 8.643 seconds
+
+# nmap -O 192.168.2.201 -p 20-25
+
+Starting nmap 3.81 ( http://www.insecure.org/nmap/ ) at 2005-09-22 16:53 JST
+Warning:  OS detection will be MUCH less reliable because we did not find at
+least 1 open and 1 closed TCP port
+Interesting ports on 192.168.2.201:
+PORT   STATE SERVICE
+20/tcp open  ftp-data
+21/tcp open  ftp
+22/tcp open  ssh
+23/tcp open  telnet
+24/tcp open  priv-mail
+25/tcp open  smtp
+Device type: general purpose|specialized
+Running (JUST GUESSING) : Microsoft Windows NT/2K/XP|95/98/ME|PocketPC/CE
+(92%), NetBSD (87%)
+Aggressive OS guesses: Microsoft Windows XP Pro SP1 (92%), Microsoft Windows
+Millennium Edition (Me) (88%), Microsoft Windows Millennium Edition (Me),
+Windows 2000 Pro or Advanced Server, or Windows XP (88%), Microsoft Windows
+2000 Advanced Server SP3 (88%), Microsoft Windows 2000 Pro SP2 or Windows XP
+SP1 (88%), Microsoft Windows 2000 Pro SP4 (88%), Microsoft Windows 2000 SP2
+(88%), Microsoft Windows 2000 SP3 (88%), Microsoft Windows XP Home Edition
+(German) SP1 (88%), Microsoft Windows XP Pro (German) SP1 (88%)
+No exact OS matches for host (test conditions non-ideal).
+
+Nmap finished: 1 IP address (1 host up) scanned in 8.913 seconds
+
+
+# nmap -O 192.168.2.202 -p 20-25
+
+Starting nmap 3.81 ( http://www.insecure.org/nmap/ ) at 2005-09-22 16:56 JST
+Warning:  OS detection will be MUCH less reliable because we did not find at
+least 1 open and 1 closed TCP port
+Interesting ports on 192.168.2.202:
+PORT   STATE SERVICE
+20/tcp open  ftp-data
+21/tcp open  ftp
+22/tcp open  ssh
+23/tcp open  telnet
+24/tcp open  priv-mail
+25/tcp open  smtp
+Device type: general purpose|specialized
+Running (JUST GUESSING) : Microsoft Windows NT/2K/XP|95/98/ME|PocketPC/CE
+(92%), NetBSD (87%)
+Aggressive OS guesses: Microsoft Windows XP Pro SP1 (92%), Microsoft Windows
+Millennium Edition (Me) (88%), Microsoft Windows Millennium Edition (Me),
+Windows 2000 Pro or Advanced Server, or Windows XP (88%), Microsoft Windows
+2000 Advanced Server SP3 (88%), Microsoft Windows 2000 Pro SP2 or Windows XP
+SP1 (88%), Microsoft Windows 2000 Pro SP4 (88%), Microsoft Windows 2000 SP2
+(88%), Microsoft Windows 2000 SP3 (88%), Microsoft Windows XP Home Edition
+(German) SP1 (88%), Microsoft Windows XP Pro (German) SP1 (88%)
+No exact OS matches for host (test conditions non-ideal).
+
+Nmap finished: 1 IP address (1 host up) scanned in 8.926 seconds
+-----
+
+　結果、「Cisco IOS 11.3 - 12.0(11)」と「Microsoft Windows XP Pro SP1」で
+ある可能性が高いと、報告されています。これは、設定ファイルのpersonalityで
+設定したものと同じですね。
+　したがって、仮想プロトコルスタックの機能はうまく動作していることがわか
+ります。
+
+
+■0x03.) 仮想ネットワーク機能の拡張
+
+　honeydの仮想ネットワークに関する機能としてネットワークの環境を変化させ
+る機能があります。具体的には、レイテンシや、パケットの損失率、帯域などを
+変化させることができます。ここでは簡単に、機能を使って本当に環境の変化が
+起こっているのか確かめてみましょう
+
+　では、まず設定を少し変更します。変更点は次の通りです。
+
+-----
+# route 192.168.1.2 add net 192.168.2.128/25 192.168.2.2
+↓
+# route 192.168.1.2 add net 192.168.2.128/25 192.168.2.2 latency 1ms
+-----
+
+　ここでは、レイテンシが1msになるように設定にしました。
+
+　では、honeydを起動し、LAN内の他のマシンからPingを送信してみてください。
+
+-----
+> ping 192.168.2.201 -c 1
+PING 192.168.2.201 (192.168.2.201) 56(84) bytes of data.
+64 バイト応答 送信元 192.168.2.201: icmp_seq=0 ttl=126 時間=32.1ミリ秒
+
+--- 192.168.2.201 ping 統計 ---
+送信パケット数 1, 受信パケット数 1, パケット損失 0%, 時間 0ミリ秒
+rtt 最小/平均/最大/mdev = 32.197/32.197/32.197/0.000ミリ秒, pipe 2
+-----
+
+　平均で、およそ32msになっていることがわかります。
+
+　では、さらにレイテンシが100msになるように設定を変えてみましょう。
+
+-----
+# route 192.168.1.2 add net 192.168.2.128/25 192.168.2.2 latency 1ms
+↓
+# route 192.168.1.2 add net 192.168.2.128/25 192.168.2.2 latency 100ms
+-----
+
+　では、honeydを起動し、LAN内の他のマシンからPingを送信してみてください。
+
+-----
+> ping 192.168.2.201 -c 1
+PING 192.168.2.201 (192.168.2.201) 56(84) bytes of data.
+64 バイト応答 送信元 192.168.2.201: icmp_seq=0 ttl=126 時間=230 ミリ秒
+
+--- 192.168.2.3 ping 統計 ---
+送信パケット数 1, 受信パケット数 1, パケット損失 0%, 時間 0ミリ秒
+rtt 最小/平均/最大/mdev = 230.869/230.869/230.869/0.000ミリ秒, pipe 2
+-----
+
+　平均で、およそ231msになっていることがわかります。レイテンシが1msの場合
+が32msですから差は199msになります。
+　したがって、往復でそれぞれ約100msずつ時間がかかっており、確かに設定した
+とおりレイテンシが上昇していることになります。
+
+　次はパケットのロスを発生させてみましょう。設定の変更点は次の通りです。
+
+-----
+route 192.168.1.2 add net 192.168.2.128/25 192.168.2.2 latency 1ms
+↓
+route 192.168.1.2 add net 192.168.2.128/25 192.168.2.2 latency 2ms loss 15.75
+-----
+
+　では、honeydを起動し、LAN内の他のマシンからpingを送信してみてください。
+
+-----
+> ping 192.168.2.201 -c 100
+PING 192.168.2.201 (192.168.2.201) 56(84) bytes of data.
+64 バイト応答 送信元 192.168.2.201: icmp_seq=1 ttl=126 時間=40.3ミリ秒
+64 バイト応答 送信元 192.168.2.201: icmp_seq=3 ttl=126 時間=30.5ミリ秒
+～中略～
+64 バイト応答 送信元 192.168.2.201: icmp_seq=97 ttl=126 時間=34.7ミリ秒
+64 バイト応答 送信元 192.168.2.201: icmp_seq=98 ttl=126 時間=34.8ミリ秒
+
+--- 192.168.2.201 ping 統計 ---
+送信パケット数 100, 受信パケット数 66, パケット損失 34%, 時間 100254ミリ秒
+rtt 最小/平均/最大/mdev = 28.454/35.029/40.397/2.771ミリ秒, pipe 2
+-----
+
+　結果は34%ほどパケットが落ちていることがわかります。これは、損失率が15.
+75%とした設定とは違っているようにみえますが、損失率は片方向の通信の損失率
+となっているためおよそ倍の34%の損失で正しいということになります。ただし、
+だからといって損失率50%に設定した場合、すべての通信が損失するのかというと
+そうではなく、行きに50%の確率でパケットがロスとし、帰りに50%の確率でパケ
+ットがロストするということになります。つまり、コインをひとつ投げて、表だ
+った場合に、さらにコインをひとつ投げて、表で有る確率ということになります。
+個人的に使用してみた感覚としてはhoneydの確率の生成はどうも一様ではないら
+しく偏りがあるように感じます。
+
+　さらに、帯域を変更してみましょう。設定の変更点は次の通りです。
+
+-----
+# route 192.168.1.2 add net 192.168.2.128/25 192.168.2.2 latency 2ms loss
+15.75
+↓
+# route 192.168.1.2 add net 192.168.2.128/25 192.168.2.2 bandwidth 10Mbps
+-----
+
+　帯域を正確にチェックするにはきちんとしたツールを使う必要がありますので、
+ここでは詳細な検証は省略します。何か、標準的なコマンドで帯域の確認ができ
+るものがあればいいのですが…。代わりにごく簡単にPingを用いた不確かな検証
+を行いました。
+
+-----
+> ping 192.168.2.202 -s 1000 -c 10
+PING 192.168.2.202 (192.168.2.202) 1000(1028) bytes of data.
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=0 ttl=126 時間=37.4ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=1 ttl=126 時間=39.4ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=2 ttl=126 時間=39.5ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=3 ttl=126 時間=39.6ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=4 ttl=126 時間=39.7ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=5 ttl=126 時間=39.8ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=6 ttl=126 時間=40.0ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=7 ttl=126 時間=40.2ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=8 ttl=126 時間=40.3ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=9 ttl=126 時間=40.3ミリ秒
+
+--- 192.168.2.202 ping 統計 ---
+送信パケット数 10, 受信パケット数 10, パケット損失 0%, 時間 9098ミリ秒
+rtt 最小/平均/最大/mdev = 37.459/39.661/40.366/0.806ミリ秒, pipe 2
+-----
+
+　結果として、10Mbpsの設定で1,008バイトのパケットを送信すると平均でおよそ
+40msかかっています。
+
+　ここで100Mbpsに帯域を変更します。
+
+-----
+# route 192.168.1.2 add net 192.168.2.128/25 192.168.2.2 bandwidth 10Mbps
+↓
+# route 192.168.1.2 add net 192.168.2.128/25 192.168.2.2 bandwidth 100Mbps
+-----
+
+　そして、Pingを行います。
+
+-----
+> ping 192.168.2.202 -s 1000 -c 10
+PING 192.168.2.202 (192.168.2.202) 1000(1028) bytes of data.
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=0 ttl=126 時間=38.4ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=1 ttl=126 時間=32.5ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=2 ttl=126 時間=32.6ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=3 ttl=126 時間=32.8ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=4 ttl=126 時間=32.8ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=5 ttl=126 時間=33.0ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=6 ttl=126 時間=33.1ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=7 ttl=126 時間=33.2ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=8 ttl=126 時間=33.4ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=9 ttl=126 時間=33.5ミリ秒
+
+--- 192.168.2.202 ping 統計 ---
+送信パケット数 10, 受信パケット数 10, パケット損失 0%, 時間 9096ミリ秒
+rtt 最小/平均/最大/mdev = 32.513/33.576/38.433/1.665ミリ秒, pipe 2
+-----
+
+　結果は平均で33msになり、10Mbpsの場合に比べて7msほど高速になっていること
+がわかります。
+
+
+■0x04.) おわりに
+
+　今回はhoneydのネットワーク周りの拡張的な機能について説明しました。どう
+だったでしょうか？
+　次回は、honeydの個々の仮想PCの設定に関して説明したいと思います。
+
+

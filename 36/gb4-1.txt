@@ -1,0 +1,203 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: リバースエンジニアリング実践 khallengeへのチャレンジ その1 ---
+
+著者：Green boy 4
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　はじめまして。Green boy4と申します。初めて投稿いたします。初心者でNo S
+killですが、Skill upのために勉強中ですので、どうぞよろしくお願いします。
+
+　私自身がいろいろとバタバタしていたため、文章をまとめるのに時間がかかり、
+ちょっと旬を過ぎていますが、khallenge 2007ネタを書いていた何人かのブログ
+を拝見したところ、あきらめてしまった方が多かったようなので、いつもお世話
+になっているWizard Bibleを通じて皆様に貢献できればと思い、投稿いたしまし
+た。
+
+
+■0x02.) Khallengeとは？
+
+　さて、2007年8月某日に「F-Secure Reverse Engineering Challenge 2007(通称
+khallenge 2007)」が開催されました。これは一言で言うと、制限時間内にcrack
+meのようなものなのをいくつかクリアするゲームといった感じなのですが、内輪
+でちょっと話題になっていたので、私も挑戦してみました。
+
+　やり方ですがhttp://www.khallenge.com/にアクセスすると、Level1のバイナリ
+へのリンクが貼られたページが表示されますので、Level1をダウンロードして解
+析します。
+
+　解析に成功するとメールアドレスが表示されますので、取得したメールアドレ
+スへメールを送信すると、正解の場合は次のレベルへのダウンロードリンク付き
+のメールが返信されてきます。それをまた解析し、メールを送信します。この繰
+り返しで、チャレンジはLevel3まで存在します。
+
+　ただし残念ながら、上記URLは現在ではすでにアクセスできなくなっていますし、
+解析してメールアドレスを得て、そこにメールを送信しても返信されないと思い
+ます。ですが、以下のURLにアクセスすれば、バイナリは入手可能ですので、もし
+ご興味のある方は挑戦してみてはいかがでしょうか？
+
+http://www.f-secure.com/security_center/asm.html
+
+　Level3は文章が非常に長くなるので次回以降に発表するとして、今回はウォー
+ムアップ代わりに、Level1と2を実施してみたいと思います。
+
+
+■0x03.) 環境
+
+　今回、私は以下の環境で実施しました。
+
+・OS：Windows XP Pro SP2
+・Debugger：OllyDbg（http://www.ollydbg.de/）
+・Debugger Plugin：OllyDump
+
+※DokoDonさんがサイトを閉めてしまっているようなので、googleなどから検索し
+てダウンロードしてください。
+
+　また、できればIDA Proがあればグラフ機能やDisassemble機能が強力なので効
+率面で有利ですが、必須ではありません。グラフ機能を利用したいのであれば、
+OllyGraphやOllyFlow、それからImmunity Debuggerで表示することも可能なので、
+合わせて利用してみるのもひとつの手だと思います。
+
+http://www.immunitysec.com/products-immdbg.shtml
+
+　ただし、OllyGraphやOllyFlowはwingraph32が必要です。IDA Proのページでソ
+ースコードはダウンロード可能ですが、コンパイルにはBorland CBuilder v5が必
+要です。また、私の環境ではOllyGraphやOllyFlowを動作させたところ、うまく動
+作したりしなかったりだったので、どこまで使えるかは未知数です。
+
+
+■0x04.) まず実行
+
+　さて、非常に前置きが長くなってしまいましたが、本題に入ります。
+　まずLevel1のバイナリをダウンロードしておもむろに実行します。
+
+　本当のリバースエンジニアリングであれば、まずPEiDでパッカーの有無をチェ
+ックしたり、stringsコマンドで得られる文字列を確認して…、となるところです
+が、今回はお遊びなので、そういったツッコミはなしの方向でお願いします ;-)
+
+-----　FSC_Level1.exe実行画面
+Assembly 2007 Reverse-Engineering Challenge - Level 1
+Copyright (c) 2007 F-Secure Corporation
+
+For more informations visit:
+http://www.f-secure.com/security_center/asm.html
+
+Enter the key:
+-----
+
+　Keyの入力を促す画面が出て一時停止しました。
+　とりあえず、適当な文字列を入力したところ、以下のメッセージが表示されま
+した。
+
+
+-----　入力後に表示されたメッセージ
+Sorry, this key is not valid!
+Press enter to terminate...
+-----
+
+　当然ですが、Keyがあっていないので、メールアドレスが表示されませんでした。
+
+　ではOllyDbgで読み込んでみましょう。 
+
+
+■0x05.) OllyDbgで読み込んで実行
+
+　とりあえず、OllyDbgにFSC_Level1.exeをドラッグ＆ドロップしてから、ざっと
+眺めてみます。すると、すぐKeyの入力処理部分が見つかりました。
+
+-----　OllyDbgのCPUウィンドウ（69001056付近）
+69001056  |.  68 20300069   PUSH FSC_Leve.69003020                   ; /format = "Assembly 2007 Reverse-Engineering Challenge - Level 1
+Copyright (c) 2007 F-Secure Corporation
+
+For more informations visit:
+http://www.f-secure.com/security_center/asm.html
+
+Enter the key: "
+6900105B  |.  FFD6          CALL ESI                                 ; \printf
+6900105D  |.  68 A0310069   PUSH FSC_Leve.690031A0
+69001062  |.  68 BC200069   PUSH FSC_Leve.690020BC                   ; /format = "%s"
+69001067  |.  FF15 7C200069 CALL DWORD PTR DS:[<&MSVCR71.scanf>]     ; \scanf
+-----
+
+　また、Keyと入力値を比較しているのはどこかな？と探したところ、これまたそ
+のすぐ後にあるのを発見しました。
+
+-----　OllyDbgのCPUウィンドウ（690010BF付近）
+690010BF  |.  68 10330069   PUSH FSC_Leve.69003310                   ; /s2 = ""
+690010C4  |.  68 A0310069   PUSH FSC_Leve.690031A0                   ; |s1 = ""
+690010C9  |.  FF15 88200069 CALL DWORD PTR DS:[<&MSVCR71._stricmp>]  ; \_stricmp
+690010CF  |.  83C4 3C       ADD ESP,3C
+690010D2  |.  85C0          TEST EAX,EAX                             ; 一致していたらeax=0
+690010D4  |.  75 1D         JNZ SHORT FSC_Leve.690010F3              : 0の場合はジャンプせず
+690010D6  |.  68 10330069   PUSH FSC_Leve.69003310                   ; s2の値をPUSH
+690010DB  |.  68 E8300069   PUSH FSC_Leve.690030E8                   ;  ASCII "
+Congratulations! Please send an e-mail to ThisIs%s@khallenge.com
+Press enter to terminate...
+"
+-----
+
+　690010C9ではstricmpで比較し、文字列が一致していた場合（戻り値であるeax
+には0が入るので）は、690010D2とD4の判定ではジャンプせずにそのまま次の命令
+（690010D6）に進むという処理のようです。そこには「Congratulations!～」の
+文字が見えるので、ここがチェックポイントとなるようです。ということで、こ
+こにブレークポイントを張って引数の状態を見て見ましょう。ブレークポイント
+は690010C9を選択後、F2で設定。実行はF9です。
+　実行すると、ブレークポイントに達する前にKeyの入力を促す例のメッセージが
+表示されるので、今回は適当に「aaaaa」と入力してみました。入力が終わると、
+ブレークポイントを設定した690010C9で停止しします。
+
+-----　ブレークポイント時点のCPUウィンドウ
+690010BF  |.  68 10330069   PUSH FSC_Leve.69003310                   ; /s2 = "Asm07REC"
+690010C4  |.  68 A0310069   PUSH FSC_Leve.690031A0                   ; |s1 = "aaaaa"
+690010C9  |.  FF15 88200069 CALL DWORD PTR DS:[<&MSVCR71._stricmp>]  ; \_stricmp
+-----
+
+　やはり、入力した文字列と比較しているようです。ということは、「Asm07REC」
+が正解の文字列なのでしょうか？再度実行してこの文字列を入力して確認してみ
+ようと思います。
+
+　Ctrl+F2でデバッグをリスタートします。
+
+
+■0x06.) 正しい文字列を入力して実行
+
+　リスタート後に再度F9で実行し、入力が要求されたら今度は「Asm07REC」と入
+力します。再度ブレークポイントで停止すると以下のようになります。
+
+-----　ブレークポイント時点のCPUウィンドウ
+690010BF  |.  68 10330069   PUSH FSC_Leve.69003310                   ; /s2 = "Asm07REC"
+690010C4  |.  68 A0310069   PUSH FSC_Leve.690031A0                   ; |s1 = "Asm07REC"
+690010C9  |.  FF15 88200069 CALL DWORD PTR DS:[<&MSVCR71._stricmp>]  ; \_stricmp
+-----
+
+　今度は入力した文字列が一致していることがわかります。では、F9で最後まで
+実行してみましょう。
+
+-----　入力後に表示されたメッセージ
+Congratulations! Please send an e-mail to ThisIsAsm07REC@khallenge.com
+Press enter to terminate...
+-----
+
+　正しい文字列が得られたようです。このメールアドレスにメールを送信したと
+ころ、Level2へのリンクが貼られたメールが送信されてきました。
+
+
+■0x07.) 所感
+
+　Level1は、以上のように非常に簡単でした。わからなくても、F8（Step over）
+などで1行ずつステップ実行していくとコメント欄に正解ができてしまうので、デ
+バッガの使い方さえわかれば誰でも解けてしまうような問題でした。
+
+　図に乗りやすい私は、「なんだ、こんな程度か」と思ってしまい、実はこの
+後のLevel2でハマることになるのです。
+
+　それでは、その1はこの辺で。
+
+
+

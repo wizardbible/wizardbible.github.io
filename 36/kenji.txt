@@ -1,0 +1,352 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: Windowsシステムプログラミング Part2　～デバッグ～ ---
+
+著者：Kenji Aiko
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　このテキストは、Windowsシステムに関するプログラミングを中心に記述してい
+る。WinDbgの導入、カーネルランドのデバッグ、SYSENTERの解析などを中心に解
+説している。
+
+
+■0x02.) WinDbgの導入
+
+　カーネルランドで動作するプログラムをデバッグするには、カーネルモードデ
+バッガが必要となる。Windows環境でのカーネルモードデバッガは、SoftICEとWi
+nDbgが有名だが、SoftICEは販売停止となったため、このテキストでは、WinDbgを
+使うことにする。
+　まず、実行用と解析用で、マシンを2台と、それらを繋ぐシリアルクロスケーブ
+ルを用意する。
+
+シリアルクロスケーブル（↓こういうの）
+http://www.sanwa.co.jp/product/syohin.asp?code=KR-LK3
+
+（1） マシンを2台用意する（実行用と解析用）
+（2） シリアルクロスケーブルで2台のマシンを繋ぐ（COM1使用）
+（3） 実行用マシンに適当なOSをインストール（自分はWinXPSP2使用）
+（4） 実行用マシンにインストールされているOSの「C:\boot.ini」を開く
+
+-----  コマンドプロンプト
+C:\> attrib -r -s -h boot.ini
+C:\> notepad boot.ini
+-----
+
+-----  boot.ini（変更前）
+1: [boot loader]
+2: timeout=30
+3: default=multi(0)disk(0)rdisk(0)partition(1)\WINDOWS
+4: [operation system]
+5: multi(0)disk(0)rdisk(0)partition(1)\WINDOWS="（省略）" /fastdetect
+-----
+
+（5） boot.iniの最後に1行追加（以下は2行になっているが、実際は1行とする）
+
+-----  boot.ini（変更後）
+1: [boot loader]
+2: timeout=30
+3: default=multi(0)disk(0)rdisk(0)partition(1)\WINDOWS
+4: [operation system]
+5: multi(0)disk(0)rdisk(0)partition(1)\WINDOWS="（省略）" /fastdetect
+6: multi(0)disk(0)rdisk(0)partition(1)\WINDOWS="（省略）" /fastdetect
+6:  /debug /debugport=com1 /baudrate=115200
+-----
+
+（6） boot.ini保存（これで実行用マシンの設定終了）
+（7） 解析用マシンにWinDbgをインストール、WinDbgを起動
+
+　ここで、WinDbgにシンボルのパスを設定しておく。まず、「c:\tmp」というフ
+ォルダを作成。WinDbgのメニューから「File」→「Symbol File Path」を開く。
+そして、「Symbol Path」の入力欄に「srv*c:\tmp*http://msdl.microsoft.com/
+download/symbols」を設定する。
+　これらの設定は、WinDbgの起動には直接影響しないが、やっておくと後々便利。
+
+（8） メニューから「File」→「Kernel Debug」→「COM」を表示
+（9） Baud Rateを115200、Portをcom1、Reconnectにチェック、で「OK」
+
+　これでWinDbgが待ち状態に入る。実行用マシンを再起動すると、OSの選択画面
+が表示される。boot.iniの設定により「debugger enabled」モードで起動可能に
+なる。「debugger enabled」モードで起動すると、解析用マシンのWinDbgが反応
+する。
+　待ち状態だったWinDbgが反応し、次のような文字列が表示される。
+
+-----  WinDbg
+Microsoft (R) Windows Debugger  Version 6.6.0007.5
+Copyright (c) Microsoft Corporation. All rights reserved.
+
+Opened \\.\com1
+Waiting to reconnect...
+Connected to Windows XP 2600 x86 compatible target, ptr64 FALSE
+Kernel Debugger connection established.
+Symbol search path is: srv*c:\tmp*http://msdl.microsoft.com/download/symbols
+Executable search path is: 
+Windows XP Kernel Version 2600 UP Free x86 compatible
+Built by: 2600.xpsp_sp2_rtm.040803-2158
+Kernel base = 0x804d9000 PsLoadedModuleList = 0x8055cb20
+-----
+
+　使い方を始めとした、コマンドのヘルプは、「?」を入力すれば分かる。WinDb
+gのメニューから「Debug」→「Break」で実行用OSを止めて、以下のコマンドを入
+力。
+
+-----  WinDbg
+kd> ?
+
+Open debugger.chm for complete debugger documentation
+
+B[C|D|E][<bps>] - clear/disable/enable breakpoint(s)
+BL - list breakpoints
+BA <access> <size> <addr> - set processor breakpoint
+BP <address> - set soft breakpoint
+D[type][<range>] - dump memory
+DT [-n|y] [[mod!]name] [[-n|y]fields]
+   [address] [-l list] [-a[]|c|i|o|r[#]|v] - dump using type information
+DV [<name>] - dump local variables
+E[type] <address> [<values>] - enter memory values
+G[H|N] [=<address> [<address>...]] - go
+K <count> - stacktrace
+…
+（省略）
+…
+-----
+
+　これでWinDbgの導入は完了。
+
+
+■0x03.) APIからカーネルへの道
+
+　kernel32.dllやuser32.dllが提供している通常のAPI群とは違い、カーネル側で
+動作するAPI群をエクスポートしているのが、 ntdll.dllである。そして、API呼
+び出しに伴って、ユーザーランドからカーネル側に処理が移る過程は、「Applic
+ation」→ 「kernel32.dll」→「ntdll.dll」→「KERNEL」となる。
+　ntdll.dllがエクスポートしているZwCreateFile関数の呼び出し構造は以下。
+
+-----  ntdll.dll（ZwCreateFile呼び出し）
+7C94D682 >/$ B8 25000000    MOV EAX,25
+7C94D687  |. BA 0003FE7F    MOV EDX,7FFE0300
+7C94D68C  |. FF12           CALL DWORD PTR DS:[EDX]
+7C94D68E  \. C2 2C00        RETN 2C
+-----
+
+　7FFE0300にあるデータは「8B EB 94 7C」なので、7C94EB8Bへ飛ぶ。
+
+-----  ntdll.dll（7C94D68CのCALLの先）
+7C94EB8B >/$ 8BD4           MOV EDX,ESP
+7C94EB8D  |. 0F34           SYSENTER
+-----
+
+　eaxレジスタが、システムコールテーブルの関数呼び出し番号（識別番号）。
+ただし、Windowsのバージョンによって変わる可能性アリ。また、 WindowsNT/20
+00では「int 0x2e」を使うが、WindowsXP/2003（x86系）では、sysenter命令を使
+用する。
+　SYSENTERが実行された時点で、処理がカーネルへ移る。SYSENTERについては、
+「int 2E/sysenter/syscall考察」より、以下の処理が走る。
+
+int 2E/sysenter/syscall考察
+http://www.marbacka.net/asm64/arkiv/int2e_sysenter_syscall.html
+
+-----　sysenter実行時の処理内容
+（1）CSレジスタにSYSENTER_CS_MSR(MSR-174H)の値をロード
+（2）EIPレジスタにSYSENTER_EIP_MSR(MSR-176H)の値をロード
+（3）SSレジスタにSYSENTER_CS_MSRの値に8を加算した値をロード
+（4）ESPレジスタにSYSENTER_ESP_MSR(MSR-175H)の値をロード
+（5）特権レベル0に切り替えて、カーネルモードルーチンの実行を開始
+-----
+
+　要するに、スタックには積まず、それぞれのレジスタにMSRの値を入れて、カー
+ネルモードへ入っているだけだ。MSRの値は、WinDbgで確認できる。WinDbgのメニ
+ューから「Debug」→「Break」で実行用OSを止めて、以下のコマンドを入力。
+
+-----  WinDbg
+msr[174] = 00000000`00000008
+kd> rdmsr 175
+msr[175] = 00000000`f9e73000
+kd> rdmsr 176
+msr[176] = 00000000`804e0f6f
+-----
+
+　EIPレジスタに入れられる値（SYSENTER_EIP_MSR）は804e0f6fであることが分か
+る。よって、このアドレスのコードを出力する。
+
+-----  WinDbg
+kd> u 804e0f6f
+nt!KiFastCallEntry:
+804e0f6f b923000000      mov     ecx,23h
+804e0f74 6a30            push    30h
+804e0f76 0fa1            pop     fs
+804e0f78 8ed9            mov     ds,cx
+804e0f7a 8ec1            mov     es,cx
+804e0f7c 8b0d40f0dfff    mov     ecx,dword ptr ds:[0FFDFF040h]
+804e0f82 8b6104          mov     esp,dword ptr [ecx+4]
+804e0f85 6a23            push    23h
+-----
+
+　これがSYSENTERが呼ばれたときのカーネル側の処理となる。
+
+
+■0x04.) SYSENTERフック
+
+　WinDbgを利用して、SYSENTERをフックする。SYSENTERによるEIPの変更は、MSR
+を参照して行われるため、MSRの値をあらかじめ変更しておくことで、SYSENTERの
+フックが可能となる。
+　まずは、自身のコードを入れるための領域をカーネル空間に確保する。次のド
+ライバを作成する。
+
+----  rk_empty.c
+#include <ntddk.h>
+
+VOID OnUnload(IN PDRIVER_OBJECT pDriverObject)
+{
+    DbgPrint("rk_empty: OnUnload called.\n");
+}
+
+NTSTATUS DriverEntry(IN PDRIVER_OBJECT pDriverObject, 
+                     IN PUNICODE_STRING theRegistryPath)
+{
+    __asm {
+        nop
+        nop
+        nop
+        nop
+        nop
+        nop
+    }
+    DbgPrint("rk_empty: DriverEntry = %08x\n", (ULONG)DriverEntry);
+    pDriverObject->DriverUnload = OnUnload;
+    return STATUS_SUCCESS;
+}
+-----
+
+　DriverEntryに適当な数のNOPを入れた。このドライバをインストールすると、
+DriverEntryのアドレスがWinDbgに表示される。
+
+-----  WinDbg
+rk_empty: DriverEntry = fa10f4d4
+-----
+
+　このアドレス以降のどこかに、NOPが6バイト連続している領域があるはずなの
+で、逆アセンブルして探す。
+
+-----  WinDbg
+kd> u fa10f4d4
+rk_empty!DriverEntry [c:\winddk\rootkit\rk_empty\rk_empty.c @ 11]:
+fa10f4d4 8bff            mov     edi,edi
+fa10f4d6 55              push    ebp
+fa10f4d7 8bec            mov     ebp,esp
+fa10f4d9 90              nop
+fa10f4da 90              nop
+fa10f4db 90              nop
+fa10f4dc 90              nop
+fa10f4dd 90              nop
+-----
+
+　アドレスfa10f4d9以降には、NOPが6バイトあるため、ここに任意のコードを入
+れられる。
+
+-----  WinDbg
+kd> rdmsr 176
+msr[176] = 00000000`804e0f6f
+-----
+
+　現在のSYSENTERのジャンプ先は804e0f6fとなっている。これがオリジナルアド
+レスであるため、fa10f4d9以降の6バイトに、「JMP 804e0f6f」という命令を追加
+する。WinDbgのメニューから「View」→「Memory」でメモリの状態が参照できる。
+ここに「fa10f4d4」と入力すれば、fa10f4d4以降のメモリの状態が表示される。
+
+-----  WinDbg（Memory）
+fa10f4d4  8b ff 55 8b ec 90 90 90 90 90 90 68 d4 f4 10 fa 68 b0
+fa10f4e6  f4 10 fa e8 18 00 00 00 8b 45 08 59 c7 40 34 a2 f4 10
+fa10f4f8  fa 59 33 c0 5d c2 08 00 cc cc cc cc cc cc ff 25 84 f5
+..........
+-----
+
+　6バイトのNOPがある先頭アドレスfa10f4d9から、804e0f6fへジャンプする命令
+なので、記述するマシン語は
+
+-----
+100000000 - ((fa10f4d9 - 804e0f6f) + 5) = 863d1a91
+-----
+
+となり、結果「E9 91 1a 3d 86」となる。そして、fa10f4d9以降の5バイトにこの
+JMP命令を記述する。
+
+-----  WinDbg（Memory）
+fa10f4d4  8b ff 55 8b ec e9 91 1a 3d 86 90 68 d4 f4 10 fa 68 b0
+fa10f4e6  f4 10 fa e8 18 00 00 00 8b 45 08 59 c7 40 34 a2 f4 10
+fa10f4f8  fa 59 33 c0 5d c2 08 00 cc cc cc cc cc cc ff 25 84 f5
+..........
+-----
+
+　そして、再度逆アセンブルして確認する。
+
+-----  WinDbg
+kd> u fa10f4d4
+rk_empty!DriverEntry [c:\winddk\rootkit\rk_empty\rk_empty.c @ 11]:
+fa10f4d4 8bff            mov     edi,edi
+fa10f4d6 55              push    ebp
+fa10f4d7 8bec            mov     ebp,esp
+fa10f4d9 e9911a3d86      jmp     nt!KiFastCallEntry (804e0f6f)
+fa10f4de 90              nop
+fa10f4df 68d4f410fa      push    offset rk_empty!DriverEntry (fa10f4d4)
+fa10f4e4 68b0f410fa      push    offset rk_empty!OnUnload+0xe (fa10f4b0)
+fa10f4e9 e818000000      call    rk_empty!DbgPrint (fa10f506)
+-----
+
+　うまく、fa10f4d9に、オリジナル（804e0f6f）へジャンプする命令が記述され
+ている。あとは、MSRの値をfa10f4d9に変更することで、SYSENTERが、rk_emptyの
+DriverEntryを通ることになる。
+
+-----  WinDbg
+kd> wrmsr 176 fa10f4d9
+kd> rdmsr 176
+msr[176] = 00000000`fa10f4d9
+kd> g
+-----
+
+　Windowsは正常に動作する。ただし、メモリ領域は、こちら側が用意したrk_em
+ptyのDriverEntryを利用しているため、rk_emptyをOSからアンロードしたら、ジ
+ャンプ先がなくなり、OSがフリーズしてしまう。
+　試しに、rk_emptyをアンロードすると、以下のメッセージが表示された。
+
+-----  WinDbg
+rk_empty: OnUnload called.
+
+*** Fatal System Error: 0x000000ce
+                       (0xFA10F4D9,0x00000000,0xFA10F4D9,0x00000000)
+
+Driver at fault:
+Break instruction exception - code 80000003 (first chance)
+
+A fatal system error has occurred.
+Debugger entered on first try; Bugcheck callbacks have not been invoked.
+
+A fatal system error has occurred.
+-----
+
+　よって、rk_emptyをアンロードする場合は、必ず、MSRのアドレスを元に戻して
+おく必要がある。
+
+-----  WinDbg
+kd> wrmsr 176 804e0f6f
+kd> rdmsr 176
+msr[176] = 00000000`804e0f6f
+-----
+
+　これで、元通りとなる。
+
+
+■0x05.) さいごに
+
+　今回はWinDbgでSYSENTERのジャンプ先を変更しただけだったが、実用を考える
+ならば、SYSENTERの呼び出しをすべてログに保存するなども可能である。まぁ、
+SYSENTERフックが必要な場面が、それほどあるとは思えないが、なかなか楽しめ
+る内容だったと思う。
+
+
+

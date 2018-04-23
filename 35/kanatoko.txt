@@ -1,0 +1,315 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: マニアックJavaプログラミング第6回: ～ Javaでメタプログラミング ～ ---
+
+著者：金床
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　アプリケーション内で動的にコードを生成し、さらにそれを実行したい場合が
+ある。このようにプログラムが動的にプログラムを生成し実行するようにプログ
+ラムをプログラムすることをメタプログラミングとよぶ。
+
+
+■0x02.) コードの生成
+
+　さてメタプログラミングは「コードの生成」と「コードの実行」から成り立つ
+わけだが、「コードの生成」は単なる文字列処理である。例えば次の例は立派に
+コードを生成している。
+
+-----
+System.out.println( "System.out.println( \"hoge\" )" );
+-----
+
+　うわ、ただ文字列を出力するだけなのにSystem.outとか打つのって鬱じゃね？
+しかもダブルクオートをエスケープしたりして超読みにくくね？ヒアドキュメン
+ト無いとかありえなくね？Javaちょっとダサくね？いやむしろかなりダサくね？
+
+　などとちょっとでも思ったキミはボクとはトモダチになれないと思うので、次
+の記事に飛んでくだちい。
+
+　ということで「コードの生成」は普段プログラマーが自分で打ち込んでいるソ
+ースコードをプログラム自体に出力させるだけなので、用途によって適切なルー
+チンを組むだけで完成する。ここでは特に難しいことはない。
+
+
+■0x03.) コードの実行
+
+　問題は生成したコードの実行なのである。
+
+　…は？
+　…つか、eval呼ぶだけじゃね？まさかJavaにはeval無いとか？ちょwwwそれって
+ありえなくね？
+
+　などと少しでも脳裏をかすめたキミはCIAに洗脳されているか、あるいは脳内麻
+薬の出過ぎでオーバードーズ気味になっていると思われるので、今すぐ水分をた
+っぷりとって休養すること。
+
+　そんなわけでJavaにはevalがない（涙）ので、動的にコードを実行するには一
+工夫必要となる。というか実行の前にコンパイルしなくてはならない。今回は隠
+れAPIとして一部のマニアに知られている、Javaソースコードのコンパイル機能を
+利用してみることにする。
+
+
+■0x04.) tools.jar
+
+　SunのJDKをダウンロードして使用している場合には、libの下にtools.jarとい
+うファイルがあるはずだ。これはJavaのソースファイルをコンパイルするコマン
+ドであるjavacから使われるものである。これを勝手に自分のJavaアプリ内から呼
+んでしまうのだ。
+
+　コンパイルで必要になるのはtools.jarの中に格納されているcom.sun.tools.j
+avac.Mainというクラスである。このクラスのcompileというメソッド（そのまん
+まの名前である）を呼び出すことでJavaのソースコードがコンパイルされ、クラ
+スファイルが生成される。
+
+　もちろんRuntime.execなどを使ってjavacコマンドを別のプロセスとして立ち上
+げる方法でもコンパイルはできるのだが、このクラスを直接呼び出すことでパフ
+ォーマンス的に有利となる（javacコマンドはJVMを起動するため、実際のコンパ
+イルよりも前の処理でたくさんのCPUサイクルを消費する）。
+
+
+■0x05.) javaShell
+
+　それではJavaアプリ内部で動的にソースコードをコンパイルすることにより、
+インタラクティブにJavaのコードを実行する、いわばJavaのシェルのようなアプ
+リケーションを作ってみることにする。ソースコードは次のURLからダウンロード
+できる。
+
+http://src.jumperz.net/javaShell.java
+
+　このアプリケーションを開始すると、標準入力からJavaソースコードの入力を
+行うことができるようになる。空行を打ち込むとそこまでに入力したJavaソース
+コードが内部でコンパイルされて実行される。
+
+　例えば画面に「patch Kenji」と出力するためには次のようにする。
+
+-----
+[anvil@supernova ~]# java javaShell   ← javaShellを起動
+System.out.println( "patch Kenji" );  ← Javaのソースコードを打ち込む
+　　　　　　　　　　　　　　　　　　　← 空行を打ち込む
+patch Kenji　　　　　　　　　　　　　 ←コードが実行される
+-----
+
+　複数行に渡ってソースコードを打ち込むこともできる。例えば「1234+2222」を
+計算したい場合には次のようにする。
+
+-----
+int a = 1234;
+int b = 2222;
+System.out.println( a + b );
+
+3456　　←コードが実行される
+-----
+
+　このプロセスを好きなだけ繰り返すことができる。シェルから抜けるには「qu
+it」あるいは「exit」と打ち込む。
+
+
+■0x06.) ソースコード解説
+
+　それではお待ちかねのソースコード解説である。
+
+-----
+String javaHome = System.getProperty( "java.home" );
+-----
+
+　まず環境変数java.homeを取得し、現在実行中のJREのホームディレクトリを取
+得する。
+
+-----
+File tools = new File( javaHome + "/../lib/tools.jar" );
+if( !tools.exists() )
+	{
+	System.out.println( "tools.jar not found." );
+	return;
+	}
+-----
+
+　JDKがインストールされている場合には、tools.jarはJREのひとつ上の階層のl
+ibディレクトリ以下にある。このファイルが見つからない場合にはjavaShellは動
+作しないので、エラーメッセージを出力して終了する。
+
+-----
+String classStr = "public class otf { public String toString() { try { CODE } catch( Throwable e ) { e.printStackTrace(); } return \"\"; } }";
+-----
+
+　この文字列は動的に生成されるクラスファイルの元になる文字列である。整形
+すると次のようになる。
+
+-----
+public class otf
+{
+//-----------------------------
+public String toString()
+{
+try
+        {
+        CODE
+        }
+catch( Throwable e )
+        {
+        e.printStackTrace();
+        }
+return "";
+}
+//-----------------------------
+}
+-----
+
+　「CODE」の部分にユーザが入力したコードが挿入され、実行されることになる。
+toStringを利用しているのは単なる手抜きである（これがなぜ手抜きになるのか
+については後ほど触れる）。
+
+　続いてユーザからの入力を逐次受け取るためのループが開始される。while周辺
+についてはお決まりなので説明は省略する。
+
+-----
+	if( line == null || line.equalsIgnoreCase( "quit" ) || line.equalsIgnoreCase( "exit" ) )
+		{
+		break;
+		}
+-----
+
+　これによりユーザが「quit」あるいは「exit」を入力した場合（あるいは標準
+入力が閉じられた場合）にループから抜けることになる。
+
+-----
+	else if( line.equals( "" ) )
+		{
+		exec( classStr, buf.toString() );
+		buf = new StringBuffer();
+		}
+-----
+
+　ユーザが空行を入力した場合、クラスファイルの元となる文字列classStrと、
+その時点までに入力されたJavaソースコードを保持しているインスタンスのbufを
+文字列型に変換したものをexec関数に渡す。
+
+　exec関数内ではいよいよJavaの動的コンパイルと実行が行われる。
+
+-----
+	//Generate java source
+String className = "otf_" + System.currentTimeMillis();
+String javaFileName = className + ".java";
+classStr = replaceAll( classStr, "CODE", userStr );
+classStr = replaceAll( classStr, "public class otf", "public class " + className  );
+saveStringToFile( classStr, javaFileName );
+-----
+
+　動的に生成したクラスは毎回使い捨てる。そのため毎回別のクラス名が必要と
+なる。ここでは現在時刻をミリ秒単位で取得しそれを使ってクラス名を決定する。
+例えばクラス名は「otf_118663679990」のようになる。ちなみに「otf」はオンザ
+フライ、つまりフライの上にのっているマヨネーズなどのことを指している。マ
+ヨネーズは油の固まりなので、メタボなキミは食べちゃダメだぞ。
+
+　replaceAllというのはただの文字列置換関数である。つまり「CODE」の部分を
+「System.out.println( "patch Kenji" );」のようなユーザが入力したソースコ
+ードに、そしてクラス名の部分を「public class otf」から「public class otf
+_118663679990」のように変換している。変換後の文字列は正しいファイル名で
+（つまりotf_118663679990.javaのようにクラス名と対応したファイル名で）保存
+する。
+
+　続いてコンパイルを行う。tools.jarは通常はJREからは見えない位置にあるた
+め、自動的にクラスのロードを行うことができない。そこでローカルなクラスロ
+ーダを作成する。クラスファイルが格納されているjarファイル（tools.jarのこ
+と）はわかっているので、file:のURLを与えてURLClassLoaderを作成する。
+
+-----
+String javaHome = System.getProperty( "java.home" );
+File tools = new File( javaHome + "/../lib/tools.jar" );
+String toolsFileName = tools.getCanonicalPath();
+
+URL toolsURL = new URL( "file:" + toolsFileName );
+URLClassLoader cl = new URLClassLoader( new URL[]{ toolsURL } );
+-----
+
+　そして目的であるMainクラスをロードする。
+
+-----
+Class javac = cl.loadClass( "com.sun.tools.javac.Main" );
+-----
+
+　実はソースコード中に
+
+-----
+com.sun.tools.javac.Main javac = ...
+-----
+
+　とするコーディングも可能なのだが、この場合にはjavaShell.javaのコンパイ
+ルの際にクラスパスとしてtools.jarを与える必要がある。これは面倒なので、今
+回はリフレクションを用いている。これにより「javac javaShell.java」だけで
+コンパイルすることが可能となっている。
+
+　リフレクションを用いているため、Mainクラスのcompileメソッドの呼び出しは
+次のようにMethodクラスを用いて行う。
+
+-----
+Method m = javac.getDeclaredMethod( "compile", new Class[]{ String[].class } );
+String[] args = new String[]{ javaFileName  };
+Object result = m.invoke( null, new Object[]{ args } );
+-----
+
+　これによってコンパイルが開始される。エラーがある場合にはエラー出力にエ
+ラーメッセージなどが出力される。コンパイルが成功した場合には0が返される。
+
+-----
+if( resultInt != 0 )
+	{
+	System.out.println( "Compilation error." );
+	return;
+	}
+-----
+
+　コンパイルがエラーになった場合にはコードを実行せず、関数を抜ける。
+
+　コンパイルが成功した場合には、次のように動的に生成したクラス（「otf_11
+8663679990.class」など）をロードし、newInstanceを使ってインスタンスを生成
+する。
+
+-----
+	//Execute
+Class otfClass = cl.loadClass( className );
+Object o = otfClass.newInstance();
+-----
+
+　コードを実行するためにただ単にtoStringを呼び出す。toStringはObjectクラ
+スに備わっているものなので、ここではリフレクションなどのややこしい手間を
+かけずに動的に生成されたクラスのメソッドを実行することができる。非常にひ
+ねくれた形のポリモーフィズムの利用だと言えるだろう。
+
+-----
+o.toString();
+-----
+
+　言うまでもないがこのコードはネタなので、会社で書かないようにしていただ
+きたい（コンストラクタでもできる気がするが、試していない）。ソースコード
+の解説は以上である。
+
+
+■0x07.) まとめ
+
+　今回はjavacが使っている隠れAPIを使い、さらにクラスを使い捨てることでJa
+vaで動的にソースコードを扱う例について説明をおこなった。実際の開発でも（
+デザインパターンの）Factoryメソッドなどと組み合わせることで面白いことがで
+きるだろう。
+
+　筆者は実際にこのテクニックを使い、設定ファイルの記述にそのままJavaを使
+うということをやっている。これによって設定ファイル中でif文などによる条件
+分岐などが非常に簡単に記述できるようになった。
+
+　ちなみにJavaでのメタプログラミングに興味のある人はjavassistを試してみる
+ことをおすすめする。こちらはかなり洗練されたインターフェースで動的にクラ
+スの中身を書き換えることができる面白いライブラリだ。使い捨てではできない
+こともこちらでは可能となるだろう。
+
+　また、さらに深く潜りたいキミはJavaバイトコードを勉強するとよいだろう（
+筆者はめんどくさいので勉強してません…スマン○（自主規制））
+
+
+

@@ -1,0 +1,9 @@
+■IPUSIRON
+●Job:サイト更新
+●Web:- Security Akademeia -（http://akademeia.info/）
+●Mail:ipusiron@ruffnex.oc.to
+●Team（Group）:TeamSA
+●Comment:
+　今月12日に、トップページが改竄されてしまい、閲覧した皆様にご迷惑をおかけしました。詳細は、http://d.hatena.ne.jp/ipusiron/20031214で触れています。でも、この改竄事件のおかげで少しアクセス数が伸びたのは、不幸中の幸いだったかもしれません。これからもWizard Bibleをよろしくお願いします。
+●オススメツール:PuTTY
+　PuTTYはWindowsで動作するフリーのTelnet/SSHクライアントです。TeraTermPro＋TTSSHという組み合わせが一般的ですが、TeraTermProが対応している日本語文字コードはEUCとShiftJISの2種類だけです。アクセス先のLinuxがRedHatならば問題ありませんが、Fedora Coreだと不都合が生じます。RedHatの日本語文字コードはEUC、Fedora Coreの日本語文字コードはUTF-8だからです。こんなとき、UTF-8に対応したPuTTYを用いるとよいでしょう。本家（http://www.chiark.greenend.org.uk/~sgtatham/putty/）から英語版がダウンロードができ、、http://hp.vector.co.jp/authors/VA024651/#PuTTYkj_topから日本語パッチをダウンロードできます。

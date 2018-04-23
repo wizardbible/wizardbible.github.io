@@ -1,0 +1,1544 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: Intel x86命令の構造 version 2 ～ x86簡易ディスアセンブラの作成 ---
+
+著者：大原まひる
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　Wizard Bible 27で書いた内容の続きです。簡易なディスアセンブラを作成する
+ところまでやってしまいます。
+
+　僕の住んでいる世界では自動解析とか、解析結果の視覚化とかブームのようで、
+それに伴ったディスアセンブラの利用とか作成もまた話題に上っているようです。
+　時代を先取りしすぎてWB27で書いたことは見向きもされなかったのですが、よ
+うやく時代が追いついてきた気がしたので、ちょこっとバージョンアップしてみ
+ました。
+
+注: ブームといっても僕の住んでいる世界の話ですから一般の世界がどうなのか
+分かりません。
+
+
+■0x02.) Intel x86命令フォーマット
+
+　これからIntel x86アーキテクチャの命令フォーマットについて解説していきま
+すが、この項を読むに当たってはインテルから提供されている「IA-32 インテル 
+アーキテクチャ ソフトウェア デベロッパーズ マニュアル」を参考にするのがい
+いでしょう。
+
+Intel 日本語技術資料: http://www.intel.com/jp/download/index.htm#ia32
+
+
+●基本構造
+
+　Intel x86の命令はその命令を構成する数値を分解していくと次の構造になって
+います。それぞれの意味については後から説明します。
+
+|Prefix|Opcode|ModR/M|SIB|Displacement|Immediate|
+
+（図）http://wizardbible.org/48/image/instruction_structure.png
+
+　命令を構成する各要素が取りうる長さは次のようになります。
+
+| 要素         | 長さ(bytes) |
+|--------------+-------------|
+| Prefix       | 0,1,2,3,4   |
+| Opcode       | 1,2,3       |
+| ModR/M       | 0,1         |
+| SIB          | 0,1         |
+| Displacement | 0,1,2,4     |
+| Immediate    | 0,1,2,4     |
+
+　単純に計算すると一つの命令の取りうる長さは1バイトから15バイトの間になる
+と分かります。
+
+　命令を構成する各要素について見ていきます。
+
+
+●Prefixの分類
+
+　prefixは4つグループに分けられます。
+
+ - Group 1 :: リピート(Repeat Prefix),ロック(Lock Prefix)
+              F3h,F2h,F0h
+ - Group 2 :: セグメント(Segment Prefix),分岐ヒント(Branch Hint Prefix)
+              2Eh,36h,3Eh,26h,64h,65h,2Eh,3Eh
+ - Group 3 :: オペランドサイズ(Operand Size Prefix)
+              66h
+ - Group 4 :: アドレスサイズ(Address Size Prefix)
+              67h
+
+　各命令はこれらのグループからひとつずつプリフィックスを使うことができま
+す。プリフィックスなしのときも含めて、各グループからひとつずつなら使って
+も使わなくてもいいので、プリフィックスの長さが0-4の間になるわけです。
+
+　各グループの出てくる順番は決まっていません。
+
+○Group 1 - Repeat Prefix, Lock Prefix
+
+　REP、REPNEがそれぞれF3hとF2hで表されるリピートプリフィックスです。
+
+　通常ストリング命令と組み合わせて使われます。たとえばLODSD命令はADhなの
+で "REP LODSD", "REPNE LODSD"は次のようになります。のストリング命令の繰り返しに使われます。
+
+| LODSD       | AD   |
+| REP LODSD   | F3AD |
+| REPNE LODSD | F2AD |
+
+　LockはF0hで表され、マルチプロセッサ環境での共有メモリの排他的使用のため
+に使
+われます。
+
+
+○Group 2 - Segment Prefix, Branch Hint Prefix
+
+　DOSなどの16ビット環境でのアセンブリ言語プログラミングの経験があればセグ
+メントは基本かつ重要な概念ですが、32ビットWindowsのflatな環境で普通のソフ
+トウェアを作るのにはほとんど気にする必要がありません。
+
+　例えば、DOSではデータとコードをデータセグメントDS、コードセグメントCSに
+わけ、メモリ上のコードのアドレスを指すには"CS:"を頭につけてアドレスを指定、
+データを指すには"DS:"を頭につけてアドレスを指定するといった感じで使ってい
+ました。同じ7777hでもDS:7777hとCS:7777hでは別の場所を指すことになります。
+
+　WindowsではCSやDSを直接使うようなことはないですが、FSで指定されるセグメ
+ントが、そのスレッドの重要な情報を格納していたりするので、システムレベル
+の解析などではよく出てきます。
+
+　それぞれのセグメントプリフィックスには次の表の値が対応しています。
+
+| CS | 2Eh |
+| SS | 36h |
+| DS | 3Eh |
+| ES | 26h |
+| FS | 64h |
+| GS | 65h |
+
+　通常、デフォルトのセグメントはDSとなっていて、DS以外のセグメントを使い
+たいときにセグメントプリフィックスを命令のプレフィックス領域に配置します。
+
+例：Segment Prefix
+
+| MOV EAX, DWORD [EAX]    |    8B00 |
+| MOV EAX, DWORD CS:[EAX] | 2E 8B00 |
+
+
+○Group 3 - Operand Size Prefix
+
+　Windowsの32ビット環境なら32ビットオペランドがデフォルトで使用されます。
+16ビットオペランドを使いたいときにはオペランドサイズプリフィックスを付加
+する必要があります。66hがオペランドサイズプリフィックスを表します。
+
+例：Operand Size Prefix
+
+| MOV EAX,EAX |    89C0 |
+| MOV AX,AX   | 66 89C0 |
+
+
+○Group 4 - Address Size Prefix
+
+　Operand Size Prefixと同様で、デフォルトのアドレッシングモードを変更する
+のに使われます。67hがアドレスサイズプリフィックスを表します。
+
+例：Address Size Prefix
+
+| MOV EAX,DWORD DS:[EAX]   |    8B00 |
+| MOV EAX,DWORD DS:[BX+SI] | 67 8B00 |
+
+
+●Opcode
+
+　オペコードは命令の機能を決める柱となる部分です。この領域は1から3バイト
+の長さになっています（すべてのオペコードの表はインテルのマニュアルに詳し
+く載っていますので、それを参考にしてください）。
+
+　基本的にはこの領域で命令の種類と命令が使うレジスタやメモリが決まります。
+
+　x86の命令のなかでもっとも短いものは1バイトで表されます。1バイトで命令が
+完結するものの代表としてNOP命令があります。アセンブリ言語にそれほど詳しく
+なくてもNOPは90hだと知っている人も多いはずです。
+
+　"PUSH EAX"という命令も1バイトで表すことができます。50hがこれに対応して
+います。他のPUSH命令は次の表のようになっています。
+
+| PUSH EAX | 50h |
+| PUSH ECX | 51h |
+| PUSH EDX | 52h |
+| PUSH EBX | 53h |
+| PUSH ESP | 54h |
+| PUSH EBP | 55h |
+| PUSH ESI | 56h |
+| PUSH EDI | 57h |
+
+これらを2進数に直すと次のようになります。
+
+| PUSH EAX | 01010 000 |
+| PUSH ECX | 01010 001 |
+| PUSH EDX | 01010 010 |
+| PUSH EBX | 01010 011 |
+| PUSH ESP | 01010 100 |
+| PUSH EBP | 01010 101 |
+| PUSH ESI | 01010 110 |
+| PUSH EDI | 01010 111 |
+
+　先頭の5ビットでPUSH命令を表し、続く3ビットでレジスタを指定すると見るこ
+とができます。つまり"PUSH reg"=>"01010reg"と考えることができます。
+
+　実はx86命令では3ビットでのレジスタの指定方法が決められています。
+
+| reg | 8bits | 16bits | 32bits |
+|-----+-------+--------+--------|
+| 000 | AL    | AX     | EAX    |
+| 001 | CL    | CX     | ECX    |
+| 010 | DL    | DX     | EDX    |
+| 011 | BL    | BX     | EBX    |
+| 100 | AH    | SP     | ESP    |
+| 101 | CH    | BP     | EBP    |
+| 110 | DH    | SI     | ESI    |
+| 111 | BH    | DI     | EDI    |
+
+
+　この決まりを使って簡単に表すことができる命令を挙げておきます。
+
+| INC reg       | 01000reg |
+| DEC reg       | 01001reg |
+| PUSH reg      | 01010reg |
+| POP reg       | 01011reg |
+| XCHG EAX, reg | 10010reg |
+
+　例えば次のようになります。
+
+: INC EAX      => 01000 000 => 40h
+: INC ECX      => 01000 001 => 41h
+: XCHG EAX,EAX => 10010 000 => 90h
+: XCHG EAX,ECX => 10010 001 => 91h
+
+　"XCHG EAX,EAX"に注目してください。90hになっています。さっき見たNOPと同
+じです。つまり、NOP命令の「何もしない」動作の正体が"XCHG EAX,EAX"というこ
+とが分かります。そもそもNOP命令は"XCHG EAX,EAX"の別名として定義されている
+だけです。
+
+　次にもう少し複雑な例を見てみます。
+
+: 89C1h => 10001001 11000001 => MOV ECX,EAX
+
+　構造を分解すると次のようになります。
+
+| instruction | d | w |   | Mod | Reg1 | Reg2 |
+|-------------+---+---+---+-----+------+------|
+|      100010 | 0 | 1 |   |  11 |  000 | 001  |
+
+ - instruction :: 命令を表す部分
+ - d :: d=0のとき REG2,REG1 の順番。d=1のとき REG1, REG2 の順番。
+ - w :: 32ビット環境で、w=0 のとき8ビットモード、w=1 のとき32ビットモード
+        16ビット環境で、w=0 のとき8ビットモード、w=1 のとき16ビットモード
+
+　上の例で2バイト目はModR/Mという領域です。ModR/Mはオペランドの型を決定す
+る領域で、Mod=11のときには続く2つの3ビットは共にレジスタであることを意味
+しています。ModR/Mについては後で解説します。
+
+　"MOV ECX,EAX" (100010 0 1 11 000 001)をd=1にすると、"MOV EAX,ECX"(100010
+ 1 1 11 000 001)となります。
+　dの状態によりReg1とReg2が入れ替わることから、同じ命令を表す2通りの方法
+が考えられます。
+
+: MOV EDI,EAX => 100010 1 1 11 111 000 => 8B F8
+: MOV EDI,EAX => 100010 0 1 11 000 111 => 89 C7
+
+　つまりdのビットを反転させると同時にReg1とReg2を入れ替えれば同じ命令にな
+りま
+す。
+
+　次にwについて見てみます。
+　"MOV ECX,EAX"の例で、w=0として8ビットモードにすると次のように、続くレジ
+スタが8ビットレジスタになります。
+
+:100010 0 0 11 000 001 => MOV CL,AL
+
+
+　このMOV命令と同じ型で使われる命令には以下のようなものがあります。
+
+| OR  | 000010dw |
+| AND | 001000dw |
+| SUB | 001010dw |
+| XOR | 001100dw |
+| CMP | 001110dw |
+| ADD | 100000dw |
+| MOV | 100010dw |
+
+
+●ModR/M
+
+　ModR/M という領域について詳しく見てみます。
+　ModR/M は命令がどのような型のオペランドを使用するかを指定する領域です。
+以下のような構造になっていて、Modが2ビット、Reg/Opcodeが3ビット、R/Mが3ビ
+ットで構成されています。
+
+| Mod | Reg/Opcode | R/M |
+| bb  | bbb        | bbb |
+
+　オペコードには1つのオペランドをとるものも2つのオペランドをとるものもあ
+ります。1つのオペランドだけを必要とするとき、Reg/Opcodeの部分で、命令の種
+類が決まります。
+
+: NOT EAX => F7 D0 => 11110111 11 010 000
+: MUL EAX => F7 E0 => 11110111 11 100 000
+: DIV EAX => F7 F0 => 11110111 11 110 000
+
+　上のようにReg/Opcode領域がことなるだけで3つの異なる命令になります。
+
+　2つのオペランドを必要とする命令ではReg/Opcodeがレジスタを表します。
+
+: CMP EDX,EAX => 39 D0 => 00111001 11 010 000
+
+　010がReg/Opcode領域で、010に対応するレジスタEDXを表しています。
+
+　次にR/Mの領域について見てみます。
+　R/MはMod部分により意味が変わってきます。
+
+| Mod | 意味                                                                         |
+|-----+------------------------------------------------------------------------------|
+|  00 | メモリアドレス => [EAX]                                                      |
+|  01 | 1バイトのディスプレイメントを伴ったメモリアドレス => [EAX+11h]               |
+|  10 | 1ダブルワードのディスプレイスメントを伴ったメモリアドレス => [EAX+11111111h] |
+|  11 | レジスタ => EAX                                                                  |
+
+　次の表がModR/Mの組み合わせです。
+
+（図）http://wizardbible.org/48/image/modrm.png
+
+　この中で00 101のところはレジスタは使用されずにModR/Mの後にDWORD値がくる
+ことになります。
+　dispというところはディスプレイスメントを伴ったアドレスの指定になります。
+これについては後から解説します。
+　[-][-]で表されている 00 100, 01 100, 10 100のところはModR/Mの後にSIBが
+続きます。
+
+●SIB
+
+　SIBはScale、Index、Baseの略で、次のような構造になっています。
+
+| Scale | Index | Base |
+| bb    | bbb   | bbb  |
+
+　たとえばアドレスの指定で[EBP+EAX*2]となっているとき、EBPがBase(ベースレ
+ジスタ)、EAXがIndex(インデックスレジスタ)、2がScaleと呼ばれるものになって
+います。
+
+　Scaleは次のように、2のScale乗が実際に対応する値になります。
+
+: 00 => 2^0 = 1
+: 01 => 2^1 = 2
+: 10 => 2^2 = 4
+: 11 => 2^3 = 8
+
+　Indexはレジスタを3ビットで表します。
+
+　BaseもIndexと同じく3ビットでレジスタを表します。
+
+　いくつか例を挙げると次のようになります。
+
+| SIB        |             |
+|------------+-------------|
+| 00 000 001 | [1*EAX+ECX] |
+| 01 001 010 | [2*ECX+EDX] |
+| 10 010 111 | [4*EDX+EBX] |
+| 11 000 011 | [8*EAX+EBX] |
+
+
+●Displacement
+
+　ModR/MでModが01または10のときにはディスプレイスメントを伴ったアドレスの
+指定になります。ディスプレイスメントは [EBP+EAX+12345678h] のようなメモリ
+指定をしたときの 12345678h の部分になります。
+
+: MOV EDI,[EBP+12345678h] => 8B BD 78563412
+
+|        100010 |            1 |        1 |  10 |             111 |      101 | 12345678h    |
+| MOV r32,r/m32 | d=>REG1 REG2 | w=>32bit | Mod | Reg/Opcode=>EDI | R/M=>EBP | Displacement |
+
+●Immediate
+
+　即値を表す領域です。
+　たとえば、05hは"ADD EAX,imm32"を表し、05hに続いて即値を指定することにな
+ります。
+
+: 05 78 56 34 12 => ADD EAX,12345678h
+
+
+■0x03.) ディスアセンブラの実装の手法
+
+　ここまでの知識があれば、汎用命令についての基本的なディスアセンブラを作
+ることができます。
+
+　インテルの「IA-32 アーキテクチャ ソフトウェア デベロッパーズ マニュアル」
+の中巻の最後に「オペコードマップ」と「命令フォーマットおよびエンコーディ
+ング」という項目があります。ここにどの値にどの命令が対応付けされているの
+かが書かれています。命令の取りうるオペランドもオペコードマップから分かり
+ます。
+
+　ディスアセンブラのもっとも重要な機能は命令を構成する各フィールドを分解
+することです。つまり、プリフィックス、オペコード、ModR/M、SIB、ディスプレ
+イスメント、即値といったフィールドの有無とその長さを取得することが核とな
+ります。
+
+　これさえできれば、各フィールドを細かく読み取っていくだけです。フィール
+ドが分割されていれば、面倒ではありますが、個々の命令をアセンブリ言語の書
+式に変換するのは簡単に実装できます。プログラム中で使うにしても各フィール
+ドの内容を分割して取得し、そこから必要な情報を導き出していくことになりま
+す。
+
+　ここではフィールドを分割し、1 つの命令の長さを算出するディスアセンブラ
+（Length Disassemblerなどと呼ばれる）の実装について説明していきます。
+
+
+●プリフィックス解析
+
+　各命令は最大4バイトのプリフィックスを持ちます。
+
+　プリフィックス部分は可変長なので、これを解析しないと主となる処理を決め
+るオペコードが何バイト目からはじまるかが分かりません。また、オペランドサ
+イズプリフィックスとアドレスサイズプリフィックスが存在すればオペコードに
+続く領域のサイズが変更されるため、どのプリフィックスがあるのかを調べて、
+保存しておかないといけません。
+
+　プリフィックスも他の命令と同じオペコードマップを構成する要素のひとつな
+のでオペコードマップを参照して、プリフィックスなのかどうかを確かめること
+にします。
+
+　インテルの「IA-32 アーキテクチャ ソフトウェア デベロッパーズ マニュアル」
+の中巻の「オペコードマップ」と「命令フォーマットおよびエンコーディング」
+を元に書き出すと次のようになります（以下のプログラムはすべてC++）。
+
+-----
+/* opcode map */
+unsigned char op_tbl[256] = {
+  /* 00h */  C_MODRM     /* add Eb,Gb */
+  /* 01h */, C_MODRM     /* add Ev,Gv */
+  /* 02h */, C_MODRM /* add Gb,Eb */
+....
+  /* 63h */, C_MODRM /* arpl Ew,Gw */
+  /* 64h */, C_PREFIX      /* Prefix Group 2 : Segment Prefix: FS */
+  /* 65h */, C_PREFIX      /* Prefix Group 2 : Segment Prefix: GS */
+  /* 66h */, C_PREFIX      /* Prefix Group 3 : Operand Size Prefix */
+  /* 67h */, C_PREFIX      /* Prefix Group 4 : Address Size Prefix */
+  /* 68h */, C_IMM32         /* push imm32 */
+....
+-----
+
+　各命令の解析に必要なフラグをセットしてあります。プリフィックス命令には
+C_PREFIX、他のものに関してはオペコードのあとにModRMが続くとか、即値が続く
+とかの情報です。
+
+　解析対象となるバイト列から1バイトを取り出して、オペコードテーブルから対
+応するフラグを取り出します。フラグがC_PREFIXなら4つのプリフィックスのうち
+のどれなのかを保存します。これをプリフィックスが続く間、最大4回繰り返しま
+す。
+
+　解析した結果は、構造体にまとめて保存します。xxx_prefix_pはbool型でその
+プリフィックスがあるかどうかを保持します。prefix_lengthにはプリフィックス
+の合計サイズを保持しています。
+
+-----
+typedef struct _dsminfo{
+  unsigned char length; // 命令のトータルの長さ
+
+  // 各プリフィックスの有無
+  bool          repeat_lock_prefix_p;
+  bool          segment_branchhint_prefix_p;
+  bool          operand_size_prefix_p;
+  bool          address_size_prefix_p;
+  // プリフィックスの合計の長さ
+  unsigned char prefix_length;
+.....
+-----
+
+　コードは次のようになります。
+
+-----
+  op_tbl_flags = op_tbl[inst];
+
+  while(op_tbl_flags == C_PREFIX){
+    switch (inst){
+      /* repeat prefix */
+      case 0xF3:
+      case 0xF2:
+      case 0xF0:
+        dsm->repeat_lock_prefix_p=true;
+        break;
+
+      /* segment prefix */
+      case 0x2E:
+      case 0x36:
+      case 0x3E:
+      case 0x26:
+      case 0x64:
+      case 0x65:
+        dsm->segment_branchhint_prefix_p=true;
+        break;
+
+        /* operand size prefix */
+      case 0x66:
+        dsm->operand_size_prefix_p=true;
+        break;
+
+        /* address size prefix */
+      case 0x67:
+        dsm->address_size_prefix_p=true;
+        break;
+    };
+    dsm->length++;
+    pos++;
+    inst=*pos;
+    op_tbl_flags=op_tbl[inst];
+    if(dsm->length == 4){
+      break;
+    };
+  }; /* while - prefix */
+  dsm->prefix_length=dsm->length;
+  /* end of prefix scan */
+
+  dsm->length++;
+-----
+
+　これでプリフィックス部の解析が終了しました。
+
+　プリフィックス部の解析の次は命令の実際の処理を決定するオペコード部の解
+析に移ります。
+
+
+●2バイトオペコード
+
+　1バイトの表せる範囲は256個ではCPUの命令のすべてをカバーできません。そこ
+で0Fhをエスケープオペコードとして別のオペコードテーブルを参照するようにな
+っています。これが2バイトオペコードです。
+
+　ここでは必須の汎用命令にのみ対応できるようにしています。
+
+　オペコードテーブルの0FhにC_ESCAPEというフラグを立てておき、2バイトオペ
+コードを表すオペコードテーブルop_tbl2 []を定義しておきます。
+
+-----
+unsigned char op_tbl2[256] = {
+  /* 01h */  C_UNKNOWN
+  /* 02h */, C_UNKNOWN
+  /* 03h */, C_UNKNOWN
+....
+-----
+
+　これを解析する部分は命令を表す部分をひとつずつらして、参照するテーブルを
+op_tbl2 []にするだけです。
+
+-----
+  /****************************
+   * TWO bytes(ESCAPE) opecode
+   ****************************/
+  if (op_tbl_flags == C_ESCAPE){
+    pos++;
+    inst=*pos;
+    op_tbl_flags=op_tbl2[inst];
+    dsm->length++;
+    dsm->two_bytes_opcode_p = true;
+  };
+-----
+
+
+●未実装の命令
+
+　オペコードテーブルはすべてうまってるわけではなく予約領域として置いてあ
+る部分もあります。そのような領域にはオペコードテーブルでC_UNKNOWNというフ
+ラグを立てておいてエラーを返すようにします。
+
+　また、仕様では定義されていても、自分が作るディスアセンブラにはまだ解析
+できるようにしていないという部分にもC_UNKNOWNというフラグを立ててエラーを
+返すようにしています。
+
+-----
+  /*************************
+   * UNKNOWN
+   *************************/
+  if (op_tbl_flags == C_UNKNOWN){
+    dsm->length=0;
+    return dsm->length;
+  };
+-----
+
+●1バイト命令
+
+　次に、もっとも単純な1バイトで完結する命令を解析します。NOPやINT3命令な
+どが対象となります。
+
+　これらは、それ以降に何も続かないので解析は簡単に終わります。
+
+　1バイト命令にはC_SIZE1というフラグを立てておき、これを処理する部分を作
+ります。
+
+-----
+  /***********************
+   * ONE byte Instruction
+   ************************/
+  if (op_tbl_flags == C_SIZE1) {
+    pos++;
+    return dsm->length;
+  };
+-----
+
+　長さを1増加させればそれで解析終了となります。
+
+
+●ModR/Mの解析
+
+　次にModR/Mを持つ命令の処理をします。C_MODRMというフラグが立っている場合
+にここで処理を行います。
+
+　まず、Mod,Reg/Op,R/Mの3つの領域に分けて考えます。
+
+　ディスプレイスメントとSIBのチェックをします。どちらもMODが00,01,10,11の
+場合で分けて、さらにR/Mの場合分けで絞り込んで決定できます。ここではディス
+プレイスメントのチェックとSIBのチェックを別のブロックにします。
+
+　ディスプレイスメントのチェックでは、アドレスサイズプリフィックスの有無も
+チェックする必要があります。これによってサイズが2バイトなのか4バイトなのか
+も決定されます。
+
+-----
+  /**************************
+   * MODRM
+   **************************/
+  if (op_tbl_flags & C_MODRM){
+    pos++; /* pos point to MODRM byte */
+    inst=*pos;
+
+    dsm->length++; /* modrm byte */
+
+    /* check MODRM for displacement */
+    switch (inst & MODRM_MOD_MASK){
+
+      case MODRM_MOD00:
+        if((inst & MODRM_RM_MASK) == 0x05){ /* Mod:00 RM:101 == disp32 */
+          dsm->displacement_size = dsm->address_size_prefix_p ? 2 : 4;
+          dsm->length += dsm->displacement_size;
+
+        };
+        break;
+
+      case MODRM_MOD01:
+
+        dsm->displacement_size = 1;
+        dsm->length += dsm->displacement_size;
+        break;
+
+      case MODRM_MOD10:
+
+        dsm->displacement_size = dsm->address_size_prefix_p ? 2 : 4;
+        dsm->length += dsm->displacement_size;
+        break;
+    }; /* end modrm field check for disp*/
+
+    /* check MODRM for sib */
+    if((inst&MODRM_MOD_MASK) != MODRM_MOD11){
+      if((inst & MODRM_RM_MASK) == 0x04){ /* RM: 100 == SIB */
+        dsm->sib_p = true;
+        dsm->length++;
+      };
+    }; /* end modrm check for sib */
+  } /* MODRM */
+-----
+
+
+●即値の解析
+
+　次に即値を取る命令の解析です。C_IMM8,C_IMM32,C_IMM16がそれぞれ8,32,16ビ
+ットの即値を取る命令のフラグです。ただし、C_IMM32に関してはプリフィックス
+の影響を受けて32,16ビットのどちらかになります。
+
+　それぞれ、即値の長さが決定されれば、その分だけlengthを増加させれば終わ
+りです。
+
+-----
+ /********************
+   * IMM
+   ********************/
+
+  if(op_tbl_flags & C_IMM8){
+      dsm->length++;
+      dsm->c_imm8_size++;
+  };
+
+  if(op_tbl_flags & C_IMM32){
+    if(dsm->operand_size_prefix_p){
+      dsm->length+=2;
+      dsm->c_imm32_size=2;
+    }else if(dsm->address_size_prefix_p && !(op_tbl_flags & C_REL)){
+      dsm->length+=2;
+      dsm->c_imm32_size=2;
+    }
+    else{
+      dsm->length+=4;
+      dsm->c_imm32_size=4;
+    }
+  }
+
+  if(op_tbl_flags & C_IMM16){
+    dsm->length+=2;
+    dsm->c_imm16_size=2;
+  }
+  /* end of IMM */
+-----
+
+
+■0x04.) 高機能なディスアセンブラへ
+
+　ここまで、ディスアセンブラの骨格を示しましたが、これは不完全なものなの
+で、まだまだ改良の余地はあります。対応する命令を増やしたり、特殊な場合の
+処理を追加したりする必要があります。インテルのマニュアルを見ながら行うこ
+とになりますが、もう少しまとまったわかりやすいものとしてSandpile.orgのIA
+-32のページやx86asm.netのx86 Referenceのページが役に立ちます。わかりやす
+い表をメインに構成されたレファレンスになっているので、ディスアセンブラの
+実装するときに参照すると便利です。
+
+ - Sandpile.org IA-32 :: http://www.sandpile.org/ia32/index.htm
+ - x86asm.net reference :: http://ref.x86asm.net/
+
+
+●ソースコード
+
+-----  disasm.h
+/*
+ * File: disasm.h
+ *
+ *  - dsminfo structure
+ *  - opcode table
+ */
+
+#pragma pack(push)
+#pragma pack(1)
+
+
+/*
+ * struct dsminfo
+ */
+typedef struct _dsminfo{
+  unsigned char length; // length
+
+  // prefix
+  bool          repeat_lock_prefix_p;
+  bool          segment_branchhint_prefix_p;
+  bool          operand_size_prefix_p;
+  bool          address_size_prefix_p;
+  unsigned char prefix_length;
+
+  // displacement size
+  unsigned char displacement_size;
+  /*
+   * displacement size:
+   *   0== no displacement
+   *   1== 1 byte
+   *   2== 2 bytes
+   *   4== 4 bytes
+   */
+
+  bool sib_p; /* followed by SIB */
+
+  unsigned char c_imm8_size;  /* 0 == no C_IMM8
+                                 1 == 1 byte
+                                 2 == 2 bytes */
+  unsigned char c_imm32_size; /* 0 == no C_IMM32
+                                 2 == 2 bytes
+                                 4 == 4 bytes */
+  unsigned char c_imm16_size; /* 0 == no C_IMM16
+                                 2 == 2 bytes */
+
+  bool two_bytes_opcode_p;
+
+} dsminfo, *pdsminfo;
+
+
+
+/* flags */
+#define C_UNKNOWN 0x00          /* not implemented */
+#define C_PREFIX  0x01          /* Prefix */
+#define C_SIZE1   0x02          /* One byte instruction */
+#define C_MODRM   0x04          /* have ModRM */
+#define C_IMM8    0x08          /* 8 bits imm */
+#define C_IMM16   0x10          /* 16 bits imm */
+#define C_IMM32   0x20          /* 32 bits imm */
+#define C_REL     0x40          /* relative jmp */
+#define C_ESCAPE  0x80          /* escape byte for next byte */
+
+
+
+/*
+   ModR/M
+    Mod Reg/Op R/M
+     00    000 000
+*/
+#define MODRM_MOD_MASK 0xc0  /* Mod field mask: ModRM: 11 000 000 */
+#define MODRM_RM_MASK  0x07 /* RM field mask: ModRM: 00 000 111 */
+#define MODRM_MOD00    0 /* MOD 0b00 */
+#define MODRM_MOD01    1 /* MOD 0b01 */
+#define MODRM_MOD10    2 /* MOD 0b10 */
+#define MODRM_MOD11    3 /* MOD 0b11 */
+
+/* opcode map */
+unsigned char op_tbl[256] = {
+  /* 00h */  C_MODRM     /* add Eb,Gb */
+  /* 01h */, C_MODRM     /* add Ev,Gv */
+  /* 02h */, C_MODRM /* add Gb,Eb */
+  /* 03h */, C_MODRM /* add Gv,Ev */
+  /* 04h */, C_IMM8 /* add al,imm8 */
+  /* 05h */, C_IMM32 /* add eax,imm32 */
+  /* 06h */, C_SIZE1 /* push es */
+  /* 07h */, C_SIZE1 /* pop es */
+  /* 08h */, C_MODRM /* or Eb,Gb */
+  /* 09h */, C_MODRM /* or Ev,Gv */
+  /* 0Ah */, C_MODRM /* or Gb,Eb */
+  /* 0Bh */, C_MODRM /* or Gv,Ev */
+  /* 0Ch */, C_IMM8 /* or al,imm8 */
+  /* 0Dh */, C_IMM32 /* or eax,imm32 */
+  /* 0Eh */, C_SIZE1 /* push cs */
+  /* 0Fh */, C_ESCAPE /* 0x0F => */
+  /* 10h */, C_MODRM /* adc Eb,Gb */
+  /* 11h */, C_MODRM
+  /* 12h */, C_MODRM
+  /* 13h */, C_MODRM
+  /* 14h */, C_IMM8
+  /* 15h */, C_IMM32
+  /* 16h */, C_SIZE1 /* push ss */
+  /* 17h */, C_SIZE1 /* pop ss */
+  /* 18h */, C_MODRM /* sbb Eb,Gb */
+  /* 19h */, C_MODRM
+  /* 1Ah */, C_MODRM
+  /* 1Bh */, C_MODRM
+  /* 1Ch */, C_IMM8
+  /* 1Dh */, C_IMM32
+  /* 1Eh */, C_SIZE1 /* push ds */
+  /* 1Fh */, C_SIZE1 /* pop ds */
+  /* 20h */, C_MODRM /* and Eb,Gb */
+  /* 21h */, C_MODRM
+  /* 22h */, C_MODRM
+  /* 23h */, C_MODRM
+  /* 24h */, C_IMM8
+  /* 25h */, C_IMM32
+  /* 26h */, C_PREFIX      /* Prefix Group 2 : Segment Prefix: ES */
+  /* 27h */, C_SIZE1 /* daa */
+  /* 28h */, C_MODRM /* sub Eb,Gb*/
+  /* 29h */, C_MODRM
+  /* 2Ah */, C_MODRM
+  /* 2Bh */, C_MODRM
+  /* 2Ch */, C_IMM8
+  /* 2Dh */, C_IMM32
+  /* 2Eh */, C_PREFIX      /* Prefix Group 2 : Segment Prefix: CS */
+  /* 2Fh */, C_SIZE1 /* das */
+  /* 30h */, C_MODRM /* xor Eb,Gb */
+  /* 31h */, C_MODRM
+  /* 32h */, C_MODRM
+  /* 33h */, C_MODRM
+  /* 34h */, C_IMM8
+  /* 35h */, C_IMM32
+  /* 36h */, C_PREFIX      /* Prefix Group 2 : Segment Prefix: SS */
+  /* 37h */, C_SIZE1 /* AAA */
+  /* 38h */, C_MODRM /* cmp Eb,Gb */
+  /* 39h */, C_MODRM
+  /* 3Ah */, C_MODRM
+  /* 3Bh */, C_MODRM
+  /* 3Ch */, C_IMM8
+  /* 3Dh */, C_IMM32
+  /* 3Eh */, C_PREFIX     /* Preefix Group 2 : Segment Prefix: DS */
+  /* 3Fh */, C_SIZE1 /* aas */
+  /* 40h */, C_SIZE1 /* inc reg */
+  /* 41h */, C_SIZE1
+  /* 42h */, C_SIZE1
+  /* 43h */, C_SIZE1
+  /* 44h */, C_SIZE1
+  /* 45h */, C_SIZE1
+  /* 46h */, C_SIZE1
+  /* 47h */, C_SIZE1
+  /* 48h */, C_SIZE1 /* dec reg */
+  /* 49h */, C_SIZE1
+  /* 4Ah */, C_SIZE1
+  /* 4Bh */, C_SIZE1
+  /* 4Ch */, C_SIZE1
+  /* 4Dh */, C_SIZE1
+  /* 4Eh */, C_SIZE1
+  /* 4Fh */, C_SIZE1
+  /* 50h */, C_SIZE1 /* push reg *
+  /* 51h */, C_SIZE1
+  /* 52h */, C_SIZE1
+  /* 53h */, C_SIZE1
+  /* 54h */, C_SIZE1
+  /* 55h */, C_SIZE1
+  /* 56h */, C_SIZE1
+  /* 57h */, C_SIZE1
+  /* 58h */, C_SIZE1 /* pop reg */
+  /* 59h */, C_SIZE1
+  /* 5Ah */, C_SIZE1
+  /* 5Bh */, C_SIZE1
+  /* 5Ch */, C_SIZE1
+  /* 5Dh */, C_SIZE1
+  /* 5Eh */, C_SIZE1
+  /* 5Fh */, C_SIZE1
+  /* 60h */, C_SIZE1 /* pushad */
+  /* 61h */, C_SIZE1 /* popad */
+  /* 62h */, C_MODRM /* bound Gv, Ma */
+  /* 63h */, C_MODRM /* arpl Ew,Gw */
+  /* 64h */, C_PREFIX      /* Prefix Group 2 : Segment Prefix: FS */
+  /* 65h */, C_PREFIX      /* Prefix Group 2 : Segment Prefix: GS */
+  /* 66h */, C_PREFIX      /* Prefix Group 3 : Operand Size Prefix */
+  /* 67h */, C_PREFIX      /* Prefix Group 4 : Address Size Prefix */
+  /* 68h */, C_IMM32         /* push imm32 */
+  /* 69h */, C_MODRM+C_IMM32 /* imul Gv Ev imm32 */
+  /* 6Ah */, C_IMM8          /* push imm8 */
+  /* 6Bh */, C_MODRM+C_IMM8 /* imul Gv,Ev,imm8 */
+  /* 6Ch */, C_SIZE1 /* insb */
+  /* 6Dh */, C_SIZE1 /* insd */
+  /* 6Eh */, C_SIZE1 /* outsb */
+  /* 6Fh */, C_SIZE1 /* outsd */
+  /* 70h */, C_IMM8+C_REL /* jcc imm8 */
+  /* 71h */, C_IMM8+C_REL
+  /* 72h */, C_IMM8+C_REL
+  /* 73h */, C_IMM8+C_REL
+  /* 74h */, C_IMM8+C_REL
+  /* 75h */, C_IMM8+C_REL
+  /* 76h */, C_IMM8+C_REL
+  /* 77h */, C_IMM8+C_REL
+  /* 78h */, C_IMM8+C_REL
+  /* 79h */, C_IMM8+C_REL
+  /* 7Ah */, C_IMM8+C_REL
+  /* 7Bh */, C_IMM8+C_REL
+  /* 7Ch */, C_IMM8+C_REL
+  /* 7Dh */, C_IMM8+C_REL
+  /* 7Eh */, C_IMM8+C_REL
+  /* 7Fh */, C_IMM8+C_REL /* end of jcc imm8 */
+  /* 80h */, C_MODRM+C_IMM8 /* add or adc sbb and sub xor cmp / Eb,Ib */
+  /* 81h */, C_MODRM+C_IMM32/* add or adc sbb and sub xor cmp / Ev,Iv */
+  /* 82h */, C_MODRM+C_IMM8/* add or adc sbb and sub xor cmp / Eb,Ib */
+  /* 83h */, C_MODRM+C_IMM8/* add or adc sbb and sub xor cmp / Ev,Ib */
+  /* 84h */, C_MODRM /* test Eb,Gb */
+  /* 85h */, C_MODRM /* test Ev,Gv */
+  /* 86h */, C_MODRM /* xchg Eb,Gb */
+  /* 87h */, C_MODRM /* xchg Ev,Gv */
+  /* 88h */, C_MODRM /* mov Eb,Gb */
+  /* 89h */, C_MODRM /* mov Ev,Gv */
+  /* 8Ah */, C_MODRM /* mov Gb,Eb */
+  /* 8Bh */, C_MODRM /* mov Gv,Ev */
+  /* 8Ch */, C_MODRM /* mov Ew,Sw */
+  /* 8Dh */, C_MODRM /* lea Gv,M */
+  /* 8Eh */, C_MODRM /* mov Sw,Ew */
+  /* 8Fh */, C_MODRM /* pop Ev */
+  /* 90h */, C_SIZE1 /* nop / xchg eax, reg */
+  /* 91h */, C_SIZE1 /* xchg eax, reg */
+  /* 92h */, C_SIZE1 /* xchg eax, reg */
+  /* 93h */, C_SIZE1
+  /* 94h */, C_SIZE1
+  /* 95h */, C_SIZE1
+  /* 96h */, C_SIZE1
+  /* 97h */, C_SIZE1
+  /* 98h */, C_SIZE1 /* cbw/cwde */
+  /* 99h */, C_SIZE1 /* cwd/cdq */
+  /* 9Ah */, C_IMM32+C_IMM16 /* far call */
+  /* 9Bh */, C_SIZE1 /* wait/fwait */
+  /* 9Ch */, C_SIZE1 /* pushfd */
+  /* 9Dh */, C_SIZE1 /* popfd */
+  /* 9Eh */, C_SIZE1 /* sahf */
+  /* 9Fh */, C_SIZE1 /* lahf */
+  /* A0h */, C_IMM32 /* mov al, [imm32] */
+  /* A1h */, C_IMM32 /* mov eax, [imm32] */
+  /* A2h */, C_IMM32 /* mov [imm32], al */
+  /* A3h */, C_IMM32 /* mov [imm32], eax */
+  /* A4h */, C_SIZE1 /* movsb */
+  /* A5h */, C_SIZE1 /* movsd */
+  /* A6h */, C_SIZE1 /* cmpsb */
+  /* A7h */, C_SIZE1 /* cmpsd */
+  /* A8h */, C_IMM8 /* test al,imm8 */
+  /* A9h */, C_IMM32 /* test eax,imm32 */
+  /* AAh */, C_SIZE1 /* stosb */
+  /* ABh */, C_SIZE1 /* stosd */
+  /* ACh */, C_SIZE1 /* lodsb */
+  /* ADh */, C_SIZE1 /* lodsw */
+  /* AEh */, C_SIZE1 /* scasb */
+  /* AFh */, C_SIZE1 /* scasd */
+  /* B0h */, C_IMM8 /* mov al,imm8 (alt encoding) */
+  /* B1h */, C_IMM8 /* mov cl,imm8 */
+  /* B2h */, C_IMM8 /* mov dl,imm8 */
+  /* B3h */, C_IMM8 /* mov bl,imm8 */
+  /* B4h */, C_IMM8 /* mov ah,imm8 */
+  /* B5h */, C_IMM8 /* mov ch,imm8 */
+  /* B6h */, C_IMM8 /* mov dh,imm8 */
+  /* B7h */, C_IMM8 /* mov bh,imm8 */
+  /* B8h */, C_IMM32 /* mov eax,imm32 */
+  /* B9h */, C_IMM32 /* mov ecx,imm32 */
+  /* BAh */, C_IMM32 /* mov edx,imm32 */
+  /* BBh */, C_IMM32 /* mov ebx,imm32 */
+  /* BCh */, C_IMM32 
+  /* BDh */, C_IMM32
+  /* BEh */, C_IMM32
+  /* BFh */, C_IMM32 /* mov edi,imm32 */
+  /* C0h */, C_MODRM+C_IMM8 /* rol,ror,rcl,rcr,shl/sal,shr,sar Eb,imm8 */
+  /* C1h */, C_MODRM+C_IMM8 /* rol,ror,rcl,rcr,shl/sal,shr,sar Ev,imm8 */ 
+  /* C2h */, C_IMM16 /* ret imm16 */
+  /* C3h */, C_SIZE1 /* ret */
+  /* C4h */, C_MODRM /* les Gv,Mp*/
+  /* C5h */, C_MODRM /* lds Gv,Mp */
+  /* C6h */, C_MODRM+C_IMM8 /* mov Eb,imm8 */
+  /* C7h */, C_MODRM+C_IMM32 /* mov Ev,imm32 */
+  /* C8h */, C_IMM8+C_IMM16 /* enter Iw, Ib */
+  /* C9h */, C_SIZE1 /* leave */
+  /* CAh */, C_IMM16 /* retf Iw*/
+  /* CBh */, C_SIZE1 /* retf */
+  /* CCh */, C_SIZE1 /* int3 */
+  /* CDh */, C_IMM8 /* int Ib */
+  /* CEh */, C_SIZE1 /* into */
+  /* CFh */, C_SIZE1 /* iret */
+  /* D0h */, C_MODRM /* rol,ror,rcl,rcr,shl/sal,shr,sar Eb,1 */
+  /* D1h */, C_MODRM /* rol,ror,rcl,rcr,shl/sal,shr,sar Ev,1 */
+  /* D2h */, C_MODRM /* rol,ror,rcl,rcr,shl/sal,shr,sar Eb,cl */
+  /* D3h */, C_MODRM /* rol,ror,rcl,rcr,shl/sal,shr,sar Ev,cl */
+  /* D4h */, C_IMM8 /* aam imm8 */
+  /* D5h */, C_IMM8 /* aad imm8 */
+  /* D6h */, C_SIZE1 /* salc */
+  /* D7h */, C_SIZE1 /* xlat */
+  /* D8h */, C_MODRM /* FPU -- modrm */
+  /* D9h */, C_MODRM
+  /* DAh */, C_MODRM
+  /* DBh */, C_MODRM
+  /* DCh */, C_MODRM
+  /* DDh */, C_MODRM
+  /* DEh */, C_MODRM
+  /* DFh */, C_MODRM /* end of FPU */
+  /* E0h */, C_IMM8+C_REL /* loopne/loopnz imm8 */
+  /* E1h */, C_IMM8+C_REL /* loope/loopz imm8 */
+  /* E2h */, C_IMM8+C_REL /* loop imm8 */
+  /* E3h */, C_IMM8+C_REL /* jecxz imm8 */
+  /* E4h */, C_IMM8 /* in al,imm8 */
+  /* E5h */, C_IMM8 /* in eax,imm8 */
+  /* E6h */, C_IMM8 /* out imm8,al */
+  /* E7h */, C_IMM8 /* out imm8,eax */
+  /* E8h */, C_IMM32+C_REL /* call imm32 */
+  /* E9h */, C_IMM32+C_REL /* jmp imm32 (near) */
+  /* EAh */, C_IMM32+C_IMM16 /* jmp far imm16 (far) */
+  /* EBh */, C_IMM8 /* jmp imm8 (short) */
+  /* ECh */, C_SIZE1 /* in al,dx */
+  /* EDh */, C_SIZE1 /* in eax,dx */
+  /* EEh */, C_SIZE1 /* out dx,al */
+  /* EFh */, C_SIZE1 /* out dx,eax */
+  /* F0h */, C_PREFIX     /* Prefix Group 1 - Lock Prefix: LOCK */
+  /* F1h */, C_SIZE1 /* ICEBP (INT1 - ICE Break Point) */
+  /* F2h */, C_PREFIX     /* Prefix Group 1 - Repeat Prefix: REPNE */
+  /* F3h */, C_PREFIX     /* Prefix Group 1 - Repeat Prefix: REP/REPE */
+  /* F4h */, C_SIZE1 /* hlt */
+  /* F5h */, C_SIZE1 /* cmc */
+  /* F6h */, C_MODRM+C_IMM8 /* test not neg mul imul div idiv */
+  /* F7h */, C_MODRM+C_IMM32 /* test not neg mul imul div idiv */
+  /* F8h */, C_SIZE1 /* clc */
+  /* F9h */, C_SIZE1 /* stc */
+  /* FAh */, C_SIZE1 /* cli */
+  /* FBh */, C_SIZE1 /* sti */
+  /* FCh */, C_SIZE1 /* cld */
+  /* FDh */, C_SIZE1 /* std */
+  /* FEh */, C_MODRM /* inc/dec */
+  /* FFh */, C_MODRM /* inc/dec  */
+};
+
+
+/************************************/
+unsigned char op_tbl2[256] = {
+  /* 01h */  C_UNKNOWN
+  /* 02h */, C_UNKNOWN
+  /* 03h */, C_UNKNOWN
+  /* 04h */, C_UNKNOWN
+  /* 05h */, C_UNKNOWN
+  /* 06h */, C_UNKNOWN
+  /* 07h */, C_UNKNOWN
+  /* 08h */, C_UNKNOWN
+  /* 09h */, C_UNKNOWN
+  /* 0Ah */, C_UNKNOWN
+  /* 0Bh */, C_UNKNOWN
+  /* 0Ch */, C_UNKNOWN
+  /* 0Dh */, C_UNKNOWN
+  /* 0Eh */, C_UNKNOWN
+  /* 0Fh */, C_UNKNOWN
+  /* 10h */, C_UNKNOWN
+  /* 11h */, C_UNKNOWN
+  /* 12h */, C_UNKNOWN
+  /* 13h */, C_UNKNOWN
+  /* 14h */, C_UNKNOWN
+  /* 15h */, C_UNKNOWN
+  /* 16h */, C_UNKNOWN
+  /* 17h */, C_UNKNOWN
+  /* 18h */, C_UNKNOWN
+  /* 19h */, C_UNKNOWN
+  /* 1Ah */, C_UNKNOWN
+  /* 1Bh */, C_UNKNOWN
+  /* 1Ch */, C_UNKNOWN
+  /* 1Dh */, C_UNKNOWN
+  /* 1Eh */, C_UNKNOWN
+  /* 1Fh */, C_UNKNOWN
+  /* 20h */, C_MODRM /* mov Rd,Cd (mov reg,crx) */
+  /* 21h */, C_MODRM /* mov Rd,Dd (mov reg,drx) */
+  /* 22h */, C_MODRM /* mov Cd,Rd (mov crx,reg) */
+  /* 23h */, C_MODRM /* mov Dd,Rd (mov drx,reg) */
+  /* 24h */, C_UNKNOWN
+  /* 25h */, C_UNKNOWN
+  /* 26h */, C_UNKNOWN
+  /* 27h */, C_UNKNOWN
+  /* 28h */, C_UNKNOWN
+  /* 29h */, C_UNKNOWN
+  /* 2Ah */, C_UNKNOWN
+  /* 2Bh */, C_UNKNOWN
+  /* 2Ch */, C_UNKNOWN
+  /* 2Dh */, C_UNKNOWN
+  /* 2Eh */, C_UNKNOWN
+  /* 2Fh */, C_UNKNOWN
+  /* 30h */, C_SIZE1 /* wrmsr */
+  /* 31h */, C_SIZE1 /* rdtsc */
+  /* 32h */, C_SIZE1 /* rdmsr */
+  /* 33h */, C_SIZE1 /* rdpmc */
+  /* 34h */, C_SIZE1 /* sysenter */
+  /* 35h */, C_SIZE1 /* sysexit */
+  /* 36h */, C_UNKNOWN
+  /* 37h */, C_UNKNOWN
+  /* 38h */, C_UNKNOWN
+  /* 39h */, C_UNKNOWN
+  /* 3Ah */, C_UNKNOWN
+  /* 3Bh */, C_UNKNOWN
+  /* 3Ch */, C_UNKNOWN
+  /* 3Dh */, C_UNKNOWN
+  /* 3Eh */, C_UNKNOWN
+  /* 3Fh */, C_UNKNOWN
+  /* 40h */, C_UNKNOWN
+  /* 41h */, C_UNKNOWN
+  /* 42h */, C_UNKNOWN
+  /* 43h */, C_UNKNOWN
+  /* 44h */, C_UNKNOWN
+  /* 45h */, C_UNKNOWN
+  /* 46h */, C_UNKNOWN
+  /* 47h */, C_UNKNOWN
+  /* 48h */, C_UNKNOWN
+  /* 49h */, C_UNKNOWN
+  /* 4Ah */, C_UNKNOWN
+  /* 4Bh */, C_UNKNOWN
+  /* 4Ch */, C_UNKNOWN
+  /* 4Dh */, C_UNKNOWN
+  /* 4Eh */, C_UNKNOWN
+  /* 4Fh */, C_UNKNOWN
+  /* 50h */, C_UNKNOWN
+  /* 51h */, C_UNKNOWN
+  /* 52h */, C_UNKNOWN
+  /* 53h */, C_UNKNOWN
+  /* 54h */, C_UNKNOWN
+  /* 55h */, C_UNKNOWN
+  /* 56h */, C_UNKNOWN
+  /* 57h */, C_UNKNOWN
+  /* 58h */, C_UNKNOWN
+  /* 59h */, C_UNKNOWN
+  /* 5Ah */, C_UNKNOWN
+  /* 5Bh */, C_UNKNOWN
+  /* 5Ch */, C_UNKNOWN
+  /* 5Dh */, C_UNKNOWN
+  /* 5Eh */, C_UNKNOWN
+  /* 5Fh */, C_UNKNOWN
+  /* 60h */, C_UNKNOWN
+  /* 61h */, C_UNKNOWN
+  /* 62h */, C_UNKNOWN
+  /* 63h */, C_UNKNOWN
+  /* 64h */, C_UNKNOWN
+  /* 65h */, C_UNKNOWN
+  /* 66h */, C_UNKNOWN
+  /* 67h */, C_UNKNOWN
+  /* 68h */, C_UNKNOWN
+  /* 69h */, C_UNKNOWN
+  /* 6Ah */, C_UNKNOWN
+  /* 6Bh */, C_UNKNOWN
+  /* 6Ch */, C_UNKNOWN
+  /* 6Dh */, C_UNKNOWN
+  /* 6Eh */, C_UNKNOWN
+  /* 6Fh */, C_UNKNOWN
+  /* 70h */, C_UNKNOWN
+  /* 71h */, C_UNKNOWN
+  /* 72h */, C_UNKNOWN
+  /* 73h */, C_UNKNOWN
+  /* 74h */, C_UNKNOWN
+  /* 75h */, C_UNKNOWN
+  /* 76h */, C_UNKNOWN
+  /* 77h */, C_UNKNOWN
+  /* 78h */, C_UNKNOWN
+  /* 79h */, C_UNKNOWN
+  /* 7Ah */, C_UNKNOWN
+  /* 7Bh */, C_UNKNOWN
+  /* 7Ch */, C_UNKNOWN
+  /* 7Dh */, C_UNKNOWN
+  /* 7Eh */, C_UNKNOWN
+  /* 7Fh */, C_UNKNOWN
+  /* 80h */, C_IMM32 /* jcc imm32 */
+  /* 81h */, C_IMM32
+  /* 82h */, C_IMM32
+  /* 83h */, C_IMM32
+  /* 84h */, C_IMM32
+  /* 85h */, C_IMM32
+  /* 86h */, C_IMM32
+  /* 87h */, C_IMM32
+  /* 88h */, C_IMM32
+  /* 89h */, C_IMM32
+  /* 8Ah */, C_IMM32
+  /* 8Bh */, C_IMM32
+  /* 8Ch */, C_IMM32
+  /* 8Dh */, C_IMM32
+  /* 8Eh */, C_IMM32
+  /* 8Fh */, C_IMM32 /* end: jcc imm32 */
+  /* 90h */, C_UNKNOWN
+  /* 91h */, C_UNKNOWN
+  /* 92h */, C_UNKNOWN
+  /* 93h */, C_UNKNOWN
+  /* 94h */, C_UNKNOWN
+  /* 95h */, C_UNKNOWN
+  /* 96h */, C_UNKNOWN
+  /* 97h */, C_UNKNOWN
+  /* 98h */, C_UNKNOWN
+  /* 99h */, C_UNKNOWN
+  /* 9Ah */, C_UNKNOWN
+  /* 9Bh */, C_UNKNOWN
+  /* 9Ch */, C_UNKNOWN
+  /* 9Dh */, C_UNKNOWN
+  /* 9Eh */, C_UNKNOWN
+  /* 9Fh */, C_UNKNOWN
+  /* A0h */, C_SIZE1 /* push fs */
+  /* A1h */, C_SIZE1 /* pop fs */
+  /* A2h */, C_SIZE1 /* cpuid */
+  /* A3h */, C_MODRM /* bt Ev,Gv */
+  /* A4h */, C_UNKNOWN
+  /* A5h */, C_UNKNOWN
+  /* A6h */, C_UNKNOWN
+  /* A7h */, C_UNKNOWN
+  /* A8h */, C_SIZE1 /* push gs */
+  /* A9h */, C_SIZE1 /* pop gs */
+  /* AAh */, C_UNKNOWN
+  /* ABh */, C_UNKNOWN
+  /* ACh */, C_UNKNOWN
+  /* ADh */, C_UNKNOWN
+  /* AEh */, C_UNKNOWN
+  /* AFh */, C_MODRM /* imul Gv,Ev */
+  /* B0h */, C_MODRM /* cmpxchg Eb,Gb */
+  /* B1h */, C_MODRM /* cmpxchg Ev,Gv */
+  /* B2h */, C_UNKNOWN
+  /* B3h */, C_MODRM /* btr Ev,Gv */
+  /* B4h */, C_UNKNOWN
+  /* B5h */, C_UNKNOWN
+  /* B6h */, C_MODRM /* movzx Gv,Eb */
+  /* B7h */, C_MODRM /* movzx Gv,Ew */
+  /* B8h */, C_UNKNOWN
+  /* B9h */, C_UNKNOWN
+  /* BAh */, C_MODRM+C_IMM8 /* bt/bts/btr/btc Ev,imm8 */
+  /* BBh */, C_MODRM /* BTC Ev,Gv */
+  /* BCh */, C_MODRM /* BSF Gv,Ev */
+  /* BDh */, C_MODRM /* BSR Gv,Ev */
+  /* BEh */, C_MODRM /* movsx Gv,Eb */
+  /* BFh */, C_MODRM /* movsx Gv,Ew */
+  /* C0h */, C_UNKNOWN
+  /* C1h */, C_UNKNOWN
+  /* C2h */, C_UNKNOWN
+  /* C3h */, C_UNKNOWN
+  /* C4h */, C_UNKNOWN
+  /* C5h */, C_UNKNOWN
+  /* C6h */, C_UNKNOWN
+  /* C7h */, C_UNKNOWN
+  /* C8h */, C_SIZE1 /* bswap reg */
+  /* C9h */, C_SIZE1
+  /* CAh */, C_SIZE1
+  /* CBh */, C_SIZE1
+  /* CCh */, C_SIZE1
+  /* CDh */, C_SIZE1
+  /* CEh */, C_SIZE1
+  /* CFh */, C_SIZE1 /* end: bswap reg */
+  /* D0h */, C_UNKNOWN
+  /* D1h */, C_UNKNOWN
+  /* D2h */, C_UNKNOWN
+  /* D3h */, C_UNKNOWN
+  /* D4h */, C_UNKNOWN
+  /* D5h */, C_UNKNOWN
+  /* D6h */, C_UNKNOWN
+  /* D7h */, C_UNKNOWN
+  /* D8h */, C_UNKNOWN
+  /* D9h */, C_UNKNOWN
+  /* DAh */, C_UNKNOWN
+  /* DBh */, C_UNKNOWN
+  /* DCh */, C_UNKNOWN
+  /* DDh */, C_UNKNOWN
+  /* DEh */, C_UNKNOWN
+  /* DFh */, C_UNKNOWN
+  /* E0h */, C_UNKNOWN
+  /* E1h */, C_UNKNOWN
+  /* E2h */, C_UNKNOWN
+  /* E3h */, C_UNKNOWN
+  /* E4h */, C_UNKNOWN
+  /* E5h */, C_UNKNOWN
+  /* E6h */, C_UNKNOWN
+  /* E7h */, C_UNKNOWN
+  /* E8h */, C_UNKNOWN
+  /* E9h */, C_UNKNOWN
+  /* EAh */, C_UNKNOWN
+  /* EBh */, C_UNKNOWN
+  /* ECh */, C_UNKNOWN
+  /* EDh */, C_UNKNOWN
+  /* EEh */, C_UNKNOWN
+  /* EFh */, C_UNKNOWN
+  /* F0h */, C_UNKNOWN
+  /* F1h */, C_UNKNOWN
+  /* F2h */, C_UNKNOWN
+  /* F3h */, C_UNKNOWN
+  /* F4h */, C_UNKNOWN
+  /* F5h */, C_UNKNOWN
+  /* F6h */, C_UNKNOWN
+  /* F7h */, C_UNKNOWN
+  /* F8h */, C_UNKNOWN
+  /* F9h */, C_UNKNOWN
+  /* FAh */, C_UNKNOWN
+  /* FBh */, C_UNKNOWN
+  /* FCh */, C_UNKNOWN
+  /* FDh */, C_UNKNOWN
+  /* FEh */, C_UNKNOWN
+  /* FFh */, C_UNKNOWN
+};
+
+#pragma pack(pop)
+-----
+
+-----  disasm.cpp
+/*
+  IA32 32bits mode specific length disassembler
+*/
+
+#include <stdio.h>
+#include <string.h>
+
+#include "disasm.h" /* opcode table */
+
+
+/*
+  Func:
+    int disasm()
+
+  @params:
+   inst_start:
+     ディスアセンブルする命令
+   dsm :
+     ディスアセンブルの結果を格納する構造体
+  @return:
+    length:
+*/
+int disasm(unsigned char* inst_start, dsminfo* dsm)
+{
+  unsigned char inst;
+  unsigned char* pos;
+  unsigned char op_tbl_flags;
+
+  memset(dsm,0,sizeof(dsminfo));
+  pos = inst_start;
+  inst = *pos;
+
+  /**************
+   * prefix の解析
+   **************/
+  op_tbl_flags = op_tbl[inst];
+ 
+  while(op_tbl_flags == C_PREFIX){
+    switch (inst){
+      /* repeat prefix */
+      case 0xF3:
+      case 0xF2:
+      case 0xF0:
+        dsm->repeat_lock_prefix_p=true;
+        break;
+
+      /* segment prefix */
+      case 0x2E:
+      case 0x36:
+      case 0x3E:
+      case 0x26:
+      case 0x64:
+      case 0x65:
+        dsm->segment_branchhint_prefix_p=true;
+        break;
+
+        /* operand size prefix */
+      case 0x66:
+        dsm->operand_size_prefix_p=true;
+        break;
+
+        /* address size prefix */
+      case 0x67:
+        dsm->address_size_prefix_p=true;
+        break;
+    };
+    dsm->length++;
+    pos++;
+    inst=*pos;
+    op_tbl_flags=op_tbl[inst];
+    if(dsm->length == 4){
+      break;
+    };
+  }; /* while - prefix */
+  dsm->prefix_length=dsm->length;
+  /* end of prefix scan */
+
+  dsm->length++;
+
+
+
+
+  /****************************
+   * TWO bytes(ESCAPE) opecode
+   ****************************/
+  if (op_tbl_flags == C_ESCAPE){
+    pos++;
+    inst=*pos;
+    op_tbl_flags=op_tbl2[inst];
+    dsm->length++;
+    dsm->two_bytes_opcode_p = true;
+  };
+
+
+
+  /*************************
+   * UNKNOWN
+   *************************/
+  if (op_tbl_flags == C_UNKNOWN){
+    dsm->length=0;
+    return dsm->length;
+  };
+
+
+  /***********************
+   * ONE byte Instruction
+   ************************/
+  if (op_tbl_flags == C_SIZE1) {
+    pos++;
+    return dsm->length;
+  };
+
+
+  /**************************
+   * MODRM
+   **************************/
+  if (op_tbl_flags & C_MODRM){
+    pos++; /* pos point to MODRM byte */
+    inst=*pos;
+
+    dsm->length++; /* modrm byte */
+
+    /* check MODRM for displacement */
+    switch (inst & MODRM_MOD_MASK){
+
+      case MODRM_MOD00:
+        if((inst & MODRM_RM_MASK) == 0x05){ /* Mod:00 RM:101 == disp32 */
+          dsm->displacement_size = dsm->address_size_prefix_p ? 2 : 4;
+          dsm->length += dsm->displacement_size;
+
+        };
+        break;
+
+      case MODRM_MOD01:
+
+        dsm->displacement_size = 1;
+        dsm->length += dsm->displacement_size;
+        break;
+
+      case MODRM_MOD10:
+
+        dsm->displacement_size = dsm->address_size_prefix_p ? 2 : 4;
+        dsm->length += dsm->displacement_size;
+        break;
+    }; /* end modrm field check for disp*/
+
+    /* check MODRM for sib */
+    if((inst&MODRM_MOD_MASK) != MODRM_MOD11){
+      if((inst & MODRM_RM_MASK) == 0x04){ /* RM: 100 == SIB */
+        dsm->sib_p = true;
+        dsm->length++;
+      };
+    }; /* end modrm check for sib */
+  } /* MODRM */
+
+  /********************
+   * IMM
+   ********************/
+
+  if(op_tbl_flags & C_IMM8){
+      dsm->length++;
+      dsm->c_imm8_size++;
+  };
+
+  if(op_tbl_flags & C_IMM32){
+    if(dsm->operand_size_prefix_p){
+      dsm->length+=2;
+      dsm->c_imm32_size=2;
+    }else if(dsm->address_size_prefix_p && !(op_tbl_flags & C_REL)){
+      dsm->length+=2;
+      dsm->c_imm32_size=2;
+    }
+    else{
+      dsm->length+=4;
+      dsm->c_imm32_size=4;
+    }
+  }
+
+  if(op_tbl_flags & C_IMM16){
+    dsm->length+=2;
+    dsm->c_imm16_size=2;
+  }
+  /* end of IMM */
+
+
+
+  return dsm->length;
+
+
+};
+
+
+void display(dsminfo dsm)
+{
+
+  printf("Length: %d\n", dsm.length);
+
+  printf("Prefix: Rep Seg Ope Adr\n");
+  printf("        %3d %3d %3d %3d\n",
+         dsm.repeat_lock_prefix_p,
+         dsm.segment_branchhint_prefix_p,
+         dsm.operand_size_prefix_p,
+         dsm.address_size_prefix_p);
+  printf("Prefix length: %d\n",dsm.prefix_length);
+  printf("Displacement Length: %d\n", dsm.displacement_size);
+  printf("SIB?   : %3d\n", dsm.sib_p);
+  printf("2-byte Opcode?:  %d\n",dsm.two_bytes_opcode_p);
+  printf("imm8:  %d\n", dsm.c_imm8_size);
+  printf("imm16: %d\n", dsm.c_imm16_size);
+  printf("imm32: %d\n", dsm.c_imm32_size);
+
+};
+
+int main(int argc, char* argv[])
+{
+  dsminfo dsm;
+
+//  unsigned char instdata[]= {0x50};
+//  unsigned char instdata[]= {0x08,0xc0};
+  unsigned char instdata[]= {
+    // 0x66,0x05,0x08,0x00
+    0x81,0xc6,0x08,0x00,0x00,0x00,0x00
+  };
+  
+  disasm(instdata, &dsm);
+  display(dsm);
+  
+  return 0;
+};
+-----
+
+
+

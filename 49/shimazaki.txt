@@ -1,0 +1,165 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: Androidでアプリを作る ---
+
+著者：嶋崎　聡
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) Androidのネタ
+　Androidという名前、最近よく聞きますよね。何かとiPhoneと比較されているア
+レです。携帯電話用のプラットフォームと思われがちですが、実際はそうでもあ
+りません。
+　Androidを採用した携帯端末を出しているのは、まだNTTDoCoMo一社のみですが、
+携帯電話にとどまらず、組み込み用途で使われる機会が増えているそうで話題に
+あがることも増えてきました。
+　先日久しぶりに会った電話が大好きな人が、後日電話をかけてきて「これから
+はAndroidがあついですね！」と開口一番言い出してびっくりしました。また、こ
+の間見に行ったET2009では、富士通が液晶テレビに組み込んでデモやっていまし
+た。それ以外のメーカーさんでもAndroidの文字を掲げているところが多かったで
+す。
+　そこでAndroidがこの先、結構な話のネタになりそうなこともありますので、WB
+にはそぐわない内容かもしれませんが、GoogleAppEngineと組み合わせてなんかや
+るかーというと考えてみました。
+　そこで、まずは開発環境のインストールとちょっとしたものを動かしてみると
+ころまでを書いていきます。
+
+
+■0x02.) 開発環境のインストール
+
+　Androidの開発には、端末代や通信費、Androidマーケットへ出店料以外のお金
+はかかりません。開発環境もSDKも無料です。が、実際に始めようと思ったときに
+何をどうすればいいのかわからん状態でした。
+　最初に必要なのは、Java(JRE)、Eclipse、AndroidSDKをそれぞれダウンロード
+してインストールすることです。
+
+Java(Java2SE/JRE):http://java.sun.com/javase/ja/6/download.html
+Eclipse(Ganymede):http://www.eclipse.org/downloads/packages/release/ganymede/sr2
+AndroidSDK:http://developer.android.com/sdk/index.html
+
+　どれも相手サーバーの都合でダウンロードに時間がかかりますが、そのうちに
+落ちてきますので気長に待ちましょう。ダウンロードが終わったら、Javaはイン
+ストーラーでインストールします。EclipseやAndroidSDKは解凍して適当なドライ
+ブにコピーしましょう。
+　コピーが終わったら、Eclipseを起動してAndroidSDKを利用するための設定をし
+ます。Eclipseは初回の起動時にworkspaceを保存する場所を聞いてきます。これ
+はどこでもかまわないと思いますが、HDDに余裕があればOSとは違う場所にしてお
+くとよいと思います。
+　Help→SoftwareUpdate→Add Siteで「http://dl-ssl.google.com/android/eclipse/」を登録してADTをインストールします。次にWindowからPreferencesのAndroidの項
+目にあるSDK LocationにSDKを解凍した場所を設定します。
+　ADTがインストールされると携帯電話の形をしたボタン(Opens the Android SD
+K and AVD Manager、以下、AVDマネージャ)が出てきますので、これを押してくだ
+さい。
+　Android SDK and AVD Managerが開きますので、左側のメニューからAvailable
+Packagesを選択しましょう。右側にはチェックボックスとともに「https://dl-g
+oogle.com/android/repository/repository.xml」と表示されます。ここをチェッ
+クしてRefreshを押してください。
+　現在利用できるSDKがリストに表示されますが全部ダウンロードしていると大変
+なので、まずはGoogle APIsのAndroid API 4とSDKの1.6を入れましょう。この2つ
+にチェックを入れて、Install Selectedを押します(残りのSDKはあとで入れてお
+いてください)。
+　Installing Archivesというウィンドウにインストール状況が表示されますので、
+これが終わるまでほかのことで時間をつぶしているといいでしょう。
+
+
+■0x03.) お試しプロジェクトのインポート
+
+　まずは、「Hello!World!」と言いたいところですが、その辺は各自やってもら
+うことにして、ちょこちょこと作ったアプリを見てもらいます。
+　Threemin.zipを適当なところに解凍して、EclipseのProjectExplorerで右クリ
+ック、Importを選びます。ImportメニューからExisting Projects into Workspa
+ceを選びます。
+　Select root directoryで解凍した先のフォルダを選択するとProjectsの中に「
+Threemin」が出てきますので、これを選んでFinishを押すとProjectExplorerに読
+み込まれます。このままだとエラーが出ますのでThreeminのところで右クリック
+→Android Tools→Fix Project Propertiesを選んでください。
+　次にAVDマネージャからAVD(Android仮想デバイス)を作ります。
+　Newボタンを押すとCreate New AVDウィンドウが開きます。
+　Nameは仮想デバイスの名前、わかりやすいものをつけてください。
+　TargetはSDK1.6 - API Level 4, revision 2を選びましょう。
+　SD Cardは、最初はSize 128MB で十分です。
+　その他の項目は現状は特に設定する必要はありませんので、Create AVDボタン
+を押してください。ここで、自分のユーザー名が全角の方は注意が必要です。AV
+Dを起動する際にファイル名/パス名に全角が入っていると起動できません。その
+場合は半角の名前のユーザーを作って作業してください。
+　この原稿の前後でSDKがバージョンアップされました。以前は面倒な入れ替えの
+作業が必要でしたが、今回はAVDマネージャからAvailable Packagesを選んでgoo
+gle側のリポジトリから更新状況が調べられます。新しいものがあった場合は、イ
+ンストールの時と同じようにチェックボックスを選択してInstall Selectedを選
+んでください。
+
+
+■0x04.) プロジェクトを実行
+
+　AVDができたら、再度ProjectExplorerに戻ってThreeminの上で右クリック→Run
+ as→Android Applicationを選んで実行してみましょう。初回起動時はAVDの初期
+化などもありますので、若干時間がかかります。
+　起動すると左側には白いバーや時計、Startと書かれた大きなボタン、右側には
+キーボードや各種電話操作のボタンが出ると思います。
+　ここでStartと書かれたボタンをマウスでクリックすればStopに変わりカウント
+ダウンを始めます。このカウントが0になったら、TimeUpに変わって音がなります
+(0:00→一瞬間があってTimeUpになるのは仕様です)。
+　途中で止めたときはResetに変わり、再度押したら、また最初からカウントダウ
+ンです(仕様で…す…)。
+
+
+■0x05.) Androidの開発環境は整いました
+
+　このようにAndroidの開発を行う場合には、AVDを使うことで、まずは実機がな
+くてもどうにかなります。
+　当然のことながら、最終的に実機が必要になる場面はありますが、誰か電話が
+好きな知人が1台か2台持ってると思いますので、ぜひ協力してもらいましょう。
+きっとそれで済む話です。
+　ですから、まずはJava/Eclipse/AndroidSDKをインストールして試してみてくだ
+さい。
+　Threeminのプログラムについて細かい内容は解説しません。Android用なのでS
+haredPreferenceやSoundPool、Thread、Handlerのような機能を使っていますので、
+その辺を他へ転用できる部分もあると思います。(Blogのアクセス解析見てるとS
+haredPreferenceを検索してくる方が多いので)
+
+
+■0x06.) GAEの環境を整える
+
+　次はGAEの環境を整えます。GAEは、Pythonをメインで使う環境とJavaをメイン
+で使う環境があります。BlogなどではPython使ってやっていたのですが、今回は
+Eclipseもありますので思い切ってGAE/Javaを使います。
+　先ほど、ADTをインストールした要領でHelp→SoftwareUpdate→Add Siteで、
+「http://dl.google.com/eclipse/plugin/3.4」を登録してダウンロード/インス
+トールします(Galileoの場合は3.5/Europaの場合は3.3に変更してください)。
+　Eclipseを再起動するか聞かれますので、再起動しておきましょう。こうしてイ
+ンストールするだけで、GAEのSDKまでインストールされます。
+
+
+■0x07.) サンプルプログラム
+
+　ProjectExplorerにプロジェクトを追加してみます。右クリック→New→Project
+と選ぶとNewProjectウィザードが出ますのでGoogle→Web Application Projectを
+選びます。
+　Project nameはプロジェクトの名前ですが、まずはなんでもいいです。
+　Package名は、規則はいろいろありますが例のように com.example.myprojectと
+入力してください。
+　これでFinishを押すとなにやら新しい項目が出てきます。そこで右クリック→
+Run as→Web Applicationと選んでみてください。
+　1つはホスト、もう1つはクライアントとウィンドウが2つ開き、サンプルの動作
+を確認できます。
+　実際にGAEのサーバーにアップロード(Deploy)して動作させたりするまでにはい
+くつか作業はありますが、ローカルで動作させるだけならば作業はここまでです。
+　Deployする場合もhttps://appengine.google.com/の設定画面からApplication
+を登録、そこで付けたApplicationID(Application Identifier)をプロジェクトに
+設定したら、Deploy to App Engineすれば、公開できるようになります。
+　Androidの設定に比べると拍子抜けするような簡単さですが、これで両方の開発
+環境が整いました。
+
+
+■0x08.) 最後に
+
+　書き込みがあるとその内容を教えてくれる掲示板スクリプトをまずは作りたい
+と思います。メールを使うのでもいいですし、Androidのアプリとして作るのもい
+いでしょう。
+　位置情報を埋め込むなどの機能拡張については、いったん掲示板ができた後に
+仕様を固めます。
+
+

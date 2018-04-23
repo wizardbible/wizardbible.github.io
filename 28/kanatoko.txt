@@ -1,0 +1,444 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第1章: マニアックJavaプログラミング第四回:
+           ～ 実用速度で使うXMLEncoder/Decoder ～ ---
+
+著者：金床
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　筆者はXMLが大嫌いである。XMLはおそらくHTMLのウェブでの成功を受けて出て
+きたものであるが、HTMLはいわゆるデザイナー系の人に受け入れられはしたもの
+の、プログラマー系の人にはそれほど高くは評価されていないのではないか。
+
+　XMLをデータの保存形式として使うのは、場合によっては悪くない。特に階層構
+造を保存する場合には適しており、筆者もNoFTP@JUMPERZ.NETというFTPクライア
+ントを開発した際に、階層構造を持つブックマークの保存形式としてXMLを選択し
+た。
+
+　うんざりするのは、サーバーなどの設定ファイルがXML形式である場合だ。特に
+オープンソースのJavaプロダクトにはこの傾向が顕著で、Tomcatを初め数多くの
+プロダクトが設定ファイルをXML形式としている。ここで一つ、筆者を凍り付かせ
+た設定ファイルの一部を紹介しよう。
+
+-----
+  <mime-mapping>
+    <extension>abs</extension>
+    <mime-type>audio/x-mpeg</mime-type>
+  </mime-mapping>
+  <mime-mapping>
+    <extension>ai</extension>
+    <mime-type>application/postscript</mime-type>
+  </mime-mapping>
+  <mime-mapping>
+    <extension>aif</extension>
+    <mime-type>audio/x-aiff</mime-type>
+  </mime-mapping>
+  <mime-mapping>
+    <extension>aifc</extension>
+    <mime-type>audio/x-aiff</mime-type>
+  </mime-mapping>
+  <mime-mapping>
+    <extension>aiff</extension>
+    <mime-type>audio/x-aiff</mime-type>
+  </mime-mapping>
+  <mime-mapping>
+    <extension>aim</extension>
+    <mime-type>application/x-aim</mime-type>
+  </mime-mapping>
+  <mime-mapping>
+    <extension>art</extension>
+    <mime-type>image/x-jg</mime-type>
+  </mime-mapping>
+
+…以下えんえんと続く
+-----
+
+　これはTomcatの設定ファイルであるweb.xmlの一部である。ごちゃごちゃしてい
+て分かりにくいので、タグ部分を全部消してみよう。すると次のようになる。
+
+-----
+abs
+audio/x-mpeg
+ai
+application/postscript
+aif
+audio/x-aiff
+aifc
+audio/x-aiff
+aiff
+audio/x-aiff
+aim
+application/x-aim
+art
+image/x-jg
+-----
+
+　すっきりして、何が行われているか分かるようになる。Apacheなどの設定を行
+った経験があればピンとくるだろう。これはファイルの拡張子とそれに対応する
+MIMEタイプの一覧の一部である。Apacheではmime.typesというファイル名で次の
+ように記述される。この方がはるかにわかりやすい。
+
+-----
+image/x-cmu-raster              ras     
+image/x-portable-anymap         pnm     
+image/x-portable-bitmap         pbm     
+image/x-portable-graymap        pgm     
+image/x-portable-pixmap         ppm     
+image/x-rgb                     rgb     
+image/x-xbitmap                 xbm     
+image/x-xpixmap                 xpm     
+image/x-xwindowdump             xwd  
+-----
+
+　このように、階層構造でもない大量のデータが並ぶ場合、XMLの使用はあまりに
+も冗長であり、無駄や重複を嫌うプログラマの神経を逆撫でするのである。また、
+XML形式というのはプログラムにとっては読み書きしやすい形式だが、人間が直接
+テキストエディタで読み書きするのには向いていない。特に、一部のタグの対応
+がずれてしまった場合にファイル全体に影響が出してしまう点などは非常にいた
+だけない。
+　XMLを人間が編集する必要がある場合、専用の使いやすいエディタなどがあれば
+良いが、サーバーの設定ファイルというのはターミナルしか使えないなどの不便
+な環境で編集する必要がでてくるものなので、XML形式ではなく、例えばviのよう
+なシンプルなエディタでも問題なく扱える形式が好ましい。
+
+
+■0x02.) オブジェクトの保存
+
+　さてJavaでは、オブジェクトをファイルに保存するための手軽な方法が2つ用意
+されている。ひとつはシリアライゼーション、もうひとつがXMLエンコード（とデ
+コード）である。どちらもストリームに対してオブジェクトを読み書きできるよ
+うに設計されているため、ファイルストリームを指定すればファイルへの読み書
+き、つまりデータとしての保存が可能になる。また、ソケットストリームなどを
+指定すればネットワーク越しにオブジェクトをやりとりすることが可能だ。
+
+　シリアライゼーションはJDK1.1の頃から存在する、古くよく知られた手法だ。
+具体的にはObjectInputStreamクラスとObjectOutputStreamクラスを使う。この方
+法の欠点は読み書きの対象となるクラスの定義の変更に弱いことだ。ある時点で
+オブジェクトをファイルに書き出したとする。その後ソフトウェアがアップデー
+トされ、クラスの定義が変更されてしまうと、もはや過去に保存したファイルか
+らは正しくオブジェクトを再構築することができないのである。
+　この欠点に対処する方法は存在するものの、手間がかかる上に本質的でないた
+め、オブジェクトの保存にシリアライゼーションを使うことは推奨できない。
+
+　もう一方のオブジェクトの保存方法であるXMLエンコードは、JDK1.4で登場した、
+比較的新しい方法である。シリアライゼーションでの失敗の経験を元に、クラス
+の変更に強い作りになっている。
+　シリアライゼーションがバイナリ形式の出力を行っていたのに対し、XMLエンコ
+ードはその名の通りオブジェクトをXML形式として出力する。例えば次のようなコ
+ードを見てみよう。
+
+-----
+XMLEncoder e = new XMLEncoder( System.out );
+e.writeObject( new JButton( "hoge" ) );
+e.close();
+-----
+
+　このコードの出力は次のようになる。
+
+-----
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.4.2" class="java.beans.XMLDecoder"> 
+ <object class="javax.swing.JButton"> 
+  <string>hoge</string> 
+ </object> 
+</java> 
+-----
+
+　このようにオブジェクトをXML形式で吐き出すことが可能になる。逆にこのXML
+をXMLDecoderで読み込めば、オブジェクトを復元できる。
+
+
+■0x03.) XMLEncoder/Decoderの特徴
+
+　XML形式でオブジェクトを読み書きするためには、
+
+・クラスがデフォルトコンストラクタをもつ
+・保存したいプロパティ（フィールド）について、ゲッターとセッターを持つ
+
+　という条件を満たせば、とりあえずはよい（厳密な定義についてはXMLEncoder
+のjavadocを参照）。いわゆるJavaBeansと呼ばれるスタイルだ。この条件は簡単
+に満たせるだろう。
+
+　エンコードとデコードはこのゲッターとセッターによって行われるため、実際
+には内部に存在しないプロパティ（のようなもの）を読み書きすることもできる。
+つまりオブジェクト指向プログラミングらしく、外部に公開するインターフェー
+ス（ゲッターとセッター）と、内部の実装を完全に分離できるのだ。このため非
+常に柔軟なプログラミングが可能となる。
+
+
+■0x04.) 書き出しは遅い
+
+　ある程度のボリュームのあるクラスのインスタンスをいくつか連続で書き出し
+てみると分かるが、XMLEncoderのエンコード処理は非常に遅い。特に悲劇的なの
+がbyte型の配列などを書き出すときだ。
+　なぜ遅いのかというと、配列の要素全てを次のようにXMLとして書き出している
+からである。
+
+　例えば配列が次のようなものだったとすると
+
+-----
+byte[]{ ( byte )0x01, ( byte )0x02, ( byte )0x03, ( byte )0x04 }
+-----
+
+　次のようにXMLにエンコードされるのだ。
+
+-----
+   <array class="byte" length="4"> 
+    <void index="0"> 
+     <byte>1</byte> 
+    </void> 
+    <void index="1"> 
+     <byte>2</byte> 
+    </void> 
+    <void index="2"> 
+     <byte>3</byte> 
+    </void> 
+    <void index="3"> 
+     <byte>4</byte> 
+    </void> 
+   </array> 
+-----
+
+　めまいを覚える読者もいるのではないだろうか。
+　たった4byteのデータを保存するために、なんと285byteも使っているのだ。つ
+まり処理速度が遅いばかりでなく、吐き出されたデータが非常にスペースを取る
+という、2重にデメリットを持つ構造になっているのである。もちろんいちおうメ
+リットもあって、保存されたデータをテキストファイルやプログラムなどで変更
+しやすいという面も持つ。
+
+
+■0x05.) パフォーマンスチューニング
+
+　さてここからがマニアックプログラミングとなる。このbyte配列の書き出しは
+あまりにも遅いため、100byteや1000byte単位のデータを扱うプログラムでは、X
+MLEncoderの使用は実用的ではない。しかし、オブジェクトのファイルへの保存の
+ために、クラスごとにいちいちエンコーダーとデコーダーを書くのも面倒だ。ま
+た、パフォーマンスの問題を抜かせば、変更に対する強さなど、XMLEncoder/Dec
+oderの動きは非常に魅力がある。そこで、次のようにする。
+
+　まず、ここでは読み書き対象のクラスの例として、byte配列のプロパティbuff
+erを持つMHogeクラスを考える。このクラスの定義は以下のようなものだ。
+
+-----
+public class MHoge
+{
+private byte[] buffer = new byte[]{};
+//--------------------------
+public byte[] getBuffer()
+{
+return buffer;
+}
+//--------------------------
+public void setBuffer( byte[] b )
+{
+buffer = b;
+}
+//--------------------------
+}
+-----
+
+　問題となるのはbyte配列の書き出しなので、これを避けることにする。しかし
+byte配列に対するゲッター・セッターは定義されており、それらは様々なプログ
+ラムの中で使われているため、当然ながら削除することはできない。そして、XM
+LEncoderは必ずゲッターを呼び出してしまう。ではどうすればよいだろうか。
+
+　XMLEncoderから呼び出される場合、つまりオブジェクトを書き出す場合のみ、
+空の配列を返すようにするのである。具体的にはクラスにフラグを一つ持たせ、
+そのフラグがonの間はXMLEncode/Decodeが行われると考え、byte配列のプロパテ
+ィに関するゲッター・セッターは何もしない。変更後のMHogeクラスのコードは次
+のようになる。
+
+-----
+
+public class MHoge
+{
+boolean xmlFlag = true;
+private byte[] buffer = new byte[]{};
+//--------------------------
+public void setXmlFlag( boolean b )
+{
+xmlFlag = b;
+}
+//--------------------------
+public byte[] getBuffer()
+{
+if( xmlFlag )
+	{
+	return new byte[]{};
+	}
+else
+	{
+	return buffer;
+	}
+}
+//--------------------------
+public void setBuffer( byte[] b )
+{
+if( !xmlFlag )
+	{
+	buffer = b;
+	}
+}
+//--------------------------
+}
+
+　xmlFlagがtrueの場合はgetBuffer()は空のbyte配列を返すため、処理はすぐに
+終わる。
+　しかし、この状態では当然ながら、肝心のbufferの内容がXMLとして吐き出され
+ない。オブジェクトの状態を保存・復元するという本来の目的が達成されないの
+である。
+
+　問題はbyte配列の要素ひとつひとつをいちいちタグで囲んで出力するという点
+にあった。そこで、これを、一つのデータの固まりとしてまとめて出力・入力す
+るようにしてしまえばよい。そこでbyte配列であるbufferをStringクラスとして
+出力・入力するためのgetBufferString()及びsetBufferString()メソッドを定義
+する。
+
+-----
+public class MHoge
+{
+boolean xmlFlag = true;
+private byte[] buffer = new byte[]{};
+//--------------------------
+public void setXmlFlag( boolean b )
+{
+xmlFlag = b;
+}
+//--------------------------
+public byte[] getBuffer()
+{
+if( xmlFlag )
+	{
+	return new byte[]{};
+	}
+else
+	{
+	return buffer;
+	}
+}
+//--------------------------
+public void setBuffer( byte[] b )
+{
+if( !xmlFlag )
+	{
+	buffer = b;
+	}
+}
+//--------------------------
+public String getBufferString()
+{
+return MStringUtil.byteToHexString( buffer );
+}
+//--------------------------
+public void setBufferString( String s )
+{
+buffer = MStringUtil.hexStringToByteArray( s );
+}
+//--------------------------
+}
+-----
+
+　ここでMStringUtilクラスにはbyte配列とStringクラス型のオブジェクトの変換
+を行うメソッドが定義されているものだ。中身は次のようになっている。
+
+-----
+public static final String byteToHexString( byte[] data )
+{
+StringBuffer strBuf = new StringBuffer( data.length * 2 );
+
+int length = data.length;
+for( int i = 0; i < length; ++i )
+	{
+	int j = data[ i ];
+	if( j < 0 )
+		{
+		j += 256;
+		}
+	String tmpStr = Integer.toHexString( j );
+	if( tmpStr.length() == 1 )
+		{
+		strBuf.append( "0" );
+		}
+	strBuf.append( tmpStr );
+	}
+
+return strBuf.toString();
+}
+//-----------------------
+public static final byte[] hexStringToByteArray( String s )
+{
+byte[] array = new byte[ s.length()/2 ];
+for( int i = 0, j = 0; ( i + 1 ) < s.length(); i+=2, j++ )
+	{
+	int k = Integer.parseInt( s.substring( i, i + 2 ), 16 );
+	array[ j ] = ( byte )k;
+	}
+return array;
+}
+-----
+
+　次のようなコードでMHogeクラスのオブジェクトをエンコードする。エンコード
+の前後でフラグを変化させている。
+
+-----
+MHoge hoge = new MHoge();
+hoge.setXmlFlag(false);
+hoge.setBuffer(  new byte[]{ ( byte )0x01, ( byte )0x02, ( byte )0x03, ( byte )0x04 } );
+
+hoge.setXmlFlag(true);
+XMLEncoder e = new XMLEncoder( System.out );
+e.writeObject( hoge );
+e.close();
+hoge.setXmlFlag(false);
+-----
+
+　出力は次のようになる。
+
+-----
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.4.2_03" class="java.beans.XMLDecoder"> 
+ <object class="test.debug.MHoge"> 
+  <void id="byteArray0" property="buffer"/> 
+  <void property="buffer"> 
+   <object idref="byteArray0"/> 
+  </void> 
+  <void property="bufferString"> 
+   <string>01020304</string> 
+  </void> 
+ </object> 
+</java> 
+-----
+
+　bufferStringとして「01020304」というデータが出力されており、byte配列が
+まとめてひとつのデータとして読み書きされることが確認できる。
+　1000byte単位のデータになると、この方法によってパフォーマンス的には何倍
+・何十倍も速く処理が行われることになり、byte配列のプロパティを持つクラス
+に対してXMLEncoder/Decoderを実用するための解としてこのような方法もあると
+いうことがわかる。
+
+
+■0x06.) まとめ
+
+　この方法のメリットは、XMLEncoder/Decoderを利用することで、クラスごとに
+エンコーダー・デコーダーを作ることを避けることができる点にある。デメリッ
+トとしては、クラスに少し変更を加える必要がある点があげられる。しかしこの
+変更は決まり切ったパターンに沿って行えばよいものなので、一度理解してしま
+えばバグを入れ込む可能性は殆どない。
+　かなり急ごしらえで考えた仕組みなので、他にも良い解決方法があるはずだ。
+例えばXMLEncoder/Decoderのような働きをし、かつ高速なものを作るという解な
+どもあるだろう。
+
+　筆者は現在開発中のDoorman@JUMPERZ.NETというソフトウェアで、HTTPセッショ
+ンのデータのエンコード・デコードにこの方法を利用している。また、XMLだとど
+うしてもファイルのサイズが大きくなってしまうので、gzip圧縮を併用している。
+　XMLは嫌いなのだが、XMLEncoder/Decoderはとても便利でおすすめできる機能だ。
+ただし処理速度は非常に遅いので、環境によっては（たとえこの方法を使っても）
+実用が難しいかもしれない。
+
+

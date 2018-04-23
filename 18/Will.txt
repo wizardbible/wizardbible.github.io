@@ -1,0 +1,98 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第3章: OllyDbgの脆弱性について ---
+
+著者：Will
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) OllyDbgとは
+
+　OllyDbgは32bitアプリケーションをデバッグすることができるソフトウェアで
+す。他にも有名なデバッガとしてIDA Pro、DriverStudioに含まれるSoft ICEなど
+がありますが、DriverStudioは20万以上というかなり高額なソフトウェアです。
+　しかし、OllyDbgはフリーでSoft ICEには劣るところもありますが、かなり高機
+能です。手軽に使えることからソフトウェアの解析などにも用いられています。
+
+
+■0x02.) 今回の脆弱性について
+
+　2004年07月21日に、OllyDbgはOutputDebugStringの引数に多数の書式指定文字
+列が含まれると発生するセキュリティホールが存在することが発見されました。
+この問題が悪用されると、任意のコードを実行される、またはOllyDbgをクラッシ
+ュされるおそれがあります。かなり前に発見された脆弱性ですが、OllyDbgの作者
+の方が修正していないので最新版でもこの脆弱性を回避できません。
+
+
+■0x03.) どんな感じになるか体験してみる。
+
+　まずはOllyDbgを以下のURLからダウンロードします。
+
+http://home.t-online.de/home/Ollydbg/
+
+　そして、以下のURLは今回解析するcrackmeです。
+
+http://will.wbjapan.com/cCrackme/crackme0x1.zip
+
+　Ollyでcrackmeを開いたら、F9を押して実行してみてください。crackmeが起動
+します。そして、適当に何か数字を入力してボタンを押すと…見事にOllyDbgがク
+ラッシュします。何が原因か、もちろんOutputDebugStringがクラッシュの原因で
+す。
+
+　もう一度Ollyで開いてCtrl＋Nを押して、OutputDebugStringAを見つけたら（ou
+tまで打ち込んだら飛びます）、カーソルをあわせて右クリック→set breakpoint
+ on every referenceをクリックすれば準備OKです。F9を押してcrackmeを実行さ
+せます。そして、適当に入力した後、ボタンを押すとブレークポイントで止まり
+ます。
+
+-----
+0040141A   . 6A 01          PUSH 1                                   ; 
+TimerID = 1
+0040141C   . 50             PUSH EAX                                 ; hWnd
+0040141D   . FF15 2C834100  CALL NEAR DWORD PTR DS:[<&USER32.KillTim>; 
+KillTimer
+00401423   . 68 28AF4100    PUSH crackme.0041AF28                    ; 
+String = "%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s%s"
+00401428   . FF15 38824100  CALL NEAR DWORD PTR DS:[<&KERNEL32.Outpu>; 
+OutputDebugStringA
+0040142E   . E8 DDFEFFFF    CALL crackme.00401310
+00401433   > C2 0400        RETN 4
+-----
+
+　原因はOutputDebugStringAの引数である"%s%s%s%s…"という文字列です。実際
+にここでF8を押すと実際にクラッシュします。それではどうしたらいいのか？　
+答えはこの文字列を変更すればOKです。「00401423   . 68 28AF4100    PUSH c
+rackme.0041AF28」にカーソルをあわせてスペースボタンを押して、「PUSH 0041
+AF28」をPUSH 4198E4に変更すれば引数が"System"に変更されます。変更が終了し
+たら右クリックしてCopy to excutableのAll modifycationsを押すとダイアログ
+が表示されるので、Copy Allをクリックします。すると別のウインドウが表示さ
+れるので、そのウインドウ上で右クリックしてSave Fileで保存すればOKです。
+
+　ここまでできたら一度OllyDbgを終了して、保存したファイルを開いて実行して
+みるとクラッシュしなくなりました。
+
+　以上が今回の脆弱性の回避の方法です。
+
+
+■0x04.) この脆弱性の対応策
+
+　作者の方はVer 2.0の開発を行っており、修正される可能性は低いと思われます。
+
+　対応策としては次が考えられます。
+・毎回OutputDebugStringの引数を調べる
+・Ollyのplug-inで回避する
+
+
+■0x05.) ついでに
+
+　一応crackmeなので、解析してみてください。チェックルーチンはかなり簡単な
+ので初心者の方でもできると思います。パッチだとあまりにも簡単なので、でき
+ればkeygenでも作ってみてください（笑。このcrackmeについて質問等があればサ
+イトのBBSにでもどうぞ。おそらく一日程度で返信がくるとおもいますので。
+
+　それでは。
+
+

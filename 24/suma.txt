@@ -1,0 +1,293 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第6章: AntiCracking Techniques - Obfuscating API Call Vol.2 ---
+
+著者：suma
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　AntiCrackingとは、プログラムのリバースエンジニアリングを防ぐ技術です。
+この記事は前回の「Obfuscating API Call」の続編となります。
+
+　コンパイラにVisual Studio 2003を、デバッガにはOllyDbg1.10を使用します。
+プログラムの動作はWindows XP（32ビット版）で確認しています。環境によって
+アドレスなどの違いがあるかもしれません。OllyDbgにはうさぴょんさんの「Oll
+yDbg1.10用日本語化パッチ」を使用しています。
+
+・OllyDbg
+http://www.ollydbg.de/
+
+・Digital Travesia  ～ でじたる　とらべしあ ～
+http://hp.vector.co.jp/authors/VA028184/
+
+
+■0x02.) 呼び出しを探す
+
+　前回はインポートしたWin32APIの呼び出しを調べ、隠す方法を解説しました。
+今回は別の方法を説明します。前回使った、LoadLibrary/GetProcAddressでMess
+ageBoxを呼び出すプログラムのobf3.exeを使います。
+
+http://beautiful.homelinux.net/~sky-software/wb/1/obf3.cpp（ソースコード）
+http://beautiful.homelinux.net/~sky-software/wb/1/obf3.vcproj（プロジェクトファイル）
+http://beautiful.homelinux.net/~sky-software/wb/1/obf3.exe（実行ファイル）
+
+
+●文字列の参照を探す
+
+　OllyDbgで文字列参照からWin32APIの呼び出しを探します。OllyDbgでプログラ
+ムを開き、コードが表示されているウィンドウで右クリックします。ポップアッ
+プメニューが表示されるので、「検索→全ての参照文字列」を実行します。文字
+列参照を表示するウィンドウが開くので、"title"と"message"という文字列を探
+します。
+
+-----
+00401025   PUSH obf3.004050D0                        ASCII "title"
+0040102A   PUSH obf3.004050C8                        ASCII "message"
+-----
+
+　どちらかを選択し、ダブルクリックまたはEnterキーで参照しているコードへ移
+動してください。
+
+------
+00401023  |> 6A 00          PUSH 0
+00401025  |. 68 D0504000    PUSH obf3.004050D0                       ;  ASCII "title"
+0040102A  |. 68 C8504000    PUSH obf3.004050C8                       ;  ASCII "message"
+0040102F  |. 6A 00          PUSH 0
+00401031  |. FFD0           CALL EAX
+------
+
+　参照されている文字列とCALL命令からMessageBoxが呼び出されていると推測で
+きます。アドレス00401031でブレークポイントを設置して実行し、CALL命令をス
+テップ実行するとMessageBoxの呼び出しを確認できます。
+
+
+●DLLにブレークポイント
+
+　参照文字列からWin32APIの呼び出しを見つけることができましたが、文字列を
+参照している場合しか使えません。文字列が暗号化されていたり、リソースに埋
+め込まれていても使えません。次に、文字列に左右されれることないよう、ロー
+ドされたDLL内にブレークポイントを設置してWin32APIの呼び出し元を調べます。
+先ほど使ったobf3を使用します。
+
+http://beautiful.homelinux.net/~sky-software/wb/1/obf3.cpp（ソースコード）
+http://beautiful.homelinux.net/~sky-software/wb/1/obf3.vcproj（プロジェクトファイル）
+http://beautiful.homelinux.net/~sky-software/wb/1/obf3.exe（実行ファイル）
+
+　obf3.exeはLoadLibraryを使ってUser32.dllをロードしているため、OllyDbgで
+開いた状態からUser32.dll内に移動することはできません。そのためLoadLibrar
+yの後にブレークポイントを設置します。
+
+　アドレス0040100BはLoadLibraryAが呼び出されて次の命令のアドレスです。こ
+こにブレークポイントを設置して実行します。User32.dllがロードされた状態で
+停止するので、ロードされたモジュールの一覧を表示します。メニューの「表示
+→実行モジュール」を実行するか、Alt+Eキーを押してください。User32.dllがロ
+ードされていることを確認し、User32.dllの行でCtrl+Nキーか、右クリックして
+ポップアップメニューから「モジュール名 Ctrl+N」を実行します。
+
+　MessageBoxAが呼び出されるとわかっているためMessageBoxAのみブレークポイ
+ントを設置します（※1）。MessageBoxAの行を選択し、Enterキーでコードまで移
+動してください。アドレス77D304EAにブレークポイントを設置して実行します。
+一時停止すると、右下のリストボックスにMessageBoxAを呼び出した情報が表示さ
+れています。
+
+-----
+0012FED4   00401033  /CALL to MessageBoxA from obf3.00401031
+0012FED8   00000000  |hOwner = NULL
+0012FEDC   004050C8  |Text = "message"
+0012FEE0   004050D0  |Title = "title"
+0012FEE4   00000000  \Style = MB_OK|MB_APPLMODAL
+0012FEE8   004011CE  RETURN先: obf3.004011CE from obf3.00401000
+-----
+
+　この状態で、メニューの「表示→コールスタック」またはAlt+Kキーでコールス
+タックを表示すると、こちらからでも呼び出しを調べることができます。自分の
+使いやすいほうを使うとよいでしょう。
+
+
+●注釈
+
+（※1）実際に調べるときは、似たような関数はすべて調べた方がよいでしょう。
+
+
+
+■0x03.) 文字列の暗号化
+
+　OllyDbgに文字列を参照されないためには、文字列を暗号化するか、リソースに
+格納します。暗号化した場合は実行時に復号化が、リソースの場合はWin32APIの
+LoadStringを呼び出す必要があります。今回は文字列を隠す方法の紹介だけにと
+どめます。
+
+------
+#include <stdio.h>
+
+#define A(c)            (c) - 0x19
+#define UNHIDE_STR(str) do { char *p = str;  while (*p) *p++ += 0x19; } while (0)
+#define HIDE_STR(str)   do { char *p = str;  while (*p) *p++ -= 0x19; } while (0)
+
+int main(int argc, char *argv[]) {
+  char str[] = {
+    A('/'), A('e'), A('t'), A('c'), A('/'),
+    A('p'), A('a'), A('s'), A('s'), A('w'), A('d'), 0
+  };
+
+  UNHIDE_STR(str);
+  printf("%s\n", str);
+  HIDE_STR(str);
+
+  return 0;
+}
+-----
+
+　このコードは書籍『C/C++セキュアプログラミングクックブック VOLUME1』で「
+文字を難読化する方法」として紹介されています。一文字ずつずつマクロAを使用
+する手間がかかり、半角文字と全角文字が混在する場合は使えません。ソースコ
+ードは、SecureProgramming.com（http://www.secureprogramming.com/）の「Bo
+oks→Download the Code」からspc-1.1.zipまたはspc-1.1.tar.gzのダウンロード
+できます（フォルダchapter12の「11-example.c」「11-api.c」です）。
+
+　ここでは、Simple String CrypterというツールとC++ライブラリを作ってみま
+した。基本的には先ほどのコードと処理・アイディアは一緒ですが、利便性を追
+求し、C++のクラスのコンストラクタで文字列を自動的に復号化し、operatorオー
+バーロードを使って文字列へのポインタを返す仕組みにしています。
+
+http://beautiful.homelinux.net/~sky-software/down_tool_crackme.htm
+
+　UNICODEには対応させていませんが、変更は難しくないと思います。使い方はC
+ryptStringとCRYPTED_STRINGマクロを使用したソースコードをビルドし、生成し
+た実行ファイルに付属のcryptで文字列を暗号化します。
+　次は、sample.cppを一部抜き出したコードです。
+
+-----
+try {
+	CryptString str = CRYPTED_STRING( "Sample Message" );
+	printf( str );
+} catch ( std::bad_alloc & ) {
+	printf( "std::bad_alloc" );
+}
+-----
+
+
+■0x04.) ブレークポイントの検出
+
+　DLLにブレークポイントが設置された場合の対策を考えます。OllyDbgなどのデ
+バッガでは、ブレークポイントの設置位置をINT3という命令に置き換えます。そ
+こでプログラム側からINT3を検出してみます。前回使用したobf3.cppに次のコー
+ドを追加します。
+
+------
+if (*((BYTE*)msgbox) == 0xCC) {
+	MessageBox(NULL, "INT3を検出しました", "", MB_OK);
+}
+-----
+
+　ソースコード、プログラムは次のファイルです。
+
+http://beautiful.homelinux.net/~sky-software/wb/2/obf5.cpp（ソースコード）
+http://beautiful.homelinux.net/~sky-software/wb/2/obf5.vcproj（プロジェクトファイル）
+http://beautiful.homelinux.net/~sky-software/wb/2/obf5.exe（実行ファイル）
+
+　先ほどと同じようにMessageBoxAの先頭にブレークポイントを設置して実行する
+と「INT3を検出しました」というメッセージが表示されます。
+
+
+●ブレークポイントをスキップ
+
+　デバッガを検出することはAntiCrackingとして有効ですが、今回の目的はWin32
+APIの呼び出しを偽装することです。ブレークポイントが設置されても止まること
+なくWin32APIを呼び出すのが理想です。それに加えて、ハードウェアブレークポ
+イント（※1）の場合はコードをINT3に置き換えないのでこのテクニックで検出す
+ることができません。
+
+（※1）コードの部分で右クリックしてポップアップメニューから「ブレークポイ
+ント→ハードウェアブレークポイント」で設置できます。
+
+　ブレークポイントを無視して実行する方法を考えます。解析者がブレークポイ
+ントを設置するアドレスは先頭の命令と推測できます。この場合「アドレス77D3
+04EA」です。手間からして、わざわざ先頭から数個先の命令にブレークポイント
+を設置するとは考えられません。この推測から、ブレークポイントが設置されて
+いるであろう先頭命令を飛ばしてWin32APIを呼び出す方法を考えます。
+
+-----
+77D304EA   8BFF             MOV EDI,EDI
+77D304EC   55               PUSH EBP
+77D304ED   8BEC             MOV EBP,ESP
+-----
+
+　OllyDbgでMessageBoxAの先頭はこのコードでした。p_MessageBoxAがGetProcAd
+dressで取得したMessageBoxAのアドレスとすると、次のようなコードを書くこと
+ができます。
+
+-----
+const char *title = "title", *msg = "message";
+_asm {
+	push 0
+	push msg
+	push title
+	push 0
+	mov  eax, p_MessageBoxA
+	add  eax, 2
+	mov  edi, edi
+	call eax
+}
+-----
+
+　このコードは私の環境では動作しましたが、他の環境で動く保証はありません。
+User32.dllのコードがバージョンなどによって違う可能性があるからです。環境
+に依存したコードをハードコーティングしてはいけません。そこで次の方法を取
+ります。
+
+1：実行属性付のメモリをVirtualAllocで確保する
+2：MessageBoxAの先頭から数命令をメモリにコピーする
+3：コピー先のメモリにMessageBoxAの途中にジャンプさせる命令を加える
+4：コピー先のメモリのアドレスをMessageBoxAと同じように呼び出す
+
+　この方法は書籍『クラッカー・プログラム大全』で知りました。DLL内のコード
+をコピーする方法はEXEプロテクターのASProtectで使われていたようです（おそ
+らく今でも使われているでしょう）。ただし、ASProtectの製作者が「DLL内で先
+頭命令はブレークポイントを設置している可能性がある」と考えたかどうか私は
+知りません。
+
+　コードのコピーで注意することがふたつあります。x86系のCPUの命令は固定サ
+イズではありません。1バイトで命令が完結することもあれば、数バイトにわたる
+こともあります。正しくコードを実行させるためには、一命令ずつコピーする必
+要があります。
+
+　そして、コピーする命令が相対アドレスで値を参照したり、CALL、LOOP、相対
+ジャンプなどで相対アドレスを指している場合、コピー先では元のアドレスを指
+しません。コピー中にアドレスを修正するか、先頭から相対アドレスを参照する
+ひとつ前の命令までコピーするとよいでしょう。
+
+　今回は命令の長さを知るのにlibdisasmというライブラリを使用し、相対ジャン
+プのひとつ前の命令までコピーするプログラムを作成しました。次のファイルです。
+
+http://beautiful.homelinux.net/~sky-software/wb/2/obf6.zip（ソースコード・プロジェクトファイル）
+http://beautiful.homelinux.net/~sky-software/wb/2/obf6.exe（実行ファイル）
+
+
+●実行と確認
+
+　obf6.exeを実行するとメッセージボックスが表示され、実行できることを確認
+できますます。次にOllyDbgで開き、LoadLibraryAの呼び出し後、DLL内のMessag
+eBoxAにハードウェアブレークブレークポイントを設置して実行してください。停
+止することなく実行できます。
+
+　今度はブレークポイントを設置して実行してください。メッセージボックスで
+はなくエラーが出るはずです。ブレークポイントの設置のせいでINT3命令までコ
+ピーされたからです。これを防ぐには、デバッガやINT3命令の検出したり、シス
+テムディレクトリにあるUser32.dllとロードされたDLLのコードを比較しながらコ
+ピーするとよいでしょう。
+
+
+■0x05.) おわりに
+
+　お疲れ様でした。これでWin32API呼び出し偽装は終わりです。私の知っている
+方法はすべて解説できた思います。
+　今後は偽装以外のテクニック、組み合わた効果、自動化について引き続き調べ
+ていくつもりです。
+
+

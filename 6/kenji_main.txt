@@ -1,0 +1,296 @@
+
+
+
+HTTP入門　～連続投稿の仕組み～
+
+
+
+0. はじめに
+
+掲示板などに連続投稿を行うプログラムが存在するが、実際にそれらのプログラムはどういった仕組みで実現されているのか。具体的にBBSに連続投稿を行う方法について学んでみようじゃないか。ということでこの記事では実際にいくつかの掲示板にテスト的に投稿していますが、これはあくまでも攻撃に使うわけでは無いということをご了承ください。連続投稿の仕組みを学ぶのであって、実際に攻撃するわけでは無いということです。なお、この記事は前回の記事「SMTP入門　～メールアドレス偽装～」の続編という位置づけですので Perl がわかる方を対象としています。
+
+
+
+1. HTTPとは
+
+HTTP とは Hyper-Text Transfer Protocol の略です。WWW(World Wide Web)に使用されているプロトコルで一般的にポート番号 80 番を使用します。HTTP について詳しく知りたい方は RFC1945,2068,2616 などを参照してください。
+
+
+
+2. GET Method
+
+ではいきなりですが telnet で以下のように打ってください。SMTPはポート25番でしたがHTTPはポート80番です。なおWindows(コマンドプロンプト)の場合は入力した文字が表示されませんが、ちゃんと入力されてるので心配せずに打ち込んでください。(スペースなども正確に打ち込んでください)ちなみに'\r\n'は改行です。
+
+<Windows>（コマンドプロンプト）
+C:\xxxx>telnet www.yahoo.co.jp 80
+GET / HTTP/1.0\r\n
+\r\n
+
+<Linux>
+[kenji@localhost http]$ telnet www.yahoo.co.jp 80
+.........
+...............
+Escape character is '^]'.
+GET / HTTP/1.0\r\n
+\r\n
+
+無事、YahooのTOPページのデータが取得できたら成功です。(YahooのTOPページのソースは結構長いので流れていくと思われます)さてまずRFC1945を見てみます。私が使ったサイトは(ftp://ftp.ring.gr.jp/pub/doc/RFC/rfc1945.txt)ですが「RFC1945」で検索すればたくさん出てきます。今回のポイントは [Page 23] の 5.1.1 Method 以下です。まずHTTP/1.0の場合 Method には"GET","HEAD","POST"が存在するらしい。RFC2068などを見ると Method が増えてたりしますが HTTP/1.0 の時点ではこれだけしか無かったのでしょう。そして次の章の 5.1.2 Request-URI を見てみると最後にAn example Request-Line would be:という文章がありますので「リクエストの例を示す」と訳すことができるでしょう。その例とは
+
+GET http://www.w3.org/pub/WWW/TheProject.html HTTP/1.0
+
+となっています。(telnetでの実演では相対パスでしたが、RFCのこの例は絶対パスで記述されています)さてさて、じゃあプログラムを書いてみます。
+
+http.pl
+------------------------------------------------------------------------------
+#!/usr/bin/perl
+
+use Socket;
+
+        $server = 'www.yahoo.co.jp';
+
+        $port = getservbyname('http', 'tcp');
+        $struct = sockaddr_in($port, inet_aton($server));
+        socket(SOCK, PF_INET, SOCK_STREAM, 0) || die("socket $!");
+        connect(SOCK, $struct) || die("connect $!");
+        select(SOCK); $| = 1; select(STDOUT);
+
+	print SOCK "GET http://www.yahoo.co.jp/ HTTP/1.0\r\n";
+	print SOCK "\r\n";
+
+	while($respons = <SOCK>){
+		$respons =~ s/\x0D\x0A|\x0D|\x0A/\r\n/g;
+		print $respons;
+	}
+
+        close(SOCK); select(STDOUT);
+
+        exit;
+------------------------------------------------------------------------------
+C:\Perl>perl http.pl > test.txt
+C:\Perl>
+
+出力先を test.txt にします。YahooはEUCなのでメモ帳などで開くと文字化けしますが見事YahooのTOPページが取得できていますね。前回のSMTPと比べるとかなりシンプルです。サーバに接続して
+
+GET http://www.yahoo.co.jp/ HTTP/1.0\r\n
+\r\n
+
+という文字列を送っているだけです。(ここでは絶対パスですがもちろん相対パスでもOKです。ただし相対パスでなければ受け付けないサーバもありますので注意してください)するとサーバからサイトの情報が送られてくるのでそれを受け取ってprintで出力しています。簡単ですね。んで、ブラウザと呼ばれるソフトがこういうやり取りをサーバと行っているのでは？というのも想像できます。つまり私たちがIEのアドレス記入欄に http://www.yahoo.co.jp/ と入力するとブラウザは www.yahoo.co.jp の http(80) に接続し GET http://www.yahoo.co.jp/ HTTP/1.0\r\n\r\n という文字列を送っているわけなのです。(いまのブラウザはHTTP/1.1かもしれませんがやってることは同じです)さてさて、ということはこのプログラムをwhileで回せば、俗にいうF5攻撃(ブラウザの更新ボタンを連打してサーバに負荷をかける攻撃方法)をプログラムで再現することができるじゃん。ということです。確かにできますがやるときは自己責任でお願いします。私は一切関係無い方向で。
+
+
+
+3. POST METHOD
+
+では次は掲示板などに書き込む場合はどういうリクエストを送らなければならないのかを調べます。まずは実験用に簡単なCGIプログラムを書きます。
+
+postTest.cgi
+------------------------------------------------------------------------------
+#!/usr/bin/perl
+
+$name = "postTest.cgi";
+
+if($ENV{'REQUEST_METHOD'} eq "POST") {
+	read(STDIN, $buf, $ENV{'CONTENT_LENGTH'});
+}
+
+print "Content-Type: text/html\r\n\r\n";
+print << "HTML";
+<html>
+<title>POST TEST</title>
+</head>
+<body>
+
+<p> $buf </p>
+
+<form action="$name" method="post">
+name:<input type="text" name="name" value="" size="20" maxlength="40"><br>
+sub:<input type="text" name="sub" value="" size="20" maxlength="40"><br>
+<textarea name="comment" rows="10" cols="70"></textarea><br>
+<input type="submit" value="送信"><br>
+</form>
+</body>
+</html>
+HTML
+
+exit;
+------------------------------------------------------------------------------
+
+これはブラウザからPOSTされたデータをそのまま出力するものです。フォームデータの要素名はそれぞれname="name", name="sub", name="comment"となっています。このCGIのフォームに適当なデータを入力して送信ボタンを押すと、
+
+name=ddd&sub=eeeee&comment=eeeeeeeeeeeeeeeeeeee
+
+というような文字列が表示されるはずです。これはつまりブラウザが送信したデータということになりますよね。再び RFC1945 を見てみます。が、どうやら POST Method の例は無さそうですので、適当な部分を読んで推測します。
+
+[Page 31] (RFC1945 一部抜粋)
+A valid Content-Length is required on all HTTP/1.0 POST requests. An HTTP/1.0 server should respond with a 400 (bad request) message if it cannot determine the length of the request message's content.
+
+すべてのPOSTリクエストは Content-Length が必要だ。もしこれが無い場合はサーバはバッドリクエストである 400 をレスポンスとして返すべきである。
+
+かなり適当な翻訳ですが、勘弁してください。でもこういうものはだいたい分かる単語を繋ぎ合わせていけばなんとか意味が理解できるので良いのです(^^; つまりPOSTリクエストを送る場合は Content-Length が必要であると解釈できます。Content-Length とはつまり "name=ddd&sub=eeeee&comment=eeeeeeeeeeeeeeeeeeee" のような文字列の長さでしょう。つまりまとめると、POST Method を使う場合は「渡すべき文字列の長さ」と「その文字列」をサーバに渡さなければならない。となります。では実際に postTest.cgi にPOSTするプログラムを書きます。
+
+http2.pl
+------------------------------------------------------------------------------
+#!/usr/bin/perl
+
+use Socket;
+
+        $server = 'localhost';
+
+        $port = getservbyname('http', 'tcp');
+        $struct = sockaddr_in($port, inet_aton($server));
+        socket(SOCK, PF_INET, SOCK_STREAM, 0) || die("socket $!");
+        connect(SOCK, $struct) || die("connect $!");
+        select(SOCK); $| = 1; select(STDOUT);
+
+	print SOCK "POST /postTest.cgi HTTP/1.0\r\n";
+	print SOCK "Content-Length: 6\r\n";
+	print SOCK "\r\n";
+	print SOCK "AAAAAA\r\n";
+
+	while($respons = <SOCK>){
+		print $respons;
+	}
+
+        close(SOCK); select(STDOUT);
+
+        exit;
+------------------------------------------------------------------------------
+C:\Perl>perl http2.pl > test.txt
+C:\Perl>
+
+test.txtを調べると、無事プログラムがPOSTしたデータ"AAAAAA"が表示されてるはずです。そしてCGIにブラウザが渡したデータは "name=ddd&sub=eeeee&comment=eeeeeeeeeeeeeeeeeeee" というように "要素名=データ&要素名=データ&要素名=データ" という構成になっています。つまり実際に掲示板に連続投稿を考える場合はこの"AAAAAA"の部分をブラウザが渡したデータのような文字列にして、連続的にサーバに送信するプログラムを書けば良いということになります。
+
+
+
+4. KENT WEB 篇 ( http://www.kent-web.com/ )
+
+では実際に配布されてる掲示板で試してみます。おそらくもっとも多くの人に使用されているであろう掲示板であるKENT氏の掲示板で試します。といってもKENT氏作の掲示板はたくさんあるのでここでは LIGHT BOARD というのを使うことにします。まずは適当なサーバに設置してください。
+
+そしてこの掲示板にプログラムから投稿してみようと思います。(注意:もし実験的に連続投稿する場合、自分のPCでサーバをたてて実験する場合は良いのですが、CGI可の無料スペースなどで実験を行う場合はサーバに負荷がかかるので控えめにしたほうが良いと思われます)
+
+まずはどんなデータを送らなければならないのかを知りたいのでブラウザで light.cgi に接続してフォーム情報を調べます。
+
+( light.cgiのHTML出力より抜粋 )
+<form method="POST" action="./light.cgi">
+<input type=hidden name=mode value="regist">
+<blockquote>
+<table cellpadding=1 cellspacing=1>
+<tr>
+  <td><b>おなまえ</b></td>
+  <td><input type=text name=name size=28 value=""></td>
+</tr>
+<tr>
+  <td><b>Ｅメール</b></td>
+  <td><input type=text name=email size=28 value=""></td>
+</tr>
+<tr>
+  <td><b>タイトル</b></td>
+  <td><input type=text name=sub size=36 value="">
+	<input type=submit value="投稿する"><input type=reset value="リセット"></td>
+</tr>
+<tr>
+  <td colspan=2><b>コメント</b><br>
+  <textarea cols=56 rows=7 name=comment wrap="soft"></textarea></td>
+</tr>
+<tr>
+  <td><b>参照先</b></td>
+  <td><input type=text size=50 name=url value="http://"></td>
+</tr>
+<tr>
+  <td><b>暗証キー</b></td>
+  <td><input type=password name=pwd size=8 maxlength=8 value="">
+  （記事メンテ用）</td>
+</tr>
+</table>
+</form>
+
+(注意:これは 2003/12/01 時点でのlight.cgiです)
+
+formタグで囲まれてるところを抜粋しました。まずターゲットとなるCGIは ./light.cgi です。そして modeの値が regist なのでCGIにPOSTするデータは mode=regist となります。名前は name=name となってるので name=NAME と適当な名前にします。メールは、name=email となっているので email=test@test.com とします。この調子で name=sub なので sub=TITLE さらに name=comment なので comment=Hello と設定していきます。そしてこれらを繋げてPOSTするデータを作ります。
+
+mode=regist&name=NAME&email=test@test.com&sub=TITLE&comment=Hello
+
+となります。ポイントは、mode=registは固定、name=名前、email=メールアドレス、sub=タイトル、comment=本文、というように設定するということです。これを理解した上で以下のプログラムをみてください。
+
++--------------------------------------------------+
+| http://kenjinet.s26.xrea.com/http/KENT.txt (.pl) |
++--------------------------------------------------+
+
+バージョンがHTTP/1.1になってますがヘッダにHostが必要なこと以外は HTTP/1.0 と同じです。初期設定の部分だけ抜き出します。
+
+#-- 初期設定
+$server = 'www00.tok2.com';
+$path   = 'http://www00.tok2.com/home/********/bbs/light.cgi';
+$body   = 'mode=regist&name=NAME&email=test@yahoo.com&sub=title&comment=';
+
+$body  .= rand(1000);
+$len    = length($body);
+
+さて拡張子を .pl にして初期設定をして実行してみてください。おそらく書き込まれるはずです。これは私が tok2 のサーバスペースを借りて試したものです。サーバとパスは伏せていますがあとはこのまま試しました。プログラムの詳細な説明はしませんが、読めば理解できると思います。あとこのプログラムは一度しか投稿しませんが、まぁcommentをランダムな数値にしてるので(よって文字列による二重投稿防止は無意味ですね)あとは while で無限に回せば連続投稿が可能でしょう。何故 while をいれたプログラムをアップしないのか？というと、WBの記事は検索エンジンに引っかかりますよね。見つかったら怒られそうじゃないですか(^^;
+
+
+
+5. THEBBS 篇 ( http://www.thebbs.jp/ )
+
+では次は実際に現在運営されてる掲示板に投稿してみましょう。しかしこれは個人で設置したものでは無いので、連続投稿をするとアクセス拒否される恐れがあります。よって試しに1,2回投稿してみるだけにしましょう。ちなみに私に攻撃する意図は一切ありません。もしあなたが本当に攻撃したいならば自己責任でお願いします。私は一切関係無い方向で。というかWBは一切関係無い方向で。
+
+これはTHEBBSのTEST板のあるスレのHTMLのフォームの部分です( 2003/12/05 )まずはフォームの情報を調べます。
+
+<form action="http://xtest.dot.thebbs.jp/w.cgi" method=post utn><a href="http://thebbs.jp/common/hello.html" target=kiyaku>[利用規約]</a><br>お名前を入力してください：<input type=text name=0 size=20 maxlength=16>&nbsp;&nbsp;クリプトノモト：<input type=password name=5 size=20 maxlength=40><br><script>setName('1068897594');</script><br>コメントを入力してください：<br><textarea name=1 rows=9 cols=70 wrap=off></textarea><br><input type=submit value="書き込み"><input type=hidden name=3 value="1068897594"><input type=checkbox name=2 value=1 checked>インデックスを上げる&nbsp;<small><a href="javascript:helper();">※各項目の説明</a></small></form>
+
+改行が無かったのでちょっと読みにくいですが、がんばって読んで下さい(^^;
+
+まずターゲットとなるCGIは http://xtest.dot.thebbs.jp/w.cgi です。これが書き込みを行うプログラムのようです。次に名前ですが name=0 となってますので POST するデータは 0=myName というようにすれば良いですね。次がクリプトノモトです name=5 なので 5=pass という感じでいいでしょう。この調子でコメントは name=1 なので 1=comment わけのわからない数字列(おそらくスレッドを管理するデータ)は name=3 なので 3=1068897594 そしてスレを上げるかどうかの値ですがこれはTESTなのでsageで行きたいので 2=0 とします。ではこれらの文字列を繋げます。
+
+0=myName&5=pass&1=Hello&3=1062995806&2=0
+
+となります。ブラウザで書き込みボタンを押したとき、おそらくこのようなデータがPOSTされていると考えられますね。投稿すべきCGIは http://xtest.dot.thebbs.jp/w.cgi ですね。ではプログラムを見てください。
+
++-------------------------------------------------+
+| http://kenjinet.s26.xrea.com/http/THE.txt (.pl) |
++-------------------------------------------------+
+
+さてここでちょっとおかしなことが。 $path が http://www.thebbs.jp/xtest/w.cgi となっています。$server も違いますね。おいおい、アドレス違うじゃん。http://xtest.dot.thebbs.jp/w.cgi じゃないのか。と思われますが実はこれで良いのです。ためしに http://xtest.dot.thebbs.jp/w.cgi として投稿してみるとなんと投稿出来ません(私はここでハマりました) 結果を話すとターゲットのCGIは
+
+http://www.thebbs.jp/[サーバ名の最初から'.'までの文字列]/w.cgi
+
+にアクセスしなければならない。ということです。つまり http://xtest.dot.thebbs.jp/w.cgi なら www.thebbs.jp に接続し xtest というディレクトリ以下のw.cgiにデータを渡さなければならないようです。何故こうなってるのかは分かりません。というか 2003/11/23 にテストした時はこうはなってなかったのです。でも 2003/12/04 に試してみるとなんか出来ない。正直焦りました。んで急遽この章だけ書き直したというわけなんです。(以上ネタばれでした^^;)
+
+
+
+6. 2ch 篇 ( http://www.2ch.net/ )
+
+最後に「2ちゃんねる」をやります。いままで通りフォーム情報を調べます。これは2chの厨房板のあるスレのデータです。( 2003/12/01 )
+
+<form method=POST action="../../../bbs.cgi"><input type=submit value="書き込む" name=submit> 名前： <input name=FROM size=19> E-mail<font size=1> (省略可) </font>: <input name=mail size=19><br><textarea rows=5 cols=70 wrap=off name=MESSAGE></textarea><input type=hidden name=bbs value=kitchen><input type=hidden name=key value=1069576102><input type=hidden name=time value=1070108651></form>
+
+もう３度目なので詳細な説明はしません。まずターゲットとなるCGIは ../../../bbs.cgi ですね。それぞれ適当なデータを持ってきて繋ぎます。
+
+FROM=nanashi&mail=sage&MESSAGE=sage&bbs=kitchen&key=1069576102&time=1070108651
+
+となります。さて上記のプログラムを使って実際に送信してみてください。おそらく書き込まれません。何故なら 2ch はクッキーを使ってるからです。書き込みを行うPCのIPアドレスをクッキーとして保存させてそれを持ってるならば書き込みを許可するという風な処理をCGIにさせてるからです。ではどうするのか。答えは簡単。リクエストヘッダに Cookie を追加します。まずブラウザで2chに書き込みを行ってみてセットされたクッキーを見てみます。クッキーはこちら側(クライアント)に保存されてるので見ることができます。しかしクッキーがどこに保存されてるかはOSによって違いますので各自調べてください。調べてみると PON という名前で myhost.co.jp というようなデータが保存されてるのが分かります。これをリクエストヘッダに付加してやります。
+
+Cookie:PON=myhost.co.jp
+
+こんな感じです。さてこれでもう一度送信してみましょう。おそらくまた書き込まれません（笑 レスポンスを見てみると、Referer をください。みたいなことが書かれてあります。よってリクエストヘッダに Refererも付け加えましょう。
+
+Referer:http://tmp2.2ch.net/test/read.cgi/kitchen/**********/l50
+
+これでおそらく書き込みできるはずです。
+
++-------------------------------------------------+
+| http://kenjinet.s26.xrea.com/http/2CH.txt (.pl) |
++-------------------------------------------------+
+
+これが(↑)実際に書き込みを行ったプログラムです。初期設定を2ch用に変更、あとデータ生成の部分に Cookie と Referer を付加してます。
+
+
+このようにBBSによってどういったデータを欲しがってるのか。どういった仕組みで実現してるのかは微妙に違います。掲示板を攻撃するならばHTTPの知識は不可欠です。そのためには実際に自分で掲示板を作ってみるというのも良いでしょう。
+
+
+
+7. 最後に
+
+さて、いかがだったでしょうか。掲示板荒らしは結構奥が深いようで掲示板の作成者によっては、あらゆる手段を使って連続投稿を防止するプログラムを組み込んでいたりするようです。結局攻撃する方法が分からなければ防御する方法も分からないわけで、そこは攻撃側と防御側のスキルの競い合いと言ったところでしょうか。どちらにしても HTTP の知識が必要になってくることは間違いないでしょう。最後になりましたが、ここまで付き合って読んでくださった方有り難うございました。
+
+では、また会う日まで...
+

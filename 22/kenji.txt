@@ -1,0 +1,315 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第7章: 自前でDLLをプロセスへマッピングさせる方法 ～LoadLibrary関数の作成～ ---
+
+著者：Kenji Aiko
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　私は以前「WizardBible vol.15」にて「リバースエンジニアリグ」という記事
+を書きました。そして、この記事の最後の「絶対にKrackされないソフトウェアの
+作り方を考える」にて、マシン語を暗号化したプログラムを内部に入れておき、
+特定のパスワードを入力しなければ任意のコードが復号化されず、結果的に任意
+のコードが実行されないようにするというテクニックを書きました。しかし、こ
+のテクニックは前回の記事で書いた通り、実用性に欠けます。
+
+　そして数ヵ月後くらいに私のところへあるメールが来ました。その内容は「DL
+Lをプロセスへマッピングする処理を自前で作成し、暗号化したDLLイメージを動
+的に復号化して、プロセスへマッピングさせるようにすれば、暗号化しておきた
+いプログラムをDLLとして作成しておくことができ、実用性が大きく増すのではな
+いか？」というものでした。
+
+　つまり「プロセス内にあらかじめ暗号化した状態のDLLイメージを持っておき、
+そのDLLイメージを復号化し自前でプロセスへマッピングできれば、実用的なアン
+チクラッキング対策を行うことができるのではないか？」ということです。
+
+　例えばパッカー（packer）というソフトは任意のEXEファイルを圧縮し、その圧
+縮したデータの先頭に展開コードを追加します。このようなパッカーで処理され
+たファイルも、もちろんPEフォーマットに従っているため実行することができま
+すし、圧縮されるべき元々のEXEファイルもまたPEフォーマットに従っています。
+よって、パッカーが付加した展開コードは圧縮されているEXEファイルを展開し、
+そのEXEファイルをあらためてメモリにロードしているわけであり、これはつまり、
+展開コードがローダー（loader）の役割に担っていることを意味します。
+
+　さて、ローダーを作るならばWindowsAPIのCreateProcessの動作をデバッガで追
+っていけば再現することができます。これと同じように、DLLのマッピング処理は
+LoadLibraryを追っていくことで分かります。今回はこのDLLのマッピングを自前
+で行うプログラムを作成していくことにします。ちなみに、ローダーを自前で用
+意するならば、UPXという有名なオープンソースのパッカーがありますので、その
+辺りはUPXのソースコードを読むことで理解することができると思います。
+
+　今回私が使用する環境は「WindowsXP + VC++.NET」ですが、Windows2000以降な
+らば、問題ないでしょう。
+
+
+■0x02.) LoadLibrary(Ex)関数の定義
+
+　LoadLibrary関数はMSDNにて以下のように定義されています。
+
+-----  LoadLibrary関数
+HINSTANCE LoadLibrary(
+    LPCTSTR lpLibFileName    // DLLファイル名
+);
+-----
+
+　lpLibFileNameにDLLファイル名を指定し、DLLのマッピングが成功したら戻り値
+としてDLLハンドルを、失敗したらNULLを返します。このLoadLibrary関数を拡張
+したのが、LoadLibraryEx関数です。
+
+-----  LoadLobraryEx関数
+HMODULE LoadLibraryEx(
+    LPCTSTR lpLibFileName,    // DLLファイル名
+    HANDLE hFile,             // NULL固定
+    DWORD dwFlags             // フラグ
+);
+-----
+
+　hFileはNULLで固定です。dwFlagsはフラグで以下のどれかを指定します。
+
+・DONT_RESOLVE_DLL_REFERENCES
+・LOAD_LIBRARY_AS_DATAFILE
+・LOAD_WITH_ALTERED_SEARCH_PATH
+
+　これらの詳細は説明はMSDNを参照してください。
+
+
+■0x03.) LoadLibrary(Ex)関数の動作
+
+　では、いったいLoadLibrary関数は内部でどのような処理を行っているのでしょ
+うか？　まずはそれを考えてみます。ちなみに、このテキストではLoadLibraryと
+LoadLibraryExを同じものと考えていますが、それはLoadLibraryは、内部的に以
+下のように呼び出していると推測しているからです。
+
+-----
+LoadLibrary("test.dll")      →      LoadLibraryEx("test.dll", NULL, 0)
+                         内部的には
+-----
+
+　このことから、以後LoadLibraryとLoadLibraryExは同一のものとして話を進め
+ていきます。
+
+　プロセス内でLoadLibraryが呼び出された時、まず一番最初に、LoadLibraryは
+該当するDLLがすでにマッピングされていないかどうかを調べます。もしマッピン
+グされていたら、新しくマッピングする必要はないためそのDLLのハンドルを返却
+して終了です。もしマッピングされていなかったならば、まずはDLLイメージをプ
+ロセスのメモリへマッピングします。この時にOpenFileMapping関数やCreateFil
+eMapping関数を使用します。
+
+-----
++---------+-----+          +-----+
+|         |     |   <--    |     |
+|         |     |   <--    |     |
+| Process | DLL |   <--    | DLL |
+|         |     |   <--    |     |
+|         |     |   <--    |     |
++---------+-----+          +-----+
+
+　 プロセスへのマッピング処理
+-----
+
+　このマッピング時にLOAD_LIBRARY_AS_DATAFILEフラグが指定されているならば、
+DLLのマッピングのみを行いここで終了します。それ以外の場合は、次にインポー
+トアドレステーブルの解決を行います。DLL自体ももちろん他の様々なDLLや関数を
+利用しているためそれらのアドレス解決を行います。インポートアドレステーブル
+に利用しているDLLや関数名が存在するので、それを調べて、適切なアドレスを設
+定していきます。さらに必要ならば再配置テーブルも処理します。
+
+-----
++---------+-----+          +--------------+
+|         |     |  ------> | kernel32.dll |
+|         |     |          +--------------+
+| Process | DLL |  ---+
+|         |     |     |    +--------------+
+|         |     |     +--> |  user32.dll  |
++---------+-----+          +--------------+
+
+　DLLが利用しているDLLのインポート関数アドレスを解決
+-----
+
+　これで、とりあえずDLL内のプログラムは実行できる状態になったので、今度は
+DllMain関数を呼び出します。DllMain関数は「DLLのアタッチ時」「DLLのデタッ
+チ時」「スレッド起動時」「スレッド終了時」に呼び出さなければなりません。
+とりあえずは、一番最初の「DLLのアタッチ時」として、DllMainを呼び出します。
+またDONT_RESOLVE_DLL_REFERENCESフラグが立っていれば、DllMain関数の実行は
+行いません。
+
+　次にDLLイメージのプロテクトを行います。現在DLLイメージはメモリ上に展開
+されています。そしてセクションによっては読み込みのみでよい部分もあれば、
+読み書きが必要な部分もあります。そのため、セクションによってメモリプロテ
+クト行います。
+
+-----
++---------+-----+
+|         |     | <-- read & write
+|         +-----+
+| Process | DLL | <-- read & exec
+|         +-----+
+|         |     | <-- read only
++---------+-----+
+
+　メモリプロテクトの実行
+-----
+
+　ここまでで、一応DLLのマッピング部分は終わりです。次に、現在マッピングし
+ているDLLを管理しなければならないため、DLLのデータベースを作成します。デ
+ータベースに設定するパラメータデータには、「DLLのイメージベースアドレス」
+「DLLファイル名」「フラグ」「ロックカウンタ」そして「次のパラメータデータ
+のアドレス」を設定します。
+
+　LoadLibraryが呼び出され、プロセスへマッピングするDLLが増えるたびにDLLの
+パラメータデータを追加していき、ここを参照して、DLLの管理を行います。また
+FreeLibraryが呼び出されたらDLLのマッピングを解除しなければならないので、
+データベースからデータを削除し、DLLのために割り当てていたメモリを開放しま
+す。
+
+　以上がLoadLibraryの一通りの動作です。案外大したことはやってなかったりし
+ます（笑）。
+
+
+■0x04.) プログラミング
+
+　以下が、検証プログラムです。
+
+http://ruffnex.oc.to/kenji/text/load_dll/test_exe.cpp（ソースコード）
+http://ruffnex.oc.to/kenji/text/load_dll/load_dll.zip（全パッケージ）
+
+　まずはサンプルとなるDLLを作成します。このDLLがちゃんとプロセスにマッピ
+ングされ、内部の関数を実行することができたならば、LoadLibraryは成功してい
+ることになります。
+
+-----  test_dll.cpp（http://ruffnex.oc.to/kenji/text/load_dll/test_dll.cpp）
+#define WIN32_LEAN_AND_MEAN
+
+#include <windows.h>
+#include <windowsx.h>
+#include <tchar.h>
+
+#define EXPORT extern "C" __declspec(dllexport)
+
+EXPORT int add_num(int a, int b) { return (a + b); }
+EXPORT int sub_num(int a, int b) { return (a - b); }
+
+BOOL APIENTRY DllMain( HANDLE hModule, 
+                       DWORD  ul_reason_for_call, 
+                       LPVOID lpReserved
+                     )
+{
+    switch (ul_reason_for_call)
+    {
+    case DLL_PROCESS_ATTACH:
+        MessageBox(GetActiveWindow(), 
+            _T("Process Attach!"), _T("Message"), MB_OK);
+        break;
+    case DLL_THREAD_ATTACH:
+        MessageBox(GetActiveWindow(), 
+            _T("Thread Attach!"), _T("Message"), MB_OK);
+        break;
+    case DLL_THREAD_DETACH:
+        MessageBox(GetActiveWindow(), 
+            _T("Thread Detach!"), _T("Message"), MB_OK);
+        break;
+    case DLL_PROCESS_DETACH:
+        MessageBox(GetActiveWindow(), 
+            _T("Process Detach!"), _T("Message"), MB_OK);
+        break;
+    }
+    return TRUE;
+}
+-----
+
+　このDLLを作成した状態で、test_exe.cppをコンパイルし、実行します。test_
+exe.cppのWinMain関数は以下のようになっています。
+
+-----
+int APIENTRY WinMain(HINSTANCE hInstance,
+                     HINSTANCE hPrevInstance,
+                     LPTSTR    lpCmdLine,
+                     int       nCmdShow)
+{
+    InitializeDLLLoad();
+    HMODULE hHandle = LoadDLL(_T("test_dll"));
+    PADDFUNC pAdd = (PADDFUNC)GetDLLProcAddress(hHandle, _T("add_num"));
+    int a = (*pAdd)(3, 5);  // 3 + 5 = 8
+    PSUBFUNC pSub = (PSUBFUNC)GetDLLProcAddress(
+        GetDLLHandle(_T("test_dll.dll")), _T("sub_num"));
+    int b = (*pSub)(8, 5);  // 8 - 5 = 3
+    TCHAR szFileName[MAX_PATH];
+    GetDLLFileName(hHandle, szFileName, sizeof(szFileName));
+    TCHAR szBuffer[1024];
+    wsprintf(szBuffer, _T(
+        "FileName = %s\r\na = %d, b = %d\r\n"), szFileName, a, b);
+    MessageBox(GetActiveWindow(), szBuffer, _T("Message"), MB_OK);
+    FreeDLL(hHandle);
+    KillDLLLoad();
+    return 0;
+}
+-----
+
+　まず最初にInitializeDLLLoad、最後にKillDLLLoadを確認してください。これ
+ら2つの関数は必ず必要です。
+
+　まずはLoadDLLでtest_dllをマッピングします。そして、GetDLLProcAddressを
+使ってDLL内の関数アドレスを取得します。そのアドレスを使って関数を呼び出し、
+足し算や引き算の計算を行います。さらにGetDLLHandle関数を使ってマッピング
+しているDLLのハンドルが取得でき、GetDLLFileName関数を使ってマッピングして
+いるDLLファイル名の取得ができます。このようにして、DLLをマッピングし、使
+用することが可能です。
+
+　動作の詳しい内容はソースコードを読んでください。いや、ここで全部解説し
+てもよいのですが、800行程度もあるため、WizardBibleがそのまま800行長くなり、
+さらにずっとソースコードの解説というものあまり好まれないようなので…(^^;。
+
+　プログラムを実行すると、LoadDLLにより、DLLマッピング時の処理が行われま
+す。つまり、メッセージボックスで「Process Attach!」が表示されます。次に、
+GetDLLProcAddressで関数アドレス、GetDLLFileNameでファイル名を取得して、そ
+れをメッセージボックスで表示しているため、「FileName = test_dll.dll」「a
+ = 8, b = 3」と表示されます。そしてFreeDLLにて、マッピングが解除されるた
+め「Process Detach!」と表示されて終了です。
+
+
+■0x05.) 問題点と可能性
+
+　上記のプログラムですが、通常のLoadLibraryとは以下の点に違いがあります。
+
+・LoadDLLExはLOAD_WITH_ALTERED_SEARCH_PATHフラグをサポートしていません。
+・DLL_THREAD_ATTACHとDLL_THREAD_DETACHをサポートしていません。
+・バグがたくさんありそうです。
+
+　よって、これらを解決するのが今後の課題になってきます。というか、誰か改
+良してください(^^;。
+
+　ただし、現在の状態でもDLLをマッピングする上で十分であることは確かです。
+そして、このテクニックを使えば、例えば暗号化した状態のDLLをメモリ内部に持
+っておき、特定のパスワードによって復号化を行ってマッピングを行うというこ
+とが可能になり、十分にクラッキング対策になると思います。
+
+　もちろんクラッキング対策としてもっとも有効な手段はパッカーを使うことで
+すが、このように、単純にどうやったら対策が行えるかを考えるというのは楽し
+いものだと思います。
+
+
+■0x05.) さいごに
+
+　さて、いかがだったでしょうか。最近あまり役に立たないことばっかり研究し
+てる気がするんですが、今回も案の定あまり役に立たないテクニックだったかも
+しれません(^^;。自分の好きなことややりたいことはたくさんあるのですが、そ
+ういうものに限って、他人にとってはどうでもよい技術だったりするんです。こ
+れが一般的に言われるスランプというものなのか、はたまた、ただ自分が変人な
+だけなのか分かりませんが、どちらにしろ、私は自分が興味を持ったものしかや
+れない人なので、残念ですが、このまま突き進んでしまいそうです（笑）。だか
+らこそ私の記事を読んでくださる読者の方には本当に感謝しております。さて、
+最後になりましたが、ここまで読んでくれて本当にありがとうございます。
+
+　では、また会う日まで...
+
+
+■0x07.) 参考サイト
+
+・bo2k.com（http://www.bo2k.com/）
+
+

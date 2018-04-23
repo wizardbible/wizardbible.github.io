@@ -1,0 +1,313 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: 初心者のためのハッキング入門（Hack This Site!） ---
+
+著者：Kenji Aiko
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　前々から、WBで一度、初心者のための解説記事を書きたいと思っていたのです
+が、なかなか書く機会がありませんでした。また、前々から、ハッキングゲーム
+の攻略ネタを書きたいと思っていたのですが、これもなかなか書く機会がなく困
+っていました。そんなこんなで、この2つの悩みを同時に解決してくれる今回の内
+容は「初心者のためのハッキング入門」です（なんだこれ？）。実はタイトルは
+すごい悩んだのですが、思い切って、とことん思い切ったものにしました(^^;。
+　というわけで、今回はハッキングゲーム「Hack This Site!」の攻略をやってい
+くことにします。
+
+　「Hack This Site!」http://www.hackthissite.org/
+
+　「ユーザー登録ページ」http://www.hackthissite.org/user/create
+
+　ユーザー登録にはメールアドレスのみ必要になります。あとはユーザー名とパ
+スワードを入力するだけです。英語サイトですが、それほど難しくはないので苦
+労することはないと思います。ユーザー登録が終わったら、さっそくログインし
+て、「challenges」以下にある「Basic Web」へ進んでください。これでLevel1が
+始まります。
+
+
+■0x02.) Level 1
+
+　http://www.hackthissite.org/missions/basic/
+
+　ヒントはないですが、とても簡単な問題です。このページのHTMLを参照すれば、
+入力フォームの上にパスワードが書いてあるのが確認できます。
+
+-----  http://www.hackthissite.org/missions/basic/
+This level is what we call "The Idiot Test", if you can't complete it, 
+don't give up on learning all you can, but, don't go begging to someone
+ else for the answer, thats one way to get you hated/made fun of. Enter
+ the password and you can continue. <br /><br />
+<!-- the first few levels are extremely easy: password is 3853d321 -->
+<center><b>password:</b><br /><form action="/missions/basic/2/index.php
+" method="post"><input type="password" name="password"><br /><br /><inp
+ut type="submit" value="submit"></form></center>
+-----
+
+　HTMLに「the first few levels are extremely easy: password is 3853d321」
+という一文が見つかります。というわけで、パスワード「3853d321」で次に進め
+ます。
+
+
+■0x03.) Level 2
+
+　http://www.hackthissite.org/missions/basic/2/index.php
+
+　2問目は「開発者のサムはパスワード認証のためのスクリプトを書いたが、肝心
+のパスワードファイルをアップロードするのを忘れてしまった。ということで、
+この認証を突破してくれ！」という問題です。とりあえず、適当なパスワードを
+入れてみると、「ファイルがありません」と言われスクリプトエラーとなります。
+　この問題はある種の推測が必要です。「パスワードを比較しなければならない」
+から、そのために「ファイルを参照する」という流れでプログラムが組まれてい
+ることを推測しなければなりません。つまり、パスワードが入力されていると、
+それを比較しようとして、ファイルを参照しようとするわけであり、もしパスワ
+ードが入力されていなかったらどうだろうか？　と考えることで問題を解くこと
+ができます。よって、何も入力せずに「submit」ボタンを押せばよいわけです。
+まぁまだ2問目なので、それほど難しいものはないでしょう。
+
+
+■0x04.) Level 3
+
+　http://www.hackthissite.org/missions/basic/3/index.php
+
+　開発者サムは「今度はちゃんとパスワードファイルをアップロードした」らし
+く、その状態で脆弱性を発見して攻略することが今回の問題です。そして、今回
+重要なのはHTMLのformタグです。
+
+-----  http://www.hackthissite.org/missions/basic/3/index.php
+<form action="/missions/basic/4/index.php" method="post">
+<input type="hidden" name="file" value="password.php">
+<input type="password" name="password"><br /><br />
+<input type="submit" value="submit"></form>
+-----
+
+　POSTメソッドで「/missions/basic/4/index.php」へ「file」として「passwor
+d.php」を渡していることがわかります。よって、このpassword.phpへブラウザで
+アクセスします（ディレクトリはもちろん/missions/basic/4/）。
+
+-----  http://www.hackthissite.org/missions/basic/4/password.php
+25329228
+-----
+
+　これが、Level4へのパスワードとなります。まだまだ簡単ですね。
+
+
+■0x05.) Level 4
+
+　http://www.hackthissite.org/missions/basic/4/index.php
+
+　「開発者サムは忘れっぽいので、パスワードもすぐに忘れてしまう。だから、
+忘れても大丈夫なように自分のメールアドレスにだけ送信してくれるパスワード
+取得ボタンを作成したようだ」
+　というわけで、このパスワード送信ボタンの脆弱性をつくのが今回の問題です。
+毎度のごとくHTMLのformタグを参照します。
+
+-----  http://www.hackthissite.org/missions/basic/4/index.php
+<form action="/missions/basic/4/level4.php" method="post">
+<input type="hidden" name="to" value="webmaster@hulla-balloo.com">
+<input type="submit" value="Send password to Sam"></form>
+-----
+
+　すると、「to」に「webmaster@hulla-balloo.com」というメールアドレスが設
+定されていることがわかります。というわけで、ここを自分のメールアドレスに
+変更したデータをaction先の「/missions/basic/4/level4.php」へ送ってやるこ
+とで、Level4クリアとなります。が、これにはいろいろと攻略法があって、例え
+ば、次のようなファイルを作成し、ブラウザで開いてボタンを押してもよいです。
+
+-----  test.html
+<form action="http://www.hackthissite.org/missions/basic/4/level4.php" method="post">
+<input type="hidden" name="to" value="test@test.com">
+<input type="submit" value="Send password to Sam"></form>
+-----
+
+　多分、これが一番簡単な方法だと思います。あと、IEならアドレスバーで利用
+できる JavaScriptを使ってもよいです。
+
+-----  IEのアドレスバーに入力
+javascript:void(document.forms[1].to.value="test@test.com");void(document.forms[1].submit());
+-----
+
+　この方法だと、いちいちローカル環境にファイルを保存せずともよいので、手
+軽な方法だと思います。自分のメールアドレスをlevel4.phpへPOSTしたら次のデ
+ータが出力されます。
+
+-----  http://www.hackthissite.org/missions/basic/4/level4.php
+password: 67cbb3a7
+-----
+
+　これでLevel4攻略完了です。
+
+
+■0x06.) Level 5
+
+　http://www.hackthissite.org/missions/basic/5/index.php
+
+　Level4の問題にRefererの識別を追加したのが、Level5の問題です。Refererが
+識別されるため、他のページからフォーム情報を投稿することはできません。と
+いうわけで、ローカル環境にファイルを保存して、そこからデータをPOSTすると
+いう芸当はできないことになります。しかし、IEのアドレスバーで扱えるJavaSc
+riptは利用できるため、それを使って攻略できます。
+
+-----  IEのアドレスバーに入力するデータ
+javascript:void(document.forms[1].to.value="test@test.com");void(document.forms[1].submit());
+-----
+
+　また、Refererを吐き出さないproxy（ローカルproxyでも可）や、Refererを操
+作できるブラウザなどを使ってもよいです。
+
+-----  http://www.hackthissite.org/missions/basic/5/level5.php
+Password: cb32e9e9
+-----
+
+　これでLevel5攻略完了です。
+
+
+■0x07.) Level 6
+
+　http://www.hackthissite.org/missions/basic/6/index.php
+
+　Level6は暗号化の問題です。暗号化スクリプトの「平文→暗号文」の変換プロ
+グラムは公開されており、それを使ってパスワードの平文を求めるのが今回の問
+題となります。そして、パスワードを暗号化したものが「6e5gjf>l」であり、こ
+れの平文を探すことになります。
+　暗号化といっても、アルゴリズムはとても簡単なものなので、よく考えればわ
+かります。とりあえず「aaaaa」や「11223344」などをやってみてください。する
+と「abcde」や「124578:;」となります。もうお分かりの通り、1文字目はそのま
+まの文字、2文字目は1つ進めた文字、3文字目は2つ進めた文字（以下同）となっ
+ています。つまり、暗号文「「6e5gjf>l」」に対して、これの逆の処理を行えば、
+平文が求まることになります。いや、実にメンドクサイ（笑）。
+　ちなみに、この暗号化はASCIIコードの順によりスライドされるので、ASCIIコ
+ード表を持って解読に挑んでください。
+
+
+■0x08.) Level 7
+
+　http://www.hackthissite.org/missions/basic/7/index.php
+
+　とりあえず、calコマンドを実行してくれる入力ボックスが存在し、開発者サム
+は、次のレベルへのパスワードが書かれてあるファイルを、同じディレクトリ内
+に「よくわからないあいまいな（bscurely）」名前で保存しているらしいという
+ことがわかっている状態です。calコマンドはカレンダーを表示するUNIXコマンド
+なので、実際に入力してみると、事実カレンダーが出力されます。
+　この問題は結構ハッキングっぽくて、まずこちら側が入力したデータは、その
+ままUNIX環境のコマンドプロンプト（というかターミナル）へ入力されるであろ
+うことが推測できます。
+
+-----
+>cal [input]
+-----
+
+　つまり、以下のinputの部分をこちら側がいくらでも変更することができること
+になります。そして、UNIXでは同時に実行させたいコマンドを「;」で区切ること
+ができるので、lsコマンドとcallコマンドを「;」で区切って同時に実行させれば、
+そのままファイル一覧が取得できることになります。
+　ファイル一覧の中には「k1kh31b1n55h.php」というよくわからないファイルが
+あるので、それにアクセスすることでパスワードを取得できます。
+
+
+■0x09.) Level 8
+
+　http://www.hackthissite.org/missions/basic/8/index.php
+
+　Level8ではSSIの知識が必要になります。
+　SSIに関しては「http://www.openspc2.org/reibun/SSI/」を参照してください。
+
+　SSIには「exec cmd」という任意のコマンドを実行できる命令があります。そし
+て、開発者のステファニーが作ったプログラムは、SHTMLファイルを作成するもの
+であり、つまり、攻撃者が任意のSSI命令を書き込むことが可能になるものです。
+よって、例えば、「<!--#exec cmd="ls" -->」という命令を書き込めば、ディレ
+クトリ内のファイルが列挙されることになります。
+
+-----  「<!--#exec cmd="ls" -->」の入力例
+Hi, tshngmww.shtml hipykpqu.shtml ztxdhjxn.shtml avpfeoie.shtml 
+fviqpmaw.shtml kqbybdzc.shtml dzrnmzgx.shtml npcsygfl.shtml whqx
+xojt.shtml ylomcmvu.shtml uhdppswp.shtml gzntiicx.shtml dzwbqiuu
+.shtml qvzuieng.shtml smcerykh.shtml qjhnmhmq.shtml znodwztr.shtml!
+
+Your name contains 254 characters.
+-----
+
+　しかし、この中にパスワードが書かれてありそうなファイルはありません。と
+いうのも、これはtmpディレクトリ内のファイル一覧であり、パスワードが書かれ
+てあるファイルはそのひとつ下のディレクトリだからです。よって、「ls ../」
+というコマンドを実行させる必要があります。
+
+-----  「<!--#exec cmd="ls ../" -->」の入力例
+Hi, au12ha39vc.php index.php level8.php tmp!
+
+Your name contains 39 characters.
+-----
+
+　すると「au12ha39vc.php」という怪しいファイルが見つかります。このファイ
+ルにアクセスして、Level8クリアとなります。
+
+
+■0x0A.) Level 9
+
+　http://www.hackthissite.org/missions/basic/9/index.php
+
+　Level9はLevel8と同じ脆弱性を利用します。というのも、Level8の脆弱性を利
+用して取得できるのは、Level8のパスワードだろうか？　もちろん違います。任
+意のコードを実行できるというのなら、Level9のパスワードだって取得すること
+は可能じゃないでしょうか。Level9 のパスワードファイルは「/var/www/hackth
+issite.org/html/missions/basic/9/」に存在することが問題文に書かれてあるの
+で、そこに移動してlsコマンドを実行するようなものを「exec cmd」へ渡せばよ
+いことになります。
+　この問題はLevel8の動作を理解していれば簡単に解くことができます。ぜひチ
+ャレンジしてみてください。
+
+
+■0x0B.) Level 10
+
+　http://www.hackthissite.org/missions/basic/10/index.php
+
+　いよいよ最終レベルです。Level10はcookieの問題です。どうやら最終レベルの
+スクリプトは、cookieを取得して、そのデータから閲覧の許可、非許可を出すス
+クリプトらしい。とりあえず適当なパスワードを入力して試してみると、「You 
+are not authorized to view this page」と怒られてしまいます。そして、その
+状態でブラウザが持っているcookieを調べると「level11_authorized=no」という
+cookieが「www.hackthissite.org」からブラウザに与えられているのがわかりま
+す。
+　つまり、この「level11_authorized=no」を「level11_authorized=yes」に変更
+して、このページへアクセスすればよいというわけですが、この問題、IEならば
+level4-5で使用したアドレスバーでのJavaScriptを使うことできます。アドレス
+バーでのJavaScriptでcookieを変更したあと、再度ページをリロードするだけで
+OKです。
+　また、cookieを操作できるブラウザならば、そのまま直接cookie情報を書き換
+えてもよいです。あと、その気になればcookieを変更したデータを送信するクラ
+イアントプログラムをCなりPerlなりで自作してもよいですが、それは結構手間が
+かかるので、あまりお勧めはしません(^^;。
+
+
+■0x0B.) クリアすると？
+
+　すべてのレベルを攻略できたら「Congratulations, you have successfully c
+ompleted every basic level!」というテキストが表示されます。ちなみに、これ
+だけです。これ以外には何のごほうびもありません（笑）。
+　ただ、これはあくまでもBasic（基本）問題であり、楽しいのはこれからです。
+Basicをクリアしたら次は「realistic」へと進んでください。もっと高度で面白
+い問題がたくさんあります。
+
+
+■0x0C.) さいごに
+
+　さて、いかがだったでしょうか。実は世の中にハッキングゲームサイトという
+のは結構あるのですが、日本語版はなかなかなく、日本人の私たちにしてみれば
+ちょっと面白くないものです。出来れば「誰か作って～」という感じなのですが、
+「お前が作れ！」と言われそうなのでダンマリします（ぉぃ。
+　ここで解説したのはあくまで、Basic（基本）問題であり、「Hack This Site!」
+では、まだまだ難易度の高い問題が多数あります。「Realistic」を始めとして、
+暗号問題、プログラム問題、リバースエンジニアリング問題などなど、様々なも
+のがあります。そういう問題も、いずれ攻略記事を書いてみたいのですが、今は
+いかんせん時間と技術がないので無理です(^^;。
+　というわけで、今回の攻略ネタ、楽しんでいただけたなら幸いです。最後にな
+りましたが、ここまで読んでくれて本当にありがとうございます。
+
+　では、また会う日まで...
+
+

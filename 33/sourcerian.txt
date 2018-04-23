@@ -1,0 +1,485 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: UnhandledExceptionFilter()を使ったアンチデバッギング手法 ---
+
+著者：sourcerian
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　前回「アンチデバッギングの話は終わりです」と書いておきながら性懲りもな
+くまたアンチデバッギングの話です。おまけでインポート関数呼び出しの隠蔽も
+行っているので読んでみてください。前回は特定のデバッガがアタッチされてい
+ないと動作しない仕組みでしたが、今回はデバッガがアタッチされていると動作
+しない仕組みとなります。
+
+
+■0x02.) UnhandledExceptionFilter()APIとSetUnhandledExceptionFilter()API
+
+　今回のアンチデバッギング手法の根幹となるのがUnhandledExceptionFilter()
+APIとSetUnhandledExceptionFilter()APIです。UnhandledExceptionFilter()API
+はアプリケーションエラーダイアログボックスを表示し、アンワインドを行って
+プロセスを終了させる関数です。基本的には構造化例外処理のフィルタ式の中で
+使うAPIですが、明示的に呼び出すまでもなく、Cランタイムやカーネルが未処理
+の例外を捕捉してUnhandledExceptionFilter()APIを呼び出します(Cランタイムの
+場合は一部例外をシグナルに変換します)。アプリケーションエラーダイアログを
+表示させたくなければSetErrorMode()APIを使うだけで十分ですが、デバッグ情報
+の収集や独自のダイアログボックスを表示させたい場合はSetUnhandledExceptio
+nFilter()APIを使います。
+
+-----
+// フィルタ関数のポインタ型
+typedef LONG (WINAPI *PTOP_LEVEL_EXCEPTION_FILTER)(
+    struct _EXCEPTION_POINTERS *ExceptionInfo
+);
+typedef PTOP_LEVEL_EXCEPTION_FILTER LPTOP_LEVEL_EXCEPTION_FILTER;
+
+// SetUnhandledExceptionFilter()の宣言
+LPTOP_LEVEL_EXCEPTION_FILTER SetUnhandledExceptionFilter(
+	LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter
+);
+-----
+
+　SetUnhandledExceptionFilter()APIでフィルタ関数をセットするとUnhandledE
+xceptionFilter()関数はセットされたフィルタ関数を呼び出し、その戻り値によ
+って動作を変えます。
+
+・EXCEPTION_EXECUTE_HANDLER
+　プロセスを終了させる。
+
+・EXCEPTION_CONTINUE_EXECUTION
+　例外発生場所に戻って処理を続行させる。
+
+・EXCEPTION_CONTINUE_SEARCH
+　本来の動作(アプリケーションエラーダイアログの表示)を行う。
+
+　さて、ここからが今回の重要なところですが、UnhandledExceptionFilter()AP
+Iは、アプリケーションデバッガがアタッチされている場合にセットされたフィル
+タ関数を呼び出さないという仕様というかバグがあります。Windows95～Windows
+Vistaまで一貫しているその動作はバグというより仕様としか思えませんが、Kno
+wledge Base Q173652（http://support.microsoft.com/kb/173652）では、バグと
+書かれているのでバグなんでしょう。バグか仕様かはさておき、デバッグ時とそ
+うでない時に動作が違うものを利用すればデバッギング対策になるのは間違いあ
+りません。今回はこの動作の違いを利用してアンチデバッギングを実装します。
+
+
+■0x03.) SetUnhandledExceptionFilter()APIのサンプルコード
+
+　アンチデバッギングの実装に取り掛かる前にSetUnhandledExceptionFilter()A
+PIの使い方を見てみましょう。以下はアプリケーションエラーダイアログの代わ
+りにメッセージボックスで素っ気無いメッセージを表示して終了するサンプルで
+す。
+
+-----
+LONG WINAPI MyUnhandledExceptionFilter(
+	PEXCEPTION_POINTERS	pExceptPointers
+)
+{
+	MessageBox(
+		NULL
+	,	"不正な処理を行ったため強制終了されます。"
+	,	"アプリケーションエラー"
+	,	MB_ICONEXCLAMATION
+	);
+	return EXCEPTION_EXECUTE_HANDLER;	// プロセスを終了させる
+}
+
+int main()
+{
+	// フィルタ関数をセットする
+	SetUnhandledExceptionFilter(MyUnhandledExceptionFilter);
+
+	// アクセスバイオレーション例外が発生！
+	*(int*)0 = 0;
+
+	// 強制終了されるため実行されない
+	printf("強制終了されるため実行されない\n");
+}
+-----
+
+　一見、単純に見えるコードですが、水面下でいろいろと動いています。処理の
+流れは次のようになります。
+
+1：「*(int*)0 = 0;」でアクセスバイオレーション例外が発生。
+
+2：Cランタイムがアクセスバイオレーション例外を捕捉してSIGSEGVシグナルに変
+換し、シグナルハンドラを呼び出そうとするが、シグナルハンドラにSIG_DFLがセ
+ットされているためUnhandledExceptionFilter()APIを呼び出す。
+
+3：UnhandledExceptionFilter()APIはSetUnhandledExceptionFilter()APIによっ
+てセットされたMyUnhandledExceptionFilter()関数を呼び出す。
+
+4：MyUnhandledExceptionFilter()関数はメッセージボックスを表示して、EXCEP
+TION_EXECUTE_HANDLERを返す。
+
+5：EXCEPTION_EXECUTE_HANDLERを戻されたUnhandledExceptionFilter()APIがプロ
+セスを強制終了する。
+
+　注意すべき点はステップ2ぐらいでしょうか。当たり前ですが、signal()関数で
+例外に対応するシグナルのハンドラをセットしてある場合は、そのシグナルハン
+ドラが呼ばれてUnhandledExceptionFilter()APIは呼び出されません。signal()関
+数を使っている場合は自前でUnhandledExceptionFilter()APIを呼び出したり、フ
+ィルタ関数で捕捉したい例外とシグナルの対応に気をつけるなどしてください。
+なお、例外とシグナルの対応はCランタイムのソースのwinxfltr.cに定義されてい
+ます。次の対応表は参考程度にしてwinxfltr.cを確認してください。
+
+-------------------------------------------
+例外                           | シグナル
+-------------------------------------------
+STATUS_ACCESS_VIOLATION	       | SIGSEGV
+STATUS_ILLEGAL_INSTRUCTION     | SIGILL
+STATUS_PRIVILEGED_INSTRUCTION  | SIGILL
+STATUS_FLOAT_DENORMAL_OPERAND  | SIGFPE
+STATUS_FLOAT_DIVIDE_BY_ZERO    | SIGFPE
+STATUS_FLOAT_INEXACT_RESULT    | SIGFPE
+STATUS_FLOAT_INVALID_OPERATION | SIGFPE
+STATUS_FLOAT_OVERFLOW          | SIGFPE
+STATUS_FLOAT_STACK_CHECK       | SIGFPE
+STATUS_FLOAT_UNDERFLOW         | SIGFPE
+-------------------------------------------
+
+
+■0x04.) アンチデバッギングの実装
+
+　前置きが長くなってしまいましたが、実際にアンチデバッギングの実装に取り
+掛かりましょう。話を簡単にするために、デバッガがアタッチされていない場合
+にメッセージボックスで"Hello world"を表示する例をとって説明していきます。
+　次はデバッガがアタッチされているとEIP(実行中のアドレス)がNULLになって続
+行不可能な状態に陥るサンプルです。
+
+-----
+LONG WINAPI MyUnhandledExceptionFilter(
+	PEXCEPTION_POINTERS	pExceptPointers
+)
+{
+	if( pExceptPointers->ContextRecord->Eip == 0 )
+	{
+		pExceptPointers->ContextRecord->Eip = (DWORD)MessageBoxA;
+		return EXCEPTION_CONTINUE_EXECUTION;
+	}
+	else
+	{
+		return EXCEPTION_CONTINUE_SEARCH;
+	}
+}
+
+static int (WINAPI * s_pMessageBoxA)(HWND, LPCSTR, LPCSTR, int) = NULL;
+
+int main()
+{
+	SetUnhandledExceptionFilter(MyUnhandledExceptionFilter);
+
+	s_pMessageBoxA(NULL, "world!", "Hello", MB_OK);
+	return 0;
+}
+-----
+
+　main()関数ではSetUnhandledExceptionFilter()APIでフィルタ関数をセット後、
+s_pMessageBoxA（メッセージボックスの関数ポインタ）を経由してAPI呼び出しを
+しようとしています。当然、s_pMessageBoxAにはNULLがセットされているのでこ
+の呼び出しは実行アドレスを0番地（NULL）に飛ばしてアクセスバイオレーション
+例外を発生させる結果になります。ここからが重要な分岐点で、デバッガがアタ
+ッチされていなければフィルタ関数がその例外を受け取って実行アドレスをMess
+ageBoxA()APIのアドレスに飛ばしますが、デバッガがアタッチされている場合は
+0番地に飛んだ時点で続行不可能な状態に陥ります（デバッガがEIPをMessageBox
+Aのアドレスに変更すれば話は別ですが）。
+　しかし、上記の方法ではもともとのソースに手を加える必要がある上、ソース
+コードの可読性が落ちてしまいます。そこらへんを何とかしてみたのが次のコー
+ドです。
+
+-----
+#ifndef _DEBUG
+#pragma comment(linker, "/ENTRY:EntryPoint")
+
+#define MAXIMPORTINDEX		2
+static FARPROC s_rgImport[MAXIMPORTINDEX + 1];
+
+__declspec(naked) LPCSTR WINAPI _imp__GetCommandLineA()
+{	__asm	{
+	_emit	0x01
+	_emit	0x00
+	_emit	0x00
+	_emit	0x00
+}	}
+
+__declspec(naked) int WINAPI _imp__MessageBoxA(
+	HWND	hWnd
+,	LPCTSTR	lpText
+,	LPCTSTR	lpCaption
+,	UINT	uType
+)
+{	__asm	{
+	_emit	0x02
+	_emit	0x00
+	_emit	0x00
+	_emit	0x00
+}	}
+
+LONG WINAPI MyUnhandledExceptionFilter(
+	PEXCEPTION_POINTERS	pExceptPointers
+)
+{
+	DWORD Eip;
+
+	Eip = pExceptPointers->ContextRecord->Eip;
+	if( 1 <= Eip && Eip <= MAXIMPORTINDEX )
+	{
+		pExceptPointers->ContextRecord->Eip = (DWORD)s_rgImport[Eip];
+		return EXCEPTION_CONTINUE_EXECUTION;
+	}
+	else
+	{
+		return EXCEPTION_CONTINUE_SEARCH;
+	}
+}
+
+int EntryPoint(void)
+{
+	extern int mainCRTStartup(void);
+	HMODULE modKernel, modUser;
+
+	modKernel	  = LoadLibrary("kernel32.dll");
+	s_rgImport[1] = GetProcAddress(modKernel, "GetCommandLineA");
+
+	modUser  	  = LoadLibrary("user32.dll");
+	s_rgImport[2] = GetProcAddress(modUser,   "MessageBoxA");
+
+	// フィルタ関数のセット
+	SetUnhandledExceptionFilter(MyUnhandledExceptionFilter);
+
+	return mainCRTStartup();
+}
+#endif	// #ifndef _DEBUG
+
+int main()
+{
+	MessageBox(NULL, "world!", "Hello", MB_OK);
+	return 0;
+}
+-----
+
+　かなりトリッキーなことをしていますが、何をしているかわかりますか？
+　まず、main()関数から見てみましょう。普通にMessageBox()APIを呼び出してい
+るだけですが、これでもデバッガがアタッチされていると正しく動かないように
+なっています。当然、その仕組みはmain()より上にあります。main()がすっきり
+した代わりにSetUnhandledExceptionFilter()APIを呼び出している部分はEntryP
+oint()関数に移りました。EntryPoint()関数はリストの冒頭にある
+
+-----
+#pragma comment(linker, "/ENTRY:EntryPoint")
+-----
+
+という文でCランタイムスタートアップルーチンに代わってプログラムエントリポ
+イントになります。本来ならリンカによってプログラムエントリポイントとなり
+プログラムのロード後に呼び出されるCランタイムスタートアップルーチンは、E
+ntryPoint()関数内の
+
+-----
+return mainCRTStartup();
+-----
+
+という式で手動で呼び出されることになります。mainCRTStartup()はCランタイム
+の初期化後にmain()関数を呼び出すCランタイムスタートアップルーチンそのもの
+です。Cランタイムスタートアップルーチンはmain()関数やWinMain()関数によっ
+てリンクされる関数が異なりますので以下のリストを参考に自分のプログラムを
+修正してください。
+
+---------------------------------------------------------------
+アプリケーションの開始関数 | Cランタイムスタートアップルーチン
+---------------------------------------------------------------
+main()                     | mainCRTStartup()
+wmain()	                   | wmainCRTStartup()
+WinMain()                  | WinMainCRTStartup()
+wWinMain()                 | wWinMainCRTStartup()
+---------------------------------------------------------------
+
+　EntryPoint()関数の定義によって、Cランタイムスタートアップルーチンが呼び
+出される前にフィルタ関数のセットを行っている、ということになります。Entr
+yPoint()関数では他にも今回のコアとも言える処理をしています。FARPROCの配列
+であるs_rgImportのインデックス1と2にGetCommandLineA()APIとMessageBoxA()A
+PIのアドレスを格納しています。このインデックス値は重要なので覚えておいて
+ください。
+　今度はフィルタ関数であるMyUnhandledExceptionFilter()関数を見てみましょ
+う。実行アドレスを指すレジスタのEipが1～MAXIMPORTINDEX(2)の間の場合は、E
+ipの値をインデックスにs_rgImportからアドレスを取り出して、Eipをそのアドレ
+スにセットする、ということをしています。つまりアドレス1番地または2番地に
+飛んでしまった場合はGetCommandLineA()APIまたはMessageBoxA()APIのアドレス
+に飛ばす、ということをしています。
+　そして、アドレス1番地や2番地に飛ばす仕組みを提供しているのが以下のコー
+ドになります。
+
+-----
+__declspec(naked) LPCSTR WINAPI _imp__GetCommandLineA()
+{	__asm	{
+	_emit	0x01
+	_emit	0x00
+	_emit	0x00
+	_emit	0x00
+}	}
+
+__declspec(naked) int WINAPI _imp__MessageBoxA(
+	HWND	hWnd
+,	LPCTSTR	lpText
+,	LPCTSTR	lpCaption
+,	UINT	uType
+)
+{	__asm	{
+	_emit	0x02
+	_emit	0x00
+	_emit	0x00
+	_emit	0x00
+}	}
+-----
+
+　__asmブロックの0x02と3つの0x00はジャンプさせるアドレスで、フィルタ関数
+の中ではs_rgImport配列のインデックスになる値です。この定義が何故そうなる
+のかを理解するにはインポート関数がどのようにリンクされるか知らないといけ
+ないでしょう。変数名や関数名がコンパイラからリンカに渡される際に__declsp
+ec修飾子や呼び出し規約によって名前にアンダーバー(_)やアットマーク(@)がつ
+きます。
+
+・__declspec(import)修飾子
+　呼び出し規約より優先されて先頭に_imp__が付きます。
+
+・__stdcall(WINAPI/CALLBACK)
+　先頭にアンダースコア(_)が付き、末尾にアットマーク (@) が付き、その後ろ
+にパラメータ リストのバイト数が続きます。
+
+・__cdecl(既定値。C++ではextern "C")
+　先頭にアンダースコア(_)が付きます。
+
+・__fastcall
+　先頭と末尾にアットマーク(@)が付き、その後ろにパラメータリストのバイト数
+が続きます。
+
+　上記を踏まえてMessageBoxA()APIがどのような名前でリンカに渡されるか考え
+てみましょう。次はWinUser.hに含まれるMessageBoxA()APIの宣言です。
+
+-----
+WINUSERAPI
+int
+WINAPI
+MessageBoxA(
+    IN HWND hWnd,
+    IN LPCSTR lpText,
+    IN LPCSTR lpCaption,
+    IN UINT uType);
+-----
+
+※WINUSERAPIはプリプロセッサにより__declspec(import)に変換されます。
+※WINAPIはプリプロセッサにより__stdcallに変換されます。
+
+　上記の宣言は__declspec(import)で_imp__MessageBoxAとなり、__stdcall呼び
+出し規約と16バイトの引数によって__imp__MessageBoxA@16になります。ただし、
+これは関数のプロトタイプ宣言ではなく、関数ポインタの宣言であることに注意
+してください。インポート関数はIAT（インポートアドレステーブル）に含まれる
+関数アドレスを参照して呼び出されるため、コンパイラはMessageBoxA()APIの呼
+び出しを__imp__MessageBoxA@16関数ポインタを経由した関数呼び出しに変換し、
+「__imp__MessageBoxA@16という関数ポインタがどこかにある筈だから探してきて
+リンクしてください」とリンカに指示するのです。__imp__MessageBoxA@16はuse
+r32.libインポートライブラリに含まれていて、リンクされる時にIATのエントリ
+のひとつとなります。
+　先ほどの_imp__MessageBoxA()関数の定義も__stdcall呼び出し規約と16バイト
+の引数によってMessageBoxAの宣言と全く同じ__imp__MessageBoxA@16という名前
+でリンカに渡されます（実は引数の数さえあっていれば戻り値の型や引数の型は
+何でもよい）。そしてリンカに渡されると、user32.libインポートライブラリに
+含まれる__imp__MessageBoxA@16よりも優先してリンクされ、MessageBoxA()APIの
+アドレスを格納した関数ポインタとして利用されることになります。
+　つまり、リンカをだましてインポート関数のアドレスを定義している訳です。
+その結果、main()内でのMessageBox()API呼び出しは本来ならIATのエントリを経
+由して行われるはずが、まったく別の関数ポインタ（その値は0x00000002）を経
+由するようになり、MessageBoxA()APIの呼び出しをしたはずなのにアドレス2番地
+に飛んでしまう、ということになります。
+　なお、リンカをだましたことによってMessageBoxA用のIATエントリは作られま
+せん。そのためロード時に0x00000002がMessageBoxA()APIのアドレスで上書きさ
+れるようなことはありませんし、副産物として逆アセンブルされた時にMessageB
+oxA()APIの呼び出しを隠蔽することができます。
+　また、自分で作成したソースのみならず静的ライブラリが使用しているインポ
+ート関数にもこのトリックが使えます。GetCommandLineA()はCランタイムスター
+トアップルーチンが使用するAPIの一つですが、_imp__GetCommandLineAを定義し
+てリンカをだましています。
+　今回は、2つのAPIにしかこのトリックを使っていない上に関数ポインタの配列
+で本来のアドレスを取得しているため、解除が比較的簡単でしょう。パフォーマ
+ンスが犠牲になりますが、関数ポインタの配列ではなく連想配列やswitch文で本
+来のアドレスに飛ばすようにした上で、もっとたくさんのAPI呼び出しに今回のト
+リックを使うことで解除を行いにくくすることができます。ただし、API呼び出し
+のたびに例外が発生するこのコードはパフォーマンスを大きく低下させる点に注
+意してください。GetMessage()APIなどループに組み込まれて頻繁に呼び出される
+ようなAPIにこのトリックを使うのはお薦めしません。
+　また、やりすぎてIATエントリがひとつもない実行可能ファイルにしてしまうと、
+Windows2000/2000Serverで動作しなくなってしまう（ロードに失敗してしまう）
+ので、注意してください。ちなみにインポート関数呼び出しを隠蔽したいだけの
+場合には同じ原理で以下のような手法が使えます。
+
+-----
+#ifndef _DEBUG
+#pragma comment(linker, "/ENTRY:EntryPoint")
+#pragma comment(linker, "/SECTION:.noimp,RW")
+
+#define	IMPORT_WINAPI(RET,NAME,PARAM)						\
+	__declspec(naked) RET WINAPI _imp__##NAME##PARAM		\
+	{													\
+		__asm	{ _emit	((__LINE__ >>  0) & 0xff)	}		\
+		__asm	{ _emit	((__LINE__ >>  8) & 0xff)	}		\
+		__asm	{ _emit	((__LINE__ >> 16) & 0xff)	}		\
+		__asm	{ _emit	((__LINE__ >> 24) & 0xff)	}		\
+	}
+
+#define BIND_API(HMOD,NAME)	\
+	*(FARPROC*)_imp__##NAME = GetProcAddress((HMOD), #NAME)
+
+#pragma code_seg(push, ".noimp")
+	IMPORT_WINAPI(
+		LPCSTR,GetCommandLineA,()
+	)
+	IMPORT_WINAPI(
+		int,MessageBoxA,(
+		  HWND		hWnd,
+		  LPCTSTR	lpText,
+		  LPCTSTR	lpCaption,
+		  UINT		uType
+		)
+	)
+#pragma code_seg(pop)
+
+int EntryPoint()
+{
+	extern int mainCRTStartup(void);
+	HMODULE modKernel, modUser;
+
+	modKernel	= LoadLibrary("kernel32.dll");
+	modUser		= LoadLibrary("user32.dll");
+
+	BIND_API(modKernel, GetCommandLineA);
+	BIND_API(modUser, MessageBoxA);
+
+	return mainCRTStartup();
+}
+#endif	// #ifndef _DEBUG
+
+int main()
+{
+	MessageBox(NULL, "world!", "Hello", MB_OK);
+	return 0;
+}
+-----
+
+　こちらはAPI呼び出しのたびに例外が発生するわけではないのでパフォーマンス
+を低下させることなくAPI呼び出しを隠蔽できます。少々特殊なマクロは使ってい
+ますが、説明はいらないでしょう。
+
+
+■0x05.) さいごに
+
+　前回と今回に共通していえることは「プロテクションの仕組みがばれても解除
+が困難」ということです。プログラムの解析や改ざんを防ぐには「プロテクショ
+ンの仕組みがばれにくい」ものや「プロテクションの仕組みがばれても解除が困
+難」なものを作るのが重要です。プロテクションを実装する場合は「仕組みがば
+れやすく解除が簡単なもの」にならないように注意してください。
+
+
+

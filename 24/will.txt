@@ -1,0 +1,301 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第2章: C# Programming 0x2 ～Making Packer～ ---
+
+著者：Will
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) 今回作成するソフト
+
+　題名にもあるように、今回はPackerを作成します。まず、Packとは何か知って
+おきましょう。
+
+-----
+　実行可能ファイルを実行可能なまま圧縮を行うこと。圧縮を行うソフトはパッ
+カーと呼ぶ。圧縮形式としてよく知られているLZHやZIPは基本的にどんなファイ
+ルでも圧縮できるが、圧縮されたファイルは一旦外部記憶装置に解凍しないと使
+用することはできない。これに対し、パックできるファイルは原則として実行可
+能ファイルやDLLのみであり、パック済みのファイルは自己解凍型となる。
+-----
+
+引用元：どーも eagle0wl です（仮）http://www.mysys.org/eagle0wl/
+
+　そういうわけで任意のファイルをPackするPackerを作ってみましょう。
+　なお、PEフォーマットの知識は必須です。
+
+
+■0x02.) 用意
+
+●使用ソフトなど
+・Visual C# 2005 Express Edition
+　インストール済みを前提に進めます。
+http://www.microsoft.com/japan/msdn/vstudio/express/vcsharp/
+
+・Will Packer Source Code
+http://antiwmac.overclock.ch/public/will/archive/programming/source/willpacker_src.zip
+
+・PE Format
+http://www.microsoft.com/whdc/system/platform/firmware/PECOFF.mspx
+
+
+■0x03.) Packingの流れ
+
+　Packingは次のような手順で行います。
+
+1：ターゲットファイルにセクションを追加する。
+		↓
+2：ターゲットファイルのコードセクションを暗号化する。
+		↓
+3：追加したセクションに展開コードを挿入する。
+
+　まずはセクションの追加をしてみましょう。
+　ソースコードでいうとaddSection関数がこれにあたります。
+
+-----
+protected void addSection()
+        {
+            int sectionAddress;
+            int preSectionAddress;
+            int sectionRawSize;
+
+            byte[] rawSize = new byte[4];
+            byte[] ImageSize = new byte[4];
+      
+            byte[] sectionData = { 0x2E, 0x77, 0x69, 0x6C, 0x6C, 0x00, 0x00, 0x00, 0x00, 0x10, 0x00,
+                                   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 
+                                   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                   0x00, 0x00, 0x00, 0x20, 0x00, 0x00, 0xE0 };
+
+            preSectionAddress = sectionOffset + (numberOfSections - 1) * SECTION_SIZE;
+            sectionAddress = sectionOffset + numberOfSections * SECTION_SIZE;
+
+            //セクション数を増やす
+            exeFile[PEHeaderOffset + 0x6] = (byte)(exeFile[PEHeaderOffset + 0x6] + 0x1);
+
+            //ImageSizeの変更
+            ImageSize = ConvertAddress(ConvertAddress(SiseOfImage) + 0x1000);
+
+            exeFile[PEHeaderOffset + SIZE_OF_IMAGE] = ImageSize[0];
+            exeFile[PEHeaderOffset + SIZE_OF_IMAGE + 1] = ImageSize[1];
+            exeFile[PEHeaderOffset + SIZE_OF_IMAGE + 2] = ImageSize[2];
+            exeFile[PEHeaderOffset + SIZE_OF_IMAGE + 3] = ImageSize[3];
+
+            //RawSize
+            CopyArray(ref rawSize, 0,  exeFile, preSectionAddress + RAW_SIZE_OFFSET);
+            sectionRawSize = ConvertAddress(rawSize);
+
+            //RawOffset
+            rawOffset = new byte[4];
+
+            CopyArray(ref rawOffset, 0, exeFile, preSectionAddress + RAW_OFFSET);
+            rawOffset = ConvertAddress((ConvertAddress(rawOffset) + sectionRawSize));
+
+            //VirtualOffset
+            virtualOffset = new byte[4];
+
+            CopyArray(ref virtualOffset, 0, exeFile, preSectionAddress + VIRTUAL_OFFSET);
+
+            if (sectionRawSize%0x1000 != 0)
+                sectionRawSize = (sectionRawSize / 0x1000) * 0x1000 + 0x1000;
+
+            virtualOffset = ConvertAddress((ConvertAddress(virtualOffset) + sectionRawSize));
+
+            //追加するセクションデータの変更
+            for (int i = 0; i < 4; i++)
+            {
+                sectionData[i+0x14] = rawOffset[i];
+                sectionData[i+0xc] = virtualOffset[i];
+            }
+
+            //セクションを追加する
+            for (int i = 0; i < sectionData.Length; i++)
+            {
+                exeFile[sectionAddress + i] = sectionData[i];
+            }
+        }
+-----
+
+　getPEData関数ですでにexeFileには読み込んだファイルのバイナリデータが入
+っています。なおexeFileのサイズは追加するセクション分の0x1000が余分に確保
+しています。セクションの数はPEヘッダから0x5と0x6の位置にあるのですが、Mi
+crosoftのドキュメントを見ると「Note that the Windows NT loader limits th
+e Number of Sections to 96」と書いてあります。よって、0x60までしか追加で
+きないので、0x5のデータは無視できます。そこで、0x6の位置のデータに0x1を足
+すことによってWindows Loaderが実行時に認識するセクションの数が1増えます。
+
+　さらに、追加するセクション分の0x1000をImageSizeに足します。
+
+-----
+	　　//RawSize
+            CopyArray(ref rawSize, 0,  exeFile, preSectionAddress + RAW_SIZE_OFFSET);
+            sectionRawSize = ConvertAddress(rawSize);
+
+            //RawOffset
+            rawOffset = new byte[4];
+
+            CopyArray(ref rawOffset, 0, exeFile, preSectionAddress + RAW_OFFSET);
+            rawOffset = ConvertAddress((ConvertAddress(rawOffset) + sectionRawSize));
+
+            //VirtualOffset
+            virtualOffset = new byte[4];
+
+            CopyArray(ref virtualOffset, 0, exeFile, preSectionAddress + VIRTUAL_OFFSET);
+
+            if (sectionRawSize%0x1000 != 0)
+                sectionRawSize = (sectionRawSize / 0x1000) * 0x1000 + 0x1000;
+
+            virtualOffset = ConvertAddress((ConvertAddress(virtualOffset) + sectionRawSize));
+-----
+
+　この部分では、追加するセクションのひとつ前のセクションの情報から新しく
+追加するセクションのRaw OffsetとVirtual Offsetを計算しています。
+
+　そして最後に、あらかじめ作っておいたセクションデータ（byte[] sectionDa
+ta）を変更します。変更された新しいセクションのデータをexeFileに追加してい
+ます。
+
+　ちなみに次の部分ですが
+
+-----
+if (sectionRawSize%0x1000 != 0)
+                sectionRawSize = (sectionRawSize / 0x1000) * 0x1000 + 0x1000;
+-----
+
+　この0x1000で割って、0x1000掛けてる部分は意味がないように見えますが、Vi
+rtual OffsetはSection Alignment（0x1000）× n（nは整数）である必要がある
+ので、0x1000以下のサイズを繰り上げています。
+
+○例
+Virtual Offsetが0x12a00のとき、(sectionRawSize / 0x1000)…12になる。
+よって、0x12×0x1000 + 0x1000 = 0x13000
+
+
+　次にターゲットファイルのコードセクションを暗号化してみましょう。
+　ソースコードでいうとoperation関数がこれにあたります。
+
+-----
+protected virtual void operation()
+        {
+            byte[] codeOffset = new byte[4];
+
+            CopyArray(ref codeOffset,0, exeFile, sectionOffset + RAW_OFFSET);
+
+            for (int i = ConvertAddress(codeOffset); i < ConvertAddress(codeOffset) + ConvertAddress(sizeOfCode); i++)
+            {
+                exeFile[i] = (byte)(exeFile[i]^0xa);
+            }
+        }
+-----
+
+　この関数ではコードセクションのデータと0xaとの排他的論理和をとっているだ
+けです。
+
+　そして追加したセクションに展開コードを挿入してみましょう。
+　ソースコードでいうとcodeinjection関数がこれにあたります。
+
+-----
+protected virtual void codeinjection()
+        {
+            int injectionAddress = ConvertAddress(rawOffset);
+            byte[] codeOffset = new byte[4];
+            byte[] entryPoint = new byte[4];
+            byte[] codeSize = new byte[4];
+            byte[] sectionData = {0x20, 0x00, 0x00, 0xE0};
+            byte[] injectionCode = { 0xB9, 0x00, 0x00, 0x00, 0x00, 0x80, 0x31, 0x0A, 0x41, 0x81, 0xF9, 0x00, 
+                                     0x00, 0x00, 0x00, 0x75, 0xF4, 0xB9, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xE1 };
+
+            sizeOfCode = new byte[4];
+            CopyArray(ref sizeOfCode,0, exeFile, sectionOffset + RAW_SIZE_OFFSET);
+
+            codeOffset = ConvertAddress(ConvertAddress(peImageBase) + ConvertAddress(baseOfCode));
+            codeSize = ConvertAddress(ConvertAddress(peImageBase) + ConvertAddress(baseOfCode) + ConvertAddress(sizeOfCode) - 0x1);
+            entryPoint = ConvertAddress(ConvertAddress(peImageBase) + ConvertAddress(EntryPoint));
+        
+            //エントリーポイントの変更
+            for (int i = 0; i < 4; i++)
+            {
+                exeFile[PEHeaderOffset + ENTRYPOINT + i] = virtualOffset[i];
+            }
+            
+            //セクション情報変更
+            for (int i = 0; i < 4; i++)
+            {
+                exeFile[sectionOffset+ 0x24 + i] = sectionData[i];
+            }
+            
+            //追加するコードデータの変更
+            for (int i=0; i<4; i++)
+            {
+                injectionCode[0x1+i] = codeOffset[i];
+                injectionCode[0xb + i] = codeSize[i];
+                injectionCode[0x12+i] = entryPoint[i];
+            }
+
+            //コードを挿入
+            for (int i = 0; i < injectionCode.Length; i++)
+            {
+                exeFile[injectionAddress + i] = injectionCode[i];
+            }
+        }
+-----
+
+　injectionCodeには挿入するバイナリが入ってます。
+　バイナリの中身は以下のアセンブリコードです。
+
+-----
+MOV ECX,コードセクションの先頭RVA
+XOR BYTE PTR DS:[ECX],0A
+ECX
+CMP ECX,コードセクションの最後のRVA
+JNZ SHORT （XOR BYTE PTR DS:[ECX],0Aのアドレス）
+MOV ECX,元のエントリーポイント
+JMP ECX
+-----
+
+　そして最後に編集したファイルを書き込みます。
+　ソースコードでいうとcreateExe関数がこれにあたります。
+
+　以上でPackが完了します。
+
+
+■0x04.) 再利用
+
+　自分なりに色々と弄りたい方はpackerクラスを変更したほうが無難かもしれま
+せん。ちなみにcodeinjection関数とoperation関数はVirtualで宣言しています。
+  例えば、OllyDbgで開いた時に表示される「エントリーポイントがコードセクシ
+ョン外…」というメッセージが表示されないようにするにはPackerクラスを次の
+ように編集すればOKです。
+
+-----
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Packer
+{
+    class packer: willPacker
+    {
+        protected override void operation()
+        {
+            for (int i = 0; i < virtualOffset.Length; i++)
+            {
+                exeFile[PEHeaderOffset + BASE_OF_CODE + i] = virtualOffset[i];
+            }
+
+            base.operation();
+        }
+    }
+}
+-----
+
+
+■0x05.) おわりに
+
+　私は今回のWizard Bibleをもちましてしばらくの間、お休みを頂きたいと思います。
+  長々と書きましたが以上で終わりです。お疲れ様でした。
+
+

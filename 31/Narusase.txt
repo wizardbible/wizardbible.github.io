@@ -1,0 +1,197 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: ハニーポットを作ろう（連載第11回） ---
+
+著者：Narusase
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　前回はSnortとPostgreSQLのインストールと設定について解説しました。Snort
+のログをDB（データベース）に格納すると軽く触れましたが、ログの中身につい
+てはまったく触れませんでした。動作させるだけで、監視の結果を分析しないの
+では意味がありません。
+　そこで今回はDBに格納されたログを見やすい形で表示してくれるソフトウェア
+であるACIDのインストールについて解説していきたいと思います。
+
+
+■0x02.) Apache2 + PHP + gdのインストール
+
+　ACIDを使用するためには、Snortより多くのパッケージをインストールする必要
+があります。まずはaptで導入できるパッケージをインストールします。ところで、
+Apache2ではなくApacheでもおそらく問題ありませんが、今回はApacheをアンイン
+ストールした上でApache2を使用することにします。また、マルチスレッドで動か
+すと一部のパッケージでエラーがでるためApache2のバイナリへのリンクを変更し
+ます。
+
+-----
+# apt-get remove apache
+# apt-get install apache2 php php-pgsql php-apache2 gd
+# rm -f /etc/alternatives/apache2
+# ln -s /usr/sbin/apache2.prefork* /etc/alternatives/apache2
+-----
+
+　次にApache2の設定を変更して、Apache2を起動します。
+
+-----
+# vi /etc/apache2/conf/apache2.conf
+-----
+
+-----　編集前
+LanguagePriority en da nl et fr de el it ja kr no pl pt pt-br ltz ca es sv tw
+-----
+ ↓jaを先頭に持ってくる
+-----　編集後
+LanguagePriority ja en da nl et fr de el it kr no pl pt pt-br ltz ca es sv tw
+-----
+
+-----　編集前
+AddDefaultCharset ISO-8859-1
+-----
+ ↓jisをデフォルトにする
+-----　編集後
+AddDefaultCharset ISO-2022-JP
+-----
+
+
+■0x03.) その他のパッケージのインストール
+
+　ここからはどんどん必要なパッケージを入れていきます。基本的にtar.gzを解
+凍しコピーしていくだけですので特に問題は起こらないはずです。
+
+●phplotのインストール
+
+-----
+# cd /usr/local/src
+# wget http://downloads.sourceforge.net/phplot/phplot-5.0rc2.tar.gz
+# tar xvzf phplot-5.0rc2.tar.gz
+# cp -R phplot /var/www/html/
+-----
+
+●ADOdbのインストール
+
+-----
+# cd /usr/local/src
+# wget http://downloads.sourceforge.net/adodb/adodb493a.tgz
+# tar xvzf adodb493a.tgz
+# cp -R adodb /var/www/html/
+-----
+
+●ACIDのインストール
+
+-----
+# cd /usr/local/src
+# wget http://www.andrew.cmu.edu/user/rdanyliw/snort/acid-0.9.6b23.tar.gz
+# tar xvzf acid-0.9.6b23.tar.gz
+# cp -R acid /var/www/html/
+-----
+
+
+■0x04.) ACIDの設定
+
+　必要なパッケージを入れ終わったので、次は設定に入ります。必要な変更がい
+くつもあるので変更点だけ列挙します。
+
+-----
+# vi /var/www/html/acid/acid_conf.php
+-----
+
+　編集内容は下記を参考にしてください。
+
+-----　編集前
+$DBlib_path = "";
+$DBtype = "MySQL";
+$alert_dbname = "snort_log";
+$alert_host = "localhost";
+$alert_port = "";
+$alert_user = "root";
+$alert_password = "mypassword";
+$ChartLib_path = "";
+-----
+ ↓編集
+-----　編集後
+$DBlib_path = "/var/www/html/adodb";
+$DBtype = "postgres";
+$alert_dbname = "snort";
+$alert_host = "localhost";
+$alert_port = "";
+$alert_user = "snort";
+$alert_password = "snort";
+$ChartLib_path = "/var/www/html/phplot";
+-----
+
+
+■0x05.) ACID用のPostgreSQLの設定
+
+　次はPostgreSQLでACIDを使うための設定を行います。この作業は、ACIDがPost
+greSQLの最新版では廃止されている型を使っているために、最新版のPostgreSQL
+では必須の作業となります。編集を忘れた場合、データベースが変な形でできて
+しまうため面倒なことになってしまいますので気をつけてください。
+
+1：まずは、テーブルの作成に利用するSQLファイルから編集します。
+
+-----
+# vi /var/www/html/acid/create_acid_tbls_pgsql.sql
+-----
+
+　「DATETIME」となっている部分を「TIMESTAMP」に変更します。計4個所あるは
+ずです。
+
+2：次は、DBのセットアップを行うPHPファイルを編集します。
+
+-----
+# vi /var/www/html/acid/acid_db_setup.php
+-----
+
+　「DATETIME」となっている部分を「TIMESTAMP」に変更します。計10個所あるは
+ずです。
+
+3：最後に書き換えたSQLファイルをつかってDBに必要なテーブルを作成するSQL文
+を発行します。
+
+-----
+# sudo -u snort psql snort < /var/www/html/acid/create_acid_tbls_pgsql.sql
+-----
+
+4：これで設定作業は終了です。
+
+
+■0x06.) ACIDの動作確認
+
+　では、早速ACIDの動作確認をしてみます。次のURLにアクセスしてみてください
+（IPアドレスは自分のサーバーのものを指定する）。
+
+http://192.168.1.1/acid/acid_main.php
+
+　アクセスができ、行頭に「Analysis Console for Intrusion Databases」とい
+う文字が表示されればACIDがうまく動作していることが確認されました。
+
+
+■0x07.) Snortの動作確認
+
+　Snortの動作確認にはnmapを使って、インターネット側からのPCで次のように実
+行します。ポートスキャンができるアプリケーションであれば、nmap以外でも構
+いません。
+
+------
+# nmap -sT [Snortが動作しているIPアドレス]
+------
+
+　実行終了後にACIDにアクセスし、「Unique Alerts:」の横の数字をクリックす
+ると、アラートのリストが表示されます。その中に「TCP Portscan」、「BLEEDI
+NG-EDGE SCAN NMAP」などの文字列があればポートスキャンされたことを意味しま
+す。表示されない場合は、監視するNICに関する設定などを変更してみてください。
+監視するNICは/etc/sysconfig/snortあたりに設定があったはずです。
+
+
+■0x08.) おわりに
+
+　今回はSnortのログ分析ツールであるACIDのインストールと設定について解説し
+ました。次回はTripwireかnepentesについて解説したいと思います。
+
+
+

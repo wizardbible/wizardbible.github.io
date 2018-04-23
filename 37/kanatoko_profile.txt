@@ -1,0 +1,13 @@
+■金床
+●Job: プログラマー
+●Web: http://guardian.jumperz.net/, http://www.jumperz.net/
+●Mail: anvil@jumperz.net
+●Comment:
+　BHJはお祭りとしてｴﾝｼﾞｮｲさせていただきやしたヽ(´ー`)ノ
+●暗号について
+　Javaには標準でたくさんの有用な暗号化ライブラリがあるので、自分が作るツ
+ールで気軽にこれらを利用することができて萌えです。特にSSLについては脆弱性
+だらけのﾌｧｯｷﾝOpenSSLと決別できるのでいいです。つまりまとめると、「時代は
+Java」ということになります。
+
+

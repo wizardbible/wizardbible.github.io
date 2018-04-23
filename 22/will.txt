@@ -1,0 +1,127 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第2章: Crackme Kracking 0x3 ---
+
+著者：Will
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) crackmeとは
+
+　crakemeとは、簡単にいえば解析の練習用のソフトのことです。今回は私が自作
+したcrackmeを用いて解析の勉強をしていってもらいたいと思います。
+
+
+■0x02.) 用意
+
+○使用ソフト：
+・Reflector for .NET
+http://www.aisto.com/roeder/dotnet/
+
+・Niblheim Niflheim: Reflector.NET String
+http://will.wbjapan.com/archive/programming/software/Reflector.NETString.zip
+
+○ターゲット
+・Niblheim Niflheim: 自作crackme
+http://will.wbjapan.com/archive/crackme/crackme0xc.zip
+
+○かる～いやる気
+
+○C#の知識
+
+
+■0x03.) 解析開始
+
+　まず上記のURLからcrackmeをダウンロードして普通に起動します。起動すると
+名前とパスワードを入力するTextBoxがあるのがわかります。それではReflector
+ for .NETを起動してcrackmeを開きます。すると、crackme0xc、MD5などのクラス
+があるので、crackme0xcの方を開いていくと、crackme0xc.crackme_Formの変数や
+関数が見えます。その中に「crackme0xc.crackme_Form.OK_button_Click(Object
+, EventArgs) : Void」というボタンを押したときに発生する処理が見つかります。
+コードは次のようになっています。
+
+-----
+private void OK_button_Click(object sender, EventArgs e)
+{
+      if ((this.name_textBox.Text.Length > 0) && (this.pass_textBox.Text.Length > 0))
+      {
+            if (this.pass_textBox.Text == this.passCheck(this.name_textBox.Text))
+            {
+                  MessageBox.Show("OK\u3067\u3059", "\u6b63\u898f\u306e\u30d1\u30b9");
+            }
+            else
+            {
+                  MessageBox.Show("\u4e0d\u6b63\u306a\u30d1\u30b9\u3067\u3059", "\u4e0d\u6b63\u306a\u30d1\u30b9");
+            }
+      }
+      else
+      {
+            MessageBox.Show("\u5165\u529b\u3055\u308c\u3066\u3044\u306a\u3044\u9805\u76ee\u304c\u3042\u308a\u307e\u3059", "Error");
+      }
+}
+-----
+
+　MessageBoxの文字列がユニコードが直接表示されているのでReflector.NET St
+ringで変換します。変換する場合は「"」から「"」までをTextBoxに入力してOKを
+押すと文字列が表示されます。調べてみると次のようになってます。
+
+-----
+MessageBox.Show("OK\u3067\u3059", "\u6b63\u898f\u306e\u30d1\u30b9");
+-----
+
+　これが「OKです」と表示するのがわかります。そして、その前のコードを見る
+とpass_textBoxの文字列とname_textBoxの文字列を引数にした関数の戻り値が等
+しかったら表示されるようです。そこで、passCheck関数の中身はこうなっていま
+す。
+
+-----
+private string passCheck(string pass_Text)
+{
+      string text1;
+      byte[] buffer1 = Encoding.GetEncoding(0x3a4).GetBytes(pass_Text);
+      long num1 = 0;
+      try
+      {
+            for (int num2 = 0; num2 < buffer1.Length; num2++)
+            {
+                  num1 = buffer1[num2];
+                  num1 *= buffer1[num2];
+            }
+            ConvertMD5.ToConvertMD5(num1.ToString());
+            text1 = ConvertMD5.ToConvertMD5(num1.ToString());
+      }
+      catch
+      {
+            MessageBox.Show("\u540d\u524d\u306e\u6587\u5b57\u5217\u304c\u9577\u3059\u304e\u307e\u3059");
+            text1 = null;
+      }
+      return text1;
+}
+-----
+
+　中の処理はこんな感じになってます。
+
+1：name_textBoxの文字列をbyteの配列に変換
+2：num1に配列を順に足して、かけたものが入る
+3：num1のMD5ハッシュ値を戻り値として返す
+
+　Keygenを作る場合は上の様な関数を作るか、Reflector.NETが吐いたコードを再
+利用するかの2通りありますが、基本的にはReflector.NETが吐いたコードを再利
+用する方が早いです。もちろん「using」で必要な名前空間を宣言する必要があり
+ます。
+
+
+■0x04.) 終わりに
+
+　今回もとても簡単でした。恐らくちょっと前に作成したcrackme0xbの方が面白
+いと思います。
+
+http://will.wbjapan.com/archive/crackme/crackme0xb.zip
+
+　興味がある方はこちらも解析してみてください。
+　それでは。
+
+

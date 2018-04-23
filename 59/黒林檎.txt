@@ -1,0 +1,85 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: LINEのアカウントなりすましについて ---
+
+著者：黒林檎
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) 最初に
+
+　世間一般で言われているLINEの乗っ取り手法と僕の成り済まし手法が同一という自信は無いですがかなり似た結果なのでは無いかと思います。
+　個人的にこれに気づく前はIDとPASSがいる(しかも不特定)であるのにバカみたいに乗っ取られる、しかもアカウントの持ち主にアカウントが戻ってくる?
+　そんな疑問がようやく解決した感じがします。
+
+
+■0x02.) Test環境
+
+・ubuntu 13.10
+・LINE   4.4.1
+※LINEの全バージョンで行えると思われます。
+
+
+■0x03.) 準備するもの
+
+・iOS端末2台
+・1代目にLINEアカウントA(成り済まされるアカウント)
+・2代目にLINEアカウントB(成り済ますアカウント)
+※成り済まされるアカウントには視覚的になりすましが行われているのが見えるようにするためにある程度のフレンド又トーク履歴があると良いでしょう。
+・Linux環境(筆者環境Ubuntu 13.10)
+　上記環境+aでiPad上のドキュメントにアクセスできる事が条件
+
+
+■0x04.) 実行
+
+cd '/run/user/1000/gvfs/sfc:host=498d2f5e5210116d....,porT=35=3'
+cd jp.naver.line
+
+　とかいう面倒な方法はしなくて良いです。
+
+　Ubuntuの場合はデバイスから"iPad上のドキュメントにアクセスしてくだい。"
+
+　LINEのアイコンが見えたと思うので、
+
+・取得データ:talk.sqli
+・ファイル場所:LINE>Douments>talk.sqli
+
+/*
+関連資料
+LINEについて:http://www.slideshare.net/murashimamasahiro/line-38283011?ref=http://ameblo.jp/r00tapple/entry-11915243606.html
+*/
+
+　では、これで成り済ますアカウントの基本データ(アカウントA)は手に入れました。
+
+　次に、このデータをアカウントBにマージ(上書き)します。
+　マージ作業が完了すればアカウントBのLINEアカウントを再起動してください。
+　以下の様な画面になれば作業の90%はほぼ完成です。
+
+画像1:https://twitter.com/r00tapple/status/507914563409297408/photo/1
+
+　動機作業が完了すればaccount Aとaccount Bの差を見てください。
+
+Account A:https://pbs.twimg.com/media/BwyDIhwCEAA4-w9.jpg:large
+Account B:https://pbs.twimg.com/media/BwyDIdoCUAEzH9z.jpg:large
+
+　見ての通りフレンド数も登録グループなどすべて同じになっています。
+
+　又、talk.sqliに書き込まれているトーク履歴までのトークはすべてaccount Bにも引き継がれます。
+
+　よって、Account Aと同一のアカウントが作成される訳です。
+　そして面白い事に、Account Bから見ればグループに参加してるのはAccount Bです(実際グループに参加しているのはAccount A)。
+　Account Bがグループにメッセージを送信すれば送信エラーとなり送信する事は出来ません。
+　しかしフレンド(一般的なフレンドに対してのトーク)にたいしてはメッセージを送信する事が可能です。
+　成り済ましによって単一ユーザーの被害が多い理由はこれにあると言えます。
+
+
+■0x04.) 最後に
+
+　talk.sqliへのアクセス又書き換えは難しくなくデータとしても重要度が高く大変興味深いものでした。
+　是非皆さんも遊んでみてください。
+
+
+

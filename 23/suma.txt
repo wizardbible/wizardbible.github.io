@@ -1,0 +1,382 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第1章: AntiCracking Techniques ～ Obfuscating API Call ～ ---
+
+著者：suma
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　AntiCrackingとはプログラムのリバースエンジニアリングを防ぐ技術です。ア
+センブリコードがコンピュータ上で実行される以上、リバースエンジニアリング
+そのものを防ぐことはできません。そのため「防ぐ」ではなく「リバースエンジ
+ニアリングの邪魔をする」を重点におきます。また、AntiCrackingにかかる手間
+を可能な限り最小限にとどめることも考えてみます。
+
+　コンパイラはVisual Studio .NET 2003を使用し、言語にはC++を使用します。
+基本的な偽装の仕組みはCとC++で特に違いがないので、C++がわからなくても理解
+できると思います。コンパイラはBorland C/C++ Compiler（以後BCCと呼びます）
+を使用しても構いません。
+
+
+■0x02.) Win32API呼び出しの偽装
+
+　Win32APIはDLL（Dynamic Link Library）によって提供されています。Win32AP
+IはWindowsプログラムを作る上で非常に重要です。そこで、リバースエンジニア
+リングのヒントとなるWin32APIの呼び出しを偽装する方法について説明します。
+
+●OllyDbgで呼び出しを調べる
+
+　OllyDbgを使ってWin32APIの呼び出しを調べます。偽装してないプログラムと偽
+装したプログラムの違いを見てみましょう。
+　ソースコード、プロジェクトファイル、実行ファイルをまとめたアーカイブを用意しています。まとめてダウンロードしたい方こちらをどうぞ。
+
+http://beautiful.homelinux.net/~sky-software/wb/1/obf_all.zip
+
+
+●普通にMessageBoxを呼び出すプログラム
+
+　普通にMessageBoxを呼び出すプログラムは次のURLからダウンロードできます。
+
+http://beautiful.homelinux.net/~sky-software/wb/1/msgbox.cpp（ソースコード）
+http://beautiful.homelinux.net/~sky-software/wb/1/msgbox.vcproj（プロジェクトファイル）
+http://beautiful.homelinux.net/~sky-software/wb/1/msgbox.exe（実行ファイル）
+
+-----
+const char *title = "title", *msg = "message";
+MessageBox(NULL, msg, title, MB_OK);
+-----
+
+　OllyDbgでは、プログラムを開いてからCtrl+Nを押し、自分の知りたい関数を選
+択してEnterを押すと、関数を呼び出している（参照している）アドレスを知るこ
+とができます。作成した実行ファイルをOllyDbgで見てみましょう。行う手順は「
+Ctrl+N→MessageBoxAを選択してEnter→アドレス0040100Eで参照されている部分
+を選択してEnter」となります。
+
+-----
+00401000  /$ 6A 00          PUSH 0                                   ; /Style = MB_OK|MB_APPLMODAL
+00401002  |. 68 D8504000    PUSH msgbox.004050D8                     ; |Title = "title"
+00401007  |. 68 D0504000    PUSH msgbox.004050D0                     ; |Text = "message"
+0040100C  |. 6A 00          PUSH 0                                   ; |hOwner = NULL
+0040100E  |. FF15 C4504000  CALL DWORD PTR DS:[<&USER32.MessageBoxA>>; \MessageBoxA
+-----
+
+　OllyDbgを使うと簡単にMessageBoxが呼び出しを見つけることができました。コ
+ードを見ると、MessageBoxAを呼び出した引数まで表示されています。
+
+　ご存じかもしれませんが念のため説明します。MessageBoxを呼び出しているは
+ずなのに、OllyDbgではMessageBoxAが表示されています。Win32APIの中にUNICOD
+Eに対応している関数があります。ANSI版とUNICODE版があり、PlatformSDKのヘッ
+ダファイル内で宣言されています。MessageBoxの場合MessageBoxAとMessageBoxW
+があります。AはANSI、WはWideの略です。
+
+
+●定数のスクランブル1
+
+　定数のスクランブル1のプログラムは次のURLからダウンロードできます。
+
+http://beautiful.homelinux.net/~sky-software/wb/1/obf1.cpp（ソースコード）
+http://beautiful.homelinux.net/~sky-software/wb/1/obf1.vcproj（プロジェクトファイル）
+http://beautiful.homelinux.net/~sky-software/wb/1/obf1.exe（実行ファイル）
+
+　今度は偽装した状態で呼び出してみます。ソースコードを見てください。
+
+-----
+const DWORD_PTR msgbox = ((DWORD_PTR)MessageBox + 0x7F12AE11);
+int main()
+{
+	typedef int (WINAPI *MsgBox)(HWND, LPCTSTR, LPCTSTR, UINT);
+
+	const char *title = "title", *msg = "message";
+	((MsgBox)(msgbox - 0x7F12AE11))(NULL, msg, title, MB_OK);
+	return 0;
+}
+-----
+
+　DWORD_PTR型のmsgboxという定数を宣言しています。この宣言によってMessage
+Boxのアドレスに0x7F12AE11を足した値がmsgboxに入ることになります。main内で
+はmsgboxの値から0x7F12AE11を引くことで、MessageBoxのアドレスを復元し、呼
+び出しています。0x7F12AE11の代わりに別の値を足したり引いても構いません。
+足す・引くを逆にしたり、XORなどの別の演算を使うこともできます。
+
+　ここでmsgboxの宣言がmain関数内にないこと、const修飾子がついていることを
+忘れてはいけません。例えばVC++の場合、main内に宣言したり、constを付け忘れ
+るとコンパイラの最適化で普通にMessageBoxの呼び出した場合とかわらないコー
+ドが生成されることになります。BCCでは確認していませんが、コンパイラ・最適
+化オプションの違いによって意図しないコードが生成される可能性があります。
+そのためコンパイラが生成するコードを把握しておく必要があります。
+
+　コンパイラが生成したコードを調べるには、作成した実行ファイルをOllyDbgで
+開いてから調べる方法もありますが別の方法もあります。コンパイラの中には、
+アセンブリ言語のソースコードを生成をサポートしているものがあります。Visu
+al Studo .NETの場合は「プロジェクトオプションを表示→C/C++→出力ファイル
+→アセンブリの出力」から選択できます。ソースコードとアセンブリコードの両
+方と比べて見ることができる「アセンブリ コードとソース コード (/Fas)」がお
+すすめです。
+
+　先ほどと同じようにOllyDbgで調べてみます。しかし、「Ctrl+N→MessageBoxA
+を選択してEnter…」という順をたどってもMessageBoxAの呼び出しを発見できま
+せん。呼び出しが偽装されていることがわかります。とりあえず、Homeキーを押
+すか、アドレス00401000にジャンプしてください。
+
+------
+00401000  /$ A1 C0724000    MOV EAX,DWORD PTR DS:[4072C0]
+00401005  |. 6A 00          PUSH 0
+00401007  |. 68 D8504000    PUSH obf1.004050D8                       ;  ASCII "title"
+0040100C  |. 68 D0504000    PUSH obf1.004050D0                       ;  ASCII "message"
+00401011  |. 6A 00          PUSH 0
+00401013  |. 05 EF51ED80    ADD EAX,80ED51EF
+00401018  |. FFD0           CALL EAX
+------
+
+　普通にMessageBoxを呼び出した場合と構成が似ています。違っているのはMOV命
+令、ADD命令、XOR命令です。使われている値にMessageBoxAのアドレスがないため、
+OllyDbgはMessageBoxAが呼び出されていることを検出できていません。
+
+　ついでに動作を確かめてみます。アドレス00401000でF2キーを押してブレーク
+ポイントをしかけ、F9キーを押して実行してみましょう。アドレス00401000でい
+ったん止まるのでF8キーを押して1命令ずつ実行します。アドレス00401013のADD
+命令を実行後にレジスタEAXに何が入っているのか確認してください。「EAX 77D
+304EA USER32.MessageBoxA」のように表示されていると思います。EAXにはMessa
+geBoxAのアドレスが入っています。もう一度F8キーを押すと次のように表示され
+ます。
+
+-----
+00401018  |. FFD0           CALL EAX                                 ;  USER32.MessageBoxA
+-----
+
+　さらにF8キーを押すとMessageBoxAが呼び出されます。OllyDbgではレジスタに
+Win32APIアドレスが入っていると検出できることがわかりました。
+
+
+●定数のスクランブル2
+
+　定数のスクランブル2のプログラムは次のURLからダウンロードできます。
+
+http://beautiful.homelinux.net/~sky-software/wb/1/obf2.cpp（ソースコード）
+http://beautiful.homelinux.net/~sky-software/wb/1/obf2.vcproj（プロジェクトファイル）
+http://beautiful.homelinux.net/~sky-software/wb/1/obf2.exe（実行ファイル）
+
+　ここは流すように見て構いません。インラインアセンブラを使用する方法です。
+インラインアセンブラで記述したコードはVC++では最適化されません。そのため、
+先ほど比べて少し違ったコードが生成されます。
+
+　BCCを使ってコンパイルする場合、Turbo Assemblerがインストールされている
+必要があります。Turbo AssemblerはBorland C/C++ Compiler 5.5には同梱されて
+おらず、C++ BuilderまたはC++ BuilderXなどに付属しています。C++ BuilderX 
+Personal版は無料で使える上、Turbo Assemlberも付属しているのでそちらを使う
+手もあります。
+
+-----
+const char *title = "title", *msg = "message";
+_asm {
+	lea eax, [MessageBox + 0x7F12AE11]
+	push 0
+	push msg
+	push title
+	push 0
+	sub eax, 0x7F12AE11
+	call [eax]
+}
+-----
+
+-----
+00401000  /$ 55             PUSH EBP
+00401001  |. 8BEC           MOV EBP,ESP
+00401003  |. 83EC 08        SUB ESP,8
+00401006  |. C745 FC D85040>MOV [LOCAL.1],obf2.004050D8              ;  ASCII "title"
+0040100D  |. C745 F8 D05040>MOV [LOCAL.2],obf2.004050D0              ;  ASCII "message"
+00401014  |. 8D05 D5FE527F  LEA EAX,DWORD PTR DS:[7F52FED5]
+0040101A  |. 6A 00          PUSH 0
+0040101C  |. FF75 F8        PUSH [LOCAL.2]
+0040101F  |. FF75 FC        PUSH [LOCAL.1]
+00401022  |. 6A 00          PUSH 0
+00401024  |. 2D 11AE127F    SUB EAX,7F12AE11
+00401029  |. FF10           CALL DWORD PTR DS:[EAX]
+-----
+
+
+●LoadLibraryの使用
+
+　LoadLibraryを使用したプログラムは次のURLからダウンロードできます。
+
+http://beautiful.homelinux.net/~sky-software/wb/1/obf3.cpp（ソースコード）
+http://beautiful.homelinux.net/~sky-software/wb/1/obf3.vcproj（プロジェクトファイル）
+http://beautiful.homelinux.net/~sky-software/wb/1/obf3.exe（実行ファイル）
+
+　LoadLibraryとGetProcAddressを使って呼び出します。LoadLibraryでuser32.d
+llをロードし、 GetProcAddressでMessageBoxAのアドレスを取得しています。
+
+-----
+HINSTANCE hUser = LoadLibrary("user32.dll");
+if (!hUser) {
+	return -1;
+}
+
+MsgBox msgbox = (MsgBox)GetProcAddress(hUser, "MessageBoxA");
+if (!msgbox) {
+	return -1;
+}
+------
+
+　OllyDbgで見ると次のようになります。
+
+------
+00401000  /$ 68 E4504000    PUSH obf2.004050E4                       ; /FileName = "user32.dll"
+00401005  |. FF15 04504000  CALL DWORD PTR DS:[<&KERNEL32.LoadLibrar>; \LoadLibraryA
+0040100B  |. 85C0           TEST EAX,EAX
+0040100D  |. 74 10          JE SHORT obf2.0040101F
+0040100F  |. 68 D8504000    PUSH obf2.004050D8                       ; /ProcNameOrOrdinal = "MessageBoxA"
+00401014  |. 50             PUSH EAX                                 ; |hModule
+00401015  |. FF15 00504000  CALL DWORD PTR DS:[<&KERNEL32.GetProcAdd>; \GetProcAddress
+0040101B  |. 85C0           TEST EAX,EAX
+0040101D  |. 75 04          JNZ SHORT obf2.00401023
+0040101F  |> 83C8 FF        OR EAX,FFFFFFFF
+------
+
+　続いてMessageBoxAを呼び出す部分です。
+
+------
+const char *title = "title", *msg = "message";
+msgbox(NULL, msg, title, MB_OK);
+-----
+
+-----
+00401023  |> 6A 00          PUSH 0
+00401025  |. 68 D0504000    PUSH obf2.004050D0                       ;  ASCII "title"
+0040102A  |. 68 C8504000    PUSH obf2.004050C8                       ;  ASCII "message"
+0040102F  |. 6A 00          PUSH 0
+00401031  |. FFD0           CALL EAX
+-----
+
+　この段階では、LoadLibraryで動的にロードしたため、MessageBoxAの呼び出し
+はOllyDbgに検出されていません。ここでも動作を確かめてみます。アドレス004
+01031でブレークポイントをしかけて停止させると、EAXにMessageBoxAのアドレス
+が入っていることがわかります。LoadLibraryとGetProcAddressを使った場合でも、
+OllyDbgはWin32APIのアドレスを検出できることがわかりました。
+
+
+■0x03.) 手間を減らす
+
+　偽装の仕組みについて理解して頂けたでしょうか。Win32APIのアドレスを出さ
+せないことが肝となります。ここで終わりたいところですが、最初に「AntiCrac
+kingにかかる手間を可能な限り最小限にとどめることも考えてみます」と書いた
+ように、手間を減らすことも考えてみます。
+
+●ソースコードの可読性
+
+　MessageBoxを呼び出したソースコードを比較します。msgbox.cppの場合、特に
+見やすくもなく、見づらくもありません。しかし、obf1.cpp～obf3.cppのソース
+コードはどうでしょうか。一行で済む処理をわざわざ複数行に展開することでソ
+ースコードが見づらくなっています。実際にプログラムを作る場合は多くのWin3
+2APIを呼び出すため、可読性に大きな影響を与えると考えられます。
+
+●偽装する手間
+
+　完成たソースコードに手を加えること、コーディング時に偽装していくこと、
+両方ともひとつひとつの呼び出しを手作業で変更することになります。単調な作
+業の繰り返しをコーディングの一環に取り入れるわけにはいきません。
+
+
+■0x04.) 手間を減らすために
+
+　単調な作業の繰り返しと、ソースコードの可読性について取り上げました。単
+調な作業を解決するのに役立つツールとは何でしょうか。C/C++のプリプロセッサ
+です。マクロを宣言することで、プリプロセッサが自動的に展開します。実際に
+使ったプログラムを作ってみます。
+
+http://beautiful.homelinux.net/~sky-software/wb/1/obf4.cpp（ソースコード）
+http://beautiful.homelinux.net/~sky-software/wb/1/obf4.h（ヘッダファイル）
+http://beautiful.homelinux.net/~sky-software/wb/1/obf4.vcproj（プロジェクトファイル）
+http://beautiful.homelinux.net/~sky-software/wb/1/obf4.exe（実行ファイル）
+
+　ソースコードはmsgbox.cppと比べて、obf4.hをインクルードしているだけです。
+
+-----　obf4.cpp
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#include "obf4.h"
+
+int main()
+{
+	const char *title = "title", *msg = "message";
+	MessageBox(NULL, msg, title, MB_OK);
+	return 0;
+}
+-----
+
+　続いてヘッダファイルです。obf1.cppでの宣言部分をヘッダファイルに移し、
+MessageBoxをマクロで再宣言しています。
+
+-----　obf4.h
+#pragma once
+typedef int (WINAPI *_MessageBox)(HWND, LPCTSTR, LPCTSTR, UINT);
+
+const DWORD_PTR p_MessageBox = ((DWORD_PTR)MessageBox + 0x7F12AE11);
+#undef MessageBox
+#define MessageBox ((_MessageBox)(p_MessageBox - 0x7F12AE11))
+-----
+
+　コンパイルされると結局、プリプロセッサに展開されてobf1.cppと変わらなく
+なります。
+
+
+■0x05.) GetProcAddressの自作
+
+アーカイブ（ソースコード・プロジェクトファイルのみ）
+http://beautiful.homelinux.net/~sky-software/wb/1/apicaller.zip
+
+　LoadLibraryとGetProcAddressを使用することで呼び出しを偽装することができ
+ました。しかし、それでもOllyDbgでステップ実行すればアドレスが検出できまし
+た。そこで私は「OllyDbgはGetProcAddressの呼び出しをHookすることでWin32AP
+Iのアドレスを調べている」と考え、この仮定のもとGetProcAddressを作成しまし
+たが、試したところGetProcAdderssは関係ありませんでした。おそらく、LoadLi
+braryが呼ばれた段階でアドレスが解析されているのでしょう。
+
+　GetProcAddressの自作に加えて、次のことを考えて作成しました。
+
+1：自作したGetProcAddressに文字列のハッシュを使用する
+2：取得したアドレスはスクランブルしてメモリに保存する
+3：Win32APIを呼び出す際はスクランブルした値を元に戻してから呼び出す
+4：GetProcAddressを自作にAPI Hookの対策もかねる
+5：呼び出しはプリプロセッサに自動展開させる
+
+　GetProcAddressを自作することでDLLからアドレスが取得されてないようにみせ
+かけ、文字列のハッシュしか保持しないことで、リバースエンジニアリング時に
+注目されににくくします。LoadLibraryと自作のGetProcAddressを使うことで、I
+ATを書き換える方法を使うAPI Hookの対策が可能です。
+
+　すいませんが時間の都合上、GetProcAddressの作成方法と、ソースコードの細
+かい説明は省かせて頂きます。ごめんなさい。
+
+
+■0x06.) ヘッダファイルの生成
+
+　ヘッダファイルに宣言をまとめることでWin32APIを呼び出す側のソースコード
+の変更を意識する必要はなくなりました。しかし、宣言を書く手間は解決してい
+ません。そこで、ヘッダファイルを自動生成するツールを作成します。
+
+　PlatformSDKのヘッダファイルから全ての宣言を抽出するか、自分が呼び出すW
+in32APIのみ抽出してヘッダファイルを作成するツールを作るとよいでしょう。こ
+こでソースコードとプログラムを公開したいところですが、恥ずかしいことに私
+が文字列処理が苦手で、この記事を書くまでに作成することができませんでした。
+自分で挑戦してみてください。
+
+
+■0x07.) 終わりに
+
+　手間を減らすために「プリプロセッサを活用する」「ヘッダファイルを自動生
+成する」のふたつの手段を紹介しました。単純な作業はプログラムにやらせまし
+ょう。
+
+　今回はWin32API呼び出しの偽装でした。Win32APIに限らず、DLLの関数を呼び出
+す際にこのテクニックを使うことができます。リバースエンジニアリングを防ぐ
+ための方法はこれだけではありませんし、これだけで十分とはいえません。興味
+のある方はぜひ自分で調べてみてください。また、普通とは違った視点で考え、
+実際にプログラムを作ってはいいかがでしょうか。
+
+

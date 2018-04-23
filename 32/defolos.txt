@@ -1,0 +1,254 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: はじめてのハッキング　～番外編：パスワードクラック～ ---
+
+著者：Defolos
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　プログラミングの基礎の確認を終えたところで、C言語によるプログラミングの
+練習を行いましょう。題材としてはハッキングにも関係が深いパスワードクラッ
+カーの作成を通して、パスワードの基礎およびプログラミング技術の確認を行い
+ます。
+
+　近年では、パスワードクラッカーは多くの種類が出回っています。John The R
+ipperをはじめ、高性能なパスワードクラッカーが簡単に手に入り、その気になれ
+ば小学生でさえパスワードクラックを楽しむことができるようになりました。し
+かし、パスワードの原理やパスワードクラッカーに必要な動作を知らずしてツー
+ルを用いることは、何の進歩にもなりえないと考えます。そこで、簡単なパスワ
+ードクラッカーを作成し、パスワードとそれを取り巻く技術について知識を深め
+ることを本レポートの目的とします。
+
+　パスワードクラッキングに関するより詳しい解説はWizard Bible vol.7のKenj
+iさんの記事を参照ください。
+
+参考→http://wizardbible.org/7/7.txt
+
+
+■0x02.) Linuxログインパスワード
+
+　Linuxのログインパスワードは「/etc/passwd」に暗号化されてテキストファイ
+ルとして保存されています。/etc/passwdはすべてのユーザが閲覧できるようにな
+っているため、セキュリティの観点からは好ましいものではありませんでした。
+そのため、一般ユーザが閲覧さえできない「/etc/shadow」に暗号化したパスワー
+ドを置く方法が一般的になっています。この方法のことをShadowと呼びます。
+　以前まで多くのLinuxはパスワードの暗号化にDESを用いていましたが、近年で
+はMD5で暗号化することが一般的になっています。そこで、このレポートでは事前
+に入手した「/etc/shadow」内のMD5で暗号化されたパスワードをクラックし、も
+とのパスワードを入手するツールを作成します。
+
+●単方向のハッシュ関数
+
+　MD5（Message Digest 5）は単方向のハッシュ関数と呼ばれるものです。また、
+DES（Data Encryption Standard）は共通鍵暗号（ブロック暗号と呼ばれるタイプ
+）ですが、連鎖して使うことでハッシュ関数のように使うこともできます。
+　ある文字列を入力すると、まったく別の文字列（ビット長が小さい）を出力す
+る関数をハッシュ関数と呼び、出力された文字列をどういじくっても入力された
+文字列を求めることはできません。ハッシュ関数を用いて文字列を変形させる場
+合、正確にはエンクリプトとは呼ばずエンコード（あるいはハッシュ化）と呼び
+ます。また、出力されたエンコードされた値はハッシュ値と呼びます。
+
+　Linuxではエンコードされたパスワードは「/etc/shadow」に置かれます。ログ
+イン時に入力されるパスワードを同じアルゴリズムでエンコードし、「/etc/sha
+dow」に格納されているエンコード済みのパスワードと比較します。もし、両者が
+一致すれば正確なパスワードが入力されたとして認証可能とします。上記のハッ
+シュ関数の性質のうちで、特に一方向性の概念が大きく影響していることがわか
+るでしょう。こうしたログイン時と同じ原理を用いてパスワードクラッカーの作
+成に応用することができます。
+
+●ソルト
+
+　単方向ハッシュ関数をクラックする最も高速な方法は、事前にすべての文字列
+をエンコードし、それと/etc/shadow内に保存されているエンコードされたパスワ
+ードとの比較を行う方法です。この方法では文字列が一致した場合、その文字列
+がパスワードであったと判断できます。この方法では、パスワードによく使われ
+る文字列をエンコードして保存しておいても10Gバイトにも満たないことが多く、
+なおかつ高速でクラックが可能です。このような弱点を克服するため、単方向ハ
+ッシュ関数にはソルト（salt）という概念を導入している場合が多いです。本レ
+ポートの攻撃対象であるMD5関数にもソルトは導入されています。
+
+　ソルトはエンコードパターンに多様性を持たせるための仕組みです。ソルトは
+ごく短い文字列で構成されます。入力文字列の先頭にソルトを配置し、エンコー
+ドします。エンコード結果の先頭にはソルトを配置します。これで認証時に照合
+は可能になりながらエンコードパターンが一意に定まらず、事前に文字列をエン
+コードする手法は防ぐことができます。仮にソルトの長さが8文字、使える文字が
+[A-Z],[a-z],[0-9],[.],[/]の64文字だとすれば、エンコードパターンはあるひと
+つの入力に対して4,398,046,511,104通り考えられることになります。もしパスワ
+ードによく使われる文字列を事前にエンコードして保存しておくとすれば、10Tバ
+イトではすまない可能性もあります。
+　このため、本レポートで作成したパスワードクラッカーは別のアプローチを行
+っています。簡単に言えば、エンコードされたパスワードからソルトを取得し、
+そのソルトを用いてパスワードによく使われる文字列をMD5でエンコードします。
+それを比較し、一致した場合その文字列がパスワードであったと判断します。非
+常に多くの文字列に対してハッシュ化を行うため、速度は期待できません。
+
+●crypt関数
+
+　暗号化にはcrypt関数を利用します。crypt関数は引数としてソルトとキーの格
+納されたアドレスをとり、ハッシュの先頭3文字が「$1$」で始まるときはMD5で、
+それ以外のときはDESでエンコードします。また、crypt関数を利用するには-lcr
+yptオプションが必要であり、次のようなマクロとインクルードを行わなければな
+りません。
+
+-----
+#define _XOPEN_SOURCE
+#include <unistd.h>
+-----
+
+　MD5は非可逆なハッシュアルゴリズムで、最大8文字のソルトをとり出力は最大
+34バイトとなります。出力は「$1$+ソルト+$<string>」で、<string>は[A-Z],[a
+-z],[0-9],[.],[/]の64文字の集合から選ばれる22バイトです。
+
+●ソースコード
+
+　それでは以上の事項を踏まえ、パスワードクラッカーのソースコードを記述し
+ます。
+
+-----　passcrack.c
+#define _XOPEN_SOURCE
+#include <stdio.h>
+#include <unistd.h>
+#include <string.h>
+
+enum {CMD_NAME, DICTIONARY, SALT, PASSWD};
+
+int main(int argc, char *argv[]){
+
+    FILE *file;
+    char salt[11];
+    char pass[35];
+    char key[256] ={"newbie"};
+    char *code;
+    int i = 0;
+
+    if (argc != 4){
+        printf("Usage:<%s> Dictionary Salt Passwd\n", argv[CMD_NAME]);
+        printf("-----[Example]-----\n");
+        printf("if passwd is $1$N9rTnvmD$Z.e92/gt.SqCmUyyxHI6A0\n");
+        printf("passcracker.exe dic.txt N9rTnvmD Z.e92/gt.SqCmUyyxHI6A0\n");
+        return 0;
+    }
+
+    salt[0] = '$';
+    salt[1] = '1';
+    salt[2] = '$';
+    i = 0;
+    while(i < 8){
+        salt[i+3] = *(argv[SALT] + i);
+        i++;
+    }
+    salt[i+3] = '\0';
+
+    i = 0;
+    while(i < 11){
+        pass[i] = salt[i];
+        i++;
+    }
+    pass[i] = '$';
+    i = 0;
+
+    while( i < 23){
+        pass[i+12] = *(argv[PASSWD] + i);
+        i++;
+    }
+    pass[i+12] = '\0';
+
+    file = fopen(argv[DICTIONARY], "r");
+
+    while(1){
+        if(fgets(key,256,file) == NULL){
+            printf("it end of file\n");
+            return 0;
+        }
+
+        i = 0;
+        while(key[i] != '\0'){
+            if(key[i] == '\n'){key[i] = '\0';}
+            i++;
+        }
+
+
+        if((code = crypt(key, salt)) == NULL){
+            printf("crypt error\n");
+            return 0;
+        }
+        printf("code = %s\n", code);
+        printf("key = %s\n", key);
+
+        if(strcmp(pass, code) == 0){
+            printf("[ found ]\n");
+            printf("password is %s\n", key);
+            return 0;
+        }
+        else{
+            printf("[ not found ]\n\n");
+        }
+    }
+    fclose(file);
+
+    return 0;
+}
+-----
+
+　上記のソースコードをコンパイルして、次のような引数をとって実行します。
+testは辞書ファイルとなるファイルです。N9rTnvmDがソルト、Z.e92/gt.SqCmUyy
+xHI6A0が暗号化されたキーです。ここでは「/etc/shadow」内のあるユーザーのパ
+スワードフィールドが「$1$N9rTnvmD$Z.e92/gt.SqCmUyyxHI6A0」であったとして、
+これをクラックします。
+
+-----　実行例
+defolos@glazheim:~/Desktop$ ./a.out test N9rTnvmD Z.e92/gt.SqCmUyyxHI6A0
+code = $1$N9rTnvmD$HTOCZbrTwxdy.4HSpNHRA0
+key = Jack
+[ not found ]
+
+code = $1$N9rTnvmD$6jFamv7jEuqDcqkomYXx31
+key = test
+[ not found ]
+
+code = $1$N9rTnvmD$LXBqOZGaTLotR//T0.DgD.
+key = Yahoooooooo!!!!!!
+[ not found ]
+
+code = $1$N9rTnvmD$aDtpAyAr7IuXPA/2xMvqs1
+key = Hello
+[ not found ]
+
+code = $1$N9rTnvmD$Z.e92/gt.SqCmUyyxHI6A0
+key = newbie
+[ found ]
+password is newbie
+-----
+
+　パスワードクラックに成功していることが確認できました。パスワードはnewb
+ieであるとわかりました。用意した辞書ファイルは次のようなファイルです。5行
+目にnewbieの文字があります。
+
+-----　test
+Jack
+test
+Yahoooooooo!!!!!!
+Hello
+newbie
+apple
+computer
+root
+-----
+
+
+■0x03.) おわりに
+
+　本レポートで紹介したパスワードクラッカーは、最小限の機能しかもっていな
+い低速なパスワードクラッカーです。実際のところJhon The Ripperなどの有名な
+パスワードクラッカーとの速度の差は歴然としたものがあります。しかし、パス
+ワードクラッカーの動作原理を理解するという目的では、本レポートのパスワー
+ドクラッカーは十分に妥当性があると考えられます。
+　このレポートを通して原理を知ることの楽しさを伝えられれば幸いと存じます。
+
+
+

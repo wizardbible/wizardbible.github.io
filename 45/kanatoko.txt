@@ -1,0 +1,384 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: マニアックJavaプログラミング第10回: ～ SSLのベンチマーク ～ ---
+
+著者：金床
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　ﾎﾟﾝﾁﾜ。なんだかﾌﾟﾛｷｼばかり作り続けて10年経ったらしい。こんど名刺の肩書
+きを「ﾌﾟﾛｷｼ職人」にしよう。
+
+　さて今回のWBで、なんとマニアックJavaプログラミングも10回目である。最近
+はSSLでゴソゴソする機会が多いので、前回に引き続きSSL関連である。
+
+　IPUロム様と違って漏れは暗号の原理的な部分はさっぱり理解不能なので、もっ
+ぱら使うだけである。しかし最近数冊の暗号関連の書籍を読破したので、以下の
+ような知識は身につけることができた。
+
+　・RC4は鍵長が40bitしかないので脆弱で、使うべきでない。WEPが破られたのは
+全部こいつのせい
+　・DESは米国の輸出規制のせいで日本では56bitの鍵長しか使えない。本土のや
+つらは256bitでウハウハ
+　・AESはAsynmmetric Encryption Signatureの略である
+　・RSAはRandom Sign Algorithmの略で、楕円を意味する
+　・最近、32bitでは鍵長が短く危険なので、64bitのOSを使う人が増えた
+　・TLSはファルケンの特殊装備の名前であって、プロトコルのことではない
+　・フグとかいうふざけた名前の暗号が存在する
+　・アリスとボブはできてる
+　・SSLv4ではナヴァホ暗号が利用できるようになる
+
+　上記のうち1つくらいは間違っている可能性があるので注意すること。
+
+
+■0x02.) データ送受信ベンチ
+
+　SSLは奥の深いプロトコルで、ひとくちに「SSLで通信する」といってもブラウ
+ザやウェブサーバーの設定などによっていろいろなアルゴリズムが選択され暗号
+化に使われる。最近の流行はAESで、いつのまにか256bitまで使えるような組み合
+わせが増えたようだ。筆者としてはCPUへの負荷が知りたかったので、簡単にJav
+aを使ってベンチマークを取ってみた。
+
+　まず、SSLSocketｸﾗｽのgetEnabledCipherSuites()を呼び出すと、以下のような
+ｻｲﾌｧｰ（編注: ｴｽｺﾝZeroの主役のことではありません）が使えることがわかる。
+
+　降ってきたな…。
+
+-----
+SSL_RSA_WITH_RC4_128_MD5
+SSL_RSA_WITH_RC4_128_SHA
+TLS_RSA_WITH_AES_128_CBC_SHA
+TLS_RSA_WITH_AES_256_CBC_SHA
+TLS_DHE_RSA_WITH_AES_128_CBC_SHA
+TLS_DHE_RSA_WITH_AES_256_CBC_SHA
+TLS_DHE_DSS_WITH_AES_128_CBC_SHA
+TLS_DHE_DSS_WITH_AES_256_CBC_SHA
+SSL_RSA_WITH_3DES_EDE_CBC_SHA
+SSL_DHE_RSA_WITH_3DES_EDE_CBC_SHA
+SSL_DHE_DSS_WITH_3DES_EDE_CBC_SHA
+SSL_RSA_WITH_DES_CBC_SHA
+SSL_DHE_RSA_WITH_DES_CBC_SHA
+SSL_DHE_DSS_WITH_DES_CBC_SHA
+SSL_RSA_EXPORT_WITH_RC4_40_MD5
+SSL_RSA_EXPORT_WITH_DES40_CBC_SHA
+SSL_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA
+SSL_DHE_DSS_EXPORT_WITH_DES40_CBC_SHA
+SSL_RSA_WITH_NULL_MD5
+SSL_RSA_WITH_NULL_SHA
+SSL_DH_anon_WITH_RC4_128_MD5
+TLS_DH_anon_WITH_AES_128_CBC_SHA
+TLS_DH_anon_WITH_AES_256_CBC_SHA
+SSL_DH_anon_WITH_3DES_EDE_CBC_SHA
+SSL_DH_anon_WITH_DES_CBC_SHA
+SSL_DH_anon_EXPORT_WITH_RC4_40_MD5
+SSL_DH_anon_EXPORT_WITH_DES40_CBC_SHA
+TLS_KRB5_WITH_RC4_128_SHA
+TLS_KRB5_WITH_RC4_128_MD5
+TLS_KRB5_WITH_3DES_EDE_CBC_SHA
+TLS_KRB5_WITH_3DES_EDE_CBC_MD5
+TLS_KRB5_WITH_DES_CBC_SHA
+TLS_KRB5_WITH_DES_CBC_MD5
+TLS_KRB5_EXPORT_WITH_RC4_40_SHA
+TLS_KRB5_EXPORT_WITH_RC4_40_MD5
+TLS_KRB5_EXPORT_WITH_DES_CBC_40_SHA
+TLS_KRB5_EXPORT_WITH_DES_CBC_40_MD5
+SSL_RSA_WITH_RC4_128_MD5
+-----
+
+　つーかSSLでケルベロスとか使うこともできるんだ。わけわかめ…というのはさ
+ておき、今回のテストではRSAの鍵しか用意しなかったので、DSS系については試
+していない。
+
+　単純に127.0.0.1でSSLサーバーソケットをlistenし、そこにSSLクライアントソ
+ケットで接続して、100MBのデータを送る。そしてこのときかかった時間（ミリ秒）
+をｻｲﾌｧｰごとに並べたのが以下である。もちろんベンチマークを取っている最中、
+CPUの使用率はきっちり100%であった。テストのSauceｺｰﾄﾞは簡単なので省略。
+
+-----
+SSL_RSA_WITH_RC4_128_MD5
+3656
+
+SSL_RSA_WITH_RC4_128_SHA
+4578
+
+TLS_RSA_WITH_AES_128_CBC_SHA
+6781
+
+TLS_RSA_WITH_AES_256_CBC_SHA
+7938
+
+TLS_DHE_RSA_WITH_AES_128_CBC_SHA
+7140
+
+TLS_DHE_RSA_WITH_AES_256_CBC_SHA
+7891
+
+SSL_RSA_WITH_3DES_EDE_CBC_SHA
+26469
+
+SSL_DHE_RSA_WITH_3DES_EDE_CBC_SHA
+26734
+
+SSL_RSA_WITH_DES_CBC_SHA
+11359
+
+SSL_DHE_RSA_WITH_DES_CBC_SHA
+11657
+
+SSL_RSA_EXPORT_WITH_RC4_40_MD5
+3625
+
+SSL_RSA_EXPORT_WITH_DES40_CBC_SHA
+11515
+
+SSL_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA
+11500
+
+SSL_RSA_WITH_NULL_MD5
+2203
+
+SSL_RSA_WITH_NULL_SHA
+3421
+
+SSL_DH_anon_WITH_RC4_128_MD5
+3469
+
+TLS_DH_anon_WITH_AES_128_CBC_SHA
+7109
+
+TLS_DH_anon_WITH_AES_256_CBC_SHA
+7735
+
+SSL_DH_anon_WITH_3DES_EDE_CBC_SHA
+26485
+
+SSL_DH_anon_WITH_DES_CBC_SHA
+11062
+
+SSL_DH_anon_EXPORT_WITH_RC4_40_MD5
+3265
+
+SSL_DH_anon_EXPORT_WITH_DES40_CBC_SHA
+12594
+-----
+
+　RC4速い。DES遅ぇﾜﾛﾀ。という感じである。40bitでも遅いDESの悲しさよ…。と
+いうことで、鯖管の立場でSSLのｺﾈｸｼｮﾝを監視していると、たまに3DESでやってく
+る人がいますが、エコじゃないのでやめましょう。
+
+　しかし気になるのはSSL_RSA_WITH_NULL_MD5である。これ速いじゃん。超速いじ
+ゃん。ということで筆者のお薦めはSSL_RSA_WITH_NULL_MD5。オトコは裸で勝負。
+ﾇﾙ暗号が2009年の流行な悪寒。なわけない。
+
+
+■0x03.) コネクション生成ベンチ
+
+　SSLではコネクションの確立が重い処理となる。そして、SSLセッションの再利
+用を行うと2度目以降のコネクションの確立が比較的軽く行われると言われている。
+筆者はこの辺りが具体的にはどの程度の数字になるのか興味があったので、Java
+を使って実験してみた。
+
+　Javaではクライアント側でSSLContextのインスタンスを使い回すことで（サー
+バー側が再利用を行おうとしている時に限り）セッションを再利用できる。SSLS
+ocketクラスのインスタンスからgetSession().getId()を呼び出すことでセッショ
+ンIDを意味するバイト配列を取得できるので、実験ではこの値を使ってセッショ
+ンの再利用が行われたかどうかを確かめることができる。
+
+　まずは単純にSSL接続を確立させ、1バイトだけデータを送るという操作を1000
+回繰り返してみた。このときかかった時間（ミリ秒）は以下の通りである。
+
+-----
+SSL_RSA_WITH_RC4_128_MD5
+8750
+
+SSL_RSA_WITH_RC4_128_SHA
+8562
+
+TLS_RSA_WITH_AES_128_CBC_SHA
+8578
+
+TLS_RSA_WITH_AES_256_CBC_SHA
+8562
+
+TLS_DHE_RSA_WITH_AES_128_CBC_SHA
+24360
+
+TLS_DHE_RSA_WITH_AES_256_CBC_SHA
+24031
+
+SSL_RSA_WITH_3DES_EDE_CBC_SHA
+8469
+
+SSL_DHE_RSA_WITH_3DES_EDE_CBC_SHA
+24375
+
+SSL_RSA_WITH_DES_CBC_SHA
+8532
+
+SSL_DHE_RSA_WITH_DES_CBC_SHA
+23968
+
+SSL_RSA_EXPORT_WITH_RC4_40_MD5
+10000
+
+SSL_RSA_EXPORT_WITH_DES40_CBC_SHA
+10031
+
+SSL_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA
+16125
+
+SSL_RSA_WITH_NULL_MD5
+8265
+
+SSL_RSA_WITH_NULL_SHA
+8438
+
+SSL_DH_anon_WITH_RC4_128_MD5
+16609
+
+TLS_DH_anon_WITH_AES_128_CBC_SHA
+16782
+
+TLS_DH_anon_WITH_AES_256_CBC_SHA
+16735
+
+SSL_DH_anon_WITH_3DES_EDE_CBC_SHA
+16734
+
+SSL_DH_anon_WITH_DES_CBC_SHA
+16641
+
+SSL_DH_anon_EXPORT_WITH_RC4_40_MD5
+8906
+
+SSL_DH_anon_EXPORT_WITH_DES40_CBC_SHA
+9000
+-----
+
+　RSAよりもDHの方が重いという傾向があるようだ。また、SSL_DHE_RSA_WITH_3D
+ES_EDE_CBC_SHAなどについては1000回のコネクション確立（と1バイト送信）に24
+秒もかかっており、つまり1コネクションあたり24ミリ秒もかかることになる。こ
+れはかなり遅いという印象を受けた。
+
+　次にSSLContextｸﾗｽを使い回し、SSLｾｯｼｮﾝの再利用を行った場合のベンチマーク
+結果を示す。
+
+-----
+SSL_RSA_WITH_RC4_128_MD5
+1829
+
+SSL_RSA_WITH_RC4_128_SHA
+1312
+
+TLS_RSA_WITH_AES_128_CBC_SHA
+1516
+
+TLS_RSA_WITH_AES_256_CBC_SHA
+1312
+
+TLS_DHE_RSA_WITH_AES_128_CBC_SHA
+1312
+
+TLS_DHE_RSA_WITH_AES_256_CBC_SHA
+1313
+
+SSL_RSA_WITH_3DES_EDE_CBC_SHA
+1297
+
+SSL_DHE_RSA_WITH_3DES_EDE_CBC_SHA
+1297
+
+SSL_RSA_WITH_DES_CBC_SHA
+1140
+
+SSL_DHE_RSA_WITH_DES_CBC_SHA
+1110
+
+SSL_RSA_EXPORT_WITH_RC4_40_MD5
+1172
+
+SSL_RSA_EXPORT_WITH_DES40_CBC_SHA
+1281
+
+SSL_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA
+1250
+
+SSL_RSA_WITH_NULL_MD5
+969
+
+SSL_RSA_WITH_NULL_SHA
+1015
+
+SSL_DH_anon_WITH_RC4_128_MD5
+1094
+
+TLS_DH_anon_WITH_AES_128_CBC_SHA
+1328
+
+TLS_DH_anon_WITH_AES_256_CBC_SHA
+1375
+
+SSL_DH_anon_WITH_3DES_EDE_CBC_SHA
+1297
+
+SSL_DH_anon_WITH_DES_CBC_SHA
+1156
+
+SSL_DH_anon_EXPORT_WITH_RC4_40_MD5
+1156
+
+SSL_DH_anon_EXPORT_WITH_DES40_CBC_SHA
+1188
+-----
+
+　非常に大きな効果があり、5倍～22倍近く速くなっている。
+
+　ちなみに今回すべてのベンチマークは
+
+・Core2Duo 2.4GHz
+・Win2k（そうです、ﾜﾀｼがWin2k厨です）
+・jdk1.6系統
+
+　で計測した。Sauceコードは全体的に省略しているが、特に難しいところはない
+はずだ。
+
+
+■0x04.) まとめ
+
+　そんなわけで今回はSSLのベンチマークを取ってみた。もちろんこれはJavaの実
+装に依存しているものなのでOpenSSLを使っている場合にはもっと別の傾向が出る
+ことも考えられる。
+
+　個人的にはセッション再利用の効果の大きさが実感できたので、Guardian@JUMP
+ERZ.NETなどにこの成果をフィードバックするつもりだ。
+
+
+■0x05.) おまけ1
+
+　SSL+Javaに関連したおまけ1つめ。JREの1.6系列では、ﾃﾞﾌｫではAESは128bitまで
+しか使えないようになっている。しかしSunのｻｲﾄからjce-policy-6.zipをSunから
+ダウンロードしてきてjre/lib/security以下にjarファイルを2つﾋﾟｰｺすれば、256
+bitが使えるようになる。
+
+
+■0x06.) おまけ2
+
+　http://forums.sun.com/thread.jspa?threadID=5172531&tstart=60で話題にな
+っているように、1.6系列ではSSLｻｰﾊﾞｰｿｹｯﾄでDHE関連のﾋﾞｯﾄ数が768しかない。そ
+のためOperaで接続すると「今時これじゃﾋﾞｯﾄ数が足りないぽ」というｶﾝｼﾞでﾀﾞﾒ
+判定を喰らう。そこでDHE系のｻｲﾌｧｰをあらかじめ無効にしておけばこれを避ける
+ことができる。これにより当然ながらSSLにおいて使用できるｻｲﾌｧｰの数は減るが、
+今時のﾌﾞﾗｳｻﾞは多くのｻｲﾌｧｰをｻﾎﾟｰﾄしているのでたぶん問題ない。
+
+　筆者はsetEnabledCypherSuites()をDHE関連を抜いた引数で呼び出すことにより
+対策している。ただしTomcatなどでやる場合はこのように直接ｿｰｽｺｰﾄﾞをいじるの
+はかったるいと思われるので、何かﾎﾟﾘｼｰﾌｧｲﾙ系で対策できるとよいと思われるが、
+どうやるかわからないので誰か教えてくだちい。
+
+
+

@@ -1,0 +1,11 @@
+HN: unya
+Job: ネコの世話
+Web: Lunatic Stream (http://lunatic_stream.tn.st)
+Mail: tmlise@yahoo.co.jp
+Team（Group）: Team LISE
+Comment:
+  ども、お初です。最近、Pentium2マシンを入手してちょっとご機嫌です♪
+  え？Pentium4？なにそれ。つーか時代はイリジウム！
+オススメツール: grep
+  ハックからクラックまでとっても重宝するのがgrep。
+  使い方は簡単 "grep ウニャ!" これで決まりヽ(´ー`)ノ

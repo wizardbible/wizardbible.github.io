@@ -1,0 +1,17 @@
+■suma
+●Job: Student
+●Web: http://beautiful.homelinux.net/~sky-software/
+●Mail: shu_2001jp(at)yahoo.co.jp
+●Team（Group）: secret
+●Comment:
+　先日crackmeを作ってみましたが、自分で触って改めてWin32APIの偽装は厄介な
+ものだと感じています。
+http://beautiful.homelinux.net/~sky-software//archive/etc/crackme1_v2.zip
+●雑誌に対する考え方:
+　3年ほど前から『C MAGAZINE』を読んでいます。12月に定期購読が切れてから、
+気になる記事があれば買おうと思っていたところ、休刊について知りました。『
+C MAGAZINE』のおかげで、自分の目の届かない情報手に入れたり、基礎的な技術
+の習得に役立ったと思います。『C MAGAZINE』を用いた学習は、ソースコードを
+読んだり、パズルに挑戦することだと思いますが、バックナンバーから記事を探
+して活用するのもひとつの手だと思います。
+

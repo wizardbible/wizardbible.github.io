@@ -1,0 +1,100 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: Quick Beのメモリーリーク修正＆Vista対応パッチの作成 ---
+
+著者：Will
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　今回はブログで少し書いたQuick Beのメモリーリークについて詳しくとまでは
+いきませんが、その修正方法について書いてみました。Vistaでなくてもエラーの
+検出はできるのですが、Vistaの方がわかりやすいということで今回についてはV
+ista環境を想定しています。
+
+　なお、必要な物として以下のソフトウェアが必要です。OllyDbgについてはすで
+に日本語化済みとして話しを進めます。
+
+・OllyDbg　http://www.ollydbg.de/
+・Quick Be Build 011　http://cowscorpion.com/file/QuickBe.html
+
+
+■0x02.) Quick Beとは
+
+　krackをしている人ならば知らない人はいないと思いますが、Quick Beはいわゆ
+る、日本ではバイナリエディタ、海外ではhexadecimal editorなどと呼ばれてい
+るソフトウェアです。
+
+
+■0x03.) なぜ修正するのか？
+
+　Windows Vista上でQuick Beを動作させた場合「パッチファイル実行」の「書き
+換えるファイルが存在するフォルダ」を選択すると落ちてしまいます。他のWind
+owsでは落ちはしませんが、以下の様なログを残します。
+
+-----
+ ﾒｯｾｰｼﾞ=デバッグ文字列: Invalid Address specified to RtlFreeHeap( 130000, 7d08e150 )
+-----
+
+　というわけで自分で修正してみましょう。
+
+
+■0x04.) 修正
+
+（注意）以下の作業はVistaで行います。
+
+　まず、OllyDbgでQuick Beを開き、実行させます。そしてフォルダを選択すると
+ntdllの中で一時停止し、さらに進めると終了してしまいます。というわけで再ス
+タートし、トレース実行を行います。再びフォルダを選択し、停止したところで
+ラントレースを見ます。
+
+　ntdllに入る前に実行されたのが、次の命令だとわかります。
+
+-----
+0040E185  FF15 30564100 CALL NEAR DWORD PTR DS:[<&ole32.CoTaskMe>;  ole32.CoTaskMemFree
+-----
+
+　この関数が原因なのです。
+　そして、これのどこが駄目なのかというとその前のPUSH EAXです。本来ならば
+SHBrowseForFolderの戻り値を引数にして呼び出す必要があるのですが、SHGetPa
+thFromIDListを呼び出す前に戻り値を退避させていないので、その戻り値で上書
+きされています。というわけで修正したいのですが、かなり詰まっています。空
+いてる所にジャンプしてから修正するのがいいかも知れませんが、今回はパッチ
+数を減らす方向で修正しましょう。
+
+　そういう訳でエラー処理の
+
+-----
+TEST EAX,EAX
+JE 0040E9AF
+-----
+
+を消して使うことにします。
+
+　上記のコードを
+
+-----
+MOV DWORD PTR SS:[ESP+14],EAX
+-----
+
+に変更します。
+
+　後はファイルに保存するだけです。
+
+　以上でQuick Beの修正は終わりです。
+
+
+■0x05.) 駄文
+
+　時間はあるけどネタがないということで、再度しょぼい文章を書かしていただ
+きましたｗ。今度出す時はもう少しましなことを書きたいと思います。と思い続
+けて最早不可能だと気づきました。
+
+　ではでは。
+
+
+

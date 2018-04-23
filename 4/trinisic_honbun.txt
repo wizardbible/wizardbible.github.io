@@ -1,0 +1,132 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+ --- 第３章：趣味と実益のWinny破壊 ---
+
+ 著者：trinisic
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+
+# この文は自分のサイトのコンテンツを一部改変したものです。
+# オリジナルのほうが若干詳しく書かれているので、そちらも参考にしてください。
+# http://www.geocities.jp/geekofnewbie/contents/winny_crack.html
+# また Winny の動作の解析で何かわかったことがあれば、教えていただければ幸いです。
+
+
+winnyをperdrで逆アセンブルする。
+
+C:\Documents and Settings\*****>perdr "C:******\winny.exe" > winny.txt
+
+Runtime Error: Unable to read from file
+
+当然失敗したようだ。
+
+
+Winny.exe はパッカーで圧縮されていることは公知なので別の解析方法が必要である。
+
+ここで "PE iDentifier" を使用する。"PE iDentifier" はファイルアナライザーであり、exe ファイルが何でビルドされているか知ることができる。 "PE iDentifier" を起動して Winny.exe をD&D する。
+
+Information : tElock 0.95 build 1 -> tE!
+
+tElock をGoogle で検索してみると、次のような記述があった。
+
+
+--------------------
+tElock is a PE-File Encryptor/-Compressor which is designed to process most .exe, .dll and .ocx files. It decreases an image's size and protects it against patching, disassembling and unpacking.
+tElock has been originally made for TMG members only to compress their keygens and protect them a bit against thiefs. 
+
+Features:
+- decreases size of most executable files a lot while leaving them executable;
+- protects your files against dumping/unpacking, patching and disassembling;
+- optimizes some PE stuff (Alignments, PE-Checksum..);
+- integrates into shell (context-menu: 'Open with tElock');
+- drag'n'drop capabilities (that's the reason why the window stays on top).
+--------------------
+
+まあ要はファイルを暗号化・圧縮してディスアセンブルやメモリダンプを防ぐツールということだ。 また別のページには以下のような記述があった。
+
+--------------------
+A utility which compresses a file, encrypting it in the process. It adds a header that automatically expands the file in memory, when it is executed, and then transfers control to that file. Some packers can unpack without starting the packed file. Packers are ""useful"" for trojan authors as they make their work undetectable by anti-virus products.
+--------------------
+また tElock のアンパッキングチュートリアルも見つけた。
+
+調べたところ、Cool Memory Dumper を使えばアンパックできるそうだ。早速ダウンロードして使用してみる。コマンドラインから実行。すると LordPe の Dumper Server を先に起動しろとのメッセージが表示される。
+
+なんだそりゃと思いつつ、検索。するとヒットした。 LordPE をダウンロードして、Dumper Server のボタンを押し、Cool Memory Dumper を実行。 Winny が一瞬起動して・・・Winny.ex_ファイルが生成！エラーメッセージも出ていないようなので、これでアンパックできた？と期待する。ちなみに Winny.ex_ ファイルは11MBほどの大きさだ。
+
+これをバイナリエディタで開いてC++で文字列を検索する。やった！ヒットした。２箇所ほど引っかかる。当然アンパック前はそのような文字列は引っかからない。逆アセンブラでディスアセンブルしてみても、アンパック前のようにエラーで終了しない。
+
+
+こうなればデバッガでのデバッギングも可能かも知れないという期待がよぎる。 OllyDBGを使用してみる。
+
+・・・がプログラムはパックされていると思われるというダイアログが出てしまった。大丈夫だろうか？案の定F9で実行しようとしてもエラーで進まなくなってしまう。まさかまだパックされているのか？もう一度ファイルアナライザーを使ってみる。
+
+Information : Borland C++ 1999 
+
+もうオリジナルファイルではないのか？アンパック後の Winny.exe をダブルクリックしてもエラーで実行できなくなっている。アンパックは完璧ではないようだ。 
+
+どうしたものかと思ってまた検索を進めていくと、PE Explorer というツールを発見した。高機能な exe ファイルエディターで、逆アセンブル機能やリソース書き換えの機能もある。 
+
+これでリソースを修正してみると・・・アンパック後でも Resource Hacker では不可能だったアイコンの置き換えができた。
+ら一筋縄ではいかないようだ。 
+
+tElock のアンパックにはほかのツールもあったのでそれを試してみる。 
+
+WKT_tElock_Dumper は tElock 0.95 に対応しているためそれを使ってみる。しかしXPの環境で実行しようとすると、メッセージが表示されて実行できない。
+「このプログラムはNT系ではテストされていません」とのこと。しかし自分は9x系の環境がない。仕方ないので知り合いの人に頼んで代わりにやってもらった。
+
+渡されたファイルをまずはダブルクリックしてみると、やった！！！起動した！！！すげー、感動だよ。Pe iDentifier でスキャンしてみると Entry Point や EP Section などの値が先ほどアンパックしたものとは違う。やった！ 
+ここまでくればもう UP/DOWN の制限のクラックも可能じゃないだろうか。それはまたの機会にする。 
+
+
+UP/DOWN 数を詐称できるようプログラムを改造したい。ここでスペシャルねこまんま５７号（メモリエディタ）を使用した。 
+
+実は使い方がよくわからなかったが、某紙で紹介されていたので記事を読んで使い方を少し理解できた。
+Winny.exe を指定してメモリ検索→比較用メモリを記録して winny の転送数が変化したら値増加、値減少を押して転送ファイルの数を格納していると思われるメモリアドレスを絞り込んでいく。 
+
+するとDL数の値を格納していると思われるメモリアドレスが二つに絞られた。リアルタイムの変化値も二つとも同じ変化を示しており、それはWinnyのGUI上の表示数とも一致する。そこで調べたアドレスを用いてコード実行してみる。 
+
+013F87E8-05
+014974D8-05 
+
+Winny 上には転送ファイルの制限が2であるにもかかわらず、DL数が5と表示される（正確には実際の転送数と5が交互に表示される。スペシャルねこまんま５７号の自動更新時のコード実行は１秒おきのようなので、Winnyの転送数チェックが１秒以下で行われているためと考えられる。）。 
+
+同様にして最大UL数を格納していると思われるメモリアドレスを検索する。するとひとつだけヒットした。ここを 
+
+013F87BC-10 
+
+として実行してみると・・・ 
+
+おおっと、何も転送していないのに最大転送数がどちらも16になってしまった。これはまいったなｗ 
+
+ただ気になるのはコード実行したと同時に転送中のファイルがキーロストによる切断エラーで転送中断されてしまったことだ。偶然、かもしれないがおそらく違うだろう。1.14がクラックされて47も不正なメモリ書き換え等の対策を行っているかもしれない。
+それにWinny起動時にいちいちスペシャルねこまんま５７号を起動してコードを実行させるのは面倒なのでパッチを当てねばならない。パッチというものは作成したことがないのでまたいずれ調べてみる。 
+
+メモリからの解析は難しそうなので、今度は実行ファイルのバイナリを調べてみる。何かわかるかもしれない。
+ファイルの末尾のほうに、なにやら関数名らしきものが連続している。
+とりあえず、ダウンロードに関係ありそうな関数名を探してみる。 
+
+DropDownCount のあとには2という文字が続いている。
+2 は無転送時の Winny の最大ダウンロード数（だよね？）なのでちょっと怪しい。
+とりあえずここを 6 などいじってみる。何箇所かあったので、すべて書き換えてみた。
+ほかにも、s: 0 t: 0 / 0 0 なんていかにも怪しい部分があり、そこも（ほんとに）適当に改造。これでどうだ～と思いつつ、Winny 起動。ダウンロードを試みてみる。すると・・・ 
+
+UL 数は 0 のまま、4DLs できている。これって書き換えなければありえなかったことだろうか？よくわからない。
+一応転送はキーロストによる切断エラーで切れないまま続いた。ただ、コネクション数限界エラーでは切断され（当然だけど）、その後はファイル探索中のままになってしまい、結局ファイルが見つからなかったら DL 数あげても意味ない気がしてきた。 
+
+
+余談：
+某 IRC でも Winny の解析が行われていた。
+そこでの目的は tElock のマニュアルアンパッキングであった（解析者はみなマニュアルアンパッキングの技術を習得すべきらしい）。
+即座に、とはいかなくとも成功した方もいるようである。
+つまり、公開はされていないものの改造版の Winny を使用しているユーザーの存在は十分考えられる。
+Winny が b6.6 から更新が途絶えていることも考えると、Winny 崩壊の日も近いのかもしれない。
+これからの warez はどうなるのか。それは誰にもわからない。
+
+
+
+
+ 

@@ -1,0 +1,3355 @@
+[-]=======================================================================[-]
+
+                      Wizard Bible vol.24 (2006,2,9)
+
+[-]=======================================================================[-]
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+  ---- 第0章：目次 ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+○第1章：SQLエラーによるデータ盗掘                               金床 著
+
+○第2章：C# Programming 0x2 ～Making Packer～                    Will 著
+
+○第3章：初級解析講座（一風変わった登録方法 .NET版）         右サイド 著
+
+○第4章：割り込みプログラム [後編]                            Defolos 著
+
+○第5章：ハニーポットを作ろう（連載第8回）                   Narusase 著
+
+○第6章：AntiCracking Techniques - Obfuscating API Call Vol.2    suma 著
+
+○第7章：Becky! リバースエンジニアリング                         金床 著
+
+○第8章：カスタムリソース＋ローダー＝パッカー              Kenji Aiko 著
+
+○第9章：『ハッカーになるには！どびん　ちょびん　はげちょびん　コチラ』秘話
+                    MaD（＝宇宙・ｈしぎ大爆発のアムールトラのおやｋ） 著
+
+○第10章：Google Hacking ～ 基礎編 ～                        IPUSIRON 著
+
+○第11章：お知らせ
+
+○第12章：著者プロフィール
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第1章: SQLエラーによるデータ盗掘 ---
+
+著者：金床
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　SQLインジェクションの攻撃を仕掛ける場合、攻撃者はウェブアプリケーション
+やデータベースが吐くエラーメッセージを手がかりにすることが多い。エラーメ
+ッセージに登場するテーブル名やカラム名などは、データベースの構造を外部か
+ら把握するための大きな助けになる。そのため、エラーメッセージはユーザーに
+返さないという対策を採るのがセキュリティを保つための基本事項だ。
+
+　しかしエラーメッセージを返さないようにしても、Blind SQL Injectionと呼ば
+れるテクニックによってデータベースに対する攻撃が可能である。Blind SQL In
+jectionについて知りたい方はGoogleで検索し、Impervaのテキストを読んでみて
+欲しい。
+
+
+■0x02.) SQL文のエラーを判別できる場合
+
+　エラーメッセージが手に入らない場合でも、SQLの実行自体がエラーになったか
+どうかは判別できる場合が多い。例えばログイン画面で、SQLがエラーになった場
+合には「データベースのエラーが発生しました」と表示され、そうでない場合に
+は「ユーザー名かパスワードが間違っています」などと表示されるようなケース
+だ。この場合、サブSELECTなどの結果によって故意にSQLエラーを発生させ、デー
+タベースに格納されているデータを取り出すことができる。具体的な方法は次の
+ようなものだ。
+
+-----
+mysql> select * from db where 1 = ( select max( 0 ) from db union all select 0 from db where Host = 'localhost' );
+ERROR 1242 (21000): Subquery returns more than 1 row
+mysql> select * from db where 1 = ( select max( 0 ) from db union all select 0 from db where Host = 'localho' );
+Empty set (0.00 sec)
+-----
+
+　この例では、dbテーブルのHostフィールドの値を取り出している。条件式で"l
+ocalhost"という文字列を指定した場合にはSQLエラーが発生し、"localho"の場合
+にはエラーが発生しないことがわかる。この事から、"localhost"という値を持つ
+レコードは存在し、"localho"という値を持つレコードは存在しないことがわかる。
+条件式にはLIKE句や各種の文字列系の関数なども使えるので本格的に攻撃する場
+合にはバイナリサーチなどの手法を用いることになるが、ここでのポイントは、
+「サブSELECTの結果で故意にSQLエラーを発生させることができる」という点だ。
+上の例で使われている手法はhsj氏が2003年の某イベントで発表したものである
+が、筆者は2年後の2005年になってようやくその意味、つまりウェブアプリケー
+ションの挙動でSQLエラーの有無を判別できる場合に使うことのできるテクニッ
+クである、ということを理解した。
+
+　さて前回のWizard Bibleで、RDBMS上でUNIONキーワードを使えなくしてしまう、
+というちょっと変わり種の防御手法を紹介した。この手法が用いられていれば、
+上の方法での攻撃は不可能ということになる。その理由はもちろん、UNIONキーワ
+ードが使われているからだ。では、UNIONキーワードが使えない場合に、サブSEL
+ECTの結果を故意にエラーにすることはできるだろうか。そう考え、MySQLとPost
+greSQLでいろいろと試してみた。ちなみに上の方法は、hsj氏のレポート中ではO
+racleに対して有効と書いてあり、また例に挙げたようにMySQLに対しても有効で
+あることを確認した。
+
+
+■0x03.) DoS穴を発見
+
+　リファレンス本を頼りに、目に付いた関数に片っ端から変な変数を与えて実行
+してみた。さまざまな条件でデータベースに格納されたデータを取得することを
+考えると、SELECT COUNT(*)を使って条件に合うレコードの数を取得し、その結果
+がゼロかどうかが分かれば取りあえずは充分である。例えば「パスワードがAで始
+まるレコードの数」を取得し、0以外であれば、次は「パスワードがAAで始まるレ
+コードの数」を取得するようなイメージだ。これを繰り返せば、原理的にはいつ
+かはパスワード全体を取得することができる。ただしこれではもちろん効率が非
+常に悪いので、実際に攻撃を行う際には先述したとおり、LIKE句を使ったり、バ
+イナリサーチを使ったりすることになる。
+
+　SELECT COUNT(*)の結果は数字だ。数字が0か、あるいは（例えば）1かという違
+いによって故意にエラーを発生させるというのは、少々難しそうに思えた。そこ
+で、MySQLのゼロ除算の特徴を利用することにした。MySQLではゼロ除算を行うと
+その結果がNULLになるのだ。そこで、まず数字の1（もちろん1以外でもよいが）
+に対してSELECT COUNT(*)の結果で除算を行う。SELECT COUNT(*)の結果が0の場合
+にはNULLを取得し、そうでない場合には数値を取得することができる。本来数値
+や文字列を入力すべきところにNULLを入力するとエラーが発生する関数があれば、
+このことを利用してデータを探ることができることになる。そして、この考えは
+正しかった。str_to_date()関数がまさにそのような挙動を見せたのだ。
+
+　str_to_date関数は2つの引数を必要とし、通常どちらも文字列である。例えば
+両方に"1"という文字列を入力すると、次のようにSQLは正常に終了する。
+
+-----
+mysql> select str_to_date( '1', '1' );
++-------------------------+
+| str_to_date( '1', '1' ) |
++-------------------------+
+| 0000-00-00              |
++-------------------------+
+1 row in set (0.00 sec)
+-----
+
+　しかし2つめの引数をNULLにすると、SQLの実行がエラーとなる。
+
+-----
+mysql> select str_to_date( '1', NULL );
+ERROR 2013 (HY000): Lost connection to MySQL server during query
+-----
+
+　このことを利用すれば、指定した条件にマッチするレコードがテーブルに存在
+するかどうかを、次のようにして調べることができることになる。この例では条
+件はhogeというテーブルのpasswordというフィールドの値が「Aで始まる」レコー
+ドがあるかどうかを調べている。
+
+-----
+（略） where 1 = '' or str_to_date( '1', 1/( select count(*) from hoge where password like 'A%' ) );
+-----
+
+　さて望みの動作をする関数が見つかった、と喜んでいたのだが、どうもエラー
+メッセージが奇妙である。よく読んでみると「Lost connection」、つまりデータ
+ベースサーバーとの接続が切れてしまったようだ。通常、SQL文の実行がエラーに
+なったからといって、接続を切られるようなことはない。
+
+　どうやら、なんとも面白いことに、MySQLのセキュリティホールを見つけてしま
+ったようだ。str_to_date()の2番目の引数にNULLを指定すると、データベースサ
+ーバーであるmysqldプロセスが死んでしまうのだ。mysqldは自動で再起動するも
+のの、連続してこの方法でstr_to_date()を呼び出せばデータベースサーバーとし
+ての役割を妨害することができるだろう。どうやら任意のコードの実行はできな
+いようなので、これはDoSに繋がるセキュリティホールと考えられる。
+
+　このバグはこのまま筆者の胸の中だけにしまっておいてもよかったのだが、と
+りあえずは報告することにした。MySQLにはきちんとしたバグトラッキングシステ
+ムが導入されているようで、このバグは15828というIDを振られ、次のURLで詳細
+を確認できる。おそらく次のバージョンでは修正されることだろう。
+
+http://bugs.mysql.com/bug.php?id=15828
+
+　余談となるが、このバグに対して最初に作られたパッチが失敗作だったのは少
+し面白かった。
+
+http://lists.mysql.com/commits/1037
+
+
+■0x04.) バグに頼らない方法
+
+　str_to_date()にNULLを与えてSQL文を異常終了させる方法はあくまでもバグに
+頼ったものであり、おそらく次のバージョンでは使えなくなってしまう。そこで
+他の関数を色々試してみたのだが、結局NULLを有効に使うことのできる方法は見
+つからなかった。そこで、さらに色々な値を引数に与えてエラーが起こる関数を
+探したところ、正規表現を使う際に利用できるREGEXPキーワードで故意にエラー
+を起こすことができることを発見した。REGEXPキーワードに対して空の文字列を
+与えると、次のようにエラーが発生するのだ。
+
+-----
+mysql> select 'HOGE' regexp '^HO';
++---------------------+
+| 'HOGE' regexp '^HO' |
++---------------------+
+|                   1 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> select 'HOGE' regexp '';
+ERROR 1139 (42000): Got error 'empty (sub)expression' from regexp
+-----
+
+　この現象を利用すると、次のようにしてデータを探ることが可能になる。
+
+-----
+（略） where 'a' regexp ( if( ( select count(*) from hoge where password like 'A%' ), '', 1 ) );
+-----
+
+　IFキーワードを利用して、該当するデータがある場合には空の文字列を、そう
+でない場合には1をREGEXPに与えている。この例では「Aで始まる」レコードがあ
+る場合にはSQLエラーが発生し、そうでない場合には正常終了する。
+
+　このようにして、MySQLではUNIONキーワードが禁止されていても、条件によっ
+てSQLエラーを発生させる方法でデータの取得が可能であることがわかった。
+
+
+■0x05.) PostrgeSQLの場合
+
+　同じように、PostgreSQLで故意にエラーを起こす方法がないか探してみた。す
+ると、あっけなく見つかった。ゼロ除算である。MySQLの場合には結果がNULLにな
+るが、PostgreSQLではSQLエラーが発生するのだ。
+
+-----
+template1=# select 1/0;
+ERROR:  floating point exception! The last floating point operation either exceeded legal ranges or was a divide by zero
+-----
+
+　これを利用し、次の方法でデータを探ることができる。
+
+-----
+（略） where 1 = 1/( select count(*) from hoge where password like 'A%' );
+-----
+
+　「Aで始まる」レコードがある場合には正常終了し、そうでない場合にはSQLエ
+ラーが発生する。
+
+
+■0x05.) SQLエラーを判別できない場合
+
+　さて、滅多にないことだが、SQLエラーが発生したかどうかすらユーザー画面か
+ら判断できない場合はどうだろうか。実はこの場合でも、MySQLではデータを探る
+ことができる。benchmark関数を利用して、「時差攻撃」を仕掛けるのだ。
+
+-----
+mysql> select if( 0 < ( select count(*) from db where host like 'A%' ), benchmark( 100000, sha1( 'hoge' ) ), 0 );
+-----
+
+　dbテーブルのhostフィールドが「Aで始まる」レコードがある場合にはこのSQL
+文の実行には数秒ほど時間が掛かるが、レコードがない場合にはSQL文の実行は一
+瞬で終わる。ユーザーに返される画面はどちらの場合でも変わりないが、データ
+が返ってくるまでの時間に差が出るのだ。なんとも巧妙な方法である。PostgreS
+QLで同様の方法を実現する方法は、おそらく見つかっていない。
+
+　この「時差攻撃」を防ぐために、UNIONキーワードの禁止と同じ方法が使える。
+benchmark関数の使用を禁止してしまえばよいのだ。具体的にはUNIONキーワード
+の場合と同様にsql/lex.hを編集し、
+
+-----
+   { "BENCHMARK",        SYM(BENCHMARK_SYM)},
+-----
+
+　の行をコメントアウトするなりしてしまえばよい。
+
+
+■0x06.) まとめ
+
+　今回はBlind SQL Injectionでデータを盗み出す際に利用される、「結果によっ
+て故意にSQLエラーを引き起こす」実験をMySQLとPostgreSQL上で行った。データ
+ベース内に格納される重要な情報（パスワードやクレジットカード番号など）は
+このような方法で掘り出されかねないので、暗号化した状態で格納する方がよい
+と言えるだろう。
+
+　今回、hsj氏にBBS上でたくさんの貴重なアドバイスを頂くことで、最終的にこ
+のように記事をまとめることができた。感謝する。技術を掘り下げていく際に、
+同じ興味を持つ人間が複数集まることのありがたさをあらためて実感した。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第2章: C# Programming 0x2 ～Making Packer～ ---
+
+著者：Will
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) 今回作成するソフト
+
+　題名にもあるように、今回はPackerを作成します。まず、Packとは何か知って
+おきましょう。
+
+-----
+　実行可能ファイルを実行可能なまま圧縮を行うこと。圧縮を行うソフトはパッ
+カーと呼ぶ。圧縮形式としてよく知られているLZHやZIPは基本的にどんなファイ
+ルでも圧縮できるが、圧縮されたファイルは一旦外部記憶装置に解凍しないと使
+用することはできない。これに対し、パックできるファイルは原則として実行可
+能ファイルやDLLのみであり、パック済みのファイルは自己解凍型となる。
+-----
+
+引用元：どーも eagle0wl です（仮）http://www.mysys.org/eagle0wl/
+
+　そういうわけで任意のファイルをPackするPackerを作ってみましょう。
+　なお、PEフォーマットの知識は必須です。
+
+
+■0x02.) 用意
+
+●使用ソフトなど
+・Visual C# 2005 Express Edition
+　インストール済みを前提に進めます。
+http://www.microsoft.com/japan/msdn/vstudio/express/vcsharp/
+
+・Will Packer Source Code
+http://antiwmac.overclock.ch/public/will/archive/programming/source/willpacker_src.zip
+
+・PE Format
+http://www.microsoft.com/whdc/system/platform/firmware/PECOFF.mspx
+
+
+■0x03.) Packingの流れ
+
+　Packingは次のような手順で行います。
+
+1：ターゲットファイルにセクションを追加する。
+		↓
+2：ターゲットファイルのコードセクションを暗号化する。
+		↓
+3：追加したセクションに展開コードを挿入する。
+
+　まずはセクションの追加をしてみましょう。
+　ソースコードでいうとaddSection関数がこれにあたります。
+
+-----
+protected void addSection()
+        {
+            int sectionAddress;
+            int preSectionAddress;
+            int sectionRawSize;
+
+            byte[] rawSize = new byte[4];
+            byte[] ImageSize = new byte[4];
+      
+            byte[] sectionData = { 0x2E, 0x77, 0x69, 0x6C, 0x6C, 0x00, 0x00, 0x00, 0x00, 0x10, 0x00,
+                                   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 
+                                   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                   0x00, 0x00, 0x00, 0x20, 0x00, 0x00, 0xE0 };
+
+            preSectionAddress = sectionOffset + (numberOfSections - 1) * SECTION_SIZE;
+            sectionAddress = sectionOffset + numberOfSections * SECTION_SIZE;
+
+            //セクション数を増やす
+            exeFile[PEHeaderOffset + 0x6] = (byte)(exeFile[PEHeaderOffset + 0x6] + 0x1);
+
+            //ImageSizeの変更
+            ImageSize = ConvertAddress(ConvertAddress(SiseOfImage) + 0x1000);
+
+            exeFile[PEHeaderOffset + SIZE_OF_IMAGE] = ImageSize[0];
+            exeFile[PEHeaderOffset + SIZE_OF_IMAGE + 1] = ImageSize[1];
+            exeFile[PEHeaderOffset + SIZE_OF_IMAGE + 2] = ImageSize[2];
+            exeFile[PEHeaderOffset + SIZE_OF_IMAGE + 3] = ImageSize[3];
+
+            //RawSize
+            CopyArray(ref rawSize, 0,  exeFile, preSectionAddress + RAW_SIZE_OFFSET);
+            sectionRawSize = ConvertAddress(rawSize);
+
+            //RawOffset
+            rawOffset = new byte[4];
+
+            CopyArray(ref rawOffset, 0, exeFile, preSectionAddress + RAW_OFFSET);
+            rawOffset = ConvertAddress((ConvertAddress(rawOffset) + sectionRawSize));
+
+            //VirtualOffset
+            virtualOffset = new byte[4];
+
+            CopyArray(ref virtualOffset, 0, exeFile, preSectionAddress + VIRTUAL_OFFSET);
+
+            if (sectionRawSize%0x1000 != 0)
+                sectionRawSize = (sectionRawSize / 0x1000) * 0x1000 + 0x1000;
+
+            virtualOffset = ConvertAddress((ConvertAddress(virtualOffset) + sectionRawSize));
+
+            //追加するセクションデータの変更
+            for (int i = 0; i < 4; i++)
+            {
+                sectionData[i+0x14] = rawOffset[i];
+                sectionData[i+0xc] = virtualOffset[i];
+            }
+
+            //セクションを追加する
+            for (int i = 0; i < sectionData.Length; i++)
+            {
+                exeFile[sectionAddress + i] = sectionData[i];
+            }
+        }
+-----
+
+　getPEData関数ですでにexeFileには読み込んだファイルのバイナリデータが入
+っています。なおexeFileのサイズは追加するセクション分の0x1000が余分に確保
+しています。セクションの数はPEヘッダから0x5と0x6の位置にあるのですが、Mi
+crosoftのドキュメントを見ると「Note that the Windows NT loader limits th
+e Number of Sections to 96」と書いてあります。よって、0x60までしか追加で
+きないので、0x5のデータは無視できます。そこで、0x6の位置のデータに0x1を足
+すことによってWindows Loaderが実行時に認識するセクションの数が1増えます。
+
+　さらに、追加するセクション分の0x1000をImageSizeに足します。
+
+-----
+	　　//RawSize
+            CopyArray(ref rawSize, 0,  exeFile, preSectionAddress + RAW_SIZE_OFFSET);
+            sectionRawSize = ConvertAddress(rawSize);
+
+            //RawOffset
+            rawOffset = new byte[4];
+
+            CopyArray(ref rawOffset, 0, exeFile, preSectionAddress + RAW_OFFSET);
+            rawOffset = ConvertAddress((ConvertAddress(rawOffset) + sectionRawSize));
+
+            //VirtualOffset
+            virtualOffset = new byte[4];
+
+            CopyArray(ref virtualOffset, 0, exeFile, preSectionAddress + VIRTUAL_OFFSET);
+
+            if (sectionRawSize%0x1000 != 0)
+                sectionRawSize = (sectionRawSize / 0x1000) * 0x1000 + 0x1000;
+
+            virtualOffset = ConvertAddress((ConvertAddress(virtualOffset) + sectionRawSize));
+-----
+
+　この部分では、追加するセクションのひとつ前のセクションの情報から新しく
+追加するセクションのRaw OffsetとVirtual Offsetを計算しています。
+
+　そして最後に、あらかじめ作っておいたセクションデータ（byte[] sectionDa
+ta）を変更します。変更された新しいセクションのデータをexeFileに追加してい
+ます。
+
+　ちなみに次の部分ですが
+
+-----
+if (sectionRawSize%0x1000 != 0)
+                sectionRawSize = (sectionRawSize / 0x1000) * 0x1000 + 0x1000;
+-----
+
+　この0x1000で割って、0x1000掛けてる部分は意味がないように見えますが、Vi
+rtual OffsetはSection Alignment（0x1000）× n（nは整数）である必要がある
+ので、0x1000以下のサイズを繰り上げています。
+
+○例
+Virtual Offsetが0x12a00のとき、(sectionRawSize / 0x1000)…12になる。
+よって、0x12×0x1000 + 0x1000 = 0x13000
+
+
+　次にターゲットファイルのコードセクションを暗号化してみましょう。
+　ソースコードでいうとoperation関数がこれにあたります。
+
+-----
+protected virtual void operation()
+        {
+            byte[] codeOffset = new byte[4];
+
+            CopyArray(ref codeOffset,0, exeFile, sectionOffset + RAW_OFFSET);
+
+            for (int i = ConvertAddress(codeOffset); i < ConvertAddress(codeOffset) + ConvertAddress(sizeOfCode); i++)
+            {
+                exeFile[i] = (byte)(exeFile[i]^0xa);
+            }
+        }
+-----
+
+　この関数ではコードセクションのデータと0xaとの排他的論理和をとっているだ
+けです。
+
+　そして追加したセクションに展開コードを挿入してみましょう。
+　ソースコードでいうとcodeinjection関数がこれにあたります。
+
+-----
+protected virtual void codeinjection()
+        {
+            int injectionAddress = ConvertAddress(rawOffset);
+            byte[] codeOffset = new byte[4];
+            byte[] entryPoint = new byte[4];
+            byte[] codeSize = new byte[4];
+            byte[] sectionData = {0x20, 0x00, 0x00, 0xE0};
+            byte[] injectionCode = { 0xB9, 0x00, 0x00, 0x00, 0x00, 0x80, 0x31, 0x0A, 0x41, 0x81, 0xF9, 0x00, 
+                                     0x00, 0x00, 0x00, 0x75, 0xF4, 0xB9, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xE1 };
+
+            sizeOfCode = new byte[4];
+            CopyArray(ref sizeOfCode,0, exeFile, sectionOffset + RAW_SIZE_OFFSET);
+
+            codeOffset = ConvertAddress(ConvertAddress(peImageBase) + ConvertAddress(baseOfCode));
+            codeSize = ConvertAddress(ConvertAddress(peImageBase) + ConvertAddress(baseOfCode) + ConvertAddress(sizeOfCode) - 0x1);
+            entryPoint = ConvertAddress(ConvertAddress(peImageBase) + ConvertAddress(EntryPoint));
+        
+            //エントリーポイントの変更
+            for (int i = 0; i < 4; i++)
+            {
+                exeFile[PEHeaderOffset + ENTRYPOINT + i] = virtualOffset[i];
+            }
+            
+            //セクション情報変更
+            for (int i = 0; i < 4; i++)
+            {
+                exeFile[sectionOffset+ 0x24 + i] = sectionData[i];
+            }
+            
+            //追加するコードデータの変更
+            for (int i=0; i<4; i++)
+            {
+                injectionCode[0x1+i] = codeOffset[i];
+                injectionCode[0xb + i] = codeSize[i];
+                injectionCode[0x12+i] = entryPoint[i];
+            }
+
+            //コードを挿入
+            for (int i = 0; i < injectionCode.Length; i++)
+            {
+                exeFile[injectionAddress + i] = injectionCode[i];
+            }
+        }
+-----
+
+　injectionCodeには挿入するバイナリが入ってます。
+　バイナリの中身は以下のアセンブリコードです。
+
+-----
+MOV ECX,コードセクションの先頭RVA
+XOR BYTE PTR DS:[ECX],0A
+ECX
+CMP ECX,コードセクションの最後のRVA
+JNZ SHORT （XOR BYTE PTR DS:[ECX],0Aのアドレス）
+MOV ECX,元のエントリーポイント
+JMP ECX
+-----
+
+　そして最後に編集したファイルを書き込みます。
+　ソースコードでいうとcreateExe関数がこれにあたります。
+
+　以上でPackが完了します。
+
+
+■0x04.) 再利用
+
+　自分なりに色々と弄りたい方はpackerクラスを変更したほうが無難かもしれま
+せん。ちなみにcodeinjection関数とoperation関数はVirtualで宣言しています。
+  例えば、OllyDbgで開いた時に表示される「エントリーポイントがコードセクシ
+ョン外…」というメッセージが表示されないようにするにはPackerクラスを次の
+ように編集すればOKです。
+
+-----
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Packer
+{
+    class packer: willPacker
+    {
+        protected override void operation()
+        {
+            for (int i = 0; i < virtualOffset.Length; i++)
+            {
+                exeFile[PEHeaderOffset + BASE_OF_CODE + i] = virtualOffset[i];
+            }
+
+            base.operation();
+        }
+    }
+}
+-----
+
+
+■0x05.) おわりに
+
+　私は今回のWizard Bibleをもちましてしばらくの間、お休みを頂きたいと思います。
+  長々と書きましたが以上で終わりです。お疲れ様でした。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第3章: 初級解析講座（一風変わった登録方法 .NET版） ---
+
+著者：右サイド
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) .NET Framework
+
+　Ollydbgを使用して解析を行っているときに、たまにC#.NETやVB.NETを使ってい
+るものが出てくる場合があります。それをOllyに突っ込んでみると、まったく解
+析ができません。これはすべて.NET Frameworkが悪さをしているからです。イメ
+ージとしては次のような感じになります。厳密ではないものすごくアバウトであ
+るが、間違いがあったら教えてください。
+
+
+                        ---------
+                       | Program |
+                        ---------
+                            ||
+                            ||
+ ------------        ---------------         ------------
+| Platform A |======|.NET Framework |======| Windows XP |
+ ------------        ---------------         ------------
+
+
+○具体的過ぎる例
+
+
+
+                        ---------
+                       |  日本人  |
+                        ---------
+                            ||
+                            ||
+ ------------        ---------------       --------
+| フランス人 |======| バイリンガル |======| 宇宙人 |
+ ------------        ---------------       --------
+
+
+　C#（※1）をコンパイルしたもの（C#で書かれた言語）は、Win問わずいろいろ
+なプラットフォームで動かせまずが、やはりプラットフォーム依存の物（Win32 
+APIなど）を使用するため、.NET Frameworkを使用する物はMacなどでは動かせま
+せん。LinuxではMonoというモノ（ギャグじゃないぞ！！）で動かせるそうですが、
+依存しないコードを書けば事実上どのプラットフォームでも動かすことができま
+す。Javaみたいでよいですね～ｗ（使ったことはありませんけど）。
+
+　もし、この説明がわかりにくかったら次のサイトを参考にすればわかると思い
+ます。私の日本語能力じゃここが限界に近いです。
+
+●参考になるところ
+
+http://e-words.jp/w/.NET20Framework.html
+http://www.atmarkit.co.jp/fdotnet/dotnetwork/index/index.html
+
+●注釈
+
+（※1）厳密にC#は、CLI（Common Language Infrastructure）という一種の実行
+環境で動いています。.NET FrameworkはCLIを独自にWindows用に拡張したもので
+す。
+
+
+■0x02.) じゃあどうする？
+
+　.NETの説明もしたので、Ollyで解析できないこともわかったはずです。
+
+　では、次にどうしたらよいのでしょうか？
+　これに対しては、Willさん（※1）がもうすでにWizard Bibleで解説済みである。
+同じことをやっても仕方がない、というかネタがかぶってはまったく面白くも何
+ともありません。てなわけで、今回は実用性がないというかパズル的な遊びをし
+ようと思いま～す。
+
+●注釈
+
+（※1） http://antiwmac.overclock.ch/public/will/
+
+
+■0x03.) 遊びましょ！！
+
+●用意する物
+・Reflector for .NET
+http://www.aisto.com/roeder/dotnet/
+・Crack_me!!（今回は自作です）
+http://www3.pf-x.net/~right-hand-side/RE/WB/CM_WB.zip
+
+
+●解説
+
+　恒例の、まずは起動！！
+　すると、ピクロスみたいな画面と2つのボタンだけ。どう見てもやる気のかけら
+が見えません。本当にありがとうございました。ひとつは登録ボタン、もうひと
+つは終了ボタンです。わかりましたね？　チェックボタンをチェックしてもしあ
+っていたら「正解」との文字がでます。不正解だった場合は「m9（＾Д＾）ﾌﾟｷﾞ
+ｬｰ!!」とあざ笑われます。非常に悔しいです。
+　今回はどれをチェックしたら正解なのか、探ろうと思います。この時点で「m9
+（＾Д＾）ﾌﾟｷﾞｬｰ!!」とか思っているそこの貴方！！正解を自力で見つけてみな
+さい！！普通では不可能です。なんせ33,554,432通り（＝2^25）あるんですから！！
+
+　これを1秒間に1回試したとしても、
+
+33554432（秒）/60（秒）= 559,240.533（分）
+559240.533（分）/60（分）= 9,320.67555（時）
+9,320.67555（時）/24（時）= 388.361481（日）…約一年とちょい
+
+　あなたは、これだけ時間を費やせますか？
+
+　NEETでも不可能ですね。
+　それでは早速閉じて、速攻でReflectorに突っ込んでみてください。ここから先、
+多少プログラミングの知識が必要です。
+　そうしたら、次のように展開してください。
+
+（図）http://www3.pf-x.net/~right-hand-side/RE/WB/Reflector.png
+
+　「button1_Click」のところにはいろいろな処理が書かれています。
+　「button2_Click」のところには「Application.Exit();」というのが書かれて
+いますのでアプリを終了という意味になります。
+　今回はボタンが2つしかなかったから命拾いしたのですが、いっぱいあった場合
+は根性が必要です。これはどうすることもできません。
+　それでは「button1_Click」のところを中心に攻めていきたいと思います
+
+　まず、ざ～と見てみるとif文があるのに気付きます。まあ、ここが分岐で正解
+か不正解かの分かれ目になります。ちなみに、「\u6b63\u89e3\uff01\uff01」が
+「正解！！」、「m9\uff08\uff3e\u0414\uff3e\uff09\uff8c\uff9f\uff77\uff9e
+\uff6c\uff70!!」が「m9（＾Д＾）ﾌﾟｷﾞｬｰ!!」となっております。変換方法につ
+いては、WillさんがWizard Bible vol.23で解説しております。
+
+　今回は c_line_1関数のみ解説しますので、後は自力で見つけてください。解答
+は最後に言います。
+
+-----
+：button1_Click
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+
+int num1 = 0;
+      num1 += this.c_line_1();
+      num1 += this.c_line_2();
+      num1 += this.c_line_3();
+      num1 += this.c_line_4();
+      num1 += this.c_line_5();
+      if (num1 == 5)
+      {
+            MessageBox.Show("\u6b63\u89e3\uff01\uff01");
+      }
+      else
+      {
+            MessageBox.Show("m9\uff08\uff3e\u0414\uff3e\uff09\uff8c\uff9f\uff77\uff9e\uff6c\uff70!!");
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+-----
+
+　まず、「this.checkBox1.Checked」というのは、チェックボックスにチェック
+が入っているかどうかをチェックするためのものです。もし、「this.checkBox1
+.Checked == true」だとしたらチェックボックスにチェックが入っているという
+ことになります。この場合は、最初の「if (this.checkBox1.Checked)」のところ
+ではチェックが入っていれば、「num1++」するということになります。
+　次のifでは「!」が入っているのでチェックボックスにチェックが入っていなけ
+れば「num1++」をするということになります。
+　この法則を守ってやっていくと、「○×××○」という風な感じになります。
+　c_line_1～5についても同様の考え方を適用していきます。
+
+　正解は一番下に書いておきます。
+
+-----
+：c_line_1()
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+private int c_line_1()
+{
+      int num1 = 0;
+      if (this.checkBox1.Checked)
+      {
+            num1++;
+      }
+      if (!this.checkBox2.Checked)
+      {
+            num1++;
+      }
+      if (!this.checkBox3.Checked)
+      {
+            num1++;
+      }
+      if (!this.checkBox4.Checked)
+      {
+            num1++;
+      }
+      if (this.checkBox5.Checked)
+      {
+            num1++;
+      }
+      if (num1 == 5)
+      {
+            return 1;
+      }
+      return 0;
+}
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+-----
+
+
+■0x04.) 正解と問題点
+
+　この解析方法には多少問題が存在します。実は、この解析方法だと死人が出て
+しまいます（嘘。問題点として、checkBoxがどのcheckBoxに対応しているかがわ
+からないのです。ハンバーガーにピクルスが入っていないぐらい重大です！！こ
+の問題点を利用して、チェックボックスを配置するときに適当に配置して、ON/O
+FFをチェックする関数もバラバラにチェックするようにすれば解析は非常に困難
+になります。
+　誰か解決方法を知りませんか？
+
+
+●解答！！
+
+○×××○
+×○×○×
+××○××
+×○×○×
+○×××○
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第4章: 割り込みプログラム [後編] ---
+
+著者：Defolos
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　こんにちは、Defolosです。
+　前回に引き続き割り込みプログラムについてまとめてみたいと思います。後編
+では実際のプログラムの書き方を重点的に解説したいと思いますので、先に「割
+り込みプログラム [前編]」（http://wizardbible.org/22/22.txt）に一通り目を
+通していただきたいと思います。
+
+　また、一通り目を通していただくに際し、前編での注釈不足をお詫びいたしま
+す。前編で注釈なく出てきた「SysVシグナル」とは、「SystemVシグナル」の略で
+す。
+　SystemVとは、1969年に米国AT&Tベル研究所のデニス・リッチとケン・トンプソ
+ンが開発したUNIXをバージョンアップさせたものです。SystemVは最終的にRelea
+se 5まで開発されています。特に1989年に登場したSystemV Release 4は「SVR4」
+と記され、多くのUNIXの手本として広く普及したようです。
+
+
+■0x02.) 前編のおさらい
+
+　前編では、割り込みの概要と割り込みの動作をキーボード割り込みの実例を挙
+げて解説しました。また、UNIXでは割り込みを実現するためにシグナルという仕
+組みを利用しており、シグナルの動作にもSysV、BSD、POSIXの3つの処理体系があ
+ることを説明しました。
+　今回はもう少し込み入ったシグナルの解説と、それぞれのシグナル処理体系に
+おける、割り込みプログラムの実際の書き方を解説していきたいと思います。
+
+
+■0x03.) サンプルプログラムの仕様
+
+　次にサンプルプログラムとして作成するプログラムの仕様を記述します。以後
+は、ここで記述した要求を満たすようなプログラムをシグナルを使って作ってい
+くことになります。
+
+●前提条件
+
+1：プログラムのメイン処理はgets関数でキーボードからの入力を待ち受ける
+2：キーボードからの入力を変数に格納する
+3：Ctrl+C入力によるSIGINTシグナルを感知した場合、制御をシグナルハンドラに
+移す
+4：シグナルハンドラではステップ2の変数の内容を文字列として出力する
+5：リエントラントテストを行うため割り込みハンドラ内で1秒間待機する
+6：割り込みハンドラの処理を終えると、メイン処理へ制御を移す
+7：以上の処理を繰り返す
+
+=============
+ main start
+=============
+   ↓
+----------
+ while(0) ←------.
+----------        |
+   ↓             |
+---------------   |
+printf(Message)   |
+---------------   |
+   ↓             |
+----------        |
+gets(buff)        |
+----------        |
+   ↓             |
+--------          |
+pause() --------→^
+--------
+   ↓
+=============
+ main stop
+=============
+
+::::::::::::::::::::::::::
+
+===============
+ warikomi start
+===============
+    ↓
+---------------
+printf(Message)
+---------------
+    ↓
+------------
+printf(buff)
+------------
+    ↓
+---------
+sleep(1)
+---------
+    ↓
+===============
+ warikomi stop
+===============
+
+
+■0x04.) シグナル詳細
+
+●signal関数
+
+　シグナルの動作には、あらかじめ決められているデフォルト動作というものが
+あります。このデフォルトの動作に不満が無ければ、特になにもせずにそのまま
+使えばよいのですが、もし動作に不満がある場合はユーザープログラムで新しい
+動作（シグナルハンドラ）を設定することができます。この動作を変更する関数
+がsignal関数です。
+　signal関数のプロトタイプは次のようになっています。
+
+-----
+#include <signal.h>
+
+typedef void (*sighandler_t)(int);
+void signal(int signum, void (*handler)(int) );
+-----
+
+　signal関数は引数を2つとります。第1引数には動作を変更したいシグナルの番
+号を指定しますが、「SIGINT」や「SIGARLM」などのような文字列定数もsignal.h
+（Linuxではasm/signal.h）でそれぞれのシグナル番号と関連付けされているため
+指定できます。
+　第2引数には、第1引数で動作を変更したシグナルが届いたときに制御を移すシ
+グナルハンドラへの関数ポインタを指定します。あるいは第一引数で指定された
+シグナルを受け取っても無視するようにするSIG_IGNか、第1引数で指定されたシ
+グナルの動作をデフォルト動作に戻すSIG_DFLを指定することもできます。また、
+第2引数でシグナルハンドラへの関数ポインタを指定した場合、signumを引数とし
+てとった状態でhandlerが呼び出されます。
+　注意点としましては、SIGKILLやSIGSTOPにシグナルハンドラを設定することは
+できません。また、シグナル関数は成功するとハンドラルーチンを指すポインタ
+を戻り値に返し、エラーの場合はSIG_ERRを返し、errnoにエラーの種類を示す値
+をセットします。
+
+　ここまでの解説はSysVシグナル処理体系でもBSDシグナル処理体系でも同じです。
+SysVシグナルとBSDシグナルとの大きな違いは、後述しますがシグナルを受け取っ
+たときの動作に現れます。
+
+●リエントラント問題
+
+　シグナルの到着は基本的に非同期であり、いつどのようなタイミングでシグナ
+ルが送信されてくるかはわかりません。ブロッキング関数が処理をブロック（※1）
+している状態や、システムコール（※2）処理中の状態でシグナルを受け取るとい
+った状況も考えられます。この場合ブロッキング関数を中断してシグナルハンド
+ラに処理を移すべきなのか、ブロッキング関数を優先してシグナルを無視するべ
+きかといった問題が発生します。
+　また、シグナルハンドラの処理を実行している間に、同一のシグナル番号の新
+しいシグナルが到着した場合に、どのように動作するべきなのかといった問題も
+あります。例えばサンプルプログラムの仕様にしたがって、[Ctrl]＋[C]でシグナ
+ルハンドラへ制御を切り替え、メッセージを出力している間にもう一度[Ctrl]＋
+[C]を入力した場合にどのような動作を行うかということです。
+
+　このリエントラント問題の処理においては、SysVシグナル処理体系、BSDシグナ
+ル処理体系、POSIXシグナル処理体系のそれぞれで異なった動作を行います。リエ
+ントラント処理の違いがそれぞれ3つの処理体系の大きな違いといってもよいでし
+ょう。
+
+●注釈
+
+（※1）readシステムコール関数の場合なら、読み込むためのデータの到着を待っ
+ている状態です。read関数などのように、その関数での仕事が終わるまで処理を
+占領してしまうような関数のことをブロッキング関数と呼び、処理を占領してい
+る状態のことを「ブロックしている」と表現します。ブロッキング関数には他に
+send関数やaccpet関数などがあります。
+
+（※2）OSのカーネルが提供する機能のうち、プロセスから呼び出せるようになっ
+ている機能、もしくはその呼び出し規約のこと。ファイルアクセスやメモリの割
+り当て、子プロセスの生成などの機能が用意されていることが多い。
+　最近のOSでは、システムコールではなく、API（Application Program Interfa
+ce）という用語を使うことが多い。これは、OSのバージョンアップなどによって、
+従来はカーネルが提供していた機能がライブラリや別プロセスによって提供され
+るようになるなど、実装方法が多様化していることに対応したものである。
+
+・「@nifty：デジタル用語辞典：システムコール」を参考。
+http://www.nifty.com/webapp/digitalword/word/037/03749.htm
+
+
+■0x05.) SysVシグナル
+
+　SysVシグナルは古くからUNIXに実装されてきたシグナルであるため、もはや古
+いシグナル処理体系であるといえます。しかし、現在でもまだ動作する処理体系
+であることと、シグナルの動作の実装がどのように変化してきたかという歴史を
+知ることは、それ以後の技術を理解する手助けになると思いますので、ここでは
+古いといわれるSysVシグナルの解説も行います。
+
+●SysVのリエントラント処理
+
+　前述のリエントラント問題でもふれたように、リエントラント処理はそれぞれ
+のシグナル処理体系で動作が異なっています。SysVシグナル処理体系では、次の
+ようにリエントラント処理を行っています。
+
+○ブロック中のシグナル受信
+
+　システムコールやブロッキング関数などの処理中にシグナルが到着した場合は、
+システムコール・ブロッキング関数を停止させます。システムコール関数の場合、
+エラー時には-1を返すので、シグナルによる割り込みが発生した場合エラー（-1）
+を吐いて停止します。
+
+○同一シグナルの到着
+
+　SysVシグナルでは、このような状況が起こらないようにすることで対処してい
+ます。プログラム内でsignal関数を用いて指定されたシグナルを受け取ると、si
+gnal関数で指定したシグナルハンドラへ処理を移しますが、そのときシグナルの
+動作をデフォルトへ戻してしまいます。この動きはLinuxカーネルとlibc4,5でも
+同様なようです。
+　例えば、サンプルプログラムの場合、[Ctrl]＋[C]が入力された場合にシグナル
+ハンドラとして割り込みの発生を通知するようなメッセージを出力し、1秒間待機
+しますが、この1秒間の間にもう一度[Ctrl]＋[C]が押された場合の処理について
+です。SysVシグナルでは一度シグナルハンドラが呼び出されたときにシグナルの
+動作をデフォルトに戻してしまいますので、サンプルプログラムのシグナルハン
+ドラ中にもう一度[Ctrl]＋[C]を押した場合はSIGINTのデフォルト動作である「終
+了」が実行されます。
+
+●プログラムの書き方
+
+　上記の点を踏まえてサンプルの仕様を満たすプログラムを書くと次のようにな
+ります。グローバル変数を文字列格納に使うなどという無茶をやっていますが、
+テスト用プログラムということで許してやってください。
+
+-----
+#include <stdio.h>
+#include <unistd.h>
+#include <signal.h>
+
+char buff[256];
+
+void warikomi(int signo){
+
+	int i = 0;
+
+	signal(SIGINT, SIG_IGN);
+	printf("there was interrupt.\n");
+	puts(buff);
+	sleep(1);
+
+	/*バッファクリア*/
+	while (buff[i] != '\0'){
+	buff[i] = '\0';
+	i++;
+	}
+	i = 0;
+
+	signal(SIGINT, warikomi);
+}
+
+int main(void){
+
+	signal(SIGINT, warikomi);
+
+	   while(1){
+	      gets(buff);
+	      printf("I'm waiting!\n");
+	      pause();
+	   }
+
+return 0;
+}
+-----
+
+　まず、pause関数について説明します。pause関数はシグナルを受け取るまでプ
+ロセスの実行をブロックし、シグナルを受け取るとシグナルハンドラ実行後にpa
+useから戻ります。プロトタイプは次のようになっています。
+
+-----
+#include <unistd.h>
+
+int pause(void);
+-----
+
+　pause関数が戻り値を返すのは、シグナルを受け取ってシグナル捕獲関数から返
+った場合だけです。この場合は-1を返し、errnoにEINTRが設定されます。
+
+　このプログラムでは「signal(SIGINT, warikomi);」の部分でSIGINTシグナルの
+動作をwarikomi関数を呼び出すように設定しています。設定された状態で[Ctrl]
+＋[C]（SIGINT）を入力すればwarikomi関数を呼び出すことができます。warikom
+i関数内では「signal(SIGINT, SIG_IGN);」の部分で[Ctrl]＋[C]（SIGINT）を無
+視するように設定しています。[Ctrl]＋[C]（SIGINT）を無視することでシグナル
+ハンドラの処理中に同じシグナルが到着することを防いでいます。さらに、SysV
+ではシグナルに設定された動作は一度でも呼び出されるとデフォルトの動作に戻
+るので、たとえ「signal(SIGINT, SIG_IGN);」の設定がエラーになっても同一シ
+グナルが到着することはありません。
+　しかし、一度呼び出されるとデフォルトの動作に戻ってしまうが故にmain関数
+内で設定している「signal(SIGINT, warikomi);」をシグナルハンドラ内で再設定
+する必要があります。
+
+　また、システムコール関数を使用したプログラムを作製した場合、システムコ
+ールのブロック中にSIGINTシグナルを受け取る可能性があります。このときシス
+テムコールはSysVシグナル処理体系にしたがって、エラー（-1）を返して停止し
+てしまいます。こういった動作を避けるためにSysVシグナル処理体系では次のよ
+うにコーディングすることになります。
+
+-----
+#include <stdio.h>
+#include <unistd.h>
+#include <signal.h>
+#include <errno.h>
+
+char buff[256];
+
+void warikomi(int signo){
+
+	int i = 0;
+
+	signal(SIGINT, SIG_IGN);
+	printf("there was interrupt.\n");
+	puts(buff);
+	sleep(1);
+
+	/*バッファクリア*/
+	while (buff[i] != '\0'){
+	buff[i] = '\0';
+	i++;
+	}
+	i = 0;
+
+	signal(SIGINT, warikomi);
+}
+
+int main(void){
+
+	int rc;
+
+	signal(SIGINT, warikomi);
+
+	   while(1){
+	      rc = gets(buff);
+		if(rc == -1){
+		   if(errno != EINTR){
+		      printf("error!\n" );
+		      exit(1);
+		   }
+		}
+	      printf("I'm waiting!\n");
+	      pause();
+	   }
+
+return 0;
+}
+-----
+
+　warikomi関数内の処理は同じですが、main関数内のgets関数の戻り値を取得し
+て、-1が戻っていた場合（シグナルが発生した場合）さらにerrnoの値がEINTR（
+システムコールがシグナルに割り込まれた場合）かどうかを判断し、EINTRではな
+いエラーの場合には終了します。つまり、システムコールがシグナルの割り込み
+によってエラーとなった場合は無視して処理を続行するようにコーディングして
+います。
+
+
+■0x06.) BSDシグナル
+
+　前述のSysVシグナル処理体系のリエントラント問題の解決方法は少々強引な解
+決方法でした。そこでBSD開発者達は別な方法でリエントラント問題を解決しよう
+としました。
+
+●BSDのリエントラント処理
+
+　BSD処理体系ではそれぞれ次のようにリエントラント処理を行っています。
+
+○ブロック中のシグナル受信
+
+　BSDシグナル処理体系では、システムコールやブロッキング関数などの処理中に
+シグナルが到着した場合は、エラー値で戻るようなことはしません。一時的にシ
+グナルハンドラに処理が移りますが、シグナルハンドラの処理が終わればシステ
+ムコールやブロッキング関数などの処理を続行することになります。
+
+○同一シグナルの到着
+
+　同一シグナルがシグナルハンドラの実行中に到着した場合、後に到着したシグ
+ナルはOSによって保留（ペンディング）されます。シグナルハンドラの実行完了
+後に保留されていたシグナルが処理され、後に到着したシグナルによって新たに
+シグナルハンドラが呼び出されます。OSによって保留されるため、一度シグナル
+ハンドラが呼び出されてもデフォルトの動作に戻ることはありません。ちなみに、
+glibc2ライブラリではBSDの動作に従っているようです。
+
+●プログラムの書き方
+
+　BSDシグナル処理体系でサンプルプログラムを書くと、次のようになります。
+
+-----
+#include <stdio.h>
+#include <unistd.h>
+#include <signal.h>
+
+char buff[256];
+
+void warikomi(int signo){
+
+	int i = 0;
+
+	printf("there was interrupt.\n");
+	puts(buff);
+	sleep(1);
+
+	/*バッファクリア*/
+	while (buff[i] != '\0'){
+	buff[i] = '\0';
+	i++;
+	}
+	i = 0;
+}
+
+int main(void){
+
+	signal(SIGINT, warikomi);
+
+	   while(1){
+	      gets(buff);
+	      printf("I'm waiting!\n");
+	      pause();
+	   }
+
+return 0;
+}
+-----
+
+　BSDシグナルはシステムコール中のシグナル割り込みをエラーで戻らず、同一シ
+グナルが到着しても新しいシグナルを保留するので、このように非常にストレー
+トな書き方ができます。
+　また、libc5システムにおいて<signal.h>のかわりに<bsd/signal.h>をインクル
+ードすると、signal()は__bsd_signalに再定義されてBSDシグナル処理体系となり
+ます。どちらの種類のsignal関数もsigaction関数を用いて作られたライブラリル
+ーチンであり、推奨されません。
+
+
+■0x07.) POSIXシグナル
+
+　リエントラント問題に関して、一見優れた解決法と思われたBSDシグナルは、前
+編でもふれたようにあまり普及しませんでした。そのうえ、2つの処理体系ができ
+たことで互換性の問題が表れました。
+　現在ではこのような、2つの処理体系が入り交じり、混沌とした状況を打開する
+ためPOSIXが策定したPOSIXシグナル処割り込みを実装するべきとされています。
+
+●POSIXのリエントラント処理
+
+　POSIXシグナル処理体系のデフォルトでは、次のようになっています。しかし、
+これらの動作は設定によって変えることができるため、BSDの動作もSysVの動作も
+模倣することができます。
+
+○ブロック中のシグナル受信
+
+　POSIXのデフォルトでは、SysVのようにシステムコールなどのブロック中にシグ
+ナルが到着した場合、エラー（-1）を吐いて停止します。
+
+○同一シグナルの到着
+
+　デフォルトではBSDのように新しく到着したシグナルを保留します。それゆえに
+シグナルハンドラが呼び出されるたびにシグナルの動作をデフォルトに戻すこと
+もしません。
+
+●sigaction関数
+
+　POSIXシグナル処理体系ではBSDのシグナルの保留という考えを取り入れ、シグ
+ナルマスクでシグナルの動作を指定します。POSIXではsigactionシステムコール
+関数を使ってシグナルの動作を設定します。sigactionのプロトタイプは次のよう
+になっています。
+
+-----
+#include <signal.h>
+
+int sigaction(int signum, const struct sigaction *newaction, struct sigaction *oldaction);
+-----
+
+　第1引数のsignumにはSIGKILLとSIGSTOP以外のシグナルをなんでも指定できます。
+第2引数のactがNULL以外であれば、signumの新しい動作としてactが設定されます。
+第3引数のoldactがNULLでないならば、今までの動作がoldactに格納されます。つ
+まり、シグナルの古い動作が格納されているsigaction構造体がコピーされます。
+　sigaction関数の戻り値は、成功時には0が返り、失敗時には-1が返ります。
+
+●sigaction構造体
+
+　第2引数のactを格納するsigaction構造体は次のようになっています。このsig
+action構造体を用いてシグナルの動作を設定します。
+
+-----
+struct sigaction {
+   void (*sa_handler)(int);
+   void (*sa_sigaction)(int, siginfo_t *, void *);
+   sigset_t sa_mask;
+   int sa_flags;
+   void (*sa_restorer)(void);
+}
+-----
+
+・sa_handler
+　sigaction関数の第一引数で与えられたシグナルへの動作を設定
+
+・sa_sigaction
+　より詳細な情報を引数に受け取ることのできるシグナルハンドラを設定
+
+・sa_mask
+　シグナルハンドラ実行中にブロックするシグナルを設定
+
+・sa_flags
+　動作の詳細を設定するフラグ
+
+・sa_restorer
+　　廃止予定
+
+○sa_handler
+
+　int型の引数をひとつとってvoidを返す関数へのポインタです。ここでsigacti
+on関数の第1引数で与えられたシグナルへの動作を設定します。例えばSIG_IGNと
+指定すればシグナルを無視し、SIG_DELと指定すればシグナルの動作をデフォルト
+に戻し、関数のアドレスを指定すると送信されたシグナルを識別するためのパラ
+メータ（シグナル番号）が付けられてその関数が呼び出されます。
+
+○sa_sigaction
+
+　より詳細な情報を引数に受け取ることのできるシグナルハンドラを設定します。
+a_flagsにSA_SIGINFOを加えることでsa_handlerの代わりに使用できるようになり
+ます。
+　sa_sigactionのパラメータであるsiginfo_tは次の要素を持つ構造体です。
+
+-----
+siginfo_t {
+   int      si_signo;  /* Signal number */
+   int      si_errno;  /* An errno value */
+   int      si_code;   /* Signal code */
+   pid_t    si_pid;    /* Sending process ID */
+   uid_t    si_uid;    /* Real user ID of sending process */
+   int      si_status; /* Exit value or signal */
+   clock_t  si_utime;  /* User time consumed */
+   clock_t  si_stime;  /* System time consumed */
+   sigval_t si_value;  /* Signal value */
+   int      si_int;    /* POSIX.1b signal */
+   void *   si_ptr;    /* POSIX.1b signal */
+   void *   si_addr;   /* Memory location which caused fault */
+   int      si_band;   /* Band event */
+   int      si_fd;     /* File descriptor */
+}
+-----
+
+　si_signoはシステムによって生成されたシグナル番号が格納されており、si_e
+rrnoが0以外であればerrno.hで関連付けされたエラー番号が格納され、si_codeに
+はシグナルが発生した理由を表すコードが格納されます。その他の変数について
+はシグナルによって変わってきます。si_pidはシグナルを送信したプロセスのID
+が格納され、si_uidはシグナル送信元プロセスの実ユーザIDが格納されます。si
+_statusは終了値や終了シグナルが格納され、si_valueにはシグナル値が、si_ad
+drにはフォルトしている命令のアドレスが格納されます。
+
+　si_codeはシグナルが発生した理由を表したコードが格納されます。次の値が、
+si_codeに格納されることになります。
+
+・SI_USER
+　kill()、raise()などから送られたシグナル
+
+・SI_QUEUE
+　sigqueue()から送信されたシグナル
+
+・SI_TIMER
+　timer_settime()で設定されたタイマーが終了した時に生成されたシグナル
+
+・SI_ASYNCIO
+　非同期I/Oの要求が完了した時に生成されたシグナル
+
+・SI_MESGQ
+　空のメッセージキューにメッセージが到着した時に生成されたシグナル
+
+　上記で挙げたイベントや関数以外でシグナルが生成された場合、si_codeには上
+記の値とは異なる値（処理系定義の値）が格納されることになります。Signalの
+列はどのシグナルにおいての理由なのかを表しています。シグナルの種類によっ
+て発生理由にばらつきがあります。
+
+  Signal    Code            Reason
+  ________________________________________________________________
+  SIGILL
+            ILL_ILLOPC      不当なオペコード
+            ILL_ILLOPN      不当なオペランド
+            ILL_ILLADR      不当なアドレスモード
+            ILL_ILLTRP      不当なトラップ
+            ILL_PRVOPC      特権オペコード
+            ILL_PRVREG      特権レジスタ
+            ILL_COPROC      コプロセッサエラー
+            ILL_BADSTK      内部スタックエラー
+  ________________________________________________________________
+  SIGFPE
+            FPE_INTDIV      0による整数除算
+            FPE_INTOVF      整数のオーバフロー
+            FPE_FLTDIV      0による浮動小数点除算
+            FPE_FLTOVF      浮動小数点のオーバフロー
+            FPE_FLTUND      浮動小数点のアンダフロー
+            FPE_FLTRES      浮動小数点の不正確な結果
+            FPE_FLTINV      無効な浮動小数点演算
+            FPE_FLTSUB      添え字の範囲超過
+  ________________________________________________________________
+  SIGSEGV   SEGV_MAPERR     アドレスがオブジェクトにマップしてない
+            SEGV_ACCERR     マップしたオブジェクトの無効な許可
+  ________________________________________________________________
+  SIGBUS
+            BUS_ADRALN      無効なアドレス整列
+            BUS_ADRERR      存在しない物理アドレス
+            BUS_OBJERR      オブジェクト特有のハードウェアエラー
+            BUS_XMEM        I/Oアドレスへの予約済み命令
+  ________________________________________________________________
+  SIGTRAP
+            TRAP_BRKPT      プロセスのブレークポイント
+            TRAP_TRACE      プロセスのトレーストラップ
+  ________________________________________________________________
+  SIGCHLD
+            CLD_EXITED      子プロセスが存在してる
+            CLD_KILLED      子が終了させられた
+            CLD_DUMPED      子が終了しコアファイルを作成した
+            CLD_TRAPPED     トレースした子がトラップしている
+            CLD_STOPPED     子プロセスの停止
+            CLD_CONTINUED   停止した子プロセスの再開
+  ________________________________________________________________
+  SIGPOLL
+            POLL_IN         データが入力可能
+            POLL_OUT        出力バッファが使用可能
+            POLL_MSG        入力メッセージが使用可能
+            POLL_ERR        I/Oエラー
+            POLL_PRI        優先的入力が使用可能
+            POLL_HUP        デバイスが非接続
+
+○sa_mask
+
+　シグナルはシグナルハンドラの処理中に他のシグナルのシグナルハンドラを呼
+び出すことができ、これが問題となることがあります。sa_mask要素は、sigacti
+on関数の第1引数で与えられたシグナルのシグナルハンドラ実行中に無視（block）
+するシグナルのマスクを表します。これが設定できるのはSIG_IGN、SIG_DEL以外
+のシグナルハンドラです。
+　さらに、SA_NODEFERフラグが指定されていない場合は、シグナルハンドラを呼
+び出したシグナルにもsa_maskが適用されます。例えばSIGINTで呼び出されたシグ
+ナルハンドラ処理中に、新たにSIGINTが到着した場合、新しく到着したSIGINTを
+無視します。これはデフォルトとなっています。
+
+　sa_maskはひとつが一種類のシグナルを扱うboolen型のフラグの集合として実装
+されており、このフラグセットの操作は次の4つの関数を用います。
+
+-----
+int sigemptyset(sigset_t *set)
+    /* setの全フラグをセット */
+
+int sigfillset(sigset_t *set)
+     /* setの全フラグをリセット */
+
+int sigaddset(sigset_t *set, int signum)
+     /* signumで指定したフラグを個別にセット */
+
+int sigdelset(sigset_t *set, int signum)
+     /* signumで指定したフラグを個別にリセット */
+-----
+
+○sa_flags
+
+　sa_flagsはシグナルハンドラの動作を変更するためのフラグの集合を指定しま
+す。sa_flagsには、次のフラグの論理和をとったものを指定します。
+
+・SA_NOCLDSTOP
+　signumがSIGCHLDの場合、子プロセスが停止したり再開したりしたときにSIGCH
+LDの通知を受けなくなります。 
+
+・SA_NOCLDWAIT
+　signumがSIGCHLDの場合、子プロセスが終了したときに子プロセスをゾンビプロ
+セスに変化させません（Linux2.6以降）。
+
+・SA_RESETHAND
+　シグナルハンドラが呼ばれるごとにシグナルの動作をデフォルトに戻します。
+SvsVシグナル処理体系のような動作をします。
+
+・SA_ONSTACK
+　sigaltstack関数で提供される、別のシグナルスタックでシグナルハンドラを呼
+び出します。別のシグナルスタックが利用可能でなければ、デフォルトのスタッ
+クが使用されます。
+
+・SA_RESTART
+　いくつかのシステムコールをシグナルの到着の前後で再開できるようにして、
+BSDシグナル処理体系のセマンティックスと互換性のある動作を提供します。
+
+・SA_NODEFER
+　それ自身のシグナルハンドラ内部にいる時でもそのシグナルをブロックしない
+ようにします。つまり、BSDシグナル処理体系から保留という概念を取り除いたよ
+うな動作をします。
+
+・SA_SIGINFO
+　シグナルハンドラはひとつではなく、3つの引き数をとります。この場合はsa_
+handlerのかわりにsa_sigactionを設定しなければなりません 。
+
+○sa_restorer
+
+　廃止予定ですので、使用するべきではありません。POSIXではsa_restorer要素
+に関する規定はなくなっています。
+
+●プログラムの書き方
+
+　sigaction関数を用いてサンプルのプログラムを書くには、次のようにします。
+sigactionは、sa_flagsのメンバの設定によってBSD風の動作もSysV風の動作も模
+倣できますので2パターンの記述方法を説明します。
+
+○BSD風の動作をさせる場合
+
+-----
+#include <stdio.h>
+#include <unistd.h>
+#include <signal.h>
+
+char buff[256];
+
+void warikomi(int signo){
+
+	int i = 0;
+
+	printf("there was interrupt.\n");
+	puts(buff);
+	sleep(1);
+
+	/*バッファクリア*/
+	while (buff[i] != '\0'){
+	buff[i] = '\0';
+	i++;
+	}
+	i = 0;
+}
+
+int main(void){
+
+struct sigaction sa;
+
+	memset(&sa, 0, sizeof(struct sigaction));
+	sa.sa_handler = warikomi;
+	sa.sa_flags   = SA_RESTART;
+
+	if(sigaction(SIGINT, &sa, NULL) != 0 ){
+	    printf("sigaction error\n");
+	    exit(1);
+	} 
+
+	while(1){
+	    gets(buff);
+	    printf("I'm waiting!\n");
+	    pause();
+	}
+
+return 0;
+}
+-----
+
+　main関数内のmemsetでsa構造体を0でクリアしていますが、あくまで一応であり
+絶対に必要な処理ではないでしょう。sa.sa_handlerでwarikomi関数をハンドラと
+して設定しています。sa.sa_flagsでシステムコールを中止しないように設定しま
+す。sigaction関数でSIG_INTのシグナルにsa構造体の設定を適用しています。こ
+れで、BSD風の動作を模倣することができます。
+
+○SysV風の動作をさせる場合
+
+-----
+#include <stdio.h>
+#include <unistd.h>
+#include <errno.h>
+#include <signal.h>
+
+char buff[256];
+
+struct sigaction sa;
+struct sigaction ignore;
+
+void warikomi(int signo){
+
+	int i = 0;
+
+	sigaction(SIGINT, &ignore, NULL);
+
+	printf("there was interrupt.\n");
+	puts(buff);
+	sleep(1);
+
+	/*バッファクリア*/
+	while (buff[i] != '\0'){
+	buff[i] = '\0';
+	i++;
+	}
+	i = 0;
+
+	sigaction(SIGINT, &sa, NULL);
+}
+
+int main(void){
+
+	int rc;
+
+	memset(&sa, 0, sizeof(struct sigaction));
+	sa.sa_handler = warikomi;
+	sa.sa_flags   = SA_NODEFER;
+	sa.sa_flags  |= SA_RESETHAND;
+
+	memset(&ignore, 0, sizeof(struct sigaction));
+	ignore.sa_handler = SIG_IGN;
+	ignore.sa_flags   = SA_NODEFER;
+	ignore.sa_flags  |= SA_RESETHAND;
+
+	if(sigaction(SIGINT, &sa, NULL) != 0){
+	    printf("sigaction error\n");
+	    exit(1);
+	}
+
+	while(1){
+	    rc = gets(buff);
+	    if(rc == -1){
+		 if(errno != EINTR){
+		     printf("error!\n" );
+		     exit(1);
+		 }
+	    }
+	    printf("I'm waiting!\n");
+	    pause();
+	}
+return 0;
+}
+-----
+
+　SysVシグナルを模倣するにはsa構造体とignore構造体をハンドラ内とmain関数
+内で切り替えることで実現しています。
+　sa構造体はハンドラをwarikomi関数に設定しており、sa_flagsにSA_NODEFERと
+SA_RESETHANDを設定することで、二重に起動するシグナルをブロックしないよう
+にし、シグナルを呼び出されるたびにデフォルトの動作にするようにしています。
+　main関数内ではsa構造体を適用し、ハンドラが呼び出されるとignore構造体を
+適用することでハンドラ内で新たに到着するシグナルを無視しています。そのま
+まmain関数へ戻ってしまっては次にSIGINTが到着してもデフォルト動作へ戻って
+しまうため、ハンドラの最後でSvsVと同じようにsa構造体を適用してシグナルの
+到着を待ち受けます。
+
+　さて、POSIXシグナル処理体系のデフォルトではシグナルハンドラ処理中の同一
+シグナルの到着を保留します。しかし、シグナルはキューに入らないという性質
+がありますのでシグナルの状態は保留中かそうでないかのどちらかしかありませ
+ん。シグナルハンドラの処理中に、シグナルハンドラを呼び出したシグナルと同
+一のシグナルが複数回到着しても、最初に送られてきた同一シグナルを保留して、
+残りを全て破棄します。例えばSIGINTでハンドラを呼び出し、その後5回SIGINTを
+発生させたとしても保留されるのははじめの1回で、後の4回は破棄されてしまい
+ます。シグナルハンドラの処理終了時に保留されていたシグナルが実行されます。
+
+
+■0x08.) volatile修飾子
+
+　volatile修飾子は変数に処理の最適化をしないようにコンパイラに知らせるた
+めのものです。コンパイラは最適化という工程で変数の値をCPUのレジスタに割り
+当てたり、不要な命令を削除するといった、場合によっては勝手なことをやって
+くれます。シグナルを用いてプログラムを作る場合、この最適化が問題になるこ
+とがあります。
+　例えば、次のプログラムをご覧ください。
+
+-----
+#include <stdio.h>
+#include <unistd.h>
+#include <signal.h>
+
+int warikomi_flag = 0; /*割り込みフラグを初期値0に設定*/
+
+void warikomi(signo){
+
+	warikomi_flag = 1; /*割り込みが発生したため1にする*/
+
+	/* ....なんらかの処理..... */
+
+	warikomi_flag = 0; /*割り込み処理が終わったため0に戻す*/
+}
+
+int main(void){
+
+	printf("main start.\n");
+
+     while(1){
+	while(warikomi_flag != 0;){ /*割り込み発生してない間*/
+	   /* ....なんらかの処理..... */
+	}
+	sleep(1); /*割り込みが発生した時1秒寝ます*/
+     }
+return 0;
+}
+-----
+
+　このプログラムはグローバル変数warikomi_flagを用いて割り込みの発生時はm
+ain関数内での処理を1秒づつ延期するプログラムです。見ての通り変数warikomi
+_flagの値が0か1かによって割り込みが発生しているのかどうかを判断しています。
+　しかし、もしコンパイラが最適化の途中でwarikomi_flagの値をCPU内部のレジ
+スタのひとつに格納し、これ以降のwarikomi_flagが参照される部分で主記憶装置
+ではなくレジスタに保存した値を参照するようになった場合、常に割り込みが発
+生していないことになってしまいます。こういった事態は、コンパイラが遅い主
+記憶装置へのアクセスよりも高速なレジスタへのアクセスへ最適化するために起
+こり得ます。
+
+　このような場合、コンパイラに対してwarikomi_flagの値は変更される可能性が
+あることを知らせる必要があります。この通知がvolatile修飾子です。先ほどの
+プログラムの場合ですと「int warikomi_flag = 0;」の部分を「volatile int w
+arikomi_flag = 0;」と書き直すことで通知することができます。
+　こういった理由から、割り込みを利用するプログラムのフラグになるような変
+数にはvolatile修飾子をつけておくのが無難です。
+
+　これらのことを頭の片隅においてシグナル処理プログラミングを満喫してい
+だきたく思います。
+
+
+■0x09.) 参考文献
+
+・「杉浦康仁(三木淑生)のホームページ」
+http://www.nurs.or.jp/~sug/soft/super/signal.htm
+
+・「Linux Programmer's Manual (2)　Manpage of SIGACTION」
+http://www.linux.or.jp/JM/html/LDP_man-pages/man2/sigaction.2.html
+
+・「筑波大学　電子・情報工学系　追川 修一　システムプログラム（第5週）」
+http://www.coins.tsukuba.ac.jp/~syspro/2005/No5.html
+
+・「コンカレント日本株式会社　テクニカルドキュメント」
+http://www.ccur.co.jp/external/TechSup/page3.html
+
+・『TCP/IPソケットプログラミングC言語　Michael J.Donahoo/Kenneth L.Calvert』
+（オーム社）
+
+
+■0x0A.) さいごに
+
+　今回は割り込みプログラミングの基礎について説明させていただきましたが、
+派手さもなくぱっとしないと感じられた方も多いと思います。しかし、割り込み
+はOSの機能のひとつとして実装されている点やWindowsのイベントドリブンという
+概念にも見られるように非常に重要な技術です。割り込みの概念を知っているの
+と知らないのとではプログラムの理解に大きな差ができる可能性もあります。
+　割り込みというのはプログラマーの間では常識的なことであったかもしれませ
+んが、常識的なことであるからこそ再確認というものが重要ではないかと思い、
+レポートさせていただきました。
+
+　最後になりましたが、ここまで読んでくださった皆様、どうもありがとうござ
+いました。それではまたお会いしましょう。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第5章: ハニーポットを作ろう（連載第8回） ---
+
+著者：Narusase
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　前回はhoneydの仮想ネットワーク機能について説明を行いました。
+　今回はhoneydのネットワーク周りの拡張的な機能に関して説明していきたいと
+思います。
+
+
+■0x02.) 仮想プロトコルスタック機能
+
+　honeydのユニークな機能として仮想プロトコルスタック機能の機能があります。
+honeydではpersonalityの設定を用いることでスキャンに対して各OSの仮想的なプ
+ロトコルスタックを用いて、フィンガープリントを返すことで、フィンガープリ
+ンティングによってハニーポットであるかどうかの判断をしにくくすることがで
+きます。
+　また、設定ファイルを書き換えることでフィンガープリントをカスタマイズす
+ることも可能です。
+
+　では、nmapを使って192.168.2.Xの仮想マシンをスキャンして実際に仮想プロト
+コルスタックがうまく動作しているか確認してみましょう（設定ファイルは前回
+を参考）。
+
+-----
+# nmap -O 192.168.2.2 -p 20-25
+
+Starting nmap 3.81 ( http://www.insecure.org/nmap/ ) at 2005-09-22 16:53 JST
+Interesting ports on 192.168.2.2:
+PORT   STATE  SERVICE
+20/tcp closed ftp-data
+21/tcp closed ftp
+22/tcp open   ssh
+23/tcp open   telnet
+24/tcp closed priv-mail
+25/tcp closed smtp
+Device type: router
+Running: Cisco IOS 11.X|12.X
+OS details: Cisco IOS 11.3 - 12.0(11)
+
+Nmap finished: 1 IP address (1 host up) scanned in 2.289 seconds
+
+nmap -O 192.168.2.3 -p 20-25
+
+Starting nmap 3.81 ( http://www.insecure.org/nmap/ ) at 2005-09-22 16:51 JST
+Warning:  OS detection will be MUCH less reliable because we did not find at
+least 1 open and 1 closed TCP port
+Interesting ports on 192.168.2.3:
+PORT   STATE SERVICE
+20/tcp open  ftp-data
+21/tcp open  ftp
+22/tcp open  ssh
+23/tcp open  telnet
+24/tcp open  priv-mail
+25/tcp open  smtp
+Device type: general purpose|specialized
+Running (JUST GUESSING) : Microsoft Windows NT/2K/XP|95/98/ME|PocketPC/CE
+(92%), NetBSD (87%)
+Aggressive OS guesses: Microsoft Windows XP Pro SP1 (92%), Microsoft Windows
+Millennium Edition (Me) (88%), Microsoft Windows Millennium Edition (Me),
+Windows 2000 Pro or Advanced Server, or Windows XP (88%), Microsoft Windows
+2000 Advanced Server SP3 (88%), Microsoft Windows 2000 Pro SP2 or Windows XP
+SP1 (88%), Microsoft Windows 2000 Pro SP4 (88%), Microsoft Windows 2000 SP2
+(88%), Microsoft Windows 2000 SP3 (88%), Microsoft Windows XP Home Edition
+(German) SP1 (88%), Microsoft Windows XP Pro (German) SP1 (88%)
+No exact OS matches for host (test conditions non-ideal).
+
+Nmap finished: 1 IP address (1 host up) scanned in 8.643 seconds
+
+# nmap -O 192.168.2.201 -p 20-25
+
+Starting nmap 3.81 ( http://www.insecure.org/nmap/ ) at 2005-09-22 16:53 JST
+Warning:  OS detection will be MUCH less reliable because we did not find at
+least 1 open and 1 closed TCP port
+Interesting ports on 192.168.2.201:
+PORT   STATE SERVICE
+20/tcp open  ftp-data
+21/tcp open  ftp
+22/tcp open  ssh
+23/tcp open  telnet
+24/tcp open  priv-mail
+25/tcp open  smtp
+Device type: general purpose|specialized
+Running (JUST GUESSING) : Microsoft Windows NT/2K/XP|95/98/ME|PocketPC/CE
+(92%), NetBSD (87%)
+Aggressive OS guesses: Microsoft Windows XP Pro SP1 (92%), Microsoft Windows
+Millennium Edition (Me) (88%), Microsoft Windows Millennium Edition (Me),
+Windows 2000 Pro or Advanced Server, or Windows XP (88%), Microsoft Windows
+2000 Advanced Server SP3 (88%), Microsoft Windows 2000 Pro SP2 or Windows XP
+SP1 (88%), Microsoft Windows 2000 Pro SP4 (88%), Microsoft Windows 2000 SP2
+(88%), Microsoft Windows 2000 SP3 (88%), Microsoft Windows XP Home Edition
+(German) SP1 (88%), Microsoft Windows XP Pro (German) SP1 (88%)
+No exact OS matches for host (test conditions non-ideal).
+
+Nmap finished: 1 IP address (1 host up) scanned in 8.913 seconds
+
+
+# nmap -O 192.168.2.202 -p 20-25
+
+Starting nmap 3.81 ( http://www.insecure.org/nmap/ ) at 2005-09-22 16:56 JST
+Warning:  OS detection will be MUCH less reliable because we did not find at
+least 1 open and 1 closed TCP port
+Interesting ports on 192.168.2.202:
+PORT   STATE SERVICE
+20/tcp open  ftp-data
+21/tcp open  ftp
+22/tcp open  ssh
+23/tcp open  telnet
+24/tcp open  priv-mail
+25/tcp open  smtp
+Device type: general purpose|specialized
+Running (JUST GUESSING) : Microsoft Windows NT/2K/XP|95/98/ME|PocketPC/CE
+(92%), NetBSD (87%)
+Aggressive OS guesses: Microsoft Windows XP Pro SP1 (92%), Microsoft Windows
+Millennium Edition (Me) (88%), Microsoft Windows Millennium Edition (Me),
+Windows 2000 Pro or Advanced Server, or Windows XP (88%), Microsoft Windows
+2000 Advanced Server SP3 (88%), Microsoft Windows 2000 Pro SP2 or Windows XP
+SP1 (88%), Microsoft Windows 2000 Pro SP4 (88%), Microsoft Windows 2000 SP2
+(88%), Microsoft Windows 2000 SP3 (88%), Microsoft Windows XP Home Edition
+(German) SP1 (88%), Microsoft Windows XP Pro (German) SP1 (88%)
+No exact OS matches for host (test conditions non-ideal).
+
+Nmap finished: 1 IP address (1 host up) scanned in 8.926 seconds
+-----
+
+　結果、「Cisco IOS 11.3 - 12.0(11)」と「Microsoft Windows XP Pro SP1」で
+ある可能性が高いと、報告されています。これは、設定ファイルのpersonalityで
+設定したものと同じですね。
+　したがって、仮想プロトコルスタックの機能はうまく動作していることがわか
+ります。
+
+
+■0x03.) 仮想ネットワーク機能の拡張
+
+　honeydの仮想ネットワークに関する機能としてネットワークの環境を変化させ
+る機能があります。具体的には、レイテンシや、パケットの損失率、帯域などを
+変化させることができます。ここでは簡単に、機能を使って本当に環境の変化が
+起こっているのか確かめてみましょう
+
+　では、まず設定を少し変更します。変更点は次の通りです。
+
+-----
+# route 192.168.1.2 add net 192.168.2.128/25 192.168.2.2
+↓
+# route 192.168.1.2 add net 192.168.2.128/25 192.168.2.2 latency 1ms
+-----
+
+　ここでは、レイテンシが1msになるように設定にしました。
+
+　では、honeydを起動し、LAN内の他のマシンからPingを送信してみてください。
+
+-----
+> ping 192.168.2.201 -c 1
+PING 192.168.2.201 (192.168.2.201) 56(84) bytes of data.
+64 バイト応答 送信元 192.168.2.201: icmp_seq=0 ttl=126 時間=32.1ミリ秒
+
+--- 192.168.2.201 ping 統計 ---
+送信パケット数 1, 受信パケット数 1, パケット損失 0%, 時間 0ミリ秒
+rtt 最小/平均/最大/mdev = 32.197/32.197/32.197/0.000ミリ秒, pipe 2
+-----
+
+　平均で、およそ32msになっていることがわかります。
+
+　では、さらにレイテンシが100msになるように設定を変えてみましょう。
+
+-----
+# route 192.168.1.2 add net 192.168.2.128/25 192.168.2.2 latency 1ms
+↓
+# route 192.168.1.2 add net 192.168.2.128/25 192.168.2.2 latency 100ms
+-----
+
+　では、honeydを起動し、LAN内の他のマシンからPingを送信してみてください。
+
+-----
+> ping 192.168.2.201 -c 1
+PING 192.168.2.201 (192.168.2.201) 56(84) bytes of data.
+64 バイト応答 送信元 192.168.2.201: icmp_seq=0 ttl=126 時間=230 ミリ秒
+
+--- 192.168.2.3 ping 統計 ---
+送信パケット数 1, 受信パケット数 1, パケット損失 0%, 時間 0ミリ秒
+rtt 最小/平均/最大/mdev = 230.869/230.869/230.869/0.000ミリ秒, pipe 2
+-----
+
+　平均で、およそ231msになっていることがわかります。レイテンシが1msの場合
+が32msですから差は199msになります。
+　したがって、往復でそれぞれ約100msずつ時間がかかっており、確かに設定した
+とおりレイテンシが上昇していることになります。
+
+　次はパケットのロスを発生させてみましょう。設定の変更点は次の通りです。
+
+-----
+route 192.168.1.2 add net 192.168.2.128/25 192.168.2.2 latency 1ms
+↓
+route 192.168.1.2 add net 192.168.2.128/25 192.168.2.2 latency 2ms loss 15.75
+-----
+
+　では、honeydを起動し、LAN内の他のマシンからpingを送信してみてください。
+
+-----
+> ping 192.168.2.201 -c 100
+PING 192.168.2.201 (192.168.2.201) 56(84) bytes of data.
+64 バイト応答 送信元 192.168.2.201: icmp_seq=1 ttl=126 時間=40.3ミリ秒
+64 バイト応答 送信元 192.168.2.201: icmp_seq=3 ttl=126 時間=30.5ミリ秒
+～中略～
+64 バイト応答 送信元 192.168.2.201: icmp_seq=97 ttl=126 時間=34.7ミリ秒
+64 バイト応答 送信元 192.168.2.201: icmp_seq=98 ttl=126 時間=34.8ミリ秒
+
+--- 192.168.2.201 ping 統計 ---
+送信パケット数 100, 受信パケット数 66, パケット損失 34%, 時間 100254ミリ秒
+rtt 最小/平均/最大/mdev = 28.454/35.029/40.397/2.771ミリ秒, pipe 2
+-----
+
+　結果は34%ほどパケットが落ちていることがわかります。これは、損失率が15.
+75%とした設定とは違っているようにみえますが、損失率は片方向の通信の損失率
+となっているためおよそ倍の34%の損失で正しいということになります。ただし、
+だからといって損失率50%に設定した場合、すべての通信が損失するのかというと
+そうではなく、行きに50%の確率でパケットがロスとし、帰りに50%の確率でパケ
+ットがロストするということになります。つまり、コインをひとつ投げて、表だ
+った場合に、さらにコインをひとつ投げて、表で有る確率ということになります。
+個人的に使用してみた感覚としてはhoneydの確率の生成はどうも一様ではないら
+しく偏りがあるように感じます。
+
+　さらに、帯域を変更してみましょう。設定の変更点は次の通りです。
+
+-----
+# route 192.168.1.2 add net 192.168.2.128/25 192.168.2.2 latency 2ms loss
+15.75
+↓
+# route 192.168.1.2 add net 192.168.2.128/25 192.168.2.2 bandwidth 10Mbps
+-----
+
+　帯域を正確にチェックするにはきちんとしたツールを使う必要がありますので、
+ここでは詳細な検証は省略します。何か、標準的なコマンドで帯域の確認ができ
+るものがあればいいのですが…。代わりにごく簡単にPingを用いた不確かな検証
+を行いました。
+
+-----
+> ping 192.168.2.202 -s 1000 -c 10
+PING 192.168.2.202 (192.168.2.202) 1000(1028) bytes of data.
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=0 ttl=126 時間=37.4ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=1 ttl=126 時間=39.4ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=2 ttl=126 時間=39.5ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=3 ttl=126 時間=39.6ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=4 ttl=126 時間=39.7ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=5 ttl=126 時間=39.8ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=6 ttl=126 時間=40.0ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=7 ttl=126 時間=40.2ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=8 ttl=126 時間=40.3ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=9 ttl=126 時間=40.3ミリ秒
+
+--- 192.168.2.202 ping 統計 ---
+送信パケット数 10, 受信パケット数 10, パケット損失 0%, 時間 9098ミリ秒
+rtt 最小/平均/最大/mdev = 37.459/39.661/40.366/0.806ミリ秒, pipe 2
+-----
+
+　結果として、10Mbpsの設定で1,008バイトのパケットを送信すると平均でおよそ
+40msかかっています。
+
+　ここで100Mbpsに帯域を変更します。
+
+-----
+# route 192.168.1.2 add net 192.168.2.128/25 192.168.2.2 bandwidth 10Mbps
+↓
+# route 192.168.1.2 add net 192.168.2.128/25 192.168.2.2 bandwidth 100Mbps
+-----
+
+　そして、Pingを行います。
+
+-----
+> ping 192.168.2.202 -s 1000 -c 10
+PING 192.168.2.202 (192.168.2.202) 1000(1028) bytes of data.
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=0 ttl=126 時間=38.4ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=1 ttl=126 時間=32.5ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=2 ttl=126 時間=32.6ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=3 ttl=126 時間=32.8ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=4 ttl=126 時間=32.8ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=5 ttl=126 時間=33.0ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=6 ttl=126 時間=33.1ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=7 ttl=126 時間=33.2ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=8 ttl=126 時間=33.4ミリ秒
+1008 バイト応答 送信元 192.168.2.202: icmp_seq=9 ttl=126 時間=33.5ミリ秒
+
+--- 192.168.2.202 ping 統計 ---
+送信パケット数 10, 受信パケット数 10, パケット損失 0%, 時間 9096ミリ秒
+rtt 最小/平均/最大/mdev = 32.513/33.576/38.433/1.665ミリ秒, pipe 2
+-----
+
+　結果は平均で33msになり、10Mbpsの場合に比べて7msほど高速になっていること
+がわかります。
+
+
+■0x04.) おわりに
+
+　今回はhoneydのネットワーク周りの拡張的な機能について説明しました。どう
+だったでしょうか？
+　次回は、honeydの個々の仮想PCの設定に関して説明したいと思います。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第6章: AntiCracking Techniques - Obfuscating API Call Vol.2 ---
+
+著者：suma
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　AntiCrackingとは、プログラムのリバースエンジニアリングを防ぐ技術です。
+この記事は前回の「Obfuscating API Call」の続編となります。
+
+　コンパイラにVisual Studio 2003を、デバッガにはOllyDbg1.10を使用します。
+プログラムの動作はWindows XP（32ビット版）で確認しています。環境によって
+アドレスなどの違いがあるかもしれません。OllyDbgにはうさぴょんさんの「Oll
+yDbg1.10用日本語化パッチ」を使用しています。
+
+・OllyDbg
+http://www.ollydbg.de/
+
+・Digital Travesia  ～ でじたる　とらべしあ ～
+http://hp.vector.co.jp/authors/VA028184/
+
+
+■0x02.) 呼び出しを探す
+
+　前回はインポートしたWin32APIの呼び出しを調べ、隠す方法を解説しました。
+今回は別の方法を説明します。前回使った、LoadLibrary/GetProcAddressでMess
+ageBoxを呼び出すプログラムのobf3.exeを使います。
+
+http://wizardbible.org/file/suma/1/obf3.cpp（ソースコード）
+http://wizardbible.org/file/suma/1/obf3.vcproj（プロジェクトファイル）
+http://wizardbible.org/file/suma/1/obf3.exe（実行ファイル）
+
+
+●文字列の参照を探す
+
+　OllyDbgで文字列参照からWin32APIの呼び出しを探します。OllyDbgでプログラ
+ムを開き、コードが表示されているウィンドウで右クリックします。ポップアッ
+プメニューが表示されるので、「検索→全ての参照文字列」を実行します。文字
+列参照を表示するウィンドウが開くので、"title"と"message"という文字列を探
+します。
+
+-----
+00401025   PUSH obf3.004050D0                        ASCII "title"
+0040102A   PUSH obf3.004050C8                        ASCII "message"
+-----
+
+　どちらかを選択し、ダブルクリックまたはEnterキーで参照しているコードへ移
+動してください。
+
+------
+00401023  |> 6A 00          PUSH 0
+00401025  |. 68 D0504000    PUSH obf3.004050D0                       ;  ASCII "title"
+0040102A  |. 68 C8504000    PUSH obf3.004050C8                       ;  ASCII "message"
+0040102F  |. 6A 00          PUSH 0
+00401031  |. FFD0           CALL EAX
+------
+
+　参照されている文字列とCALL命令からMessageBoxが呼び出されていると推測で
+きます。アドレス00401031でブレークポイントを設置して実行し、CALL命令をス
+テップ実行するとMessageBoxの呼び出しを確認できます。
+
+
+●DLLにブレークポイント
+
+　参照文字列からWin32APIの呼び出しを見つけることができましたが、文字列を
+参照している場合しか使えません。文字列が暗号化されていたり、リソースに埋
+め込まれていても使えません。次に、文字列に左右されれることないよう、ロー
+ドされたDLL内にブレークポイントを設置してWin32APIの呼び出し元を調べます。
+先ほど使ったobf3を使用します。
+
+http://wizardbible.org/file/suma/1/obf3.cpp（ソースコード）
+http://wizardbible.org/file/suma/1/obf3.vcproj（プロジェクトファイル）
+http://wizardbible.org/file/suma/1/obf3.exe（実行ファイル）
+
+　obf3.exeはLoadLibraryを使ってUser32.dllをロードしているため、OllyDbgで
+開いた状態からUser32.dll内に移動することはできません。そのためLoadLibrar
+yの後にブレークポイントを設置します。
+
+　アドレス0040100BはLoadLibraryAが呼び出されて次の命令のアドレスです。こ
+こにブレークポイントを設置して実行します。User32.dllがロードされた状態で
+停止するので、ロードされたモジュールの一覧を表示します。メニューの「表示
+→実行モジュール」を実行するか、Alt+Eキーを押してください。User32.dllがロ
+ードされていることを確認し、User32.dllの行でCtrl+Nキーか、右クリックして
+ポップアップメニューから「モジュール名 Ctrl+N」を実行します。
+
+　MessageBoxAが呼び出されるとわかっているためMessageBoxAのみブレークポイ
+ントを設置します（※1）。MessageBoxAの行を選択し、Enterキーでコードまで移
+動してください。アドレス77D304EAにブレークポイントを設置して実行します。
+一時停止すると、右下のリストボックスにMessageBoxAを呼び出した情報が表示さ
+れています。
+
+-----
+0012FED4   00401033  /CALL to MessageBoxA from obf3.00401031
+0012FED8   00000000  |hOwner = NULL
+0012FEDC   004050C8  |Text = "message"
+0012FEE0   004050D0  |Title = "title"
+0012FEE4   00000000  \Style = MB_OK|MB_APPLMODAL
+0012FEE8   004011CE  RETURN先: obf3.004011CE from obf3.00401000
+-----
+
+　この状態で、メニューの「表示→コールスタック」またはAlt+Kキーでコールス
+タックを表示すると、こちらからでも呼び出しを調べることができます。自分の
+使いやすいほうを使うとよいでしょう。
+
+
+●注釈
+
+（※1）実際に調べるときは、似たような関数はすべて調べた方がよいでしょう。
+
+
+
+■0x03.) 文字列の暗号化
+
+　OllyDbgに文字列を参照されないためには、文字列を暗号化するか、リソースに
+格納します。暗号化した場合は実行時に復号化が、リソースの場合はWin32APIの
+LoadStringを呼び出す必要があります。今回は文字列を隠す方法の紹介だけにと
+どめます。
+
+------
+#include <stdio.h>
+
+#define A(c)            (c) - 0x19
+#define UNHIDE_STR(str) do { char *p = str;  while (*p) *p++ += 0x19; } while (0)
+#define HIDE_STR(str)   do { char *p = str;  while (*p) *p++ -= 0x19; } while (0)
+
+int main(int argc, char *argv[]) {
+  char str[] = {
+    A('/'), A('e'), A('t'), A('c'), A('/'),
+    A('p'), A('a'), A('s'), A('s'), A('w'), A('d'), 0
+  };
+
+  UNHIDE_STR(str);
+  printf("%s\n", str);
+  HIDE_STR(str);
+
+  return 0;
+}
+-----
+
+　このコードは書籍『C/C++セキュアプログラミングクックブック VOLUME1』で「
+文字を難読化する方法」として紹介されています。一文字ずつずつマクロAを使用
+する手間がかかり、半角文字と全角文字が混在する場合は使えません。ソースコ
+ードは、SecureProgramming.com（http://www.secureprogramming.com/）の「Bo
+oks→Download the Code」からspc-1.1.zipまたはspc-1.1.tar.gzのダウンロード
+できます（フォルダchapter12の「11-example.c」「11-api.c」です）。
+
+　ここでは、Simple String CrypterというツールとC++ライブラリを作ってみま
+した。基本的には先ほどのコードと処理・アイディアは一緒ですが、利便性を追
+求し、C++のクラスのコンストラクタで文字列を自動的に復号化し、operatorオー
+バーロードを使って文字列へのポインタを返す仕組みにしています。
+
+http://www.obfuscatism.net/old/anticrack/CryptString_20060122.zip
+
+　UNICODEには対応させていませんが、変更は難しくないと思います。使い方はC
+ryptStringとCRYPTED_STRINGマクロを使用したソースコードをビルドし、生成し
+た実行ファイルに付属のcryptで文字列を暗号化します。
+　次は、sample.cppを一部抜き出したコードです。
+
+-----
+try {
+	CryptString str = CRYPTED_STRING( "Sample Message" );
+	printf( str );
+} catch ( std::bad_alloc & ) {
+	printf( "std::bad_alloc" );
+}
+-----
+
+
+■0x04.) ブレークポイントの検出
+
+　DLLにブレークポイントが設置された場合の対策を考えます。OllyDbgなどのデ
+バッガでは、ブレークポイントの設置位置をINT3という命令に置き換えます。そ
+こでプログラム側からINT3を検出してみます。前回使用したobf3.cppに次のコー
+ドを追加します。
+
+------
+if (*((BYTE*)msgbox) == 0xCC) {
+	MessageBox(NULL, "INT3を検出しました", "", MB_OK);
+}
+-----
+
+　ソースコード、プログラムは次のファイルです。
+
+http://wizardbible.org/file/suma/2/obf5.cpp（ソースコード）
+http://wizardbible.org/file/suma/2/obf5.vcproj（プロジェクトファイル）
+http://wizardbible.org/file/suma/2/obf5.exe（実行ファイル）
+
+　先ほどと同じようにMessageBoxAの先頭にブレークポイントを設置して実行する
+と「INT3を検出しました」というメッセージが表示されます。
+
+
+●ブレークポイントをスキップ
+
+　デバッガを検出することはAntiCrackingとして有効ですが、今回の目的はWin32
+APIの呼び出しを偽装することです。ブレークポイントが設置されても止まること
+なくWin32APIを呼び出すのが理想です。それに加えて、ハードウェアブレークポ
+イント（※1）の場合はコードをINT3に置き換えないのでこのテクニックで検出す
+ることができません。
+
+（※1）コードの部分で右クリックしてポップアップメニューから「ブレークポイ
+ント→ハードウェアブレークポイント」で設置できます。
+
+　ブレークポイントを無視して実行する方法を考えます。解析者がブレークポイ
+ントを設置するアドレスは先頭の命令と推測できます。この場合「アドレス77D3
+04EA」です。手間からして、わざわざ先頭から数個先の命令にブレークポイント
+を設置するとは考えられません。この推測から、ブレークポイントが設置されて
+いるであろう先頭命令を飛ばしてWin32APIを呼び出す方法を考えます。
+
+-----
+77D304EA   8BFF             MOV EDI,EDI
+77D304EC   55               PUSH EBP
+77D304ED   8BEC             MOV EBP,ESP
+-----
+
+　OllyDbgでMessageBoxAの先頭はこのコードでした。p_MessageBoxAがGetProcAd
+dressで取得したMessageBoxAのアドレスとすると、次のようなコードを書くこと
+ができます。
+
+-----
+const char *title = "title", *msg = "message";
+_asm {
+	push 0
+	push msg
+	push title
+	push 0
+	mov  eax, p_MessageBoxA
+	add  eax, 2
+	mov  edi, edi
+	call eax
+}
+-----
+
+　このコードは私の環境では動作しましたが、他の環境で動く保証はありません。
+User32.dllのコードがバージョンなどによって違う可能性があるからです。環境
+に依存したコードをハードコーティングしてはいけません。そこで次の方法を取
+ります。
+
+1：実行属性付のメモリをVirtualAllocで確保する
+2：MessageBoxAの先頭から数命令をメモリにコピーする
+3：コピー先のメモリにMessageBoxAの途中にジャンプさせる命令を加える
+4：コピー先のメモリのアドレスをMessageBoxAと同じように呼び出す
+
+　この方法は書籍『クラッカー・プログラム大全』で知りました。DLL内のコード
+をコピーする方法はEXEプロテクターのASProtectで使われていたようです（おそ
+らく今でも使われているでしょう）。ただし、ASProtectの製作者が「DLL内で先
+頭命令はブレークポイントを設置している可能性がある」と考えたかどうか私は
+知りません。
+
+　コードのコピーで注意することがふたつあります。x86系のCPUの命令は固定サ
+イズではありません。1バイトで命令が完結することもあれば、数バイトにわたる
+こともあります。正しくコードを実行させるためには、一命令ずつコピーする必
+要があります。
+
+　そして、コピーする命令が相対アドレスで値を参照したり、CALL、LOOP、相対
+ジャンプなどで相対アドレスを指している場合、コピー先では元のアドレスを指
+しません。コピー中にアドレスを修正するか、先頭から相対アドレスを参照する
+ひとつ前の命令までコピーするとよいでしょう。
+
+　今回は命令の長さを知るのにlibdisasmというライブラリを使用し、相対ジャン
+プのひとつ前の命令までコピーするプログラムを作成しました。次のファイルです。
+
+http://wizardbible.org/file/suma/2/obf6.zip（ソースコード・プロジェクトファイル）
+http://wizardbible.org/file/suma/2/obf6.exe（実行ファイル）
+
+
+●実行と確認
+
+　obf6.exeを実行するとメッセージボックスが表示され、実行できることを確認
+できますます。次にOllyDbgで開き、LoadLibraryAの呼び出し後、DLL内のMessag
+eBoxAにハードウェアブレークブレークポイントを設置して実行してください。停
+止することなく実行できます。
+
+　今度はブレークポイントを設置して実行してください。メッセージボックスで
+はなくエラーが出るはずです。ブレークポイントの設置のせいでINT3命令までコ
+ピーされたからです。これを防ぐには、デバッガやINT3命令の検出したり、シス
+テムディレクトリにあるUser32.dllとロードされたDLLのコードを比較しながらコ
+ピーするとよいでしょう。
+
+
+■0x05.) おわりに
+
+　お疲れ様でした。これでWin32API呼び出し偽装は終わりです。私の知っている
+方法はすべて解説できた思います。
+　今後は偽装以外のテクニック、組み合わた効果、自動化について引き続き調べ
+ていくつもりです。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第7章: Becky! リバースエンジニアリング ---
+
+著者：金床
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　Becky!は多くの国内Windowsユーザーに愛されている、シェアウェアのメールク
+ライアントソフトウェアだ。筆者も1998年頃に送金し、以来ずっとバージョン1系
+列を使ってきた。ソフトウェアの肥大化とともにソースコードのスパゲッティ化
+が進みメンテナンスが不可能な状態になるのはよくあることで、Becky!の作者も
+ある時点でスクラッチからコードを組み直すことにしたようだ。そして誕生した
+のがBecky!のバージョン2系列である。
+　筆者はWindows 95を2003年まで使い続けた実績があるほどソフトウェアのバー
+ジョンアップを面倒くさがる性質なので、当然ながらBecky!のバージョン2が出た
+ときも無視した。しかし、頑張って使い続けたバージョン1もスパムメールやウイ
+ルスメールの受信時にバッファーオーバーフローっぽいクラッシュをすることが
+多くなり、そのたびに該当するメールを特定して削除し再び受信処理を行う、と
+いう手順があまりにも面倒くさくなり、しかたなくバージョン2系列へのバージョ
+ンアップを決行した。
+　しばらく使ってみてインターフェースの違いにも慣れ、「おっ、バージョン2も
+結構いい感じではないですか」などと油断しはじめたころ、事件は起こった。
+
+
+■0x02.) 漏れるIPアドレス
+
+　ある日、本当に偶然に、自分が送信したメールのヘッダー部を眺めていると、
+なにやらいやな文字列が目に付いた。
+
+-----
+Received: from ff194.ade2.point.ne.jp (HELO ?192.168.2.9?) 
+-----
+
+　なんだこれは。なんと筆者のマシンのプライベートIPアドレス（192.168.2.9の
+部分）がヘッダー部に記録され、丸見えになってしまっているではないか。
+　筆者の家のネットワーク環境はごくありふれたもので、ADSLルーターでIPマス
+カレードを使っている。つまり内側はプライベートアドレスを使ったネットワー
+クになっているが、外側へは特別な設定を行わずにTCP接続が可能な環境だ。この
+環境は外側から内側のホストに対して直接パケットを送りつけることができない
+ため、TCP接続を利用するワームなどの攻撃を一切寄せ付けず、それだけである程
+度のセキュリティを確保できる、優れたものだ。IPマスカレードのユニークな点
+はそのTCP接続の透過性にある。ネットワーク内側のクライアントソフトウェアに
+は自ホストのプライベートIPアドレスと接続先サーバーのグローバルIPアドレス
+によって成り立っているように見えるTCP接続が、接続先サーバー側からはADSLル
+ーターの外側のグローバルIPアドレスと接続先サーバー自身のグローバルIPアド
+レスによって成り立っているように見える。初めてIPマスカレードに触れたとき
+にはその仕組みが理解できず、激しく混乱した。まぁこれは、筆者がアプリケー
+ション層の住人だからだが。
+　さてBecky!はバージョン2系列へのバージョンアップの際にHELOコマンドの引数
+の扱いを変更したらしく、以前はホスト名を使っていたのだが、今度はIPアドレ
+スを使うようになったようだ。これはとんでもない改悪である。筆者以外にもこ
+れを改悪だと感じた人がいたようで2002年くらいの時点でメーリングリストに投
+稿があったようだが、どうも作者には大した事とは受け取られなかったらしく、
+そのままの仕様で現在に至るようだ。
+　IPマスカレード環境の内側のネットワークアドレスやホストのプライベートア
+ドレスが知られたからといってすぐにハッキングされてしまう、などということ
+はないのだが、これらの情報は公開すべき性質のものではない。CSRFを使ったイ
+ントラネット系アプリケーションへの攻撃（Wizard Bible Vol.18参照）などは
+その理由の一例だ。
+　これに気付き、いくつかのメーリングリストでBecky!のバージョン2系列を使っ
+ているユーザのメールヘッダーをチェックしてみると、筆者同様に職場や自宅と
+思われるネットワークのプライベートアドレスが漏れてしまっている人がたくさ
+んいる。おそらく大部分は気付いていないのだろう。
+
+
+■0x03.) リバースエンジニアリングという選択肢
+
+　さて、たったこれだけの理由でバージョン1系列に戻すという気にもならないし、
+作者への仕様変更の要望は既に拒否されている。こんなとき、自分の好きなよう
+に改造できるオープンソースソフトウェアのありがたみが身にしみる。　だがし
+かし、筆者はここ最近ブームであるアセンブリ系・クラック系書籍をいくつか読
+んでおり、こんなときにはバイナリ自体をいじって強引に解決できないかという
+考えが浮かんできた。筆者が知っている一人のスーパーハカーは以前こう言って
+いた。
+
+「アセンブリを極めてれば、Windowsのバイナリだって全部オープンソースだよ」
+
+　なんとも格好のいいセリフではないか。筆者はアセンブリについては極めるど
+ころか初心者同然のレベルでしかないが、何事も一歩目を踏み出さないかぎり極
+みに到達することもない。そんな思いでバイナリの解析と改造、つまりリバース
+エンジニアリングに挑んでみることにした。
+
+
+■0x04.) 3分で終了
+
+　今回問題になっているのはHELOコマンドである。まずはバイナリエディタでBe
+cky!の実行ファイルを開き、とりあえずはHELOという文字列を検索してみた。す
+るとHELOを含む以下の3つの文字列が見つかった。
+
+-----
+HELO localhost
+HELO 
+HELO %s
+-----
+
+　問題となるHELOコマンドの引数にIPアドレスが使用されてしまう処理では、こ
+れらの3つの文字列のうちのどれかが使われているはずだ。ここで3つめが猛烈に
+怪しいことに気付く。この「%s」はおそらくC言語系の関数で使用されるフォーマ
+ット文字列であり、実行時にIPアドレスを含む文字列に変換されるのではないだ
+ろうか。そこで、この「%s」の「%」を「A」に変換し、フォーマット文字列のメ
+タキャラクタとしての役割を排除する。変換後の実行ファイルを起動してメール
+を送信し、ヘッダー部を確認してみる。すると…
+
+-----
+220 mtools.mixedmedia.net ESMTP
+HELO As
+250 mtools.mixedmedia.net
+…（略）…
+-----
+
+　見事に目的が達成された。HELOコマンドの引数にはIPアドレスは現れず、代わ
+りに「%」が「A」に変換された「As」という意味不明の文字列が使われるように
+なった。「リバースエンジニアリングだ」などと構えて挑戦してみたものの、作
+業としてはたった1バイト書き換えただけ。時間にしても3分もかかっていないの
+ではないだろうか。
+
+
+■0x05.) もう一歩奥へ
+
+　確かに目的は達成したものの、「HELO As」では何だか不細工だ。もちろん「A
+s」の部分を好きなように書き換えることはできるのだが、たった2文字ではどん
+な単語を選んだところで、いかんせん格好がつかない。何より気に入らないのは、
+まだOllyDbgを起動していないということだ。せっかくクラック系書籍を読んでや
+る気になっているところなので、ぜひともOllyDbgでバイナリを解析してみたい。
+そんなわけで、もう一歩奥まで踏み込んでみることにした。
+　OllyDbgを起動し、Becky!の実行ファイルであるB2.exeを開く。CPUウィンドウ
+上で右クリックし、メニューから「Search For」->「All referenced text stri
+ngs」を選び、さらにその結果のウィンドウで右クリックしメニューから「Searc
+h for text」を選んで「HELO %s」を検索する。このOllyDbgの強力な機能によっ
+て、特定の文字列が実行ファイル中のどこから参照されるのかを全て把握するこ
+とができる。
+　実は最初に解析に挑んだときはこの方法ではなく、メモリ上の「HELO」を検索
+し、そのアドレスへのアクセスに対してブレークポイントを仕掛けるという方法
+を採ったのだが、その後もっと便利な方法がないかと様々なメニューを探してい
+るうちに今回の方法を見つけた。見つけたときにはOllyDbgの強力さに感動すると
+ともに筆者自身の解析スキルが大幅に上がったように思ったのだが、その後『ク
+ラッカー・プログラム大全』を読んでいたら、106ページでこの方法が解説されて
+おり、そこに「この方法に頼りすぎるとスキルが身に付かなくなるので、程ほど
+にしましょう」と書いてあって苦笑させられた。すみませんeagle0wl先生。出直
+してきます。
+　それはさておき、この検索方法によって「HELO %s」は実行ファイル中の3箇所
+から参照されていることがわかる。実行時に「HELO %s」という文字列はメモリ上
+のアドレス0x005F3FC0にロードされる。これを参照する3つの命令は、どれもpus
+h命令によってこの文字列のアドレスをスタックへ格納するものだ。
+
+-----
+00505BB8     68 C03F5F00    PUSH B2.005F3FC0                         ;  ASCII "HELO %s"
+
+00505C2B  |. 68 C03F5F00    PUSH B2.005F3FC0                         ;  ASCII "HELO %s"
+
+00505D10  |. 68 C03F5F00    PUSH B2.005F3FC0                         ;  ASCII "HELO %s"
+-----
+
+　さて目的は「HELO As」ではなく「HELO DEADBEEF」のように、ある程度の長さ
+の好きな英単語を使えるようにすることだ。そこで、B2.exeに存在し、かつ通常
+の使用では使われることがなさそうに思われる文字列「HELO localhost」を利用
+してしまうことにする。「HELO localhost」はアドレス0x005F3FA4に存在するの
+で、上記に挙げた3箇所の命令をすべて次のように書き換えることにする。
+
+-----
+68 C03F5F00    PUSH B2.005F3FC0       ; before
+68 C03F5F00    PUSH B2.005F3FA4       ; after
+-----
+
+　このようにすることで、「HELO %s」の代わりに「HELO localhost」が使われる
+ようになる。実際の書き換え作業としてはCPUウィンドウ上で該当する命令を選び、
+右クリックしてメニューから「View」->「Executable File」を選んで実行ファイ
+ル上でのその命令が格納されているアドレスを確認し、バイナリエディタから行
+う。書き換え後にBecky!を起動してメールを送信しヘッダー部を確認してみると、
+HELOコマンドは次のようになる。
+
+-----
+220 mtools.mixedmedia.net ESMTP
+HELO localhost
+250 mtools.mixedmedia.net
+…（略）…
+-----
+
+　最後に、再びバイナリエディタから「HELO localhost」の文字列を「HELO DEA
+DBEEF」に書き換えて（余りの部分は0x00で埋めておく）やれば作業は完了だ。
+
+-----
+220 mtools.mixedmedia.net ESMTP
+HELO DEADBEEF
+250 mtools.mixedmedia.net
+…（略）…
+-----
+
+
+■0x06.) まとめ
+
+　今回はバイナリファイルを直接いじることでソフトウェアの動作を自分の希望
+通りに変更してしまうことに成功した。といっても使用される文字列を一部変更
+するだけであり、リバースエンジニアリングのテクニックとしては非常に簡単な
+初歩の部類に属すると思われる。データハウスから出版されている『クラッキン
+グバイブル』の「リバースエンジニアリング」の章（著者はeagle0wl氏）で非常
+に高度な技術を用いた実行ファイルの改造テクニックを目にすることができるの
+で、興味がある方はぜひ読んでみてもらいたい。
+　技術的には大したことはないのだが、個人的には自分の目的であった「IPアド
+レスの漏洩」を防ぎ、かつ好きな文字列を使うことができるようになって、なか
+なか気持ちがよい。今後も気にくわない動作をするソフトウェアがあったらリバ
+ースエンジニアリングに挑んでみようと思う。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第8章: カスタムリソース＋ローダー＝パッカー ---
+
+著者：Kenji Aiko
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　パッカー（packer）とは、実行ファイルを実行できる形式のまま圧縮（暗号化
+）するツールであり、UPX、FSG、tElockなど様々なものがあります。しかし、種
+類は違えどパッカーの基本的動作原理はほとんど同じで、「ターゲットとなる実
+行ファイルを圧縮（or暗号化）して、プログラムの先頭に展開（or復号化）ルー
+チンを付加する」だけです。こうすることにより、プログラムが実行されたら一
+番最初に展開ルーチンが実行され、本来の実行ファイルのデータをメモリ上に復
+元してプログラムが処理されることになります。
+　それで、今回はそのパッカーを作成してみようというわけですが、パッカー作
+成に関して大いなる壁になるのは「実行ファイルの先頭に付加する展開コードは
+アセンブリ言語で書かなければならない」という事態です。
+　例えば、暗号化処理がビット反転だったなら、アセンブリ言語でも簡単に復号
+化処理を書くことができますが、LHAやZIP（DESやRSA）のような一般的な圧縮（
+暗号化）アルゴリズムを使用したい場合、付加する展開コードもさぞかし面倒く
+さいことになります。まぁCで書いてアセンブラに変換すれば万時解決ですが、そ
+れは置いといて。
+　というわけで、その辺りを考慮しつつ、さらに一般的なパッカーとは少し違う
+「新しいパッカーを考えてみよう」というのが今回のネタです。
+
+
+■0x02.) 挑戦される方へ
+
+http://ruffnex.oc.to/kenji/crackme/crackme.zip
+
+　もし、解析に挑戦したい方は上記のプログラムをダウンロードしてチャレンジ
+してみてください。ここから先のテキストには少なからずヒントになるようなこ
+とが書かれてあるのでご注意ください。
+　難易度は低く、速ければ10分程度で解くことができますが、一般的なパッカー
+と比べると少し特殊な構造なので、ハマってしまうと無駄に時間をとられるかも
+しれません。
+　もし解けた方は感想などをくださると有難いです。
+
+http://ruffnex.oc.to/kenji/
+http://ruffnex.oc.to/kenji/bbs/bbs.cgi
+
+
+■0x03.) 動作原理
+
+　ここからは実際の動作原理について解説していきます。といってもソースコー
+ドなどは出てきませんが、一応プログラミングに関するテキストなので、読み進
+めるためにはWindows APIと多少の解析スキルを必要とします。
+　また、解析にチャレンジする方は以降のテキストは解析後に読むことをお勧め
+します。解析する前に読むと、だいたいの動作が分かってしまうため面白さが半
+減すると思うので。あらかじめご了承ください。
+
+
+■0x04.) カスタムリソース
+
+　実行ファイルのリソース領域には、本来「ダイアログ」、「メニュー」、「ビ
+ットマップ」などを入れることができますが、カスタムリソースというカタチで
+バイナリデータを挿入することもできます。よって、この領域に実行ファイルの
+データをそのまま格納することができるわけです。
+　そして、リソース領域は他のプログラムから変更することが可能です。それは
+PEフォーマットを直接書き換えるカタチではなく、Windows APIにより提供されて
+いる機能を使うことで実現できます。よって、他のプログラムから「リソース領
+域の変更と読み込み」を行うことができるわけです。
+
+　リソース領域の変更と読み込みを行うための具体的な関数を次に示します。
+
+ +------------------+-----------------------------
+ |読み込み          | 書き込み
+ +------------------+-----------------------------
+ |・FindResource    |・BeginUpdateResource
+ |・SizeofResource  |・UpdateResource
+ |・LoadResource    |・EndUpdateResource
+ |・LockResource    |
+ +------------------+-----------------------------
+
+　これらはWindows 2000以降でしか使用することができません。しかし、PEフォ
+ーマットの知識を持たなくても実行ファイルのリソース領域にアクセスすること
+ができるため、なかなか面白い使い方ができると思います。
+
+
+■0x05.) 暗号化の流れ
+
+　仮にターゲットとなる（パッキングを行う）実行ファイルをtarget.exe、パッ
+キングを行う側のプログラムをpacking.exeとします。
+　まず、最初にpacking.exeはtarget.exeのデータを読み込み、暗号化します。暗
+号化アルゴリズムはなんでもよいですが、ここでは分かりやすくビット反転とし
+ます。つまり、packing.exeはtarget.exeをビット反転したデータを持つことにな
+ります。
+
+（1）packing.exeがデータを取得し暗号化する
+
+　次にpacking.exeは雛形となる実行ファイルを新しく作成します。その実行ファ
+イルをmodel.exeとします。
+　model.exeは自分自身のリソース領域からデータを読み込み、それをビット反転
+して実行するプログラムにします。つまり、あらかじめ「自分自身のリソース領
+域からデータを読み込み、ビット反転して実行する」というプログラムが記述し
+てあるmodel.exeを作成しておき、このmodel.exeのデータをpacking.exeに入れて
+おくというわけです。そしてpacking.exeはmodel.exeをそのままのカタチで出力
+することになります。
+
+（2）packing.exeがmodel.exeを作成する
+
+　packing.exeがmodel.exeを作成したら、今度はmodel.exeのリソース領域を変更
+します。model.exeは「自分自身のリソース領域からデータを読み込み、ビット反
+転して実行する」プログラムですが、まだ現時点ではリソース領域には何も入っ
+ていないので、実行してもエラーになるだけです。よって、packing.exeがmodel
+.exeのリソース領域にtarget.exeをビット反転したデータを格納します。
+
+（3）packing.exeがmodel.exeのリソース領域に
+     target.exeをビット反転したデータを格納する
+
+　これで、model.exeを実行したら自分自身のリソース領域からビット反転された
+target.exeのデータを取り出して実行することになり、つまりは、target.exeを
+暗号化した実行ファイルがmodel.exeということになります。これでpacking.exe
+の処理は終わります。
+
+-----  （プログラムの一連の流れ）
+
++---------------+             +---------------+
+|               |             |               |
+|   model.exe   | <---------- |  packer.exe   |
+|               |             |               |
++---------------+             |   +-----------+
+                              |   | model.exe |
+                              +---+-----------+
+
+（1）packer.exeがmodel.exeを作成
+
+
++---------------+             +---------------+
+|               |             |  target.exe   |
+|   model.exe   |             +---------------+
+|               |             +---------------+
+|  +------------+             |               |
+|  | target.exe | <---------- |  packer.exe   |
++--+------------+             |               |
+                              |   +-----------+
+                              |   | model.exe |
+                              +---+-----------+
+
+（2）packer.exeがtarget.exeを読み込み、
+     暗号化してmodel.exeへ挿入
+（3）model.exeが暗号化後のtarget.exeとなる
+（4）model.exeは自分自身のリソース領域（target.exe）を
+     読み込み、実行するコードを持っている
+
+-----
+
+　packing.exeの一連の流れとなります。
+
+
+■0x06.) ローダー（loader）
+
+　model.exeはリソース領域に存在するtarget.exeを取得して実行するわけですか
+ら、つまりはローダーの役割を担うことになります。
+　もちろん、target.exeのバイナリデータを一度実行ファイルとして出力し、そ
+れをCreateProcessを使って起動してもよいですが、それだとアンチリバースエン
+ジニアリングという方面から見るとかなり軟弱になってしまうので、やはりメモ
+リ上からそのままロードするカタチがよいでしょう。となると、やはり自前でロ
+ーダーを用意することになってしまいます。
+　model.exeは「自分自身のリソース領域からデータを読み込み、ビット反転して
+実行する」というプログラムと書きましたが、この「実行する」という部分はmo
+del.exe自身がローダーの役割を果たすという意味に他なりません。しかし、ちゃ
+んとしたローダーを作成するのは少し骨が折れるので、今回はインチキなローダ
+ーを作成しました。
+　まず、何でもよいので適当なプロセスを起動します。まぁcalc.exe（電卓プロ
+グラム）などが手頃でしょう。そして、そのプロセスが実行される前に停止させ、
+プロセス空間内のデータをすべて、target.exeのデータに置きかえます。そして
+その停止を解除させることで、生成されたプロセスはtarget.exeとして動作する
+ことになります。本当の意味でのローダーの処理は行っていませんが、結果的に
+ローダーと変わらない動作を行うプログラムとなります。
+　このような処理をあらかじめmodel.exeに組み込んでおくことで、リソース領域
+内のデータを読み込み、実行させることができます。
+
+
+■0x07.) 解析の手引き
+
+　以上で、概略的な動作原理の解説は終了です。よってここでは少し解析へのヒ
+ントを書くことにします（といってもヒントを書くほど難しくないかもしれませ
+んが^^;）。
+　まず動作原理が一般的なパッカーとは若干異なるため、セオリー通りに解析し
+ていっても解けないかもしれません。アセンブリコードを見ても分かるとおり、
+コード自体が難読化されているわけではないので、読み進めるのはかなり容易で
+ありその動作原理を解読するのにもさほど時間はかかりません。
+　そして、原理が分かってしまえばいとも簡単にオリジナルコードにたどり着け
+るため、どれほど正確にマシン語を追い、動作原理を掴むかが攻略のポイントに
+なると思います。
+　解析する方法はいろいろとありますが、OllyDbgだけで十分こと足ります。
+　速ければ10分ほどでパスワードを得られると思いますが、一度ハマってしまう
+と1、2時間くらいかかってしまう場合もあるかもしれません。しかし、ソースコ
+ードは見えてるも同然なので、ポイントさえ抑えれば問題ないでしょう。
+
+
+■0x08.) さいごに
+
+　さて、いかがだったでしょうか。今回はこれまでと少し変わってテキストベー
+スで進めてみました（ついでにタイトルも変わった感じに）。個人的には「ソー
+スコードがないと、というか実際に動作しているプログラムがないと本当に実現
+可能かどうかを証明できないじゃん！」という考えなのですが、ソースコードば
+っかりのテキストも読むのが辛くなったりするかなぁ、と思いまして、今回はこ
+ういったテキスト形式にしてみました。
+　ただし文章内でソースコードの解説をしていないだけで、crackmeやpackerのソ
+ースコードはちゃんと書いているので、テキストが少ない割に結構な労働力だっ
+たりしました(^^;。なので出来ればcrackmeやソースコードも併せて楽しんでもら
+えたらと思います。
+　さて、最後になりましたが、ここまで読んでくれて本当にありがとうございま
+す。
+
+　では、また会う日まで...
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第9章: 『ハッカーになるには！どびん　ちょびん　はげちょびん　コチラ』秘話 ---
+
+著者：MaD（＝宇宙・ｈしぎ大爆発のアムールトラのおやｋ）
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　『ハッカーになるための必読書103選』は、最初の依頼から約１年半もかかりま
+した。今回の企画は、じっくりと時間をかけたいという考えはありましたが、「
+まさか、ここまでかかるとは！」と、著者はもちろんのこと、まとめ役のIPUSIR
+ON氏も編集のまどさんもビビりました。 
+　……とは言え、内容面で陳腐化しない情報であったため、さらにブラッシュア
+ップすることができました。 
+　著者の皆さま、ご心配をおかけしましたが、ようやく搬入となりました。 
+　有難うございました。 
+
+
+■0x02.) 編集について 
+
+　『ハッカーの教科書【完全版】』では、IPUSIRON氏が編集実務を一緒におこな
+いましたが、今回は、IPUSIRON氏が編集のほとんどをやったと言っても過言では
+ないほどの気合いの入り方でした。 
+　編集とは、一見すると派手な職業のように思われがちです。しかし、実際は内
+職のような地道な作業ばかりという“ルーチンワークの塊”のような職業だと言
+えます。 
+　そして、IPUSIRON氏は編集作業の中でも、もっとも過酷な作業である“赤字校
+正”をおこなうこととなりました。 
+
+
+■0x03.) 赤字校正について 
+
+　編集のおこなう赤字校正は、本来、明らかな間違いでもないかぎりは文章を直
+さない、というのが鉄則となっています。しかしながら、どうしても避けて通れ
+ないものに「慣例用語の統一」があります。これは、以前から口を酸っぱくして
+言っていることですが、たまたま、IPUSIRON氏がいるときに某元祖ハッカー雑誌
+で編集をされていた方が同様のことを当たり前のように言っていました。ここで
+IPUSIRON氏の編集魂に火がつきました。 
+
+
+■0x04.) 慣例用語の統一 
+
+　今回は、複数の著者であるため、慣例用語の統一などの処理が必要となります。
+一人で執筆していても、この問題は起きるものであるため、複数の著者となると、
+かなりキツい作業となります。 
+
+
+イプ「『わかる』『分かる』『分る』『判る』『解る』は、どれ？」 
+まど「『わかる』にして、ひらいておけば？」 
+イプ「『又、こうして貰えば、こう言う事になる筈』というのは、どう？」 
+まど「ぜーんぶ、ひらく」 
+イプ「イライラしてきた！」 
+まど「『又』を『股』とか直してみたくなるでしょ？」 
+イプ「あと、トイレの張り紙も気になるな」 
+まど「『絶対に止めて下さい』とかやろ？」 
+イプ「そう、そういう、おかしな漢字の使い方」 
+まど「つまり、相手を混乱させるのであれば、ひらがなにしてまえと」 
+イプ「難しい世界だなぁ」 
+まど「まぁ、任せるから頑張りたまへ！」 
+
+　そんなこんなで、レイアウト以外は、IPUSIRON氏が目から血を流して制作をし
+たというデータハウス始まって以来、根性の入った力作です。 
+　立ち読みでいいから、どうか読んでみてください。 
+
+
+■0x05.) コラム：矛盾した用語の表現 
+
+　ここで某出版社さんとデータハウスのPC系を扱う編集員に共通した認識がひと
+つありことがわかりました。それは「サーバ」を「サーバー」として表記する点
+です。ネット上で見かける表現では圧倒的に「サーバ」が多いのですが、これは、
+英語も堪能とされている超有名な、あるハッカーの方が「『サーバ』ではなく『
+サーバー』と表記しろ」と、なにかの記事で発言して以来、この表現にしたとい
+うものです。 
+　自分としては「この方がおっしゃるのだから」と信じて、やっていたわけです
+が、どうやら他社さんも、まったく同じ理由からだったそうです。そこまで影響
+をおよぼすのですから、すごいものです。わかる人だけニヤッとしてください。 
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第10章: Google Hacking ～ 基礎編 ～ ---
+
+著者：IPUSIRON
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　インターネットユーザーならいまやGoogleを知らない者はほとんどいないでし
+ょう。Googleの登場以前は、日本の検索エンジンでロボット検索と言ったら、Go
+o（名称が似ているが、Googleとはまったく別物）が有名でした。しかしながら、
+Googleの登場すると、トップページのシンプルさ、そして何よりも検索能力の高
+さから、Googleの名を世間に広めることになりました。
+　近年、Googleを検索能力を脆弱なWebサイトを発見するための方法として利用さ
+れてきています。昔からこうした考え方はありました。例えば、本当は誰にでも
+アクセスされてはいけない個人情報がWebスペースにアップされていることもあり、
+それを発見するのにGoogleが活用されていたわけです。他にもクレジットカード
+番号、WAREZやシリアルナンバーを発見するのにも使われていました。こうした方
+法があまりにも効果的に働くため、Google Hackingという名称まで付いたわけで
+す。
+　今回は、このGoogle Hackingについて解説したいと思います。
+
+
+■0x02.) Google Hacking
+
+　まず、Google Hackingとは何か明確にしておきましょう。Google Hackingとは、
+Googleを利用して脆弱なWebサイトを発見する手法のことです。
+
+　アカデメイア内や『ハッカーの教科書』などで何度も繰り返して述べているこ
+とですが、サーバー侵入といったアタックを仕掛ける際には、アタック前に特定
+のターゲットの情報を可能な限り調べなければなりません。その情報を取っ掛か
+りに、適切なセキュリティホールを調べ、それに対応するExploitなどを作成・利
+用するわけです。
+　また、特定のIPアドレス帯域やドメイン領域に対してポートスキャナーなどで
+絨毯爆撃をして、脆弱なホストを見つけて、それをターゲットとして設定する方
+法もあります。かつては、この手法はスクリプトキディたちの手口としてよく非
+難されることもありました。
+　さらに、最近のクラッキング界では、Google Hackingにより脆弱なWebサイト（
+基本的にホストではない点に注目）を発見し、それをターゲットとして設定する
+アプローチも見受けられてきたのです。
+
+●メリット
+
+　かつてのサーバー侵入の前段階のアプローチといえば、Pingerでホストの存在
+しているIPアドレスをリスト化して、それらのIPアドレスに対してポートスキャ
+ナーでポートが開いているポート（提供されているサービス）を探すというのが
+定石でした。Google Hackingでは、基本的にWebサイトが前提となっているので、
+ポート80（HTTP）を開いているサーバーを探し出すことができます。そして、う
+まくキーワードを設定するだけで、そのサーバー内に設置されている脆弱なWebア
+プリケーションを発見できるわけです。Webアプリケーションがインターネット上
+に普及し始めたことに、比例してGoogle Hackingの効果も上がっていったのでし
+ょう。
+
+　また、スキャナーを使う方法は、基本的に時間がかかるのです。ブロードバン
+ド化が進んだ現代ですが、数百や数千といったIPアドレス範囲に対して、ポート
+スキャナーを実行するのは一晩以上時間がかかったりします。ただし、これはス
+キャンするポートの数に依存します。Google Hackingの場合、すでにGoogleクロ
+ーラーがHTTPサービスに焦点を絞ってインターネット上の隅々まで行き、検索処
+理を円滑に行うためにデータベース化していくわけです。この作業はアタッカー
+側がやる必要がありません。あくまでGoogle側がすでに実行していることなので、
+アタッカー側は適切なキーワードを入力すれば、数秒でそれに対応するWebサイト
+の一覧が表示されるわけです。
+　しかし、脆弱性が存在しつつも、リスト化されていないWebサイトが、インター
+ネット上には存在します。また、リストも重複したり、解説サイトが引っかかっ
+たりと完璧ではありません。完璧ではありませんが、効率さのほうが圧倒的に有
+利に働くということです。
+
+　最後にまとめておきましょう。
+
+・脆弱なWebアプリケーションを設置してあるWebサイトを発見できる。
+・そのためには適切なキーワードを入力する。
+・結果は数秒で得られる。しかも、脆弱なWebサイトのリスト化された結果を得る
+ことができるため、アタックの全体時間を短縮・効率化できる。
+
+
+■0x03.) 実践例　その1
+
+　かつて、PHP nukeと呼ばれるWebアプリケーションがありました。スラッシュド
+ットや現在のblogのようにヘッダー、フッダー、サイドにブロック単位に分かれ
+ていて、全体が動的に反映する仕組みです。Webサイト全体がCGIで動的に動くと
+考えてもらえればよいでしょう。MT（Movable Type）、Xoops、Zopeなどもそれに
+似たようなタイプのものです。ちなみに、大昔に存在したUGツールのWin Nukeと
+はまったく関係ありません。このころは、blogが全然流行っておらず、今のよう
+に初心者でも簡単にレンタルサービスとして借りることができず、似たようなこ
+とをしたければ、PHP nukeなどをWebサーバーにインストールしなければならない
+のです。
+
+　2002年10月16日に、PHPToNukeにリモートからファイルを閲覧されてしまうとい
+う脆弱性が発見されました。 
+　PHPToNuke（phptonuke.php）はPHP Nukeサイトの中間にPHPスクリプトを挿入さ
+せるPHP Nuke用AddOnスクリプトです。
+　この脆弱性はアプリケーション上の脆弱性ではなく、PHP自体の特徴的な脆弱な
+仕様が原因なようです。デフォルトで、指定したファイルを開くことができるから
+です。
+　対策は、php.iniファイル内において、利用するopenbase_dirを設定することに
+よって、これをオーバーライドし、指定したパスのサブセットに対するファイル
+操作を規制することです。この対策方法は、Webアプリケーションをインストール
+した個々のサイト管理者がこの対策をしなければならないのです。Webサーバーの
+管理者ではないことに注目してください。Apacheなどにセキュリティホールが発
+見されれば、Webサーバーの管理者が対策しなければなりません。それはサーバー
+のセキュリティを維持するため、サーバー管理者として当然の義務と言えます。
+しかしながら、Webサイトの管理者はセキュリティの意識がそこまで高くありませ
+ん。普通なら、掲示板が荒らされないように注意するぐらいでしょう。サイト運
+営を放置して、宣伝だけでスパム状態の掲示板があるのを見たことあるはずです。
+これと同じ状況が他のWebアプリケーションであるPHP nukeでも少々ありました。
+ヘルプファイルを個人だけで読んでインストールするのは難しいので、定番とさ
+れるマニュアルまたは文書を沿ったままインストールされたWebサイトが放置され
+ているのです。つまり、そのマニュアルや文書にセキュリティ対策のことが書い
+てないと、Webサイトのほうもセキュリティ対策されていない状態になるのです。
+
+　話を戻しましょう。先ほど言ったPHPToNukeの脆弱性を利用するには、まずPHP
+ nukeを利用しているWebサイトを見つける必要があります。その際に、Googleを
+用いて、PHP nukeを利用しているWebサイトをリスト化して表示するのがアタッカ
+ーの行動として有効なわけです。そこで「php nuke」のキーワードで検索しても、
+PHP nukeを利用しているWebサイトを発見できますが、まだ結果にノイズが多いは
+ずです。PHP nukeの解説ページ（なのにPHP nukeを使っていないところ）、単に
+ニュースや紹介記事だけのWebページなどが含まれているからです。そこでノイズ
+を消すために、PHP nuke特有のファイルを考えます。私がすぐに思いついたのは
+「index.php」ファイルです。しかし、これだけでは、他の「index.php」を利用
+しているWebアプリケーションを利用しているWebページも引っかかるので、さら
+に「nuke」というキーワードを追加しましょう。最終的に、「nuke "index.php"」
+を利用しました。実際利用してみるとわかりますが、ほとんどノイズなしなく、
+PHP nukeのWebサイトのリストが効率よく生成されたはずです。
+　後は、これらのWebサイトに対して、片っ端から脆弱性に対応するExploitを用
+いていきます。今回のExploitはURL型なので、単にブラウザに入力するだけで働
+きます。Webアプリケーションはこうしたタイプの脆弱性が多いことも特徴と言え
+ます。
+　今回は、次の書式のURIにブラウザでアクセスするだけで、指定したファイルを
+覗くことができます。
+
+http://target.com/phptonuke.php?filnavn=[対象ファイル]
+
+　ということは、次のようにしてアクセスすれば、パスワードファイルを閲覧で
+きることは簡単に推測できます。
+
+http://target.com/phptonuke.php?filnavn=/etc/passwd
+
+　本当は「/etc/shadow」ファイルを閲覧したいですが、HTTPdの動作権限が「/e
+tc/shadow」を開くことができない権限なので、仕方なくシャドウ化されたパスワ
+ードファイルにあたる「/etc/shadow」にしました。これでは暗号化されたパスワ
+ードのリストではないため、オフラインパスワードクラッカーでパスワード解析
+できません。しかし、「/etc/passwd」ファイルであっても、ユーザー名の列挙は
+可能なのです。
+　ちなみに、他のユーザー・グループの列挙方法に関しては特別講座＜ユーザー
+・グループ列挙編＞を参照してください。
+
+http://akademeia.info/main/lecture2/tokubetu_user_group_list.htm
+
+　今回うまくいったターゲットは、ドメインから海外の航空大学であることがわ
+かりました。大学なので、ユーザー名がたくさんいて、しかもその中には数人の
+脆弱なパスワード（ユーザー名と同じパスワード、短いパスワード、数字だけの
+パスワード）を使っているユーザーがいると当たりをつけました。ということで、
+オンラインパスワードクラッカーを用いて、POP3に対してJoeアカウント（ユーザ
+ー名と同じパスワードを設定しているアカウントのこと）を探すように設定しま
+した。数十人目でヒット。所要時間は数分。最初のGoogle Hackingのところから
+計算しても、所要時間は1時間以内。後は同様な手口でどんどん探していけばよい
+だけです。このアカウントはPOP3だけでなく、FTPの権限まで持っていたので、さ
+らに踏み台にしていろいろできそうでした。
+　上級クラッカーの方なら、こんな面倒なことをせずに一気にルート権限を奪う
+かもしれませんが、ここで示したかったのは誰にでもアカウントを奪取できてし
+まうということです。つまり、下級クラッカー（俗にスクリプトキディや厨房と
+呼ばれる）たちであっても、脅威となりうるということです。むしろそうした層
+が多いのですから、それ相応のセキュリティ対策は重要でしょう。
+
+　なお、SQLインジェクションの存在するログインページを発見するために、Goo
+gle Hackingを利用することもできます。
+
+
+■0x04.) Google Hackingのためのキーワード
+
+●バックアップディレクトリを探す
+
+・「"Index of /backup"」
+
+　Web管理者が臨時にファイルを保存したり、やり取りするために、非公開のディ
+レクトリを作ることがあります。そのディレクトリ名として命名される可能性が
+高いものに、「backup」があるわけです。運がよければ、そこに普通には手に入
+ることができないファイル（ログ、個人情報など）が存在するかもしれません。
+
+●クレジットカードナンバーを探す
+
+・「Amex Numbers: 300000000000000..399999999999999」
+・「MC Numbers: 5178000000000000..5178999999999999」
+・「visa 4356000000000000..4356999999999999」
+
+　「..」は、それを挟む数字の連番すべてが対象となります。クレジットカード
+会社によって、先頭の4桁は決まっていたりするので、それを活用しています。
+　例えば、アメックスカードなら「3000」～「3999」、Master Cardなら「5178」、
+Visaなら「4356」です。
+　ここで手に入るようなクレジットカード番号は99%使えませんが（番号だけでは
+意味がない。ネットで買い物するには名義人、有効期限も必要）、それでもこう
+してセンシティブな個人情報が洩れる危険性があると覚えておいてください。
+
+●WAREZを探す
+
+・「"parent directory " /appz/ -xxx -html -htm -php -shtml -opendivx -md5 -md5sums」
+・「"parent directory " DVDRip -xxx -html -htm -php -shtml -opendivx -md5 -md5sums」
+・「"parent directory " Xvid -xxx -html -htm -php -shtml -opendivx -md5 -md5sums」
+・「"parent directory " Gamez -xxx -html -htm -php -shtml -opendivx -md5 -md5sums」
+・「"parent directory " MP3 -xxx -html -htm -php -shtml -opendivx -md5 -md5sums」
+・「"parent directory " "[歌手の名前または音楽名]" -xxx -html -htm -php -shtml -opendivx -md5 -md5sums」
+
+　現在日本では、ファイル共有ソフト（共有と名ばかりの実質は交換ソフトもあ
+りますが）を利用したWAREZ（ゲームやアプリだけでなく、動画・映画や音楽も含
+む）が主流です。しかし、世界的には昔ながらのWeb WAREZの名残がまだ残ってい
+ます。そうしたものを発見するためにGoogle Hackingのテクニックを利用するこ
+ともできます。普通に欲しいゲーム名などを入力しても、ノイズが多いので、ハ
+イフンを付けてノイズとなるキーワードを外していきます。これが大きな特徴と
+言えるでしょう。
+
+・「inurl:microsoft filetype:iso」
+
+　これは、「microsoft」というキーワードをURLに含み、拡張子が「ISO」のもの
+を探すときに活用するパターンです。つまり、Windows OSのようなMicrosoft製の
+ソフトウェアのISOファイルを探していることになります。ISOファイルを入手した
+ら、ライティングソフトでCD-Rに焼いて、CDを作ることができます。
+　「microsoft」のところを欲しいアプリ名やゲーム名、「iso」のところを「zip
+」などに変更して流用できます。
+
+
+●パスワードファイルを探す
+
+・「inurl:passlist.txt」
+
+　これも、「backup」ディレクトリのように、パスワードファイルとして命名さ
+れやすいファイル名です。この記事を書くにあたり検索した結果、41件見つかり
+ました。すでに「passlist.txt」ファイルが存在しないWebサイトが大半でした。
+これは脆弱な状態で放置するWebサイトの管理人は、いつの間にかWebサイトを更
+新する意欲がなくなり放置してサーバーから削除されてしまったからだと思われ
+ます。しかし、キャッシュをクリックすれば、どういう状態で保存されているの
+かがわかるかと思います。
+
+・「"# -FrontPage-" inurl:service.pwd」
+　これは、FrontPageのパスワードファイルである「service.pwd」ファイルを探
+し出すためのパターンです。
+
+・「"AutoCreate=TRUE password=*"」
+　これは、「Website Access Analyzer」というWebサイトのアクセス解析用のCGI
+（日本製のソフト）で使われているパスワードを差だし出すためのパターンです。
+
+●その他
+
+　他にもGoogle Hackingで使われるパターンはたくさん存在します。興味があれ
+ば、次に示すURLをチェックしてみてください。
+
+http://www.i-hacked.com/content/view/23/42/
+http://johnny.ihackstuff.com/index.php?module=prodreviews
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+ --- 第11章：お知らせ ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○Wizard Bible（http://akademeia.info/wizardbible/）では随時、執筆ライタ
+ーを募集しています。
+　扱う内容のテーマは広義での「under ground」です。例えば、ハッキングから
+サリンガスの合成法などと幅広い内容を考えています。また、各種、特殊な職業
+や趣味を持った方のレクチャーなども含まれます。
+　一回きりでも構いません。また、必ず、毎回連載する義務もありませんのでで
+きる範囲で構いません。気軽に声をかけてください。もちろん一回書いたことが
+ある人も気軽に声をかけてください（全く気にしていない性格なので）。
+
+○Kenji AikoさんがQ&Aを作ってくれました。初めて参加する人でもわかりやすく
+書かれていますので、参考にしてください。
+
+http://akademeia.info/wizardbible/wbQandA.html
+
+○支援者、参加希望者用のスレッドを立てました。
+
+http://ruffnex.oc.to/ipusiron/cgi/forum/patio.cgi?mode=view&no=17
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+  ---- 第12章：著者プロフィール ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■金床
+●Job:プログラマー
+●Web:http://guardian.jumperz.net/、http://www.jumperz.net/
+●Mail:anvil@jumperz.net
+●雑誌に対する考え方:
+　唯一定期購読しているのは『日経システム構築』。これは近くの書店の店頭で
+は立ち読みできないという理由で定期購読することにした。日経系の雑誌は異常
+に宣伝が多くうんざりするが、『日経システム構築』では他社のシステムの実例
+を目にすることができるため、我慢して読んでいる。
+　技術系の雑誌の多くは月刊誌だが、はっきりいってどれもネタ切れの感が否め
+ない。特にJava系の雑誌は明らかにネタ切れ気味で、どの雑誌も毎月同じような
+記事で読むところが少なく、買うことは滅多にない。
+　雑誌というかムックかもしれないが、昔あった『B-GEEKS』というのが大好きだ
+った。いつか復活してほしい。
+
+
+■Will
+●Job:Student
+●Web:http://antiwmac.overclock.ch/public/will/
+●Mail:will_net@hotmail.co.jp
+●Team（Group): Anti-WMAC
+●Comment:
+　記事中にも書いたとおり、今回のWizard Bibleをもちましてしばらくの間、お
+休みを頂きたいと思います。今回で終わりではないので悪しからず。
+●雑誌に対する考え方:
+　最近、『C MAGAZINE』が休刊になったことがちょっとショック。インターネッ
+トの情報の方が多くなったからかな？　そういや最近ちょっと面白いかなと思っ
+たのはメールマガジン。Wizard Bibleならば、結構読んでる人がいると思うので
+広告入れたら結構儲かりそうな気がする。んで著者に平等に分けるとか。まぁし
+ばらく離れる私にとっては関係のないこと。ただの妄想です。
+
+
+■右サイド
+●Job:Student
+●Web:右サイド（http://www3.pf-x.net/~right-hand-side/）
+●Mail:right-hand-side@mail3.pf-x.net
+●Team（Group）:N/A
+●雑誌に対する考え方:
+　毎度毎度、役に立たなそうな記事を書いております右サイドです。
+　私は雑誌は定期購読してません。すべて立ち読みですましてしまいます（いけ
+ない子です）。少ない小遣いの中で、やりくりしていくためには立ち読みは欠か
+せない技です。どんな雑誌を立ち読みしているかというと、ひとつめは『ゲーム
+ラボ』（PC関係ですよね？？）。最近は、ビニールテープでくるまれており読め
+ません（小梅大夫風にチクショー）。厨房向けの雑誌かと思われていますが、そ
+れなりに参考になるページもいくつかあったりします（厨房向けっていったら『
+ネットラ○ナー』ですけど）。
+　学習法というわけではありませんが、興味のあるページに書いてある方法は頭
+の中に一通りたたき込みます。それで、家に帰ってから思い出して、実践してみ
+ると…。ソフト名とかがややこしい場合は、店から出てから携帯でPCの方へソフ
+ト名などを送ってしまいます（よい子は真似しないでね）。百聞は一見にしかず
+ではありませんが、覚えているだけじゃダメなので実際にやってみることが重要
+です。
+　後は『C Magazine』（以下 Cマガ）ですかね？　Cマガは最近読み始めたのです
+が、あんまり内容は理解できてないです。ざ～と眺めて、ふ～ん程度です。知識
+が多少あれば、目を通すだけでもだいぶ違うと思いますしね。
+
+
+■Defolos
+●Job:Student
+●Web:http://ruffnex.oc.to/defolos/
+●Mail:defolos@ruffnex.oc.to
+●Team（Group）:none
+●Comment:
+　こんにちは、Defolosです。
+　最近は得意分野（？）である物理的UGに代わってWEBサイト作成やプログラミン
+グが趣味になりつつあります。前回「次週お会いしましょう」などと言っておき
+ながらVol.23をお休みしてしまって申し訳ありませんでした。プログラマーでも
+ない自分が付け焼刃だけで「割り込み」などという高度な技術について解説して
+よいものかどうか疑問ですが、資料を調べまわったりでとても勉強になりました。
+また、間違ってるところはこっそり教えていただけると嬉しく思います。
+　それではまたお会いしましょう。
+●雑誌に対する考え方:
+　私は定期購読している雑誌はありませんが、どうしても気になる記事がある場
+合だけ購入しています。雑誌はあまり後から読み返すことがないので雑誌に使う
+金額分技術書などに使いたいですね。
+　雑誌を使った学習法ですが、雑誌の特性でもある情報の新鮮さを活用して行け
+ば良いのではないでしょうか。私は基本情報を受験するにあたって学習研究社の
+「合格情報処理」という雑誌を読んでましたが、信頼性がありながら新鮮な情報
+というのは重宝しました。
+
+
+■Narusase
+●Job:Student
+●Web:(裏)雑学の博物館（http://k-o-m.hp.infoseek.co.jp/）
+●Mail:narusase@mcn.ne.jp
+●Team（Group):N/A
+●Comment:
+　こんにちわ、Narusase（ナルサス）です。今回はhoneydのネットワーク周りの
+拡張的な機能について説明しました。なんだか、ここ最近honeydの説明ばかりの
+ような気が…（汗。まあ、この手のツールの日本語で書かれた文章はそうはない
+ということでお付き合いしてくださいな（笑。
+　個人的には最近の、ライブドアの騒動＆マネックスショックはどうしても国策
+捜査の疑いをぬぐい去れません。実際の所、あの程度のことをやってる会社は星
+の数ほどもあるかと思うし見せしめ的な感じも…。
+　サイトのほうはまあ、ヘタレな文章と、未熟な技術、ヘボいプログラムを紹介
+するサイトということで、暇があったらあら探しでもしてみてください。誤植と
+かミスとかはBBSにでも書いてくだされば、こっそり修正しときます（笑。
+●雑誌に対する考え方:
+　私の定期購読している雑誌は、『日経Linux』、『PC Japan』、『Hacker Japa
+n』の3誌です。昔は「UG系」と呼ばれていた雑誌が2つ入ってるのがポイントです
+かねぇ（笑。特に、『PC Japan』は最近落ち着いた内容が多くてかつての「ぁゃ
+しぃ」雰囲気が少なく寂しい限りです。
+　雑誌を買う理由は、「流行の把握」、「足りない部分の知識の補完」などです。
+最近はDBやSQL、プログラミングなどの部分が弱いと感じているため、何かこれら
+のよい雑誌を新たに購読しようかと考え中で、セキュリティ関連のハイレベルな
+雑誌も欲しいところです。
+　なにか、よさげな雑誌があればどなたか推薦してくださ～～い（笑。
+　雑誌の購読に当たって考えることはやはり「わかりやすいこと」と「技術的に
+中立の立場で書かれていること」ですかね…。まあ、『日経Linux』などは当然L
+inuxの側によっているのですが、この雑誌の場合あくまでLinuxとWindowsはそれ
+ぞれよい所もあるし悪い所をもある、それらの差異は用途によっては長所にも短
+所にもなるみたいな考え方で書かれておりと思います。よくあるマスコミのよう
+に「結論があって事実がある」書き方ではなく「事実があって仮説があり、仮説
+があって結論がある」といった書き方の雑誌を選ぶようにしています。
+
+
+■suma
+●Job: Student
+●Web: http://beautiful.homelinux.net/~sky-software/
+●Mail: shu_2001jp(at)yahoo.co.jp
+●Team（Group）: secret
+●Comment:
+　先日crackmeを作ってみましたが、自分で触って改めてWin32APIの偽装は厄介な
+ものだと感じています。
+http://www.obfuscatism.net/old/crackme1_v2.zip
+●雑誌に対する考え方:
+　3年ほど前から『C MAGAZINE』を読んでいます。12月に定期購読が切れてから、
+気になる記事があれば買おうと思っていたところ、休刊について知りました。『
+C MAGAZINE』のおかげで、自分の目の届かない情報手に入れたり、基礎的な技術
+の習得に役立ったと思います。『C MAGAZINE』を用いた学習は、ソースコードを
+読んだり、パズルに挑戦することだと思いますが、バックナンバーから記事を探
+して活用するのもひとつの手だと思います。
+
+
+■Kenji Aiko
+●Job: Student
+●Web: http://ruffnex.oc.to/kenji/
+●Mail: kenji@ruffnex.oc.to
+●Team（Group): N/A
+●Comment:
+　最近「NINTENDO DS」と「英語漬け」をセットで買いました。普通に面白いので
+ハマっていたらいつの間にやら日が暮れてました。一ヶ月くらいでクリアできる
+かなぁ。
+●雑誌に対する考え方:
+　実はコンピュータ関連の雑誌を買ったことはこれまでに数回ほどしかありませ
+ん。興味がある記事を見つけたときは買ったりしますが、定期購読はこれまで一
+度もありません。やっぱり、なるべくたくさんの人に読んでもらえるように作ら
+ざるを得ない雑誌という媒体は「楽しいから」だけでプログラミング（コンピュ
+ータ）を学んでるような人間には、あまり必要ないのかもしれないです。
+　ちなみに書籍（コンピュータ本）もあんまり買わなかったりします(^^;。基本
+的に「ネット上に落ちてるソースコードをプリントアウト！」→「読破！！」と
+いう学習スタイルです。
+
+
+■MaD（宇宙・ｈしぎ大爆発のアムールトラのおやｋ）
+●Job:DATA HOUSE
+●Web:http://www.data-house.co.jp/
+●Mail:mad@data-house.co.jp
+●Team（Group）:h@cksection,ruffnex
+●雑誌に対する考え方:
+　ほんだら、ナニかい？　本をケツから読んだり、下から読んだりするっちゅう
+話かいや！　自分が買った本をどう読もうと、おまえらにウダウダ言われる覚え
+はないわい！　好きに読ませろや！　ヴォケ！ わしは、元KGBのスパイや。元KG
+Bのスパイが大事な秘密を簡単に教えるわｋないやろが！
+
+　ばーかばーかばーか！
+
+　いちよー、お気に入りの雑誌は教えとｋわ。
+
+『機材のカタログ』
+
+　これだけや。ここに書かれているスペックシートには、嘘を書けないというこ
+とや。つまり、真実だけがあり、しかも、糞退屈なレトリックすらも存在せぇへ
+んいうことや。こんだけ明確でわｋらいやすいのんて、他にない。
+
+　そういうこっちゃ！(　ﾟдﾟ)､ﾍﾟｯ
+　ケーロヨーン♪
+
+
+■IPUSIRON
+●Job:家でごろごろ
+●Web:http://akademeia.info/
+●Mail:ipusiron@ruffnex.oc.to
+●Team（Group):ruffnex
+●Comment:
+　今月号は新年始まっての最初の号になります。去年の12月は休みましたので、
+実質合併号といえるでしょう。今年もWizard Bibleをよろしくお願いします。参
+加者は随時募集しておきますので、興味ある方は気軽にメールください。
+　2月4日に、『ハッカーになるための必読書103選』が発売されました。今回は初
+めて編集を本格的に行いました。原稿を集めるのは思った以上に大変でした。ま
+た、著者たちそれぞれの語句統一がされていないので、ゲラでその朱入れを重点
+的に行いました。正直『ハッカーの教科書・完全版』より大変でした。個人的に
+は自信作なので、興味ある方は読んでみてください。詳細は次のURLに記載されて
+おります。
+http://akademeia.info/main/books/11/
+●雑誌に対する考え方:
+　自作初心者のころは、『Windows Start』でOSの再インストール方法を学んだり、
+『DOS/V magazine』などをたくさん読んでいましたが、今では読んでいません。
+しかし、昔読んだことは今役に立っています。セキュリティ本を買い漁っている
+時期は、『ハッカージャパン』や『ゲームラボ』なども買っていました。『ハッ
+カージャパン』はホワイトハット寄りの記事が多くなってから、ほとんど買って
+いません。一応立ち読みしますが、著者プロフィールと「Hack the Hacker」の記
+事（内容は読まないが、誰が取り上げられたかで、上下関係がわかるような気が
+する）だけはチェックしていました。現在購入する雑誌は『ラジオライフ』、そ
+してまれに『トランジスタ技術』ぐらいです。あとは、最近株データブック（雑
+誌というほど頻繁ではないが…）とか株関係の雑誌を購入するぐらいです。
+　個人的には、雑誌はよほど最新情報を追いかけたりしない限りは、初心者のこ
+ろに大量読みして、その後は自分が興味ある本を読んでいったほうがよいと思い
+ます。雑誌の記事も好評なら、本としてまとめられるわけですから（まとめられ
+ないと推測でき、よい記事・気になる記事があれば買う）。
+

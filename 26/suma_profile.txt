@@ -1,0 +1,16 @@
+■suma
+●Job: Student
+●Web: http://beautiful.homelinux.net/~sky-software/
+●Mail: shu_2001jp(at)yahoo.co.jp
+●Team（Group): secret
+●Comment:
+　プログラミングしたい、特にバイナリエディタが作りたい、ネットワークプロ
+グラミングをやってみたいと最近嘆いています。
+●OSについて:
+　Windows 98を2000～2003年頃に使い、それ以降はWindows XP、最近になってWi
+ndows 2000 Proを併用しています。2004年からはLinuxもたまに使いつつ、結局は
+Windowsに大きく偏っています。普段使用したり、プログラミングに使うのがWin
+dows、サーバーとして使うのがLinuxになっています。クライアントPCやプログラ
+ミング環境としてLinuxも使ってみたいとは思っていますが、いかんせんPCのスペ
+ックなどが低く…。
+

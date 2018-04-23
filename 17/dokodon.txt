@@ -1,0 +1,428 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第3章: ビバ！OllyDbg ---
+
+著者：DokoDon
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　OllyDbgはOleh Yuschuk氏の作ったデバッガで、今やその人気は世界トップレベ
+ルといっても過言ではないでしょう。私とOllyDbgのはじめての出会いは、当時私
+にとって最強の情報源であり、神のことばでもあった「解析素材」の以下の記事
+によってでした。
+
+-----
+OllyDbg           2000/12/14
+
+フリーなデバッガ。
+ブレークポイントに API を指定できなかったり、
+機能的には既存のデバッガに少し劣るのだけど、わりと期待できそうな感じ？
+-----
+
+　以来、今日まで私はOllyDbgと共に解析の道を歩むことになるのです。
+
+
+■0x02.) OllyDbgの歴史
+
+　では、わかる範囲でOllyDbgの歴史を振り返ってみたいと思います。
+
+●記念すべきVer1.00
+　OllyDbgの最初のバージョンは2000年11月16日にリリースされました。といって
+も先にも書いたとおり、私自身はその時点では知りませんでしたが。まさに彗星
+のごとくあらわれ、当時TRW2000を使っており、ナグにウンザリしていた私はOll
+yDbgの手軽さ、扱いやすさと安定度に一発で魅了されました。この最初のリリー
+スですでにインポート関数を名前で表示してくれるなど、ディスアセンブルコー
+ドの可読性はすばらしいものでした。
+　また、オブジェクトやライブラリをサーチして静的結合されたルーチンを特定
+してくれるなど、現在でもかなり有用な分析機能をこの時点で有していました。
+　ちなみにホイールマウスには対応していませんでした（書きながら確認）。
+
+●Ver1.01
+　初版リリースの約一ヵ月後の2000年12月27日に出たバージョン1.10では、限定
+的ながらボーランド形式のデバッグ情報に対応する試みがなされています。
+
+●Ver1.02
+　2001年3月17日にリリースされたバージョン1.02ではWM_PAINTなどのウィンドウ
+メッセージをデコードできるようになりました。またボーランドデバッグ情報へ
+の対応もより進みました。
+
+●Ver1.03
+　2001年4月25日リリース。このころから末尾の数字が奇数のバージョンは中間バ
+ージョンでテスト的なものに位置付けられました（ひょっとしたら最初からだっ
+たかも）。ヘルプの更新などがなされなくなったので、変更点についてはわかり
+にくくなりましたが、オプションの項目が増えていることよりこのバージョンか
+らSFX機能が搭載されました。SFX機能とは、パックや暗号化されているアプリの
+自己展開ルーチンをトレースしてくれる機能で、アンパックの最大の友と言える
+ものです。が、このころはなんのことやらまったくわからず、アンパックのなん
+たるかも知らなかったので使っていませんでした。今使ってみると、例外の自動
+処理がまだできないため、途中で止まってしまったりして、使用にはまだ不十分
+だったもののようです。
+
+●Ver1.04
+　2001年6月15日リリース。Ver1.03で試されていたSFX機能が、例外を無視（プロ
+グラムにそのまま処理させる）オプションの追加と共に、使えるものになってい
+ます。
+　そして、恐らくOllyDbg史上最大の進化であるプラグインへの対応がなされまし
+た。これによりOllyDbgは無限の可能性を秘めたデバッガへと成長することになり
+ます。
+　また、インポートライブラリ内の関数の序数名前解決やジャスト・イン・タイ
+ムデバッガへの登録、PE/COFFヘッダーのデコード、ラン・トレースなど多くの便
+利な機能が追加されています。
+　ところで、このバージョンからついた、「Options」メニューの「Analysis1」
+タブにある「Decode tricky code sequences」はmuffinさんのリクエストにより
+実現された機能です。
+
+●Ver1.05
+　ホイールマウスに対応してました。正式には次の1.06で対応とのことですが。
+
+●Ver1.06
+　なぜかReadme.txtが見当たらず、ファイルの更新日時からVer1.06は2002年2月
+25日頃のリリースと思われます。このバージョンでは1.04で登場したラン・トレ
+ースに条件を指定できるようになり、この機能もアンパックに有用なものとなり
+ました。「Options」メニューに「Appearance」が加わり、フォントと色をユーザ
+ーが指定できるようになりました。これにより、日本語文字列の表示が可能にな
+りました。多くの新機能が追加された結果、内部で使用している構造体が大幅な
+変更となり、Ver1.06以前用のプラグインはそのままでは使えなくなりました。
+といっても、新しいPlugin Development Kitでコンパイルし直すだけでVer1.06
+で使えるようになったのですが。
+
+●Ver1.08
+　2002年11月16日リリース。M$形式のデバッグ情報ファイルに対応しました。ジ
+ャンプ命令を選択すると飛び先を示す矢印が表示されるようになりました。
+　また、コードハイライト機能が追加され、命令のカテゴリ別にコードに色がつ
+けられますます可読性が増しました。
+
+●Ver1.10-ファイナルバージョン
+　Ver1.xxの最終バージョンとなる1.10は2004年5月23日にリリースされました。
+DLLの単独デバッグ、SEHチェーンの表示、アナライザへの分析ヒント設定（強制
+的に指定したデータと見なすように指定する）などを加え、ディスアセンブラと
+してもIDAに迫る分析能力を得ました。
+
+●今後
+　OllyDbg V1シリーズのプロジェクトは終了し、V2シリーズが完全再設計でスタ
+ートしています。開発の方は時間がかかっていますが順調に進んでいるようです。
+　また、V1シリーズもプラグインにより拡張が可能でありまだまだ進化すること
+でしょう。
+
+　駆け足でOllyDbgの歴史を振り返ってみました。読んでもなんのことかわらない
+かもしれませんが、筆者も書いていてよくわからなくなってきてるのでご容赦く
+ださい。
+
+
+■0x03.) プラグインを作ってみよう
+
+　さて、OllyDbgの最大の特徴ともいえるプラグインによる機能拡張はすべての人
+に開かれたものです。OllyDbgをより使いやすいものにするため、ぜひプラグイン
+作成に挑戦していただきたいと思います。ここではプラグインを作成するための
+基本コード（雛型）について見ていきたいと思います。
+
+●プラグイン・コールバック関数
+　プラグイン・コールバック関数とは、OllyDbgのイベントによって呼び出される
+プラグインの関数でOllyDbgとプラグインとのインターフェースとなるものです。
+PDK1.10では下記の14のプラグイン・コールバック関数が用意されています（引数
+省略）。
+
+　・ODBG_Plugindata
+　・ODBG_Plugininit
+　・ODBG_Pluginmainloop
+　・ODBG_Pluginsaveudd
+　・ODBG_Pluginuddrecorddata
+　・ODBG_Pluginmenu
+　・ODBG_Pluginaction
+　・ODBG_Pluginshortcut
+　・ODBG_Pluginreset
+　・ODBG_Pluginclose
+　・ODBG_Plugindestroy
+　・ODBG_Paused
+　・ODBG_Pausedex
+　・ODBG_Plugincmd
+
+　この中で必須なのはODBG_PlugindataとODBG_Plugininitの2つだけで、他はオプ
+ションです。
+　ODBG_Plugindata関数はプラグイン名を引数に渡し、プラグインバージョンを戻
+り値とすることでこれらをOllyDbgに知らせる役目を担います。
+
+-----
+extc int _export cdecl ODBG_Plugindata(char shortname[32]) {
+  strcpy(shortname,"Sample");       // Name of plugin
+  return PLUGIN_VERSION;
+};
+-----
+
+　ODBG_Plugininit関数は文字通りプラグインの初期化を行うための関数です。
+
+-----
+extc int _export cdecl ODBG_Plugininit(int ollydbgversion,HWND hw,
+                                                     ulong *features) {
+  // まず、OllyDbgのバージョンとプラグインのバージョンをチェックします。
+  // OllyDbgのバージョンが古ければ処理を中断するため-1を返します。
+  if (ollydbgversion<PLUGIN_VERSION)
+    return -1;
+
+  // メッセージボックスの表示などのためにOllyDbgメインウィンドウの
+  // ハンドルをグローバル変数に取っておきます。
+  hwmain=hw;
+
+  ... 初期化処理を書く ...
+
+  // ログウィンドウにプラグインの情報を出力します。
+  // Addtolist関数はOllyDbgのログウィンドウに文字列を出力する関数で、
+  // printf関数形式の書式指定が可能です。
+  Addtolist(0,0,"Sample plugin v1.10 (plugin demo)");
+  Addtolist(0,-1,"  Copyleft (C) 2001-2005 DokoDon");
+
+  // 初期化が正常に終了したら0を返します。
+  return 0;
+};
+-----
+
+　必須ではありませんが、ほとんどの場合必要となる関数がODBG_PluginmenuとO
+DBG_Pluginactionです。
+
+　ODBG_Pluginmenuはメインメニューの「Plugins」や右クリックメニューにプラ
+グインのメニューを追加します。
+
+-----
+extc int _export cdecl ODBG_Pluginmenu(int origin,char data[4096],void *item) {
+
+  // originは呼び出し元の識別子で、その値別にメニューを登録します。
+  // メニュー登録は引数dataにメニューとなる文字列を書き込むことで行います。
+  // メニュー項目名の前の数字はODBG_Pluginactionで使用されるメニューIDとなります。
+  switch (origin) {
+    case PM_MAIN: // メインウィンドウのプラグインメニュー
+      strcpy(data,"0 &Sample|1 &About");
+      return 1;
+    case PM_DISASM:  // ディスアセンブラ窓の右クリックメニュー
+      strcpy(data,"0 &Sample|1 &About");
+      return 1;
+    default: break;                    // Any other window
+  };
+  return 0;                            // Window not supported by plugin
+};
+-----
+
+　ODBG_PluginactionはODBG_Pluginmenuで登録されたメニュー項目が選択された
+ときに実行されるコードを指定する関数です。
+
+-----
+extc void _export cdecl ODBG_Pluginaction(int origin,int action,void *item) {
+  // OllyDbgのメインメニューから呼ばれた場合です。
+  if(origin==PM_MAIN) {
+
+    // actionにはメニュー登録の際に文字列の前に付けた数字が入ってきます。
+    switch (action) {
+    // 0はメインメニューの項目ではSampleです。
+    case 0:
+      SampleCode();
+      break;
+    // 1はメインメニューの項目ではAboutです。
+    case 1:
+      About();
+      break;
+    default: break;
+    }
+  }
+  else if (origin==PM_DISASM) {
+    switch (action) {
+    case 0:
+      SampleCode();
+      break;
+    case 1:
+      About();
+      break;
+    default: break;
+    }
+  }
+}
+-----
+
+●コンパイル
+　コンパイラはフリーのBorland C++ Compilerを使用することとします。コンパ
+イルの際、いくつかの約束事があります。
+
+・すべてのエクスポート関数を名前でエクスポートする。序数エクスポートは不
+可
+・C++コンパイラを使う場合、すべてのコールバック関数の名前切断を無効にする
+　（extern "C"で宣言する）
+・すべてのAPIおよびコールバック関数への引数渡しを標準Cスタイルに強制する
+　（cdeclとして宣言する）
+・plugin.h内で宣言されているすべての構造体のアラインメントをバイトに強制する
+・デフォルトのキャラクタータイプをUNSIGNEDにする
+
+　後ろ2つはコンパイラオプションで-aおよび-Kを指定することで実現します。
+
+　MAKEファイルを使用するのがよいでしょう。
+
+-----
+# Sample make file for BCC 5.5
+BCC = $(MAKEDIR)\..
+FILENAM  = SamplePlugin
+PROJECT  = $(FILENAM).dll
+OBJFILES = $(FILENAM).obj
+RESFILES = $(FILENAM).res
+RESDEPEN = $(RESFILES)
+LIBFILES = ollydbg.lib
+PATHCPP  = .;
+PATHASM  = .;
+PATHRC   = .;
+RELEASELIBPATH = $(BCC)\lib\release
+
+CFLAG1 = -I$(BCC)\include -WD -Oc -O2 -w -Ve -C -AT -x -RT- -r -a1 -d -k- -K -y -v -vi -c -b- -w-par -w-inl -Vx -tWD
+RFLAGS = -i$(BCC)\include
+AFLAGS = /i$(BCC)\include /mx /w2 /zd
+LFLAGS = -L$(BCC)\lib\obj;$(BCC)\lib;$(RELEASELIBPATH) -aa -Tpd -x -Gn -Gi -w -v
+ALLOBJ = c0d32.obj $(OBJFILES)
+ALLRES = $(RESFILES)
+ALLLIB = $(LIBFILES) $(LIBRARIES) import32.lib cw32.lib
+
+.autodepend
+BCC32  = bcc32
+CPP32  = cpp32
+TASM32 = tasm32
+LINKER = ilink32
+BRCC32 = brcc32
+
+.PATH.CPP = $(PATHCPP)
+.PATH.C   = $(PATHCPP)
+.PATH.ASM = $(PATHASM)
+.PATH.RC  = $(PATHRC)
+
+$(PROJECT): $(OBJFILES) $(RESDEPEN) $(DEFFILE)
+    $(BCC)\BIN\$(LINKER) @&&!
+    $(LFLAGS) +
+    $(ALLOBJ), +
+    $(PROJECT),, +
+    $(ALLLIB), +
+    $(DEFFILE), +
+    $(ALLRES)
+!
+
+.c.obj:
+    $(BCC)\BIN\$(BCC32) $(CFLAG1) -n$(@D) {$< }
+
+.asm.obj:
+    $(BCC)\BIN\$(TASM32) $(AFLAGS) $<, $@
+
+.rc.res:
+    $(BCC)\BIN\$(BRCC32) $(RFLAGS) -fo$@ $<
+
+clean:
+    del *.obj
+    del *.tds
+    del *.lib
+    del *.res
+-----
+
+
+●雛型コード
+　以下のコードにOllyDbgのプラグインAPIを駆使したプログラムを追加すればプ
+ラグインができるはずです（未確認）。Sample関数やAbout関数は定義していない
+ので、このままではエラーになります。OllyDbgに添付のBookmarkやComandline、
+拙作のプラグインなどのソースを参考にトライしてみてください。
+
+-----
+#include <windows.h>
+#include <stdio.h>
+#include <string.h>
+
+#include "plugin.h"
+
+HINSTANCE        hinst;    // DLLインスタンス格納用グローバル変数
+HWND             hwmain;   // OllyDbgメインウィンドウのウィンドウハンドル用
+
+BOOL WINAPI DllEntryPoint(HINSTANCE hi,DWORD reason,LPVOID reserved) {
+  if (reason==DLL_PROCESS_ATTACH)
+    hinst=hi;                          // Mark plugin instance
+  return 1;                            // Report success
+}
+
+extc int _export cdecl ODBG_Plugindata(char shortname[32]) {
+  strcpy(shortname,"Sample");       // プラグインの名前
+  return PLUGIN_VERSION;
+}
+
+extc int _export cdecl ODBG_Plugininit(int ollydbgversion,HWND hw,
+                                                     ulong *features) {
+  // まず、OllyDbgのバージョンとプラグインのバージョンをチェックします。
+  // OllyDbgのバージョンが古ければ処理を中断するため-1を返します。
+  if (ollydbgversion<PLUGIN_VERSION)
+    return -1;
+
+  // メッセージボックスの表示などのためにOllyDbgメインウィンドウの
+  // ハンドルをグローバル変数に取っておきます。
+  hwmain=hw;
+
+  /*... ここに初期化処理を書く ...*/
+
+  // ログウィンドウにプラグインの情報を出力します。
+  // Addtolist関数はOllyDbgのログウィンドウに文字列を出力する関数で、
+  // printf関数形式の書式指定が可能です。
+  Addtolist(0,0,"Sample plugin v1.10 (plugin demo)");
+  Addtolist(0,-1,"  Copyleft (C) 2001-2005 DokoDon");
+
+  // 初期化が正常に終了したら0を返します。
+  return 0;
+}
+
+extc int _export cdecl ODBG_Pluginmenu(int origin,char data[4096],void *item) {
+
+  // originは呼び出し元の識別子で、その値別にメニューを登録します。
+  // メニュー登録は引数dataにメニューとなる文字列を書き込むことで行います。
+  // メニュー項目名の前の数字はODBG_Pluginactionで使用されるメニューIDとなります。
+  switch (origin) {
+    case PM_MAIN: // メインウィンドウのプラグインメニュー
+      strcpy(data,"0 &Sample|1 &About");
+      return 1;
+    case PM_DISASM:  // ディスアセンブラ窓の右クリックメニュー
+      strcpy(data,"0 &Sample|1 &About");
+      return 1;
+    default: break;                    // Any other window
+  }
+  return 0;                            // Window not supported by plugin
+}
+
+extc void _export cdecl ODBG_Pluginaction(int origin,int action,void *item) {
+  // OllyDbgのメインメニューから呼ばれた場合です。
+  if(origin==PM_MAIN) {
+
+    // actionにはメニュー登録の際に文字列の前に付けた数字が入ってきます。
+    switch (action) {
+    // 0はメインメニューの項目ではSampleです。
+    case 0:
+      Sample();
+      break;
+    // 1はメインメニューの項目ではAboutです。
+    case 1:
+      About();
+      break;
+    default: break;
+    }
+  }
+  else if (origin==PM_DISASM) {
+    switch (action) {
+    case 0:
+      Sample();
+      break;
+    case 1:
+      About();
+      break;
+    default: break;
+    }
+  }
+}
+-----
+
+
+■0x04.) おわりに
+
+　急作りで企画的にも練れてなく、あまり面白くなくて役に立たない内容になっ
+てしまいました。もともと文才があるわけではないし、理解もこの程度なのでご
+容赦ください。
+　むしろこんなレベルのやつでもプラグイン作ったりできるんだという感想が正
+しい読み方です。
+

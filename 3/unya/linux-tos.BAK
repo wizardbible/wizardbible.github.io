@@ -1,0 +1,220 @@
+  高機能な事で有名なポートスキャナー「Nmap」が、ターゲットのオペレーティ
+ングシステムをLinuxと推測する判断材料のひとつに、Linuxが送信するポート到
+達不可エラーパケットのTOS値をみる、というのがあります。周知の通り、Linux
+はTOS値に0xc0という値を設定してパケットを送信します。TOSというのは、IPヘ
+ッダーの"Type of Service"と呼ばれる部分で、ルーターが対応していればサービ
+ス品質機能を提供する、というものです。ここでは、TOSとは何か？などという退
+屈な事は書きません。どのような理屈でTOS値に0xc0を設定しているのか、その辺
+をみていきましょう。
+
+  まず、Linuxカーネルのソースコードを用意します。使用しているオペレーティ
+ングシステムは何でも構いません。WindowsでもMacintoshでも大丈夫です。Linu
+xカーネルのソースコードは http://www.kernel.org/ からダウンロード出来ます。
+
+  準備が出来たら始めましょう。今回、参考のためにダウンロードしたカーネル
+はlinux-2.4.20.tar.gzです。カーネル全体ではかなり大きなサイズになりますが、
+これから参考にしていくソースファイルはふたつだけです。まずはUDPを処理する
+udp.cとICMPを発行するicmp.cです。これらのファイルは /linux-2.4.20/net/ipv4/
+にあります。
+
+  UDPパケットは、udp.cのudp_rcv()という関数で処理されます。説明のために行
+番号を付けています。
+
+-----  (udp.c、左側の数字は行番号)
+   884  int udp_rcv(struct sk_buff *skb)
+   885  {
+   886      struct sock *sk;
+   887      struct udphdr *uh;
+   888      unsigned short ulen;
+   889      struct rtable *rt = (struct rtable*)skb->dst;
+   890      u32 saddr = skb->nh.iph->saddr;
+   891      u32 daddr = skb->nh.iph->daddr;
+   892      int len = skb->len;
+   893
+            /*
+             * UDP長、チェックサム、キャッシュされたPCBとの比較
+             * マルチキャスト／ブロードキャストの振り分け
+             */
+
+            /* ポート到達不可エラーを発行する */
+   931      icmp_send(skb, ICMP_DEST_UNREACH, ICMP_PORT_UNREACH, 0);
+   932
+   933      /*
+   934       * Hmm.  We got an UDP packet to a port to which we
+   935       * don't wanna listen.  Ignore it.
+   936       */
+   937      kfree_skb(skb);
+   938      return(0);
+            /* 以下 goto 処理部 */
+   969  }
+-----
+
+  931行目でポート到達不可エラーを発行しています。UDPはポートが閉じている
+場合、ICMPタイプ3・コード3のICMPパケットを発行して、その旨を伝えます。で
+は、これから実際にICMPを発行している関数に移ってどのようにTOS値を設定して
+いるのか、みてみましょう。
+
+  ICMPポート到達不可エラーを発行する関数は391行目から始まります。この関数
+は長いので、変数宣言部と実際にTOS値を設定している部分のみを抜き出しました。
+399行目で宣言している"u8 tos"が目的の変数です。ちなみに、u8はunsigned char
+で8ビット(1バイト)です。
+
+-----  (icmp.c)
+   391  void icmp_send(struct sk_buff *skb_in, int type, int code, u32 info)
+   392  {
+   393          struct iphdr *iph;
+   394          int room;
+   395          struct icmp_bxm icmp_param;
+   396          struct rtable *rt = (struct rtable*)skb_in->dst;
+   397          struct ipcm_cookie ipc;
+   398          u32 saddr;
+   399          u8  tos;
+                ^^^^^^^^
+
+                /*
+                 * マルチキャスト／ブロードキャストの振り分け
+                 * フラグメント状態のチェック
+                 */
+
+                /* TOS値設定部 */
+   480          tos = icmp_pointers[type].error ?
+   481                  ((iph->tos & IPTOS_TOS_MASK) | IPTOS_PREC_INTERNETCONTROL) :
+   482                          iph->tos;
+   483  
+                /* 以下省略 */
+   537  }
+-----
+
+  ようやく、TOS値を設定している部分に辿り着きました。次のようになってますね。
+
+-----
+   480          tos = icmp_pointers[type].error ?
+   481                  ((iph->tos & IPTOS_TOS_MASK) | IPTOS_PREC_INTERNETCONTROL) :
+   482                          iph->tos;
+-----
+
+  このコードを見ると、 "icmp_pointers[type].error" が真ならば 
+"(iph->tos & IPTOS_TOS_MASK) | IPTOS_PREC_INTERNETCONTROL)" がTOS値になり、
+そうでなければ "iph->tos" がTOS値に設定されるようです。"iph->tos" は受信
+したIPヘッダーに設定されていたTOS値です。この判定文が真になるかどうかは、
+以下の部分を見れば分かります。
+
+-----  (icmp.c)
+   170  struct icmp_control
+   171  {
+   172          unsigned long *output;          /* Address to increment on output */
+   173          unsigned long *input;           /* Address to increment on input */
+   174          void (*handler)(struct sk_buff *skb);
+   175          short   error;          /* This ICMP is classed as an error message */
+   176  };
+-----
+
+-----  (icmp.c)
+   947  /*
+   948   *      This table is the definition of how we handle ICMP.
+   949   */
+   950   
+   951  static struct icmp_control icmp_pointers[NR_ICMP_TYPES+1] = {
+   952  /* ECHO REPLY (0) */
+   953   { &icmp_statistics[0].IcmpOutEchoReps, &icmp_statistics[0].IcmpInEchoReps, icmp_discard, 0 },
+   954   { &icmp_statistics[0].dummy, &icmp_statistics[0].IcmpInErrors, icmp_discard, 1 },
+   955   { &icmp_statistics[0].dummy, &icmp_statistics[0].IcmpInErrors, icmp_discard, 1 },
+   956  /* DEST UNREACH (3) */
+   957   { &icmp_statistics[0].IcmpOutDestUnreachs, &icmp_statistics[0].IcmpInDestUnreachs, icmp_unreach, 1 },
+   958  /* SOURCE QUENCH (4) */
+   959   { &icmp_statistics[0].IcmpOutSrcQuenchs, &icmp_statistics[0].IcmpInSrcQuenchs, icmp_unreach, 1 },
+   960  /* REDIRECT (5) */
+   961   { &icmp_statistics[0].IcmpOutRedirects, &icmp_statistics[0].IcmpInRedirects, icmp_redirect, 1 },
+   962   { &icmp_statistics[0].dummy, &icmp_statistics[0].IcmpInErrors, icmp_discard, 1 },
+   963   { &icmp_statistics[0].dummy, &icmp_statistics[0].IcmpInErrors, icmp_discard, 1 },
+   964  /* ECHO (8) */
+   965   { &icmp_statistics[0].IcmpOutEchos, &icmp_statistics[0].IcmpInEchos, icmp_echo, 0 },
+   966   { &icmp_statistics[0].dummy, &icmp_statistics[0].IcmpInErrors, icmp_discard, 1 },
+   967   { &icmp_statistics[0].dummy, &icmp_statistics[0].IcmpInErrors, icmp_discard, 1 },
+   968  /* TIME EXCEEDED (11) */
+   969   { &icmp_statistics[0].IcmpOutTimeExcds, &icmp_statistics[0].IcmpInTimeExcds, icmp_unreach, 1 },
+   970  /* PARAMETER PROBLEM (12) */
+   971   { &icmp_statistics[0].IcmpOutParmProbs, &icmp_statistics[0].IcmpInParmProbs, icmp_unreach, 1 },
+   972  /* TIMESTAMP (13) */
+   973   { &icmp_statistics[0].IcmpOutTimestamps, &icmp_statistics[0].IcmpInTimestamps, icmp_timestamp, 0  },
+   974  /* TIMESTAMP REPLY (14) */
+   975   { &icmp_statistics[0].IcmpOutTimestampReps, &icmp_statistics[0].IcmpInTimestampReps, icmp_discard, 0 },
+   976  /* INFO (15) */
+   977   { &icmp_statistics[0].dummy, &icmp_statistics[0].dummy, icmp_discard, 0 },
+   978  /* INFO REPLY (16) */
+   979   { &icmp_statistics[0].dummy, &icmp_statistics[0].dummy, icmp_discard, 0 },
+   980  /* ADDR MASK (17) */
+   981   { &icmp_statistics[0].IcmpOutAddrMasks, &icmp_statistics[0].IcmpInAddrMasks, icmp_address, 0  },
+   982  /* ADDR MASK REPLY (18) */
+   983   { &icmp_statistics[0].IcmpOutAddrMaskReps, &icmp_statistics[0].IcmpInAddrMaskReps, icmp_address_reply, 0 }
+   984  };
+-----
+
+  先の判定文は、struct icmp_control の "error"というメンバ名の変数が真か
+負なのかで判定しています。私たちが求めるポート到達不可エラーは以下の部分
+です。
+
+-----
+   957   { &icmp_statistics[0].IcmpOutDestUnreachs, &icmp_statistics[0].IcmpInDestUnreachs, icmp_unreach, 1 },
+                         ^^^
+-----
+
+　これを見ると"error"の部分が"1"に設定されています。つまり、ポート到達不
+可エラーパケットのTOS値は以下の計算式によって求められます。
+
+-----
+tos = (iph->tos & IPTOS_TOS_MASK) | IPTOS_PREC_INTERNETCONTROL);
+-----
+
+　マクロを展開しましょう。Linuxマシンでgrepを実行した結果です。
+
+-----
+/usr/include/linux/ip.h:33:#define IPTOS_PREC_INTERNETCONTROL      0xc0
+/usr/include/netinet/ip.h:172:#define   IPTOS_PREC_INTERNETCONTROL      0xc0
+/usr/include/linux/ip.h:23:#define IPTOS_TOS_MASK               0x1E
+-----
+
+　この結果から、マクロを展開すると次のようになります。
+
+-----
+tos = (iph->tos & 0x1e) | 0xc0);
+-----
+
+  ここまで見れば、もう分かるでしょう。私は今回、このコンテンツを書く前に、
+日本語のサイトを対象に、LinuxがTOS値に0xc0を設定する謎を調べてみましたが、
+数少ないヒットページには、例えば次のように記述されています。
+
+>ICMPポート到達不能メッセージのTOS値をチェックする手法。大半の実装はこの
+>フィールドを0にセットするが、Linuxでは値を0xC0（つまり16進数のC0）にセッ
+>トする
+
+　さて、これは正しいのでしょうか？
+
+  送信元ホストがTOS値に0xb9を設定して閉じているUDPポートにパケットを送信
+した場合、パケットを受信したLinuxはTOS値にどのような値を設定して、ポート
+到達不可エラーパケットを発行するのでしょうか？Linuxは次のような計算を行う
+でしょう。
+
+-----
+tos = (0xb9 & 0x1e) | 0xc0);
+            ||
+    0xb9 & 0x1e = [0x18]
+    [0x18] | 0xc0 = [0xd8] => tos = 0xd8
+-----
+
+　この計算結果から、TOS値は0xd8になると予想出来ます。これを確かめてみまし
+ょう。使用する"sonic"は私が書いたツールで、現在、公開／配布はしていません。
+自分で試してみたい方は"hping"を使用してください。おそらく同じような事が出
+来るはずです。hpingは http://www.hping.org/ からダウンロードしてください。
+
+-----
+[root@maniac ~]# sonic www.kernel.org --udp --tos 0xb9 -c1
+Sonic zeus-pub.kernel.org (204.152.189.116)
+356 bytes from zeus-pub.kernel.org (204.152.189.116): icmp: zeus-pub.kernel.org 
+udp port 80 unreachable for maniac.30000 > zeus-pub.kernel.org.80: [tos 0xd8] (id 25707, ttl 46, len 356)
+-----
+
+　確認出来ました。ホスト"www.kernel.org"は予想通りTOS値に0xd8を設定してい
+ます。この事から分かるように、LinuxはTOS値に0xc0を設定するのではなく、TOS
+値が0のパケットを受信したから、送信するTOS値が「0xc0になる」のです。この
+違いは覚えておくといいかも知れません。

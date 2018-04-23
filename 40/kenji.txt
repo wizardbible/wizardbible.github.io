@@ -1,0 +1,329 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第0章: DNS拡張EDNS0の解析  ---
+
+著者：Kenji Aiko
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　「512バイトの壁」という言葉をご存知だろうか？
+　TCP/IPネットワークにおいて、信頼性と速度はトレードオフの関係にある。あ
+たかも仮想的な空間を構築しているかのように見えるインターネットにおいても、
+リアル世界の物理的距離を無視しているわけではない。日本のコンピュータから
+送信されたデータが、ブラジルのコンピュータに必ずしも届くとは限らない。だ
+からこそ、信頼性を保障するためのTCPである。
+　しかし、インターネットの根幹を支えている技術のひとつであるDNS（Domain
+ Name System）ネットワークは、信頼性を失うことと引き換えに速度を重視した
+UDPにより実現されている。名前解決はインターネットの根幹のひとつであると言
+えるだろう。しかし、その割にはあまり注目度が高くない。
+　今回はそんな、縁の下の力持ちの話である。
+
+
+■0x02.) 512バイトの壁
+
+　「512バイトの壁」とは、名前解決に使用できるパケットサイズの限界値を指す。
+例えばdigコマンドで名前解決を行うと、受け取ったパケットサイズが表示される。
+
+-----  terminal
+# dig @localhost www.example.jp
+
+; <<>> DiG 9.4.0 <<>> @localhost www.example.jp
+; (1 server found)
+;; global options:  printcmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 49259
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 1, ADDITIONAL: 0
+
+;; QUESTION SECTION:
+;www.example.jp.                        IN      A
+
+;; ANSWER SECTION:
+www.example.jp.         86400   IN      A       192.168.10.6
+
+;; AUTHORITY SECTION:
+example.jp.             86400   IN      NS      dns.example.jp.example.jp.
+
+;; Query time: 0 msec
+;; SERVER: 127.0.0.1#53(127.0.0.1)
+;; WHEN: Sat Apr 19 03:33:15 2008
+;; MSG SIZE  rcvd: 77（←ポイント）
+
+#
+-----
+
+　名前解決により受け取ったパケットサイズは、0x77バイトであることが分かる。
+512バイトに収まっているため、正常に名前解決が出来る。では、もし512バイト
+より大きい名前解決応答が必要になったらどうだろう。以下のファイルを用意す
+る。
+
+-----  example.zone（BIND9用設定ファイル）
+$TTL 86400
+@       IN      SOA     dns.example.jp. root.example.jp. (
+                        2006120101
+                        3600
+                        900
+                        604800
+                        86400
+)
+        IN      NS      dns.example.jp
+dns     IN      A       192.168.10.1
+www     IN      A       192.168.10.100
+www     IN      A       192.168.10.101
+www     IN      A       192.168.10.102
+www     IN      A       192.168.10.103
+www     IN      A       192.168.10.104
+（省略）
+www     IN      A       192.168.10.163
+-----
+
+　www.example.jpに多くのIPアドレスを割り当てた。100から163まで64個のIPア
+ドレスが割り当てられているため、名前解決応答は必ず512バイトを超えるだろう。
+では、digで要求を送り、応答を確認する。
+
+-----  terminal
+# dig @localhost www.example.jp
+;; Truncated, retrying in TCP mode.（←ポイント）
+
+; <<>> DiG 9.4.0 <<>> @localhost www.example.jp
+; (1 server found)
+;; global options:  printcmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 60995
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 64, AUTHORITY: 1, ADDITIONAL: 0
+
+;; QUESTION SECTION:
+;www.example.jp.                        IN      A
+
+;; ANSWER SECTION:
+www.example.jp.         86400   IN      A       192.168.10.100
+www.example.jp.         86400   IN      A       192.168.10.101
+www.example.jp.         86400   IN      A       192.168.10.102
+（省略）
+www.example.jp.         86400   IN      A       192.168.10.163
+
+;; AUTHORITY SECTION:
+example.jp.             86400   IN      NS      dns.example.jp.example.jp.
+
+;; Query time: 2 msec
+;; SERVER: 127.0.0.1#53(127.0.0.1)
+;; WHEN: Sat Apr 19 03:43:26 2008
+;; MSG SIZE  rcvd: 1085（←ポイント）
+
+#
+-----
+
+　512バイトの壁を越えたため、通信がTCPモードになった。
+　この設定ファイルは意図して512バイトを超えるようにしているが、今後IPv6が
+普及し始めると、否応なくこの問題にぶつかることになる。そして、その解決方
+法がTCP。確かに一理あるが、速度が必要だからこそUDPを使っていたDNS。そして、
+今後も「速度が必要である」という事実は変わらない。
+　ここから、現在広く使われ始めている「EDNS0」へと話が進む。
+
+
+■0x03.) EDNS0
+
+　DNSは512バイトを超えない決まりであるが、ネットワークとして512バイト以上
+のパケットは扱えないか？　というと、そうでもない。MTU（Maximum Transmiss
+ion Unit）が1500くらいあるなら、別にDNSでも1500バイトのパケットを扱える。
+問題は、サーバ側とクライアント側の両方に、512バイト以上のMTUが扱えるかど
+うかである。そして、それを解決するのが、EDNS0である。
+　詳しいことは、RFC2671に書かれてある。
+
+RFC2671　DNS用拡張メカニズム (EDNS0)
+http://www.nic.ad.jp/ja/translation/rfc/2671.html
+
+　それなりに長いので読むのが大変だが、要約すると「DNSの要求と応答に『転送
+可能バイト』を格納する」ということだ。クライアントからの要求に入っている
+「転送可能バイト」と、サーバ自身の「転送可能バイト」を比較して小さい方に
+合わせる。現在のネットワークにおいて「転送可能バイト」が512なんてことはほ
+ぼないため、これで安心して512バイト以上のデータを扱える。
+　digコマンドでは、bufsizeオプションを指定することで、EDNS0を扱える。
+
+-----  terminal
+# dig +bufsize=2048 @localhost www.example.jp
+
+; <<>> DiG 9.4.0 <<>> +bufsize=2048 @localhost www.example.jp
+; (1 server found)
+;; global options:  printcmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 40073
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 64, AUTHORITY: 1, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096（←ポイント）
+;; QUESTION SECTION:
+;www.example.jp.                        IN      A
+
+;; ANSWER SECTION:
+www.example.jp.         86400   IN      A       192.168.10.100
+www.example.jp.         86400   IN      A       192.168.10.101
+www.example.jp.         86400   IN      A       192.168.10.102
+（省略）
+www.example.jp.         86400   IN      A       192.168.10.163
+
+;; AUTHORITY SECTION:
+example.jp.             86400   IN      NS      dns.example.jp.example.jp.
+
+;; Query time: 2 msec
+;; SERVER: 127.0.0.1#53(127.0.0.1)
+;; WHEN: Sat Apr 19 03:59:13 2008
+;; MSG SIZE  rcvd: 1096（←ポイント）
+
+#
+-----
+
+　今度は1096バイトのDNSパケットをUDPで処理した。
+
+
+■0x04.) パケット解析
+
+　512バイトを超えない名前解決の場合は普通のDNSパケットとなる。
+
+-----  terminal
+# dig @55.55.55.56 dns.example.jp
+-----
+
+-----  terminal
+# tcpdump -s 400 -xx -i eth0 udp
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on eth0, link-type EN10MB (Ethernet), capture size 400 bytes
+04:13:33.644091 IP 55.55.55.59.32891 > 55.55.55.56.domain:  30752+ A? dns.example.jp. (32)
+        0x0000:  000e 0c5f 8e6d 0018 8bf7 d083 0800 4500  ..._.m........E.
+        0x0010:  003c 0000 4000 4011 5dd0 3737 373b 3737  .<..@.@.].777;77
+        0x0020:  3738 807b 0035 0028 eb0a 7820 0100 0001  78.{.5.(..x.....
+        0x0030:  0000 0000 0000 0364 6e73 0765 7861 6d70  .......dns.examp
+        0x0040:  6c65 026a 7000 0001 0001                 le.jp.....
+04:13:33.644424 IP 55.55.55.56.domain > 55.55.55.59.32891:  30752* 1/1/0 A 192.168.10.1 (77)
+        0x0000:  0018 8bf7 d083 000e 0c5f 8e6d 0800 4500  ........._.m..E.
+        0x0010:  0069 0000 4000 4011 5da3 3737 3738 3737  .i..@.@.].777877
+        0x0020:  373b 0035 807b 0055 29ac 7820 8580 0001  7;.5.{.U).x.....
+        0x0030:  0001 0001 0000 0364 6e73 0765 7861 6d70  .......dns.examp
+        0x0040:  6c65 026a 7000 0001 0001 c00c 0001 0001  le.jp...........
+        0x0050:  0001 5180 0004 c0a8 0a01 c010 0002 0001  ..Q.............
+        0x0060:  0001 5180 0011 0364 6e73 0765 7861 6d70  ..Q....dns.examp
+        0x0070:  6c65 026a 70c0 10                        le.jp..
+-----
+
+　次に、EDNS0を使用したパケットを確認する。
+
+-----  terminal
+# dig +bufsize=2048 @55.55.55.56 dns.example.jp
+-----
+
+-----  terminal
+# tcpdump -s 400 -xx -i eth0 udp
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on eth0, link-type EN10MB (Ethernet), capture size 400 bytes
+04:17:55.509018 IP 55.55.55.59.32891 > 55.55.55.56.domain:  45014+ [1au] A? dns.example.jp. (43)
+        0x0000:  000e 0c5f 8e6d 0018 8bf7 d083 0800 4500  ..._.m........E.
+        0x0010:  0047 0000 4000 4011 5dc5 3737 373b 3737  .G..@.@.].777;77
+        0x0020:  3738 807b 0035 0033 8a35 afd6 0100 0001  78.{.5.3.5......
+        0x0030:  0000 0000 0001 0364 6e73 0765 7861 6d70  .......dns.examp
+        0x0040:  6c65 026a 7000 0001 0001 0000 2908 0000  le.jp.......)...
+        0x0050:  0000 0000 00                             .....
+04:17:55.509325 IP 55.55.55.56.domain > 55.55.55.59.32891:  45014* 1/1/1 A 192.168.10.1 (88)
+        0x0000:  0018 8bf7 d083 000e 0c5f 8e6d 0800 4500  ........._.m..E.
+        0x0010:  0074 0000 4000 4011 5d98 3737 3738 3737  .t..@.@.].777877
+        0x0020:  373b 0035 807b 0060 e1b5 afd6 8580 0001  7;.5.{.`........
+        0x0030:  0001 0001 0001 0364 6e73 0765 7861 6d70  .......dns.examp
+        0x0040:  6c65 026a 7000 0001 0001 c00c 0001 0001  le.jp...........
+        0x0050:  0001 5180 0004 c0a8 0a01 c010 0002 0001  ..Q.............
+        0x0060:  0001 5180 0011 0364 6e73 0765 7861 6d70  ..Q....dns.examp
+        0x0070:  6c65 026a 70c0 1000 0029 1000 0000 0000  le.jp....)......
+        0x0080:  0000                                     ..
+-----
+
+　通常のパケットと見比べると、要求と応答の両方に、11バイトのデータが付加
+されていることが確認できる。
+
+-----  追加部分（要求）
+        0x0040:  xxxx xxxx xxxx xxxx xxxx 0000 2908 0000
+        0x0050:  0000 0000 00 
+-----
+
+-----  追加部分（応答）
+        0x0070:  xxxx xxxx xxxx xx00 0029 1000 0000 0000
+        0x0080:  0000
+-----
+
+　このデータ列は、DNSのOPT-RRフォーマットに従った作りになっているため、基
+本的にOPT-RRを読み出す方法で読める。ただし、便宜的にフォーマットに従った
+だけであるため、RFCでは「OPT疑似RR」と定義され、「DNSパケットにひとつだけ
+追加できる」とされている。
+　OPT-RRの固定部分の構造を以下に示す。
+
+ フィールド名 | フィールドタイプ     | 説明
+--------------+----------------------+-----------------------------------
+ NAME         | ドメイン名           | ドメイン名（終端'\0'）
+ TYPE         | u_int16_t            | タイプ（'A', 'PTR', 'NS', etc...）
+ CLASS        | u_int16_t            | クラス（'IN', etc...）
+ TTL          | u_int32_t            | TTL（Time To Live）
+ RDLEN        | u_int16_t            | RDATAのサイズ
+ RDATA        | オクテットストリーム | データ
+--------------+----------------------+-----------------------------------
+
+　これらが、OPT疑似RR場合、以下のように設定される。
+
+ フィールド名 | フィールドタイプ     | 説明
+--------------+----------------------+-----------------------------------
+ NAME         | ドメイン名           | '\0'固定
+ TYPE         | u_int16_t            | 0ｘ0029（EDNS0識別番号）
+ CLASS        | u_int16_t            | 転送可能バイト（2048, 4096, etc...）
+ TTL          | u_int32_t            | 0x00000000固定（DNSSEC時にflagが立つ）
+ RDLEN        | u_int16_t            | 0x0000固定
+ RDATA        | オクテットストリーム | RDLENが0x0000固定であるため実質なし
+--------------+----------------------+-----------------------------------
+
+　TTLの部分は1バイトごとに別のステータスが割り当てられているが、現状EDNS
+0を使う場合はすべて0固定である。DNSSECを使用する場合のみフラグが立つ。詳
+細はRFCにて。
+　では、このフォーマットを要求と応答のそれぞれで受け取ったOPT疑似RRで当て
+はめる。
+
+ フィールド名 | 要求                 | 説明
+--------------+----------------------+-----------------------------------
+ NAME         | 0x00                 | '\0'固定
+ TYPE         | 0x0029               | 0ｘ0029（EDNS0識別番号）
+ CLASS        | 0x1000               | 転送可能バイト（2048, 4096, etc...）
+ TTL          | 0x00000000           | 0x00000000固定（DNSSEC時にflagが立つ）
+ RDLEN        | 0x0000               | 0x0000固定
+ RDATA        | なし                 | RDLENが0x0000固定であるため実質なし
+--------------+----------------------+-----------------------------------
+
+ フィールド名 | 応答                 | 説明
+--------------+----------------------+-----------------------------------
+ NAME         | 0x00                 | '\0'固定
+ TYPE         | 0x0029               | 0ｘ0029（EDNS0識別番号）
+ CLASS        | 0x0800               | 転送可能バイト（2048, 4096, etc...）
+ TTL          | 0x00000000           | 0x00000000固定（DNSSEC時にflagが立つ）
+ RDLEN        | 0x0000               | 0x0000固定
+ RDATA        | なし                 | RDLENが0x0000固定であるため実質なし
+--------------+----------------------+-----------------------------------
+
+　目的となる転送可能バイト以外さほどデータを送っていないことがわかる。
+　このようにして、DNSは512バイトの壁をTCPなしで克服する。
+
+
+■0x05.） さいごに
+
+　BIND9では、要求時、まず最初にEDNS0のクエリを出す。つまり、BIND9はすでに
+512バイトの壁の克服に動いているわけだが、必ずしもこのような実装がよいかは
+わからない。なぜなら、EDNS0に対応していないサーバも存在するからだ。もしE
+DNS0にサーバ側が対応していなかった場合、サーバはエラー応答として（NOTIMP
+L, FORMERR, or SERVFAIL）を返す。こうなると、再度、今度は通常のDNS要求を
+出す必要がでてくる。
+　プロトコルの根本的問題は、プロトコルを利用するすべてのソフトウェアが対
+応しなければ意味がない。BIND9だけがEDNS0に対応したとしても、他のソフトが
+対応してくれなければ、結局解決にはならない。しかし、BIND9はもっとも普及し
+ているDNSサーバのひとつだ。そのBIND9が、EDNS0の利用に踏み出したということ
+は、それなりに支持を得た拡張であるのではないかと思う。
+　インターネットの根幹を支えるDNS。たまにはその技術に目を向けてみるのもよ
+いのではないだろうか。
+
+
+

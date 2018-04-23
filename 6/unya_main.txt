@@ -1,0 +1,172 @@
+- RAWソケット入門 -
+
+1.はじめに
+  特に明記しない限り、BSD環境を中心に解説していきます。TCP/IPが一般に公開されたのは、1983年、4.2BSDに実装されたのが最初でした。以後、改良や拡張が加えられて、TCP/IPはインターネットの基盤となり、現在、一般公開されている 4.4BSD-Lite2 はFreeBSD, NetBSD, OpenBSDといったBSDを派生させています。又、ここ数年でLinuxが広く普及しましたが、このUnix互換OSはBSDの実装とは若干異なる所があり、そのような個所については個別に解説していきます。尚、Linuxについては2.4系カーネルを対象にしています。
+
+2.SOCK_RAW
+  rawソケットを使用すると、ICMP, IGMPパケットや、カーネルがサポートしないIPv4プロトコルフィールドを持ったパケットをユーザープロセスから読み書き出来るようになります。又、後述するIP_HDRINCLオプションを設定すれば、独自のIPv4ヘッダーを作成して送信する事が出来ます。IP_HDRINCLオプションを設定していない場合は、カーネルが生成するIPヘッダーの後ろに続くデータを作成する事になります。このとき使われるプロトコルは、socket(2)の第３引数の値になります。
+  身近にあるrawソケットを利用したプログラムにはPing(8)とTraceroute(8)があります。ICMPエコー要求送信、ICMPエコー応答の受信を行っているのがPingプログラムであり、TracerouteはIPとUDPヘッダーを含む独自のパケットを構築しています。
+  rawソケットを作成するには、socket(2)の第２引数にSOCK_RAWを指定します。以下はsocket()のプロトタイプ。
+
+===========================================
+#include <sys/types.h>
+#include <sys/socket.h>
+
+socket(int domein, int type, int protocol);
+===========================================
+
+rawソケットの作成は次のようにして行います。
+
+socket(PF_INET, SOCK_RAW, protocol);
+
+socket()の第１引数にPF_INETを指定しています。このフィールドをPF_INETとAF_INETのどちらにしたら良いのか迷う方もいると思いますが、PF_INETとAF_INETは同じ値なので、これに対して神経質になる必要はないでしょう。
+  protocolには、任意のプロトコルを設定する事が出来ます。IPPROTO_RAWを設定すると、あらゆるIPプロトコルを送信する事が出来ますが、受信に関してはこれに従いません。LinuxでIPPROTO_RAWを設定すると、IP_HDRINCLオプションが暗黙のうちに有効になる事に注意する必要があります。
+
+3.IP_HDRINCLオプション
+  このオプションは4.3BSD Renoで導入されました。送信するパケットにIPヘッダーを含める場合は、IP_HDRINCLオプションを指定します。以下はプロトタイプ。
+
+================================================================================
+#include <sys/types.h>
+#include <sys/socket.h>
+
+int
+setsockopt(int s, int level, int optname, const void *optval, socklen_t optlen);
+================================================================================
+
+  IP_HDRINCLオプションを設定する場合、 levelはIPPROTO_IPになりoptnameはIP_HDRINCLでoptlenはint型のサイズになります。例えば、次のようにしてソケットオプションの設定を行います。
+
+==============================================================
+int hincl = 1;
+
+setsockopt(sd, IPPROTO_IP, IP_HDRINCL, &hincl, sizeof(hincl));
+==============================================================
+
+4.IPヘッダーの作成／送信と注意点
+  パケットの送信は多くの場合、sendto(2)を用いる事になるはずです。これはsendto()が接続していない状態でのパケット送信が可能だからです。sendto()以外の関数を使用するならば、connect(2)を呼び出す事になります。rawソケットでもconnect()を呼び出す事は可能です。但し、rawソケットはポート番号の概念が存在しないので、TCPのような接続ではなく、リモートアドレスの設定のみを行います。connect()を呼び出したのならば、sendto()の代わりにsend(2),write(2)を用いる事になります。
+  IP_HDRINCLオプションを設定してIPヘッダーを作成する場合は自分でそれぞれのIPv4ヘッダー値を設定する事になりますが、IPv4識別フィールド(IPID)とIPv4ヘッダチェックサムは0で構いません。IPv4識別フィールドが0に設定されているならば、カーネルがこのフィールドを埋めます。IPv4ヘッダチェックサムは常にカーネルが計算します。又、全IP長フィールドは、Linuxの場合、実際に送信するサイズが優先され、カーネルによって変更されます。BSDではこのフィールドと実際に送信するサイズが一致しない場合は送信する事が出来ません。又、バイトオーダーにも気をつける必要があります。BSDではip_len(全IP長)とip_off(フラグメントオフセット)フィールドをホストバイトオーダーに設定しますが、Linuxの場合、全てのフィールドをネットワークバイトオーダーに設定します。例外として、OpenBSDはLinuxと同じ設定を行います。
+
+5.rawソケットからの読み込み
+  全てのパケットをrawソケットから読み込む事が出来るわけではなく、カーネルがUDP/TCPパケットをrawソケットへ渡す事はありません。rawソケットからはIGMPパケットとエコー要求、タイムスタンプ要求、アドレスマスク要求を除くICMPパケット、そして、カーネルがサポートしないIPv4プロトコルフィールドを持ったパケットがrawソケットへ渡されます。
+  カーネルは上記のrawソケットへ渡すべきパケットを受信した際、特定の条件と一致したパケットのみ、rawソケットへ渡します。まず、第１にソケット作成段階でsocket(2)の第３引数であるプロトコルフィールドに0でない値を設定している場合、このプロトコルフィールドと受信したプロトコルが一致する必要があります。第２に、bind(2)でローカルIPアドレスがバインドされている場合、宛先アドレスがローカルIPアドレスと一致している必要があります。第３に、connect(2)を呼び出して宛先アドレスを指定している場合、このアドレスと受信したパケットの送信元アドレスが一致している必要があります。socket()のプロトコルフィールドを0に設定している場合は、rawソケットに渡すべきパケットを全て読み込む事が出来ます。rawソケットから読み出したパケットには、IP_HDRINCLオプションに関係なくIPヘッダーが含まれています。
+
+6.BSDとLinuxにおける実装の違い
+  BSDの実装では、受信したUDP/TCPパケットがrawソケットへ渡される事はありませんが、Linuxではこれらのパケットはrawソケットへ渡されます。"Jackal"というステルスポートスキャナーがいい例です。このポートスキャナーはLinux用に書かれていますが、これをBSDに移植したとしても動作する事はありません。パケットの送信を行う事は可能でも、受信する事が出来ないからです。LinuxからBSDに移行する際は注意が必要です。
+  もうひとつ気になる実装として、Linuxではrawソケットを作成する際、プロトコルにIPPROTO_IPを設定出来ない、というのがあります。つまり、ソケットタイプにSOCK_RAWを指定して、プロトコルに0を設定するとエラーになります。これは、ソケットタイプをSOCK_RAWにした場合のみです。エラーを返す過程はカーネルソースコード上で確認する事が出来るので、実際にエラーを返している部分を見てみましょう。
+  アセンブリでソケットを扱った経験のある方ならばご存じでしょうが、Linuxでのsocket()やbind()等は個別のシステムコールにはなっておらず、sys_socketcall()というソケットシステムコールから呼び出されます。ソケットを作成する流れは以下のようになります。
+
+sys_socketcall() => sys_socket() => sock_create() => inet_create() => sock_map_fd()
+
+エラーコードを返している関数はaf_inet.cに記述されているinet_create()です。以下はinet_create()のエラーを返している部分を抜き出したものです。
+
+answer = NULL;
+br_read_lock_bh(BR_NETPROTO_LOCK);
+list_for_each(p, &amp;inetsw[sock-&gt;type]) {
+    answer = list_entry(p, struct inet_protosw, list);
+
+    /* Check the non-wild match. */
+    if (protocol == answer-&gt;protocol) {
+        if (protocol != IPPROTO_IP)
+            break;
+    } else {
+        /* Check for the two wild cases. */
+        if (IPPROTO_IP == protocol) {
+            protocol = answer-&gt;protocol;
+            break;
+        }
+        if (IPPROTO_IP == answer-&gt;protocol)
+            break;
+    }
+    answer = NULL;
+}
+br_read_unlock_bh(BR_NETPROTO_LOCK);
+
+if (!answer)
+    goto free_and_badtype;
+if (answer-&gt;capability &gt; 0 &amp;&amp; !capable(answer-&gt;capability))
+    goto free_and_badperm;
+if (!protocol)
+    goto free_and_noproto;
+
+/*
+ * 省略
+ */
+
+free_and_badtype:
+    sk_free(sk);
+    return -ESOCKTNOSUPPORT;
+
+free_and_badperm:
+    sk_free(sk);
+    return -EPERM;
+
+free_and_noproto:
+    sk_free(sk);
+    return -EPROTONOSUPPORT;
+
+do_oom:
+    return -ENOBUFS;
+}
+
+このコードは、ソケットタイプに応じたプロトコルの設定を行っています。ソケットタイプがSOCK_RAW の場合、SOCK_RAWのデフォルトプロトコルはIPPROTO_IPなので、breakでループを抜ける事が出来ず、answerがNULLになります。answerがNULLの場合、goto文によってラベル "free_and_badtype" へ飛び、"-ESOCKTNOSUPPORT"を戻り値として呼び出し元へ戻ります。
+  Linuxカーネルは日々変化しています。バージョン2.4.5までは以下のような実装になっていました。こちらの方が分かりやすいかも知れません。Linux-2.4.5で実装されているinet_create()のコードです。
+
+switch (sock-&gt;type) {
+case SOCK_STREAM:
+        if (protocol &amp;&amp; protocol != IPPROTO_TCP)
+                goto free_and_noproto;
+        protocol = IPPROTO_TCP;
+        prot = &amp;tcp_prot;
+        sock-&gt;ops = &amp;inet_stream_ops;
+        break;
+case SOCK_SEQPACKET:
+        goto free_and_badtype;
+case SOCK_DGRAM:
+        if (protocol &amp;&amp; protocol != IPPROTO_UDP)
+                goto free_and_noproto;
+        protocol = IPPROTO_UDP;
+        sk-&gt;no_check = UDP_CSUM_DEFAULT;
+        prot=&amp;udp_prot;
+        sock-&gt;ops = &amp;inet_dgram_ops;
+        break;
+case SOCK_RAW:
+        if (!capable(CAP_NET_RAW))
+                goto free_and_badperm;
+        if (!protocol)
+                goto free_and_noproto;
+        prot = &amp;raw_prot;
+        sk-&gt;reuse = 1;
+        sk-&gt;num = protocol;
+        sock-&gt;ops = &amp;inet_dgram_ops;
+        if (protocol == IPPROTO_RAW)
+                sk-&gt;protinfo.af_inet.hdrincl = 1;
+        break;
+default:
+        goto free_and_badtype;
+}
+
+/*
+ * 省略
+ */
+
+free_and_badtype:
+        sk_free(sk);
+        return -ESOCKTNOSUPPORT;
+
+free_and_badperm:
+        sk_free(sk);
+        return -EPERM;
+
+free_and_noproto:
+        sk_free(sk);
+        return -EPROTONOSUPPORT;
+
+do_oom:
+        return -ENOBUFS;
+}
+
+こちらの実装では、"-ESOCKTNOSUPPORT"を戻り値としています。エラーコードが変わるので、当然のことながらエラーメッセージも変わります。
+
+7.参考文献
+[1] 「UNIXネットワークプログラミング 第２版 Vol.1」、W. Richard Stevens 著、篠田 陽一 訳、 ピアソン・エデュケーション
+[2] Linux Programmer's Manual
+[3] NetBSD Programmer's Manual

@@ -1,0 +1,545 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: リバースエンジニアリング実践 khallengeへのチャレンジ その2 ---
+
+著者：Green boy 4
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　またまたGreen boy 4です。Level1の前項に続き、Level2について記述します。
+
+
+■0x02.) まず実行
+
+　Level1をクリアしたため、Level2を実施します。Level2を実行すると、下記内
+容のポップアップが表示されますが、どこにも入力するような欄はありません。
+OKボタンが押せるのみです。
+
+-----　ポップアップの内容
+Assembly 2007 Reverse-Engineering Challenge - Level2
+Copyright (c) 2007 F-Secure Corporation
+
+
+For more information visit
+http://www.f-secure.com/security_center/asm.html
+-----
+
+　さて、どうしたものでしょうか？
+　やはりここは、デバッガで読み込んで解析してみましょう。
+
+
+■0x03.) OllyDbgで読み込み
+
+　OllyDbgにFSC_Level2.exeをドラッグ＆ドロップします。ポップアップが表示さ
+れるということは、MessageBox APIを実行していると思われるため、まずそれを
+探そうとしました。Alt+EでExecutable Moduleを開き、Nameが「FSC_Leve」と表
+示された部分をクリック後、Ctrl+NでNameウィンドウを開きましょう。
+
+-----　FSC_LeveのNameウィンドウ
+Names in FSC_Leve
+Address    Section    Type    (  Name                                    Comment
+00407044   UPX2       Import  (  KERNEL32.ExitProcess
+00407040   UPX2       Import  (  KERNEL32.GetProcAddress
+0040703C   UPX2       Import  (  KERNEL32.LoadLibraryA
+004062A0   UPX1       Export     <ModuleEntryPoint>
+0040704C   UPX2       Import  (  USER32.wsprintfA
+-----
+
+　この5つしか表示されませんでした。また、Sectionを見ると、UPXという文字列
+が見えます。ということはUPXでパックされているために、本来のAPIが表示され
+ていないということが予想できます。
+
+　UPXはパック、アンパックが双方向で行なえるので、UPXでアンパックすればよ
+いのですが、せっかくリバースエンジニアリングをしているので、OllyDbgでアン
+パックをしてみましょう。
+
+
+■0x04.) OllyDbgでアンパック
+
+　UPXは素直なパッカーなので、単純にオリジナルコードをメモリ上に展開後、そ
+のセクションにJMPします。そのJMP先がOEP(オリジナルエントリーポイント)にな
+ります。また、UPXのもうひとつの特徴として、JMPの直前にはPOPAD命令があるの
+が特徴です。まず、そこを見つけます。
+
+　Alt+MでMemory mapウィンドウを開きます。
+
+-----　Memory mapウィンドウの内容
+Memory map
+Address    Size       Owner      Section    Contains      Type   Access    Initial   Mapped as
+00400000   00001000   FSC_Leve              PE header     Imag   R         RWE
+00401000   00005000   FSC_Leve   UPX0                     Imag   R         RWE
+00406000   00001000   FSC_Leve   UPX1       code          Imag   R         RWE
+00407000   00001000   FSC_Leve   UPX2       data,imports  Imag   R         RWE
+-----
+
+　現在、OllyDbgは4062A0で停止しているため、406000のセクションはUPXのSFXコ
+ードです。また、40700はUPXのdataやimportsセクションであり、残りの401000の
+セクションにJMPするはずなので、そのセクションへのJMP命令とPOPAD命令を見つ
+けます。
+
+　OllyDbgのコマンド検索は、v1.xではオペランドまできっちり指定しないとコマ
+ンド検索ができないという制約があります。そのため、オペランドのいらないPO
+PADを検索してみます。Ctrl+FでFind Commandウィンドウを開き、「POPAD」と入
+力して検索します。
+
+-----　検索結果1
+004061F1   . /65:73 73      JNB SHORT FSC_Leve.00406267              ;  Superfluous prefix
+004061F4   . |61            POPAD
+004061F5   . |67:65:42      INC EDX                                  ;  Superfluous prefix
+-----
+
+　POPADの後にJMP命令がないので、この場所は違います。よって、Ctrl+Lを押し、
+次の候補を見てみます。
+
+-----　検索結果2
+004063BB   > \61            POPAD
+004063BC   .- E9 99AFFFFF   JMP FSC_Leve.0040135A
+004063C1      00            DB 00
+-----
+
+　出ました。POPADとJMP命令のコンビであり、401000のセクションへのJMP命令で
+す。このJMP先がOEPになるので、まずここ（4063BC）にブレークポイントを張っ
+て実行後、F7を押してStep intoで1命令だけ処理を進めます。
+
+-----　OEP周辺のCPUウィンドウ
+0040135A    50              PUSH EAX
+0040135B    35 08714200     XOR EAX,427108
+00401360    1BC2            SBB EAX,EDX
+00401362    870424          XCHG DWORD PTR SS:[ESP],EAX
+00401365    8F05 64204000   POP DWORD PTR DS:[402064]
+0040136B    68 00104000     PUSH FSC_Leve.00401000
+00401370    C3              RETN
+00401371  - FF25 50304000   JMP DWORD PTR DS:[403050]                ; USER32.MessageBoxA
+00401377  - FF25 54304000   JMP DWORD PTR DS:[403054]                ; USER32.wsprintfA
+0040137D  - FF25 5C304000   JMP DWORD PTR DS:[40305C]                ; kernel32.GetCommandLineA
+00401383    0000            ADD BYTE PTR DS:[EAX],AL
+-----
+
+　では、この時点のメモリイメージをDumpし、IAT Rebuildするという作業をOll
+yDumpで実施してしまいましょう。PluginメニューからOllyDump->Dump Debugged
+ Processを選び、そのままDumpをクリックし、保存先を指定すればアンパック完
+成です。
+
+　勉強の意味でいうと、本当はIAT Rebuildも自分で実施すればよいのですが、今
+回は面倒なのでOllyDumpの機能で行なってしまいました。興味のある方はご自身
+で実施してみるのはいかがでしょうか？
+
+
+■0x05.) アンパックしたファイルをOllyDbgで読み込み
+
+　では、アンパックをしたファイルをOllyDbgにドラッグ＆ドロップして見てみま
+しょう。Nameウィンドウを表示させてみたところ、今度はGetCommandLineが見え
+ます。
+
+　それ以外のAPIはGetCommandLineとwsprintfだけという、なんともシンプルな構
+成のようです。LoadLibraryもないので、これ以上のAPIが呼び出されることはな
+さそうです。
+
+-----　FSC_LeveのNameウィンドウ
+Names in FSC_Leve
+Address    Section    Type    (  Name                                    Comment
+0040305C   UPX0       Import  (  kernel32.GetCommandLineA
+00403050   UPX0       Import  (  USER32.MessageBoxA
+00401352   UPX0       Export     <ModuleEntryPoint>
+00403054   UPX0       Import  (  USER32.wsprintfA
+-----
+
+　さて、再度エントリーポイント周辺を見てください。
+
+-----　OEP周辺のCPUウィンドウ
+00401352 > $  33DB          XOR EBX,EBX
+00401354   .  68 5A134000   PUSH FSC_Leve.0040135A
+00401359   .  C3            RETN                                     ;  RET used as a jump to 0040135A
+0040135A   >  50            PUSH EAX
+0040135B   .  35 08714200   XOR EAX,427108
+00401360   .  1BC2          SBB EAX,EDX
+00401362   .  870424        XCHG DWORD PTR SS:[ESP],EAX
+00401365   .  8F05 64204000 POP DWORD PTR DS:[402064]
+0040136B   .  68 00104000   PUSH FSC_Leve.00401000
+00401370   .  C3            RETN                                     ;  RET used as a jump to 00401000
+00401371   .- FF25 50304000 JMP DWORD PTR DS:[<&USER32.MessageBoxA>] ;  USER32.MessageBoxA
+00401377   .- FF25 54304000 JMP DWORD PTR DS:[<&USER32.wsprintfA>]   ;  USER32.wsprintfA
+0040137D   .- FF25 5C304000 JMP DWORD PTR DS:[<&kernel32.GetCommandL>;  kernel32.GetCommandLineA
+-----
+
+　401359のRETN、401370のRETNのコメント欄を見ると、面白いことが書いてあり
+ます。
+
+-----　401359のコメント欄
+RET used as a jump to 0040135A
+-----
+
+　このRET命令はJMP命令として動作していますよ、とOllyDbgが判断しているので
+す。RET命令の内部の動作的には、スタックからPOP、POPしたアドレスへのJMPな
+ので、その時点でスタックに入っている値がその飛び先というわけです。つまり、
+通常の用途である、Call命令に対応するRETではなく、トリッキーなジャンプ命令
+としてRETを使っています。ということは、401354-401359、40136B-401370の命令
+のセットは、それぞれ40135AへのJMP、401000へのJMPと判断できるわけです。こ
+の処理内容を把握するにはF8を押してStep実行していったほうが理解しやすいか
+もしれません。また、このブロックが終わった後の飛び先である401000に関して
+も、同じことが言えます。
+
+-----　401000周辺
+00401000   >  54            PUSH ESP
+00401001   .  890424        MOV DWORD PTR SS:[ESP],EAX
+00401004   .  B8 6D114000   MOV EAX,FSC_Leve.0040116D
+00401009   .  870424        XCHG DWORD PTR SS:[ESP],EAX
+0040100C   .  C2 0000       RETN 0
+-----
+
+　先ほどより少し複雑にしていますが、これらの命令は40116Dへ単純にJMPする
+だけの処理です。そのため、エントリーポイント周辺を以下のように変更しても
+動くでしょう。
+
+-----　OEP周辺を少しだけ改造
+00401352 > $  33DB          XOR EBX,EBX
+00401354      90            NOP                    ; PUSHとRETNをNOPで潰す
+00401355      90            NOP
+00401356      90            NOP
+00401357      90            NOP
+00401358      90            NOP
+00401359      90            NOP
+0040135A   >  50            PUSH EAX
+0040135B   .  35 08714200   XOR EAX,427108
+00401360   .  1BC2          SBB EAX,EDX
+00401362   .  870424        XCHG DWORD PTR SS:[ESP],EAX
+00401365   .  8F05 64204000 POP DWORD PTR DS:[402064]
+0040136B    ^ E9 FDFDFFFF   JMP FSC_Leve.0040116D  ; PUSHとRETNをJMPに変更
+-----
+
+　なぜこのような一見すると無駄な処理が行なわれているのでしょうか？　これ
+は、推測ですが、デバッガやディスアセンブラ対策ではないかと考えています。
+事実、OllyDbgではエントリーポイント周辺のRET命令を解釈してくれましたが、
+401000の処理はJMP命令の代わりであると判定してくれませんでした。
+
+　また、Immunity Debuggerのグラフ機能に至っては、エントリーポイント周辺の
+RET命令すらJMPとは判定せずに、そこから先の処理をグラフ化できませんでした。
+
+　このように、今回のレベルはLevel1から比べると、多少なりともレベルが上が
+っているのではないかと推測ができます。
+
+
+■0x06.) Level2を実行しながら解析
+
+　さてCPUウィンドウのディスアセンブル結果だけを静的解析するのもいいですが、
+私のような初心者だと、効率が非常によくありません。そこで、デバッガ上で実
+行して挙動を見ながら、ディスアセンブル結果も併せて確認し、解析していく、
+という解析手法を取りたいと思います。
+
+　この手法は、実行させて挙動を把握するブラックボックス分析と、ディスアセ
+ンブル結果から挙動を把握するホワイトボックス分析を同時に実施することから、
+グレーボックス分析と呼ばれています。
+
+　この場合、全部をStep intoで実行すると日が暮れてしまうので、状況に応じて
+以下のことを組み合わせて使います。
+
+ o F9 Run
+ o F8 Step over
+ o F7 Step into
+ o F2 Breakpoint
+ o Ctrl+F9 Execute till return
+ o Alt+F9 Execute till user code
+ o Ctrl+F11 Trace into
+ o Ctrl+F12 Trace over
+ o Hardware breakpoint, breakpoint memory on read/write
+
+などなど
+
+　例えばですが、F8でざっくり実行していったら、ループに入ってしまったとい
+う場合、何周かそのループをさせてみて、何を行なっているか把握できたら、ル
+ープの直後の命令にBreakPointを張って、残りはCtrl+F12なりF9で残りのループ
+処理を飛ばしてしまうという方法で時間短縮をします。
+
+　実行の際は、トレースを取っておくと便利です。勢いあまって進みすぎてしま
+った場合でも、「-」で逆戻りしてレジスタの値を見ることができます。
+
+　また、トレースを行なう際、Kernel32.dllなどのWindows APIまで解析すること
+はないと思うので、「Options」メニューから「Debugging options」を選択し、
+Traceタブに切り替え後、「Always trace over system DLLs」にチェックしてお
+くのがよいでしょう。
+
+　今回の場合は、以下の方法で解析しました。
+
+ o F8でざっくりとStep実行し、どんなデータがスタックやHeapに入るのかを見る
+ o Ctrl+F12でTrace overし、Trace logからMessageBox APIをCALLしている部分
+   を探し、そこからさかのぼって条件分岐（JNZやJBEなどのJMP以外のジャンプ
+   命令）を探す
+ o IDAのグラフ機能を使って条件分岐前後の処理をブロック単位で見て、処理を
+   把握する
+
+　上記の方法で、以下のようなことがわかりました。
+
+ o 40118B-4011B5でループして、実行時のコマンドのフルパスの文字列を読み込
+   んで文字数をカウントしている
+ o Congratulations!というメッセージを代入している処理が401245からのブロッ
+   クに存在
+ o Congratulations!のブロックにたどり着くまでに、3箇所のチェックポイント
+   が存在
+   そのポイント（JNZ）は以下のアドレス
+     + 4011E1
+     + 40121D
+     + 40123F
+ o 送付先のメールアドレスはLuckyNumberIs_%x_FSC@khallenge.comであり、%xに
+   相当する部分をどこかの処理で算出している
+
+
+■0x07.) チェックポイントをNOPでつぶす
+
+　前項では、Congratulations!という、おそらくクリアしたときに表示される文
+字列であろうブロックと、そこにたどり着くまでのチェックポイントを洗い出し
+ました。そこでちょっと無理やりではありますが、このチェックポイントを書き
+換え、強制的に到達させるとクリアできないか？　と考えました。
+
+　条件付ジャンプを自分の思い通りにするには、主に以下が考えられます。
+
+・ジャンプするように、JMPに書き換える
+・ジャンプしないように、NOPに書き換える
+
+　今回の場合、書き換え対象は全てJNZであり、値が0のときにジャンプせずにク
+リアのブロックに流れるようなので、ジャンプしないように3つのJNZをすべてNO
+Pに書き換えます。
+
+・Ctrl+Gで4011E1へ移動
+JNZ上で右クリックメニューからBinary -> Fill with NOPsをクリック
+
+・Ctrl+Gで40121Dへ移動
+JNZ上で右クリックメニューからBinary -> Fill with NOPsをクリック
+
+・Ctrl+Gで40123Fへ移動
+JNZ上で右クリックメニューからBinary -> Fill with NOPsをクリック
+
+　以上を実施後にF9で実行してみましょう。すると、以下のポップアップが表示
+されるはずです。
+
+-----　表示されたポップアップの内容
+Assembly 2007 Reverse-Engineering Challenge - Level 2
+Copyright (c) 2007 F-Secure Corporation
+
+
+Congratulations!
+Please send an e-mail to LuckyNumberIs_22657865_FSC@khallenge.com
+-----
+
+　メールアドレスとしても成り立っているので、正しそうです。「なんだ、簡単
+じゃないか」と思い、このアドレスにメールを送りました。しかし、いつまで経
+ってもメールが返ってきません。
+
+　実は、Level1のときも2通メールを送ってやっと1通返ってきたということがあ
+ったので、メールの遅配があるのかな？　と2度、3度と送ってみましたが、やは
+り戻ってくる気配がありません。
+
+　どうやら、まんまと罠に引っかかってしまったようです。この方法では正規の
+メールアドレスが得られないようなので、さらに解析をしていきます。
+
+
+■0x08.) チェックポイント付近の処理を調査
+
+　前項で、無理やりクリアの処理まで持っていきましたが、やはりそれではうま
+くいかないようです。よって、解析を続行しなければならないのですが、クリア
+に到達するまでのチェックポイントは前回までの解析で判明しているので、どう
+すればその条件を満たせるのかを見ていけばわかるはずです。
+
+　まず、4011E1のチェックから見ていきたいと思います。
+
+-----　チェックポイント1の前の処理
+004011B5   .^\75 D4         JNZ SHORT FSC_Leve.0040118B  ; 実行パスをカウントするループの終端
+004011B7   .  54            PUSH ESP
+004011B8   .  890424        MOV DWORD PTR SS:[ESP],EAX
+004011BB   .  89C0          MOV EAX,EAX
+004011BD   .  870424        XCHG DWORD PTR SS:[ESP],EAX
+004011C0   .  31C0          XOR EAX,EAX
+004011C2   .  8A42 FB       MOV AL,BYTE PTR DS:[EDX-5]   ; 注意点1
+004011C5   .  870424        XCHG DWORD PTR SS:[ESP],EAX
+004011C8   .  54            PUSH ESP
+004011C9   .  890424        MOV DWORD PTR SS:[ESP],EAX
+004011CC   .  89C0          MOV EAX,EAX
+004011CE   .  870424        XCHG DWORD PTR SS:[ESP],EAX
+004011D1   .  31C0          XOR EAX,EAX
+004011D3   .  B0 20         MOV AL,20                    ; 注意点2
+004011D5   .  870424        XCHG DWORD PTR SS:[ESP],EAX
+004011D8   .  874424 04     XCHG DWORD PTR SS:[ESP+4],EAX
+004011DC   .  3B0424        CMP EAX,DWORD PTR SS:[ESP] ; チェックポイント1のチェック
+004011DF   .  58            POP EAX
+004011E0   .  58            POP EAX
+004011E1      0F85 15010000 JNZ FSC_Leve.004012FC  ; チェックポイント1の分岐点
+-----
+
+　40118B-4011B5は実行時のコマンドのフルパスをカウントしている処理と思われ
+るので、その後の処理はこれに関連するものであることが推測できます。
+
+　4011B7にブレークポイントを設定し、レジスタの状態を見てみましょう。
+
+-----　4011B7時点でのレジスタの内容
+EAX 00141EE8 ASCII ""C:\FSC_Level2_unpacked.exe""
+ECX 0012FFB0
+EDX 00141F04
+EBX 00000000
+ESP 0012FFA4
+EBP 0012FFF0
+ESI FFFFFFFF
+EDI 7C950738 ntdll.7C950738
+EIP 004011B7 FSC_Leve.004011B7
+-----
+
+　注目すべきはEAXとEDXの値でしょう。Dumpウィンドウをクリックし、Ctrl+Gで
+EAXに移動してみましょう。
+
+-----　4011B7時点でのDumpウィンドウの内容
+00141EE8  22 43 3A 5C 46 53 43 5F  "C:\FSC_
+00141EF0  4C 65 76 65 6C 32 5F 75  Level2_u
+00141EF8  6E 70 61 63 6B 65 64 2E  npacked.
+00141F00  65 78 65 22 00           exe".
+-----
+
+　EAXにはパスの最初、EDXにはパスの最後のアドレスが格納されているようです。
+
+　そのままF8でStep実行していったところ、4011C5において、EDX-5、つまり5文
+字手前の文字列を計算し、それを4011DCのcmpで20（スペース）と比較しているこ
+とがわかりました。現状では、5文字手前は「.」になります（末尾5文字は「.exe
+"」なので）。つまり、5文字手前はスペースでないといけないということです。
+
+　しかし、ここで問題なのは「.」は拡張子の区切り文字なので、単純にスペース
+に置き換えるとダブルクリックでは実行できなくなってしまいます。さてどうし
+たものでしょうか？　勘のいい方ならお気づきかもしれませんが、実はこのプロ
+グラムには引数が必要だったのです。
+
+　5文字前がスペースとなるように調整すると、引数は4文字ということになり、
+引数を「abcd」と仮定した場合、以下の形になります。
+
+-----　引数の予想
+"C:\FSC_Level2_unpacked.exe" abcd
+------
+
+　OllyDbgでは、DebugメニューからArgumentsを選択すると、解析対象に引数を与
+えられます。引数を与えた後、Ctrl+F2でリスタートしましょう。
+
+
+■0x09.) チェックポイント2
+
+　さて、4011DCにブレークポイントを張って、そこまで実行してみましょう。目
+論見どおり、EAXと[ESP]の値が一致し、4011E1のJNZをジャンプせずに通過できま
+した。
+
+　では、チェックポイント2に移ります。
+
+-----　チェックポイント2の前の処理
+004011E1   . /0F85 15010000 JNZ FSC_Leve.004012FC         ; チェックポイント1
+004011E7   . |D3C0          ROL EAX,CL
+004011E9   . |8B42 FC       MOV EAX,DWORD PTR DS:[EDX-4]  ; 注意点1
+004011EC   . |35 6D562855   XOR EAX,5528566D              ; 注意点2
+004011F1   . |30FC          XOR AH,BH
+004011F3   . |54            PUSH ESP
+004011F4   . |890424        MOV DWORD PTR SS:[ESP],EAX
+004011F7   . |89C0          MOV EAX,EAX
+004011F9   . |870424        XCHG DWORD PTR SS:[ESP],EAX
+004011FC   . |31C0          XOR EAX,EAX
+004011FE   . |8A42 FA       MOV AL,BYTE PTR DS:[EDX-6]     ; 注意点3
+00401201   . |870424        XCHG DWORD PTR SS:[ESP],EAX
+00401204   . |54            PUSH ESP
+00401205   . |890424        MOV DWORD PTR SS:[ESP],EAX
+00401208   . |89C0          MOV EAX,EAX
+0040120A   . |870424        XCHG DWORD PTR SS:[ESP],EAX
+0040120D   . |31C0          XOR EAX,EAX
+0040120F   . |B0 22         MOV AL,22                      ; 注意点4
+00401211   . |870424        XCHG DWORD PTR SS:[ESP],EAX
+00401214   . |874424 04     XCHG DWORD PTR SS:[ESP+4],EAX
+00401218   . |3B0424        CMP EAX,DWORD PTR SS:[ESP]     ; チェックポイント2のチェック
+0040121B   . |58            POP EAX
+0040121C   . |58            POP EAX
+0040121D   . |0F85 AE000000 JNZ FSC_Leve.004012D1          ; チェックポイント2の分岐点
+-----
+
+　実は、チェックポイント2も仮の引数を与えた現状のままで通過できてしまいま
+す。というのも、ここは4011E7-4011F1の処理を除けば、チェックポイント1の処
+理とほぼ同様であり、6文字前が「"(22)」であるかどうかをチェックしているだ
+けだからです。
+
+　ただ、4011E9-4011ECを見てください。EDX-4、つまり4文字前から4文字分（＝
+引数「abcd」）を5528566DでXORしています。実は、これがチェックポイント3の
+比較文字になるのです。
+
+
+■0x10.) チェックポイント3
+
+-----　チェックポイント3の前の処理
+0040121D   . /0F85 AE000000 JNZ FSC_Leve.004012D1          ; チェックポイント2
+00401223   . |54            PUSH ESP
+00401224   . |890424        MOV DWORD PTR SS:[ESP],EAX
+00401227   . |8B42 F6       MOV EAX,DWORD PTR DS:[EDX-A]   ; 注意点1
+0040122A   . |870424        XCHG DWORD PTR SS:[ESP],EAX
+0040122D   . |54            PUSH ESP
+0040122E   . |890424        MOV DWORD PTR SS:[ESP],EAX
+00401231   . |89C0          MOV EAX,EAX
+00401233   . |870424        XCHG DWORD PTR SS:[ESP],EAX
+00401236   . |874424 04     XCHG DWORD PTR SS:[ESP+4],EAX
+0040123A   . |3B0424        CMP EAX,DWORD PTR SS:[ESP]     ; チェックポイント3のチェック
+0040123D   . |58            POP EAX
+0040123E   . |58            POP EAX
+0040123F   . |0F85 B7000000 JNZ FSC_Leve.004012FC          ; チェックポイント3の分岐
+-----
+
+　401227でEDX-A、つまり10文字前の文字列を4文字分取得しています。10文字前
+は「.exe」になります。また、40123Aでは、前項の引数を5528566DでXORしたもの
+と「.exe(6578652E)」と比較しています。ということは以下の条件を満たせばよ
+いわけです。
+
+引数 XOR 5528566D = 6578652E(.exe)
+
+　一方でXORは以下のような法則が成り立ちます。
+
+    X XOR Y = Z
+    X XOR Z = Y
+    Z XOR Y = X
+
+　ということは、以下の式も成り立つということです。
+
+6578652E XOR 5528566D = 引数
+
+　一点注意しなければならないのは、この式はリトルエンディアンを考慮してい
+ません。よって、正確には以下の結果を求めることになります。
+
+2E657865 XOR 6D562855 = 引数
+
+　これは、Windowsに付属の電卓で計算できますので、それで計算を行なってくだ
+さい。43335030という値になりました。これをASCIIコードに直すと「C3P0」にな
+ります。これが引数の正確な値になります。
+
+
+■0x11.) 正しい引数をつけて実行
+
+　では、正しい引数に直して実行してみましょう。もうデバッガでロードしなく
+てもかまいません。実行すると、以下のポップアップが表示されるはずです。
+
+-----　表示されたポップアップの内容
+Assembly 2007 Reverse-Engineering Challenge - Level 2
+Copyright (c) 2007 F-Secure Corporation
+
+
+Congratulations!
+Please send an e-mail to LuckyNumberIs_30503343_FSC@khallenge.com
+-----
+
+　このメールアドレスに送ったところ、レベル3へのリンクが貼られたメールが戻
+ってきました。
+
+
+■0x07.) 所感
+
+　Level2は、Level1から比べると急にレベルが上がったように思います。とはい
+っても、コード自体が非常に小さいので、私のような初心者にはうってつけの練
+習台でした。Level3はさらに難しくなります。次回は、そのあたりを説明したい
+と思います。
+
+　まだまだ上級者の方が見たら、私のやり方は非常に効率が悪く、取るに足らな
+いやり方かもしれませんが、暖かく見守っていただけると幸いです。また、アド
+バイスがございましたら、ぜひとも賜りたいと思います。よろしくお願いします。
+
+それでは、また。
+
+
+

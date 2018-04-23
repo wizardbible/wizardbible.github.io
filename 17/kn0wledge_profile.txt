@@ -1,0 +1,14 @@
+■kn0wledge
+●Job:読書（これはJobなのだろうか）
+●Web:http://kn0wledge.x-eye.net/
+●Mail:kn0wledge@flashmail.com
+●Team（Group）:N/A
+●Comment:
+　今回は、約9年間クラック関係を見てきた感想を書かせていただきました。
+●主に使用しているブラウザ：Mozilla Firefox
+　始めて使ったブラウザはNetscape Navigatorでした。当時やっとInternet Exp
+lorerがリリースされたのですがテーブル、フレームに未対応と全く使いものにな
+らない物だったのでNetscape Navigatorを使い続け、Netscape Communicatorにな
+り現在はMozilla Firefoxとなっています。昔から使ってきたということもありま
+すが、現在メインOSとしてGentoo Linuxを使っているためWindowsでも同じ感覚で
+使えることにメリットを感じMozilla Firefoxをメインで使っています。

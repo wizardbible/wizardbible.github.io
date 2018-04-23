@@ -1,0 +1,215 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: 難読化ツールを作ろう　前編：VC++のプロジェクト変更の自動化 ---
+
+著者：suma
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　「難読化ツールを作ろう」という題で難読化ツールの作り方を前後2回に別けて
+解説します。 今回は、VC++(Visual C++)のプロジェクトファイルをC#で作ったプ
+ログラムから変更するテクニックを解説します。
+
+　VC++のプロジェクトファイルをプログラムから編集するというのは、VC++向け
+のVisual Studioのアドインや開発ツールを作るのに便利な方法です。今回は難読
+化についてほとんど触れないため、Visual Studio向けに開発ツールを作りたい方
+は是非読んでみてください。
+
+　この記事は、以下の私のブログから参照しているPDF・プログラムをWizard Bi
+ble向けに書き直した物です。PDFではライブラリの使い方などは解説していませ
+んが、興味があればこちらも後から読んでみてください。
+
+「VC++向け難読化ツールの開発」レポートPDFの公開
+http://d.hatena.ne.jp/obfuscation/20090119#p1
+
+難読化ツールソースコード公開
+http://d.hatena.ne.jp/obfuscation/20090125#p1
+
+
+■0x02.) なぜ自動化するのか
+
+　難読化ツールで難読化を自動化する理由は次の2点でしょう。
+
+・プログラマーが難読化のためにソースコードを変更する作業をなくす。
+・これによりバグの発生、ソースコードの保守性の低下を防ぐ。
+
+　また、難読化だけでなく開発ツールで自動化を行う目的は次の2点に主眼を置く
+ことになると思います。
+
+・生産性の向上
+　手順に詳しくない人でも簡単に扱えるようにする。
+　慣れている人でも、面倒な作業を簡単にできるようにする。
+
+・別システムへの統合
+　開発ツール（NAntやMSBuildなど）やシステム（ビルド・テストツールなど）と
+統合して、開発のプロセスをすべて自動化できるようにする。
+
+　今回作るのはVisual Studio用のアドインではありませんが、例としてIntel T
+BB(Threading Buliding Blocks)のアドインを紹介しておきます。
+
+　TBBのアドインは、VC++のプロジェクトオプションを変更してDLLをロードする
+ディレクトリのパスを変更します。TBBのようなライブラリのDLLは複数バージョ
+ンのファイルが開発者のマシンに混在してインストールされることがあるため、
+TBBのインストーラはシステムディレクトリにDLLをインストールしません。しか
+し、DLLは実行ファイルのあるディレクトリ、Windowsディレクトリ、PATHに設定
+されたディレクトリなどから検索されるため、そのままではTBBのDLLをプログラ
+ムからロードされません。そこで、アドインを使ってプロジェクトオプションか
+らPATHを変更し、指定したバージョンのDLLが実行時にロードされるようにしてい
+ます。
+
+
+■0x03.) Visual Studioを拡張する方法
+
+　Visual StudioにはIDEを拡張するCOMライブラリが提供されています。提供され
+ている機能に、メニューやツールバー、ウィンドウなどのカスタマイズ、テキス
+トエディタで編集している情報へのアクセス方法などがあります。MSDNの以下の
+ページからたどっていくと、拡張できる機能の多さに驚くと思います。
+
+MSDN - Visual Studio 環境の拡張
+http://msdn.microsoft.com/ja-jp/library/esk3eey8.aspx
+
+MSDN - EnvDTE 名前空間
+http://msdn.microsoft.com/ja-jp/library/envdte.aspx
+MSDN - EnvDTE80 名前空間
+http://msdn.microsoft.com/ja-jp/library/0e105c68.aspx
+
+
+　今回はVC++のプロジェクトファイルを扱うため、VCProjectとVCProjectEngine
+というクラスインタフェースを使います。以下のページでそれぞれのインタフェ
+ースのメンバが解説されています。
+
+MSDN - VCProjectEngine メンバ (Microsoft.VisualStudio.VCProjectEngine)
+http://msdn.microsoft.com/ja-jp/library/microsoft.visualstudio.vcprojectengine.vcproject_members.aspx
+
+MSDN - VCProject メンバ (Microsoft.VisualStudio.VCProjectEngine)
+http://msdn.microsoft.com/ja-jp/library/microsoft.visualstudio.vcprojectengine.vcprojectengine_members.aspx
+
+
+■0x04.) 自動化するプログラムを書く
+
+　それでは、C#を使ってVC++のプロジェクトオプションを扱うプログラムを書い
+てみましょう。およそ以下のような手順となります。Visual Studio 2005とVisu
+al Studio 2008で作り方に異なることはありません。
+
+
+●C#でプロジェクトを作る
+
+　ここでは簡単に動作を確認するためコンソールアプリケーションのC#プロジェ
+クトを想定して説明します。
+
+
+●VCProjectとVCProjectEngineを参照に追加する
+
+　Microsoft.VisualStudio.VCProjectとMicrosoft.VisualStudio.VCProjectEngi
+neの2つのコンポーネントをプロジェクトに登録します。以下のページを参考にし
+て、Visual Studioのソリューションエクスプローラから参照を追加してみまし
+ょう。参照の追加の「.NET」タブからこれらのコンポーネントを追加することが
+できます。
+
+MSDN - 方法 : EnvDTE、EnvDTE80、および EnvDTE90 の各名前空間への参照を追
+加する
+http://msdn.microsoft.com/ja-jp/library/yf86a8ts.aspx
+
+
+●usingでVCProjectとVCProjectEngineを記述する
+
+　自動化の処理を記述するソースコードの先頭に以下の行を追加します。
+
+----
+using Microsoft.VisualStudio.VCProject;
+using Microsoft.VisualStudio.VCProjectEngine;
+----
+
+
+●自動化するコードを書く
+
+　VCProjectとVCProjectEngineを使ったコードは以下ようになります。以下のコ
+ードでは、プロジェクトのファイル一覧と、プロジェクトの設定一覧を表示しま
+す。
+
+-----
+static void test1(string project_path)
+{
+	VCProjectEngine engine = new VCProjectEngineObject();
+	VCProject proj = (VCProject)engine.LoadProject(project_path);
+	if (proj == null)
+	{
+		throw new Exception();
+	}
+
+	IVCCollection projFiles = (IVCCollection)proj.Files;
+	IVCCollection projConfs = (IVCCollection)proj.Configurations;
+
+	// プロジェクトのファイルを表示する
+	for (int i = 1; i <= projFiles.Count; i++)
+	{
+		VCFile file = (VCFile)projFiles.Item(i);
+		Console.WriteLine("File {0}: {1}", i, file.Name);
+	}
+
+	// プロジェクトの設定を表示する
+	for (int i = 1; i <= projConfs.Count; i++)
+	{
+		VCConfiguration cfg = (VCConfiguration)projConfs.Item(i);
+		Console.WriteLine("VCConfiguration {0}: {1}", i, cfg.Name);
+
+		// オプションを変更する場合は、VCConfiguraionをIVCCollectionにキャストする。
+		// IVCCollectionクラスからItemメソッドを使って好きなイベントオブジェクトを取得する。
+		// 取得し、そしてさらにキャストする。
+		//VCPreLinkEventTool eventTool = (VCPreLinkEventTool)((IVCCollection)cfg.Tools).Item("VCPreLinkEventTool");
+		//if (eventTool != null)
+		//{
+		//    eventTool.CommandLine += "....";
+		//}
+
+        // ファイル名を変更してプロジェクトを保存する
+        proj.ProjectFile = "(パス)";
+        proj.Save();
+	}
+
+}
+
+static void Main(string[] args)
+{
+	if (args.Length == 1)
+	{
+		test1(args[0]);
+	}
+}
+-----
+
+　通常のC#コードとは異なる以下の点に気をつけてコードを書く必要があります。
+
+・メソッドの返り値、もしくはプロパティがobject型の場合は、自分が扱うイン
+タフェースの型へキャストする
+・キャストしたリファレンスがnullになっていないかチェックする
+・一部のリスト（ファイル一覧）などは、IVCCollecitonというインタフェースを
+使ってオブジェクトのリファレンスを取得する（その後キャストする）
+
+　コンポーネントはCOMである関係もあってか、メソッドの返り値やプロパティは
+オブジェクト（object型）なっています。自分が扱いたいインタフェースをMSDN
+のドキュメントから探し、同時にメソッドやプロパティが何の型を返すのか確認
+しておくとよいでしょう。
+
+MSDN - Microsoft.VisualStudio.VCProjectEngine 名前空間
+http://msdn.microsoft.com/ja-jp/library/microsoft.visualstudio.vcprojectengine.aspx
+
+
+■0x05.) まとめ
+
+　Visual Studioは色々拡張できて実はスゴイのに、解説した記事を見たことがな
+いので書いてみることにしました。少々説明不足なところがあるかもしれません
+が、MSDNを見て試行錯誤すればすぐに解決できると思います。
+
+　このネタは昨年秋頃に、Wizard Bibleにチュートリアルを書こうと思っていて
+気がついたら放置していた内容でした。文章を書くリハビリと、記事を書くのが
+続くように前後に別けたので、後編に続きます。次回はOCamlというプログラミン
+グ言語を使った難読化プログラムの実装について解説する予定です。
+
+
+

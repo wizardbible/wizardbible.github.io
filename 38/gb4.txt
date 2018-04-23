@@ -1,0 +1,389 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: リバースエンジニアリング実践 khallengeへのチャレンジ その3-1 ---
+
+著者：Green boy 4
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　どもGreen boy 4です。36号に続き、F-Secure Reverse-Engineering Challenge
+2007(khallenge 2007)の解析を行ないます。今回から数回にわたって、ラストの
+問題であるLevel3について説明していきたいと思います。本当は1回で説明できれ
+ばよいのですが、かなり長文になることが予想されるので、何回かに分けて説明
+していきたいと思います。
+
+　と、ちょっとその前に、この場を借りてお詫びしなければならないことはあり
+ます。36号の第3章 0x03.)において、OllyDumpはDokoDonさんのサイトからはもう
+ダウンロードができないような書き方をしてしまいました。しかし、ご本人から
+ツッコミをいただきまして、サイトは閉めているものの、OllyDumpをはじめとし
+たPluginはダウンロードできるようです。具体的にはOllyDumpのダウンロードは
+以下の方法で行ないます。
+
+1：以下のURLにアクセス
+http://dd.x-eye.net/
+
+2：「閉めました。」というリンクをクリック
+
+3：「ollydump300110.zip」をダウンロード
+
+　私が確認不足のために、誤った記述をしてしまい、申し訳ありませんでした。
+またDokoDonさん、ご指摘ありがとうございました。
+
+　ということで、ここからLevel3の説明を始めたいと思います。
+
+
+■0x02.) まず実行
+
+　Level3は実行すると、下記のようにKeyの入力を求められます。この点はLevel
+1と同様ですね。このKeyがわかれば、Level3が解けます。では、実際にOllyDbgで
+読み込ませて見ましょう。
+
+-----　出力された内容
+Assembly 2007 Reverse-Engineering Challenge - Level 3
+Copyright (c) 2007 F-Secure Corporation
+
+For more informations visit:
+http://www.f-secure.com/security_center/asm.html
+
+Enter the key:
+-----
+
+　さて、どうしたものでしょうか？ やはりここは、デバッガで読み込んで解析し
+てみましょう。
+
+
+■0x03.) OllyDbgで読み込み
+
+　OllyDbgにFSC_Level3.exeをドラッグ＆ドロップします。前項で実行した際、「
+Assembly 2007～」という文字列が表示されていたことを確認済みなので、その文
+字列を表示後、文字列の入力を受け付けた後に正規のKeyの文字列と比較する処理
+があるはずです。ということで、まずこのメッセージがどこで表示されるかを探
+したいと思います。
+
+　CPUウィンドウの逆アセンブラが表示されている部分を右クリックし、Search 
+For->All referenced text stringsを開いてください。
+
+-----　All referenced text stringsウィンドウの一部
+Text strings referenced in FSC_Leve:.text
+Address    Disassembly                               Text string
+00401086   PUSH FSC_Leve.00400F00                    ASCII "Assembly 2007 Reverse-（略）Enter the key: "
+004010F1   MOV ESI,FSC_Leve.0040C398                 ASCII "Congratulations! Please send an e-mail to "
+00401167   MOV ESI,FSC_Leve.0040C3D4                 ASCII "Sorry, this key is not valid!"
+…（以下略）…
+-----
+
+　最初の行（401086）に実行時のメッセージが出てきました。また成功時、失敗
+時に表示されるメッセージはそれぞれ4010F1、401167が参照していることがわか
+ります。このように実行時のメッセージがバイナリにそのまま存在することから
+今回はLevel2のときのようにパックされていないようです。ではとりあえず4010
+86にブレークポイントを設定し、F9でそこまで実行して様子を見てみましょう。
+
+
+■0x04.) 文字列の入力場所の判定
+
+　実行すると、以下の場所で停止します。
+
+-----　ブレークポイント（401086）時点のCPUウィンドウの内容
+00401086   |.  68 000F4000   PUSH FSC_Leve.00400F00                   ;  ASCII "Assembly （略）Enter the key: "
+0040108B   |.  C705 50E04000>MOV DWORD PTR DS:[40E050],FSC_Leve.00401>
+00401095   |.  C705 54E04000>MOV DWORD PTR DS:[40E054],FSC_Leve.00401>
+0040109F   |.  C705 64E04000>MOV DWORD PTR DS:[40E064],FSC_Leve.00401>
+004010A9   |.  E8 06050000   CALL FSC_Leve.004015B4
+004010AE   |.  E8 A8010000   CALL FSC_Leve.0040125B
+004010B3   |.  50            PUSH EAX
+004010B4   |.  8D8424 100400>LEA EAX,DWORD PTR SS:[ESP+410]
+004010BB   |.  68 00040000   PUSH 400
+004010C0   |.  50            PUSH EAX
+004010C1   |.  E8 67030000   CALL FSC_Leve.0040142D                   ;  文字入力受け付け関数
+004010C6   |.  8D8C24 180400>LEA ECX,DWORD PTR SS:[ESP+418]
+004010CD   |.  6A 0A         PUSH 0A
+004010CF   |.  51            PUSH ECX
+004010D0   |.  E8 2B030000   CALL FSC_Leve.00401400
+004010D5   |.  8D9424 200400>LEA EDX,DWORD PTR SS:[ESP+420]
+004010DC   |.  52            PUSH EDX
+004010DD   |.  C600 00       MOV BYTE PTR DS:[EAX],0
+004010E0   |.  E8 EB000000   CALL FSC_Leve.004011D0                   ;  文字列比較関数？
+004010E5   |.  83C4 1C       ADD ESP,1C
+004010E8   |.  85C0          TEST EAX,EAX
+004010EA   |.  75 76         JNZ SHORT FSC_Leve.00401162              ;  合否の判定
+004010EC   |.  B9 0A000000   MOV ECX,0A
+004010F1   |.  BE 98C34000   MOV ESI,FSC_Leve.0040C398                ;  ASCII "Congratulations! Please send an e-mail to "
+-----
+
+　ここから、F8で進めていったところ、まず、4010C1でF8が効かなくなり、コマ
+ンドプロンプトがKeyの入力待ちの状態になりました。そこでその次の行の4010C6
+にブレークポイントを設定後、Keyはわからないので、仮に「abcdefgh」と入力し
+てEnterを押したところ、再度デバッガに処理が戻りました。よってそのままF8で
+さらに進めていきました。
+
+　すると、4010E0のcallが実行される直前までは入力した文字列がスタックに積
+まれていましたが、4010E0がcallされ、その後のADD命令（4010E5）によって、そ
+の文字列がスタックから解放されていることがわかりました。そのため、このcal
+l文（4010E0）が入力文字列と正規のKeyを比較している部分であると推測するこ
+とができます。また、その後のJNZ（4010EA）でEAXが0でなければ、文字列が不正
+であったときの処理にジャンプします。よって、4010E0で呼び出した関数の合否
+判定（＝入力文字列の合否判定）をここ（4010EA）でおこなっているということ
+になります。ということで、4010E0のCALL 4011D0を詳しく調査すれば、正しい文
+字列が得られるはずなので、次の項ではそれを調査していくことにします。
+
+
+■0x05.) 文字数チェック処理を特定
+
+　4010E0にブレークポイントを設定後、Ctrl+F2でプロセスを再スタートしてF9を
+押して再度実行します。その際、それまでに設定したブレークポイントは、Alt+B
+でBreakpointsウィンドウを開き、SpaceキーでDisableに設定しておくとよいでし
+ょう。Keyはとりあえずまた「abcdefgh」と入力し、Enterを押すと、4010E0で停
+止するので、F7でStep intoし、F8でStep overして進めていきます。
+
+　F8でざっくり進めていくとわかると思いますが、2～3命令を実行ごとにJMP命令
+であちこちにジャンプしてしまい、内容が非常にわかりにくくなっていることが
+わかると思います。これは、コードが難読化（obfuscate）されていることが予測
+されます。やはりLevel3は一筋縄ではいかないようです。
+
+　また、F8で進めていったところ、しばらくすると、以下のようなコードが出て
+きました。
+
+-----　413E3B付近のCPUウィンドウ
+00413E3B    31C0            XOR EAX,EAX
+00413E3D    8A8B 68000000   MOV CL,BYTE PTR DS:[EBX+68]
+00413E43    388B 64000000   CMP BYTE PTR DS:[EBX+64],CL  ; 入力文字の１文字目「a」とNULL?を比較
+00413E49    75 01           JNZ SHORT FSC_Leve.00413E4C
+00413E4B    40              INC EAX
+00413E4C    8883 64000000   MOV BYTE PTR DS:[EBX+64],AL
+00413E52  ^ E9 7BAEFFFF     JMP FSC_Leve.0040ECD2
+-----
+
+　413E49は難読化のJMP命令とは違い、条件分岐のJNZなので、何らかの条件判定
+を行なっている部分のようです。また、入力した文字列の1文字目である「a」と
+NULL(00)を比較しているように見えます(413E3D)。本物のKey文字列の比較部分で
+あるかはわかりませんが、ここは重点的に見ておく必要があると考えられます。
+よって、413E49あたりにブレークポイントを設定後、一度Ctrl+F2でプロセスを再
+起動し、F9で実行してKeyを入力すると、以前に設定したブレークポイント（4010
+E0）で停止するので、F7を押して4011D0に入ります。そして、ここからの動きを
+詳細に見ていきます。
+
+　ただし前述の通りコードが難読化されているようであるため、コードがあちこ
+ちに飛んで、一見では確認しづらいので、ここから実行されるコードのトレース
+をとって、トレースログをチェックすることで、この難読化を回避してみたいと
+思います。
+
+　まずメニューバーよりView->Run traceを選択し、Run traceウィンドウを表示
+します。次にRun traceウィンドウを右クリックし、Log to fileを選択し、結果
+をファイルに保存するようにします。その後、Ctrl+F12でTrace overを実行する
+ことで、F8を押してStep overしていった場合と同程度の内容がファイルに保存さ
+れるようになります。
+
+-----　トレースログの一部（ループ１回目）
+Address  Thread   Command                                   ; Registers and comments
+0040EB11 Main     MOV DWORD PTR DS:[EBX+78],0
+00413DE3 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162E38 -> 入力文字列が格納されているアドレス
+00413DE9 Main     ADD DWORD PTR DS:[EBX+78],EAX
+00410AD9 Main     MOV EAX,DWORD PTR DS:[EBX+78]
+00410ADF Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162E61 -> ALは0x61であり、ASCIIコードでいう「a」
+00410AE1 Main     MOV BYTE PTR DS:[EBX+64],AL
+004127C7 Main     MOV DWORD PTR DS:[EBX+78],4
+00411FDE Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162E38
+00411FE4 Main     ADD DWORD PTR DS:[EBX+78],EAX
+00412209 Main     MOV EAX,DWORD PTR DS:[EBX+78]             ; EAX=00162E3C
+0041220F Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162E00
+00412211 Main     MOV BYTE PTR DS:[EBX+68],AL
+00413E3B Main     XOR EAX,EAX                               ; EAX=00000000
+00413E3D Main     MOV CL,BYTE PTR DS:[EBX+68]               ; ECX=00162E00 -> ALは0x00であり、ASCIIコードでいうNULL
+00413E43 Main     CMP BYTE PTR DS:[EBX+64],CL
+    Breakpoint at FSC_Leve.00413E49
+00413E49 Main     JNZ SHORT FSC_Leve.00413E4C               ; ブレークポイント
+00413E4C Main     MOV BYTE PTR DS:[EBX+64],AL
+0040ECD2 Main     AND BYTE PTR DS:[EBX+64],1
+0040ECD9 Main     XOR BYTE PTR DS:[EBX+64],1
+0040EF95 Main     MOV DWORD PTR DS:[EBX+78],0
+-----
+
+　これは、トレースログからブレークさせた413E49付近のコードを抜き出し、さ
+らにJMP命令を省略したものです。ただ実行していたときより、だいぶ見やすくな
+ったのではないかと思います。ここから、以下のような法則があることがわかり
+ました。
+
+----- 413E43時点での各値
+EBX      : 下記の値を計算するためのベースアドレス
+[EBX+8]  : 入力文字列（１文字分）のポインタ
+[EBX+64] : 入力文字列（１文字分）の値
+[EBX+68] : 不明（NULL?常に00でした）
+[EBX+78] : 入力文字列のポインタ＋４（410AD9では入力文字列のポインタを格納
+           していたので、汎用的に利用される変数？）
+-----
+
+　その後もCtrl+F12を実行するたびに413E43でブレークし、[EBX+64]の値が「b」
+「c」…と変化していき、入力文字が１文字ずつNULLと比較されているのがわかる
+と思います。ここは入力文字列をチェックするループのようです。入力した文字
+列＋1回試行した際に、終端文字であるNULL同士が比較され、413E49のJNZでジャ
+ンプせずに413E4BのINC EAXが実行されます。
+
+　[EBX+64]の表示の仕方がわからない方は、CPUウィンドウ右上のRegistersセク
+ションのEBXの値をクリック後、右クリックメニューからFollow in Dumpを選択す
+ると、CPUウィンドウ下部のDumpセクションにそのアドレスが表示されます。Dump
+セクションのアドレスをダブルクリックすると、アドレスが絶対表示から相対表
+示に切り替わるので、$+64を確認すれば確認できますので、試してみてください。
+他にも、Memory mapウィンドウから確認する方法など、いくつかあると思うので
+ご自身のお好きな方法で実施してみてください。
+
+　実は、このループは入力文字数のカウントと文字列の終端のチェックを行なう
+ループであり、413E4BのINC EAXはこのループを抜けるためのフラグになります。
+以下のトレースログは、まだ入力文字が残っている場合です。40ECD2、40ECD9に
+よって、フラグは反転され、0から1になります。そのため、40ECBBのCMP命令で0
+と比較され、一致しないために40ECC5のJE命令ではジャンプせずに、40ECC7へ進
+み、JMP 414711で終端チェックをするループの先頭へと戻ります。
+
+----- 入力文字列が終端文字でない場合のトレースログ
+00413E49 Main     JNZ SHORT FSC_Leve.00413E4C
+00413E4C Main     MOV BYTE PTR DS:[EBX+64],AL
+0040ECD2 Main     AND BYTE PTR DS:[EBX+64],1                ; この行と、その次の命令でフラグを1の場合は0、
+0040ECD9 Main     XOR BYTE PTR DS:[EBX+64],1                ; 0の場合は1に変換する
+0040ECE0 Main     JMP FSC_Leve.0040EF95
+0040EF95 Main     MOV DWORD PTR DS:[EBX+78],0
+0041417B Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162E38
+00414181 Main     ADD DWORD PTR DS:[EBX+78],EAX
+0040FCF9 Main     MOV AL,BYTE PTR DS:[EBX+64]               ; EAX=00162E01
+0040FCFF Main     MOV ECX,DWORD PTR DS:[EBX+78]             ; ECX=00162E38
+0040FD05 Main     MOV BYTE PTR DS:[ECX],AL
+00414717 Main     MOV DWORD PTR DS:[EBX+78],0
+00414771 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162E38
+00414777 Main     ADD DWORD PTR DS:[EBX+78],EAX
+0040F049 Main     MOV EAX,DWORD PTR DS:[EBX+78]
+0040F04F Main     MOV EAX,DWORD PTR DS:[EAX]                ; EAX=00000001
+0040F051 Main     MOV DWORD PTR DS:[EBX+64],EAX
+0040ECBB Main     CMP DWORD PTR DS:[EBX+64],0               ; フラグがたっていない場合は40ECD2-9で1に反転する
+0040ECC5 Main     JE SHORT FSC_Leve.0040ECCC                ; のでこのJEではJMPせずに、次の命令へ進み、
+0040ECC7 Main     JMP FSC_Leve.00414711                     ; 終端チェックループの最初に戻る
+-----
+
+　それに対し、入力文字がなくなり、終端文字が出てきた場合は、下記のように
+40ECBBの[EBX+64]が0になるため、40ECC5のJE命令で40ECCCへジャンプし、次の処
+理へと進みます。
+
+----- 入力文字列が終端文字（=NULL）だった場合のトレースログ
+00413E49 Main     JNZ SHORT FSC_Leve.00413E4C
+00413E4B Main     INC EAX                                   ; EAX=00000001
+00413E4C Main     MOV BYTE PTR DS:[EBX+64],AL
+0040ECD2 Main     AND BYTE PTR DS:[EBX+64],1                ; この行と、その次の命令でフラグを1の場合は0、
+0040ECD9 Main     XOR BYTE PTR DS:[EBX+64],1                ; 0の場合は1に変換する
+0040EF95 Main     MOV DWORD PTR DS:[EBX+78],0
+0041417B Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162E38
+00414181 Main     ADD DWORD PTR DS:[EBX+78],EAX
+0040FCF9 Main     MOV AL,BYTE PTR DS:[EBX+64]               ; EAX=00162E00
+0040FCFF Main     MOV ECX,DWORD PTR DS:[EBX+78]             ; ECX=00162E38
+0040FD05 Main     MOV BYTE PTR DS:[ECX],AL
+00414717 Main     MOV DWORD PTR DS:[EBX+78],0
+00414771 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162E38
+00414777 Main     ADD DWORD PTR DS:[EBX+78],EAX
+0040F049 Main     MOV EAX,DWORD PTR DS:[EBX+78]
+0040F04F Main     MOV EAX,DWORD PTR DS:[EAX]                ; EAX=00000000
+0040F051 Main     MOV DWORD PTR DS:[EBX+64],EAX
+0040ECBB Main     CMP DWORD PTR DS:[EBX+64],0               ; 0（入力文字が終端文字）だった場合は、
+0040ECC5 Main     JE SHORT FSC_Leve.0040ECCC                ; 40ECCCにJMPする
+0040ECCC Main     JMP FSC_Leve.0040E282                     ; ループを抜け、次の場所へJMP
+-----
+
+　ここからさらにトレースログを追っていくと、下記のようなコードが実行され
+ていることがわかります。
+
+----- 入力文字数チェック？
+0040E262 Main     MOV DWORD PTR DS:[EBX+78],0
+0040FDDD Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+0040FDE3 Main     ADD DWORD PTR DS:[EBX+78],EAX
+0041165A Main     MOV EAX,DWORD PTR DS:[EBX+78]
+00411660 Main     MOV EAX,DWORD PTR DS:[EAX]                ; EAX=00000008 -> 入力文字数
+00411662 Main     MOV DWORD PTR DS:[EBX+64],EAX
+00411F84 Main     MOV DWORD PTR DS:[EBX+78],4
+00413E8E Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+00413E94 Main     ADD DWORD PTR DS:[EBX+78],EAX
+0040FAD7 Main     MOV EAX,DWORD PTR DS:[EBX+78]             ; EAX=00162C28
+0040FADD Main     MOV EAX,DWORD PTR DS:[EAX]                ; EAX=00000010
+0040FADF Main     MOV DWORD PTR DS:[EBX+68],EAX
+00413D6C Main     XOR EAX,EAX                               ; EAX=00000000
+00413D6E Main     MOV ECX,DWORD PTR DS:[EBX+68]             ; ECX=00000010 -> 正当な入力文字数？
+00413D74 Main     CMP DWORD PTR DS:[EBX+64],ECX
+00413D7A Main     JNZ SHORT FSC_Leve.00413D7D
+00413D7D Main     MOV DWORD PTR DS:[EBX+64],EAX
+00410739 Main     AND DWORD PTR DS:[EBX+64],1
+00410743 Main     XOR DWORD PTR DS:[EBX+64],1
+0040E622 Main     MOV DWORD PTR DS:[EBX+78],0
+-----
+
+　なお、ここでは省略していますが、前述のループでは[EBX+8]+200に文字数をカ
+ウントして、保存しています。それが411660の時点でEAXに入るので、おそらく41
+3D74で比較している内容は文字数と見て間違いなさそうです。よって今までは仮
+のKeyとして、８文字しか与えていませんでしたが次回から16進で0x10、つまり16
+文字与えて変化をみてみたいと思います。
+
+
+■0x06.) 1文字目の特定
+
+　では、413D74にブレークポイントを設定して、Ctrl+F2でプロセスをリスタート
+し、F9で実行後、Keyを「0123456789abcdef」にしてどのようになるかをみましょ
+う。その際、それ以前に設定したブレークポイントはDisableに設定してしまって
+かまいません。
+
+　413D74で停止したことを確認したら、ECXの値と、[EBX+64]を比べてみてくださ
+い。0x10で一致していることがわかると思います。では、ここからCtrl+F12でト
+レースを取って、処理を追っていきます。正当な文字列と必ず比較する部分があ
+るはずであり、そこにはCMP命令など比較する処理が存在するはずです。そこで、
+トレースログからCMPを抜き出したところ、下記５点ありました。
+
+----- トレースログからCMPを抜き出し
+0040FAAC Main     CMP DWORD PTR DS:[EBX+64],0
+00412896 Main     CMP BYTE PTR DS:[EBX+64],CL
+0040E7F3 Main     CMP DWORD PTR DS:[EBX+64],0
+004132D0 Main     CMP DWORD PTR DS:[EBX+64],ECX
+00412758 Main     CMP DWORD PTR DS:[EBX+64],0
+-----
+
+　そのうち、即値"0"と比較しているものは、おそらく別の処理であると考えられ
+るので、412896か412758が怪しいといえそうです。そこで、それらの周辺を確認
+してみます。
+
+----- 412896周辺のトレースログ
+004116C8 Main     MOV DWORD PTR DS:[EBX+78],0
+0040F9F0 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+0040F9F6 Main     ADD DWORD PTR DS:[EBX+78],EAX
+004141CB Main     MOV EAX,DWORD PTR DS:[EBX+78]
+004141D1 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162C30 -> 入力文字の１文字目"0"
+004141D3 Main     MOV BYTE PTR DS:[EBX+64],AL
+0040EA55 Main     MOV DWORD PTR DS:[EBX+78],4
+0040F2AB Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+0040F2B1 Main     ADD DWORD PTR DS:[EBX+78],EAX
+0040E43A Main     MOV EAX,DWORD PTR DS:[EBX+78]             ; EAX=00162C28
+0040E440 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162C53 -> 本当のKeyの１文字目"S"
+0040E442 Main     MOV BYTE PTR DS:[EBX+68],AL
+0041288E Main     XOR EAX,EAX                               ; EAX=00000000
+00412890 Main     MOV CL,BYTE PTR DS:[EBX+68]               ; ECX=00162C53
+00412896 Main     CMP BYTE PTR DS:[EBX+64],CL               ; "S"と入力文字を比較している
+0041289C Main     JNZ SHORT FSC_Leve.0041289F
+-----
+
+　いきなりヒットしました。前述のループと同じようなルーチンで、Byte単位で
+文字列の比較を行なっているようです。4141D1で仮に1文字目として与えた0が出
+現して、それを[EBX+64]に入れています。また40E440で本当のKeyであると思われ
+るSが出現し、それを[EBX+68]に入れ、412896でそれらの文字を比較しています。
+ということは1文字目は"S"になるので、次は412896にブレークポイントを設定後
+Ctrl+F2でプロセスを再起動し、「S123456789abcdef」を与えて、412896でブレー
+クした時点の状態を確認してみてください。今度は"S"同士を比較しているのがわ
+かるはずです。こうして1文字目がSであることを求めることができました。
+
+■0x07.) 所感
+
+　Level3はこれだけ長い説明をしながら、まだ1文字目しか説明できていません。
+それだけ、私にとってLevel3は難問であったという証拠です（それとは別に私の
+説明が冗長すぎるという理由もありますが・・・）。残りは次回以降に説明をし
+ていきたいと思います。ただ、多少変化球はあるものの、1文字目を発見した方法
+と大きな違いはないので、ご自身でどんどん進めてみると、勉強になってよいか
+もしれません。
+
+　それでは、また。
+
+
+

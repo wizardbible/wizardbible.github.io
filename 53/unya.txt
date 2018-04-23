@@ -1,0 +1,557 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: BSD環境におけるIPv6パケット送信手順 ---
+
+著者：unya
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　イーサネットで接続されたネットワークにおいて、ソケットAPIにたよらず完
+全なIPv6パケットを構築して送信する方法について解説します。完全なIPv6パケ
+ットとは、IPv6拡張ヘッダーを含むパケットを指します。この方法により、API
+の制限を受けることなく、あらゆる形式のパケットを構築して送信することがで
+きるようになります。なお、今回はIPv6拡張ヘッダーについて触れず、パケット
+の送信のみに焦点をあてます。併せて、別途表記がないかぎり、すべてBSD系シ
+ステムを対象としています。GNU/Linuxなど非BSD系システムには当てはまらない
+場合があります。
+
+
+■0x02.) 対象オペレーティングシステム
+
+　下記のオペレーティングシステムを使用して、ヘッダーファイルの参照および
+サンプルコードのコンパイル・実行をおこないました。
+
+・Mac OS X 10.6.8(Snow Leopard)
+・Mac OS X 10.7(Lion)
+・FreeBSD 8.2 amd64
+・OpenBSD 4.9 amd64
+・NetBSD 5.1 amd64
+
+
+■0x03.) パケット送信におけるIPv6とIPv4のちがい
+
+○3.1 socket(2)のプロトコル指定
+
+　IPv4では、socket(2)の第3引数にIPPROTO_RAWを指定することでIPv4ヘッダを
+含む完全なパケットを送信することができます。
+
+-----
+socket(PF_INET, SOCK_RAW, IPPROTO_RAW);
+-----
+
+　IPv6ではIPPROTO_RAWが特別な意味をもつことはありません。IPv6拡張ヘッダ
+ーを含む完全なパケットを送信するためには、リンクレイヤでパケットを送信す
+る必要があります。これを実現するためには、後述するBPFデバイスを使用しま
+す。socket(2)を使用して拡張ヘッダーを含むIPv6パケットを送信する場合は、
+ソケットオプションを使用してパケットを構築する必要があります。しかし、こ
+の方法はAPIの制限を受けるため、カスタムパケットを送信する場合には適しま
+せん。
+
+○3.2 バイトオーダー
+
+　IPv4では、IPヘッダーの各フィールドのバイトオーダーについて明文化されて
+いませんでした。そのため、オペレーティングシステムの仕様に合わせてバイト
+オーダーを考慮した設定をおこなう必要がありました。これに対して、IPv6では
+すべてネットワークバイトオーダーでIPv6ヘッダーの各フィールドを設定します。
+
+
+■0x04.) イーサネットヘッダー
+
+　リンクレイヤは、OSI参照モデルのデータリンク層を指します。今回はイーサ
+ネットで接続されているネットワークを想定しているため、データリンク層でや
+り取りをおこなう際に参照されるイーサネットヘッダーの構造を知っている必要
+があります。
+
+○4.1 イーサネットヘッダーの構造
+
+　イーサネットヘッダーは、48ビットの送信先MACアドレス、48ビットの送信元M
+ACアドレスおよび16ビットのイーサネットタイプから構成されます。
+
+-----
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                  Destination MAC Address                      |
+|                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                               |                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               |
+|                       Source MAC Address                      |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|            Type               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+-----
+
+Destination MAC Address
+	48ビットの送信先MACアドレスです。
+Source MAC Address
+	48ビットの送信元MACアドレスです。
+Type
+	ペイロードのタイプを示します。IPv6であれば、ここは0x86ddになりま
+す。
+	この値はFreeBSDとMac OSではnet/ethernet.h、OpenBSDとNetBSDではne
+t/ethertypes.hで定義されています。
+
+-----
+#define ETHERTYPE_PUP           0x0200  /* PUP protocol */
+#define ETHERTYPE_IP            0x0800  /* IP protocol */
+#define ETHERTYPE_ARP           0x0806  /* Addr. resolution protocol */
+#define ETHERTYPE_REVARP        0x8035  /* reverse Addr. resolution protocol */
+#define ETHERTYPE_VLAN          0x8100  /* IEEE 802.1Q VLAN tagging */
+#define ETHERTYPE_IPV6          0x86dd  /* IPv6 */
+#define ETHERTYPE_PAE           0x888e  /* EAPOL PAE/802.1x */
+#define ETHERTYPE_RSN_PREAUTH   0x88c7  /* 802.11i / RSN Pre-Authentication */
+#define ETHERTYPE_LOOPBACK      0x9000  /* used to test interfaces */
+-----
+
+　イーサネットヘッダーの構造体は、FreeBSDとMac OSではnet/ethernet.h、Ope
+nBSDではnetinet/if_ether.h、NetBSDではnet/if_ether.hで定義されています。
+
+-----
+/*
+ * Structure of a 10Mb/s Ethernet header.
+ */
+struct  ether_header {
+        u_char  ether_dhost[ETHER_ADDR_LEN];
+        u_char  ether_shost[ETHER_ADDR_LEN];
+        u_short ether_type;
+};
+-----
+
+
+■0x05.) IPv6ヘッダー
+
+○5.1 IPv6ヘッダーの構造
+
+-----
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|Version| Prio. |                   Flow Label                  |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|         Payload Length        |  Next Header  |  Hop Limit    |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                               |
++                                                               +
+|                                                               |
++                         Source Address                        +
+|                                                               |
++                                                               +
+|                                                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                                                               |
++                                                               +
+|                                                               |
++                      Destination Address                      +
+|                                                               |
++                                                               +
+|                                                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+-----
+
+Version
+	IPv6のバージョンです。ここは6が入ります。
+Priority
+	優先度。IPv4でいうところのTOSにあたります。
+Flow Label
+	フローラベル。パケットの識別用に用いられますが、今のところ明確な
+規定はありません。
+Payload Length
+	IPv6ヘッダーに続くペイロードサイズです。拡張ヘッダーもペイロード
+サイズに含まれます。
+	IPv6ヘッダーのサイズは含まないので注意が必要です。
+Next Header
+	IPv6は数珠つなぎのようにしてヘッダーを拡張させることができます。
+	ここには、後続のヘッダー種別が入ります。
+Hop Limit
+	IPv4でいうところのTTLです。
+Source Address
+	送信元IPアドレス。128ビットです。
+Destination Address
+	送信先IPアドレス。128ビットです。
+
+　IPv6ヘッダーにはチェックサムはなく、すべて上位レイヤーに任せます。
+　IPv6ヘッダーはnetinet/ip6.hで定義されています。
+
+-----
+/*
+ * Definition for internet protocol version 6.
+ * RFC 2460
+ */
+
+struct ip6_hdr {
+        union {
+                struct ip6_hdrctl {
+                        u_int32_t ip6_un1_flow; /* 20 bits of flow-ID */
+                        u_int16_t ip6_un1_plen; /* payload length */
+                        u_int8_t  ip6_un1_nxt;  /* next header */
+                        u_int8_t  ip6_un1_hlim; /* hop limit */
+                } ip6_un1;
+                u_int8_t ip6_un2_vfc;   /* 4 bits version, top 4 bits class */
+        } ip6_ctlun;
+        struct in6_addr ip6_src;        /* source address */
+        struct in6_addr ip6_dst;        /* destination address */
+} __attribute__((__packed__));
+-----
+
+
+■0x06.)  IPv6パケットの送信
+
+○6.1 リンクレベルでのパケット送信手順
+
+　リンクレイヤでパケットを送信するためには、パケットを送信するためのBPF
+デバイスを開き、出力インタフェースと関連づける必要があります。その後、パ
+ケットの構築および送信処理をおこないます。
+
+○6.2 BPFデバイスを開く
+
+　BPF(4)はリンクレベルでパケットの読み書きをおこなうためのデバイスです。
+/dev/bpfNがそのデバイスで、Nの部分はBPFデバイスの番号となります（/dev/bp
+f0のように）。BPFデバイスはopen(2)で開きます。
+
+-----
+bpfd = open("/dev/bpf0", O_RDWR, 0);
+-----
+
+　送信元MACアドレスをスプーフする場合は、オペレーティングシステムによっ
+て送信元MACアドレスが上書きされないようにする必要があります。
+
+-----
+int spoof = 1;
+
+#if defined(BIOCGHDRCMPLT) && defined(BIOCSHDRCMPLT)
+if (ioctl(bpfd, BIOCSHDRCMPLT, &spoof) < 0) {
+    fprintf(stderr, "ioctl(BIOCSHDRCMPLT)");
+    exit(1);
+}
+#endif
+-----
+
+○6.3 出力インタフェースとBPFデバイスを関連づける
+
+　パケットを出力するインタフェースを決定し、BPFと関連づける必要がありま
+す。em0を出力インタフェースとするのであれば、以下のようなコードになりま
+す。
+
+-----
+struct ifreq ifr;
+
+bpfd = open("/dev/bpf0", O_RDWR, 0);
+
+memset(&ifr, 0, sizeof(ifr));
+strlcpy(ifr.ifr_name, "em0", sizeof(ifr.ifr_name));
+
+if (ioctl(bpfd, BIOCSETIF, &ifr) < 0) {
+    perror("ioctl(BIOCSETIF)");
+    exit(1);
+}
+-----
+
+○6.4 パケット送信
+
+　送信はwrite(2)を使用してBPFデバイスへ書き込みます。構築したパケットの
+バッファをoutpack、サイズをpacketsizeとすると以下のようなコードになりま
+す。
+
+-----
+write(bpfd, outpack, packetsize);
+-----
+
+
+■0x07.)  サンプルコード
+
+　以下、サンプルコードを掲載します。エラー処理は大幅に省略しています。
+
+-----
+/*
+ * IPv6 UDPパケット送信サンプルコード
+ *
+ * 以下のOSにてコンパイル・動作を確認済み
+ * Mac OS X 10.6.8
+ * Mac OS X 10.7
+ * FreeBSD 8.2 amd64
+ * OpenBSD 4.9 amd64
+ * NetBSD 5.1 amd64
+ *
+ * root:~# ./a.out en0 1:2:3:4:5:6 6:5:4:3:2:1 2001:db8::1 2001:db8::2
+ * Sending 126 bytes ... 126 bytes sended.
+ * 
+ * Using bpf device : /dev/bpf1
+ * Interface        : en0
+ * Source ether     : 1:2:3:4:5:6
+ * Destination ether: 6:5:4:3:2:1
+ * Source ip        : 2001:db8::1
+ * Destination ip   : 2001:db8::2
+ * Source port      : 40000(0x9c40)
+ * Destination port : 54321(0xd431)
+ * 
+ *  0                   1                   2                   3
+ *  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+ * -+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ * 06050403020101020304050686dd60000000004811fa20010db8000000000000
+ * 00000000000120010db80000000000000000000000029c40d431004800004141
+ * 4141414141414141414141414141414141414141414141414141414141414141
+ * 414141414141414141414141414141414141414141414141414141414141
+ *
+ * root:~#
+ */
+
+#include <sys/sockio.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/ioctl.h>
+
+#include <netinet/in.h>
+#include <netinet/udp.h>
+#include <netinet/ip6.h>
+
+#include <net/if.h>
+#include <net/if_dl.h>
+#include <net/if_types.h>
+#include <net/bpf.h>
+
+#if defined (__OpenBSD__)
+# include <net/ethertypes.h>
+# include <netinet/if_ether.h>
+#elif defined (__NetBSD__)
+# include <net/ethertypes.h>
+# include <net/if_ether.h>
+#else
+# include <net/ethernet.h>
+#endif
+
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <netdb.h>
+#include <ifaddrs.h>
+#include <errno.h>
+#include <getopt.h>
+
+#define BPFMAX 255
+#define DEFAULT_SPORT 40000
+#define DEFAULT_DPORT 54321
+#define PACKETSIZ 60000
+
+static void
+hexdump(char *p, size_t len)
+{
+	unsigned int i, s;
+	int nshorts;
+
+	nshorts = (unsigned int)len / sizeof(unsigned short);
+	i = 0;
+
+	printf("\n");
+	printf(" 0                   1                   2                   3\n");
+	printf(" 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1\n");
+	printf("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
+	while (--nshorts >= 0) {
+		if ((i++ % 16) == 0)
+			printf("\n");
+		s = *p++;
+		printf("%02x%02x", s & 0xff, *p++ & 0xff);
+	}
+	if (len & 1) {
+		if ((i % 8) == 0)
+			printf("\n");
+		printf(" %02x", *p);
+	}
+	printf("\n\n");
+}
+
+static void
+usage(void)
+{
+
+	fprintf(stderr,
+		"Usage: ip6udp <interface> <src mac> <dst mac> <src ip> <dst ip>\n");
+	exit(1);
+}
+
+static size_t
+ip6udp_build(char *outpack, const char *p, size_t plen, struct sockaddr_in6 *src,
+	struct sockaddr_in6 *dst, unsigned short sport, unsigned short dport)
+{
+	struct ip6_hdr *ip6;
+	struct udphdr *udp;
+	size_t packetsiz, payloadsiz;
+
+	payloadsiz = sizeof(struct udphdr) + plen;
+	packetsiz = sizeof(struct ether_header) + sizeof(struct ip6_hdr) + payloadsiz;
+
+	ip6 = (struct ip6_hdr *)(outpack + sizeof(struct ether_header));
+	ip6->ip6_vfc = IPV6_VERSION;
+	ip6->ip6_plen = htons(payloadsiz);
+	ip6->ip6_nxt = IPPROTO_UDP;
+	ip6->ip6_hlim = 0xfa;
+	ip6->ip6_src = src->sin6_addr;
+	ip6->ip6_dst = dst->sin6_addr;
+
+	udp = (struct udphdr *)(outpack + sizeof(struct ether_header)
+		+ sizeof(struct ip6_hdr));
+	udp->uh_sport = htons(sport);
+	udp->uh_dport = htons(dport);
+	udp->uh_ulen = htons(sizeof(struct udphdr) + plen);
+	udp->uh_sum = 0;
+	memcpy((char *)(udp + 1), p, plen);
+
+	return packetsiz;
+}
+
+static void
+my_ether_aton(const char *p, unsigned char *buf)
+{
+	struct ether_addr *eap;
+
+	if ((eap = ether_aton(p)) == NULL) {
+		fprintf(stderr, "%s: invalid ether address\n", p);
+		exit(1);
+	}
+	memcpy(buf, eap, sizeof(struct ether_addr));
+}
+
+static void
+ether_build(char *outpack, unsigned short ether_type, struct ether_header *e)
+{
+	struct ether_header *ether;
+
+	ether = (struct ether_header *)outpack;
+	memcpy(ether->ether_dhost, e->ether_dhost, ETHER_ADDR_LEN);
+	memcpy(ether->ether_shost, e->ether_shost, ETHER_ADDR_LEN);
+	ether->ether_type = htons(ether_type);
+}
+
+int
+main(int argc, char *argv[])
+{
+	char outpack[PACKETSIZ], bpfname[sizeof("/dev/bpf####")];
+	char *udppayload;
+	char *sourceif = 0, *sourceip = 0, *destip = 0;
+	char *sourceeth = 0, *desteth = 0;
+	struct ifreq ifr;
+	int spoof = 1, i, snddev, error, r;
+	unsigned long sport = DEFAULT_SPORT, dport = DEFAULT_DPORT;
+	size_t plen = 64; /* udp payload data length */
+	size_t packetsiz;
+	struct sockaddr_in6 src, dst;
+	struct addrinfo *res, hints;
+	struct ether_header eh;
+
+	if (argc != 6)
+		usage();
+
+	sourceif = argv[1];
+	sourceeth = argv[2];
+	desteth = argv[3];
+	sourceip = argv[4];
+	destip = argv[5];
+
+	my_ether_aton(sourceeth, eh.ether_shost);
+	my_ether_aton(desteth, eh.ether_dhost);
+
+	if ((udppayload = malloc(plen)) == NULL) {
+		perror("malloc");
+		exit(1);
+	}
+	memset(udppayload, 'A', plen);
+
+	/* 送信用デバイス設定 */
+	for (i = 0; i < BPFMAX; i++) {
+		sprintf(bpfname, "/dev/bpf%d", i);
+		if ((snddev = open(bpfname, O_RDWR, 0)) > 0)
+			break;
+	}
+	if (snddev < 0) {
+		perror("open(bpf)");
+		exit(1);
+	} 
+
+#if defined(BIOCGHDRCMPLT) && defined(BIOCSHDRCMPLT)
+	if (ioctl(snddev, BIOCSHDRCMPLT, &spoof) < 0) {
+		fprintf(stderr, "ioctl(BIOCSHDRCMPLT)");
+		exit(1);
+	}
+#endif
+
+	/* bpfと送信インタフェースを関連づける */
+	memset(&ifr, 0, sizeof(ifr));
+	strlcpy(ifr.ifr_name, sourceif, sizeof(ifr.ifr_name));
+	if (ioctl(snddev, BIOCSETIF, &ifr) < 0) {
+		perror("ioctl(BIOCSETIF)");
+		exit(1);
+	}
+
+	/* 送信先アドレス */
+	memset(&hints, 0, sizeof(hints));
+	hints.ai_family = PF_INET6;
+	hints.ai_socktype = SOCK_RAW;
+	hints.ai_protocol = IPPROTO_UDP;
+	hints.ai_flags = AI_CANONNAME;
+	error = getaddrinfo(destip, NULL, &hints, &res);
+	if (error) {
+		fprintf(stderr,
+			"ip6udp: %s: %s\n", destip, gai_strerror(error));
+		exit(1);
+	}
+	memcpy(&dst, res->ai_addr, res->ai_addrlen);
+	freeaddrinfo(res);
+
+	/* 送信元アドレス */
+	memset(&hints, 0, sizeof(hints));
+	hints.ai_family = PF_INET6;
+	hints.ai_socktype = SOCK_RAW;
+	hints.ai_protocol = IPPROTO_UDP;
+	hints.ai_flags = AI_CANONNAME;
+	error = getaddrinfo(sourceip, NULL, &hints, &res);
+	if (error) {
+		fprintf(stderr,
+			"ip6udp: %s: %s\n", sourceip, gai_strerror(error));
+		exit(1);
+	}
+	memcpy(&src, res->ai_addr, res->ai_addrlen);
+	freeaddrinfo(res);
+
+	/* フレーム構築 */
+	memset(outpack, 0, sizeof(outpack));
+	ether_build(outpack, ETHERTYPE_IPV6, &eh);
+	packetsiz = ip6udp_build(outpack, udppayload, plen,
+						&src, &dst, sport, dport);
+
+	/* IPv6パケット送信 */
+	fprintf(stderr, "Sending %lu bytes ... ", packetsiz);
+	if ((r = write(snddev, outpack, packetsiz)) != packetsiz) {
+		perror("write");
+		exit(1);
+	}
+	fprintf(stderr, "%d bytes sended.\n\n", r);	
+
+	fprintf(stderr, "Using bpf device : %s\n", bpfname);
+	fprintf(stderr, "Interface        : %s\n", sourceif);
+	fprintf(stderr, "Source ether     : %s\n",
+	  ether_ntoa((struct ether_addr *)eh.ether_shost));
+	fprintf(stderr, "Destination ether: %s\n",
+	  ether_ntoa((struct ether_addr *)eh.ether_dhost));
+	fprintf(stderr, "Source ip        : %s\n", sourceip);
+	fprintf(stderr, "Destination ip   : %s\n", destip);
+	fprintf(stderr, "Source port      : %lu(0x%.4x)\n", sport, (int)sport);
+	fprintf(stderr, "Destination port : %lu(0x%.4x)\n", dport, (int)dport);
+
+	hexdump(outpack, packetsiz);
+
+	return r;
+}
+-----
+
+
+■0x08.)  参考文献
+
+[1] RFC 2460 - Internet Protocol, Version 6 (IPv6) Specification
+[2] RFC 3542 - Advanced Sockets Application Program Interface (API) for IPv6
+

@@ -1,0 +1,589 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: 逆アセンブルコードを読んでみよう ---
+
+著者：Kenji Aiko
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　基本的な解析技術を覚えた後、次のステップへ進むためにはどうしたら良いだ
+ろう？　私は、解析の基本はやはり「アセンブルコードを読むこと」だと考えて
+います。現在は様々なツールがあり、それらを駆使して効率的なソフトウェア解
+析を行えますが、ツールはあくまでツールであり、それを有効活用するためには、
+やはり基礎となる技術が必要だと思います。よって、今回は「アセンブルコード
+を読むこと」を中心としたリバースエンジニアリングについて解説します。
+　使用するツールはOllyDbgオンリーです。そのOllyDbgも逆アセンブルコードを
+出力することだけにしか使ってません（ぉぃ。
+
+
+■0x02.) crackmeを手動でデコンパイル
+
+　以下は、簡単なcrackmeを逆アセンブルしたコードです。
+
+-----  sample01.exe
+00401000 >/$  837C24 04 02  CMP DWORD PTR SS:[ESP+4],2
+00401005  |.  7D 06         JGE SHORT sample01.0040100D
+00401007  |.  B8 01000000   MOV EAX,1
+0040100C  |.  C3            RETN
+0040100D  |>  8B4424 08     MOV EAX,DWORD PTR SS:[ESP+8]
+00401011  |.  8B48 04       MOV ECX,DWORD PTR DS:[EAX+4]
+00401014  |.  68 34514000   PUSH OFFSET /String2 = "wizardbible"
+00401019  |.  51            PUSH ECX    |String1
+0040101A  |.  FF15 00504000 CALL NEAR DWORD PTR DS:[<&KERNEL32.lstrcmpA>]
+00401020  |.  85C0          TEST EAX,EAX
+00401022  |.  6A 00         PUSH 0 ; /Style = MB_OK|MB_APPLMODAL
+00401024  |.  68 2C514000   PUSH OFFSET |Title = "Message"
+00401029  |.  75 15         JNZ SHORT sample01.00401040
+0040102B  |.  68 18514000   PUSH OFFSET Text = "you are wonderful!"
+00401030  |.  FF15 CC504000 CALL NEAR DWORD PTR DS:[<&USER32.GetActiveWindow>]
+00401036  |.  50            PUSH EAX 
+00401037  |.  FF15 C8504000 CALL NEAR DWORD PTR DS:[<&USER32.MessageBoxA>]
+0040103D  |.  33C0          XOR EAX,EAX
+0040103F >|.  C3            RETN
+00401040  |>  68 FC504000   PUSH OFFSET |Text = "password is not correct!"
+00401045  |.  FF15 CC504000 CALL NEAR DWORD PTR DS:[<&USER32.GetActiveWindow>]
+0040104B  |.  50            PUSH EAX                                            0040104C  |.  FF15 C8504000 CALL NEAR DWORD PTR DS:[<&USER32.MessageBoxA>]
+00401052  |.  33C0          XOR EAX,EAX
+00401054  \.  C3            RETN
+-----
+
+　では、これをC言語のソースコードに、手動でデコンパイルしましょう。
+　まずは、一番最初「00401000」の命令ですが、「2」と何かの値をCMPで比較し
+ています。そして、JGEなので、2以上だったらジャンプです。つまり、次のよう
+に推測できます。
+
+-----  sample01.cpp
+if(x < 2)
+    return 1;
+-----
+
+　適当な変数xが、2より小さいなら「MOV EAX, 1」と「RETN」なので、「return
+ 1」と変換できます。また、xはESP+4から取られているため、引数と分かります。
+　さて、もし2以上ならば、JGEはジャンプします。では、ジャンプ先「0040100D」
+を見ていきます。
+
+-----  sample01.exe
+0040100D  |>  8B4424 08     MOV EAX,DWORD PTR SS:[ESP+8]
+00401011  |.  8B48 04       MOV ECX,DWORD PTR DS:[EAX+4]
+-----
+
+　アドレス「00401011」で、EAX+4を参照しているため、EAXはアドレスです。そ
+してその参照先をECXに入れています。次に、PUSHで「wizardbible」という文字
+列のアドレスをスタックへ積んでおり、次にECXをスタックへ積んでいます。そし
+て、lstrcmpAなので、ECXは文字列のアドレスだと考えられます。よって以下のコ
+ードになります。
+
+-----  sample01.cpp
+if(x < 2)
+    return 1;
+lstrcmp(y(ECX), "wizardbible");
+-----
+
+　また、lstrcmpの戻り値を使って分岐しています。分岐にはTEST命令を使ってい
+ます。TEST命令は、基本はAND命令と同じですが、ANDの結果を保存せず、フラグ
+だけ変化するため、条件分岐によく使われます。
+
+-----  sample01.exe
+00401020  |.  85C0          TEST EAX,EAX（←lstrcmpAの戻り値比較）
+00401022  |.  6A 00         PUSH 0 ; /Style = MB_OK|MB_APPLMODAL
+00401024  |.  68 2C514000   PUSH OFFSET |Title = "Message"
+00401029  |.  75 15         JNZ SHORT sample01.00401040（比較によるジャンプ）
+-----
+
+　「TEST EAX, EAX」としていますが、このような「同じ値のAND」は必ず同じ値
+になりますよね（「AND 5, 5」は「5」です）。しかし、もしEAXが「0」ならば、
+このAND（TEST）の結果は「0」となります。よって、このように記述することで
+「0」か「それ以外の値」か、というように、条件を分けられます。
+　このことから、コードは以下になります。
+
+-----  sample01.cpp
+if(x < 2)
+    return 1;
+if(lstrcmp(y, "wizardbible") == 0)
+    // 何かの処理
+else
+    // 何かの処理
+-----
+
+　さらに、PUSHにより「MB_OK|MB_APPLMODAL」と「"Message"」がスタックへ入れ
+られているため、MessageBox関数が呼ばれることが推測でき、どちらの文字列を
+表示するかにより、分岐しています。
+
+-----  sample01.exe
+0040102B  |.  68 18514000   PUSH OFFSET Text = "you are wonderful!"
+00401030  |.  FF15 CC504000 CALL NEAR DWORD PTR DS:[<&USER32.GetActiveWindow>]
+00401036  |.  50            PUSH EAX 
+00401037  |.  FF15 C8504000 CALL NEAR DWORD PTR DS:[<&USER32.MessageBoxA>]
+0040103D  |.  33C0          XOR EAX,EAX
+0040103F >|.  C3            RETN
+00401040  |>  68 FC504000   PUSH OFFSET |Text = "password is not correct!"
+00401045  |.  FF15 CC504000 CALL NEAR DWORD PTR DS:[<&USER32.GetActiveWindow>]
+0040104B  |.  50            PUSH EAX                                            0040104C  |.  FF15 C8504000 CALL NEAR DWORD PTR DS:[<&USER32.MessageBoxA>]
+00401052  |.  33C0          XOR EAX,EAX
+00401054  \.  C3            RETN
+-----
+
+　lstrcmp関数の戻り値が0じゃなければ、JNZ命令により、アドレス「00401040」
+に処理が移ります。すると、「"password is not correct!"」がPUSHされ、Mess
+ageBoxA関数が呼ばれます。逆に、lstrcmp関数の戻り値が0ならば、「"you are 
+wonderful!"」がPUSHされ、MessageBoxA関数が呼ばれます。
+　これらの結果を合わせると、以下のC言語コードが記述できます。
+
+-----  sample01.cpp
+if(x < 2)
+    return 1;
+if(lstrcmp(y, "wizardbible") == 0){
+    MessageBoxA(GetActiveWindow(), 
+        "you are wonderful!", "Message", 0);
+}else{
+    MessageBoxA(GetActiveWindow(), 
+        "password is not correct!", "Message", 0);
+}
+-----
+
+　さらに、xはESP+4から取得され、yはESP+8から取得されているため、それぞれ
+引数を元に得られたものですね。つまり、関数は以下のようなコードだと考えら
+れます。
+
+-----  sample01.cpp
+int function(int x, void **z)
+{
+    if(x < 2)
+        return 1;
+    if(lstrcmp(*(z+1), "wizardbible") == 0){
+        MessageBoxA(GetActiveWindow(), 
+            "you are wonderful!", "Message", 0);
+    }else{
+        MessageBoxA(GetActiveWindow(), 
+            "password is not correct!", "Message", 0);
+    }
+    return 0;
+}
+-----
+
+　引数の感じ的に、main関数っぽいですね（事実main関数ですが…）。
+　このように、順番にアセンブルコードを読んでいくと、C言語のコードに変換す
+ることができます。
+
+
+■0x03.) アルゴリズムを手動でデコンパイル
+
+　簡単なcrackmeを手動でデコンパイルしましたが、実は、このようにAPI関数が
+ガンガン呼び出されているようなところをデコンパイルする機会は、あまりあり
+ません。なぜなら、デコンパイルしなくとも大体の動作が分かるからです。
+　手動でのデコンパイルが必要なところは、アルゴリズム的な処理を行っている
+部分が多いです。
+　例えば、以下のコードを見てください。
+
+-----  sample02.exe
+00401000 >/$  8B4C24 08     MOV ECX,DWORD PTR SS:[ESP+8]
+00401004  |.  83C8 FF       OR EAX,FFFFFFFF
+00401007  |.  85C9          TEST ECX,ECX
+00401009  |.  0F84 8B000000 JE sample02.0040109A
+0040100F  |.  8B5424 04     MOV EDX,DWORD PTR SS:[ESP+4]
+00401013  |.  56            PUSH ESI
+00401014  |>  0FB632        /MOVZX ESI,BYTE PTR DS:[EDX]
+00401017  |.  33C6          |XOR EAX,ESI
+00401019  |.  42            |INC EDX
+0040101A  |.  A8 01         |TEST AL,1
+0040101C  |.  74 04         |JE SHORT sample02.00401022
+0040101E  |.  D1E8          |SHR EAX,1
+00401020  |.  EB 07         |JMP SHORT sample02.00401029
+00401022  |>  D1E8          |SHR EAX,1
+00401024  |.  35 2083B8ED   |XOR EAX,EDB88320
+00401029  |>  A8 01         |TEST AL,1
+0040102B  |.  74 04         |JE SHORT sample02.00401031
+0040102D  |.  D1E8          |SHR EAX,1
+0040102F  |.  EB 07         |JMP SHORT sample02.00401038
+00401031  |>  D1E8          |SHR EAX,1
+00401033  |.  35 2083B8ED   |XOR EAX,EDB88320
+00401038  |>  A8 01         |TEST AL,1
+0040103A  |.  74 04         |JE SHORT sample02.00401040
+0040103C  |.  D1E8          |SHR EAX,1
+0040103E  |.  EB 07         |JMP SHORT sample02.00401047
+00401040  |>  D1E8          |SHR EAX,1
+00401042  |.  35 2083B8ED   |XOR EAX,EDB88320
+00401047  |>  A8 01         |TEST AL,1
+00401049  |.  74 04         |JE SHORT sample02.0040104F
+0040104B  |.  D1E8          |SHR EAX,1
+0040104D  |.  EB 07         |JMP SHORT sample02.00401056
+0040104F  |>  D1E8          |SHR EAX,1
+00401051  |.  35 2083B8ED   |XOR EAX,EDB88320
+00401056  |>  A8 01         |TEST AL,1
+00401058  |.  74 04         |JE SHORT sample02.0040105E
+0040105A  |.  D1E8          |SHR EAX,1
+0040105C  |.  EB 07         |JMP SHORT sample02.00401065
+0040105E  |>  D1E8          |SHR EAX,1
+00401060  |.  35 2083B8ED   |XOR EAX,EDB88320
+00401065  |>  A8 01         |TEST AL,1
+00401067  |.  74 04         |JE SHORT sample02.0040106D
+00401069  |.  D1E8          |SHR EAX,1
+0040106B  |.  EB 07         |JMP SHORT sample02.00401074
+0040106D  |>  D1E8          |SHR EAX,1
+0040106F  |.  35 2083B8ED   |XOR EAX,EDB88320
+00401074  |>  A8 01         |TEST AL,1
+00401076  |.  74 04         |JE SHORT sample02.0040107C
+00401078  |.  D1E8          |SHR EAX,1
+0040107A  |.  EB 07         |JMP SHORT sample02.00401083
+0040107C  |>  D1E8          |SHR EAX,1
+0040107E  |.  35 2083B8ED   |XOR EAX,EDB88320
+00401083  |>  A8 01         |TEST AL,1
+00401085  |.  74 04         |JE SHORT sample02.0040108B
+00401087  |.  D1E8          |SHR EAX,1
+00401089  |.  EB 07         |JMP SHORT sample02.00401092
+0040108B  |>  D1E8          |SHR EAX,1
+0040108D  |.  35 2083B8ED   |XOR EAX,EDB88320
+00401092  |>  49            |DEC ECX
+00401093  |.^ 0F85 7BFFFFFF \JNZ sample02.00401014
+00401099  |.  5E            POP ESI
+0040109A  |>  F7D0          NOT EAX
+0040109C  \.  C3            RETN
+-----
+
+　さて、これは簡単な「ある計算を行うアルゴリズム」です。これを手動でデコ
+ンパイルし、C言語に変換しましょう。
+
+-----  sample02.exe
+00401000 >/$  8B4C24 08     MOV ECX,DWORD PTR SS:[ESP+8]
+00401004  |.  83C8 FF       OR EAX,FFFFFFFF
+00401007  |.  85C9          TEST ECX,ECX
+00401009  |.  0F84 8B000000 JE sample02.0040109A
+-----
+
+　最初の2行で、2番目の引数をECXへ入れて、EAXを0xFFFFFFFFにしています。さ
+らに、ECX（2番目の引数）が0なら「0040109A」へジャンプします。つまり、2番
+目の引数が0だと「エラー」というわけです。さらに、アドレス「0040109A」は
+「NOT EAX」なので、EAXの値が反転し、0xFFFFFFFFから0x00000000へ変更されま
+す。
+
+-----  sample02.exe
+0040100F  |.  8B5424 04     MOV EDX,DWORD PTR SS:[ESP+4]
+00401013  |.  56            PUSH ESI
+00401014  |>  0FB632        /MOVZX ESI,BYTE PTR DS:[EDX]
+00401017  |.  33C6          |XOR EAX,ESI
+00401019  |.  42            |INC EDX
+-----
+
+　1番目の引数をEDXへ入れます。アドレス「00401014」で、EDXはアドレスを参照
+しているため、EDXはポインタです。
+　アドレス「00401013」で行ってる「PUSH ESI」は、この関数でESIレジスタを使
+うため、現在ESIに入っている値をスタックへ一時的に保存（バックアップ）して
+おく処理です。関数の最後でまたスタックからESIを復元します。
+　アドレス「00401014」のMOVZX命令は、サイズが違うレジスタへ値を転送します。
+EDXが指す値が1バイト分だけ、ESIへ入れられます。そして、ESIはEAXとXORされ
+ます。EAXは0xFFFFFFFFですね。さらにEDXをインクリメントです。EDXはポインタ
+なので、次の値を指すことになります。
+　では、ここまでを、C言語のソースコードにします。
+
+-----  sample02-1.cpp
+int function(char *x, int y)
+{
+    a = 0xFFFFFFFF;
+    if(y == 0)
+        return ~a;
+
+    b = *x;
+    a = a ^ b;
+    x++;
+-----
+
+　関数名、戻り値や引数の型は適当です。とりあえず、中の処理が重要です。ま
+た、中の処理もループなどはまだ計算していないため、そのまま処理を書いてい
+るだけです。今後変更される可能性があります。ただ、現状分かっている段階で
+はここまで書けます。
+　では、次へ進みます。
+
+-----  sample02.exe
+0040101A  |.  A8 01         |TEST AL,1
+0040101C  |.  74 04         |JE SHORT sample02.00401022
+0040101E  |.  D1E8          |SHR EAX,1
+00401020  |.  EB 07         |JMP SHORT sample02.00401029
+00401022  |>  D1E8          |SHR EAX,1
+00401024  |.  35 2083B8ED   |XOR EAX,EDB88320
+-----
+
+　最初のTEST命令により、EAXの最初の1ビットがONかOFFかによって処理が分かれ
+ます。ここから、以下のコードが再現できます。ここは、xorやシフト演算なので、
+コード化しやすいかもしれません。
+
+-----  sample02-2.cpp
+    if(a & 1){
+        a = a >> 1;
+    }else{
+        a = a >> 1;
+        a ^= 0xEDB88320;
+    }
+-----
+
+　では、次を読み進めます。
+
+-----  sample02.exe
+00401029  |>  A8 01         |TEST AL,1
+0040102B  |.  74 04         |JE SHORT sample02.00401031
+0040102D  |.  D1E8          |SHR EAX,1
+0040102F  |.  EB 07         |JMP SHORT sample02.00401038
+00401031  |>  D1E8          |SHR EAX,1
+00401033  |.  35 2083B8ED   |XOR EAX,EDB88320
+-----
+
+　前回とコードが同じです。
+
+-----  sample02-3.cpp
+    if(a & 1){
+        a = a >> 1;
+    }else{
+        a = a >> 1;
+        a ^= 0xEDB88320;
+    }
+-----
+
+　さらに次へ進みます。
+
+-----  sample02.exe
+00401038  |>  A8 01         |TEST AL,1
+0040103A  |.  74 04         |JE SHORT sample02.00401040
+0040103C  |.  D1E8          |SHR EAX,1
+0040103E  |.  EB 07         |JMP SHORT sample02.00401047
+00401040  |>  D1E8          |SHR EAX,1
+00401042  |.  35 2083B8ED   |XOR EAX,EDB88320
+-----
+
+　またまた、コードが同じです。
+　よく見ていくと、アドレス「0040108D」まで、同じコードが続きます。もちろ
+ん、このまま「0040108D」まで、上記のC言語コードを書いてもよいのですが、せ
+っかくC言語に直すので、少し読みやすくします。アドレス「0040108D」まで8回、
+同じコードが繰り返されるため、for文を使って、処理を簡略化します。
+
+-----  sample02-4.cpp
+    for(int i=0; i < 8; i++)
+    {
+        if(a & 1){
+            a = a >> 1;
+        }else{
+            a = a >> 1;
+            a ^= 0xEDB88320;
+        }
+    }
+-----
+
+　そして、最後のルーチンです。
+
+-----  sample02.exe
+00401092  |>  49            |DEC ECX
+00401093  |.^ 0F85 7BFFFFFF \JNZ sample02.00401014
+00401099  |.  5E            POP ESI
+0040109A  |>  F7D0          NOT EAX
+0040109C  \.  C3            RETN
+-----
+
+　ECXを減算していますが、この値はこの関数へ渡される第2引数です。そして、
+ECXが0でないならば、またアドレス「00401014」へ戻り、これまでと同じ処理が
+繰り返されます
+　では、ソース全体を完成させましょう。
+
+-----  sample02.cpp
+unsigned long function(char *x, int y)
+{
+    unsigned long a;
+    char b;
+
+    a = 0xFFFFFFFF;
+    if(y == 0)
+        return ~a;
+
+    while(1){
+        b = *x;
+        a = a ^ b;
+        x++;
+
+        for(int i=0; i < 8; i++)
+        {
+            if(a & 1){
+                a = a >> 1;
+            }else{
+                a = a >> 1;
+                a ^= 0xEDB88320;
+            }
+        }
+        y--;
+        if(y == 0)
+            break;
+    }
+
+    return ~a;
+}
+-----
+
+　アセンブルコードを元に生成しているため、実際のコードとは異なっているか
+もしれませんが、出力結果は同じです。無事デコンパイルが出来ています。ちな
+みにこのコードは、データのCRCを求める関数です。私も知り合いに教えてもらっ
+たコードで「こんな単純な処理でCRCが求められるのか」と少し驚かされました。
+
+
+■0x04.) さいごに
+
+　今回、crackmeとCRCアルゴリズムのコードを手動でデコンパイルしましたが、
+いかがだったでしょうか？　crackmeは関数呼び出しの流れにより大体のコードが
+分かるため、やりやすかったかもしれませんが、アルゴリズム系は、いったい何
+をやっているのか最初は検討がつかないため、本当に自分の理解が正しいのか不
+安になります。しかし、最初は間違っていたとしても、読み進めていけば全体像
+が次第に掴めていくので、とりあえず「読むこと」が重要だと思います。
+　また、アセンブルコードを読むことは解析の基礎なので、速く正確に読めるこ
+とは、それだけで技術になります。それに、読む技術は何より経験が重要ですの
+で、伸ばすためには、毎日の地道な積み重ねが必要かもしれません。
+　そんなところで今回は終わりとさせていただきます。
+
+
+■0x05.) さいごのさいごに
+
+　以下のコードは、それなりに有名なあるアルゴリズムです。2つの関数で実装さ
+れています（00401000と00401100）。もし良かったら腕試しにデコンパイルに挑
+戦してみてください。ただ、既存のアルゴリズムなので、特定さえできたら、お
+そらくインターネット上で同様のソースコードが見つかるかと思います。なので、
+全部デコンパイルする必要はないでしょう。
+　元々アルゴリズムを知ってる人（研究者？）なら、一瞬で分かるかと思います
+が、知らない人で「じゃあコードを読んで解析しよう！」となると、2～3時間く
+らいはかかるかと思います（たぶん）。個人的には、一日かけて分かれば十分に
+すごいのでは？　と思ってます。
+
+-----  sample03.exe
+00401000 >/$  53            PUSH EBX
+00401001  |.  55            PUSH EBP
+00401002  |.  56            PUSH ESI
+00401003  |.  8B7424 10     MOV ESI,DWORD PTR SS:[ESP+10]
+00401007  |.  33C9          XOR ECX,ECX
+00401009  |.  33C0          XOR EAX,EAX
+0040100B  |.  57            PUSH EDI
+0040100C  |.  33ED          XOR EBP,EBP
+0040100E  |.  890E          MOV DWORD PTR DS:[ESI],ECX
+00401010  |.  894E 04       MOV DWORD PTR DS:[ESI+4],ECX
+00401013  |>  884C0E 08     /MOV BYTE PTR DS:[ESI+ECX+8],CL
+00401017  |.  41            |INC ECX
+00401018  |.  81F9 00010000 |CMP ECX,100
+0040101E  |.^ 72 F3         \JB SHORT sample03.00401013
+00401020  |.  8B4C24 1C     MOV ECX,DWORD PTR SS:[ESP+1C]
+00401024  |.  8D7E 09       LEA EDI,DWORD PTR DS:[ESI+9]
+00401027  |.  C74424 14 400>MOV DWORD PTR SS:[ESP+14],40
+0040102F  |.  90            NOP
+00401030  |>  0FB657 FF     /MOVZX EDX,BYTE PTR DS:[EDI-1]
+00401034  |.  8B5C24 18     |MOV EBX,DWORD PTR SS:[ESP+18]
+00401038  |.  0FB61C18      |MOVZX EBX,BYTE PTR DS:[EAX+EBX]
+0040103C  |.  03DA          |ADD EBX,EDX
+0040103E  |.  0FB657 FF     |MOVZX EDX,BYTE PTR DS:[EDI-1]
+00401042  |.  03DD          |ADD EBX,EBP
+00401044  |.  81E3 FF000000 |AND EBX,0FF
+0040104A  |.  8BEB          |MOV EBP,EBX
+0040104C  |.  0FB65C2E 08   |MOVZX EBX,BYTE PTR DS:[ESI+EBP+8]
+00401051  |.  40            |INC EAX
+00401052  |.  3BC1          |CMP EAX,ECX
+00401054  |.  88542E 08     |MOV BYTE PTR DS:[ESI+EBP+8],DL
+00401058  |.  885F FF       |MOV BYTE PTR DS:[EDI-1],BL
+0040105B  |.  72 02         |JB SHORT sample03.0040105F
+0040105D  |.  33C0          |XOR EAX,EAX
+0040105F  |>  0FB617        |MOVZX EDX,BYTE PTR DS:[EDI]
+00401062  |.  8B5C24 18     |MOV EBX,DWORD PTR SS:[ESP+18]
+00401066  |.  0FB61C18      |MOVZX EBX,BYTE PTR DS:[EAX+EBX]
+0040106A  |.  03DA          |ADD EBX,EDX
+0040106C  |.  03DD          |ADD EBX,EBP
+0040106E  |.  81E3 FF000000 |AND EBX,0FF
+00401074  |.  8BEB          |MOV EBP,EBX
+00401076  |.  0FB61F        |MOVZX EBX,BYTE PTR DS:[EDI]
+00401079  |.  0FB6542E 08   |MOVZX EDX,BYTE PTR DS:[ESI+EBP+8]
+0040107E  |.  40            |INC EAX
+0040107F  |.  3BC1          |CMP EAX,ECX
+00401081  |.  885C2E 08     |MOV BYTE PTR DS:[ESI+EBP+8],BL
+00401085  |.  8817          |MOV BYTE PTR DS:[EDI],DL
+00401087  |.  72 02         |JB SHORT sample03.0040108B
+00401089  |.  33C0          |XOR EAX,EAX
+0040108B  |>  0FB657 01     |MOVZX EDX,BYTE PTR DS:[EDI+1]
+0040108F  |.  8B5C24 18     |MOV EBX,DWORD PTR SS:[ESP+18]
+00401093  |.  0FB61C18      |MOVZX EBX,BYTE PTR DS:[EAX+EBX]
+00401097  |.  03DA          |ADD EBX,EDX
+00401099  |.  03DD          |ADD EBX,EBP
+0040109B  |.  81E3 FF000000 |AND EBX,0FF
+004010A1  |.  8BEB          |MOV EBP,EBX
+004010A3  |.  0FB65F 01     |MOVZX EBX,BYTE PTR DS:[EDI+1]
+004010A7  |.  0FB6542E 08   |MOVZX EDX,BYTE PTR DS:[ESI+EBP+8]
+004010AC  |.  40            |INC EAX
+004010AD  |.  3BC1          |CMP EAX,ECX
+004010AF  |.  885C2E 08     |MOV BYTE PTR DS:[ESI+EBP+8],BL
+004010B3  |.  8857 01       |MOV BYTE PTR DS:[EDI+1],DL
+004010B6  |.  72 02         |JB SHORT sample03.004010BA
+004010B8  |.  33C0          |XOR EAX,EAX
+004010BA  |>  0FB657 02     |MOVZX EDX,BYTE PTR DS:[EDI+2]
+004010BE  |.  8B5C24 18     |MOV EBX,DWORD PTR SS:[ESP+18]
+004010C2  |.  0FB61C18      |MOVZX EBX,BYTE PTR DS:[EAX+EBX]
+004010C6  |.  03DA          |ADD EBX,EDX
+004010C8  |.  03DD          |ADD EBX,EBP
+004010CA  |.  81E3 FF000000 |AND EBX,0FF
+004010D0  |.  8BEB          |MOV EBP,EBX
+004010D2  |.  0FB65F 02     |MOVZX EBX,BYTE PTR DS:[EDI+2]
+004010D6  |.  0FB6542E 08   |MOVZX EDX,BYTE PTR DS:[ESI+EBP+8]
+004010DB  |.  40            |INC EAX
+004010DC  |.  3BC1          |CMP EAX,ECX
+004010DE  |.  885C2E 08     |MOV BYTE PTR DS:[ESI+EBP+8],BL
+004010E2  |.  8857 02       |MOV BYTE PTR DS:[EDI+2],DL
+004010E5  |.  72 02         |JB SHORT sample03.004010E9
+004010E7  |.  33C0          |XOR EAX,EAX
+004010E9  |>  8B5424 14     |MOV EDX,DWORD PTR SS:[ESP+14]
+004010ED  |.  83C7 04       |ADD EDI,4
+004010F0  |.  4A            |DEC EDX
+004010F1  |.  895424 14     |MOV DWORD PTR SS:[ESP+14],EDX
+004010F5  |.^ 0F85 35FFFFFF \JNZ sample03.00401030
+004010FB  |.  5F            POP EDI
+004010FC  |.  5E            POP ESI
+004010FD  |.  5D            POP EBP
+004010FE  |.  5B            POP EBX
+004010FF  \.  C3            RETN
+00401100 >/$  8B4C24 10     MOV ECX,DWORD PTR SS:[ESP+10]
+00401104  |.  85C9          TEST ECX,ECX
+00401106  |.  76 64         JBE SHORT sample03.0040116C
+00401108  |.  8B4424 04     MOV EAX,DWORD PTR SS:[ESP+4]
+0040110C  |.  53            PUSH EBX
+0040110D  |.  55            PUSH EBP
+0040110E  |.  8B6C24 10     MOV EBP,DWORD PTR SS:[ESP+10]
+00401112  |.  56            PUSH ESI
+00401113  |.  57            PUSH EDI
+00401114  |.  8B7C24 1C     MOV EDI,DWORD PTR SS:[ESP+1C]
+00401118  |.  2BEF          SUB EBP,EDI
+0040111A  |.  894C24 20     MOV DWORD PTR SS:[ESP+20],ECX
+0040111E  |.  8BFF          MOV EDI,EDI
+00401120  |>  8B08          /MOV ECX,DWORD PTR DS:[EAX]
+00401122  |.  8B70 04       |MOV ESI,DWORD PTR DS:[EAX+4]
+00401125  |.  41            |INC ECX
+00401126  |.  81E1 FF000000 |AND ECX,0FF
+0040112C  |.  0FB65408 08   |MOVZX EDX,BYTE PTR DS:[EAX+ECX+8]
+00401131  |.  03F2          |ADD ESI,EDX
+00401133  |.  81E6 FF000000 |AND ESI,0FF
+00401139  |.  0FB65C30 08   |MOVZX EBX,BYTE PTR DS:[EAX+ESI+8]
+0040113E  |.  8908          |MOV DWORD PTR DS:[EAX],ECX
+00401140  |.  8970 04       |MOV DWORD PTR DS:[EAX+4],ESI
+00401143  |.  885430 08     |MOV BYTE PTR DS:[EAX+ESI+8],DL
+00401147  |.  885C08 08     |MOV BYTE PTR DS:[EAX+ECX+8],BL
+0040114B  |.  03DA          |ADD EBX,EDX
+0040114D  |.  81E3 FF000000 |AND EBX,0FF
+00401153  |.  8A4C03 08     |MOV CL,BYTE PTR DS:[EBX+EAX+8]
+00401157  |.  320C2F        |XOR CL,BYTE PTR DS:[EDI+EBP]
+0040115A  |.  880F          |MOV BYTE PTR DS:[EDI],CL
+0040115C  |.  8B4C24 20     |MOV ECX,DWORD PTR SS:[ESP+20]
+00401160  |.  47            |INC EDI
+00401161  |.  49            |DEC ECX
+00401162  |.  894C24 20     |MOV DWORD PTR SS:[ESP+20],ECX
+00401166  |.^ 75 B8         \JNZ SHORT sample03.00401120
+00401168  |.  5F            POP EDI
+00401169  |.  5E            POP ESI
+0040116A  |.  5D            POP EBP
+0040116B  |.  5B            POP EBX
+0040116C  \>  C3            RETN
+-----
+
+　もし機会があれば、回答編もやるかもしれません(^^;。
+　ではではー。
+
+
+

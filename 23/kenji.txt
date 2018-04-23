@@ -1,0 +1,408 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第7章: パケットフィルタリング　～デバイスドライバ篇～ ---
+
+著者：Kenji Aiko
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　パケットフィルタリングやパケットキャプチャといったテクニックはアプリケ
+ーションレベルでも十分に作成することが可能です。しかし、本格的なものを作
+るならば、デバイスドライバを利用した方がよいかもしれません。というわけで、
+今回はデバイスドライバを利用したパケットフィルタリング（パケットキャプチ
+ャ）を行ってみようと思います。アプリケーションレベルでのパケットフィルタ
+リングについては「パケットフィルタリング　～アプリケーション篇～」（※1）
+を参照してください。
+
+　デバイスドライバを利用したプログラミングの入門テキストは、「Windows De
+vice Driver Programming Part 1」（※2）と「Windows Device Driver Program
+ming Part 2」（※3）を参照してください。
+
+　今回使用するプログラムは以下です。
+
+http://ruffnex.oc.to/kenji/windriver/packet/DrvHookIp.zip
+
+　そして、今回私が使用する環境は「WindowsXP + VC++.NET + DDK_XP」です。
+
+（※1）パケットフィルタリング　～アプリケーション篇～
+http://ruffnex.oc.to/kenji/text/fire_a/
+
+（※2）Windows Device Driver Programming Part 1
+http://ruffnex.oc.to/kenji/windriver/
+
+（※3）Windows Device Driver Programming Part 2
+http://ruffnex.oc.to/kenji/windriver/driver2.html
+
+
+■0x02.) 2つのアプローチ
+
+　Windows上でパケットフィルタリングを行う場合、もっとも簡単な方法として2
+つのアプローチがあります。まずひとつ目は「Packet Filtering API」を使う方
+法です。これは簡単なユーザーモードのアプリケーションレベルで実装できるた
+め、フィルタリングを行うだけならばもっとも手軽な方法だといえます。これを
+使えばファイヤーウォールを作成することも容易です。しかし、この方法はあく
+までも「フィルタリング」を行うだけであり、パケットそのものをキャプチャす
+ることができません。これはユーザーモードアプリケーションの限界ともいえま
+す。ちなみにこの方法については、「パケットフィルタリング　～アプリケーシ
+ョン篇～」（※1）にて解説しています。
+
+（※1）パケットフィルタリング　～アプリケーション篇～
+http://ruffnex.oc.to/kenji/text/fire_a/
+
+　2つ目は「Filter Hook Driver」を作成する方法です。この方法はカーネルモー
+ドのドライバを作成し、PacketFilterExtensionPtrのコールバック関数を登録し
+ます。登録後、IPヘッダ以上のパケットはすべてフックすることが可能になり、
+パケットの内部を調べて破棄するか通過させるかの判断ができます。また、この
+方法だと、フィルタリングだけではなく、キャプチャも行うこともできるため、
+他にもいろいろと使い道がありそうです。
+
+　MSDNにはフィルタフックに関するテキスト（※2）があります。よければ参考に
+してください。
+
+（※2）Filter-Hook Drivers
+http://msdn.microsoft.com/library/default.asp?url=/library/en-us/NetXP_r/hh/NetXP_r/fltrref_16b29dd7-dd36-4f22-a828-24a6820dfeb3.xml.asp
+
+
+■0x03.) Filter-Hook Driver
+
+　突然「Filter-Hook Driverを利用します」といわれてもワケが分からないので、
+まずは、この関数をみてください。詳細は後ほど説明しますので、とりあえずは
+この関数についての説明を行います。
+
+-----  PacketFilterExtensionPtr関数
+typedef  PF_FORWARD_ACTION 
+  (*PacketFilterExtensionPtr)(
+    IN unsigned char  *PacketHeader,     // IPヘッダのアドレス
+    IN unsigned char  *Packet,           // IPよりひとつ上位のヘッダのアドレス
+    IN unsigned int  PacketLength,       // Packetのサイズ（バイト単位）
+    IN unsigned int  RecvInterfaceIndex, // NICがこの受信パケットを取得した順番数
+    IN unsigned int  SendInterfaceIndex, // NICがこの送信パケットを取得した順番数
+    IN IPAddr  RecvLinkNextHop,          // パケットを受信したNICのアドレス
+    IN IPAddr  SendLinkNextHop           // パケットを送信したNICのアドレス
+); 
+-----
+
+　PacketHeaderは取得したIPヘッダのアドレスです。PacketはIPよりひとつ上位
+にあるプロトコルデータ（TCPやUDPなど）のアドレスです。PacketLengthはPack
+etのサイズです（バイト単位）。そして戻り値のPF_FORWARD_ACTIONですが、これ
+は以下のいずれかの値を持ちます。
+
+・PF_FORWARD  パケットを次のドライバへ渡します（通過）。
+・PF_DROP     パケットを次のドライバへ渡しません（破棄）。
+・PF_PASS     パケットを処理しない場合にこれを返します。
+
+　私が翻訳した限りの情報ですので、ところどころ間違ってそうですが、もし間
+違っていたらメール（kenji@ruffnex.oc.to）ください(^^;。
+
+　とりあえず、PacketFilterExtensionPtr関数というものがどういうものかをわ
+かってもらえたでしょうか。みての通り、NICに流れるパケットをIPレベル以上で
+取得することが可能です。
+
+　それで、この関数をipfltdrv.sysというドライバにセットします。私の環境で
+は、「C:\windows\system32\DRIVERS\ipfltdrv.sys」にあります。このドライバ
+にPacketFilterExtensionPtr関数をセットすることでNICを流れるパケットを取得
+することができます。
+
+　しかし、残念ながらipfltdrv.sysはWindowsXPではデフォルトで動作していませ
+ん。レジストリを見てもそれが分かります。「HKLM\SYSMTEM\CurrentControlSet
+\Services\IpFilterDriver」に設定されていますが、デフォルトではスタート状
+態になっていません。なので、まずは、このドライバをスタートさせる必要があ
+ります。
+
+
+■0x04.) フィルタリングの流れ
+
+　最初にipfltdrv.sysドライバをスタートさせます。これは通常のドライバ起動
+と同様にサービスマネージャを使うことで可能です。そして、次にこちら側が用
+意したDrvHookIp.sysドライバを同じくサービスマネージャを使ってスタートさせ
+ます。このDrvHookIp.sysドライバは、パケットをフックさせるために、ipfltdr
+v.sysドライバへPacketFilterExtensionPtr関数をセットします。あとは、DrvHo
+okIp.sysドライバをアプリケーションプログラムから管理することでフィルタリ
+ングやパケットキャプチャを行うことができます。
+
+-----
+
+                                      +--------------+
+ +--------------+                     |              |
+ | ipfltdrv.sys | ------------------> |      OS      |
+ +--------------+  OSへインストール   |              |
+                                      +--------------+
+
+
+                                      +--------------+
+                                      | ipfltdrv.sys |
+                                      +--------------+
+ +---------------+                    |              |
+ | DrvHookIp.sys | -----------------> |      OS      |
+ +---------------+  OSへインストール  |              |
+                                      +--------------+
+
+
+                                      +--------------+
+                                      | ipfltdrv.sys |
+ +---------------+                   +---------------+
+ | User Mode App | ----------------> | DrvHookIp.sys |
+ +---------------+ 定期的にアクセス  +---------------+
+                                      |              |
+                                      |      OS      |
+                                      |              |
+                                      +--------------+
+
+-----
+
+　ドライバをOSへインストールさせる処理はすべてユーザーモードのプログラム
+が行います。つまり、この流れはユーザーモードプログラムからの視点といえま
+す。
+
+　これをプログラムにしたのが以下です。
+
+http://ruffnex.oc.to/kenji/windriver/packet/DrvHookIpTest.cpp
+
+　コンソールアプリケーションとなっており、main関数を追っていくと上記の処
+理が行われているのがわかります。また、処理が終わるとドライバはOSから取り
+外さなければならないので、OSからのアンインストール処理も追加しています。
+
+　パケットの取得と表示を行っている部分は以下のコードです。
+
+-----  DrvHookIpTest.cpp
+    unsigned char szBuffer[8192];
+
+    while( ! (GetAsyncKeyState(_T('Z')) & 0x0001)){
+
+        szBuffer[0] = 0xFF;
+
+        DWORD dwReturn;
+        DeviceIoControl(hFile, IOCTL_ID_BUFFIO, 
+            szBuffer, sizeof(szBuffer), 
+            szBuffer, sizeof(szBuffer), &dwReturn, NULL);
+        
+        if(szBuffer[0] == 0xFF){
+            Sleep(1000);
+            continue;
+        }
+
+        for(DWORD i=0; i < dwReturn; i++){
+            printf(_T("%02x "), szBuffer[i]);
+            if(((i + 1) % 16) == 0)
+                printf(_T("\n"));
+        }
+        printf(_T("\n\n"));
+    }
+-----
+
+　GetAsyncKeyState関数でキーボードを監視し、zキーが押されたら終了します。
+また、最初に代入している0xFFという値は識別子の役割を果たします。szBuffer
+にはIPヘッダが格納されますが、万が一にもIPヘッダの1バイト目が0xFFになるこ
+とはありえません（大抵0x45となる）。よって、ドライバへアクセスした後もこ
+の1バイト目が0xFFならば、ネットワークパケットを受けとっていないと判断し、
+1秒のウェイトをかけて再度取得を取得を試みます。
+
+
+■0x05.) パケットフィルタドライバ
+
+　さて、これまで何度か出てきたDrvHookIp.sysドライバのコードは以下になりま
+す。
+
+http://ruffnex.oc.to/kenji/windriver/packet/DrvHookIp.cpp
+
+　DriverEntry関数はドライバのインストール時に実行されます。基本的に初期化
+しか行っていません。UnloadFunction関数も同様にお決まりの処理しか行ってい
+ません。
+
+　CreateFunction関数はドライバがオープンされた時に呼ばれ、フィルタ関数の
+セットを行ってます。つまり、ユーザープログラムのCreateFile関数が実行され
+た直後から、ドライバはパケットの受信を行うことになります。そして、CloseF
+unction関数にてフィルタ関数を解除するので、CloseHandle関数が呼び出された
+らパケット受信を終えるというわけです。
+
+　SetFilterFunction関数はフィルタ関数のセットを行う関数です。DD_IPFLTRDR
+VR_DEVICE_NAMEはipfltdrv.sysを意味します。そしてPacketFilterFunction関数
+はセットされるフィルタ関数です。見て通り、パケットデータを取得したらすぐ
+さまGetPacketDataへ渡しています。
+
+　ドライバの主な処理は、パケットの取得と保持、そしてユーザープログラムと
+の会話部分です。パケットの取得と保持についてはPACKETDATA構造体を使ってい
+ます。
+
+-----  PACKETDATA構造体
+typedef struct _PacketData {
+    unsigned char *pBuffer;   // パケットデータのポインタ
+    int pBufferSize;          // パケットデータのサイズ
+    struct _PacketData *next; // 次のパケットデータのポインタ
+} PACKETDATA, *PPACKETDATA;
+
+PPACKETDATA g_first_ppd = NULL; // 一番古いパケットデータ
+PPACKETDATA g_last_ppd  = NULL; // 一番新しいパケットデータ
+-----
+
+　パケットを取得するタイミングと、ユーザープログラムからアクセスがあるタ
+イミングは必ずしも同じではないため、一定時間ドライバ側でデータを保持して
+おく必要があります。そのため、DrvHookIp.cppではチェーン式にデータを連結す
+るアルゴリズムを使いました。
+
+　仮に10個のパケットを保持していると考えます。すると、一番最初に取得した
+パケット（古い）のアドレスをg_first_ppdに、そして一番最後に取得したパケッ
+ト（新しい）のアドレスをg_last_ppdに入れておきます。この状態でユーザーか
+らのアクセスがあった場合、一番最初に取得した、一番古いパケットを渡す必要
+がありますので、g_first_ppdが指すデータを渡します。そして、渡し終えたパケ
+ットのメモリ領域は開放し、g_first_ppdはその次の2番目に取得したパケットの
+アドレスに更新します。
+
+　また、この状態で、新しい11番目のパケットを取得した場合、新しくPACKETDA
+TA構造体サイズのメモリを割り当て、そのアドレスをg_last_ppd->nextに入れま
+す。そして、g_last_ppdを新しく割り当てたPACKETDATA構造体のアドレスに更新
+します。
+
+　こうすることによって、流れるパケットとユーザープログラムからのアクセス
+の両方に対応することができます。それらを行っているのが以下の関数です。
+
+-----  DrvHookIp.cpp
+PPACKETDATA GetPacketData(unsigned char *pHeader,
+                          unsigned char *pBuffer,
+                          int pBufferSize)
+{
+    // 構造体メモリ確保
+    PPACKETDATA ppd = (PPACKETDATA)ExAllocatePool(
+        NonPagedPool, sizeof(PACKETDATA));
+    if(ppd == NULL)
+        return NULL;
+
+    // バッファメモリ確保
+    ppd->pBuffer = (unsigned char *)ExAllocatePool(
+        NonPagedPool, IP_HEADER_SIZE + pBufferSize);
+    if(ppd->pBuffer == NULL){
+        ExFreePool(ppd);
+        return NULL;
+    }
+
+    // 構造体作成（1パケット）
+    RtlCopyMemory(ppd->pBuffer, pHeader, IP_HEADER_SIZE);
+    RtlCopyMemory(ppd->pBuffer + IP_HEADER_SIZE, pBuffer, pBufferSize);
+    ppd->pBufferSize = (IP_HEADER_SIZE + pBufferSize);
+
+    // 取得データをマスク
+    for(int i=0; i < ppd->pBufferSize; i++)
+        ppd->pBuffer[i] = ppd->pBuffer[i] & 0xff;
+
+    // パケット情報の関係を更新
+    if(g_last_ppd == NULL)
+        g_first_ppd = ppd;
+    else
+        g_last_ppd->next = ppd;
+    ppd->next = NULL;
+    g_last_ppd = ppd;
+
+    return ppd;
+}
+
+
+int PutPacketData(unsigned char *pOutputBuffer,
+                  int pOutputBufferSize)
+{
+    if(g_first_ppd == NULL)
+        return 0;
+
+    // バッファサイズを確認してコピー
+    if(g_first_ppd->pBufferSize > pOutputBufferSize){
+        MyDbgPrint("pOutputBufferSize is small.\r\n");
+    }else{
+        RtlCopyMemory(pOutputBuffer, 
+            g_first_ppd->pBuffer, g_first_ppd->pBufferSize);
+    }
+
+    // 戻り値retにコピーしたデータのサイズを代入
+    int ret = g_first_ppd->pBufferSize;
+
+    // 出力したデータを開放
+    PPACKETDATA ppd = g_first_ppd->next;
+    ExFreePool(g_first_ppd->pBuffer);
+    ExFreePool(g_first_ppd);
+    g_first_ppd = ppd;
+    if(g_first_ppd == NULL)
+        g_last_ppd = NULL;
+
+    return ret;
+}
+
+
+VOID FreePacketData(VOID)
+{
+    while(g_first_ppd != NULL){
+        PPACKETDATA ppd = g_first_ppd->next;
+        ExFreePool(g_first_ppd->pBuffer);
+        ExFreePool(g_first_ppd);
+        g_first_ppd = ppd;
+    }
+    g_last_ppd = NULL;
+}
+-----
+
+　GetPacketData関数は受信したパケットデータを格納するメモリ領域を確保しま
+す。この関数は、フィルタリング関数であるPacketFilterFunctionから呼び出さ
+れています。逆にPutPacketData関数はユーザープログラムの相手をしますのでI
+oControlFunction関数から呼び出されています。ユーザープログラムからアクセ
+スがあったら、データを渡し、メモリを開放します。
+
+　FreePacketDataは、現在保持しているすべてのパケットデータを開放する関数
+です。これはドライバがクローズされるときに呼び出します。終了時によけいな
+メモリを確保したままだと行儀が悪いので、このような関数を用意しています。
+
+
+■0x06.) 実行結果
+
+　実行結果は以下のようになります。
+
+-----  コマンドプロンプト
+C:\wb23>DrvHookIpTest
+Install c:\windows\system32\DRIVERS\ipfltdrv.sys...OK
+Install C:\wb23\DrvHookIp.sys...OK
+CreateFile \\.\DrvHookIp...OK
+
+Packet Capture Start!
+
+45 00 00 29 44 a7 40 00 80 06 00 00 7f 00 00 01
+7f 00 00 01 04 18 04 19 ae 25 05 72 2f dc a9 2a
+50 18 44 70 a0 89 00 00
+
+45 00 00 29 44 a7 40 00 80 06 b8 25 7f 00 00 01
+7f 00 00 01 04 18 04 19 ae 25 05 72 2f dc a9 2a
+50 18 44 70 a0 89 00 00 38
+
+45 00 00 28 44 a8 40 00 80 06 00 00 7f 00 00 01
+7f 00 00 01 04 19 04 18 2f dc a9 2a ae 25 05 73
+50 10 41 ce db 33 00 00
+
+Packet Capture Stop!
+
+Uninstall C:\wb23\DrvHookIp.sys...OK
+Uninstall c:\windows\system32\DRIVERS\ipfltdrv.sys...OK
+
+（ここで、zキー入力）
+
+C:\wb23>z
+-----
+
+　ドライバを通じて、ユーザープログラム側でパケットを処理しています。
+
+
+■0x07.) さいごに
+
+　さて、いかがだったでしょうか。デバイスドライバを組めば、パケットフィル
+タリングやパケットキャプチャといった低レベルなことが簡単に実現できます。
+これはとても面白いことだと思います。さらにデバイスドライバはリアルモード
+で動作するため、メモリ空間上のあらゆる場所を書き換えることができます。DD
+Kを入手するのは多少メンドクサイところですが、それだけ価値ある発見があると
+思います。これを機会にぜひともデバイスドライバプログラミングを体験してみ
+てはいかがでしょうか。
+
+　さて、最後になりましたが、ここまで読んでくれて本当にありがとうございま
+す。
+
+　では、また会う日まで...
+
+

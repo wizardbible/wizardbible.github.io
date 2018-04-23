@@ -1,0 +1,346 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: Linuxカーネルをハッキングしてみよう ---
+
+著者：Kenji Aiko
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　Linuxのカーネルをハッキングしてみよう。
+　まず、「http://kernel.org/」からカーネルのソースコードをゲットします。
+現在（2008/03/03）の最新版は「2.6.24.3」なので、このバージョンのフルパッ
+ケージをダウンロードします。
+
+-----  terminal
+# wget http://kernel.org/pub/linux/kernel/v2.6/linux-2.6.24.3.tar.bz2
+--06:04:11--  http://kernel.org/pub/linux/kernel/v2.6/linux-2.6.24.3.tar.bz2
+           => `linux-2.6.24.3.tar.bz2'
+kernel.org をDNSに問いあわせています...
+kernel.org|204.152.191.37|:80 に接続しています... 接続しました。
+HTTP による接続要求を送信しました、応答を待っています... 200 OK
+長さ: 46,741,533 (45M) [application/x-bzip2]
+
+100%[==============================================>] 46,741,533     3.30M/s    ETA 00:00
+
+06:04:23 (3.82 MB/s) - `linux-2.6.24.3.tar.bz2' を保存しました [46741533/46741533]
+
+# ls
+linux-2.6.24.3.tar.bz2
+# tar jxf linux-2.6.24.3.tar.bz2（tarで展開します）
+# cd linux-2.6.24.3（ディレクトリの中に入ります）
+# make-kpkg --revision=kn01 kernel_image（コンパイル開始）
+（延々と続くコンフィグ設定の質問に答えていく）
+-----
+
+　延々と続くコンフィグ設定に飽きてくると、とりあえずEnterキー連打状態にな
+ります。それでも全然コンパイルは通るのですが、個人的には、すでに誰かが作
+った.config辺りネット上から探してきてコピーしてきてもいいかなと思います。
+　そんな感じで、コンフィグ設定が終わると、ファイルがコンパイルされていき
+ます。
+
+-----  terminal
+  CC [M]  drivers/net/sk98lin/ski2c.o
+  CC [M]  drivers/net/sk98lin/sklm80.o
+  CC [M]  drivers/net/sk98lin/skqueue.o
+  CC [M]  drivers/net/sk98lin/skrlmt.o
+  CC [M]  drivers/net/sk98lin/sktimer.o
+-----
+
+　オブジェクト指向全盛なこの時代に、こんなに大きなソフトウェアをC言語で書
+けるのかという事実に驚愕しながら、コンパイルが終わるのを待ちます。
+
+-----  terminal
+dpkg-deb: building package `kernel-image-2.6.24.3' in `../kernel-image-2.6.24.3_kn01_i386.deb'.
+rm -f -r debian/tmp-image
+echo done >  stamp-image
+make[1]: Leaving directory `/.../linux-2.6.24.3k'
+-----
+
+　コンパイルが終わると、ひとつ上のディレクトリに.debファイルが作成されます。
+　kernel-image-2.6.24.3_kn01_i386.debが出来上がったので、これを、カーネル
+をインストールしたいマシンにコピーします。コンパイルした環境にカーネルを
+インストールする場合は、そのままでOKです。
+　カーネルを差し替える場合、grubが必要です。grubはapt-getでインストールで
+きます。
+
+-----  terminal
+# apt-get install grub
+# grub-install
+# update-grub
+-----
+
+　lilo系を使っている方は、bootディレクトリやlibディレクトリに必要なファイ
+ルをコピーして、/etc/lilo.conf辺りを編集してください。個人的にはgrubの方
+が若干簡単かなと思っていますが、これは好みの問題かもしれません。
+　grubをインストールしたら、カーネルを差し替えます。
+
+-----  terminal
+# dpkg -i kernel-image-2.6.24.3_kn01_i386.deb
+未選択パッケージ kernel-image-2.6.24.3 を選択しています。
+(データベースを読み込んでいます ...)
+(kernel-image-2.6.24.3_kn01_i386.deb から) kernel-image-2.6.24.3 を展開しています...
+kernel-image-2.6.24.3 (kn01) を設定しています ...
+
+# update-grub
+Searching for GRUB installation directory ... found: /boot/grub
+Searching for default file ... found: /boot/grub/default
+Testing for an existing GRUB menu.lst file ... found: /boot/grub/menu.lst
+Searching for splash image ... none found, skipping ...
+Found kernel: /boot/vmlinuz-2.6.24.3
+Found kernel: /boot/vmlinuz-2.6.22.6
+Found kernel: /boot/vmlinuz-2.6.22.1
+Found kernel: /boot/vmlinuz-2.6.22
+Found kernel: /boot/vmlinuz-2.6.21.5
+Found kernel: /boot/vmlinuz-2.6.21.4
+Found kernel: /boot/vmlinuz-2.6.20.4
+Found kernel: /boot/vmlinuz-2.6.20.3
+Found kernel: /boot/vmlinuz-2.6.18-4-686
+Updating /boot/grub/menu.lst ... done
+# vi /boot/grub/menu.lst
+# reboot
+-----
+
+　/boot/grub/menu.lstがアップデートされたようなので、これをviなどで開いて、
+デフォルトで使用するカーネルを最新版（vmlinuz-2.6.24.3）に設定します。こ
+れで準備完了です。OSの再起動を行います。
+　再起動後、カーネルのバージョンを確認します。すると、最新版になっている
+のが分かります。
+
+-----  terminal
+# uname -r
+2.6.24.3
+-----
+
+　これでカーネルの更新は終了です。
+
+
+■0x02.) printk
+
+　printkは、カーネルからディスプレイに文字列を表示する関数です。要するに
+printfのカーネル版です。カーネルはかなり膨大なソースコードなので、いきな
+り全部を理解するのは難しいです。よって、とりあえず、適当な場所でprintkを
+呼び出してみるのがよいです。
+　あと、printkはカーネルのデバッグにもよく使います。というか、むしろデバ
+ッグにはprintkしか使えません。正直、カーネルのデバッグとかかなり苦痛なの
+で（コンパイルや実行に時間がかかるし、printkだけじゃ問題箇所が全然特定で
+きないし）、もし、よく出来たVMなどで、カーネル空間をデバッガ的なもので追
+えたりできるツールがあれば教えてください（そろそろそういうのが出てきても
+いいはず）。
+
+
+■0x03.) コードの追加
+
+　printkに飽きたら、いよいよカーネルハッカーへの最初の一歩を踏み出すこと
+になります。つまり、カーネルに何か機能を持たせます。とりあえず、カーネル
+ディレクトリ以下のnet/socket.cという、とても興味深いコードを読んでみます。
+
+-----  net/socket.c
+/*
+ * NET          An implementation of the SOCKET network access protocol.
+ *
+ * Version:     @(#)socket.c    1.1.93  18/02/95
+ *
+ * Authors:     Orest Zborowski, <obz@Kodak.COM>
+ *              Ross Biro
+ *              Fred N. van Kempen, <waltje@uWalt.NL.Mugnet.ORG>
+ *
+ * Fixes:
+ *              Anonymous       :       NOTSOCK/BADF cleanup. Error fix in
+ *                                      shutdown()
+
+（略）
+
+EXPORT_SYMBOL(kernel_sock_ioctl);
+EXPORT_SYMBOL(kernel_sock_shutdown);
+-----
+
+　読んでみると、とても馴染みがありそうな名前が多々出現します。でも馴染み
+がありそうなだけで、はっきりいってよく意味がわからないコードばかりだと思
+います。でも、どんなに難しそうでも、所詮C言語です。アルファベットの記号を
+辿っていけば、なんとかなります（きっと）。
+　でも、読んでるだけではやっぱりツマラナイので、何か関数を追加します。
+
+-----  net/socket.c（追加部分）
+static int wb_talk_buffer(int flag, char *str)
+{
+        static char s[1024] = "";
+
+        switch(flag)
+        {
+        case 0:
+                strcpy(str, "Hello ");
+                strcat(str, s);
+                break;
+        case 1:
+                strcpy(s, str);
+                break;
+        default:
+                break;
+        }
+
+        return 0;
+}
+
+static int wb_talk_read(
+        char *buffer, char **start, off_t offset,
+        int count, int *peof, void *dat)
+{
+        int len = 0;
+        char str[256];
+
+        wb_talk_buffer(0, str);
+        len += sprintf(buffer + len, "%s\n", str);
+
+        return len;
+}
+
+static int wb_talk_write(
+        struct file *file, const char __user *buffer,
+        unsigned long count, void *item)
+{
+        int result;
+        char *tmp_buffer;
+
+        if((tmp_buffer = kmalloc(count + 1, GFP_KERNEL)) == NULL)
+                return -ENOMEM;
+
+        if(copy_from_user(tmp_buffer, buffer, count)){
+                result = -EFAULT;
+        }else{
+                tmp_buffer[count] = '\0';
+                wb_talk_buffer(1, tmp_buffer);
+                result = count;
+        }
+
+        kfree(tmp_buffer);
+        return result;
+}
+
+static int wizard_bible(void)
+{
+        struct proc_dir_entry *e;
+
+        if((e = create_proc_entry("wizard_bible", 0644, NULL)) == NULL)
+                return -1;
+
+        e->owner = THIS_MODULE;
+        e->read_proc  = (read_proc_t *) wb_talk_read;
+        e->write_proc = (write_proc_t *) wb_talk_write;
+
+        return 0;
+}
+-----
+
+　net/socket.cに上記のコード（4つの関数）を追加してください。追加場所はど
+こでもよいです。
+　あとは、wizard_bible関数をどこかの初期化関数から呼んでもらいましょう。
+このファイル（socket.c）には、ちょうどinit_onceという一度だけ初期化してく
+れそうな関数が用意されているので、この関数に少し手を加えます。
+
+-----  net/socket.c（変更部分）
+static int wizard_bible(void);
+static void init_once(struct kmem_cache *cachep, void *foo)
+{
+        struct socket_alloc *ei = (struct socket_alloc *)foo;
+        static int flag = 1;
+        if(flag == 1){
+                wizard_bible();
+                flag = 0;
+        }
+        inode_init_once(&ei->vfs_inode);
+}
+-----
+
+　これでコードの変更は終わりです。変更を加えたコードを以下に置いておきま
+す。自分で書くのがメンドクサイという方は、このファイルをnet以下にコピーし
+てください。
+
+　http://07c00.com/text/kernel/socket.c
+
+
+　では、再度カーネルをコンパイルします。
+
+-----  terminal
+make-kpkg --revision=kn02 kernel_image
+-----
+
+　コンパイルが終わったら、カーネルをインストールします。
+
+-----  terminal
+# dpkg -i kernel-image-2.6.24.3_kn02_i386.deb
+
+Do you want to stop now? [Y/n]n
+kernel-image-2.6.24.3 を展開し、置換しています...
+kernel-image-2.6.24.3 (kn02) を設定しています ...
+
+Please Hit return to continue.
+Not updating image symbolic links since we are being updated (kn01)
+# update-grub
+# reboot
+-----
+
+　OSを再起動します。
+　そして、/proc以下をlsで確認すると…
+
+-----  terminal
+# cd /proc
+/proc# ls
+62         dma          kcore         partitions  uptime
+apm        driver       kmsg          scsi        version
+buddyinfo  execdomains  loadavg       self        vmstat
+bus        filesystems  locks         slabinfo    wizard_bible　←ココ
+diskstats  kallsyms     pagetypeinfo  tty
+/proc#
+-----
+
+　「wizard_bible」なるステータスが、/proc以下に追加されているのが確認でき
+ます。では、このステータスに「KENJI」という文字列を、echoコマンドを使って
+送ります。そして、catコマンドで確認すると…
+
+-----  terminal
+/proc# echo KENJI > /proc/wizard_bible
+/proc# cat /proc/wizard_bible
+Hello KENJI
+/proc#
+-----
+
+　カーネルから「Hello KENJI」という文字列が返ってきました。無事、カーネル
+空間とユーザー空間との会話（データ共有）を行えたことになります。
+
+
+■0x04.) バッファオーバーフロー
+
+　見てわかるとおり、上記のコードにはバッファオーバーフローの脆弱性が存在
+します。wb_talk_read関数は、str配列として256バイトを確保していますが、wb
+_talk_buffer関数内で定義されているstaticな配列sは、1024バイトを持ちます。
+wb_talk_write関数が動的メモリ確保でデータをwb_talk_bufferへ渡しているため、
+うまくやれば、wb_talk_read実行時にスタック内で任意のコードを実行できそう
+です。
+　また、wb_talk_write関数が動的にメモリを確保しているのに対し、staticな配
+列sは1024バイトと固定なので、この部分でもオーバーフローを発生させることが
+できます。
+　さて、このバッファオーバーフローですが、見てのとおり、カーネル空間で発
+生しています。ユーザーランドで発生したバッファオーバーフローによるroot奪
+取のハンドリングは、様々な文献で解説されていますが、では、カーネルランド
+で発生しているオーバーフローに対しては、どういった可能性が考えられるでし
+ょうか？　一度ゆっくりと考えてみてもよいかもしれません。
+
+
+■0x05.) さいごに
+
+　今回は、これからLinuxカーネルに触れてみようという方を対象に解説させてい
+ただきましたが、いかがだったでしょうか？　私自身Linuxカーネルをそれほど多
+く読んでいるわけではないのですが、Linuxのソースコードは、全体的な概念さえ
+分かってしまえば、それほど難しいものではないように思えます。なので「カー
+ネルかよー」と敬遠せずに、一度、軽い気持ちで読んでみてもいいかもしれませ
+ん。意外とスラスラと読めるかもしれませんよ(^^;。
+
+　では、また会う日まで
+
+
+

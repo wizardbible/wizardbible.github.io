@@ -1,0 +1,304 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: マニアックJavaプログラミング第9回: ～ SSLでなんちゃってバーチャルホスト ---
+
+著者：金床
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　ﾎﾟｳﾝﾆﾁﾜﾎﾟｳﾝﾆﾁﾜ。筆者がはまったﾌｧｲﾙﾃﾞｨｽｸﾘﾌﾟﾀがﾘｰｸするJavaのバグ（詳しく
+はWB42参照）についてopenjdkコミュニティに報告したところ、やっと対応しても
+らうことになった。2009年に出るであろうjdk1.6.0_12で修正されるらしい。つー
+か遅いよ。
+
+　で、このバグについてはsecurity-devというメーリングリストで話し合ってい
+たのだが、先日SunのBradという人がある回避策を教えてくれた。
+
+http://www.nabble.com/-security-dev-00402-:-Re:-NullPointerException-at%09sun.security.ssl.OutputRecord.writeBuffer-td20492154.html
+
+　JSSEでは普通のプレーンなSocket（既にTCPの接続が完了しているもの）にかぶ
+せるようにしてSSLSocketを作成することができるので、これを使えば今回問題に
+なっているSSLServerSocketクラスを使わずに済む、というのである。ソースコー
+ドは以下のようなものだ。
+
+-----
+ServerSocket ss = new ServerSocket(port);
+Socket s = ss.accept();
+sslssf.createSocket(s, s.getInetAddress().getHostName(),s.getPort(), false);
+-----
+
+　筆者はcreateSocketの存在は知っていたが、てっきりこれはクライアント側で
+使うものだと思っていた。実際に実験してみると失敗したので、「これはクライ
+アント側で使うもんだろ(`Д´)ノゴラァ」とDisってみると、なんとsetUseClie
+ntModeでfalseを設定すればサーバー側でも使えるとのことである。マジすか。
+
+　つまりこういうことである。
+
+　普通にJavaでTCPサーバーアプリを書く場合、ServerSocketを作ってacceptする。
+acceptするとSocketクラスのインスタンスが生成される。このインスタンスに対
+してSSLSocketFactoryのcreateSocketを適用し、その戻り値となるSSLSocketクラ
+スのインスタンスにsetUseClientMode( false )するのである。するとなんとビッ
+クリ、SSLサーバーアプリになってしまうのだ。
+
+　このテクを使えば筆者を死滅させたバグから解放されるのである。なんだこん
+な方法あるならもっと早く教えてよ。つーかおせーよ。FOX2！
+
+
+■0x02.) 別の対策
+
+　…実は筆者は別の対策を採っていた。javassistで動的にパッチを当ててしまう
+というものだ。以下にコードの一部を抜粋する。
+
+-----
+ClassPool pool = ClassPool.getDefault();
+CtClass cc = pool.get( "com.sun.net.ssl.internal.ssl.OutputRecord" );
+CtMethod[] methodArray = cc.getDeclaredMethods();
+
+for( int i = 0; i < methodArray.length; ++i )
+        {
+        String methodName = methodArray[ i ].getName();
+        if( methodName.equals( "writeBuffer" ) )
+                {
+                CtMethod m = cc.getDeclaredMethod( methodName );
+                int mod = m.getModifiers();
+                m.insertBefore( "if($1 == null) return;" );
+                }
+        }
+Class c = cc.toClass();
+-----
+
+　WB42で書いたとおりOutputRecordクラスにたった一行nullチェックを入れれば
+解決する問題なので、javassistであれば一撃で解決してくれるのである。また当
+然ながらopenjdkを使っている場合は自分自身でソースコードを修正することもで
+きる。
+
+
+■0x03.) 本題
+
+　さてここからが今回の本題である。
+
+　JavaでSSLサーバーアプリを書く場合、100人中100人がSSLServerSocketFactor
+yを利用するだろう。しかし今回Bradたんが教えてくれたように、普通のServerS
+ocketでacceptしてから、SSLSocketFactoryを利用するという方法があるのだ。実
+に普通じゃない方法でかなりキモいが、この方法でのみ可能となる手法が存在す
+る。それは、TCPの接続が完了した"後"に、どのようなSSL接続を行うのかをサー
+バー側で決定できるという点である。
+
+　TCPの接続が完了すると、サーバー側はクライアント側のIPアドレスとポートを
+知ることができる。これらの情報を元にサーバー側がどの証明書を使用するのか
+を選ぶことができるため、SSLでなんちゃってバーチャルホストが実現できるのだ。
+
+
+■0x04.) SSLでバーチャルホスト問題
+
+　この問題については「SSL バーチャルホスト」でググれカス。あいや失礼、グ
+グってください閣下。とにかくSSLでバーチャルホストできないことは長年新米ア
+ドミンにとって悩みの種であり、未だに根本的な対策が取られていない大問題で
+ある（筆者も2002年くらいに数日悩んだ）。SNIというかなり良い感じの仕組みが
+出来ているのだが、IEの対応が悪いので本格的な運用が可能となるまではまだか
+かりそうだ。結局SSLを必要とするウェブサイトの数だけIPアドレスが欲しいとい
+う状況になりがちであり、IPv4アドレスの枯渇にさらに追い打ちをかける事態と
+なっている。
+
+
+■0x05.) なんちゃってバーチャルホストの実現
+
+　今回実験するなんちゃってSSLバーチャルホストは、「多くのウェブサイトでは
+まず最初にHTTP（プレーンのほう）でアクセスを行い、決済などの段階でHTTPSに
+移行する」という点に注目したものだ。また、「クライアントのIPアドレス1つが
+特定の1人のユーザを示す」という現実には使い物にならない前提でのみ動作する。
+あるユーザのアクセスがリクエストごとに異なるIPアドレスになる場合や、同じ
+IPアドレスから同時期に複数のユーザがアクセスする場合など（俗にAOLプロキシ
+状態として知られるやつである）は動作しない。
+
+　実験で使うホストは218.45.25.5であり、筆者のウェブサイトであるJUMPERZ.N
+ETが置かれているサーバーである。このサーバー上では実験に使えるバーチャル
+ホストとして以下の3つが稼働中である。
+
+　http://www.jumperz.net/index.php
+　http://guardian.jumperz.net/index.html
+　http://www.httptunnel.org/
+
+　まずプレーンなHTTPでこれらのうちの1つのサイトにアクセスする。次にURL入
+力欄を手動で変更し、プロトコルをhttps://に変更してアクセスしてみる。する
+と、そのウェブサイトに適した証明書を使ってSSLの処理が行われるのである（証
+明書は3つすべてがインチキなのでアラートのダイアログは出るが、ここではCNが
+ホスト名と一致する点に注目していただきたい）。
+
+　このデモはいまいち安定稼働していない気がするので、もしかしたら読者がア
+クセスしたときは既に動作していないかもしれない。mixiみたいにベータ版とい
+うことにしておく。
+
+
+■0x06.) 仕組み解説
+
+　サーバー側は最初のプレーンな方のアクセスの際に、クライアント（ここでは
+特定のIPアドレス）がどのウェブサイトを見に来たのかを知ることができるので、
+この情報を保持しておく。しばらくしてクライアントがSSLポートへアクセスして
+きた時は、サーバー側はクライアントのIPアドレスから、このユーザがもっとも
+最近ではどのウェブサイトを見に来たかを調べ、それに合った証明書を選択する、
+というものだ。非常にシンプルな仕組みである。
+
+
+■0x07.) ソースコード
+
+　今回筆者は手早く動作させるためにGuardian@JUMPERZ.NETのプラグインとして
+作成してみた。ソースコードは以下のようなものだ。
+
+-----
+package net.jumperz.app.MGuardian.plugin.sslotf;
+
+import net.jumperz.io.*;
+import net.jumperz.net.*;
+import net.jumperz.security.*;
+import net.jumperz.util.*;
+import java.security.NoSuchAlgorithmException;
+import java.util.*;
+import java.io.*;
+import java.util.regex.*;
+import java.sql.*;
+import net.jumperz.sql.*;
+import net.jumperz.app.MGuardian.*;
+import net.jumperz.app.MGuardian.plugin.*;
+import java.net.*;
+import javax.net.ssl.*;
+
+public class MSslOtf
+extends MGuardianPlugin
+implements MObserver1
+{
+private MMultiAcceptor acceptor;
+private String baseDirName;
+private Map hostFactoryMap = Collections.synchronizedMap( new HashMap() );
+private Map ipHostMap      = Collections.synchronizedMap( new HashMap() );
+private String defaultHost;
+// ----------
+public void update()
+{
+int state = acceptor.getState();
+if( state == MMultiAcceptor.ACCEPTED )
+	{
+	Socket socket = acceptor.getSocket();
+	String ip = socket.getInetAddress().getHostAddress();
+	String host = defaultHost;
+	if( ipHostMap.containsKey( ip ) )
+		{
+		host = ( String )ipHostMap.get( ip );
+		}
+	SSLSocketFactory factory = ( SSLSocketFactory )hostFactoryMap.get( host );
+	try
+		{
+		SSLSocket ssls = ( SSLSocket )factory.createSocket( socket, socket.getInetAddress().getHostName(), socket.getPort(), false );
+		ssls.setUseClientMode( false );
+		MGuardianImpl.getInstance().startSession( ssls );		
+		}
+	catch( Exception e )
+		{
+		info( e );
+		}
+	}
+}
+// ----------
+public void startup()
+throws IOException
+{
+className = "SSLOTF";
+
+debug( "startup" );
+
+if( System.getProperty( "os.name" ).indexOf( "Windows" ) == -1 )
+	{
+	baseDirName = "/etc/guardian/sslotf/";
+	}
+else
+	{
+	baseDirName = "sslotf/";
+	}
+
+acceptor = new MMultiAcceptor( 443 );
+acceptor.register1( this );
+
+MGuardianImpl.getInstance().getThreadPool().addCommand( acceptor );
+
+File dir = new File( baseDirName );
+String[] files = dir.list();
+defaultHost = files[ 0 ];
+for( int i = 0; i < files.length; ++i )
+	{
+	String host = files[ i ];
+	try
+		{
+		initFactory( host );
+		}
+	catch( Exception e )
+		{
+		warn( e );
+		throw new IOException( e.getMessage() );
+		}
+	}
+}
+// ----------
+private void initFactory( String host )
+throws Exception
+{
+InputStream certIn = new FileInputStream( baseDirName + "/" + host + "/cert.pem" );
+InputStream keyIn  = new FileInputStream( baseDirName + "/" + host + "/priv_key_pkcs8_der" );
+java.security.KeyStore keystore = MSecurityUtil.generateKeyStore( certIn, keyIn, "RSA" );
+SSLContext ctx = MSecurityUtil.getSslContext();
+MSecurityUtil.initSslContextForServer( ctx, keystore );
+SSLSocketFactory sslsf = ( SSLSocketFactory )ctx.getSocketFactory();
+
+debug( host );
+hostFactoryMap.put( host, sslsf );
+}
+// ----------
+public synchronized Map execute( Map sessionInfo )
+{
+try
+	{
+	MHttpRequest request = ( MHttpRequest )sessionInfo.get( "request" );
+	String host = request.getHeaderValue( "Host" );
+	if( host == null || !hostFactoryMap.containsKey( host ) )
+		{
+		return null;
+		}
+	if( ipHostMap.size() > 50000 )
+		{
+		ipHostMap = new HashMap();
+		}
+	Socket socket = ( Socket )sessionInfo.get( "clientSideSocket" );
+	ipHostMap.put( socket.getInetAddress().getHostAddress(), host );
+	}
+catch( Exception e )
+	{
+	e.printStackTrace();
+	}
+return null;
+}
+-----
+
+　JavaでSSLサーバーを書いたことがある人ならば同じようなものが簡単に書ける
+だろう。
+
+
+■0x08.) まとめ
+
+　今回は普通にサーバー側でacceptしたSocketクラスのインスタンスを利用して
+SSLサーバーが実現できるというキモテクを元に、SSLで限定的なバーチャルホス
+トを実現した。現実には商業レベルのウェブサイトでは使い物にならないが、趣
+味レベルのウェブサイトならば使うことができるかもしれない。自宅の固定IPア
+ドレスがグローバル一個だけだが、何とかSSLでバーチャルホストしたい！という
+ような人には使える技術かもしれない。
+
+　Apacheでこれを実現するのは、どうしても設定ファイルベースとなってしまう
+ため（クライアントIPアドレスと証明書の関係が動的に変化するため）難しいだ
+ろう。一方OpenSSLのAPIを直で叩いてC言語でサーバーを書くぜ！というような人
+ならば（編集部注:そんなやついません）もちろん可能である。
+
+
+

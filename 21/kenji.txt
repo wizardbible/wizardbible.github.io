@@ -1,0 +1,416 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第6章: パケットフィルタリング　～アプリケーション篇～ ---
+
+著者：Kenji Aiko
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　セキュリティが声高に叫ばれている現在、アンチウイルスソフトやFirewallは、
+もはや無くてはならない存在になってしまいました。というわけで、今回はパケ
+ットフィルタリングについてやってみようと思います。一般的な商用のFirewall
+などは、デバイスドライバ（フィルタドライバ）を使い、パケットフィルタリン
+グを行っていますが、このテキストでは、アプリケーションレベルでそれをやっ
+てみることにします。ちなみに、デバイスドライバを利用する方法を知りたい方
+は、来月私が書く予定である「パケットフィルタリング　～デバイスドライバ篇
+～」を読んでください。あくまで予定ですけどね(^^;。
+
+　私が使用する環境は「WindowsXP + VC++.NET」ですが、Windows2000以降ならば、
+問題ないでしょう。
+
+
+■0x02.) パケットフィルタリングとは
+
+　パケットフィルタリングとは、ルータやファイヤーウォールが持っている機能
+のひとつで、送られてきたパケットを検査して通過させるかどうか判断する機能
+です。パケットのヘッダにはプロトコルや送信元アドレス、送信先アドレスやポ
+ート番号などの情報が含まれており、これを参照して通過するかどうかを決定し
+ます。そして、通過できなかったパケットは送信元に通知されたり、破棄された
+りします。どのような方針に基づいて判断するかは、そのネットワークの管理者
+が任意に設定することになり、現在では、最も一般的かつ簡便なセキュリティ技
+術として知られています。最近のルータは大半が持っている機能ですが、よく知
+られているだけに破る手段も多く、他の技術と併用することが肝要です。
+
+（IT用語辞書e-wordより）
+
+
+■0x03.) すべてのパケットを破棄
+
+　まずはMSDNのパケットフィルタリングリファレンスを読破してください。
+
+・Packet Filtering Reference
+http://msdn.microsoft.com/library/default.asp?url=/library/en-us/rras/rras/packet_filtering_reference.asp
+
+　あっ、やっぱり読破はしないでください。読破してしまったら、このテキスト
+読まなくても理解できてしまうので（笑）。なので、流し読みしてください。
+
+　それで、どうやらパケットフィルタリング関連のAPIを利用すると、パケット通
+過の可否をアプリケーション側で決められるようです。というわけで、早速利用
+したプログラムを作成します。
+
+-----  ex1.cpp（http://ruffnex.oc.to/kenji/text/fire_a/ex1.cpp）
+#include <stdio.h>
+#include <conio.h>
+#include <windows.h>
+#include <fltdefs.h>
+
+#pragma comment(lib, "iphlpapi.lib")
+
+int main(void)
+{
+    BYTE localAddr[4] = { 192,168,4,2 };
+
+    INTERFACE_HANDLE hFilterIf;
+    DWORD dwRet = PfCreateInterface(
+        NULL, PF_ACTION_DROP, PF_ACTION_DROP, FALSE, TRUE, &hFilterIf);
+    if(dwRet != NO_ERROR){
+        fprintf(stderr, "PfCreateInterface failed");
+        return -1;
+    }
+
+    printf("Start Filtering");
+
+    dwRet = PfBindInterfaceToIPAddress(hFilterIf, PF_IPV4, localAddr);
+    if(dwRet != NO_ERROR){
+        fprintf(stderr, "PfBindInterfaceToIPAddress failed");
+        return -1;
+    }
+
+    _getch();
+
+    PfUnBindInterface(hFilterIf);
+    PfDeleteInterface(hFilterIf);
+    return 0;
+}
+-----
+
+　最初に定義されているlocalAddr配列には自分マシンのIPアドレスを指定してく
+ださい。私の環境ではIPアドレスが「192.168.4.2」でした。最初にPfCreateInt
+erface関数を使って新しいフィルタインターフェースを生成します。PfCreateIn
+terfaceは以下のように定義されています。
+
+-----  PfCreateInterface関数
+DWORD PfCreateInterface(
+  DWORD dwName,
+  PFFORWARD_ACTION inAction,
+  PFFORWARD_ACTION outAction,
+  BOOL bUseLog,
+  BOOL bMustBeUnique,
+  INTERFACE_HANDLE* ppInterface
+);
+-----
+
+　dwNameには、インターフェースの識別子を指定しますが、ここをNULL（0）にす
+ると、適当な識別子を決定してくれますので、NULLで問題ありません。inAction
+とoutActionはそれぞれ受信するパケットと送信するパケットの扱いを決めます。
+
+inAction   PF_ACTION_DROP     →  受信するパケットを破棄する
+           PF_ACTION_FORWARD  →  受信するパケットを破棄しない
+
+outAction  PF_ACTION_DROP     →  送信するパケットを破棄する
+           PF_ACTION_FORWARD  →  送信するパケットを破棄しない
+
+　bUseLogはログを使用するかどうかでしょうか？　実は私も良く分かりません(^^;。
+bMustBeUniqueは、インターフェースを共有するか否かを決めます。TRUEならば共
+有しません。そして最後のppInterfaceにインターフェースハンドルを指定します。
+この関数が成功すると、以後ppInterfaceに渡したものがインターフェースハンド
+ルとして使用されます。
+
+　PfCreateInterfaceを使ってインターフェースを生成した場合は、PfDeleteInt
+erfaceを呼び出してインターフェースを削除しなければなりません。ex1.cppでは、
+一番最後に呼び出しています。
+
+　次のPfBindInterfaceToIPAddress関数は以下のように定義されています。
+
+-----  PfBindInterfaceToIPAddress関数
+DWORD PfBindInterfaceToIPAddress(
+  INTERFACE_HANDLE pInterface,
+  PFADDRESSTYPE pfatType,
+  PBYTE IPAddress
+);
+-----
+
+　pInterfaceはPfCreateInterface関数に渡したインターフェースハンドルです。
+pfatTypeはIPのバージョンを指定します。
+
+PF_IPV4  →  IP version 4（現在のデフォルト）
+PF_IPV6  →  IP version 6（10年後のデフォルト？）
+
+　IPAddressは自分のマシンのIPアドレスを指定します。
+
+　PfBindInterfaceToIPAddressを使用したら、その後、PfUnBindInterfaceを使っ
+てバインドを解除しなければなりません。ex1.cppでは、最後にそれを行っていま
+す。
+
+　ではex1.cppをコンパイルしてください。そして、実行する前に、まず他のサー
+バーへpingを打ってください。
+
+-----  コマンドプロンプト
+C:\kenji>ping yahoo.co.jp
+
+Pinging yahoo.co.jp [203.141.35.113] with 32 bytes of data:
+
+Reply from 203.141.35.113: bytes=32 time=19ms TTL=242
+Reply from 203.141.35.113: bytes=32 time=19ms TTL=242
+Reply from 203.141.35.113: bytes=32 time=19ms TTL=242
+Reply from 203.141.35.113: bytes=32 time=19ms TTL=242
+
+Ping statistics for 203.141.35.113:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 19ms, Maximum = 19ms, Average = 19ms
+
+C:\kenji>
+-----
+
+　ちゃんと、pingが通っていることが確認できます。では、次にex1.cppをコンパ
+イルしてできたex1.exeの実行中にpingを打ってください。ex1.exeは_getchのと
+ころでキー入力を求めて処理が止まるので、そのままの状態でpingを打ちます。
+
+-----  ex1.exe実行中
+Start Filtering
+-----
+
+-----  コマンドプロンプト
+C:\kenji>ping yahoo.co.jp
+
+Pinging yahoo.co.jp [203.141.35.113] with 32 bytes of data:
+
+Request timed out.
+Request timed out.
+Request timed out.
+Request timed out.
+
+Ping statistics for 203.141.35.113:
+    Packets: Sent = 4, Received = 0, Lost = 4 (100% loss),
+
+C:\kenji>
+-----
+
+　今度はpingがyahoo.co.jpへ届きませんでした。pingの他にも、ブラウザでお好
+みのサイトへアクセスするなどなど、いろいろと試してみてください。おそらく
+すべて失敗するはずです。すべてのネットワークパケットを遮断しているため、
+ex1.exe実行中は、ネットワークを経由したどんなもアクセスも禁止されます。「
+yahoo.co.jp」をIPアドレスに変換するためにDNSサーバに問い合わせるかもしれ
+ませんが、その時点でパケット送信が失敗する可能性もあります。とにかくping
+は成功しないことでしょう。
+
+
+■0x04.) パケットフィルタリング
+
+　ex1.exeがすべてのパケットを遮断したのは、PfCreateInterface関数の引数in
+ActionとoutActionにPF_ACTION_DROPを指定していたからです。つまり、逆にPF_
+ACTION_FORWARDを指定していたら、すべてのパケットを通過させていました。ま
+ずはそれを頭に置いておいてください。
+
+-----  PfAddFiltersToInterface関数
+DWORD PfAddFiltersToInterface(
+  INTERFACE_HANDLE ih,            // インターフェースハンドル
+  DWORD cInFilters,               // 受信フィルタ数
+  PPF_FILTER_DESCRIPTOR pfiltIn,  // 受信フィルタ
+  DWORD cOutFilters,              // 送信フィルタ数
+  PPF_FILTER_DESCRIPTOR pfiltOut, // 送信フィルタ
+  PFILTER_HANDLE pfHandle         // フィルタハンドルの配列を格納する領域
+                                  // 通常はNULLで構わない
+);
+-----
+
+　PfAddFiltersToInterface関数は、指定されたインタフェースに指定されたフィ
+ルタを加えます。この時にフィルタがどう働くのか、それはPfCreateInterface関
+数に指定したinActionとoutActionによって変わります。
+
+　inActionとoutActionにパケットの破棄（PF_ACTION_DROP）を指定していたらな
+ら、PfAddFiltersToInterface関数を使って追加されたフィルタは、パケット通過
+の条件となります。逆に、パケットの通過（PF_ACTION_FORWARD）を指定していた
+らなら、PfAddFiltersToInterface関数を使って追加されたフィルタは、パケット
+破棄の条件となります。
+
+　つまり、ex1.exeにPfAddFiltersToInterface関数を使って新たにフィルタを加
+えた場合、そのフィルタの条件にあったパケットは通過します。それを示したプ
+ログラムex2.cppを見てください。
+
+-----  ex2.cpp（http://ruffnex.oc.to/kenji/text/fire_a/ex2.cpp）
+#include <stdio.h>
+#include <conio.h>
+#include <windows.h>
+#include <fltdefs.h>
+
+#define DIR_INPUT    1
+#define DIR_OUTPUT   2
+
+#pragma comment(lib, "iphlpapi.lib")
+
+int parseAddress(char *addrStr, 
+                 BYTE *addr, 
+                 BYTE *mask)
+{
+    int ip[4], mk[4];
+    int num = sscanf(addrStr, "%d.%d.%d.%d/%d.%d.%d.%d", 
+        &ip[0], &ip[1], &ip[2], &ip[3],
+        &mk[0], &mk[1], &mk[2], &mk[3]);
+    if(num != 8)
+        return -1;
+
+    for(int i=0; i < 4; i++){
+        if(ip[i] < 0 || ip[i] > 255 || mk[i] < 0 || mk[i] > 255)
+            return -1;
+        addr[i] = ip[i], mask[i] = mk[i];
+    }
+    return 0;
+}
+
+int addFilter(INTERFACE_HANDLE hIf, 
+              int flag, 
+              DWORD dwProtocol, 
+              char *localAddrStr, 
+              char *remoteAddrStr)
+{
+    BYTE localAddrBin[4], remoteAddrBin[4];
+    BYTE localMaskBin[4], remoteMaskBin[4];
+    parseAddress(localAddrStr,  localAddrBin,  localMaskBin);
+    parseAddress(remoteAddrStr, remoteAddrBin, remoteMaskBin);
+
+    PF_FILTER_DESCRIPTOR filter;
+    memset(&filter, 0, sizeof(filter));
+    filter.dwFilterFlags = FD_FLAGS_NOSYN;
+    filter.dwRule        = 0;
+    filter.pfatType      = PF_IPV4;
+    filter.dwProtocol    = dwProtocol;
+    filter.fLateBound    = 0;
+    filter.wSrcPort      = ((dwProtocol == FILTER_PROTO_ICMP) 
+        ? FILTER_ICMP_TYPE_ANY : FILTER_TCPUDP_PORT_ANY);
+    filter.wDstPort      = ((dwProtocol == FILTER_PROTO_ICMP)
+        ? FILTER_ICMP_TYPE_ANY : FILTER_TCPUDP_PORT_ANY);
+    filter.wSrcPortHighRange = filter.wSrcPort;
+    filter.wDstPortHighRange = filter.wDstPort;
+
+    DWORD dwRet;
+    if(flag == DIR_INPUT){
+        filter.SrcAddr = remoteAddrBin, filter.SrcMask = remoteMaskBin;
+        filter.DstAddr = localAddrBin,  filter.DstMask = localMaskBin;
+        dwRet = PfAddFiltersToInterface(hIf, 1, &filter, 0, NULL, NULL);
+    }else{
+        filter.SrcAddr = localAddrBin, filter.SrcMask = localMaskBin;
+        filter.DstAddr = remoteAddrBin, filter.DstMask = remoteMaskBin;
+        dwRet = PfAddFiltersToInterface(hIf, 0, NULL, 1, &filter, NULL);
+    }
+
+    if(dwRet != NO_ERROR){
+        printf("addFilter: PfAddFiltersToInterface failed");
+        return -1;
+    }
+
+    return 0;
+}
+
+int main(void)
+{
+    BYTE localAddr[4] = { 192,168,4,2 };
+
+    INTERFACE_HANDLE hFilterIf;
+    DWORD dwRet = PfCreateInterface(
+        NULL, PF_ACTION_DROP, PF_ACTION_DROP, FALSE, TRUE, &hFilterIf);
+    if(dwRet != NO_ERROR){
+        fprintf(stderr, "PfCreateInterface failed");
+        return -1;
+    }
+
+    addFilter(hFilterIf, DIR_OUTPUT, FILTER_PROTO_ICMP,
+        "192.168.4.2/255.255.255.255", "210.198.12.224/255.255.255.255");
+    addFilter(hFilterIf, DIR_INPUT,  FILTER_PROTO_ICMP,
+        "192.168.4.2/255.255.255.255", "210.198.12.224/255.255.255.255");
+
+    printf("Start Filtering");
+
+    dwRet = PfBindInterfaceToIPAddress(hFilterIf, PF_IPV4, localAddr);
+    if(dwRet != NO_ERROR){
+        fprintf(stderr, "PfBindInterfaceToIPAddress failed");
+        return -1;
+    }
+
+    _getch();
+
+    PfUnBindInterface(hFilterIf);
+    PfDeleteInterface(hFilterIf);
+    return 0;
+}
+-----
+
+　ex2.cppで追加しているフィルタは、ICMPで「192.168.4.2」から「210.198.12
+.224」へ送信されるパケットと「210.198.12.224」から「192.168.4.2」へ送信さ
+れるパケットの2つです。これらの条件に当てはまるパケットは破棄されずに、正
+常にネットワークを通過することになります。ちなみに「210.198.12.224」は「
+ruffnex.oc.to」のIPアドレスです。
+
+　では、このプログラムを実行してください。そしてコマンドプロンプトから「
+ping 210.198.12.224」と入力してください。「ping ruffnex.oc.to」とすると、
+名前解決のためにDNSサーバに問い合わせる可能性があるので、必ずIPアドレスを
+指定してください。
+
+-----  コマンドプロンプト
+C:\kenji>ping 210.198.12.224
+
+Pinging 210.198.12.224 with 32 bytes of data:
+
+Reply from 210.198.12.224: bytes=32 time=20ms TTL=242
+Reply from 210.198.12.224: bytes=32 time=21ms TTL=242
+Reply from 210.198.12.224: bytes=32 time=20ms TTL=242
+Reply from 210.198.12.224: bytes=32 time=20ms TTL=242
+
+Ping statistics for 210.198.12.224:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 20ms, Maximum = 21ms, Average = 20ms
+
+C:\kenji>
+-----
+
+　正常にパケットは通過します。しかし、その他のパケットはすべて破棄されま
+す。デフォルトの設定がパケット破棄（PF_ACTION_DROP）であり、その状態でPf
+AddFiltersToInterfaceにてフィルタの設定をしたので、フィルタの条件と一致し
+たパケットは通過することになるわけです。そして、逆に、デフォルトの設定を
+パケット通過（PF_ACTION_FORWARD）にしておいた場合、フィルタの条件と一致し
+たパケットは破棄されることになります。
+
+　このパケットフィルタリングのテクニックを利用すると、例えば自分のコンピ
+ュータにインターネット利用の制限をかけることが可能になります。次のプログ
+ラムをみてください。
+
+・ex3.cpp
+http://ruffnex.oc.to/kenji/text/fire_a/ex3.cpp
+
+　このプログラムはex2.cppに多少の改良を加えたものです。このプログラムは、
+コンピュータが行う、ポート「20番から25番」と「81番から65535番」へのアクセ
+スをすべて禁止します。つまり、FTPやSMTPやPOP3といったプロトコルが使用でき
+なくなります。よく高校や大学などの教育機関に置いてあるパソコンには、学生
+が変なことをしないように制限がかけてある場合がありますが、このようなツー
+ルを作成することによって容易にそれが実現できます。また、フィルタを強化す
+れば、簡易的なFirewallといったものも作成することができると思います。
+
+
+■0x05.) さいごに
+
+　さて、いかがだったでしょうか。アプリケーションレベルでもパケットフィル
+タリングが可能なんて少しビックリですが、パケットの内容を解析できないので、
+結局、本格的にパケットフィルタリングを行うためには、ドライバを組む必要が
+ありそうです。実はこの内容は、ネット上でドライバでのパケットフィルタリン
+グを調べている最中に分かったものでして、本当はドライバでのパケットフィル
+タリングを書こうとしていたのですが、どうせなので、こっちも書くことにしま
+した。来月は「パケットフィルタリング　～デバイスドライバ篇～」と題してお
+送りする予定ですが、予定は未定なので期待しないで待っててください(^^;。さ
+て、最後になりましたが、ここまで読んでくれて本当にありがとうございます。
+
+　では、また会う日まで...
+
+
+■0x06.) 参考サイト
+
+・Packet Filtering in .NET
+http://www.codeproject.com/managedcpp/packetfilteringnet.asp
+
+

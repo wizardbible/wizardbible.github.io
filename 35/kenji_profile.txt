@@ -1,0 +1,17 @@
+■Kenji Aiko
+●Job: kernel hacker
+●Web: http://ruffnex.oc.to/kenji/
+●Mail: kenji@ruffnex.oc.to
+●Team（Group): N/A
+●今興味あるモノ：Windows Vista
+　「Windows Vista」買いました(^^;。そもそも僕は、Vistaには興味がなかった
+のですが、たまたま友達に誘われてパソコンショップに行ったら、なんかVistaと
+かがあって、なんか触ってみたら、結構良さそうだなぁという感じで、なんか、
+もう…、うん…（ぉぃ。　しかし、Vistaは、何をするにもいちいちダイアログが
+出現するし、IE7では表示されないWebサイトがいくつかあるし、WinDDKはVista版
+じゃないとインストールできないし（当たり前？）、慣れるまでは本当にいろい
+ろと大変そうだなぁと思っています。
+　ただ、Vistaでデバドラ関連をやりたかったので、その辺りを調べるのが結構楽
+しい今日この頃。いつかVistaネタで何か書きたいっす。
+
+

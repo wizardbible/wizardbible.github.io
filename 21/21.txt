@@ -1,0 +1,2465 @@
+[-]=======================================================================[-]
+
+                      Wizard Bible vol.21 (2005,10,3)
+
+[-]=======================================================================[-]
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+  ---- 第0章：目次 ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+○第1章：SPAM対策のフィルタリングルール                           PSY 著
+
+○第2章：ハニーポットを作ろう　～連載第5回～                 Narusase 著
+
+○第3章：Crackme Kracking 0x2                                    Will 著
+
+○第4章：無煙火薬の作り方                                     Defolos 著
+
+○第5章：Linuxアクセスコントロールクイックリフェレンス
+                                                 Taka John Brunkhorst 著
+
+○第6章：パケットフィルタリング　～アプリケーション篇～    Kenji Aiko 著
+
+○第7章：個人情報保護法　～ 試験直前対策編 ～                IPUSIRON 著
+
+○第8章：お知らせ
+
+○第9章：著者プロフィール
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第1章: SPAM対策のフィルタリングルール ---
+
+著者：PSY
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) プロローグ
+
+=======================================================
+　パソコンが小さな音をたてた。
+　中央に封筒のマーク。
+　メールだ。
+　開いてみて、一瞬譲は凍りつく。
+　ただ一言、赤い文字。
+
+　I WILL CRACK YOU
+
+　差出人の名前は？
+
+　NOBODY･･････
+
+　　　　　　　    【Project Seven　第二章　脅迫より】
+　　　　http://psy.ktplan.ne.jp/seven/top.htm
+=======================================================
+
+　かなり昔のことだが、友人にふざけて匿名メールを送ったことがあった。
+　うろ覚えだが、確か、
+
+-----
+From:nobody@anomymous.com
+Subject:Hello!
+
+Do you know who i am?
+-----
+
+　ってな感じ。
+　anonymous（匿名）なんてアドレスからメールが来るなんて、怪しくってワクワ
+クするでしょ？　え、しない？
+　まぁ、彼はそういう遊び心を理解してくれる友人だったのだ。タブン。
+　んで、長いこと私は、
+「ねー、メール送った？」
+　と聞かれるのを心待ちにしていたのだった。
+　が！　んが！
+　反応ナシっ！　ではないか。
+　ちぇ、気づかなかったのかな。
+　と残念に思いながら、だいぶ経ってから、尋ねてみた。
+「あー、なんかよく怪しい英語のメール来るじゃん？　だから見ないで全部捨て
+てた」
+　とのことだった。
+　なんじゃそりゃ？
+　当時は首を傾げたが、今でいうSPAMだったのだろう。
+　そのころ、私はSPAMなんて耳にしたこともなかった。
+　恐らく彼はあちこちでメールアドレスを晒していて、海外のSPAM業者にリスト
+化されていたのだろう。そのため、SPAMがたくさん届いていたのだ。何やってた
+んでしょうね（藁）。
+
+
+■0x02.) 従来のSPAM対策の限界
+
+　さてさて、時代は変わり、今ではPCを扱う殆どの人がSPAMの嵐に晒されること
+となった。入りもしない情報、むしろ、見るだに不快な情報をチェックするのに、
+貴重な時間を割かれるのだから、実に腹立たしい。もっと困るのは大切なメール
+がSPAMの山の中に埋もれてしまうということだ。かくいう私も知人や読者からの
+メールをゴミメールから拾い出すのに日々ウンザリしている。
+
+　プロバイダも一応対策に乗り出しており、最近ではスパムフィルタを用意して
+いたりする。が、自分でいじれるフィルタはFromとSubjectでのブロックが一般的
+だ。メールにおけるFromなんてあってなきがごとし。簡単に偽装できるし、Subj
+ectも最近は知人を装ったものが多いので、これではとても対処できない。登録し
+たメールアドレスからだけ受け取るようにする手もあるが、私のようにHPを運営
+していたりすると、知らない人からのメールを読まないわけにはいかない。また、
+フィルタリングに対処していないメールサーバもある。何か手段はないものだろ
+うか？
+
+　最近のメーラには、SPAM排除機能がついたものも出てきている。また、Norton
+のAntiSpamのように、メーラに到達する以前にSPAM判断してくれるソフトもある。
+もっともAntiSpam自体にも重大なセキュリティホールがあったりして（笑）、な
+んだかなーという感じだが、まあこういうツールも串、違った、駆使すれば、あ
+る程度SPAMは防げるらしい。しかし、ここで終わってしまっては、SPAM業者は痛
+くも痒くもないのである。
+　受け手がSPAMメールを読んでいないことを業者は知らない。たとえ1,000人に1
+人でも、クリックしてくれる鴨がいれば、SPAM業者はせっせとSPAMを送り続け、
+トラフィックは日々増え続ける。
+　一方、送られる側は、正しいメールがSPAM判定されていないかどうか日々チェ
+ックしなければならず、喜ぶのはセキュリティ関連会社と通信業者だけという（
+……おっと失礼！）。実に不毛な話なのだ。
+
+　第一、有料のソフトをインストールして、なんだか分からない学習機能をONに
+して、ハイ、満足、なんてのは、ハッカーの風上にも置けない……よね？　敵を
+知り己を知らば百戦して危うからず、というではないか。Wizard Bibleを読んで
+る方は恐らく自分で中身を理解したいという意欲をお持ちだろう。
+　きっとそうだ。ここはお持ちだと決めつけて次に進む。そうしないと、話、終
+わっちゃうし。
+
+
+■0x03.) SPAMの手口を理解するための基礎知識
+
+　さて、ではまずどうやったらプログラムでSPAMメールをSPAMと判別できるのか、
+というところから考えてみよう。それぞれのヘッダを順に見ていこう。
+
+●From
+　Fromアドレスはたいてい偽装されており、同じ業者でも毎回違うメールアドレ
+スから発信してくることが多いため、実質あまりフィルタには使えない。ただし、
+同じSPAM業者は同じドメイン名を使って送ってくるケースもある。とりあえず自
+分のメールアドレスを装って発信してくるメールはフィルタ対象にできる。
+　また、名前に「love」「info」など特徴的な文字が入っているケースもある。
+
+●Subject
+　メールのタイトルは多くのメールサーバでフィルタリングがかけられるが、実
+のところあまり効率的に機能しない。本来SPAM業者はここに「未承諾広告」の文
+字を入れなければならないのだが、ほとんど守られていない。守っている業者は
+むしろ良心的で、読んであげたいぐらいだ。
+　海外のメールではフィルタに引っかかりそうな文字列をわざと置き換えたり（
+「VIAGRA」⇒「V1AGRA」）、文字を増やしたり（「VIAGRA」⇒「VIAGRRA」）して
+いるケースが多い。日本では「ご無沙汰しております」「久しぶり！」「Re:」な
+ど知人を装ったタイトルをつけているケースが増えている。
+
+　以上のように、「FromとSubjectでフィルタリング」というのがいかに使えない
+かよくわかる。
+
+　他に使えそうなメールヘッダの項目を探してみよう。
+
+●X-Mailer
+　DM発信用のメールを使っている場合、ここにソフトの名前が入ることがある。
+
+●Reply-To
+　メールの返信先。このメールで情報収集している場合、Fromは変化していても、
+返信先は毎回同じ場合もある。
+
+●To
+　宛先。SPAMではToに自分のメールアドレスが入っていないケースもある。が、
+これだけでフィルタの対象にするのは難しい。
+
+●Content-Type
+　文書のタイプとキャラクタセット。日本語のテキストメールであれば、「text
+/plain; charset=ISO-2022-JP」などが入る。
+　例えば海外からの英語のメールが絶対に来るはずがない、などと分かっていれ
+ば、「charset="us-ascii"」などをフィルタすることもできる。
+
+●Body（本文）
+　本文に「盗撮」「逆援」などが含まれるメールをブロックすれば不快な内容を
+読まずに済む。子供などに見せたくない内容をシャットアウトするにも有効だろ
+う。ただし知り合いのメールをはじいてしまう可能性もあるので、扱いには注意
+が必要だ。
+　例えば「出会」でフィルタをかければ、出会い系サイトの宣伝は弾けるが、HP
+に来た読者が「あなたのサイトに出会えて良かったです！」なんて書いてくれて
+もブロックされてしまうことになる。
+　同じ業者が何度も送りつけてくる場合は、登録サイトのURLをフィルタとして
+入れておくのもひとつの手だ。
+
+　ヘッダのチェックに加え、正規表現などを使って、本文をくまなく調べればあ
+る程度のフィルタは可能だろう。
+　しかし、手を変え品を変え送りつけてくる業者に対応するのは至難の業である。
+そもそも、冒頭の脅迫メールや悪戯メールのように、簡単に差出人を偽ったメー
+ルが出せてしまうことに問題がある。メールの受信にはパスワードがいるが、送
+信にパスワードは必要ない。サーバはどこから来たメールでも自由に中継してし
+まう。これでは犯人の手がかりがつかめない。
+
+　ちょっと待った、本当にそうだろうか。手紙だって、差出人を偽ることができ
+る。しかし、手紙ならば、郵便局の消印が入る。大阪の業者が、東京から手紙を
+出したように見せかけるには、わざわざ東京まで足を運ばなければならない。メ
+ールに消印に当たるものはないのだろうか。ある。Receivedヘッダである。
+
+●Received
+　本来一番着目すべきはココ！！
+　ここにはメールがどんなサーバを経由してきたか履歴が残されている。要する
+に「消印」。メールは色々なサーバを経由されてくる可能性があるが、注目すべ
+きは＜自分側の＞メールサーバがどこから受け取ったか記されている部分だ。そ
+れ以前の履歴はSPAM業者が偽造したものかもしれない。実は、自分の側のメール
+サーバーが受け取ったReceivedを特定し、スパムを削除するツールを作って実験
+してみたところ、ごく簡単なフィルタのルールで、実に9割のSPAMメールをフィル
+タすることができた。
+
+
+■0x04.) Receivedヘッダの見方
+
+　では実際、どんなルールを作ったら良いのだろう。
+
+　Receivedヘッダがどうなっているのか見てみよう。Receivedヘッダは例えばこ
+んな感じになっている。「xxx.xxx.xxx.xxx」はIPアドレスだと思ってほしい。
+
+-----
+Received: from smtp23.mail.bbt.yahoo.co.jp (smtp23.mail.bbt.yahoo.co.jp [202.93.85.138])
+	by www4.ktplan.ne.jp (8.12.11/8.12.10) with SMTP id j8PHIl1w026750
+	for <psy@m4.ktplan.ne.jp>; Mon, 26 Sep 2005 02:18:47 +0900
+Received: from unknown (HELO xp.yahoo.co.jp) (xxx.xxx.xxx.xxx with poptime)
+  by smtp23.mail.bbt.yahoo.co.jp with SMTP; 25 Sep 2005 17:18:44 -0000
+-----
+
+　この例では、ふたつのReceivedヘッダがある。下が送信者側のメールサーバが
+つけたヘッダ、上が受信者側のメールサーバがつけたヘッダである。つける位置
+はメールサーバによって違うらしいので、自分の使っているメールサーバが一番
+上につけるのか、一番下につけるのか確認してみてほしい。
+　上記はごく普通のメールだが、SPAMメールのヘッダを見ると、こんな風になっ
+ていることがある。
+
+-----
+　Received: from hi.imspammer.com (AB210-202-7-23.adsl.spam.com.tw [xxx.xxx.xxx.xxx])
+	by www4.ktplan.ne.jp (8.12.11/8.12.10) with SMTP id j839XigE018840
+	for <psy@m4.ktplan.ne.jp>; Sat, 3 Sep 2005 18:33:44 +0900
+-----
+
+　複数あるはずのReceivedが一個しかない。どういうことだろうか？　実は、こ
+のSPAM業者は直接受信者側のメールサーバにメールを送りつけてきているのだ。
+　どういうことかって？
+
+　一昔前、SPAM業者はよそのメールサーバを中継して自分達のメールをばらまい
+ていた。メールサーバは受信時には認証が必要だが、送信時にはなんの認証もな
+い。実際、私の職場でこんなやりとりがあったぐらいだ。
+
+O君　「Ｔ君、なんで仕事中にあんなメール送るん？」
+T君　「あんなって？」
+O君　「あんな画像送るなよ！　……恥ずかしい……」
+T君　「はぁ？　なんの話……？？」
+S先輩「ははは、悪ぃ、悪ぃ、それ俺だわ」
+O＋T 「……」
+
+　おちゃめなS先輩は、Tのメールアドレスを「拝借」してO君にHな写真を送りつ
+けたのだった。まったく、何やってんでしょうね（ｗ。もちろんハッキングでも
+なんでもなく、匿名メーラーなどを使えば他人のアドレスであっても、ごく普通
+に送信できてしまうのである。
+
+　現在ではPOP before SMTPが普及し、パスワードを使ってメールを受信した直後
+でないとメールを送信することができないサーバが増えてきた。また、会社や大
+学などのサーバーは、自ドメインのメールアドレスを使ったメールを、中継しな
+くなった。本来、組織のメールサーバーは、内部と外部、内部同士のメールを転
+送する必要はあっても、外部から外部へ第三者のメールを転送してあげる必要な
+どないのである。外部からのメールを中継してしまうサーバー　――第三者中継
+サーバー――　は、ORBL（Open Relay Black List）などのブラックリストに載せ
+られ、そこからのメールは受信メールサーバー側で拒否されるようになった。
+
+　さて、中継サーバが使えなくなってしまったので、SPAM業者は考えた。よその
+メールサーバーを中継せずに、自分自身がメールサーバーになってしまえばよい、
+と。かくて、SPAMメール専用ツールがわんさと作られた。そう、先の例では、業
+者のクライアントマシンがあたかもメールサーバーのふりをして、メールを渡し
+ているのである（編注）。
+
+　これで、先の例でReceivedヘッダがひとつしかなかったわけもおわかりいただ
+けるだろう。しかし、Receivedがいくつあるかは重要ではない。というのも、業
+者は偽装のためReceivedヘッダをたくさんくっつけて送ってくることがあるから
+だ。重要なのは、あくまで自分のサーバが受け取った時に付加したReceivedヘッ
+ダである。
+　では、もう一度ヘッダを眺めてみよう。
+
+-----　正常なメール
+　Received: from smtp23.mail.bbt.yahoo.co.jp (smtp23.mail.bbt.yahoo.co.jp [202.93.85.138])
+	by www4.ktplan.ne.jp (8.12.11/8.12.10) with SMTP id j8PHIl1w026750
+	for <psy@m4.ktplan.ne.jp>; Mon, 26 Sep 2005 02:18:47 +0900
+-----
+
+-----　サーバに直で送りつけてきたSPAM
+　Received: from hi.imspammer.com (AB210-202-7-23.adsl.spam.com.tw [xxx.xxx.xxx.xxx])
+	by www4.ktplan.ne.jp (8.12.11/8.12.10) with SMTP id j839XigE018840
+	for <psy@m4.ktplan.ne.jp>; Sat, 3 Sep 2005 18:33:44 +0900
+-----
+
+　2つ目のメールのおかしな点に気づいただろうか？　上のメールでは、「from」
+直後のドメイン名と括弧内部のドメイン名が一致しているのに、SPAMではcomドメ
+インとtwドメインと全然違うものになっている。実は、この括弧内部の「xxx.xx
+x.xxx.xxx」は、スパマーの利用している端末のアドレス、もしくはルーターなど
+のアドレスである。どうやらfromの直後はスパム業者の端末が＜自称している＞
+ホスト名、括弧内部のドメインは受信サーバー側でIPアドレスからホスト名を逆
+引きしてつけたものらしい。クライアント用の回線（ADSL）なのに、あたかもco
+mドメインを持つ組織から送りつけてきているように見せかけているのだ。
+　あるいはこんなケースもある。
+
+-----
+　Received: from default ([xxx.xxx.xxx.xxx])
+	by www4.ktplan.ne.jp (8.12.11/8.12.10) with SMTP id j839YXCE018932
+	for <psy@m4.ktplan.ne.jp>; Sat, 3 Sep 2005 18:34:33 +0900
+-----
+
+　このケースでは、そもそもIPアドレスが逆引きできていない。SPAMメールには
+意外にこういったものも少なくない。
+
+　自分のメールには、そんなもんついてないよという読者の方もおられるかもしれない。
+　どうやらReceivedの中身は、
+　　from---> ○○ドメインからのメールが、
+　　with---> ○○ドメインという方法で送られてきた。
+　　by-----> メールを受け取ったドメインは○○で、
+　　for----> 宛先は○○。
+　ということしか決まっていないらしく、fromの中の書式がどうかはメールサー
+バーに任されているようだ（詳しくはRFC2821参照）。
+
+　サーバーによって逆引きされたドメインをつけないものもある。あなたに来た
+メールは、もしかしたらこんな風になっているかもしれない。
+
+-----  正常なメール
+Received: from xxx.xxx.xxx.xxx  (EHLO noproblem.co.jp) (xxx.xxx.xxx.xxx)
+  by mta32.mail.bbt.yahoo.co.jp with SMTP; Mon, 26 Sep 2005 02:20:21 +0900
+-----
+
+-----  サーバに直で送りつけてきたSPAM
+Received: from xxx.xxx.xxx.xxx  (HELO default) (xxx.xxx.xxx.xxx)
+  by mta32.mail.bbt.yahoo.co.jp with SMTP; Mon, 26 Sep 2005 02:24:46 +0900
+-----
+
+　これをクライアント側でチェックするには、自ら逆引きしてみて、照合する必
+要があり、少々面倒である。だが、スパム業者は括弧内のドメインとFromアドレ
+スなどがめちゃくちゃになっていたりするので、そこをチェックするなど手はい
+ろいろありそうだ。
+
+【編注】『ハッカーの教科書・完全版』に収められている匿名メール用メーラー
+のMail Senderやスパム送信用メーラーのSpam Senderはこの原理と同じことをし
+ています。
+
+
+■0x05.) フィルタリングの実験
+
+　今回の実験では、簡単にするため、
+
+-----
+　Received: from smtp23.mail.bbt.yahoo.co.jp (smtp23.mail.bbt.yahoo.co.jp [202.93.85.138])
+-----
+
+　のケースで括弧の中と外のドメイン名が一致しているか調べ、SPAMを削除する
+ツールを作ってみた。逆引きできていないものもSPAMとみなした。
+　残念ながら、＜真っ当な＞メールでも逆引きできなかったりドメインが一致し
+ないものがごく一部ある。そこで、購読しているメールマガジンや知り合いのメ
+ールなどは「SPAM除外リスト」として別に定義することにした。
+
+　テストで利用したSPAMの判定ルールを次に記そう。
+
+  　　　+---------------------------+(YES)
+  （１）| 除外リストに入っている？  |------>(結果A)SPAMではない
+　 　　 +---------------------------+
+　　　　　　　　　　↓(NO)
+ 　　　 +---------------------------+
+  　　　| ドメインが一致しない／    |(YES)
+　（２）| 逆引きできない？          |------>(結果B)SPAM
+　 　　 +---------------------------+
+　　　　　　　　　　↓(NO)
+　　　  +---------------------------+(YES)
+  （３）| SPAMリストに入っている？  |------>(結果C)SPAM
+　 　　 +---------------------------+
+　　　　　　　　　　↓(NO)
+　　　　　　(結果D)SPAMではない
+
+（１）除外リストに使用しているメールマガジンや知人のメールなどのドメイン
+などを定義しておき、一致したものはSPAMから除外する。
+（２）除外リストに入っていないもので、逆引き結果と相手の名乗るホストが一
+致しないものはSPAMとみなして削除し、専用フォルダに格納する。正当なサーバ
+ーでもホスト名が完全に一致しない場合があるので、末尾のみを比較した。例え
+ば、「mail.yahoo.co.jp」だったら「yahoo.co.jp」の部分、「mail.yahoo.com」
+だったら「yahoo.com」も部分。
+（３）それ以外にSPAMによく含まれるキーワードを正規表現で定義しておき、一
+致したものはSPAMとみなして削除、専用フォルダに格納した。
+
+　本来ツールを掲載すべきだろうが、サーバーによってルールが違うので、ここ
+では（２）のフィルタリングルールに使った正規表現だけ載せておく。
+
+1：「from .*([a-z0-9-]+\.[a-z][a-z]\.jp) \(.*\.\1 \[」に一致したらSPAMで
+はない
+2：「from .*([a-z0-9-]+\.[a-z][a-z]\.jp) \(」に一致したらSPAM
+3：「from .*([a-z0-9-]+\.[a-z]+) \(.*\.\1 \[」に一致したらSPAMではない
+4：上記以外ならSPAM
+
+　Perlなどを使えば、皆さんの環境でも簡単にテストできるだろう。
+　最後に自分側のメールサーバーの名前を「.* by myserver.com」などのように
+入れれば、メーラーに付属のフィルタリングなどでも使えるかもしれない。
+
+　私のところで試してみた結果は次のようになった。
+
+==============================================================================
+　　　　　　　　　　　　　　　　　   　　　　　　　　全メール比　SPAMメール比
+　ReceivedのチェックでひっかかったSPAM(B)……866 件  (62.0%)     (85.74%)
+　ワードチェックでひっかかったSPAM(C)…………55  件  ( 4.2%)     ( 5.85%)
+　フィルタされなかったSPAM(D)……………………79  件  ( 6.1%)     ( 8.40%)
+　除外リストで除外したメール(A)…………………62  件  ( 4.8%)
+　SPAM以外のメール(D)………………………………298 件  (22.9%)
+　合計………………………………………………… 1300 件
+==============================================================================
+
+　SPAMでないのにスパムと認定されてしまうため除外リストに入れたルールは5つ。
+　SPAMに適用したワードチェックの数はたったの7つである。
+　SPAMメールの判定方法として、SPAMらしきキーワードに重みづけし、スコアを
+集計していく方法などがあるが、Receivedヘッダをチェックする方法は簡単な割
+にかなり有効なようだ。
+　過去のメールも遡って調べてみると、面白いことに、ReceivedでSPAMと認定さ
+れるメールの割合は、2003年度で40％程度だったのに、2004年度には60％台、20
+05年には80％台と徐々に上がってきている。
+　大量SPAM送信ツールが普及したため、このような簡単な見分け方が可能になっ
+た、というのは皮肉でもある。
+
+
+■0x06.) クライアント側の対処での限界
+
+　めでたしめでたし。といきたいところだが、ひとつ大きな問題が残されている。
+クライアント側でフィルタしても、相手にはメールが読まれたのか廃棄されたの
+かまったく分からないということだ。こっちはメールを見ていないのに、相手は
+メールを送ったと思い込んでいる……というのでは困ってしまう。クライアント
+側で対処すると、どんなフィルタリングルールを使おうともおのずとこういう問
+題が発生してしまうのだ。
+　相手に「あなたのメールはSPAMとして認定されました」とエラーメールを自動
+返信する手もあるが、これだとSPAM業者は「存在しているメールリスト」として
+他の業者にメールアドレスを売ってしまうかもしれない。できることなら、SPAM
+業者には「このメールアドレスは存在しない」と思わせるのが一番だ。
+
+　そのためには、メールサーバー側で「そんなメールアドレスはないよ」とキッ
+クしてしまうことである。業者がメールサーバーに直接メールを送りつけようと
+すると、その場でエラーとなり送信そのものができない（試しに自分のドメイン
+と同じドメインで、絶対にありえないメールアドレスにメールを送信してみてほ
+しい。瞬時にエラーになるはずだ）。つまり、このメールアドレスはないと諦め
+るか、何度も再送して無駄にコストをかけるしかない。
+　知人のメールは「除外リスト」に入れておく。初めて自分にメールを送ってき
+そうな相手にはエラーメールが返ってしまうが、名刺やWEB上で「メールがエラー
+で送れない場合には、WEB上のフォームメールなどを使ってください」などと告知
+しておけばいい。
+　擬似的にメールが存在しないようなエラーメールを返すソフトがあるが、SPAM
+業者のやり方には通用しない。これではSPAM業者が＜騙っている＞Fromアドレス
+にエラー＜らしきもの＞を返すだけで、本当のSPAM業者は痛くもかゆくもない。
+あくまでメールサーバー側で対処する必要がある。
+
+　この方法が普及すると、SPAM業者はホスト名に気を配るようになるかもしれな
+い。しかし、相手が一般クライアント向けの回線を使っている以上、判別する方
+法はある。
+
+　将来的には、ドメインを取得している＜真っ当な＞メールサーバーはすべて自
+ドメインと逆引きドメインを一致されるのが理想的である。
+　一方、ISPの提供するクライアント用の回線は、逆引きドメインにクライアント
+と分かるルールを適用するか、逆引きそのものを不可能にすれば、SPAMを直接送
+りつけてくる方法は使えなくなるはずだ。
+　唯一の対抗手段は、SPAM業者は自らドメインをとってメールサーバーをたてる
+ことである。が、SPAM業者にはドメイン取得の手間と費用がかかる。しばらくす
+るとそのドメインは「ブラックリスト」に乗ってしまい、次々とドメインを取得
+しなおさなければならなくなるだろう。
+　今まで、受信側ばかりが手間とコストをかけていたSPAMメール対策。SPAM業者
+側に手間とコストをかけさせるためにも、管理者の皆様はぜひメールサーバー側
+での対処をご一考願いたい。
+
+
+■0x07.) エピローグ
+
+　さて。
+　SPAMの話はここでおしまいなのだけど、最後にちょっとCMさせてください。
+　冒頭で引用したProject SEVEN。
+　女子高生の美少女ハッカーと天才プログラマがネットで繰り広げる冒険小説で
+す。
+　近未来SFではありますが、ウイルスからバッファオーバーフローまで、ソーシ
+ャルエンジニアリングからスニフィングまで、幅広く網羅されております。
+　ハッカー、SEはもちろんのこと、厨房君、サラリーマン、大学生、通りすがり
+の女子高生、八百屋さん、魚屋さん、小学生から主婦まで、必読必携です。
+
+『Project SEVEN』
+・著者：七瀬晶
+・発行：アルファポリス
+・価格：1,400円（税別）
+・10月4日発売予定。予約受付中
+　詳しくは、
+　　http://psy.ktplan.ne.jp/seven.htm
+　にて。
+　ご予約はお早めに！
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第2章: ハニーポットを作ろう　～連載第5回～ ---
+
+著者：Narusase
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　前回は、honeydとarpdのインストールを行いました。
+　今回からは少しずつ、honeydの機能などについて説明していきたいと思います。
+honeydの起動方法とその基本的なオプションに関して説明し、実際にhoneydにア
+クセスしてみます。
+
+
+■0x02.) 下準備
+
+　まず、honeydを起動させるためにはいくつかの下準備が必要となります、ひと
+つはhoneyd用のアカウント＆グループの作成で、もうひとつは設定ファイルの書
+き換えです。
+
+　honeyd用のアカウント＆グループの作成ではhoneydのインストール時に「/usr
+/local/share/honeyd」以下の関係する各ファイルに割り当てられているUIDおよ
+びGIDを用いるように設定します。各ファイルの所有者の書き換えが面倒でない場
+合は、他のUIDおよびGIDを使用してもかまいません。
+　ここではアカウント＆グループ名はハニーポットに関係すると言うことでbee（
+「蜜蜂」という意味）とすることにします。実際のアカウント＆グループの作成
+には次のようなコマンドを実行します。
+
+------
+groupadd -g 32767 bee
+adduser -u 1000 -g 32767 -s /sbin/nologin bee
+------
+
+　次に、サンプルの設定ファイルのバックアップを作成し、サンプルを元に新た
+な設定を作成します。
+
+------
+cd /usr/local/share/honeyd/
+cp config.ethernet config.sample.ethernet
+vi config.ethernet
+------
+
+　変更するのは04行目と10行目で、新たに11行目を追加しています。
+　04行目では最後の部分がblockからopenに、11行目ではIPアドレスが192.168.1.
+125から192.168.1.2へ変更されています。なお、IPアドレスは適宜自分の環境に
+合わせてください。
+
+　設定後の設定ファイルは次のようになります。
+
+------
+01 create default
+02 set default default tcp action block
+03 set default default udp action block
+04 set default default icmp action open
+05
+06 create template
+07 set template ethernet "3com"
+08 set template personality "Linux 2.4.7 (X86)"
+09
+10 bind 192.168.1.2 template
+11 bind 192.168.1.3 default
+------
+
+　ここで、簡単に設定について説明します。
+　まず、01行目では「default」のテンプレートを作成しています。
+　02～04行目では「default」のテンプレートに対してデフォルトの動作として、
+TCPとUDPについてはすべてパケットをブロックし、ICMPについてはすべて受け付
+けるように設定しています。
+　06行目では「template」のテンプレートを作成しており、07行目では3comのEt
+hernetアダプタ（NIC）をエミュレートするように設定ています。
+　08行目ではエミュレーションするOSの動作としてX86系のCPU上のLinux 2.4.7を
+指定しています。
+　そして、10、11行目でそれぞれ、監視対象となるIPアドレスとテンプレートを
+結びつけています。つまり、ここでは192.168.1.2と192.168.1.3の仮想マシンを
+作成してるということになります。
+
+
+■0x03.) 起動
+
+　連載5回目にして、ようやくhoneydを起動するときが来ました。
+
+　次のようにコマンドを入力して起動します。
+
+--------
+honeyd -d -f /usr/local/share/honeyd/config.ethernet -i eth0 -u 1000 -g 32767 192.168.1.2-192.168.1.3
+--------
+
+　ここで、簡単に起動に必要なオプションについてのみ説明します。
+　-dオプションはデーモン化せずに実行することを意味します。また、このオプ
+ションを付けた場合、詳細なデバッグメッセージが有効になります。したがって、
+実際の運用時には使用しないオプションで、どちらかといえば構築中のちょっと
+した実験や、バグの原因解明などのために使うオプションと言えます。
+　-fオプションは読み込む設定ファイルを指定します。ここで設定ファイルを指
+定しない場合、デフォルトの設定で動作します。
+　-iオプションはどのインターフェースで通信を待ち受けるかを指定します。複
+数のインターフェースがある場合にどちらのインターフェースを監視するか指定
+するためのものです。
+　-uおよび-gオプションはそれぞれHoneydの実行時に用いるUIDおよびGIDを指定
+します。デフォルトではUIDとGIDの両方とも32767を用います。なぜか一部の設定
+ファイルなどではUIDは1000に設定されているため-uオプションの使用が必要です。
+
+　最後のIPアドレスは監視対象とするネットワークアドレスやホストアドレスを
+意味します。実際にはホストアドレス（「192.168.1.1」の型）に加えてネットワ
+ーク単位（「192.168.1.0/24」の型）、ある一定の範囲（「192.168.1.10」～「
+192.168.1.20」の型）が指定できます。
+
+
+■0x04.) 実験
+
+　honeydを実行するといろいろメッセージが表示され、シェルに戻らない状態に
+なります。この状態になればhoneydはきちんと起動しているということになりま
+す。設定ファイルにミスがある場合は、たいがいエラーメッセージを表示してす
+ぐにシェルに戻ります。
+
+　では早速、LAN内の別のマシンから、「192.168.1.2」にnmapを用いてポートス
+キャンをして、honeydが未使用アドレスを監視できているか確かめてみましょう。
+
+-----
+[root@localhost root]# nmap -sT 192.168.1.2
+Starting nmap 3.81 ( http://www.insecure.org/nmap/ ) at 2005-09-10 14:00 JST
+Interesting ports on 192.168.1.2:
+PORT      STATE SERVICE
+1/tcp     open  tcpmux
+2/tcp     open  compressnet
+3/tcp     open  compressnet
+･･･（中略）･･･
+65301/tcp open  pcanywhere
+MAC Address: 00:D0:96:E2:2B:F0 (3com Europe)
+
+Nmap finished: 1 IP address (1 host up) scanned in 4.760 seconds
+-----
+
+　「192.168.1.2」はどうやらほとんどのポートが空いている状態のようですね。
+よく見るとMACアドレスも3comのものとして見えているようです。
+
+　では、次は「192.168.1.3」はどうでしょうか？
+
+-----
+[root@localhost root]# nmap -sT 192.168.1.3
+Starting nmap 3.81 ( http://www.insecure.org/nmap/ ) at 2005-09-10 15:00 JST
+Note: Host seems down. If it is really up, but blocking our ping probes, try
+-P0
+Nmap finished: 1 IP address (0 hosts up) scanned in 2.104 seconds
+-----
+
+　おかしいですね、「192.168.1.3」のホストは起動していないようです。
+
+　では、自分のIPアドレス（192.168.1.1）に対してはどうでしょう。
+
+-----
+[root@localhost root]# nmap -sT 192.168.1.1
+Starting nmap 3.81 ( http://www.insecure.org/nmap/ ) at 2005-09-10 15:10 JST
+Interesting ports on 192.168.1.1:
+(The 1659 ports scanned but not shown below are in state: closed)
+PORT      STATE SERVICE
+22/tcp    open  ssh
+80/tcp    open  http
+199/tcp   open  smux
+32770/tcp open  sometimes-rpc3
+MAC Address: 00:04:5F:11:22:33 (Evalue Technology)
+
+Nmap finished: 1 IP address (1 host up) scanned in 3.103 seconds
+-----
+
+　どうやら、「192.168.1.1」はアクセスできているようです。
+
+　では、pingはどうでしょうか？
+
+-----
+[root@localhost root]# ping 192.168.1.1 -c 1
+PING 192.168.1.1 (192.168.1.1) 56(84) bytes of data.
+64 バイト応答 送信元 192.168.1.1: icmp_seq=0 ttl=64 時間=0.233ミリ秒
+
+--- 192.168.1.1 ping 統計 ---
+送信パケット数 1, 受信パケット数 1, パケット損失 0%, 時間 0ミリ秒
+rtt 最小/平均/最大/mdev = 0.233/0.233/0.233/0.000ミリ秒, pipe 2
+
+
+[root@localhost root]# ping 192.168.1.2 -c 1
+PING 192.168.1.2 (192.168.1.2) 56(84) bytes of data.
+64 バイト応答 送信元 192.168.1.2: icmp_seq=0 ttl=255 時間=0.565ミリ秒
+
+--- 192.168.1.2 ping 統計 ---
+送信パケット数 1, 受信パケット数 1, パケット損失 0%, 時間 0ミリ秒
+rtt 最小/平均/最大/mdev = 0.565/0.565/0.565/0.000ミリ秒, pipe 2
+
+
+[root@localhost root]# ping 192.168.1.3 -c 1
+PING 192.168.1.3 (192.168.1.3) 56(84) bytes of data.
+送信元 192.168.1.74 icmp_seq=0 目的のホストへ届きません
+
+--- 192.168.1.3 ping 統計 ---
+送信パケット数 1, 受信パケット数 0, +1 エラー, パケット損失 100%, 時間 0ミリ秒, pipe 2
+-----
+
+　実験してみると、やはり「192.168.1.3」へは届いていないことがわかります。
+　なぜ、「192.168.1.1」や「192.168.1.2」へのスキャンには反応するのに、「
+192.168.1.3」へのスキャンには反応しないのでしょうか？
+　紙面もつきてきたので、この問題の解決は次回に行います。
+
+
+■0x05.) まとめ
+
+　今回は、honeydの起動方法とその基本的なオプションに関して説明しました。
+　そして、honyedが動作していることも確認しました。
+　しかし、実験では自分のIPアドレス（192.168.1.1）や「192.168.1.2」へはア
+クセスできるのに、「192.168.1.3」を監視させようとしてもうまく動作しないと
+いう問題が発生しました。
+　そこで、次回はその問題に対してどう対処するのかについて解説していきたい
+と思います。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第3章: Crackme Kracking 0x2 ---
+
+著者：Will
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) crackmeとは
+
+　簡単にいえば解析の練習用のソフトです。今回はcrackmes.deで配布されている
+crackmeを解析したいと思います。
+　なぜか解析中にそのファイルが削除されたので（バグが原因？）、勝手に再配
+布させていただきますｗ
+
+
+■0x02.) 用意
+
+●使用ソフト：
+
+・OllyDbg 1,10
+  本家:  http://www.ollydbg.de/
+　日本語化（予めOllyDbgは日本語化してあることを前提に書いています）
+　日本語化については下記のURL参照
+　Digital Travesia:　http://hp.vector.co.jp/authors/VA028184/
+
+●ターゲット
+
+・Cyclopsさん作成のcrackme
+　http://will.wbjapan.com/archive/other/crackme3.zip
+
+●かる～いやる気
+
+●アセンブリのコードが読める位の知識（そんなに要らない）
+
+
+■0x03.) 解析開始
+
+　まず上記のURLからcrackmeをダウンロードして普通に起動します。適当に入力
+してからボタンを押しても反応なしです。
+　まぁ気にせずにOllyでcrackmeを開いて右クリック→検索→全ての参照文字列を
+表示させます。文字列を探していくと上の方に"YOU GoT It!!!"といった文字列が
+見つかります。それをダブルクリックすると逆アセンブラ画面が表示されます。
+
+-----
+00403358   . 8BF4           MOV ESI,ESP
+0040335A   . 50             PUSH EAX
+0040335B   . 8D4D E4        LEA ECX,DWORD PTR SS:[EBP-1C]
+0040335E   . E8 77030000    CALL <JMP.&MFC42D.#880>
+00403363     50             PUSH EAX
+00403364     FF15 2C874100  CALL DWORD PTR DS:[<&MSVCRTD._strcmpi>]  ;  MSVCRTD._stricmp
+0040336A     83C4 08        ADD ESP,8
+0040336D     3BF4           CMP ESI,ESP
+0040336F   . E8 F6030000    CALL <JMP.&MSVCRTD._chkesp>
+00403374     85C0           TEST EAX,EAX
+00403376     75 14          JNZ SHORT crackme3.0040338C
+00403378   . 6A 00          PUSH 0
+0040337A   . 68 E8634100    PUSH crackme3.004163E8　;  ASCII "Cracked!!!"
+0040337F     68 D8634100    PUSH crackme3.004163D8  ;  ASCII "YOU GoT It!!!"
+00403384   . 8B4D F0        MOV ECX,DWORD PTR SS:[EBP-10]
+00403387   . E8 D2030000    CALL <JMP.&MFC42D.#3517>
+0040338C   > C645 FC 01     MOV BYTE PTR SS:[EBP-4],1
+00403390   . 8D4D E4        LEA ECX,DWORD PTR SS:[EBP-1C]
+00403393   . E8 3C030000    CALL <JMP.&MFC42D.#684>
+00403398   . C645 FC 00     MOV BYTE PTR SS:[EBP-4],0
+0040339C   . 8D4D E8        LEA ECX,DWORD PTR SS:[EBP-18]
+0040339F   . E8 30030000    CALL <JMP.&MFC42D.#684>
+004033A4   . C745 FC FFFFFF>MOV DWORD PTR SS:[EBP-4],-1
+004033AB   . 8D4D EC        LEA ECX,DWORD PTR SS:[EBP-14]
+004033AE   . E8 21030000    CALL <JMP.&MFC42D.#684>
+004033B3   . 8B4D F4        MOV ECX,DWORD PTR SS:[EBP-C]
+004033B6   . 64:890D 000000>MOV DWORD PTR FS:[0],ECX
+004033BD   . 5F             POP EDI
+004033BE   . 5E             POP ESI
+004033BF   . 5B             POP EBX
+004033C0   . 81C4 24010000  ADD ESP,124
+004033C6   . 3BEC           CMP EBP,ESP
+004033C8   . E8 9D030000    CALL <JMP.&MSVCRTD._chkesp>
+004033CD   . 8BE5           MOV ESP,EBP
+004033CF   . 5D             POP EBP
+004033D0   . C3             RETN
+-----
+
+　ここで、適当に00403358にブレークポイントを仕掛けます。そして実行させて
+適当に入力してからボタンを押してブレークポイントで止まったらステップ実行
+させます。
+　すると00403363でEAXに入力したNameに対応するパスらしきものが表示されます。
+試しにこのパスを入力してみると正解らしきメッセージが表示されました。本当
+は00403358より上のコードを見て、keygenを作らなければいけないようですが、
+邪魔くさいのでこのcrackmeをkeygen化してみましょう。
+
+　それでは次のコードを変更します。
+
+-----　変更前
+0040335A   . 50             PUSH EAX
+0040335B   . 8D4D E4        LEA ECX,DWORD PTR SS:[EBP-1C]
+0040335E   . E8 77030000    CALL <JMP.&MFC42D.#880>
+00403363     50             PUSH EAX
+00403364     FF15 2C874100  CALL DWORD PTR DS:[<&MSVCRTD._strcmpi>]  ;  MSVCRTD._stricmp
+0040336A     83C4 08        ADD ESP,8
+0040336D     3BF4           CMP ESI,ESP
+0040336F   . E8 F6030000    CALL <JMP.&MSVCRTD._chkesp>
+00403374     85C0           TEST EAX,EAX
+00403376     75 14          JNZ SHORT crackme3.0040338C
+-----
+
+-----　変更後
+00403363   83C4 04          ADD ESP,4
+00403366   6A 00            PUSH 0
+00403368   6A 00            PUSH 0
+0040336A   50               PUSH EAX
+0040336B   EB 17            JMP SHORT crackme3.00403384
+0040336D   3BF4             CMP ESI,ESP
+0040336F   E8 F6030000      CALL <JMP.&MSVCRTD._chkesp>
+00403374   85C0             TEST EAX,EAX
+00403376   75 14            JNZ SHORT crackme3.0040338C
+-----
+
+　簡単に説明してみます。
+　まず0040335Eのstrcmpiは比較命令なので必要ありません。よって上の2つの命
+令も必要ないので、いらない部分を書き換えます。
+　0040336AのADD ESP,8が消えてしまうので00403363をADD ESP,4に変更します。
+　そして00403366～0040336AでMessageBoxに必要な引数をpushしています。
+　最後に0040336BのJMPでMessageBox近くまで飛ばします。
+
+　変更が終わったら右クリック→実行ファイルへコピー→全ての変更箇所→全て
+コピー→変なエラーが出ても「はい」→そして保存します。
+
+　パッチにすると次のような感じになります。
+
+-----
+*== TARGET_FILE ================
+FILENAME crackme3.exe
+* FileSize: 114743 bytes
+* LastMod.: 2005/09/26 18:18:26
+*===============================
+00003363: 50 83
+00003364: FF C4
+00003365: 15 04
+00003366: 2C 6A
+00003367: 87 00
+00003368: 41 6A
+0000336A: 83 50
+0000336B: C4 EB
+0000336C: 08 17
+-----
+
+　ちなみにKeygen化した後は正しいパスを入力しても正解のメッセージは表示さ
+れません。
+
+　以上でKeygen化終了です。
+
+
+■0x04.) 終わりに
+
+　今回はめちゃ簡単ですね。本当は普通にKeygenを作ろうかと思いましたが、時
+間がなかったので…。今もあんまり時間がないのでこの辺で。
+　それでは。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第4章: 無煙火薬の作り方 ---
+
+著者：Defolos
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+【編注】2017/11/10削除
+島根県警察の要請により、この記事を削除しました。
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第5章: Linuxアクセスコントロールクイックリフェレンス ---
+
+著者：Taka John Brunkhorst
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　今回はLinuxアクセスコントロールについて書いてみました。
+　始めはチュートリアルとして書き始めましたがどうも書きたいことが決まって
+いるのに言葉が出てこないようなのでクイックリフェレンスということにしてみ
+ました。
+　なお、+6777などUNIXと違うとこがあったような記憶がするのでUNIXは含めませ
+んでしたが、ほとんどの場合は共通するはずです。
+
+
+■0x02.) UNIXライクパーミッション　＜シンボル＞
+
+　Linuxアクセスコントロール（UNIXライクパーミッション）は4通りの表示方法
+があります。
+
+　まずひとつはシンボルです。このシンボルでのパーミッション表示は非常にわ
+かりやすい仕組みになっています。例えば、「s-trwxrw-r--」なら、「s-t」（S
+pecial bits）、「rwx」（User）、「rw-」（Group）、「r--」（Other）と分け
+ることができます。つまり、シンボルは4つのセクションに分かれているのです。
+
+
+■0x03.) スペシャルモード
+
+　スペシャルモード（Special bitsの部分）はファイル、ディレクトリに対して
+特別な操作を必要とする場合に使用します。左から順に、SUID、SGID、Stickyシ
+ンボルとなっています。
+
+・SUID（Set User ID）
+　SUIDはファイルのオーナーの権限でプログラムを実行する場合に使われます。
+例えばプログラムのオーナーがrootで実行者がfooであるとします。通常ですとf
+ooの権限で実行されますがSUIDがセットされているとrootの権限で実行できます。
+SUIDを使用するとオーナーのパスワードを渡さずにオーナーの権限で実行できる
+のでlprとなどで使用されています。
+　シンボルは「s」です。
+
+・SGID（Set Group ID）
+　SGIDはSUIDと似ています。SGIDがセットされているファイルに対してはそのフ
+ァイルのグループ権限で実行できます。またSGIDはディレクトリにも使用できま
+す。この場合そのディレクトリ下に作成されたファイルすべてにそのディレクト
+リのグループ権限が与えられます。例えば/var/user/fooのディレクトリがSGID 
+moinとしtouch /var/user/foo/omgした場合omgはmoinのグループに所属します。
+　シンボルは「s」です。
+
+・Sticky
+　Stickyは元々プログラムの起動を短縮するために実行可能プログラムに適用さ
+れプログラム終了後、プログラムのイメージをメモリーに保存するために使用さ
+れていました。現在これはバーチャルメモリーの発展により不必要になりました。
+Stickyが有効されたファイル、ディレクトリは編集のみ許可され、改名削除はフ
+ァイルオーナー、ディレクトリオーナー又はroot以外できません。
+　シンボルは「t」です。
+
+
+■0x04.) 使用方法
+
+　SUID,SGID,Stickyは普段User,Group,OtherのExecutable（x）の位置に置かれま
+す。
+　例えばその他のユーザー（other[o]）にSticky（T）を適用する場合は「$ chm
+od o+T file1」と入力し、シンボルで「rwxrw-rwt」という風になります。
+
+　他にもいくつか例を示してみます。
+
+○GroupにSGID
+　dir1に作成されたファイルは誰が作成しようが関係なくgrpに所属する。
+
+-----
+$ chmod g+s dir1
+$ ls -l dir1
+drwxrwsr--  0 usr grp 0 dir1
+-----
+
+○OtherにSUID
+　exec1がusrの権限で実行される。
+
+-----
+$ whoami
+usr2
+$ chmod o+s exec1
+$ ls -l exec1
+rwxrwxr-s  0 usr grp 0 exec1
+-----
+
+○GroupにSticky
+
+　grpに所属しているユーザーはfile1を編集できるが削除や改名はできない。
+
+-----
+$ chmod g+t file1
+$ ls -l file1
+rwxrwTr--  0 usr grp 0 file1
+-----
+
+
+■0x05.) User,Group,Other
+
+・User：ファイルの所有者、作成者
+・Group：ファイルを所有しているグループ
+・Other：その他のユーザー
+
+
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+| パーミッション | シンボル  |  ファイルへの権限   | ディレクトリへの権限
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|    Read        |    r      |  ファイルを読む権限 | ディレクトリの内容を表示
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|    Write       |    w      |  ファイルを編集     | ファイルを作成削除
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Exucute      |    x      |  ファイルを実行     | ファイルの読み書き
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+
+■0x06.) バイナリ
+
+　Special,User,Group,Otherパーミッションはバイナリで表示することができま
+す。
+　「001」「111」「110」「100」というバイナリの場合、Special,User,Group,O
+therとなります。1が有効というわけですから、シンボルでは「s-T rwx rw- r--」
+となり、「rwx rw- r-T」となります。
+
+
+■0x07.) Octal（8進数）
+
+　例えばバイナリが「111」の場合、先頭から「4」「2」「1」となります。
+
+　「000 111 101 100」のバイナリの場合、
+
+・000 = 0+0+0 = 0
+・111 = 4+2+1 = 7
+・101 = 4+0+1 = 5
+・100 = 4+0+0 = 4
+
+　つまりOctalで「0754」になります。0は略して、「754」と表記できます。
+
+
+■0x08.) バイナリ,シンボル,Octal変換例
+
+-----------
+Symbol: --- rwx rwx rwx
+binary: 000 111 111 111
+Octal: 0(0+0+0=) 7(4+2+1) 7(4+2+1) 7(4+2+1) = 0777 = 777
+-----------
+Symbol: rwx rws rwT
+binary: 011 111 111 111
+Octal: 3(2+1) 7(4+2+1) 7(4+2+1) 7(4+2+1)= 3777
+-----------
+Symbol: rws r-s r-x
+binary: 110 111 101 101
+Octal: 6(4+2) 7(4+2+1) 5(4+1) 5(4+1) = 6755
+
+
+■0x09.) Umask
+
+　umaskはシステムのデフォルトパーミッション設定を表示、変更するときに使い
+ます。
+
+　現在のumask設定を表示するにはumaskコマンドを使います。
+
+-----
+$ umask
+0022
+-----
+
+　この場合、新しく作成されたすべてのファイルのパーミッションは644（＝666
+-22）、ディレクトリのパーミッションは755（＝777-22）になります。
+
+　もうひとつ例を出しておきます。例えば、umaskが0027のときは、
+
+○ファイルの場合
+・640（＝666-27）　マイナスは0とする。
+・シンボル：rw- r-- ---
+
+○ディレクトリの場合
+・パーミッション：750（＝777-27）
+・シンボル：rwx r-x ---
+
+
+■0x02.) あとがき
+
+　どうでしたか？
+　クイックリフェレンスどころかただの表になってしまったような気がします。
+ところどころ抜けてるところもあるでしょうが許してください。次回はもしかし
+たらmanページの書き方、もしかしたらgdb（GNU DeBugger）を使ったBoF、または
+レギュラーエクスプレションチュートリアルを書くかもしれません。	
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第6章: パケットフィルタリング　～アプリケーション篇～ ---
+
+著者：Kenji Aiko
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　セキュリティが声高に叫ばれている現在、アンチウイルスソフトやFirewallは、
+もはや無くてはならない存在になってしまいました。というわけで、今回はパケ
+ットフィルタリングについてやってみようと思います。一般的な商用のFirewall
+などは、デバイスドライバ（フィルタドライバ）を使い、パケットフィルタリン
+グを行っていますが、このテキストでは、アプリケーションレベルでそれをやっ
+てみることにします。ちなみに、デバイスドライバを利用する方法を知りたい方
+は、来月私が書く予定である「パケットフィルタリング　～デバイスドライバ篇
+～」を読んでください。あくまで予定ですけどね(^^;。
+
+　私が使用する環境は「WindowsXP + VC++.NET」ですが、Windows2000以降ならば、
+問題ないでしょう。
+
+
+■0x02.) パケットフィルタリングとは
+
+　パケットフィルタリングとは、ルータやファイヤーウォールが持っている機能
+のひとつで、送られてきたパケットを検査して通過させるかどうか判断する機能
+です。パケットのヘッダにはプロトコルや送信元アドレス、送信先アドレスやポ
+ート番号などの情報が含まれており、これを参照して通過するかどうかを決定し
+ます。そして、通過できなかったパケットは送信元に通知されたり、破棄された
+りします。どのような方針に基づいて判断するかは、そのネットワークの管理者
+が任意に設定することになり、現在では、最も一般的かつ簡便なセキュリティ技
+術として知られています。最近のルータは大半が持っている機能ですが、よく知
+られているだけに破る手段も多く、他の技術と併用することが肝要です。
+
+（IT用語辞書e-wordより）
+
+
+■0x03.) すべてのパケットを破棄
+
+　まずはMSDNのパケットフィルタリングリファレンスを読破してください。
+
+・Packet Filtering Reference
+http://msdn.microsoft.com/library/default.asp?url=/library/en-us/rras/rras/packet_filtering_reference.asp
+
+　あっ、やっぱり読破はしないでください。読破してしまったら、このテキスト
+読まなくても理解できてしまうので（笑）。なので、流し読みしてください。
+
+　それで、どうやらパケットフィルタリング関連のAPIを利用すると、パケット通
+過の可否をアプリケーション側で決められるようです。というわけで、早速利用
+したプログラムを作成します。
+
+-----  ex1.cpp（http://ruffnex.oc.to/kenji/text/fire_a/ex1.cpp）
+#include <stdio.h>
+#include <conio.h>
+#include <windows.h>
+#include <fltdefs.h>
+
+#pragma comment(lib, "iphlpapi.lib")
+
+int main(void)
+{
+    BYTE localAddr[4] = { 192,168,4,2 };
+
+    INTERFACE_HANDLE hFilterIf;
+    DWORD dwRet = PfCreateInterface(
+        NULL, PF_ACTION_DROP, PF_ACTION_DROP, FALSE, TRUE, &hFilterIf);
+    if(dwRet != NO_ERROR){
+        fprintf(stderr, "PfCreateInterface failed");
+        return -1;
+    }
+
+    printf("Start Filtering");
+
+    dwRet = PfBindInterfaceToIPAddress(hFilterIf, PF_IPV4, localAddr);
+    if(dwRet != NO_ERROR){
+        fprintf(stderr, "PfBindInterfaceToIPAddress failed");
+        return -1;
+    }
+
+    _getch();
+
+    PfUnBindInterface(hFilterIf);
+    PfDeleteInterface(hFilterIf);
+    return 0;
+}
+-----
+
+　最初に定義されているlocalAddr配列には自分マシンのIPアドレスを指定してく
+ださい。私の環境ではIPアドレスが「192.168.4.2」でした。最初にPfCreateInt
+erface関数を使って新しいフィルタインターフェースを生成します。PfCreateIn
+terfaceは以下のように定義されています。
+
+-----  PfCreateInterface関数
+DWORD PfCreateInterface(
+  DWORD dwName,
+  PFFORWARD_ACTION inAction,
+  PFFORWARD_ACTION outAction,
+  BOOL bUseLog,
+  BOOL bMustBeUnique,
+  INTERFACE_HANDLE* ppInterface
+);
+-----
+
+　dwNameには、インターフェースの識別子を指定しますが、ここをNULL（0）にす
+ると、適当な識別子を決定してくれますので、NULLで問題ありません。inAction
+とoutActionはそれぞれ受信するパケットと送信するパケットの扱いを決めます。
+
+inAction   PF_ACTION_DROP     →  受信するパケットを破棄する
+           PF_ACTION_FORWARD  →  受信するパケットを破棄しない
+
+outAction  PF_ACTION_DROP     →  送信するパケットを破棄する
+           PF_ACTION_FORWARD  →  送信するパケットを破棄しない
+
+　bUseLogはログを使用するかどうかでしょうか？　実は私も良く分かりません(^^;。
+bMustBeUniqueは、インターフェースを共有するか否かを決めます。TRUEならば共
+有しません。そして最後のppInterfaceにインターフェースハンドルを指定します。
+この関数が成功すると、以後ppInterfaceに渡したものがインターフェースハンド
+ルとして使用されます。
+
+　PfCreateInterfaceを使ってインターフェースを生成した場合は、PfDeleteInt
+erfaceを呼び出してインターフェースを削除しなければなりません。ex1.cppでは、
+一番最後に呼び出しています。
+
+　次のPfBindInterfaceToIPAddress関数は以下のように定義されています。
+
+-----  PfBindInterfaceToIPAddress関数
+DWORD PfBindInterfaceToIPAddress(
+  INTERFACE_HANDLE pInterface,
+  PFADDRESSTYPE pfatType,
+  PBYTE IPAddress
+);
+-----
+
+　pInterfaceはPfCreateInterface関数に渡したインターフェースハンドルです。
+pfatTypeはIPのバージョンを指定します。
+
+PF_IPV4  →  IP version 4（現在のデフォルト）
+PF_IPV6  →  IP version 6（10年後のデフォルト？）
+
+　IPAddressは自分のマシンのIPアドレスを指定します。
+
+　PfBindInterfaceToIPAddressを使用したら、その後、PfUnBindInterfaceを使っ
+てバインドを解除しなければなりません。ex1.cppでは、最後にそれを行っていま
+す。
+
+　ではex1.cppをコンパイルしてください。そして、実行する前に、まず他のサー
+バーへpingを打ってください。
+
+-----  コマンドプロンプト
+C:\kenji>ping yahoo.co.jp
+
+Pinging yahoo.co.jp [203.141.35.113] with 32 bytes of data:
+
+Reply from 203.141.35.113: bytes=32 time=19ms TTL=242
+Reply from 203.141.35.113: bytes=32 time=19ms TTL=242
+Reply from 203.141.35.113: bytes=32 time=19ms TTL=242
+Reply from 203.141.35.113: bytes=32 time=19ms TTL=242
+
+Ping statistics for 203.141.35.113:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 19ms, Maximum = 19ms, Average = 19ms
+
+C:\kenji>
+-----
+
+　ちゃんと、pingが通っていることが確認できます。では、次にex1.cppをコンパ
+イルしてできたex1.exeの実行中にpingを打ってください。ex1.exeは_getchのと
+ころでキー入力を求めて処理が止まるので、そのままの状態でpingを打ちます。
+
+-----  ex1.exe実行中
+Start Filtering
+-----
+
+-----  コマンドプロンプト
+C:\kenji>ping yahoo.co.jp
+
+Pinging yahoo.co.jp [203.141.35.113] with 32 bytes of data:
+
+Request timed out.
+Request timed out.
+Request timed out.
+Request timed out.
+
+Ping statistics for 203.141.35.113:
+    Packets: Sent = 4, Received = 0, Lost = 4 (100% loss),
+
+C:\kenji>
+-----
+
+　今度はpingがyahoo.co.jpへ届きませんでした。pingの他にも、ブラウザでお好
+みのサイトへアクセスするなどなど、いろいろと試してみてください。おそらく
+すべて失敗するはずです。すべてのネットワークパケットを遮断しているため、
+ex1.exe実行中は、ネットワークを経由したどんなもアクセスも禁止されます。「
+yahoo.co.jp」をIPアドレスに変換するためにDNSサーバに問い合わせるかもしれ
+ませんが、その時点でパケット送信が失敗する可能性もあります。とにかくping
+は成功しないことでしょう。
+
+
+■0x04.) パケットフィルタリング
+
+　ex1.exeがすべてのパケットを遮断したのは、PfCreateInterface関数の引数in
+ActionとoutActionにPF_ACTION_DROPを指定していたからです。つまり、逆にPF_
+ACTION_FORWARDを指定していたら、すべてのパケットを通過させていました。ま
+ずはそれを頭に置いておいてください。
+
+-----  PfAddFiltersToInterface関数
+DWORD PfAddFiltersToInterface(
+  INTERFACE_HANDLE ih,            // インターフェースハンドル
+  DWORD cInFilters,               // 受信フィルタ数
+  PPF_FILTER_DESCRIPTOR pfiltIn,  // 受信フィルタ
+  DWORD cOutFilters,              // 送信フィルタ数
+  PPF_FILTER_DESCRIPTOR pfiltOut, // 送信フィルタ
+  PFILTER_HANDLE pfHandle         // フィルタハンドルの配列を格納する領域
+                                  // 通常はNULLで構わない
+);
+-----
+
+　PfAddFiltersToInterface関数は、指定されたインタフェースに指定されたフィ
+ルタを加えます。この時にフィルタがどう働くのか、それはPfCreateInterface関
+数に指定したinActionとoutActionによって変わります。
+
+　inActionとoutActionにパケットの破棄（PF_ACTION_DROP）を指定していたらな
+ら、PfAddFiltersToInterface関数を使って追加されたフィルタは、パケット通過
+の条件となります。逆に、パケットの通過（PF_ACTION_FORWARD）を指定していた
+らなら、PfAddFiltersToInterface関数を使って追加されたフィルタは、パケット
+破棄の条件となります。
+
+　つまり、ex1.exeにPfAddFiltersToInterface関数を使って新たにフィルタを加
+えた場合、そのフィルタの条件にあったパケットは通過します。それを示したプ
+ログラムex2.cppを見てください。
+
+-----  ex2.cpp（http://ruffnex.oc.to/kenji/text/fire_a/ex2.cpp）
+#include <stdio.h>
+#include <conio.h>
+#include <windows.h>
+#include <fltdefs.h>
+
+#define DIR_INPUT    1
+#define DIR_OUTPUT   2
+
+#pragma comment(lib, "iphlpapi.lib")
+
+int parseAddress(char *addrStr, 
+                 BYTE *addr, 
+                 BYTE *mask)
+{
+    int ip[4], mk[4];
+    int num = sscanf(addrStr, "%d.%d.%d.%d/%d.%d.%d.%d", 
+        &ip[0], &ip[1], &ip[2], &ip[3],
+        &mk[0], &mk[1], &mk[2], &mk[3]);
+    if(num != 8)
+        return -1;
+
+    for(int i=0; i < 4; i++){
+        if(ip[i] < 0 || ip[i] > 255 || mk[i] < 0 || mk[i] > 255)
+            return -1;
+        addr[i] = ip[i], mask[i] = mk[i];
+    }
+    return 0;
+}
+
+int addFilter(INTERFACE_HANDLE hIf, 
+              int flag, 
+              DWORD dwProtocol, 
+              char *localAddrStr, 
+              char *remoteAddrStr)
+{
+    BYTE localAddrBin[4], remoteAddrBin[4];
+    BYTE localMaskBin[4], remoteMaskBin[4];
+    parseAddress(localAddrStr,  localAddrBin,  localMaskBin);
+    parseAddress(remoteAddrStr, remoteAddrBin, remoteMaskBin);
+
+    PF_FILTER_DESCRIPTOR filter;
+    memset(&filter, 0, sizeof(filter));
+    filter.dwFilterFlags = FD_FLAGS_NOSYN;
+    filter.dwRule        = 0;
+    filter.pfatType      = PF_IPV4;
+    filter.dwProtocol    = dwProtocol;
+    filter.fLateBound    = 0;
+    filter.wSrcPort      = ((dwProtocol == FILTER_PROTO_ICMP) 
+        ? FILTER_ICMP_TYPE_ANY : FILTER_TCPUDP_PORT_ANY);
+    filter.wDstPort      = ((dwProtocol == FILTER_PROTO_ICMP)
+        ? FILTER_ICMP_TYPE_ANY : FILTER_TCPUDP_PORT_ANY);
+    filter.wSrcPortHighRange = filter.wSrcPort;
+    filter.wDstPortHighRange = filter.wDstPort;
+
+    DWORD dwRet;
+    if(flag == DIR_INPUT){
+        filter.SrcAddr = remoteAddrBin, filter.SrcMask = remoteMaskBin;
+        filter.DstAddr = localAddrBin,  filter.DstMask = localMaskBin;
+        dwRet = PfAddFiltersToInterface(hIf, 1, &filter, 0, NULL, NULL);
+    }else{
+        filter.SrcAddr = localAddrBin, filter.SrcMask = localMaskBin;
+        filter.DstAddr = remoteAddrBin, filter.DstMask = remoteMaskBin;
+        dwRet = PfAddFiltersToInterface(hIf, 0, NULL, 1, &filter, NULL);
+    }
+
+    if(dwRet != NO_ERROR){
+        printf("addFilter: PfAddFiltersToInterface failed");
+        return -1;
+    }
+
+    return 0;
+}
+
+int main(void)
+{
+    BYTE localAddr[4] = { 192,168,4,2 };
+
+    INTERFACE_HANDLE hFilterIf;
+    DWORD dwRet = PfCreateInterface(
+        NULL, PF_ACTION_DROP, PF_ACTION_DROP, FALSE, TRUE, &hFilterIf);
+    if(dwRet != NO_ERROR){
+        fprintf(stderr, "PfCreateInterface failed");
+        return -1;
+    }
+
+    addFilter(hFilterIf, DIR_OUTPUT, FILTER_PROTO_ICMP,
+        "192.168.4.2/255.255.255.255", "210.198.12.224/255.255.255.255");
+    addFilter(hFilterIf, DIR_INPUT,  FILTER_PROTO_ICMP,
+        "192.168.4.2/255.255.255.255", "210.198.12.224/255.255.255.255");
+
+    printf("Start Filtering");
+
+    dwRet = PfBindInterfaceToIPAddress(hFilterIf, PF_IPV4, localAddr);
+    if(dwRet != NO_ERROR){
+        fprintf(stderr, "PfBindInterfaceToIPAddress failed");
+        return -1;
+    }
+
+    _getch();
+
+    PfUnBindInterface(hFilterIf);
+    PfDeleteInterface(hFilterIf);
+    return 0;
+}
+-----
+
+　ex2.cppで追加しているフィルタは、ICMPで「192.168.4.2」から「210.198.12
+.224」へ送信されるパケットと「210.198.12.224」から「192.168.4.2」へ送信さ
+れるパケットの2つです。これらの条件に当てはまるパケットは破棄されずに、正
+常にネットワークを通過することになります。ちなみに「210.198.12.224」は「
+ruffnex.oc.to」のIPアドレスです。
+
+　では、このプログラムを実行してください。そしてコマンドプロンプトから「
+ping 210.198.12.224」と入力してください。「ping ruffnex.oc.to」とすると、
+名前解決のためにDNSサーバに問い合わせる可能性があるので、必ずIPアドレスを
+指定してください。
+
+-----  コマンドプロンプト
+C:\kenji>ping 210.198.12.224
+
+Pinging 210.198.12.224 with 32 bytes of data:
+
+Reply from 210.198.12.224: bytes=32 time=20ms TTL=242
+Reply from 210.198.12.224: bytes=32 time=21ms TTL=242
+Reply from 210.198.12.224: bytes=32 time=20ms TTL=242
+Reply from 210.198.12.224: bytes=32 time=20ms TTL=242
+
+Ping statistics for 210.198.12.224:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 20ms, Maximum = 21ms, Average = 20ms
+
+C:\kenji>
+-----
+
+　正常にパケットは通過します。しかし、その他のパケットはすべて破棄されま
+す。デフォルトの設定がパケット破棄（PF_ACTION_DROP）であり、その状態でPf
+AddFiltersToInterfaceにてフィルタの設定をしたので、フィルタの条件と一致し
+たパケットは通過することになるわけです。そして、逆に、デフォルトの設定を
+パケット通過（PF_ACTION_FORWARD）にしておいた場合、フィルタの条件と一致し
+たパケットは破棄されることになります。
+
+　このパケットフィルタリングのテクニックを利用すると、例えば自分のコンピ
+ュータにインターネット利用の制限をかけることが可能になります。次のプログ
+ラムをみてください。
+
+・ex3.cpp
+http://ruffnex.oc.to/kenji/text/fire_a/ex3.cpp
+
+　このプログラムはex2.cppに多少の改良を加えたものです。このプログラムは、
+コンピュータが行う、ポート「20番から25番」と「81番から65535番」へのアクセ
+スをすべて禁止します。つまり、FTPやSMTPやPOP3といったプロトコルが使用でき
+なくなります。よく高校や大学などの教育機関に置いてあるパソコンには、学生
+が変なことをしないように制限がかけてある場合がありますが、このようなツー
+ルを作成することによって容易にそれが実現できます。また、フィルタを強化す
+れば、簡易的なFirewallといったものも作成することができると思います。
+
+
+■0x05.) さいごに
+
+　さて、いかがだったでしょうか。アプリケーションレベルでもパケットフィル
+タリングが可能なんて少しビックリですが、パケットの内容を解析できないので、
+結局、本格的にパケットフィルタリングを行うためには、ドライバを組む必要が
+ありそうです。実はこの内容は、ネット上でドライバでのパケットフィルタリン
+グを調べている最中に分かったものでして、本当はドライバでのパケットフィル
+タリングを書こうとしていたのですが、どうせなので、こっちも書くことにしま
+した。来月は「パケットフィルタリング　～デバイスドライバ篇～」と題してお
+送りする予定ですが、予定は未定なので期待しないで待っててください(^^;。さ
+て、最後になりましたが、ここまで読んでくれて本当にありがとうございます。
+
+　では、また会う日まで...
+
+
+■0x06.) 参考サイト
+
+・Packet Filtering in .NET
+http://www.codeproject.com/managedcpp/packetfilteringnet.asp
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第7章: 個人情報保護法　～ 試験直前対策編 ～ ---
+
+著者：IPUSIRON
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　皆さんは個人情報保護法についてどう思っているでしょうか？　正直聞いたこ
+とはあるけど中身はよく知らないという人もいるのではないでしょうか。私とし
+ても企業に勤めているわけではないので、全然興味がありませんでした。しかし、
+資格取得を考えているなら、そうもいっていられません。今年から施行された個
+人情報保護法が試験問題に出題されると考えるのが自然だからです。例えば、セ
+キュリティアドミニストレータ試験（午後問題に出ると勝手に予想）、個人情報
+保護士認定（今年10月からスタート。この資格は個人情報保護法そのものに関す
+る試験）、セキュリティ検定（10月で第3回目。個人情報保護士認定を主宰すると
+ころを同じなので、似たような問題が使いまわされる可能性が大）、テクニカル
+エンジニア・セキュリティ（来年4月からスタート）などの資格がそうです。
+　私の場合、10月に3つのセキュリティ関係の資格が待ち受けており、そのために
+仕方なく個人情報保護法について学びました。元々、セキュリティマネジメント
+やISO関係についてもあまり興味ありませんでしたが、それらについても調べまし
+た。こういった分野の問題は知らなければまったく解けませんが、逆に一旦基本
+さえつかんでしまえば大体の問題が単純で簡単に解けてしまうようです。むしろ、
+こういった問題を選択していけば、高得点を狙えるでしょう。意外に苦手な人が
+多いようなので、ここで差をつけることができるはずです。
+　そういったことで、セキュリティ関係の資格の受験を考えている人は、一読し
+てみるとよいかもしれません。
+
+
+■0x02.) 個人情報保護法とは？
+
+　そもそも個人情報保護法とは何でしょうか。2005年4月から施行された法律で、
+正式には「個人情報の保護に関する法律」と呼びます。国・地方公共団体はもち
+ろんのこと、その他の個人情報を取り扱う事業者が守るべき個人情報に関する義
+務を定めています。この事業者とは小規模事業者を除く民間事業者全体を指しま
+す。ただ、現場で実際に個人情報を扱うのは従業員です。法律では事業者を対象
+としていますが、従業員一人ひとりが守らなくてはなりません。つまり、会社勤
+めや自営業をしているなら、個人情報保護法は他人事で済まされる問題ではない
+のです。
+
+　まず、この法律の目的は第1条に述べられています。
+
+第1条：「この法律は、高度情報通信社会の進展に伴ない個人情報の利用が著しく
+拡大していることにかんがみ、個人情報の適正な取扱いに関し、基本理念及び政
+府による基本方針の作成その他の個人情報の保護に関する施策の基本となる事項
+を定め、国及び地方公共団体の責務等を明らかにするとともに、個人情報を取り
+扱う事業者の遵守すべき義務等を定めることにより、個人情報の有用性に配慮し
+つつ、個人の権利利益を保護することを目的とする」
+
+　ちょっと長すぎていまいち一読しただけではいまいち内容がわからないかと思
+います。ポイントとなるのは、「個人情報の有用性に配慮しつつ、個人の権利利
+益を保護することを目的とする」という部分です。個人情報をビジネスに活用す
+ることが発展する一方で、やりすぎによるその個人情報に対応する個人の権利の
+侵害を防ぐことを目的としているわけです。つまり、どこからどこまでにおいて、
+個人情報を活用してよいのかということを明確にしたわけです。この法律が成立
+したのは2003年の5月です。その背景にあるのは、インターネットやコンピュータ
+の普及による個人情報を利用したビジネスの利用拡大があります。また、個人情
+報が一旦流出してしまうと、それを完全に回収することは事実上不可能となりま
+す。さらに、インターネットの世界に流れてしまうと、流出先の範囲が大規模に
+なってしまい、しかも回収は不可能です。その深刻さは、WinMXやWinnyのネット
+ワークで「個人情報」で検索してしまうとわかります。例えば、集団レイプ事件
+を起こした早稲田大学スーパーフリーに所属するメンバー表、エステTBCの容姿ラ
+ンクを含む個人情報、キンタマウイルス（Winnyで蔓延するウイルスの一種）に感
+染することによって流出した個人のデスクトップ画像やマイドキュメント内のデ
+ータなどです。こうしたものが、すぐに見つかるはずです。
+
+
+■0x03.) 個人情報
+
+　ひとことで個人情報といっても、組織によって様々な定義を提唱しています。
+　個人情報保護法では、「生存する個人に関する情報であって、当該情報に含ま
+れる氏名、生年月日その他の記述等により特定の個人を識別できるもの」と2条1
+項で述べられています。
+　ここで重要な点は「生存」と「識別」というキーワードです。
+　「生存」ということは、生きている個人を指します。これは当然と思うかもし
+れませんが、他の定義では死者の情報も個人情報に含めるとする場合もあります。
+あくまで個人情報保護法では死者の情報は含めないということをしっかり覚えて
+おいてください。
+　次に、「識別」というキーワードですが、これは特定の個人が特定できるとい
+うことを指します。特定に繋がる情報として、氏名、住所、生年月日、電話番号
+などがあります。これらは当然だとすぐにわかりますが、他には顔写真、映像、
+音声なども含まれます。また、それだけでは特定の個人を識別できないような情
+報であっても、他の情報と組み合わせれば容易に照合できる情報であれば、それ
+らも個人情報に含まれます。例えば、「tokyo_tarou@ruffnex.oc.to」というメー
+ルアドレスがあったとします。アットマークより前の「tokyo_tarou」という文字
+列を見ると、「東京太郎」さんということが一発でわかってしまいます。という
+ことはこういったメールアドレスは明らかに個人情報です。それでは、「314159
+2@ruffnex.oc.to」というメールアドレスはどうでしょうか。アットマークより前
+の「3141592」という文字列から個人を特定することはできませんが、他の情報と
+してユーザーIDが「3141592」の人物の氏名は「東京太郎」であると対応付けされ
+たデータベースがあったとします。そうすると、「3141592@ruffnex.oc.to」＝ユ
+ーザーID「3141592」＝「東京太郎」と関連付けできてしまい、最終的に個人を特
+定できてしまいます。つまり、こうした無作為な文字列を使ったメールアドレス
+であっても、場合によっては個人情報になってしまうのです。よって、一般には
+メールアドレスも個人情報として取り扱うのが普通となっています。
+
+
+■0x04.) 個人データと保有個人データ
+
+　前項で個人情報については理解できたと思います。個人情報保護法では、さら
+に個人情報の一形態として、個人データ、個人情報データベースと保有個人デー
+タというものを定義しています。
+
+　個人情報を検索しやすいように整理・分類された個人情報の集合を個人情報デ
+ータベースといいます。これはあくまで集合体のことで、この集合体に含まれる
+要素を個人データといいます。例えば、名刺を五十音図に並べておけば、それは
+立派な個人情報データベースであり、中身の情報は単なる個人情報から個人デー
+タへ格上げされるのです。
+
+　そして、保有個人データとは、6ヶ月以上保有する個人データのことです。保有
+個人データは、開示、訂正、追加、利用停止などの対象となります。逆にいえば、
+6ヶ月以内に処分する個人データなら、開示請求が来ても開示などするを法的に必
+要はないということです。ただし、法的に必要ないからといってすべて拒否すれ
+ば、顧客からの信用は下がってしまいます。
+
+●集合と要素の概念で捉える
+
+　個人情報、個人情報データベース、個人データ、保有個人データという4つの概
+念について紹介しました。これらは数学の集合論で登場する集合と要素の関係で
+表すこともできます。数学が得意な人は読んでみてください。苦手な人は読んで
+も逆に混乱するだけだと思います。あくまで先ほど説明した日本語の定義を単に
+数学を用いて表記しているだけに過ぎないので、自分の好みの理解の仕方でOKだ
+と思います。
+
+　まず、電子データや紙媒体の文書などありとあらゆる情報によって、世界は覆
+われております。これを表現すると次のようになります。
+
+　　　　とある電子データ∈（情報の集合）
+　　　　とある紙媒体の文書∈（情報の集合）
+
+　ここで、氏名というデータがあったとする。これは上と同様に次のように情報
+の集合の要素のひとつです。
+
+　　　　とある氏名∈（情報の集合）
+
+　この「とある氏名」は個人を特定でき、さらに生存している人の情報であった
+とすると、個人情報のひとつといえます。なお、見づらいので、ここから「とあ
+る」という表記を省略します。
+
+　　　　氏名∈（個人情報の集合体）
+
+　個人情報には氏名の他にも様々なものがあります。例えば、生年月日、電話番
+号、住所などがそうです。よって、個人情報の集合体はこうした個人情報がすべ
+てあつまったものと同一になります。
+
+　　　　（個人情報の集合体）＝｛氏名,生年月日,電話番号,･･･｝
+
+　ところで、個人情報の集合体を個人情報データベースと呼ぶことは説明しまし
+た。よって、書き直すと次のようになります。
+
+　　　　（個人情報データベース）＝｛氏名,生年月日,電話番号,･･･｝
+
+　氏名、生年月日などといった具体的なものでなく、一般化させるために、個人
+情報1、個人情報2といった言葉を使えば次のように書き換えられます。よくわか
+らなければ、「個人情報1＝氏名」、「個人情報2＝メールアドレス」などと考え
+てもらって結構です。
+
+　　　　（個人情報データベース）＝｛個人情報1,個人情報2,･･･｝
+
+　これこそが個人情報データベースと個人情報の関係式です。
+
+　次に、個人データという言葉ですが、「個人情報データベースの要素」という
+定義でした。つまり、個人情報と同一になります。
+
+　　　　個人情報1＝個人データ1
+　　　　個人情報2＝個人データ2
+
+　こんがらがってきてませんか？　様々な個人情報保護法の本を見ると個人情報
+と個人データが混在しているのはこのためです。本当に紛らわしいですね。厳密
+には個人情報データベースになりうる個人情報だけが、個人データとイコールに
+なると理解してください。
+　「データ」というとデータベースの構築しやすいイメージ、一方「情報」とい
+うと紙媒体もあるので、データベースの構築がしにくいイメージがあるでしょう。
+名刺などの紙媒体ならインデックス化はできますが、大小異なる大きさの用紙に
+書かれた情報はインデックス化しにくいでしょう。よって、個人情報を扱う側に
+とっては個人データの方がやりやすいわけです。
+
+　それでは先に進みましょう。最後の保有個人データですが、これは単に6ヶ月保
+有する個人データという意味です。つまり、「個人データ1＝保有個人データ1」
+ということもありえれば、「個人データ2≠保有個人データ2」ということもあり
+えます。よって、個人データの集合（＝個人情報データベース）の方が、保有個
+人データの集合より大きいということがわかります。
+
+　（保有個人データの集合）⊂（個人情報データの集合）
+
+●まとめ
+
+　最後に、簡単にまとめておきましょう。
+
+個人情報→個人データ→個人情報データ
+
+　矢印の方向に従い、機密度が高くなっています。つまり、取扱いを注意すべき
+内容となっているわけです。セキュリティ資格の問題文で戸惑ってしまわないよ
+うに、この3者をきちんとわけて考えることができるようにしておきましょう。
+
+
+■0x05.) 個人情報とプライバシー情報の違い
+
+　個人情報とプライバシー情報はまったく別の概念です。
+　プライバシー情報とは、次の条件をすべてみたすものを指します。
+・個人の私生活上の情報
+・まだ社会一般の人が知らない情報
+・一般人なら公開を望まない内容の情報
+
+　個人情報の定義とまったく異なることが明らかです。個人情報は、「生存」と
+「識別」がポイントであって、私生活上の情報かどうかは関係ありません。そし
+て、事実かどうかも関係ありません。
+
+　一般にビジネスにおいて個人データを使う場合は、個人情報とプライバシー情
+報の両面の性格を持つことが多いので、個人情報保護法の義務だけでなく、民事
+法上の問題ともあわせて考える必要があります。
+
+
+■0x06.) 個人情報取扱事業者
+
+　個人情報取扱事業者とは、法第2条第3項で「個人情報データベース等を事業の
+用に供している者をいう」と定義されています。「事業」という言葉が出ていま
+すが、これはデータを何度も利用するという意味であって、別に営利目的かどう
+かは関係ありません。つまり、非営利であっても個人情報取扱事業者に含まれる
+ということです。
+　ただし、「その取り扱う個人情報の量及び利用方法からみて個人の権利利益を
+害するおそれが少ないものとして政令を定める者」は個人情報取扱事業者から除
+外されます。ここでいう量とは、具体的に5,000件と決められています。もっと厳
+密にいえば、6ヶ月間以上保有している個人データが5,000件を超えていれば、個
+人情報取扱事業者とされてしまうわけです。会社や団体であった場合、それに属
+する個人が保有する個人データもカウントされます。
+　ちなみに、電話帳をそのまま加工せずに使用する場合、電話帳に掲載されてい
+る個人データはカウントしません。しかしながら、電話した結果をデータとして
+残した場合、それはある種のデータベースとして成りうるので、個人データとし
+てカウントされてしまいます。
+
+　個人情報取扱事業者に該当すると、個人情報保護法の義務を課せられます。
+
+
+■0x07.) 個人情報保護法による義務
+
+　個人情報事業者は、保有個人データに関してどのような目的で利用するのかを
+本人に知らせる「利用目的の通知」、本人の求めに応じて行う「開示」「訂正」
+「利用停止」などを行わなければなりません。
+
+●1：3つの取得義務
+
+○1-1：目的特定　＜取得するための目的をきちんと説明しているかどうか＞
+
+　個人情報保護法では、利用目的の範囲を超えた個人情報の取扱いを禁じていま
+す。「誰が」「どんな事業のため」「どう利用する」の3つの視点を、できる限り
+利用目的を明確にすることが重要です。
+
+よい例：「ご記入された氏名、住所、電話番号は、名簿として販売することがあ
+ります」
+
+悪い例：「マーケティング活動に用いるため」
+
+　悪い例は、何をいっているかあいまいでまったくわかりません。それに比べて
+よい例は、具体的な利用目的が提示されており、個人情報を提供する側も安心で
+きます。こうして利用目的を明確にして始めて、個人情報を集めることができる
+わけです。
+
+○1-2：適正取得　＜取得方法が適正かどうか＞
+
+　利用目的を偽って個人情報を取得してはいけません。申請書や契約書を使って
+情報を取得するときは、本文中に利用目的（直前に解説した1-1）を記載して、可
+能なら本人に説明します。
+　また、子供から本人や家族の個人情報を聞き出すことは違法です。子供は判断
+能力が乏しいから、このように決まっています。これは日本だけの流れではなく、
+世界中でも子供から情報を聞き出すのを禁止していることが多いです。
+
+○1-3：通知・公表の準備　＜トラブルを回避するための準備＞
+
+　個人情報を取得する際は、利用目的を事前に手紙やインターネットで通知また
+は公表しなければなりません。
+
+●2：4つの利用義務
+
+○2-1：目的内利用　＜目的の範囲を超えてはいけない＞
+
+　勝手に1-1で提示した目的以外の使い方をするのは禁じられています。もし後で
+目的外の使い方を希望する場合は、本人にあらためて同意を得る必要があります。
+
+○2-2：安全管理・監督　＜個人データの漏洩を防ぐためにセキュリティを高める＞
+
+　個人データは4つの安全管理対策を施さなければなりません。
+・組織的安全管理措置
+・人的安全管理措置
+・物理的安全管理措置
+・技術的安全管理措置
+
+　また、個人データを委託先に提供する場合は、上記の4つの安全管理対策を満た
+しているかどうかチェックし、定期的に監督する責任があります。
+
+○2-3：正確性の確保　＜個人データの更新＞
+
+　個人データは時間とともに風化してしまう情報があります。生年月日などは変
+化しませんが、氏名は結婚時に苗字が変わる可能性があります。また、職業など
+もそうでしょう。
+　よって、個人データの内容をなるべく正確にするために、定期的に最新のデー
+タに更新するように努める義務があります。
+
+○2-4：第三者提供の制限　＜勝手に情報を漏らしてはならない＞
+
+　個人データを第三者に提供する際には、取得時に本人の同意が必要です。とは
+いえ絶対にそうとは限りません。例外もあるのです。その例外とは、次の2つのケ
+ースです。
+・DMの発送などの個人データの取扱いを委託した場合
+・合併などの事業の継承がなされた場合
+
+　この2つは特別なので、試験に出る可能性もあります。しっかり覚えておきまし
+ょう。
+
+●3：窓口設置　＜開示・訂正の対応＞
+
+　保有する個人データの内容に関して、「開示」「訂正」「利用停止」（「消去
+依頼」）を本人から受け付けることができるように、窓口を設置します。この本
+人の求めに応じて行う3つの事柄を総称して「開示等の求め」と呼ばれます。
+
+1：会社は顧客からの「開示等の求め」に対応できる仕組みを作っておかなければ
+なりません。もし「開示等の求め」があった場合は、まず申請書に記載してもら
+います。手続きに用いる用紙は、一般に「開示申請書」「変更等申請書」「利用
+停止等申請書」の3つがあります。顧客サービスの観点から考えると、「開示等の
+求め」を行う本人が簡単に入手できるように、PDFデータをホームページに用意し
+ておいたり、郵送やFAXでも配布したりといったことを考えなければなりません。
+
+2：申し出の受け付けと同時に本人確認の手続きを行います。それらが、開示のた
+めの要件を満たしているかをチェックし、本人への回答となります。事業者によ
+っては、手数料の徴収、対象となる保有個人データを特定するための書類などの
+提出を本人に求めます。訂正や利用停止要求に対しては手数料は請求できません。
+手数料の金額は顧客の負担と実際のコストのバランスで決定します。あくまで経
+費の実費だけ請求できるのであって、それに人件費や利益を乗せることはできま
+せん。具体的には100～1,000円程度、現金ではなく切手、振込みではなく郵送で
+対応している個人情報取扱事業者が多いようです。この手数料の徴収には、嫌が
+らせ目的の「開示等の求め」の抑止効果もあります。
+　本人確認は重要です。ここが甘いと、なりすましによって情報漏洩のきっかけ
+となります。こうした事態を防ぐためにも、本人確認や代理人確認をしっかり確
+立しておきます。
+
+=============================================================================
+来所（本人）       |運転免許証、健康保険証、写真付き住基カード、パスポート、
+                   |年金手帳、外国人登録証明書、印鑑証明書と実印
+-----------------------------------------------------------------------------
+来所（代理人）     |本人と代理人の運転免許証など（他は本人の来所と同じ）
+                   |弁護士の場合は登録番号、代理を示す旨の委任状
+-----------------------------------------------------------------------------
+オンライン（本人） |IDとパスワード
+-----------------------------------------------------------------------------
+郵送・FAX（本人）  |運転免許証などのコピー、住民票の写しなど
+-----------------------------------------------------------------------------
+電話（本人）       |一定の登録情報（生年月日など）、コールバック
+=============================================================================
+
+　こうした「開示等の求め」の手続き方法は、個人情報取扱事業者側で決定する
+ことができます。具体的な方法がわかるように、ホームページで明確に示してお
+くのが望ましいでしょう。
+
+　しかし、「開示等の求め」の例外も経済産業分野ガイドラインで定められてい
+ます。
+
+・明示すると本人や第三者の生命・身体、財産などに被害を及ぼすおそれがある
+場合
+・個人情報取扱事業者の権利や正当な利益を害するおそれがある場合
+・国に機関や地方高調団体が法令の定める義務を行う際、協力する必要があり、
+利用目的を明らかにすることが事務の遂行に支障を及ぼすおそれがある場合
+・取得状況から利用目的が明らかであると認められた場合
+
+　特に、4番目の自明の場合が重要です。出前業者や宅配業者が、商品配送のため
+に送付書に記載してもらう場合は、基本的に利用目的の明示は不要です。しかし、
+商品配送だけに利用する場合であっても、利用目的を通知・公表しておくのが無
+難といえます。
+
+3：利用停止・消去依頼に関しては、次の3つのいずれにも個人データを保有する
+側（個人情報取扱事業者）が違反していなければ、受け入れなくてもOKです（も
+ちろん受け入れてもよい）。
+
+・利用目的違反（本人の同意を得ずに、利用目的の範囲を超えて個人情報を利用
+した場合）
+・取得違反（偽りや不正な手段によって個人情報を取得した場合）
+・第三者提供違反（本人の同意を得ずに、個人情報を第三者に提供した場合）
+
+　いずれも、きちんとした運用の仕方をしていればひっかからない条件ばかりで
+す。つまり、悪い使い方をしていなければ利用停止・消去依頼を受け付けなくて
+もよいということになります。
+
+●まとめ
+
+○個人情報（2条1項）
+・15条（利用目的の特定）
+・16条（利用目的による制限）
+・17条（適正な取得）
+・18条（取得に際しての利用目的の通知等）
+・19条（データ内容の正確性の確保）
+
+○個人データ（2条4項）
+・19条（データ内容の正確性の確保）
+・20条（安全管理措置）
+・21条（従業者の監督）
+・22条（委託先の監督）
+・23条（第三者提供の制限）
+
+○保有個人データ（2条5項）
+・24条（保有個人データに関する事項の公表等）
+・25条（開示）
+・26条（訂正等）
+・27条（利用停止等）
+
+　ここで25～27条に着目してください。この3つは「開示等の求め」にあたります。
+よって、保有個人データの場合は、「開示等の求め」に対応するために、窓口設
+置義務があるわけです。逆にいえば、個人情報や個人データなら、「開示等の求
+め」の義務はないわけです。
+
+
+■0x08.) プライバシーマーク
+
+　プライバシーマーク（Pマーク）は、個人情報の取扱いを適切に行っている民間
+事業者に対して認定されるマーク（ロゴ）のことです。JIPDEC（財団法人日本情
+報処理開発協会）が策定しました。個人情報保護のガイドラインであるJIS Q 15
+001に準拠しています。このマークを取得している事業者であれば、個人情報保護
+体制が整っていると顧客にとって判断できるわけです。しかし、取得前は個人情
+報保護に敏感になっていましたが、取得後逆に安心しきってしまう事業者もあり
+ます。そのため、顧客としては事業者がプライバシーマークの取得後もきちんと
+個人情報後に関して運用・監査しているかを見極める必要があります。
+
+URL：http://privacymark.jp/
+
+
+■0x09.) 個人情報取扱事業者に対する罰則
+
+　個人情報保護法には、6ヶ月以下の懲役刑を始め、30万円以下の罰金刑、10万円
+以下の科料などが規定されています。
+
+　社長やCPO（チーフプライバシーオフィサー）などの担当役員、マネージャーな
+どの行為者は6ヶ月以下の懲役または30万円以下の罰金に処せられ、法人そのもの
+は30万円以下の罰金に処せられます。
+　また、個人情報保護法は、事業者を規制するものなので、一般の従業員がこの
+法律で罰せられることは通常ありません。しかし、プライバシーの侵害といった
+他の法律で法的責任を追及される可能性はあります。
+　そして、グループ企業であっても、別組織である以上は、個人データを本人の
+同意なしに使いまわすことができません。これは第三者提供にあたるからです。
+　もし、グループ企業と共同利用して、個人データの漏洩が発生した場合、親会
+社が子会社の責任をとらざるをえない場合があります。
+
+　ここで重要なことをいい忘れました。
+　実は個人情報漏洩事件を起こしたら、例外なくすべての企業が罰則を受けるわ
+けではないのです。まず始めに担当省庁の大臣が勧告を出します。韓国を受け入
+れなければ、次に命令を出します。この命令に従わなかった場合に、ようやく刑
+罰が執行されるのです。
+　また、十分な安全管理対策を取っていて、その状態で情報が漏れても罰則を受
+けません。つまり、組織的安全対策、人的安全管理、物理的セキュリティ、情報
+セキュリティの4つ（0x07の2-2）をある一定のレベル以上で運営していればよい
+ことになります。
+
+
+■0x0A.) 情報漏洩の発覚
+
+　情報漏洩が発覚したら何をしなければならないのか、その手順の例を次に示し
+ます。
+
+1：これ以上の情報漏洩を防ぐために、情報システムの外部・内部アクセスをすべ
+てシャットアウトします。そのためには、全システムの運用を緊急停止します。
+
+2：加害者が社内のAさんというところまで判明していたら、逃げないように捕ま
+えたいところですが、そうはいきません。現行犯でなければ我々一般人は逮捕で
+きないのです。
+　加害者が特定されていないとき、タイミングよく（悪く？）金銭の要求などの
+恐喝を受けた場合、そのやり取りを録音して、顧問弁護士と対策を練ります。「
+恐喝をしてきた人物＝情報漏洩に関与した人物」の可能性が考えられるからです。
+
+3：個人情報保護責任者を中心に緊急会議を招集します。
+
+4：監督官庁の主務大臣に電話やFAXで事件の報告を行います。
+
+5：警察に被害届けを出し、加害者がわかっていれば、身柄を拘束してもらい逮捕
+してもらいます。それと共に、告訴・告発を行います。恐喝があった場合は、警
+察に任せます。
+
+6：専用の問合せ窓口を即座に開設して、被害者からの苦情・問合せに備えます。
+窓口として、Webページに専用問い合わせ用の電話番号やメールアドレスを公開し
+ます。
+
+7：広報部と連携して緊急記者会見・広報発表を行い、被害者に対して二次被害の
+恐れがあることを公表します。その後、電話、電報、速達を利用して、被害者一
+人一人に事件を通知して、二次被害の防止に全力を上げます。
+
+8：情報漏洩個所を特定し、セキュリティ強化を行います。
+
+9：漏洩した個人情報をできる限り回収するように努めます。
+
+10：全社員を招集し、事故発生状況を通知します。
+
+11：その後の事故状況については、随時被害者に報告します。
+
+12：各部署で再発防止のためのディスカッションを行い、組織体制の見直し・意
+識の引き締めを行います。
+
+13：主務大臣の指導に従い、勧告や命令などの行政処分を受けます。
+
+14：被害者から損害賠償請求または訴訟を起こされた場合には、真摯に対応して
+いきます。なお、見舞金の支払いや金券の支給は、損害賠償金とまったく関係が
+ないので注意してください。
+
+
+■0x0B.) 実例で判断する
+
+●ケース：基本的な事柄
+・5,000件以上の個人情報を保有している企業はすべて個人情報保護法に乗っ取る
+必要があるか？
+
+○分析
+　5,000件以上の個人情報を保有しているというのは最初の前提であって、次の前
+提もあります。それは事業として利用していることです。この2つの前提に合致し
+ていなければ個人情報取扱事業者ではなく、つまり個人情報保護法の対象外とい
+うことになります。ただし、対象外であっても、個人情報の漏洩によって損害賠
+償請求はされる可能性があります。
+
+
+●ケース：個人情報の境目
+・電話番号は個人情報か？
+・役職は個人情報か？
+・アカウントIDは個人情報か？
+・ブラックリストは個人情報か？
+・メモ書きは個人情報か？
+・住所だけでも個人情報か？
+・市販の人名録は個人情報か？
+・サイトで自発的に公開している情報は個人情報か？
+・暗号化された個人情報は、個人情報保護法の対象か？
+・匿名アンケートは個人情報か？
+
+○分析
+　固定電話、携帯電話、IP電話などの電話番号は、いずれも個人情報になります。
+　役職のみでは個人情報にはなりませんが、氏名と結びつけば個人情報になりま
+す。
+　顧客IDや社員ID、アカウントIDがたとえ乱数であっても、他の情報と簡単に照
+合することによって特定の個人が識別できれば、個人情報にあたります。
+　メモ書きなどのささいなものであっても、特定の個人が識別できれば個人情報
+です。ただし、個人の趣味やプライベートで利用しているのであれば、企業の個
+人情報にはあたりません。あくまで業務に利用しているデータを企業の個人情報
+として扱うわけです。
+　個人情報の定義を確認すればわかりますが、顧客の良質・悪質はまったく関係
+ありません。つまり、ブラックリストも個人情報に該当します。
+　住所は基本的に特定の自今を識別できないため個人情報にあたりません。しか
+し、他の情報と簡単に照合して個人が識別される可能性が高いです。つまり、住
+所も個人情報のように取り扱うほうが無難といえます。これは電話番号について
+も同様にいえます。
+　体系的に整理されていたり、容易に検索できるようになっていれば、個人デー
+タとなります。
+　個人情報であるかどうかは、公にされているかどうかとはまったく関係ありま
+せん。サイトで自発的に公開されている情報、電話帳や新聞に載っている情報で
+っても個人情報になります。
+　復号化関数と復号鍵（復号パスワード）があれば、暗号化した個人情報であっ
+ても簡単に復号化できてしまうので法律の適用を受けます。
+　匿名アンケートの中には個人を特定するものがありません（それが匿名アンケ
+ートそのものなんですが）。よって、これだけでは個人情報ではありません。
+
+●ケース：小規模な会社の場合
+・一般の個人向けではなく、法人相手に商売をしている
+・取引先は数百社
+
+○分析
+　取引先は数百社であっても、その他に会社の中には紙の書類やデータベースは
+たくさん存在します。ある程度の規模の会社なら、通常は5,000件を超えます。例
+えば、従業員とその家族の名簿、面接を受けた人の履歴書、法人顧客リスト（氏
+名入り）、契約書・見積書（代表者名入り）、社員が各々持っている名刺ホルダ
+ー、業界団体名簿など。こうしたものをすべて合計すれば、簡単に5,000件を超え
+るのではないでしょうか。さらにこうした情報をコンピュータでデータベース管
+理していれば、個人情報データベースとなり会社は個人情報取扱事業者に該当し
+ます。よって、小規模だからといって安心はできません。
+
+
+●ケース：電話帳と地図の利用
+・電話帳と地図を使って営業を行う
+
+○分析
+　電話帳や地図などの加工されていない情報は個人情報にカウントされません。
+他にはカーナビのデータなどもそうです。よって、これらの情報を使って、営業
+の電話をかけても問題ありません。個人情報保護取扱事業者ではないので、利用
+目的の通知も必要ありません。
+　しかし、営業の電話を結果を別の紙に記録したり、電話帳のデータを基に別の
+データベースを作成してしまうと、それらは個人情報データベースに該当します。
+そして、それが5,000件を超えれば、個人情報保護取扱事業者になってしまいます。
+このとき、利用目的を本人に通知または公表しないままDMを送信してしまえば、
+明らかに個人情報保護法に違反となります（法18条）。
+
+
+●ケース：個人情報保護法前後
+・個人情報保護法施行以前に名簿屋から個人情報を入手した
+
+○分析
+　個人情報保護法施行後に使用するためには、法律の条件を満たす必要がありま
+す。その条件とは、第三者に提供する目的（この例なら、名簿屋→我が社）であ
+らかじめ本人の同意を取って作成されたかどうかという点です。また、この名簿
+自体が違法の可能性も否定できません。違法な名簿とわかって利用するのは、完
+全に違法行為にあたります。法17条にそれが記載されています。
+　どうしてもこの名簿を使用したければ、本人に利用目的を通知または公表する
+必要があります（法18条1項）。つまり、DMを出すなら、名簿に掲載されている人
+全員に通知するか、容易にわかるように公表しなければならないわけです。
+　しかし、違法かどうかわからない名簿を使うこと事態は問題があります。こう
+した怪しい名簿には手を出さない、もし手を出した後ならすぐに処分することが
+賢明です。
+
+
+●ケース：教育機関
+・2,500名の在校生を持つ私立大学は個人情報取扱事業者になるか？
+
+○分析
+　法2条1項により、生存する個人に関する情報であって、特定の個人を識別でき
+るものなら、すべて個人情報に該当します。大学なら、入試の資料請求者、志願
+者（願書など）、在校生のデータ（学生簿、学生証データ、成績原簿、健康診断
+のデータなど）、保護者（保証人契約書、奨学金申請書など）、卒業生（卒業者
+名簿、成績データ）、教員・職員のデータなどがあります。他にも地元企業や取
+引先、進学先の大学院、入学元の高校・予備校のデータなどもあるかもしれませ
+ん。これらをあわせると、2,500名の在校生を持つ規模の学校なら、簡単に5,000
+件は突破するはずです。しかも、成績・学歴など外部に漏れては大変なことにな
+ってしまう情報（センシティブ情報という）が存在します。
+　よって、学校では企業と同様に、リスクアセスメント（リスク評価）に基づき
+個人情報保護について取り組まなければなりません。
+
+　法50条1項3号で「大学などの学術研究機関が学術研究目的で個人情報を使用す
+る場合は、個人情報取扱事業者の義務等を定めた規定の適用が除外される」と述
+べています。ただし、これは大学自体が個人情報取扱事業者にならないというこ
+とを意味しているわけではありません。あくまで研究目的というところが重要で
+あり、大学は研究以外の目的で個人情報データベースを構築していますので、大
+学は個人情報取扱事業者に含まれます。
+
+
+●ケース：データベース
+・5,000件より少ないデータベースが数種類ある
+
+○分析
+　データベースが分割されてあったとしても、それを合計してカウントされます。
+つまり、合計数が5,000件を超えれば、個人情報取扱事業者になります。ただし、
+重複している人のデータは差し引いて計算します。
+
+
+●ケース：労働組合
+・労働組合と会社は別の個人情報取扱事業者になるか？
+
+○分析
+　労働組合であっても、会社と別組織であるので、別の個人情報取扱事業者にな
+ります。他には、厚生年金組合、健康保険組合も同様です。
+
+
+●ケース：部署間取引
+・部署間で個人情報を共有してよいか？
+
+○分析
+　同一企業内であれば個人情報を部署間で共有しても第三者取引にはならないの
+で、本人同意は不要です。しかし、部署が違うということは仕事内容が異なると
+いうことなので、個人情報の利用目的も違ってきます。よって、共有することに
+よって、目的外利用が起こるようではなりません。
+
+
+●ケース：住民基本台帳
+・住民基本台帳を元にDMリストを作成する
+
+○分析
+　地方自治体の条例で禁じられている場合もありますが、原則として違法にはあ
+たりません。しかし、DMを受け取る消費者の意識を考えれば、本人の求めによっ
+て個人情報の第三者提供を中止するオプトアウト制度を利用するなどの自主的措
+置を併用するのがよいでしょう。
+
+
+●ケース：M&A
+・買収した会社の個人情報は使えるか
+
+○分析
+　M&Aなどで他の個人情報取扱事業者から会社や事業を継承して、個人情報を利用
+する場合、改めて本人の同意を取る必要がありません。こうした場合は、譲渡前
+の利用目的の範囲内に限り、個人情報を利用することができます。
+
+
+●ケース：オプトアウト
+・オプトアウト制度を定めれば必ずしも安心か
+
+○分析
+　オプトアウトとは、本人の求めによって、個人情報の第三者への提供を中止す
+ることです。このオプトアウト制度を提供していれば、安心だと思われがちです
+が、そうではありません。きちんと様々な状況を想定して提供しなければなりま
+せん。
+　本人にとって不利益な情報については、オプトアウトを利用しないほうがよい
+のです。例えば、破産者の情報などがそうです。破産者の個人情報がオプトアウ
+トされてしまうと、金融機関同士で個人情報を融通し、可視倒れの危険を回避で
+きなくなってしまいます。
+　社内の雇用管理情報の場合についても、問題になる可能性があります。ある人
+を関連企業に出向させるため、出向先企業に個人情報を提供するようなケースで
+す。その人が出向したくないがためにオプトアウトを求めれば、出向先企業に個
+人情報が提供できなくなってしまいます。こうした事態を避けるために、厚生労
+働省の「雇用管理指針解説」では、「出向先・転籍先の候補となりうる提供先の
+範囲を、ホームページ等で明記することが望まれる」としています。また、従業
+員の入社時などに、グループ企業で個人情報を包括同意を得る方法を採用してい
+る企業もあります。
+
+
+●ケース：個人情報の廃棄
+・個人情報の含まれた書類や磁器データを廃棄する
+
+○分析
+　まず廃棄する前に本当に今廃棄してよいものかどうかを判断する必要がありま
+す。定められた保管期間内に廃棄すると、その法令に違反することになってしま
+うことがあります。
+　次に、廃棄すべき書類・データを決定したら、第三者にそれらのデータを奪わ
+れないように完全に消去する必要があります。書類であれば、シュレッダーなど
+で裁断したり、信頼できる契約業者に委託して溶解・焼却します。HDD（PC丸ごと
+も含む）やCD-ROM、FDなどのデータなら、データ抹消ソフトで完全にデータを消
+去します。単にフォーマットしただけでは、復元ソフトで復元されてしまうので
+注意が必要です。PCのリース契約に関しては、契約時にあらかじめデータの消去
+について取り決めておきましょう。
+　そして、個人情報が含まれるゴミは施錠できるゴミ箱に投入させるのが理想で
+す。会社によっては、地球環境の目的のために、不要な紙を捨てるリサイクル箱
+を設置していることがありますが、これはセキュリティの観点からはちょっと問
+題があります。侵入者や産業スパイによって、リサイクル箱から資料を持ち出さ
+れる可能性があるからです。
+
+
+●ケース：メール送信の注意
+・同報メールの送信時にCC・BCCどちらを使うか
+
+○分析
+　CCを利用して同報メールを送信すると、送信先のアドレスのすべてが各受信者
+にわかってしまいます。つまり、個人情報が漏れてしまっているわけです。よっ
+て、同報メールの送信時はBCCを利用するようにしましょう。今後CCメールは使わ
+れなくなっていくと思ってかまいません。
+
+
+●ケース：開示
+・故人の情報の開示の求めをされたら
+・警察から開示の求めをされたら
+・弁護士から開示の求めをされたら
+
+○分析
+　個人情報保護法が個人情報と定義しているのは、生存する個人を識別できる情
+報です。よって、故人の情報は、個人情報保護法で扱いません。しかし、故人の
+情報であっても、生存する遺族などの個人情報に該当するケースも考えられます。
+また、関係者の利害の衝突と繋がる可能性もあります。そのため、求めの背景を
+考慮した対応が求められます。医療の場合は、亡くなった患者の遺族から開示を
+求められる旨が、官庁のガイドラインで定められています。
+　警察からの開示要求の場合、捜査令状があれば開示します。捜査令状がない場
+合は、本人に知らせることで警察の審査に支障が出ると判断した場合にのみ、本
+人の同意を得ずに開示します。
+　弁護士からの開示要求の場合は、本人の同意がなければ開示してはいけません。
+
+
+●ケース：利用目的の特定
+・電話帳やインターネットから個人情報を取得する際、利用目的を特定する方法
+は？
+・本人から直接個人情報を取得する場合には、利用目的を特定する方法は？
+
+○分析
+　利用目的を特定しなければならないが、わざわざ本人に電話やFAX、メールで利
+用目的を通知する必要はありません。会社のWebサイトで通知するだけで大丈夫で
+す。
+　申請書・契約書、懸賞の応募、アンケートなど本人から直接個人情報を取得す
+る場合には、あらかじめ利用目的を文中に記載しておいて明示しなければならな
+い。インターネットを使った事前公表や電話での事後通知ではいけません。
+
+
+●ケース：従業員名簿
+・従業員名簿を社内で配ってよいか？
+
+○分析
+　従業員名簿は業務を遂行する上で必要不可欠なものなので、安全管理をしっか
+り行っていれば、本人の同意を得ずに配布しても法律違反にはなりません。しか
+しながら、社員の自宅の住所や電話番号、携帯電話番号などの記載された名簿は
+業務遂行には関係がないので、本人の同意が必要になります。
+
+
+●ケース：Cookie
+・通販サイトでCookieを利用してよいか？
+
+○分析
+　Cookieを利用する場合は、その利用目的をあらかじめWebサイトに公表する必要
+があります。クライアントPCからCookieデータを取得することは、個人情報を取
+得していることと変わりません。よって、利用目的を通知または公表しなければ
+ならないわけです。
+
+
+■0x0C.) 第1回・個人情報保護士認定試験のレポート
+
+　10月2日に個人情報保護士認定試験を受けてきたので、そのレポートで締めくく
+りたいと思います。
+
+　受付開始時間の9:10より前に着きましたが、普通に受け付けしてました。アマ
+無線4級の受験生（当日試験）は9割男性でしたが、個人情報保護士認定では4割近
+くは女性いたような気がします。ほぼ半分ですね。また年齢層も20台～60台以上
+（見た目で判断）と幅が広かったです。
+
+　さて問題の試験内容ですが、100問の500点満点（1問5点）。個人情報保護法か
+ら40問、その他のセキュリティ（ガイドラインや基礎セキュリティ知識）から60
+問。時間は120分。 
+　合格ラインは80%以上なので、合計400点以上です。セキュアドが70%に比べると、
+80%はきついような感じがします。いくら問題がセキュアドより簡単だからといっ
+て、80%がボーダーでは、100問中20問までしか間違えることができないというこ
+とでプレッシャーを感じまくりでした。 
+　実は公式サイトに出発直前にたまたまアクセスしたら模擬試験が公開されてい
+るのに始めて気付いて、愕然としてました･･･。QCのまとめやる時間あったら、模
+擬試験完璧に1回は通して解くことができたのに･･･。まあ、過ぎたことは仕方あ
+りません。気を取り直して、電車での移動中に『最終チェック! 「個人情報保護」
+必修Q&Aハンドブック』の巻末の個人情報保護法のところを暗記してました。とい
+うのも、この試験自体がこの個人情報保護法を基に作られているわけです。そこ
+で、悪あがきは止めて、一番根幹となる各種条文を把握していればよいだろうと
+開き直ったのです。 
+
+　これが役に立ったのかわかりませんが、試験の手ごたえはまあまあでした。70
+%がボーダーならほぼ確実に受かったと自信を持っていますが、80%だとちょっと
+弱気になってしまいます。実際、2択までは絞り込めて最後のひとつがわからない
+（どっちもわからないのではなく、どっちも答えのように思えるような）問題が
+数問ありました。 
+
+　試験の難易度よりもっと気になったのが、途中退出できないことです。つまり、
+時間内にすべての問題に解答してもうやることがなくなっても、早めに教室の外
+に出ることができないのです。私は75分ぐらいで全部解けてしまったので、残り
+時間の45分が非常に辛かったです。せめて終了時間30分前には退出可能にして欲
+しいところです。なぜこのような制度になっているのかというと、おそらく答案
+用紙の回収が関係してくるのかもしれません。最後に答案用紙と席の番号が書い
+てある紙を封筒に入れて提出するという、変わった（混乱しやすい）回収方法で
+した。
+
+　後、10月の試験で残っているのは、セキュアドとセキュリティ検定の2つです。
+IPAの情報処理技術者試験を受験する人は多いと思いますが、お互いに残り2週間
+がんばりましょう。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+ --- 第8章：お知らせ ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○Wizard Bible（http://akademeia.info/wizardbible/）では随時、執筆ライタ
+ーを募集しています。
+　扱う内容のテーマは広義での「under ground」です。例えば、ハッキングから
+サリンガスの合成法などと幅広い内容を考えています。また、各種、特殊な職業
+や趣味を持った方のレクチャーなども含まれます。
+　一回きりでも構いません。また、必ず、毎回連載する義務もありませんのでで
+きる範囲で構いません。気軽に声をかけてください。もちろん一回書いたことが
+ある人も気軽に声をかけてください（全く気にしていない性格なので）。
+
+○Kenji AikoさんがQ&Aを作ってくれました。初めて参加する人でもわかりやすく
+書かれていますので、参考にしてください。
+
+http://akademeia.info/wizardbible/wbQandA.html
+
+○支援者、参加希望者用のスレッドを立てました。
+
+http://ruffnex.oc.to/ipusiron/cgi/forum/patio.cgi?mode=view&no=17
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+  ---- 第9章：著者プロフィール ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■PSY
+●Job:IT関係、作家
+●Web:http://psy.ktplan.ne.jp/seven.htm
+●Mail:psy@m4.ktplan.ne.jp
+●Team（Group）:none
+●Comment:
+　初めて参加させていただきました。
+　過去のメールを遡って調べるのがめちゃめちゃ大変でした。SPAM対策の実効性
+を確認しようとすると、むしろ労力が増える罠。
+　これ書いてる最中Anonymousという名前でメールが来てリアルにちょっと焦りま
+した。
+　ハッカー小説書いてます。ハッカーにも楽しめる小説を目指してます。上記サ
+イトで立ち読みできるのでぜひ読んでみてください。
+　最近のマイブームは暗号。次回作は暗号＋バイオネタ（＋ハック）で行く予定
+ですのでこちらもよろしく。
+
+
+■Narusase
+●Job: Student
+●Web: (裏)雑学の博物館（http://k-o-m.hp.infoseek.co.jp/）
+●Mail: narusase@mcn.ne.jp
+●Team（Group): N/A
+●Comment:
+　こんにちわ、Narusase（ナルサス）です。前回も原稿を落としました（汗
+　今回はハニーポットの起動方法＆設定の話（前編）でした。次回は後編という
+ことで落とさないように頑張りたいと思います。
+　最近、将来のこととか、簿記とか、株とか、ファンドとか、会計学とか、税金
+とか、年金とか色々と経済関係のことに興味がでてきました。そんなわけで、最
+近はそっち系のものばかり気になって、調べ出すと止まらなくなります。
+　ま、そのあとで時間が～とか、締め切りが～とかいいながらのたうちまわるん
+ですけどね（汗
+　サイトの方はまあ、ヘタレな文章と、未熟な技術、ヘボいプログラムを紹介す
+るサイトということで、暇があったらあら探しでもしてみてください。誤植とか
+ミスとかはBBSにでも書いてくだされば、こっそり修正しときます（笑
+
+
+■Will
+●Job:Student
+●Web:http://will.wbjapan.com/
+●Mail:will_net@hotmail.co.jp
+●Team（Group): Anti-WMAC
+●Comment:
+  最近はめちゃくちゃダラダラしています。
+　解析はあんまりしてませんし、プログラミングも同様にしてません。
+　まぁ何れやる気が出てくるでしょう。多分ｗ
+
+
+■Defolos
+●Job:Student
+●Web:http://scel.fc2web.com/
+●Mail:pan1124@luck.ocn.ne.jp
+●Team（Group）:none
+●Comment:
+　おはようございました、Defolosです。ピッキングとナイフメーキングとナイフ
+ファイティングの訓練（最近できてません）、PCが趣味のごく普通の学生です。
+　今回WizardBibleへの参加は9回目となります。レギュラー目指して次回も頑張
+りたいと思います(｀・ω・´)。
+
+
+■Taka John Brunkhorst
+●Job: Training Corporate Aviation Pilot
+●Web: http://www.antiwmac.com/
+●Mail: contact[at]antiwmac[dot]com
+●Team（Group): Anti-WMAC,ECC,XH,SecGate
+●Comment: 
+　あらまっく。古いニュースですがPhrack終わっちゃいましたね。62,63のLoopb
+ackは特におもろかったですね。一番印象的だったのは49-14です。この番号は皆
+様の記憶に残っていると思います。/bin/sh BoF & SUIDのやつは大変良かったで
+す。次期のPhrack楽しみにしてます。
+
+
+■Kenji Aiko
+●Job: Student
+●Web: http://ruffnex.oc.to/kenji/
+●Mail: kenji@ruffnex.oc.to
+●Team（Group): N/A
+●Comment:
+　今回はギリギリの投稿になってしまいました。IPUSIRONさん、遅れて申し訳あ
+りませんでした。これを反省材料にして、これからは来月のネタも早めに書いて
+おくことにします。
+
+
+■IPUSIRON
+●Job:テクニカルライター
+●Web:http://akademeia.info/
+●Mail:ipusiron@ruffnex.oc.to
+●Team（Group): ruffnex,backsection
+●Comment:
+　資格の話題が出ると必ず実績や実技の話が出ますが、今の時代は資格・実績の
+両方とも持たなければなりません。資格ばかり持っていても現場で使い物になり
+ませんし、実績ばかりあっても顧客にとって実力の比較要素がないので、どちら
+にしても不安材料になります。
+　仕事に絡めなくても、自己啓発や自分の知識の体系化・復習といった意味でも、
+資格は価値があると思っています。
+　「取れる間にとっておけ」というのが正直なところです。特に学生の人は･･･。

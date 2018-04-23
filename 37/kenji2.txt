@@ -1,0 +1,408 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: Windowsシステムプログラミング Part3　～SYSENTERとSYSEXIT～ ---
+
+著者：Kenji Aiko
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　このテキストは、Windowsシステムに関するプログラミングを中心に記述してい
+る。カーネルランドのデバッグ、SYSENTER、SYSEXITなどを中心に解説している。
+
+
+■0x02.) SYSENTER
+
+　Wizard Bible vol.36の「Windowsシステムプログラミング Part2」にて、「SY
+SENTERはユーザーランドとカーネルランドを繋ぐ命令であり、これをフックでき
+る」ことを述べた。そして、SYSENTER実行時に以下の処理が走ることを書いた。
+
+-----  sysenter実行時の処理内容
+1. CSレジスタにSYSENTER_CS_MSR(MSR-174H)の値をロード
+2. EIPレジスタにSYSENTER_EIP_MSR(MSR-176H)の値をロード
+3. SSレジスタにSYSENTER_CS_MSRの値に8を加算した値をロード
+4. ESPレジスタにSYSENTER_ESP_MSR(MSR-175H)の値をロード
+5. 特権レベル0に切り替えて、カーネルモードルーチンの実行を開始 
+-----
+
+　今回は、これを実際にデバッガで追い、確認する。
+　なお、環境は、ゲストOS「WindowsXPSP2」、ホストOS「WindowsXPSP2」、COM1
+からWinDbgでリモートアクセスしている状態とする。
+
+-----  WinDbg
+nt!RtlpBreakWithStatusInstruction:
+804e5b25 cc              int     3
+-----
+
+　まずは、break（Ctrl + Break）でゲストOSを止める。続いて、現在動作中のプ
+ロセスを列挙する。
+
+-----  WinDbg
+kd> !process 0 0
+**** NT ACTIVE PROCESS DUMP ****
+
+（省略）
+
+PROCESS 8194b608  SessionId: 0  Cid: 0798    Peb: 7ffdf000  ParentCid: 0364
+    DirBase: 09117000  ObjectTable: e206a078  HandleCount: 143.
+    Image: wuauclt.exe
+
+PROCESS 818e3020  SessionId: 0  Cid: 0604    Peb: 7ffdf000  ParentCid: 07d8
+    DirBase: 043bb000  ObjectTable: e21c5530  HandleCount:  32.
+    Image: cmd.exe
+
+PROCESS 81944d50  SessionId: 0  Cid: 05fc    Peb: 7ffdf000  ParentCid: 0604
+    DirBase: 0d129000  ObjectTable: e21093f0  HandleCount:  59.
+    Image: conime.exe
+-----
+
+　列挙されたプロセスの中から、適当なプロセスにアタッチし、そのプロセスの
+ntdll!KiFastSystemCallにブレイクポイントを設置する。そして、ゲストOSを動
+かす。
+
+-----  WinDbg
+kd> .process /r /p 818e3020
+Implicit process is now 818e3020
+.cache forcedecodeuser done
+Loading User Symbols
+.........................
+kd> bp ntdll!KiFastSystemCall
+kd> bl
+ 0 e 7c94eb8b     0001 (0001) ntdll!KiFastSystemCall
+
+kd> g
+Breakpoint 0 hit
+ntdll!KiFastSystemCall:
+001b:7c94eb8b 8bd4            mov     edx,esp
+-----
+
+　動き出したゲストOSは、ブレイクポイントntdll!KiFastSystemCallにて、処理
+が止まり、制御がデバッガに移る。ここで処理をひとつ進めると、SYSENTER命令
+が見える。
+
+-----  WinDbg
+kd> t
+ntdll!KiFastSystemCall+0x2:
+001b:7c94eb8d 0f34            sysenter
+kd> r
+eax=00000032 ebx=00000110 ecx=00abfc44 edx=00abfbe8 esi=00abfca8 edi=00000000
+eip=7c94eb8d esp=00abfbe8 ebp=00abfc6c iopl=0         nv up ei pl zr na pe nc
+cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
+ntdll!KiFastSystemCall+0x2:
+001b:7c94eb8d 0f34            sysenter
+-----
+
+　SYSENTER命令を呼び出す前に「レジスタの状況」を確認しておく。
+　そして、今度は、ntdll!KiFastSystemCallのブレイクポイントを解除し、SYSE
+NTER呼び出し後に実行される処理（nt!KiFastCallEntry）にブレイクポイントを
+仕掛けておく。この状態でWindowsを実行する。
+
+-----  WinDbg
+kd> bp nt!KiFastCallEntry
+kd> bd 0
+kd> bl
+ 0 d 7c94eb8b     0001 (0001) ntdll!KiFastSystemCall
+ 1 e 804e0f6f     0001 (0001) nt!KiFastCallEntry
+
+kd> g
+Breakpoint 1 hit
+nt!KiFastCallEntry:
+804e0f6f b923000000      mov     ecx,23h
+kd> r
+eax=00000032 ebx=00000110 ecx=00abfc44 edx=00abfbe8 esi=00abfca8 edi=00000000
+eip=804e0f6f esp=f9e73000 ebp=00abfc6c iopl=0         nv up di pl zr na pe nc
+cs=0008  ss=0010  ds=0023  es=0023  fs=0030  gs=0000             efl=00000046
+nt!KiFastCallEntry:
+804e0f6f b923000000      mov     ecx,23h
+-----
+
+　当然、ブレイクポイントを仕掛けたnt!KiFastCallEntryで処理が止まる。ここ
+で、再度レジスタの値を確認し、SYSENTER呼び出し前と、SYSENTER呼び出し後の
+違いを見る。
+
+-----  SYSENTER呼び出し前
+eax=00000032 ebx=00000110 ecx=00abfc44 edx=00abfbe8 esi=00abfca8 edi=00000000
+eip=7c94eb8d esp=00abfbe8 ebp=00abfc6c iopl=0         nv up ei pl zr na pe nc
+cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
+-----
+
+-----  SYSENTER呼び出し後
+eax=00000032 ebx=00000110 ecx=00abfc44 edx=00abfbe8 esi=00abfca8 edi=00000000
+eip=804e0f6f esp=f9e73000 ebp=00abfc6c iopl=0         nv up di pl zr na pe nc
+cs=0008  ss=0010  ds=0023  es=0023  fs=0030  gs=0000             efl=00000046
+-----
+
+-----  WinDbg（MSRの値）
+kd> rdmsr 174
+msr[174] = 00000000`00000008
+kd> rdmsr 175
+msr[175] = 00000000`f9e73000
+kd> rdmsr 176
+msr[176] = 00000000`804e0f6f
+-----
+
+　正確にcs、ss、eip、espがmsrの値に変わっていることが確認できる。確かにS
+YSENTERの処理が、情報通りであると分かった。また、他にも、fsやeflが変更さ
+れている。
+　なお、これを調べるために、rootkit氏のブログ「そもそも、no life（※1）」
+の記事を大いに参考にさせていただいた。
+
+（※1）そもそも、no life
+http://d.hatena.ne.jp/rootkit/20071008
+
+
+■0x03.) SYSEXIT
+
+　SYSENTERと対をなす命令として「SYSEXIT」命令がある。SYSEXITは、カーネル
+ランドからユーザーランドへ戻るための命令だ。
+　nt!KiSystemCallExit以下を逆アセンブルすると、SYSEXIT命令が使われている
+ことが確認できる。
+
+-----  WinDbg
+nt!KiSystemCallExit:
+001b:804e1170 cf              iretd
+nt!KiSystemCallExit2:
+001b:804e1171 f644240901      test    byte ptr [esp+9],1
+001b:804e1176 75f8            jne     nt!KiSystemCallExit (804e1170)
+001b:804e1178 5a              pop     edx
+001b:804e1179 83c404          add     esp,4
+001b:804e117c 80642401fd      and     byte ptr [esp+1],0FDh
+001b:804e1181 9d              popfd
+001b:804e1182 59              pop     ecx
+001b:804e1183 fb              sti
+001b:804e1184 0f35            sysexit
+-----
+
+　SYSEXIT命令にブレイクポイントを設置する。そして実行する。
+
+-----  WinDbg
+kd> bp 804e1184
+kd> bl
+ 0 e 804e1184     0001 (0001) nt!KiSystemCallExit2+0x13
+
+kd> g
+Breakpoint 0 hit
+nt!KiSystemCallExit2+0x13:
+804e1184 0f35            sysexit
+kd> r
+eax=00000000 ebx=00000000 ecx=0012ed90 edx=7c94eb94 esi=0040d120 edi=004da100
+eip=804e1184 esp=f7af1ddc ebp=0012edf0 iopl=0         nv up ei pl zr na pe nc
+cs=0008  ss=0010  ds=0023  es=0023  fs=0030  gs=0000             efl=00000246
+nt!KiSystemCallExit2+0x13:
+804e1184 0f35            sysexit
+kd> p
+ntdll!KiFastSystemCallRet:
+001b:7c94eb94 c3              ret
+kd> r
+eax=00000000 ebx=00000000 ecx=0012ed90 edx=7c94eb94 esi=0040d120 edi=004da100
+eip=7c94eb94 esp=0012ed90 ebp=0012edf0 iopl=0         nv up ei pl zr na pe nc
+cs=001b  ss=0023  ds=0023  es=0023  fs=0030  gs=0000             efl=00000246
+ntdll!KiFastSystemCallRet:
+001b:7c94eb94 c3              ret
+-----
+
+　SYSEXITから、ntdll!KiFastSystemCallRetへ処理が移ったことが分かる。ちな
+みに、ntdll!KiFastSystemCallRetは、SYSENTERの次の処理である。
+
+-----  WinDbg
+ntdll!KiFastSystemCall:
+001b:7c94eb8b 8bd4            mov     edx,esp
+001b:7c94eb8d 0f34            sysenter
+ntdll!KiFastSystemCallRet:
+001b:7c94eb8f 90              nop
+001b:7c94eb90 90              nop
+001b:7c94eb91 90              nop
+001b:7c94eb92 90              nop
+001b:7c94eb93 90              nop
+ntdll!KiFastSystemCallRet:
+001b:7c94eb94 c3              ret
+-----
+
+　また、場合によっては、SYSEXITの後、ntdll!KiFastSystemCallRetではなく、
+ntdll!KiUserApcDispatcherへ飛ばされることもあるかもしれないが、何度か試せ
+ば、ntdll!KiFastSystemCallへ来ることが確認できるだろう。
+
+
+■0x04.) SYSEXITフック
+
+　SYSENTERによりcs、ss、eip、espが変更されるのならば、SYSEXITによって、こ
+れらのレジスタが元に戻されるはずだ。では、いったいSYSEXITが呼ばれたとき、
+これらの値はどこから戻るのか？　また、SYSEXITによるフックは可能なのか？　
+実際にデバッガで追って調べてみる。
+　まずはSYSEXITにブレイクポイントを仕掛ける。
+
+-----  WinDbg
+kd> bp 804e1184
+kd> g
+Breakpoint 0 hit
+nt!KiSystemCallExit2+0x13:
+804e1184 0f35            sysexit
+kd> r
+eax=00000035 ebx=00000000 ecx=0086fcec edx=7c94eb94 esi=00000000 edi=00000001
+eip=804e1184 esp=f8291ddc ebp=0086ffb4 iopl=0         nv up ei pl zr na pe nc
+cs=0008  ss=0010  ds=0023  es=0023  fs=0030  gs=0000             efl=00000246
+nt!KiSystemCallExit2+0x13:
+804e1184 0f35            sysexit
+kd> p
+ntdll!KiFastSystemCallRet:
+001b:7c94eb94 c3              ret
+kd> r
+eax=00000035 ebx=00000000 ecx=0086fcec edx=7c94eb94 esi=00000000 edi=00000001
+eip=7c94eb94 esp=0086fcec ebp=0086ffb4 iopl=0         nv up ei pl zr na pe nc
+cs=001b  ss=0023  ds=0023  es=0023  fs=0030  gs=0000             efl=00000246
+ntdll!KiFastSystemCallRet:
+001b:7c94eb94 c3              ret
+-----
+
+　SYSEXITによって戻った先のアドレス（eip）は「7c94eb94」だ。この値はSYSE
+XIT呼び出し前のedxレジスタに格納されている。また、同じようにESPの値は、S
+YSEXIT呼び出し前のecxレジスタにある。そしてこれらのレジスタは、スタックか
+ら渡されている。
+
+-----  WinDbg
+nt!KiSystemCallExit:
+804e1170 cf              iretd
+nt!KiSystemCallExit2:
+804e1171 f644240901      test    byte ptr [esp+9],1
+804e1176 75f8            jne     nt!KiSystemCallExit (804e1170)
+804e1178 5a              pop     edx
+804e1179 83c404          add     esp,4
+804e117c 80642401fd      and     byte ptr [esp+1],0FDh
+804e1181 9d              popfd
+804e1182 59              pop     ecx
+804e1183 fb              sti
+804e1184 0f35            sysexit
+-----
+
+　では、csやssはどこから来るのか？　どうやらレジスタの中にはなさそうだ。
+「System Call Optimization with the SYSENTER Instruction（※2）」によると、
+これらはGDTに保存されているようだ。
+
+（※2）System Call Optimization with the SYSENTER Instruction
+http://www.codeguru.com/cpp/w-p/system/devicedriverdevelopment/article.php/c8223/
+
+　SYSENTERは、固定の場所（MSR）にジャンプ先アドレスが格納されていたが、S
+YSEXITはEIPに入れる値をスタックからもってきているため、固定の場所とは言え
+なさそうだ。つまり、アドレス上書きによるSYSEXITフックはできないように思え
+る。だが、この考えは間違いである。
+　確かに、nt!KiSystemCallExit内部では、スタックからジャンプ先を取り出して
+いる。これは間違いない。しかし、「そもそもそのスタックに値を入れた処理は
+どこにあるのか？」が問題だ。
+　スタックからpopしてきた値は「7c94eb94」だ。これは確かにSYSENTER命令の次
+の処理を指している。つまり、正確にユーザーランドに戻っている。これは分か
+る。だが、SYSENTERによってカーネルランドへ入ってから、nt!KiSystemCallExi
+tへ進んでくるまでの間のどこかで、必ずスタックに「7c94eb94」がpushされてい
+るはずだ。でなければ、nt!KiSystemCallExit以降の処理で、スタックから「7c9
+4eb94」をpopできない。
+　よって、nt!KiFastCallEntryからnt!KiSystemCallExitまでの処理を追って、ユ
+ーザーランドへの戻りアドレスが、スタックへpushされている箇所を特定する。
+
+-----  WinDbg
+nt!KiFastCallEntry:
+804e0f6f b923000000      mov     ecx,23h
+804e0f74 6a30            push    30h
+804e0f76 0fa1            pop     fs
+804e0f78 8ed9            mov     ds,cx
+804e0f7a 8ec1            mov     es,cx
+804e0f7c 8b0d40f0dfff    mov     ecx,dword ptr ds:[0FFDFF040h]
+804e0f82 8b6104          mov     esp,dword ptr [ecx+4]
+804e0f85 6a23            push    23h
+804e0f87 52              push    edx
+804e0f88 9c              pushfd
+804e0f89 6a02            push    2
+804e0f8b 83c208          add     edx,8
+804e0f8e 9d              popfd
+804e0f8f 804c240102      or      byte ptr [esp+1],2
+804e0f94 6a1b            push    1Bh
+804e0f96 ff350403dfff    push    dword ptr ds:[0FFDF0304h]
+804e0f9c 6a00            push    0
+-----
+
+　nt!KiFastCallEntryからひとつずつ見ていくと、かなり早い段階でそれは見つ
+かる。あきらかな固定値がスタックへpushされているいくつかの箇所を辿り、そ
+の中に、固定アドレスの先の値がpushされている箇所（804e0f96）が見つかる。
+
+-----  固定アドレスの値をスタックへ格納する処理
+804e0f96 ff350403dfff    push    dword ptr ds:[0FFDF0304h]
+-----
+
+　このハードコードされたアドレス0FFDF0304hの値を見てみると「94 eb 94 7c」
+となっている。まさにSYSEXITの戻り先アドレスである。
+
+-----  WinDbg
+ffdf0304  94 eb 94 7c 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+-----
+
+　つまり、SYSENTER同様、SYSEXITもフックできることが分かった。
+　では、SYSENTER同様、SYSEXITもフックしてみる。SYSENTERでは、フック先のコ
+ードをカーネル空間に置かなければならなかったので、仕方なくドライバを用意
+したが、SYSEXITの場合は、ユーザー空間でよいので、新たにドライバをインスト
+ールする必要はない。また、SYSENTERのうしろには、フックしてくれと言わんば
+かりのNOPが、5バイト分空けられている。
+
+-----  WinDbg
+ntdll!KiFastSystemCall:
+7c94eb8b 8bd4            mov     edx,esp
+7c94eb8d 0f34            sysenter
+ntdll!KiFastSystemCallRet:
+7c94eb8f 90              nop
+7c94eb90 90              nop
+7c94eb91 90              nop
+7c94eb92 90              nop
+7c94eb93 90              nop
+ntdll!KiFastSystemCallRet:
+7c94eb94 c3              ret
+-----
+
+　これはまさに、フックするための領域だ。例えば、この5バイトを次のように書
+き換える。
+
+-----  WinDbg
+ntdll!KiFastSystemCall:
+7c94eb8b 8bd4            mov     edx,esp
+7c94eb8d 0f34            sysenter
+ntdll!KiFastSystemCallRet:
+7c94eb8f 93              xchg eax,ebx
+7c94eb90 93              xchg eax,ebx
+7c94eb91 c3              ret
+7c94eb92 90              nop
+7c94eb93 90              nop
+ntdll!KiFastSystemCallRet:
+7c94eb94 90              nop
+-----
+
+　ついでに「7c94eb94」の命令もNOPにしておこう。そして、ハードコードされた
+「ffdf0304」の値から5バイト分減算する。
+
+-----  WinDbg
+ffdf0304  8f eb 94 7c 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+-----
+
+　これでOSを実行する。当然、正常に動作する。本来ならば7c94eb94の命令がNO
+Pになっているため、あきらかなエラーとなるはずだが、SYSEXITのジャンプ先を
+変更し、5バイト分ずらしているため、問題なく動作する。
+　では、試しに「ffdf0304」の値を、「8f eb 94 7c」から元の値「94 eb 94 7c」
+へ戻して、再度OSを実行してみる。7c94eb94の命令がNOPのままならば、SYSEXIT
+から戻った先がRETではなく、NOPということになり、OSはおかしな動作をするだ
+ろう。SYSEXITにて、すでにユーザーランドに戻っているため、ブルースクリーン
+などの致命的なダメージにはならないはずだが、OSとしての機能は果たせない。
+
+　今回の例では、SYSEXITをフックして、xchg命令を2つ実行させただけだが、も
+ちろん、フック中はありとあらゆる処理が挿入できる。SYSEXITの実行をログに保
+存することも可能だ。といっても、そもそもSYSEXIT呼び出しをログに保存する理
+由がないが、「可能である」と分かっていることは重要なことだと思う。
+
+
+■0x05.) さいごに
+
+　さて、前回に引き続き、今回はSYSEXITをフックした。SYSENTERをフックして、
+次にSYSEXITをフックして、はっきり言って我ながら無意味なことをやっているな
+ぁ、とつくづく思う。なので、次回からは少々意味のあることをやっていきたい
+なぁと思う。
+
+
+

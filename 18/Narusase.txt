@@ -1,0 +1,332 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第4章: ハニーポットを作ろう　～ 第3回 ～ ---
+
+著者：Narusase
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　前回はOSのインストールと初期設定について説明しました。今回はiptablesの
+設定と、sambaのインストール及び設定です。
+
+　まず、それぞれを用いる理由から簡単に説明しましょう。
+　iptablesは内部のLANからインターネットへアクセスするために必要となります
+。また、不要な通信を遮断するファイアウォールなどとして今後利用する予定で
+す。
+　sambaはWindowsとファイル共有を行うために必要となります。各種の設定ファ
+イルのコピーや、Windows上での編集を行う場合にあると便利であるため使用する
+ことにしました。よって、すべての作業をLinux上で行うと言う方はインストール
+は不要です。
+
+
+■0x02.) iptablesの設定
+
+　iptablesとはNATやファイアウォールなどの様々な機能を持ったパケットフィル
+タです。基本的にiptablesは最新のLinuxディストリビューションであれば最初か
+ら導入されています。そのため、インストールは不要の場合がほとんどのはずで
+すので、インストールについてはここでは説明を行いません。
+
+　今回は第一回の前提にある「ルータとしても使用」の部分を満たすために、ip
+tablesのNAT機能を利用したいと思います。簡単に説明すると、NAT機能とは指定
+されたプライベートIPアドレスとグローバルIPアドレスを相互に変換することで
+プライベートIPアドレスを持ったPCがインターネットへアクセスできるようにす
+る機能です。ここでNAT機能を利用するのは通常のISPはグローバルIPアドレスを
+ひとつしか与えてくれないために、LAN内のPCへはプライベートIPアドレスを使う
+必要があるためです。
+
+　NAT機能を有効にするには次の3つの作業が必要となります。
+
+1：/etc/sysconfig/networkファイルの編集（設定）
+2：/etc/sysctl.confファイルの編集（設定）
+3：iptableの設定
+
+　では、実際の作業に入りたいと思います。
+
+1：/etc/sysconfig/networkファイルの編集（設定）
+
+　まず、/etc/sysconfig/networkファイルの編集を行います。行う作業は「FORW
+ARD_IPV4=yes」と言う行を追加することです。/etc/sysconfig/networkファイル
+にFORWARD_IPV4の行が存在しない場合は次のコマンドを実行することで編集・設
+定が終了します。
+
+-----
+echo "FORWARD_IPV4=yes"      >> /etc/sysconfig/network
+-----
+
+　すでに、FORWARD_IPV4の行が存在する場合はエディタなどを用いて値を「yes」
+に書き換えてください。
+
+　この設定によって、NAT機能に必要なIPフォワーディング機能が有効になります。
+
+2：/etc/sysctl.confファイルの編集（設定）
+
+　次に、/etc/sysctl.confファイルの編集を行います。
+　まず、/etc/sysctl.confファイルを適当なエディタで開き、「net.ipv4.ip_fo
+rward = 0」となっている行を探し「net.ipv4.ip_forward = 1」と書き換えてく
+ださい。
+　もし、すでに「net.ipv4.ip_forward = 1」となっていた場合は何もしなくてか
+まいません。
+
+　この設定によって、再起動時にIPフォワーディング機能が無効になるのを防ぐ
+ことができいます。
+
+3：iptableの設定
+
+　ここでようやくメインディッシュの登場です。NAT機能を有効にするためには次
+のようなコマンド群を実行する必要があります。このままコマンド群コピーして
+シェルスクリプトにしてもかまいません。ただし、次のシェルスクリプトは行番
+号が入っているので、実際に利用するときはそれを除外しておいてください。
+
+-----
+01  LANG=en
+02
+03  LAN_NIC="eth0"
+04  LAN_NET=200.100.50.0/24
+05  LAN_ADDR=`ifconfig   ${LAN_NIC} | grep 'inet addr' | cut -d ':' -f 2-2 | cut -d ' ' -f 1-1`
+06
+07  WAN_NIC="eth1"
+08  WAN_NET=192.168.1.0/24
+09  WAN_ADDR=`ifconfig   ${WAN_NIC} | grep 'inet addr' | cut -d ':' -f 2-2 | cut -d ' ' -f 1-1`
+10
+11  # IPフォワーディングを一時停止
+12  echo 0 > /proc/sys/net/ipv4/ip_forward
+13
+14  # 初期化
+15  iptables -t filter -F
+16  iptables -t filter -X
+17  iptables -t filter -Z
+18  iptables -t nat    -F
+19  iptables -t nat    -X
+20  iptables -t nat    -Z
+21
+22  # デフォルトの設定
+23  iptables -P INPUT   ACCEPT
+24  iptables -P FORWARD ACCEPT
+25  iptables -P OUTPUT  ACCEPT
+26
+27  # NAT の設定
+28  iptables  -t nat -A POSTROUTING -s ${LAN_NET} -o ${WAN_NIC} -j SNAT --to ${WAN_ADDR}
+29
+30  # FTPへの外部からのデータ接続を許可
+31  modprobe ip_nat_ftp
+32  modprobe ip_conntrack_ftp
+33
+34  # FireWall ( OutSide LocalAddress )
+35  # 192.168.1.0/24からの外部からの接続を拒否する。
+36  iptables -t filter -A INPUT   -i ${WAN_NIC} -s 192.168.1.0/24 -j DROP
+37
+38  # IPフォワーディングを再開
+39  echo 1 > /proc/sys/net/ipv4/ip_forward
+40  
+41  # 日本語環境に戻す
+42  LANG=ja_JP.eucJP
+43  
+44  # 設定を保存
+45  iptables-save > /etc/sysconfig/iptables
+-----
+
+　まず、01行目では環境変数LANGをenにすることで英語環境へ移行しており、42
+行目ではそれを元に戻しています。
+　03～09行目まではそれぞれLAN側、WAN側のNICの名称、ネットワークアドレス、
+IPアドレスを設定しています。なお、この部分は各自の環境によって変更してく
+ださい。通常はネットワークアドレスの修正だけで問題ないはずです。
+　12行目はIPフォワーディングを一時停止させており、39行目で再開させていま
+す。
+　15～20行目ではiptablesの初期化を行っており、23～25行目ではデフォルトの
+設定を行っています。
+　28行目は実際にNATを行う設定を行っており、31～32行目ではNATを行うことで
+使用できなくなるFTPを使用できるように設定を行っています。
+　36行目はWAN側からLAN側のIPアドレスを持ったパケットが来た場合に破棄する
+ように設定しています。
+　最後の、45行目ですがこのコマンドを実行することでiptablesの設定をセーブ
+することができます。これは忘れやすいので注意してください。このコマンドを
+実行しないと、毎回再起動するごとにiptablesの設定が初期化されてしまい、NA
+T機能が全く働かなくなってしまいます。
+
+　以上で、NAT機能の設定は終了です。
+　しかし、今回のiptablesの設定はNAT機能を使うという目的のみのための設定で
+す。したがって、セキュリティ的にはいろいろと問題のある設定も行っています
+ので注意が必要です。ファイアウォールなどの機能に関しては今後サーバアプリ
+ケーションの追加やその他のタイミングで少しずつ設定していきたいと思います。
+
+
+■0x03.) sambaのインストール及び設定
+
+　sambaとはWindowsのファイル共有やドメインをLinux上で実現するためのサーバ
+アプリケーションです。sambaはWindowsとLinuxの双方の環境を持っている方の多
+くが使用しているかと思います。ここでは、共有するフォルダは、個人のフォル
+ダと家族などいろいろな人がファイルを共有できるフォルダ（以下、家族フォル
+ダと呼称）の2つを用意します。
+
+1：sambaのインストール
+
+　ではさっそく、sambaのインストールを行いましょう。と、その前にsambaが関
+連するパッケージをapt-cacheコマンドを用いて検索します。
+
+----
+# apt-cache search samba
+samba - Samba サーバー
+samba-client - Samba (SMB) クライアントプログラム
+samba-common - Samba サーバーとクライアントの両方に使用されるファイル
+samba-libsmbclient - Samba (SMB) クライアントライブラリ
+samba-swat - The Samba SMB server configuration program.
+webmin - Web ベースのシステム管理ツール
+----
+
+　コマンドを実行するといろいろと表示されました。
+　今回は普通にファイル共有が出来ればよいので基本的なもののみをインストー
+ルしますので、samba、samba-common、samba-client、samba-libsmbclientがあれ
+ば十分です。
+
+　sambaのインストールにはapt-getコマンドを次のように実行します。
+
+----
+apt-get install samba samba-common  samba-client samba-libsmbclient
+----
+
+　コマンドを実行すると本当にインストールを行うのかと聞いてきますのでyesと
+答えてください。回線や処理速度によっては少し時間がかかりますが特に問題な
+くインストールできるはずです。
+
+2：準備
+
+　次に、共有するディレクトリの準備を行います。
+　まず、個人のフォルダに関してはユーザのホームディレクトリを使いますので
+特に事前の準備は必要ありません。家族フォルダに関してはフォルダをどこかに
+作成し、そのフォルダを家族が自由に使えるようにしなければなりません。
+
+　そこで、下記のようなコマンド群を用いて/home/publicを家族フォルダにしま
+す。
+
+----
+mkdir /home/public
+chmod 777 /home/public
+chown nobody:nobody /home/public
+----
+
+　これで、/home/publicディレクトリは自由にファイルをおくことができるよう
+になります。
+
+3：設定
+
+　ここで、/etc/samba/smb.confを編集し設定を行います。
+　下記にセクションごとにすでにある設定を変更あるいは追加する必要のありそ
+うな項のみを列挙しました。
+
+-----
+01 [global]
+02   unix charset = eucJP-ms
+03   dos charset = cp932
+04   display charset = eucJP-ms
+05   workgroup = ${WORKGROUP}
+06   server string = ${SERVER_STRING}
+07   security = user
+08   bind interfaces only = Yes
+09   hosts allow = 127.0.0.1 ${HOSTS_ALLOW}
+10   interfaces = 127.0.0.1/24 ${INTERFACES}
+11   remote announce = 127.0.0.255 ${REMOTE_ANNOUNCE}
+12 
+13 [homes]
+14   comment = %U's Home Directory
+15   browseable = No
+16   writeable = Yes
+17   create mask = 0644
+18   directory mask = 0744
+19   force user = %S
+20   force group = %S
+21 
+22 [public]
+23   comment = Public file space
+24   path = /home/public
+25   browseable = Yes
+26   writeable = Yes
+27   public = No
+28   guest ok = No
+29   create mask = 0644
+30   directory mask = 0744
+31   force user = nobody
+32   force group = nobody
+----
+
+　まず、globalセッションの02～04行目までは日本語ファイルを扱うための設定
+です。
+　05～06行目はワークグループとサーバの説明の設定です。環境に合わせて${WO
+RKGROUP}、${SERVER_STRING}の部分を書き換えてください。
+　次に07行目はユーザ単位で認証を行う設定です。
+　08行目から11行目まではインターフェースや、接続を許可するIPアドレスの設
+定で${HOSTS_ALLOW}には接続を許可するIPアドレスを、${INTERFACES}には共有サ
+ービスを提供するNICのIPアドレスを指定し、${REMOTE_ANNOUNCE}には共有サービ
+スを提供するネットワークのブロードキャストアドレスを指定します。
+
+　連載第二回の環境ではそれぞれの設定は次のようになるかと思います。
+
+  ${HOSTS_ALLOW}     = 192.168.1.
+  ${INTERFACES}      = 192.168.1.1/24
+  ${REMOTE_ANNOUNCE} = 192.168.1.255
+
+　ここで${HOSTS_ALLOW}の設定については少し説明が必要かと思います。この設
+定では「192.168.1.1」と記述した場合、「192.168.1.1」からの接続を許可しま
+す。対して「192.168.1.」と記述した場合「192.168.1.1～255」からの、「192.
+168.」と記述した場合「192.168.1～255.1～255」からの接続を許可します。
+
+　homesセッションは個人のフォルダの設定で、これによって個人のフォルダが使
+用できるようになります。細かい説明については自分で調べてみてください。
+
+　publicセッションは家族フォルダの設定で、これによって家族フォルダが使用
+できるようになります。個々で重要なのは24行目と31～32行目です。24行目では
+家族フォルダの位置を設定しています。31～32行目の設定では家族フォルダへの
+書き込みはすべてnobodyユーザが行っているようにすることで、他のユーザが自
+由にファイルを操作できるようになります。その他の、細かい説明については自
+分で調べてみてください。
+
+　これで設定は終了しました。
+　最後に、細かい事後処理を行います
+
+4：事後処理
+
+　sambaのインストールと設定が完了しました。それでは、残った細かい設定を行
+います。
+
+　まずは、sambaのアカウントを作成します。ここではuser1を作成すると仮定し
+て話を進めます。user1アカウントを作成するには次のようにsmbpasswdコマンド
+を使用します。
+
+----
+smbpasswd -a user1
+----
+
+　コマンドを実行するとパスワードを二度聞いてきますので正確に入力してくだ
+さい。また、Linuxのアカウントとして存在しないアカウントに対してこのコマン
+ドを行っても成功しませんので注意してください。
+
+　次に、chkconfigコマンドを使用し、再起動時に自動的にsambaサーバが起動す
+るようにします。
+
+----
+chkconfig --level 35 smb on
+chkconfig --level 01246 smb off
+----
+
+　最後に、次のコマンドを実行しsambaサーバを起動しきちんと動くかテストしま
+す。
+
+----
+/etc/init.d/smb
+----
+
+　Windowsからsambaサーバにサクセスし、ファイルのコピーや削除などいろいろ
+と試してみてください。ここでエラーや問題が発生しなければ以上で、sambaの設
+定はすべて終了です。
+
+
+■0x04.) まとめ
+
+　今回はiptablesとsambaの設定に関して簡単に説明しました。
+　次回はいよいよハニーポットの本体であるhoneyedについて説明したいと思いま
+す。
+

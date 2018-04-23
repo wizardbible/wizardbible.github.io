@@ -1,0 +1,624 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: FreeBSD Kernel Hacking ---
+
+著者：Kenji Aiko
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　最近FreeBSDを使い始めたので、メモ的な意味もこめて、今回自分が学んだ過程
+を書くことにしました。実際使い始めて数ヶ月ですが、個人的にFreeBSDもなかな
+か洗練されてて良い感じです。興味があればぜひ使ってみてください。
+　ちなみに、この記事はFreeBSD環境で行いますが、他の環境（Linux, Windows）
+のカーネルについて知りたければ、ローレイヤー勉強会の資料がとても参考にな
+ります。
+
+　「ローレイヤー勉強会」公開資料
+　http://groups.google.co.jp/group/lowlayer/files
+
+　ちなみに、この記事では、FreeBSD 7.0を使います。
+
+
+■0x02.) 環境構築
+
+　FreeBSDのカーネルモジュールを作る（コンパイルする）場合、FreeBSD自体の
+ソースコードが必要です。よって、最初に、FreeBSDのソースコードをダウンロー
+ドします。
+
+-----  terminal
+# pkg_add ftp://ftp.jp.freebsd.org/pub/FreeBSD/ports/i386/packages/All/cvsup-without-gui-16.1h_4.tbz
+# cp /usr/share/examples/cvsup/stable-supfile ./
+# vi stable-supfile
+（"CHANGE_THIS.FreeBSD.org" を "cvsup.jp.FreeBSD.org" に変更）
+# cvsup stable-supfile（現在はcsup推奨）
+
+（/usr/src以下にカーネルのソースコードがダウンロードされる）
+
+-----
+
+　以上の手順で、/usr/src以下にカーネルのソースコードが展開されます。
+
+
+■0x03.) コンパイル
+
+　FreeBSDのカーネルモジュールプログラミングについては、以下のサイトが参考
+になります。
+
+　FreeBSD Architecture Handbook
+　http://www.freebsd.org/doc/en/books/arch-handbook/
+　http://www.freebsd.org/doc/en/books/arch-handbook/driverbasics-kld.html
+
+　上記のサンプルプログラムをコピーし、試しにカーネルモジュールを作ります。
+カーネルソースの/usr/src/sys/modules/以下に新しいディレクトリを作成し、そ
+の中でサンプルモジュールをコンパイルします。
+
+-----  terminal
+# cd /usr/src/sys/modules/
+# mkdir skeleton
+# cd skeleton
+# cat >skeleton.c
+/*
+ * KLD Skeleton
+ * Inspired by Andrew Reiter's Daemonnews article
+ */
+
+#include <sys/types.h>
+#include <sys/module.h>
+#include <sys/systm.h>  /* uprintf */ 
+#include <sys/errno.h>
+#include <sys/param.h>  /* defines used in kernel.h */
+#include <sys/kernel.h> /* types used in module initialization */
+
+/* 
+ * Load handler that deals with the loading and unloading of a KLD.
+ */
+
+static int
+skel_loader(struct module *m, int what, void *arg)
+{
+  int err = 0;
+  
+  switch (what) {
+  case MOD_LOAD:                /* kldload */
+    uprintf("Skeleton KLD loaded.\n");
+    break;
+  case MOD_UNLOAD:
+    uprintf("Skeleton KLD unloaded.\n");
+    break;
+  default:
+    err = EOPNOTSUPP;
+    break;
+  }
+  return(err);
+}
+
+/* Declare this module to the rest of the kernel */
+
+static moduledata_t skel_mod = {
+  "skel",
+  skel_loader,
+  NULL
+};  
+
+DECLARE_MODULE(skeleton, skel_mod, SI_SUB_KLD, SI_ORDER_ANY);
+^C（Ctrl + C）
+# cat >Makefile
+SRCS=skeleton.c
+KMOD=skeleton
+
+.include <bsd.kmod.mk>
+^C（Ctrl + C）
+# make
+Warning: Object directory not changed from original /usr/src/sys/modules/skeleton
+@ -> /usr/src/sys
+machine -> /usr/src/sys/i386/include
+cc -O2 -fno-strict-aliasing -pipe  -D_KERNEL -DKLD_MODULE -std=c99 -nostdinc   
+-I. -I@ -I@/contrib/altq -finline-limit=8000 --param inline-unit-growth=100 --p
+aram large-function-growth=1000 -fno-common  -mno-align-long-strings -mpreferre
+d-stack-boundary=2  -mno-mmx -mno-3dnow -mno-sse -mno-sse2 -mno-sse3 -ffreestan
+ding -Wall -Wredundant-decls -Wnested-externs -Wstrict-prototypes  -Wmissing-pr
+ototypes -Wpointer-arith -Winline -Wcast-qual  -Wundef -Wno-pointer-sign -fform
+at-extensions -c skeleton.c
+ld  -d -warn-common -r -d -o skeleton.kld skeleton.o
+:> export_syms
+awk -f /usr/src/sys/modules/skeleton/../../conf/kmod_syms.awk skeleton.kld  exp
+ort_syms | xargs -J% objcopy % skeleton.kld
+ld -Bshareable  -d -warn-common -o skeleton.ko skeleton.kld
+objcopy --strip-debug skeleton.ko
+# ls skeleton*
+skeleton.c      skeleton.kld    skeleton.ko     skeleton.o
+# kldload ./skeleton.ko
+Skeleton KLD loaded.
+# kldstat
+Id Refs Address    Size     Name
+ 1    8 0xc0400000 906518   kernel
+ 2    1 0xc0d07000 6a32c    acpi.ko
+ 3    1 0xc1afc000 22000    linux.ko
+ 4    1 0xc1c67000 2000     skeleton.ko（←追加されている）
+# kldunload ./skeleton.ko
+Skeleton KLD unloaded.
+# kldstat
+Id Refs Address    Size     Name
+ 1    7 0xc0400000 906518   kernel
+ 2    1 0xc0d07000 6a32c    acpi.ko
+ 3    1 0xc1afc000 22000    linux.ko
+#
+-----
+
+　実行すると、モジュールのロード時に「Skeleton KLD loaded.」という文字列
+が出力され、アンロード時に「Skeleton KLD unloaded.」が出力されます。また、
+現在カーネルにロードされているモジュールはkldstatを実行することで確認でき
+ます。
+　あとは、「FreeBSD Architecture Handbook」のサイトの「II. Device Drivers」
+の項目を読むことで、カーネルモジュールに関する一通りのことが分かります。
+
+
+■0x04.) カーネルへの移行
+
+　ユーザーランドからカーネルに移行する際、割り込み「int 80h」を呼び出して
+いることを確認します。
+
+-----  terminal
+$ cat > test.c
+int main(void)
+{
+    write(1, "Hello", 5, 0);
+    return 0;
+}
+^C（Ctrl + C）
+$ gcc test.c -o test
+$ gdb test
+GNU gdb 6.1.1 [FreeBSD]
+Copyright 2004 Free Software Foundation, Inc.
+GDB is free software, covered by the GNU General Public License, and you are
+welcome to change it and/or distribute copies of it under certain conditions.
+Type "show copying" to see the conditions.
+There is absolutely no warranty for GDB.  Type "show warranty" for details.
+This GDB was configured as "i386-marcel-freebsd"...(no debugging symbols found)...
+(gdb) b main
+Breakpoint 1 at 0x8048400
+(gdb) r
+Starting program: /usr/home/ctf/test
+(no debugging symbols found)...(no debugging symbols found)...
+Breakpoint 1, 0x08048400 in main ()
+(gdb) b write
+Breakpoint 2 at 0x281533ac
+(gdb) c
+Continuing.
+
+Breakpoint 2, 0x281533ac in write () from /lib/libc.so.7
+(gdb) x/4i write
+0x281533ac <write>:     mov    $0x4,%eax
+0x281533b1 <write+5>:   int    $0x80（←ココ）
+0x281533b3 <write+7>:   jb     0x28153398 <close+12>
+0x281533b5 <write+9>:   ret
+(gdb)
+-----
+
+　アドレス「0x281533b1」で、「int $0x80」を呼び出し、カーネルに処理を渡し
+ています。
+
+
+■0x05.) IDT（Interrupt Descriptor Table）の内容を確認
+
+　割り込みに対するジャンプ先が記述されているIDTを確認します。割り込みや例
+外に関する詳細は以下のサイトが参考になります（検索しても結構ヒットします）。
+
+　プロテクトモードの割り込み/例外
+　http://caspar.hazymoon.jp/OpenBSD/annex/interrupt_protect.html
+
+　割り込み「int 80h」で、カーネルランドに処理が移り、まず、IDTRレジスタが
+参照されます。このレジスタにはIDTのアドレスが格納されています。IDTのアド
+レスが分かったら、テーブルの先頭から80h番目の情報を読み取り、そこに記述さ
+れているアドレスへジャンプします。
+　IDTの80h番目の情報を確認するプログラムを以下に示します。
+
+-----  printidt.c
+
+/*
+ * print IDT
+ */
+
+#include <sys/types.h>
+#include <sys/module.h>
+#include <sys/systm.h>  /* uprintf */ 
+#include <sys/errno.h>
+#include <sys/param.h>  /* defines used in kernel.h */
+#include <sys/kernel.h> /* types used in module initialization */
+
+typedef struct _idta
+{
+    unsigned short size;
+    unsigned long  addr __attribute__((packed));
+
+} IDTA, *PIDTA;
+
+typedef struct _idt
+{
+    unsigned short offl;
+    unsigned short seg;
+    unsigned char  pad;
+    unsigned char  flags;
+    unsigned short offh;
+
+} IDT, *PIDT;
+
+
+void get_idtr(IDTA *pidta);
+void print_info(void);
+void mod_load(void);
+void mod_unload(void);
+
+
+void get_idtr(IDTA *pidta)
+{
+    IDTA idta;
+    __asm("sidt %0" : "=m" (idta));
+    memcpy(pidta, &idta, sizeof(IDTA));
+}
+
+void print_info(void)
+{
+    IDTA idta;
+    IDT idt;
+    int offset;
+    
+    get_idtr(&idta);
+    
+    uprintf(
+        "IDTR\n"
+        "  size  = %04X\n"
+        "  addr  = %08lX\n", 
+        idta.size, idta.addr
+    );
+    
+    offset = 0x80 * sizeof(IDT);
+    idt = *((PIDT)((unsigned char *)idta.addr + offset));
+    
+    uprintf(
+        "IDT(80h)\n"
+        "  offl  = %04X\n"
+        "  seg   = %04X\n"
+        "  pad   = %02X\n"
+        "  flags = %02X\n"
+        "  offh  = %04X\n",
+        idt.offl,
+        idt.seg,
+        idt.pad,
+        idt.flags,
+        idt.offh);
+}
+
+void mod_load(void)
+{
+    print_info();
+}
+
+void mod_unload(void)
+{
+    uprintf("call mod_unload\n");
+}
+
+/* 
+ * Load handler that deals with the loading and unloading of a KLD.
+ */
+
+static int printidt_loader(struct module *m, int what, void *arg)
+{
+    int err = 0;
+    
+    switch(what)
+    {
+    case MOD_LOAD:
+        mod_load();
+        break;
+    
+    case MOD_UNLOAD:
+        mod_unload();
+        break;
+    
+    default:
+        err = EOPNOTSUPP;
+        break;
+    }
+    
+    return err;
+}
+
+/* Declare this module to the rest of the kernel */
+
+static moduledata_t printidt_mod =
+{
+    "printidt", 
+    printidt_loader, 
+    NULL
+};
+
+DECLARE_MODULE(printidt, printidt_mod, SI_SUB_KLD, SI_ORDER_ANY);
+-----
+
+　以下のMakefileを用意します。
+
+-----  Makefile
+SRCS=printidt.c
+KMOD=printidt
+
+.include <bsd.kmod.mk>
+-----
+
+　コンパイルし、実行します。
+
+-----  terminal
+# make
+Warning: Object directory not changed from original /usr/src/sys/modules/printidt
+@ -> /usr/src/sys
+machine -> /usr/src/sys/i386/include
+cc -O2 -fno-strict-aliasing -pipe  -D_KERNEL -DKLD_MODULE -std=c99 -nostdinc   
+-I. -I@ -I@/contrib/altq -finline-limit=8000 --param inline-unit-growth=100 --p
+aram large-function-growth=1000 -fno-common  -mno-align-long-strings -mpreferre
+d-stack-boundary=2  -mno-mmx -mno-3dnow -mno-sse -mno-sse2 -mno-sse3 -ffreestan
+ding -Wall -Wredundant-decls -Wnested-externs -Wstrict-prototypes  -Wmissing-pr
+ototypes -Wpointer-arith -Winline -Wcast-qual  -Wundef -Wno-pointer-sign -fform
+at-extensions -c printidt.c
+ld  -d -warn-common -r -d -o printidt.kld printidt.o
+:> export_syms
+awk -f /usr/src/sys/modules/printidt/../../conf/kmod_syms.awk printidt.kld  exp
+ort_syms | xargs -J% objcopy % printidt.kld
+ld -Bshareable  -d -warn-common -o printidt.ko printidt.kld
+objcopy --strip-debug printidt.ko
+# kldload ./printidt.ko
+IDTR
+  size  = 07FF
+  addr  = C0C00240
+IDT(80h)
+  offl  = FC50
+  seg   = 0020
+  pad   = 00
+  flags = EF
+  offh  = C0A2
+# kldunload ./printidt.ko
+call mod_unload
+#
+-----
+
+　IDTの場所と「int 80h」が実行された時に処理されるコードは分かりました。
+この部分を任意のアドレスに変更することで「int 80h」のフックができます。
+　システムコールフックに関する全般的な話は以下の文献が参考になります。
+
+　システムコールフックを使用した攻撃検出
+　http://www.fourteenforty.jp/research/research_papers/SystemCall.pdf
+
+
+■0x06.) int80hフック
+
+　IDTを変更することで「int 80h」をフックできます。よって、次はサンプルプ
+ログラムとして、「int 80h」命令が、毎秒何回呼び出されているのかを調べるプ
+ログラムを作成します。
+
+-----  int80hook.c
+
+/*
+ * int 80h hook
+ */
+
+#include <sys/types.h>
+#include <sys/module.h>
+#include <sys/systm.h>  /* uprintf */ 
+#include <sys/errno.h>
+#include <sys/param.h>  /* defines used in kernel.h */
+#include <sys/kernel.h> /* types used in module initialization */
+#include <sys/time.h>   /* nanotime */
+
+/* int 80h call counter */
+unsigned long g_counter;
+
+/* module load time */
+unsigned long g_start_t;
+
+typedef struct _idta
+{
+    unsigned short size;
+    unsigned long  addr __attribute__((packed));
+
+} IDTA, *PIDTA;
+
+typedef struct _idt
+{
+    unsigned short offl;
+    unsigned short seg;
+    unsigned char  pad;
+    unsigned char  flags;
+    unsigned short offh;
+
+} IDT, *PIDT;
+
+
+unsigned long get_idt_addr(void);
+unsigned long get_int_addr(unsigned int intp);
+int exec_hook(unsigned int intp, unsigned long new_func, unsigned long *old_func);
+void new_int80h_func(void);
+void stub_func(void);
+void stub_handler(void);
+void mod_load(void);
+void mod_unload(void);
+
+
+unsigned long get_idt_addr(void)
+{
+    IDTA idta;
+    __asm("sidt %0" : "=m" (idta));
+    return idta.addr;
+}
+
+unsigned long get_int_addr(unsigned int intp)
+{
+    IDT idt;
+    unsigned long idt_addr;
+
+    idt_addr = get_idt_addr() ;
+    idt = *((PIDT)idt_addr + intp);
+
+    return (idt.offh << 16 | idt.offl);
+}
+
+int exec_hook(unsigned int intp, unsigned long new_func, unsigned long *old_func)
+{
+    IDT idt;
+    unsigned long idt_addr;
+
+    if(old_func)
+        *old_func = get_int_addr(intp);
+
+    idt_addr = get_idt_addr();
+
+    idt = *((PIDT)idt_addr + intp);
+
+    idt.offh = (unsigned short)(new_func >> 16 & 0xFFFF);
+    idt.offl = (unsigned short)(new_func & 0xFFFF) ;
+
+    *((PIDT)idt_addr + intp) = idt;
+    return 0;
+}
+
+unsigned long new_handler = (unsigned long)&new_int80h_func;
+unsigned long old_handler;
+
+void stub_handler(void)
+{
+    __asm(
+        ".globl stub_func \n"
+        ".align 4,0x90    \n"
+        "stub_func:       \n"
+        "    pushal       \n"
+        "    call *%0     \n"
+        "    popal        \n"
+        "    jmp  *%1     \n"
+        :: "m" (new_handler), "m" (old_handler));
+}
+
+void new_int80h_func(void)
+{
+    g_counter++;
+}
+
+void mod_load(void)
+{
+    struct timespec ts;
+    
+    nanotime(&ts);
+    g_start_t = ts.tv_sec;
+    
+    g_counter = 0;
+    
+    exec_hook(0x80, (unsigned long)&stub_func, &old_handler);
+}
+
+void mod_unload(void)
+{
+    unsigned long n;
+    struct timespec ts;
+    
+    exec_hook(0x80, (unsigned long)old_handler, NULL);
+    
+    nanotime(&ts);
+    
+    n = (ts.tv_sec - g_start_t);
+    
+    if(n != 0)
+        n = g_counter / n;
+
+    uprintf("counter = %ld/s\n", n);
+}
+
+/* 
+ * Load handler that deals with the loading and unloading of a KLD.
+ */
+
+static int int80hook_loader(struct module *m, int what, void *arg)
+{
+    int err = 0;
+    
+    
+    switch(what)
+    {
+    case MOD_LOAD:
+        mod_load();
+        break;
+    
+    case MOD_UNLOAD:
+        mod_unload();
+        break;
+    
+    default:
+        err = EOPNOTSUPP;
+        break;
+    }
+    
+    return err;
+}
+
+/* Declare this module to the rest of the kernel */
+
+static moduledata_t int80hook_mod = 
+{
+    "int80hook",
+    int80hook_loader,
+    NULL
+};
+
+DECLARE_MODULE(int80hook, int80hook_mod, SI_SUB_KLD, SI_ORDER_ANY);
+-----
+
+-----  Makefile
+SRCS=int80hook.c
+KMOD=int80hook
+
+.include <bsd.kmod.mk>
+-----
+
+　モジュールをロードし、適当な時間待った後、アンロードすると、毎秒あたり
+の「int 80h」の呼び出し回数が分かります。
+
+-----  terminal
+# kldload ./int80hook.ko
+# kldunload ./int80hook.ko
+counter = 74/s
+-----
+
+　正常に「int 80h」がフックされています。
+
+　なお、今回のソースコードは以下のサイトの記事を参考にしています。
+
+　hiding processes (understanding the linux scheduler)
+　http://phrack.org/issues.html?issue=63&id=18
+
+　上記の記事はLinux環境でのコードですが、FreeBSDも基本は同じ概念です。
+
+
+■0x07.) さいごに
+
+　Windows系だと、XP以降、sysenterを使っているわけですが、FreeBSDは「int 
+80h」を使っているようだったので、こちらのフックを行いました。また、「DEF
+CON CTF 2008」の問題にも、FreeBSD環境での「int 80h」フックを行うプログラ
+ムをリバースエンジニアリングにより解析する問題があったため、それも関連し
+て今回この記事を書きました。
+
+　Binary Leetness 400
+　http://nopsr.us/ctf2008qual/reversing400-b05c8059389c8ade8e1a10314f458be5
+　http://nopsr.us/ctf2008qual/walk-binary.html#400
+
+　FreeBSDはまだ使い始めて日が浅いですが、結構良い印象を持っている状態なの
+で、このまま少しずつですが、使っていこうかなと思っています。
+　検索のヒット数などを見ても、Linuxと比べるとFreeBSDはまだまだユーザー数
+が少ないのかな、とも思えますが、なかなか洗練されたOSなので、興味があれば
+ぜひ使ってみてください。
+
+　では、また次回お会いしましょう。
+
+
+

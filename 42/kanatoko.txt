@@ -1,0 +1,443 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: マニアックJavaプログラミング第8回: ～ デバッギングJava ～ ---
+
+著者：金床
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　ﾎﾟｳﾝﾆﾁﾜ。今回はLinux環境でのJavaデバッグについて、実際にあった超マニア
+ックなバグを題材に解説をおこなう。このバグはJavaのSauceコードに潜んでおり、
+2月ごろから7月まで筆者を悩ませ続けていた凶悪なものである。このバグはあま
+りにもマニアックすぎて普通の人は遭遇することもないかと思うが、デバッグ手
+法そのものは他のバグつぶしや解析などにも応用がきくものである。
+
+
+■0x02.) SSL Main in the middleで発生
+
+　筆者は以前より、Wizard Bible Vol.15で紹介したようなSSLのMan in the middle
+を行うプロキシサーバーをいくつか（Doorman@JUMPERZ.NETやGuardian@JUMPERZ.NET
+など）開発しているのだが、どうもLinux環境のJava1.5や1.6でのみ動作がおかし
+いのである（1.4系列では大丈夫）。具体的には、テストで大量の通信を発生させ
+ていると、too many open filesというエラーが出始め、それっきりプロキシサー
+バーとして動作することができなくなってしまう、というものだ。
+
+　too many open filesときいて「ああ、アレか…」と思った読者もいるだろう。
+Linuxでは1つのプロセスが開くことのできるファイルディスクリプタ（Windowsで
+はハンドルと呼ばれる概念）の最大数が決まっており、デフォルトでは1024など
+の値が用いられる。この値はカーネルのヘッダファイルの書き換えやシェルのビ
+ルトインコマンドであるulimitなどで変更することができる。
+
+　ｿｹｯﾄもファイルディスクリプタとして扱われるため、ネットワークサーバーが
+このエラーを発生させてしまう場合はｿｹｯﾄが確保できないために事実上ｻｰﾋﾞｽが停
+止してしまうことになり、緊急事態と言える。筆者が作っていたサーバーはこの
+エラーのためにある時点で使い物にならなくなってしまうため、「長時間安定稼
+働させる」という目標が達成できず困っていた。
+
+
+■0x03.) ファイルディスクリプタを調べる
+
+　そんなわけでデバッグが始まった。まず最初に「たまたま、一時的にたくさん
+のファイルディスクリプタを使っているだけである」というかなり願望が入った
+仮説を立ててみた。この場合、一時的に使用しているファイルディスクリプタの
+総数が1024を超えているだけということになるので、この数に余裕を持たせてや
+ればいい。具体的にはulimit -n 100000などとすれば、10万ものファイルディス
+クリプタを扱えることになる（環境によってはulimitだけでなく/etc/security/
+limits.confの設定やｶｰﾈﾙの作り直しが必要なケースもあるようなので要注意）。
+しかし結果は残念ながら、サーバーが死ぬまでの時間が長くかかるだけであった。
+
+　そのため今度はlsofコマンドによって実際にプロセスが使用しているファイル
+ディスクリプタの一覧を出力してみることにした。すると次のような奇妙な行が
+大量に（1000行くらい）出力された。
+
+-----
+java    1919 root  884u  sock    0,5            10398 can't identify protocol
+java    1919 root  885u  sock    0,5            10399 can't identify protocol
+java    1919 root  886u  sock    0,5            10418 can't identify protocol
+java    1919 root  887u  sock    0,5            10420 can't identify protocol
+java    1919 root  888u  sock    0,5            10422 can't identify protocol
+java    1919 root  890u  sock    0,5            10443 can't identify protocol
+java    1919 root  891u  sock    0,5            10444 can't identify protocol
+java    1919 root  892u  sock    0,5            10445 can't identify protocol
+java    1919 root  893u  sock    0,5            10446 can't identify protocol
+java    1919 root  894u  sock    0,5            10447 can't identify protocol
+java    1919 root  895u  sock    0,5            10448 can't identify protocol
+-----
+
+　なんとも激しく微妙で、「リークしているのは（ファイルではなく）ｿｹｯﾄであ
+る」「何個のｿｹｯﾄがﾘｰｸしている」程度の情報しか読みとることができない。ﾘｰｸ
+するｿｹｯﾄの数は一定せず、また起動後しばらくは正常なのだが、あるときからﾘｰ
+ｸが発生するなど、なかなかﾘｰｸの挙動が安定していない。
+
+　そこでとりあえず自分のコードを再度見直し、ｿｹｯﾄ系のリソースリークが無い
+かどうか隅々まで検討してみた。しかし結果はナシ。最終的にこのバグが発生す
+る非常に小さなコードにまで落とし込んでみて、このリークが自分のせいではな
+く、Java側であるという確信を持つことになった。このバグが再現可能なソース
+は以下のようなものだ。
+
+-----
+import java.net.*;
+import javax.net.*;
+import javax.net.ssl.*;
+
+public class test1
+{
+private static ServerSocketFactory ssf;
+//------------------------------------------------
+public static void main( String[] args )
+throws Exception
+{
+ssf = SSLServerSocketFactory.getDefault();
+for( int i = 0; i < 1000; ++i )
+        {
+        foo();
+        }
+Thread.sleep( 1000000 );
+}
+//------------------------------------------------
+private static void foo()
+throws Exception
+{
+ServerSocket sSocket = ssf.createServerSocket( 0, 1 );
+Socket socket1  = new Socket( "127.0.0.1", sSocket.getLocalPort() );
+Socket socket2 = sSocket.accept();
+sSocket.close();
+socket1.close();
+socket2.close();
+}
+//------------------------------------------------
+}
+-----
+
+　SSLSocketFactoryを使うため、起動時には.keystoreファイルを用意する必要が
+ある。起動は次のようなコマンドで行う（パスワードは仮にchangeitとする）。
+
+-----
+java -Djavax.net.ssl.keyStore=.keystore -Djavax.net.ssl.keyStorePassword=changeit test1
+-----
+
+　このバグを追いかけるため、この段階までに非常に多くの時間を費やしてしま
+った。しかも自分のコードの修正では対応できなさそうである。ここ数年遭遇し
+たバグの中でも、かなりやっかいなものになる予感がしていた。
+
+
+■0x04.) システムコールをトレースする
+
+　再現するコードを作成することができたので、2008年2月頃にSun(http://bugs
+.sun.com/)に報告してみたのだが、まるっきり音沙汰がない。後からわかったこ
+とだが、どうもOpenJDK化のごたごたなどで、Javaについてのバグ報告先がhttp:
+//bugs.sun.com/からメーリングリストを主体とする体制に移行していたようであ
+る。例えばSSL関連のメーリングリストはhttp://mail.openjdk.java.net/mailman
+/listinfo/security-devとなる。
+
+　Sunからまったく反応がないためこのバグについてはしばらく放置していたのだ
+が、あるとき別のネタ（VMware系）をごそごそしているときに、straceという超
+便利なコマンドを知ってしまった。これはLinux上でシステムコールをログに取る
+ことができるツールで、CentOSならばyum install straceでインスコすることが
+できる。例えばlsコマンドの動作を調べるには
+
+-----
+strace ls
+-----
+
+　とするだけだ。まぁぶっちゃけ「今まで知らなかったのかよｱﾘｴﾅｽ」ﾚﾍﾞﾙで必須
+ｺﾏﾝﾄﾞであるstrace。フック系にしては動作も安定していてかなり良い感じだ。と
+りあえずリークしているsocket関係の関数でも見てみるか、というつもりでこの
+test1クラスについてもstraceしてみることにした。
+
+　Javaのアプリケーションはデフォルトでマルチスレッドなので（たとえばgcを
+行うスレッドなどが独立している）、straceできれいにログを取るには-oオプシ
+ョンと-ffオプションを組み合わせるといい感じである。
+
+-----
+strace -o log -ff java -Djavax.net.ssl.keyStore=.keystore -Djavax.net.ssl.keyStorePassword=changeit test1
+-----
+
+　このようにすると、それぞれのスレッドについて「PID.log」といった感じのロ
+グファイルが生成される。
+
+
+■0x05.) あやしい箇所ﾊｯｹｿ
+
+　複数生成されたﾄﾚｰｽﾛｸﾞﾌｧｲﾙをgrep -li socketしてみると、2つのﾌｧｲﾙだけがヒ
+ットする。片方はJavaアプリケーションのメインのスレッドで、片方はいまいち
+よくわからないものだ。そして後者のファイルに非常にあやしい箇所を発見した。
+
+-----
+13:43:13.511753 socket(PF_INET, SOCK_STREAM, IPPROTO_IP) = 15
+13:43:13.511794 getsockopt(15, SOL_SOCKET, SO_LINGER, {onoff=0, linger=0}, [8]) = 0
+13:43:13.511933 --- SIGSEGV (Segmentation fault) @ 0 (0) ---
+13:43:13.511967 rt_sigreturn(0x2aaaab551544) = 0
+13:43:13.512082 socket(PF_INET, SOCK_STREAM, IPPROTO_IP) = 16
+13:43:13.512124 getsockopt(16, SOL_SOCKET, SO_LINGER, {onoff=0, linger=0}, [8]) = 0
+13:43:13.512164 --- SIGSEGV (Segmentation fault) @ 0 (0) ---
+13:43:13.512198 rt_sigreturn(0x2aaaab551544) = 0
+13:43:13.512271 socket(PF_INET, SOCK_STREAM, IPPROTO_IP)       = 17
+13:43:13.512327 getsockopt(17, SOL_SOCKET, SO_LINGER, {onoff=0, linger=0}, [8]) = 0
+13:43:13.512502 --- SIGSEGV (Segmentation fault) @ 0 (0) ---
+13:43:13.512544 rt_sigreturn(0x2aaaab551544) = 0
+13:43:13.512665 socket(PF_INET, SOCK_STREAM, IPPROTO_IP) = 19
+13:43:13.512705 getsockopt(19, SOL_SOCKET, SO_LINGER, {onoff=0, linger=0}, [8]) = 0
+13:43:13.512820 --- SIGSEGV (Segmentation fault) @ 0 (0) ---
+13:43:13.512853 rt_sigreturn(0x2aaaab551544)
+-----
+
+　このようなログがえんえんと続いているのだ。「Segmentation fault」ってお
+かしくね？変じゃね？という感じである。そして決定的なことに、このSegmenta
+tion faultの数が、lsofで調べることができる、「リークしているｿｹｯﾄの数」と
+一致したのである。怪しすぎるぞ(`Д´)ノｺﾞﾗｧ!!!
+
+　しかしSegmentation faultが起こっているのにﾌﾟﾛｾｽが落ちないというのが不思
+議である。シグナルをトラップしているのだろうか。このファイルの2行目にある
+
+-----
+13:43:12.655353 rt_sigprocmask(SIG_UNBLOCK, [ILL BUS FPE SEGV USR2], NULL, 8) = 0
+-----
+
+　という行が猛烈に関係ありそうだがよくわからない（誰か教えてくだちい）。
+
+
+■0x06.) Nullﾎﾟﾊｯｹｿ
+
+　さて動作し続けているアプリケーション内部でSegmentation faultが発生して
+いるという異常事態なので、改めてJavaアプリデバッグの基本に返り、-Xrunhpr
+ofオプションで関数のトレースを見てみることにした。最近知ったことだが、-X
+runhprofオプションを使う場合には次のようにdepthオプションを指定すると非常
+に便利である。
+
+-----
+java -Xrunhprof:thread=y,depth=50 test
+-----
+
+　depthの数は「何階層までトレースするか」を決める。例えばdepth=3にすると、
+ダンプされる出力は次のように短いものになる。
+
+-----
+TRACE 300013: (thread=200001)
+        java.lang.StringCoding$StringDecoder.decode(StringCoding.java:133)
+        java.lang.StringCoding.decode(StringCoding.java:173)
+        java.lang.String.<init>(String.java:444)
+TRACE 300014: (thread=200001)
+        java.nio.Buffer.<init>(Buffer.java:172)
+        java.nio.ByteBuffer.<init>(ByteBuffer.java:259)
+        java.nio.HeapByteBuffer.<init>(HeapByteBuffer.java:52)
+TRACE 300015: (thread=200001)
+        java.nio.Buffer.<init>(Buffer.java:172)
+        java.nio.CharBuffer.<init>(CharBuffer.java:259)
+        java.nio.HeapCharBuffer.<init>(HeapCharBuffer.java:52)
+-----
+
+　これを大きな数（例えば50）にすると次のようになる。
+
+-----
+TRACE 300014: (thread=200001)
+        java.lang.StringCoding$StringDecoder.decode(StringCoding.java:133)
+        java.lang.StringCoding.decode(StringCoding.java:173)
+        java.lang.String.<init>(String.java:444)
+        java.lang.String.<init>(String.java:516)
+TRACE 300015: (thread=200001)
+        java.nio.Buffer.<init>(Buffer.java:172)
+        java.nio.ByteBuffer.<init>(ByteBuffer.java:259)
+        java.nio.HeapByteBuffer.<init>(HeapByteBuffer.java:52)
+        java.nio.ByteBuffer.wrap(ByteBuffer.java:350)
+        java.lang.StringCoding$StringDecoder.decode(StringCoding.java:137)
+        java.lang.StringCoding.decode(StringCoding.java:173)
+        java.lang.String.<init>(String.java:444)
+        java.lang.String.<init>(String.java:516)
+TRACE 300016: (thread=200001)
+        java.nio.Buffer.<init>(Buffer.java:172)
+        java.nio.CharBuffer.<init>(CharBuffer.java:259)
+        java.nio.HeapCharBuffer.<init>(HeapCharBuffer.java:52)
+        java.nio.CharBuffer.wrap(CharBuffer.java:350)
+        java.nio.CharBuffer.wrap(CharBuffer.java:373)
+        java.lang.StringCoding$StringDecoder.decode(StringCoding.java:138)
+        java.lang.StringCoding.decode(StringCoding.java:173)
+        java.lang.String.<init>(String.java:444)
+        java.lang.String.<init>(String.java:516)
+-----
+
+　50というのは「最大で50階層」という意味なので、このように普通のトレース
+はすべて出力されることになる。関数の呼び出しが非常に深いアプリケーション
+の場合などには100や200などの数値を指定すればよい。depthのデフォルト値は4
+であるが、これは小さすぎる気がする。
+
+　さてこのようにして再度test1のJavaﾄﾚｰｽを取り、さらにSegmentation faultが
+起こっているとのことで例外（Exception）をｷｰﾜｰﾄﾞに検索していたところ、次の
+ﾄﾚｰｽを見つけた。
+
+-----
+TRACE 307528: (thread=200004)
+        java.lang.Throwable.<init>(Throwable.java:197)
+        java.lang.Exception.<init>(Exception.java:46)
+        java.lang.RuntimeException.<init>(RuntimeException.java:49)
+        java.lang.NullPointerException.<init>(NullPointerException.java:53)
+        sun.security.ssl.OutputRecord.writeBuffer(OutputRecord.java:314)
+        sun.security.ssl.OutputRecord.write(OutputRecord.java:303)
+        sun.security.ssl.SSLSocketImpl.writeRecordInternal(SSLSocketImpl.java:761)
+        sun.security.ssl.SSLSocketImpl.writeRecord(SSLSocketImpl.java:746)
+        sun.security.ssl.SSLSocketImpl.sendAlert(SSLSocketImpl.java:1722)
+        sun.security.ssl.SSLSocketImpl.warning(SSLSocketImpl.java:1571)
+        sun.security.ssl.SSLSocketImpl.closeInternal(SSLSocketImpl.java:1373)
+        sun.security.ssl.SSLSocketImpl.close(SSLSocketImpl.java:1312)
+        sun.security.ssl.BaseSSLSocketImpl.finalize(BaseSSLSocketImpl.java:249)
+        java.lang.ref.Finalizer.invokeFinalizeMethod(Finalizer.java:Unknown line)
+        java.lang.ref.Finalizer.runFinalizer(Finalizer.java:101)
+        java.lang.ref.Finalizer.access$100(Finalizer.java:32)
+        java.lang.ref.Finalizer$FinalizerThread.run(Finalizer.java:178)
+-----
+
+　なんとNullﾎﾟが、しかもSSLSocketの内部で発生しているではないか。また、ﾄ
+ﾚｰｽのﾄｯﾌﾟを見るとFinalizerというｷｰﾜｰﾄﾞがあり、これがGCスレッドによって引
+き起こされていることがわかる。straceによってSegmentation faultが発見され
+ていたスレッドは、メインスレッドではなくGCスレッドだったのである。
+
+　ﾌｧｲﾙﾃﾞｨｽｸﾘﾌﾟﾀを閉じるためのｺｰﾄﾞの途中でNULLﾎﾟが発生しているため、ﾘｰｸが
+発生する。一方でGCｽﾚｯﾄﾞというのは処理の途中で例外が発生しても無視するとい
+う仕様なので、ｱﾌﾟﾘｹｰｼｮﾝは動作を続けてしまう。
+
+　GCがいつ発生するかはその時々で異なるため、リークが発生するタイミングな
+どが安定していなかったことにも納得がいった。
+
+
+■0x07.) Javaのｿｰｽｺｰﾄﾞを読む
+
+　さて怪しい箇所（OutputRecord.javaの314行目あたり）がわかったので、ｿｰｽｺ
+ｰﾄﾞを読んでみることにする。筆者が以前ﾀﾞｳﾝﾛｰﾄﾞしたJavaのｿｰｽには輸出制限の
+関係からかSSLまわりのｸﾗｽが含まれていなかったのだが、現在OpenJDKのｻｲﾄから
+ﾀﾞｳﾝﾛｰﾄﾞできるｿｰｽにはSSLまわりのｸﾗｽもすべて含まれている（素晴らしい！）。
+
+　筆者はｿｰｽｺｰﾄﾞを読むときにprintfデバッグしながらでないと読めない人である
+ので、ついでに少し頑張ってOpenJDKをビルドする環境を整えてみた。CentOS5に
+いくつかのライブラリをインストールし、またOpenJDKのドキュメントにあるよう
+にいくつかの環境変数などを設定することで、手元のLinux上でJDKがビルドでき
+るようになる。筆者はこのようなインストール作業が苦手なのだが、今回は運良
+く半日ほどで無事にビルド環境を整えることができた。
+
+　Nullﾎﾟが発生している箇所は、以下のｺｰﾄﾞだった。
+
+-----
+    void writeBuffer(OutputStream s, byte [] buf, int off, int len)
+            throws IOException {
+        s.write(buf, off, len);
+        s.flush();
+-----
+
+　sがNULLの状態でこの関数（writeBuffer）が呼び出されているのである。そこ
+で、筆者は次のようなﾊﾟｯﾁを作成した。
+
+-----
+*** src/share/classes/sun/security/ssl/OutputRecord_orig.java   2008-07-09 01:54:02.000000000 +0900
+--- src/share/classes/sun/security/ssl/OutputRecord.java        2008-07-09 01:53:50.000000000 +0900
+***************
+*** 311,316 ****
+--- 311,317 ----
+       */
+      void writeBuffer(OutputStream s, byte [] buf, int off, int len)
+              throws IOException {
++       if(s == null) return;
+          s.write(buf, off, len);
+          s.flush();
+-----
+
+　「sがNULLだったらreturnする」という、まさに付け焼き刃。ｽｰﾊﾟｰﾊｶｰも真っ青、
+ﾊﾟｯﾁ中のﾊﾟｯﾁである。どうせ行っている処理はGCの中でのｿｹｯﾄのｸﾛｰｽﾞ処理なので、
+けっこう適当でもいいんじゃね？というのと、とにかくﾘｰｸしないようにしたかっ
+たのでこのようなﾊﾟｯﾁを作成した。
+　動作を確認してみたところ、無事ﾘｰｸが収まっている。ひどいﾊﾞｸﾞだったので、
+このﾊﾟｯﾁによってﾘｰｸが収まることを確認した際はｶﾞｯﾂﾎﾟｰｽﾞが飛び出した。
+
+
+■0x08.) 原因究明
+
+　さてこの「ﾊﾟｯﾁかくあるべし」というﾊﾟｯﾁをメーリングﾘｽﾄに投稿したところ、
+やはりﾀﾞﾒだしを食らった。なぜNULLになるのかﾁｪｯｸすべきだ、ということである。
+正論すぎてｸﾞｩの音も出ません。ということで、SSLの処理はややこしそうなので
+たぶんわからないだろうな、と思いつつｿｰｽをさらに見ていくことにした。
+
+　ﾄﾚｰｽを追ってみると、writeBufferでNULLになっているOutputStreamのsはSSLS
+ocketImplのsockOutputであることがわかる。問題が起こる箇所のひとつであるS
+SLSocketImplｸﾗｽのcloseInternalにprint文を埋め込み、sockOutputを出力させて
+みると、やはりNULLとなっている。SSLSocketImplｸﾗｽには非常に重要な働き（SS
+Lの状態の管理）を行うと思われるconnectionStateという変数が存在するため、
+この変数も同時に追ってみた。埋め込んだprint文は次のようなものだ。
+
+-----
+System.out.println( this + " " + connectionState + " " + sockOutput + " " + isConnected() + " " + isClosed() );
+-----
+
+　connectionStateはｲﾝｽﾀﾝｽが作成されたときにはcs_START（値は0）なのだが、
+ﾘｰｸを起こす時点ではcs_HANDSHAKE（値は1）になっていることがわかった。そこ
+でconnectionStateを書き換えている箇所を探してみると、initHandshakerという
+関数の中に次のような箇所を発見した。
+
+-----
+        if (connectionState == cs_START) {
+            connectionState = cs_HANDSHAKE;
+-----
+
+　そこでさらにinitHandshakerにも同じようなprint文を仕込んでみると、sockO
+utputがNULLの場合とそうでない場合があることがわかった。ここで知りたいのは
+sockOutputがNULLの場合にinitHandshakerがどこから呼び出されているのか？と
+いうことである。単純なprint文の埋め込みでは、ｺｰﾄﾞがどこから呼び出されてい
+るのかはわからない。そこで、例外のｽﾀｯｸﾄﾚｰｽを使うことにした。
+
+-----
+    ( new Exception() ).printStackTrace();
+        System.out.println( this + ">>> " + getConnectionState() + " " + sockOutput + " " + isConnected() + " " + isClosed() );
+-----
+
+　このようなｺｰﾄﾞを埋め込むと、例外が発生し、同時にｽﾀｯｸﾄﾚｰｽがｴﾗｰ出力に吐き
+出される。このためｺｰﾄﾞがここを通るたびに「どの関数から呼び出されているの
+か」をすべてたどることができ、激しく便利である。printfﾃﾞﾊﾞｯｶﾞｰがJavaをい
+じる際には必須のテクニックと言えるだろう。
+
+　このstackTraceデバッグにより、無事に原因が解明された。なんとSSLSocketI
+mplはSSLServerSocketImplから変な風に呼び出されており、このときsockOutput
+は（インスタンスの寿命の）最初から最後までNULLのままなのである。呼び出さ
+れている箇所は以下のとおりだ。
+
+-----
+            SSLSocketImpl tmp = new SSLSocketImpl(sslContext, useServerMode,
+                         enabledCipherSuites, doClientAuth,
+                         enableSessionCreation, enabledProtocols);
+
+            ServerHandshaker handshaker = tmp.getServerHandshaker();
+-----
+
+　このtmpｲﾝｽﾀﾝｽはServerHandshakerクラスのインスタンスを得るためだけに利用
+されており、実際のSSL通信を行わない。最初から最後までsockOutputはNULLであ
+るにもかかわらず、GCの際に呼び出されるcloseの中においてsockOutputを利用し
+ようとしてしまっていたのである。
+
+　SSLServerSocketを利用するときには必ずこのｺｰﾄﾞが実行されるため、例えばT
+omcatなどでSSLｿｹｯﾄを使っている場合には必ず1つのｿｹｯﾄがﾘｰｸしているはずだ。
+lsofｺﾏﾝﾄﾞを使えばcan't identify protocolな状態のｿｹｯﾄを見つけることができ
+るだろう。
+　しかしごく普通のｱﾌﾟﾘｹｰｼｮﾝではSSLServerSocketのｲﾝｽﾀﾝｽは1つで済む（たとえ
+ば443番ﾎﾟｰﾄを開けるだけ）ため、ﾘｰｸするﾌｧｲﾙﾃﾞｨｽｸﾘﾌﾟﾀはたった1つであり、事
+実上これは問題にはならない。
+
+　以上をメーリングﾘｽﾄに報告したところ、無事対応が期待できそうなﾚｽﾎﾟﾝｽを得
+ることができた。本稿執筆時点ではまだｱｯﾌﾟﾃﾞｰﾄは行われていないが、遅くとも
+数ヶ月後には対応が行われることだろう。
+
+
+■0x09.) まとめ
+
+　さて今回は個人的に大事件だったﾌｧｲﾙﾃﾞｨｽｸﾘﾌﾟﾀﾘｰｸ事件を題材にJavaデバッギ
+ングの様子を見てみた。まとめは以下のようになる。
+
+・straceで-ffオプションにより各スレッドをトレースすると便利杉
+・javaの-Xrunhprofではdepthに大きな数を指定するのが必須テク
+・javaのトレースを取ったら変な例外が発生していないか探すといいことあるカモ
+・javaのprintfデバッグを行う際には例外をnewしてその場でprintStackTraceすると便利すぎて失禁しる
+
+　他にも便利なデバッグ技があったら是非教えてくだきい！
+
+
+

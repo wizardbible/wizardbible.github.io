@@ -1,0 +1,351 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第3章: Windows File Protection Hacking ---
+
+著者：Kenji Aiko
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　システムファイルのリバースエンジニアリングを行っていると、Windows File
+ Protection（WFP）の存在がとても面倒に感じます。セキュリティ的観点から見
+ると、WFPはとても重要なシステムですが、プログラマや解析者からすると少しや
+っかいな存在です。よって私は、どうにかしてこのWFPを制御できないか、と考え
+ました。このテキストは、その方法を模索した結果を書き記したものです。
+　私の環境は「WindowsXP SP2」であるため、このテキストは基本的にその環境に
+従って書かれています。WFPはWindowsのバージョンによって多少の違いがあるた
+め、もしかしたら他の環境では勝手が違うかもしれません。あらかじめご了承く
+ださい。
+
+
+■0x02.) Windows File Protection（WFP）とは
+
+　「Windows File Protection」とは、Windows2000にて新しく採用されたファイ
+ル保護機能のことであり、一般のアプリケーションに、Windowsのシステムファイ
+ルの変更を行わせない仕組みのことです。以後、Windows2000/XP/2003にて同様の
+機能が実装されています。
+　本来、WFPとは、アプリケーションソフトのインストール時に、システムファイ
+ルが上書きされ、Windowsが不安定になったり、これまで正常に動作していたアプ
+リケーションに問題が発生したり、といったこと（いわゆるDLL地獄）を防ぐため
+に実装されたものです。例えば、WINDOWSフォルダ（C:\WINDOWS）やsystem32フォ
+ルダ（C:\WINDOWS\system32）には、Windowsの根幹を担うシステムファイルが多
+数存在します。これらのファイルを、一般のアプリケーションが容易に変更する
+ことができたならば、OS自体の動作に影響が出てしまいますし、また、ウイルス
+やスパイウェアが意図的にシステムファイルを都合のよいように改竄することも
+可能となります。つまり、セキュリティ的観点から、システムファイルの変更は
+好ましくありません。よって、マイクロソフトは、Windows2000にてWFPと呼ばれ
+るファイル保護機能を実装しました。
+　WFPによって保護されているファイルは、変更や削除ができなくなり、基本的に
+一般のアプリケーションからはアクセスできません。つまり、どのようなアプリ
+ケーションをインストールしても、どのような悪質なコンピュータウイルスに感
+染しても、保護されているファイルだけは、OSインストール時のままというわけ
+です。そして、このシステムによって、Windowsはとても安定したシステムを維持
+することができるようになりました（もちろんこれだけの理由ではありませんが）。
+　ちなみに、Windows ME（Millennium Edition）にも、WFPに似たような機能が搭
+載されていますが、こちらは「System File Protection」と呼ばれるものであり、
+このテキストでは別物と解釈し、扱わないものとします（ただし、どちらもほぼ
+同じ機能だと思われますが）。
+
+
+■0x03.) 保護機能の仕組み
+
+　ファイル保護はさほど難しい仕組みで動作していません。保護対象のファイル
+に対して、何かしらの変更が行われた場合、まず「C:\WINDOWS\system32\dllcache」
+フォルダ内に、同様のファイルが存在しないかを調べます。もし、同様のファイ
+ルが存在するなら「C:\WINDOWS\system32\dllcache」からファイルが復元される
+ことになります。
+　試しに、「C:\WINDOWS」フォルダ内にある「notepad.exe」のファイル名を変更
+してみてください。
+
+（図1）http://ruffnex.oc.to/kenji/text/wfp/wfp1.png
+
+　ファイル名を変更すると、実質「notepad.exe」というファイルは無くなったこ
+とになるため、ファイル保護機能が働きます。保護機能が働くと「C:\WINDOWS」
+以下に、新たに「notepad.exe」が作成されます。ちなみに「C:\WINDOWS\system
+32\dllcache」フォルダ以下に「notepad.exe」のバックアップファイルが無いと、
+当然「notepad.exe」ファイルは復元されないため、ファイル名を変更する場合は、
+必ず「C:\WINDOWS\system32\dllcache」フォルダ以下に「notepad.exe」のバック
+アップファイルが存在することを確認してから行ってください（といっても、ほ
+ぼ確実にありますので問題ないと思いますが）。
+
+（図2）http://ruffnex.oc.to/kenji/text/wfp/wfp2.png
+
+　さて、dllcacheフォルダからファイルが復元されるということは、もし、dllc
+aheフォルダ内に「notepad.exe」のバックアップファイルがない、もしくは偽物
+（まったく異なったファイル）が保存されていた場合、ファイルが復元できない
+ことになります。すると、「システムファイルが変更され復元できないため、イ
+ンストールCDを挿入してください」という旨のメッセージボックスが表示されま
+す。
+
+（図3）http://ruffnex.oc.to/kenji/text/wfp/wfp3.png
+
+　ここで指示に従ってインストールCDを入れると、インストールCDからファイル
+の復元が行われますが、もし、インストールCDを入れずに「キャンセル」を選択
+すると、復元されずに終わります。
+　つまり、まとめると、WFPの保護機能は次の処理を行うことになります。
+
+・dllcacheフォルダ内にキャッシュがあれば、dllcacheフォルダから復元する
+・dllcacheフォルダ内にキャッシュがなければ、警告のダイアログボックスを表
+示する
+
+　このような仕組みの元、システムファイルはあらゆるアプリケーションから保
+護されています。
+
+
+■0x04.) WFPの無効化
+
+　WFPを働かせないようにするためには、Windowsをセーフモードで起動する必要
+があります。セーフモードで起動すると、WFPは起動時から無効になっているので、
+システムファイルを任意に変更することが可能です。しかし、いちいちセーフモ
+ードで再起動するのも面倒くさいというわけで、便利なツールが公開されています。
+
+Windows File Protection Switcher 1.0
+http://fileforum.betanews.com/detail/Windows_File_Protection_Switcher/1106499902/1
+
+　「Windows File Protection Switcher 1.0」はWFPの「有効」「無効」を切り替
+えることができます。また、「セーフモードで実行してくれ」と書かれてありま
+すが、普通の状態でも問題なく動作します。ただし、インストールCDの挿入を求
+めるダイアログボックスが表示されますので、それに「キャンセル」を選択する
+必要があります。
+　このツールが内部でどのような動作を行っているかは、解析してみなければ分
+かりませんが、WFPの無効化は、Windowsのバージョンによって多少異なります。
+以下にその詳細を示します。ちなみに、以下の解説に出てくる、レジストリの「
+SFCDisable」キーとは、レジストリの「HKEY_LOCAL_MACHINE\SOFTWARE\Microsof
+t\Windows NT\CurrentVersion\Winlogon」以下にある「SFCDisable」キーのこと
+です。
+
+-----  Windows 2000 SP2の場合
+1. セーフモードで起動
+2. C:\WINDOWS\system32\sfc.dllをバイナリエディタで開く
+3. オフセット「0x6211」から2バイトの値を「8BC6」から「9090」へ変更
+4. レジストリの「SFCDisable」キーの値を「0xffffff9d」へ変更
+5. Windowsを再起動
+-----
+
+-----  Windows 2000 SP4の場合
+3. オフセット「0x62DB」から2バイトの値を「8BC6」から「9090」へ変更
+これ以外はWindows 2000 SP2の場合と同じ
+-----
+
+-----  Windows XPの場合
+1. セーフモードで起動
+2. C:\WINDOWS\system32\sfc_os.dllをバイナリエディタで開く
+3. オフセット「0xE2B8」から2バイトの値を「8BC6」から「9090」へ変更
+4. レジストリの「SFCDisable」キーの値を「0xffffff9d」へ変更
+5. Windowsを再起動
+-----
+
+-----  WindowsXP SP1の場合
+3. オフセット「0xE3BB」から2バイトの値を「8BC6」から「9090」へ変更
+これ以外はWindows XPの場合と同じ
+-----
+
+-----  WindowsXP SP2の場合
+3. オフセット「0xECE9」から3バイトの値を「33C040」から「909090」へ変更
+これ以外はWindows XPの場合と同じ
+-----
+
+　上記の操作を手動で行うことで、WFPを解除することができます。ただし、いろ
+いろと面倒ですし、システムファイルを変更するので、万が一のことがあるかも
+しれません。なので、もし解除だけしたいならば、ツール（Windows File Prote
+ction Switcher 1.0）を使う方がよいでしょう。ただ、このツールにも「自己責
+任で使用してください」と書いてあったりしますが…（笑）。
+
+
+■0x05.) WFP制御へのアプローチ
+
+　WFP無効化へのアプローチとして、sfc.dll（もしくはsfc_os.dll）の上書きを
+紹介しました。これは、もっともシンプルな方法です。しかし、これ以外にもWF
+Pを無効化する手段はいくつか存在します。例えば「C:\WINDOWS\system32\sfcfi
+les.dll」を変更する方法です。
+　sfcfiles.dllファイルには、WFPの対象となるファイルパスがUNICODE形式で保
+存されています。よって、それらのファイルパスを変更することで、任意のファ
+イルのWFPを無効化することができます。
+
+（図4）http://ruffnex.oc.to/kenji/text/wfp/wfp4.png
+
+　重要なAPIを提供しているuser32.dllも、もちろんWFPの対象となっています。
+しかし、sfcfiles.dllファイルに記述されているuser32.dllのパスを変更するだ
+けで、user32.dllがWFPの対象から外されます。このように、システムファイルを
+バイナリレベルで操作することにより、WFPは簡単に無効化することができます。
+　しかし、sfcfiles.dllファイルのWFP対象ファイルを見ていると、とても面白い
+ことに気づきます。それは、WFP対象ファイルに、sfc.dllも、sfc_os.dllも、sf
+cfiles.dll自身さえも含まれているということです。つまり、WFPを無効化するた
+めに編集しなければならないファイルがすべて、WFPの対象となっているわけです。
+よって、仮に悪意あるプログラムがWFPを無効にしようと企んだとしても、必ず一
+度はWFPに引っかかることになります。一度引っかかれば、警告ダイアログボック
+スによってユーザにその旨が知らされますので、十分にセキュアだと言えます。
+いやー、Windowsは実によく考えて作られていますね(^^;。
+　しかし、これは、非公開APIを利用することで簡単に突破できます。sfc_os.dl
+lがエクスポートしている、エクスポート序数が「5」の関数を呼び出すことで、
+一時的に任意のファイルに対してのWFPを解除することができます。この関数は関
+数名が存在しないため、とりあえずここでは、関数名をDisWfpとします。では、
+DisWfp関数の定義を以下に示します。
+
+-----  DisWfp関数の定義
+DWORD WINAPI DisWfp(   // 戻り値は成功時0、失敗時1
+    DWORD dwA,         // 0固定（詳細不明）
+    WCHAR *szFile,     // WFPを無効にするファイルパス（UNICODE）
+    DWORD dwB          // -1固定（詳細不明）
+);
+-----
+
+　この関数を呼び出すことで、szFileで指定したファイルへのWFPが「一時的に」
+無効になります。「一時的に」というのは、この関数を呼び出して、約1分くらい
+だけWFPが無効になるからです。関数呼出し後、1分を経過するとまたWFPが有効に
+なりますので、その1分間に対象ファイルを変更する必要があります。
+　では、以下のソースコードを見てください。
+
+-----  dwfp1.cpp
+#define WIN32_LEAN_AND_MEAN
+#define STRICT
+
+#include <windows.h>
+#include <tchar.h>
+#include <stdio.h>
+
+typedef DWORD (WINAPI *PDISWFP)(DWORD dwA, WCHAR *szFile, DWORD dwB);
+
+int main(int argc, char *argv[])
+{
+    if(argc < 3){
+        printf("%s [src file] [dest file]\n", argv[0]);
+        return 1;
+    }
+    
+    char *srcfile  = argv[1];
+    char *destfile = argv[2];
+    
+    HMODULE hMod = NULL; // sfc_os.dll handle
+    PDISWFP pWfp = NULL; // function ptr
+    
+    try{
+        if((hMod = LoadLibrary("sfc_os.dll")) == NULL)
+            throw 1;
+
+        if((pWfp = (PDISWFP)GetProcAddress(hMod, (LPCSTR)5)) == NULL)
+            throw 2;
+
+        WCHAR wdestfile[1024];
+        MultiByteToWideChar(CP_ACP, 0, 
+            destfile, -1, wdestfile, 1024 * sizeof(WCHAR));
+        
+        if(pWfp(0, wdestfile, -1))
+            throw 3;
+
+        CopyFile(srcfile, destfile, FALSE);
+        printf("Copy \"%s\" to \"%s\" successed!\n", srcfile, destfile);
+
+    }catch(int err){
+        printf("Error: %d\n", err);
+    }
+    
+    FreeLibrary(hMod);
+    return 0;
+}
+-----
+
+-----  コマンドプロンプト
+C:\>bcc32 -w- dwfp1.cpp
+Borland C++ 5.6.4 for Win32 Copyright (c) 1993, 2002 Borland
+dwfp1.cpp:
+Turbo Incremental Link 5.65 Copyright (c) 1997-2002 Borland
+C:\>
+-----
+
+　「Borland C++ Compiler 5.6.4」にてコンパイルしています。引数にコピー元
+とコピー先のファイルパスを指定します。通常ならば、WFPの対象となっているフ
+ァイルに対してCopyFile関数を実行すると、エラーとなりますが、DisWfp関数に
+てWFPを無効にしているので、問題なくファイルのコピーを行うことができます。
+system32フォルダ以下にあるcalc.exeは、Windowsに標準で搭載されている電卓プ
+ログラムです。適当な実行ファイルの名前を「calc.exe」として、system32以下
+の電卓プログラムcalc.exeと置換する例を以下に示します。
+
+-----  コマンドプロンプト
+C:\>dwfp1.exe c:\calc.exe c:\WINDOWS\system32\calc.exe
+Copy "c:\calc.exe" to "c:\WINDOWS\system32\calc.exe" successed!
+C:\>
+-----
+
+　これで、system32以下のcalc.exeは、こちらが用意した偽物のcalc.exeに置換
+されました。試しに電卓を起動してみてください。偽物のcalc.exeが起動するは
+ずです。このようにして、WFPは簡単に無効化することができます。
+
+
+■0x06.) 実用的なWFPの制御方法
+
+　DisWfp関数を使うと任意のファイルに対してのみ、WFPを解除することができま
+すが、できるならば、すべてのファイルに対してのWFPを解除したいです。WFPを
+解除するためには、sfc.dllやsfc_os.dllやsfcfiles.dllを変更することで行うこ
+とができますが、これらのファイルを変更しなくとも、WFPを解除することができ
+ます。
+　WFPを行っているプロセスは、システムプロセスであるwinlogon.exeです。これ
+は、WFP対象ファイルを変更したときに表示される警告ダイアログボックスから割
+り出すことができます。ちなみに、私は、警告ダイアログボックスが表示された
+ときにタスクマネージャを起動し、ダイアログボックスのウィンドウからプロセ
+スを調べました。
+　そして、このwinlogon.exeプロセスの内部で、SfcTerminateWatcherThread関数
+を呼び出すことで、WFPを無効化することができます。SfcTerminateWatcherThre
+ad関数とは、DisWfp関数同様に、名前のない関数であり、sfc.dllのエクスポート
+序数「2」としてエクスポートされています。定義は以下のようになっています。
+
+-----  SfcTerminateWatcherThread関数の定義
+DWORD WINAPI SfcTerminateWatcherThread(void);  // 戻り値は成功時0、失敗時1
+-----
+
+　見ての通り引数はなく、戻り値は成功時に0が返ります。この関数をwinlogon.
+exe内部で呼び出すことで、WFPが無効になります。
+　任意の関数を任意のプロセス内部で呼び出させる方法は多数あります。例えば
+DLLインジェクションやスレッドインジェクションです。これらについては、私の
+HPにある「常駐プログラム隠蔽テクニック」や「KeyLoggerとプロセス隠蔽につい
+てのまとめ」を参照してください。
+
+常駐プログラム隠蔽テクニック
+http://ruffnex.oc.to/kenji/text/dll_inj/
+
+KeyLoggerとプロセス隠蔽についてのまとめ
+http://ruffnex.oc.to/kenji/thekeylogger/KeyLogger.html
+
+　このようなテクニックを使用することで、他プロセスへ任意のコードを注入で
+きますが、winlogon.exeはシステムプロセスですので、そのままOpenProcess関数
+を使用したのでは、プロセスが開けません。よって、インジェクション処理を行
+う前に、システムファイルを制御できるよう、OpenProcessToken関数、LookupPr
+ivilegeValue関数、AdjustTokenPrivileges関数を使用して、システムレベルのデ
+バッグ処理を行えるように、特権を取得します。この辺りについては、以下のサ
+イトが参考になるでしょう。
+
+SeDebugPrivilegeを使用して任意のプロセスへのハンドルを取得する方法
+http://support.microsoft.com/default.aspx?scid=kb;ja;131065
+
+　これらの処理を行うことで、WFPを無効にすることができます。
+　本当はこの後、実証コードをずらずらっと載せたかったのですが、ちょっと時
+間がなかったので、実証コードは、私のサイトに公開するときに追加しておくこ
+とにします。すみません(^^;。
+
+
+■0x07.) さいごに
+
+　さて、いかがだったでしょうか。今回は少しHackingっぽいネタを書かせていた
+だきました。WFPの無効化や、システムファイルの改竄などは、どちらかというと
+悪意あるプログラムで使用されそうですが、個人的にはとても面白い内容だと思
+ったので書いてみました。ただ、あまりこういうことに興味のある人は少ないか
+もしれないですが…(^^;。
+　というわけで、今回のHackingネタ、楽しんでいただけたなら幸いです。最後に
+なりましたが、ここまで読んでくれて本当にありがとうございます。
+
+　では、また会う日まで...
+
+
+■0x08.) 参考サイト
+
+Hacking Windows File Protection
+http://www.bitsum.com/aboutwfp.asp
+
+More on disabling Windows File Protection
+http://www.jsifaq.com/SF/Tips/Tip.aspx?id=5392
+
+

@@ -1,0 +1,261 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第３章: ブルースクリーンと仲良くなろうよ ---
+
+著者：IPUSIRON
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) ブルースクリーンって何？
+
+　一言でWindowsといっても、95/98/Me/NT/2000/XP/2003といった様々なバージョンが存在します。これをまとめてWindowsファミリー、95/98/MeをWindows9xシリーズ、NT/2000/XP/2003をWindowsNTシリーズと呼ぶことにします。
+　自分では何も問題の無いと思って操作を行ったのに、画面が勝手に青くなり、強制終了を促される現象を知っているでしょうか。Windows9xシリーズを使ったことがある方ならば、一度は体験したことがあることでしょう（下手したら100回は超える人も･･･）。ここで、「自分では何も問題の無いと思った操作」というのが肝です。自分では問題無いと思っても、PC側にとっては問題があったわけです。なぜ、このような食い違いが起こるのかというと、ユーザーは何気なくソフトウェアを操作している一方、そのソフトウェアにバグがあって、本来アクセスしてはならないWindowsの心臓部（厳密に言えば、カーネル部分）を書き換えたりしてしまい、異常状態を引き起こしてしまうからです。
+　異常状態になってしまうと、Windowsがこのことをユーザーに知らせるために、画面を青くします。もう少し詳細に言うと、Windowsファミリーはカーネルがクラッシュ（パニック）してしまうと、ディスプレイがVGAモードに切り替わって、青い画面になる仕様になっているわけです。この画面が青くなる現象を一般的にはブルースクリーン、正式にはBSOD（Blue Screen Of Death）と呼びます。
+
+
+■0x02.) Windows9xシリーズでブルースクリーンになったらどうするか
+
+　諦めてください（笑）。Windows9xシリーズでブルースクリーンになってしまった場合、諦めて[Ctrl]+[Alt]+[Del]を連打で再起動するしかありません。しかも、ブルースクリーンになった原因を突き止めることも困難です。
+　ユーザーにとってできることは、使用しなくなったアプリケーションはこまめにアンインストール、インストールしたら急におかしくなったらそのアプリケーションは使用しないといったことぐらいでしょう。一番よいのは、再インストールして、最低限のアプリケーションしかインストールしないことでしょう。
+
+
+■0x03.) WindowsNTシリーズでブルースクリーンになったらどうするか
+
+　WindowsNTシリーズの場合、画面に残されたメッセージを解読することでブルースクリーンの原因を突き止めることができます。また、OSのクラッシュダンプを採取できるので、これを基に詳細を知ることもできます。
+
+　「え？　WindowsNTシリーズではブルースクリーンを見たことがないって？　」
+　ブルースクリーンは、カーネル空間内で何らかの原因で障害が発生したときに表示されるものなので、もしかしたらブルースクリーンを見たことが無い人もいることでしょう。それに、マーフィーの法則ではありませんが、見たくないときに限って表示され、実験で見たい思うときに限って表示されないものです。
+　そこで、意図的にブルースクリーンを発生させる方法を教えておきます。この方法が適用できる条件を次に列挙します。
+・Windows2000/XPのみ
+・PS/2のキーボードのみ（USBは不可）
+・レジストリエディタの操作が分かる能力
+
+　では、方法を示します。
+
+1：レジストリエディタを起動します。「HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\i8042prt\Parameters」キーに、新規でDWORD値で「CrashOnCtrlScroll」、その値を「1」として追加します。ちなみに、「i8042prt」はPS/2のキーボードとマウスを制御するIntel8042ポートドライバのことです。
+
+2：レジストリエディタを終了して、マシンを再起動します。
+
+3：再起動後、うまくいけば、[右Ctrl]キーを押しながら[ScrollLock]キーを2回押せば、ブルースクリーンを意図的に起こすことができます。
+
+　ちょっと待ってください。ブルースクリーンを発生する作業は終わりましたが、デフォルトでは自動的に再起動するように設定されているので、画面に表示されたメッセージを読み取ることができません。そこで、自動的に再起動しないように設定しておきましょう。
+
+1：「コントロールパネル」内の「システム」をダブルクリックします。
+
+2：「システムのプロパティ」が表示されるので、「詳細」タブ＞「起動/回復」ボタンを押します。
+
+3：「起動/回復」ウィンドウが表示されたら、「システムエラー」部分の「自動的に再起動する」のチェックボックスのチェックをはずします。そして、「システムログにイベントを書き込む」（後でこのイベントを表示する方法を言及する）と「管理警告を送信する」のチェックボックスにチェックを入れておきます。
+
+4：設定後、[OK]ボタンを押します。再起動を促されますので、再起動しておきましょう。
+
+　これで準備ができました。[右Ctrl]キーを押しながら[ScrollLock]キーを2回押して、ブルースクリーンを意図的に起こしてみましょう（ブルースクリーン後はマシンのリセットボタンしかないので、あからじめ心の準備をしておくこと）。このとき表示されるメッセージは次のようになっているはずです。
+
+-----
+*** STOP: 0x000000E2 (0x00000000,0x00000000,0x00000000,0x00000000)
+
+The end-user manually generated the crach dump.
+
+Beginning dump of physical memory
+Physical memory dump complete. Contact your system administrator or thechnical support group.
+-----
+
+　1行目に着目してください。
+
+-----
+0x000000E2 (0x00000000,0x00000000,0x00000000,0x00000000)
+-----
+
+　この英数字列（0xとなっているので16進数表示）がブルースクリーンが発生した原因を突き止めるヒントとなるわけです。この英数字が何を意味しているかは、MSのWebサイトで配布されているDDK（Driver Development Kit）というデバイスドライバ開発キットをインストールして、「DDK Documentation」というヘルプファイルを参照することで分かります(*1)。
+
+DDKのトップページ：http://www.microsoft.com/japan/whdc/ddk/winddk.mspx
+FAQ：http://www.microsoft.com/japan/whdc/ddk/ddkfaq.mspx
+
+　このURIから、DDKをダウンロードして、インストールします。と言いたいところですが、現在は残念ながらダウンロードできないようです。Windows2000用のDDKはServer 2003 DDKのCD-ROMに含まれます。このCD-ROM自体はタダですが、送料で25$かかります。
+
+　現在は、「Debugging Tools for Windows」というツールの中に「DDK Documentation」が含まれているので、これを次のURIからダウンロードします。今回はベータ版であるVersion 6.3.11（2004年3月1日）を利用することにします。
+
+http://www.microsoft.com/japan/whdc/ddk/debugging/default.mspx
+
+　「Debugging Tools for Windows ベータ版のダウンロード」というリンクをクリックします。WindowsNTの方はまず「Install Windows Installer 1.1 (Windows NT 4.0 - x86) 1.4MB」をあらかじめインストールしておく必要があります。Windows2000/XPなどの場合、これは省いて「Install 32-bit Beta Version 6.3.11 (March 1, 2004) 10MB」をインストールするだけでOKです。
+
+　それでは、「Debugging Tools for Windows」のインストールが終わったとします。
+
+　「スタート」メニュー＞「プログラム」＞「Debugging Tools for Windows」＞「Debugging Help」を起動します。
+　「Debugging Tools for Windows」＞「Bug Checks (Blue Screens)」＞「Bug Check Code Reference」でバグチェックコードを確認できます。意図的に引き起こしたブルースクリーンのバグチェックコードは、1行目の先頭部分の「0x000000E2」です。この項目は次のようになっています。
+
+-----
+Bug Check 0xE2: MANUALLY_INITIATED_CRASH
+[This is preliminary documentation and subject to change.] 
+
+The MANUALLY_INITIATED_CRASH bug check has a value of 0x000000E2. This indicates that the user deliberately initiated a crash dump from either the kernel debugger or the keyboard.
+
+Parameters
+None
+
+Comments
+For details on manually-initiated crash dumps, see Forcing a System Crash.
+-----
+
+　つまり、これは「MANUALLY_INITIATED_CRASH」という意味であることが判明します。
+
+
+　なぜ、意図的にブルースクリーンを発生する仕組みが存在するのかというと、OSがストールしてしまったときに、メモリダンプを採取して解析できるようにするためです。
+
+(*1) 前はMSDNに加入していなければ入手できませんでしたが、現在はフリーで使えます。
+
+
+■0x04.) メモリダンプと戯れる
+
+　バグチェックコードでブルースクリーンの原因である概要が分かりますが、詳細はまだ分かりません。そこで「Debugging Tools for Windows」に付属している「Windows Debugger」（WinDdg）を用いて、保存したイベント（ここではクラッシュしたイベントなのでクラッシュダンプと呼ぶことにする）をダンプします。
+
+　クラッシュダンプはデフォルトで「%SystemRoot%\Minidump」に保存されているはずです。保存場所を変更するには、前述した「起動/回復」ウィンドウで変更できます。しかし、デフォルトのままでは「デバッグ情報の書き込み」の部分が「最小メモリダンプ（64KB）」になっています。これではダンプ量が少なく、情報量を少ないので、「カーネルメモリダンプ」に変更しておきましょう。「完全メモリダンプ」にすれば全てのメモリのダンプを行いますが、そこまでする必要はめったにないでしょう。詳細は次のURIで確認できます。
+
+http://support.microsoft.com/default.aspx?scid=kb;ja;254649
+
+　ただし、HDDの容量は最低限「物理メモリ＋1MB」が必要になります。なぜならば、クラッシュダンプは一旦ページングファイル（「C:\pagefile.sys」に位置する）に採取されされ、その後にOS起動時に指定した保存先にコピーされる仕組みになっているからです。
+　2GB以上のメモリを積んでいるマシンの場合注意すべき点があります。これに関しては次のURIを参考にしてください。
+
+http://support.microsoft.com/default.aspx?scid=kb;ja;274598
+http://support.microsoft.com/default.aspx?scid=kb;JA;241046
+
+　それではデバッガでクラッシュメモリを読み込んで見ましょう。
+　まず、WinDdgを起動します。そして、メニューの「File」＞「Open Crash Dump」で、「MEMORY.DMP」ファイルを指定します。ここでは意図的に引き起こしたブルースクリーンのクラッシュメモリを使います。すると、次のように表示されるはずです。
+
+-----
+Microsoft (R) Windows Debugger  Version 6.3.0011.2
+Copyright (c) Microsoft Corporation. All rights reserved.
+
+
+Loading Dump File [G:\MEMORY.DMP]
+Kernel Summary Dump File: Only kernel address space is available
+
+************************************************************************
+WARNING: Dump file has inconsistent set-bit count.  Data may be missing.
+************************************************************************
+Symbol search path is: *** Invalid ***
+****************************************************************************
+* Symbol loading may be unreliable without a symbol search path.           *
+* Use .symfix to have the debugger choose a symbol path.                   *
+* After setting your symbol path, use .reload to refresh symbol locations. *
+****************************************************************************
+Executable search path is: 
+*********************************************************************
+* Symbols can not be loaded because symbol path is not initialized. *
+*                                                                   *
+* The Symbol Path can be set by:                                    *
+*   using the _NT_SYMBOL_PATH environment variable.                 *
+*   using the -y <symbol_path> argument when starting the debugger. *
+*   using .sympath and .sympath+                                    *
+*********************************************************************
+*** ERROR: Symbol file could not be found.  Defaulted to export symbols for ntoskrnl.exe - 
+Windows 2000 Kernel Version 2195 (Service Pack 4) UP Free x86 compatible
+Product: WinNt
+Kernel base = 0x80400000 PsLoadedModuleList = 0x8046e8f0
+Debug session time: Fri May 21 13:25:36 2004
+System Uptime: 0 days 0:02:38.203
+*********************************************************************
+* Symbols can not be loaded because symbol path is not initialized. *
+*                                                                   *
+* The Symbol Path can be set by:                                    *
+*   using the _NT_SYMBOL_PATH environment variable.                 *
+*   using the -y <symbol_path> argument when starting the debugger. *
+*   using .sympath and .sympath+                                    *
+*********************************************************************
+*** ERROR: Symbol file could not be found.  Defaulted to export symbols for ntoskrnl.exe - 
+Loading Kernel Symbols
+........................................................................................Page aee4 not present in the dump file. Type ".hh dbgerr004" for details
+.Page ba44 not present in the dump file. Type ".hh dbgerr004" for details
+...................................
+Loading unloaded module list
+.......
+Loading User Symbols
+*******************************************************************************
+*                                                                             *
+*                        Bugcheck Analysis                                    *
+*                                                                             *
+*******************************************************************************
+
+Use !analyze -v to get detailed debugging information.
+
+BugCheck E2, {0, 0, 0, 0}
+
+***** Kernel symbols are WRONG. Please fix symbols to do analysis.
+
+*** ERROR: Module load completed but symbols could not be loaded for i8042prt.sys
+Probably caused by : i8042prt.sys ( i8042prt+1dc3 )　←ここに着目。
+
+Followup: MachineOwner
+-----
+
+　下から3行目の「i8042prt.sys」に着目してください。「i8042prt.sys」はキーボードドライバです。つまり、バグチェックコードによる推測、意図的に起こした[右Ctrl]ボタンを押しながら[ScrollLock]キーを2回押したことと合致します。
+
+　コマンド入力欄に次のように入力してみます（厳密にはkdモードのとき、入力欄に「!analyze -v」）。これでより詳細な情報をチェックできます。詳細な使い方はヘルプ（英語）を参照してください。
+
+-----
+kd> !analyze -v
+*******************************************************************************
+*                                                                             *
+*                        Bugcheck Analysis                                    *
+*                                                                             *
+*******************************************************************************
+
+MANUALLY_INITIATED_CRASH (e2)
+The user manually initiated this crash dump.
+Arguments:
+Arg1: 00000000
+Arg2: 00000000
+Arg3: 00000000
+Arg4: 00000000
+
+Debugging Details:
+------------------
+
+***** Kernel symbols are WRONG. Please fix symbols to do analysis.
+
+
+BUGCHECK_STR:  MANUALLY_INITIATED_CRASH
+
+DEFAULT_BUCKET_ID:  DRIVER_FAULT
+
+LAST_CONTROL_TRANSFER:  from eb081b38 to eb081dc3
+
+STACK_TEXT:  
+WARNING: Stack unwind information not available. Following frames may be wrong.
+80473eac eb081b38 85d26500 85e3d101 00000000 i8042prt+0x1dc3
+80473f0c 80469e5a 85c27d08 85d264e0 85e3d102 i8042prt+0x1b38
+80473f24 8046fff0 ffdff000 0000000c 00000000 nt!KeSynchronizeExecution+0x15a
+8046fd60 00000000 8046fd68 8046fd68 8046fd70 nt!HalPrivateDispatchTable+0xc38
+
+
+FOLLOWUP_IP: 
+i8042prt+1dc3
+eb081dc3 5e               pop     esi
+
+SYMBOL_STACK_INDEX:  0
+
+FOLLOWUP_NAME:  MachineOwner
+
+SYMBOL_NAME:  i8042prt+1dc3
+
+MODULE_NAME:  i8042prt
+
+IMAGE_NAME:  i8042prt.sys
+
+DEBUG_FLR_IMAGE_TIMESTAMP:  3e25b9e5
+
+STACK_COMMAND:  kb
+
+BUCKET_ID:  WRONG_SYMBOLS
+
+Followup: MachineOwner
+-----
+
+
+■0x05.) おわりに
+
+　今月の講座はいかがでしたでしょうか。
+　Windows嫌いが多いことは事実ですが、現実問題としてWindows無しでは業務ができない方が大半だと思います。Windowsがユーザーに対して歩み寄りしてこないならば、ユーザーである我々がWindowsに対して歩み寄るしかないような気もします。この講座を読んで、Windowsと少しでも心を近づけることができた人がひとりでも増えたら本望です。
+

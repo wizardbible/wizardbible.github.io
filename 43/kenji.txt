@@ -1,0 +1,263 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: デジタルフォレンジック入門 ---
+
+著者：Kenji Aiko
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　デジタルフォレンジック（以下フォレンジック）とは、パソコンのハードディ
+スクに残るデータを特殊な方法で保全、解析し、利用者による不正行為の痕跡を
+調査すること、らしいです。詳しくは以下を参照ください。
+
+デジタル・フォレンジックとは
+http://itpro.nikkeibp.co.jp/article/Keyword/20070323/266134/
+
+　ここにはハードディスクと書かれてありますが、データの保存媒体はハードデ
+ィスクだけではありませんので、意味としては、フロッピーディスクやCD、DVD、
+USBメモリ、SDカードなど、多様な保存メディアに対しての詳細なデータ解析が、
+総称としての「デジタルフォレンジック」の意味かなと思います（たぶん）。
+　それで「じゃあ具体的にフォレンジックっていったい何をすることなのか？」
+というのがこのテキストのテーマなのですが、簡単に言えば「記憶媒体に保存さ
+れているデータをダンプして、それを解析しようぜ！」という話です。
+　LinuxマシンにUSBメモリを指し、ddコマンドを打つとUSBメモリに保存されてい
+るデータがダンプされます。
+
+-----  terminal
+# dd if=/dev/sdb1 of=/home/kenji/usb.bin
+-----
+
+　このダンプされたデータ（usb.bin）をバイナリエディタで解析すれば、いろ
+いろな情報が得られます。これが、フォレンジックの基本的な作業です。が、51
+2GBとかあるハードディスクをダンプして、それをバイナリエディタで解析すると
+か普通に無理なので、いろいろなツールを使ってそれを自動化（もしくは便利に）
+して、すばやくデータ解析を行うというのが、本格的なフォレンジック作業とい
+うものかと思います。
+
+
+■0x02.) 削除したファイルはきっと削除されてません
+
+　USBメモリに100個の画像が保存されています。このUSBメモリをWindowsXPから
+読み込み、全部の画像をコピーした後、USBメモリ自体をフォーマットします。フ
+ォーマットしたので、もう100個の画像を見ることはできませんが、実は物理メモ
+リ上には、まだこれらの画像のデータは保存されています。
+　フォーマットしたUSBメモリをddコマンドでダンプし、バイナリエディタで特定
+のファイルデータを検索すると、おそらくヒットします。これは何故か？　答え
+は、OSが全部消すのがメンドイからです（ホントか？）。Windowsが管理するUSB
+メモリは、だいたいFATというファイルシステムが使われています。そして、ファ
+イルシステムにはヘッダというファイルを管理するデータが付加されており、そ
+こには、削除フラグという、このファイルが削除されたものであるかどうかを意
+味するフラグが存在します。詳しくは以下のアドレスを参照のこと。
+
+FAT FS フォーマットの実装についての覚え書き
+http://www.geocities.co.jp/SiliconValley-PaloAlto/2038/fat.html
+
+　ファイルを削除するという行為は、一見「ファイルデータが存在する物理メモ
+リをすべて0で埋める」というような、本当に削除するという印象を受けますが、
+実際は「ファイルシステム上、データが見えないようになる」というだけであり、
+本当にデータが消えているわけではありません。これは、全部0に書き換えると時
+間がかかるが、削除フラグを立てるだけなら一瞬でできるため、このような仕様
+になっていると考えられます。
+　このような、削除されたファイルが見える、消したファイルを復元できる、と
+いう方向性から、フォレンジックという技術が使われます。
+
+
+■0x03.) フォレンジックツール
+
+　実は、フリーのフォレンジックツールというのは、ほとんどなく、大抵の有用
+なツールは有料でしかもかなり高価です。趣味で手を出せるものではありません。
+興味がある方は「Encase」「フォレンジック」などで検索してみるとよいかと思
+います。
+　というわけで、本格的にフォレンジックを学びたい方は、それを専門としてい
+る企業に就職してください（笑）。まぁなんだそれという感じですが、しかし、
+フォレンジックはプログラミングと違い、専門的な機器が必要で、趣味でできる
+ほど簡単ではないようです。
+　それでも「雰囲気だけでも味わいたいぜ！」という方は、sleuthkit、autopsy
+というツールがあります。
+
+sleuthkit
+http://www.sleuthkit.org/sleuthkit/
+
+autopsy
+http://www.sleuthkit.org/autopsy/
+
+The Sleuth Kit & Autopsy インストール・設定
+http://pen-test.jpn.org/forensic:tsk:install
+
+　sleuthkitはダウンロードサイトからソースコードをダウンロードし、configure
+、make、make install、のコンボでOKです。autopsyは少しややこしく、まずはデ
+ータやログを保存するディレクトリを作る必要があります。なので、あらかじめ「
+mkdir /var/evidence」と入力し、保存先を作っておいて、makeを実行します。
+
+-----  terminal
+# tar xvzf sleuthkit-2.52.tar.gz
+# cp -r sleuthkit-2.52 /usr/local/
+# cd /usr/local/
+# ln -s sleuthkit-2.52 sleuthkit
+# cd sleuthkit
+# ./configure
+（省略）
+# make
+（省略）
+# make install
+（省略）
+# mkdir /var/evidence
+# tar xvzf autopsy-2.10.tar.gz
+# cp -r autopsy-2.10 /usr/local/
+# cd /usr/local/
+# ln -s autopsy-2.10 autopsy
+# cd autopsy
+# make
+（省略）
+Enter the directory where you installed it:
+/usr/local/sleuthkit（←sleuthkitのインストール先を入力）
+
+Have you purchased or downloaded a copy of the NSRL (y/n) [n]
+n（←入力）
+
+Enter the directory that you want to use for the Evidence Locker:
+/var/evidence（←データやログの保存先を入力）
+-----
+
+　これでインストール完了です。あとはautopsyを実行します。
+
+-----  terminal
+# ./autopsy -C 172.17.0.38
+-----
+
+　IPアドレスの部分には、WebGUIを利用するPCのIPアドレスを入力します。auto
+psyはデフォルトでポート9999番を使いますので、ブラウザから「http://172.17.
+0.38:9999/autopsy」と入力すると、帽子をかぶった犬がPCを見ている画面が表示
+されます。
+
+http://ruffnex.oc.to/kenji/forensic/pic/1.png
+
+
+■0x04.) フォレンジックをやってみる
+
+http://ruffnex.oc.to/kenji/forensic/wb43.zip
+
+　ここにフォレンジックの対象となるファイルを用意しました。この中に隠され
+ているパスワードを探してください。USBメモリのイメージファイルなので、mou
+ntすれば内容を開くことはできますが、対象となるパスワードが書かれたファイ
+ルは削除しているため、専用のフォレンジックツールを使って解析する必要があ
+ります。
+
+-----  terminal
+# mount -o loop wb43.bin /mnt/usb
+# tree /mnt/usb
+
+（保存された内容が表示されるが、削除されたファイルは当然出力されない）
+
+-----
+
+　というわけで、さっそくautopsyを使います。まず、犬の画面から、真ん中の「
+NEW CASE」を選びます。すると「CREATE A NEW CASE」という画面に移動し、「Ca
+se Name」「Description」「Investigator Names」の3つの入力ボックスが表示さ
+れます。ここに入力する名前はプロジェクト名なので、適当で構いません。すべ
+て「test_wb43」と入力して、「NEW CASE」をクリックしてください。
+
+http://ruffnex.oc.to/kenji/forensic/pic/2.png
+
+　次に「Creating Case: test_wb43」という画面に移ります。そのまま「ADD HO
+ST」をクリックしてください。さらに「ADD A NEW HOST」画面に移ります。デフ
+ォルトのまま、何も変更せずに「ADD HOST」をクリックしてください。
+
+http://ruffnex.oc.to/kenji/forensic/pic/3.png
+http://ruffnex.oc.to/kenji/forensic/pic/4.png
+
+　「Adding host: host1 to case test_wb43」という画面に移ります。「ADD IM
+AGE」をクリックしてください。これで解析の準備ができました。次の画面には、
+8つほどボタンがありますが、「ADD IMAGE FILE」を押してください。すると「AD
+D A NEW IMAGE」画面に進みます。ここで「Location」に「解析対象のファイルパ
+ス」を、「Type」に「Disk」を、そして「Import Method」に「Copy」を入れます。
+
+http://ruffnex.oc.to/kenji/forensic/pic/5.png
+http://ruffnex.oc.to/kenji/forensic/pic/6.png
+http://ruffnex.oc.to/kenji/forensic/pic/7.png
+
+　これで「NEXT」をクリックします。すると、Warningが出て「Disk Image」と「
+Volume Image」の選択がせまられます。ここで「Volume Image」を選択し「OK」を
+クリックしてください。
+
+http://ruffnex.oc.to/kenji/forensic/pic/8.png
+
+　最後に「Image File Details」という画面が出ます。すべての項目はデフォル
+トのままで構いません。「ADD」をクリックしてください。少し時間がかかり、解
+析が終了します。解析が終了したら「OK」をクリックしてください。
+
+http://ruffnex.oc.to/kenji/forensic/pic/9.png
+http://ruffnex.oc.to/kenji/forensic/pic/10.png
+
+　これで読み込みは完了です。「ANALYZE」をクリックして、解析画面へ移ります。
+次に一番左の「FILE ANALYSIS」をクリックします。すると、現在保存されている
+ファイルや、削除されたファイルなどが表示されます。
+
+http://ruffnex.oc.to/kenji/forensic/pic/11.png
+http://ruffnex.oc.to/kenji/forensic/pic/12.png
+http://ruffnex.oc.to/kenji/forensic/pic/13.png
+
+　また、左下に「ALL DELETED FILES」というボタンがあり、これをクリックする
+ことで、削除されたファイルを確認、復元できます。
+
+http://ruffnex.oc.to/kenji/forensic/pic/14.png
+
+　削除されたファイルをひとつずつ見ていくと、パスワードが書かれたファイル
+（すでに削除されているファイル）が表示されます。このように、OSからは見え
+ないデータをダンプして解析することで、削除されたり、隠されたファイルを復
+元することができます。
+
+
+■0x05.) データを完全に消すには？
+
+　Windowsからフォーマットを行ったUSBメモリやフロッピーなどは、OSからは見
+えなくなりますが、完全にデータが消されているわけではないため、autopsyから
+内容を解析できます。フロッピー（もしくはUSBメモリ）を入れ、ddコマンドを使
+うと、内容がダンプできます。そのダンプしたデータをautopsyで読み込むことで、
+まだ完全に消されていないデータを解析できます。
+
+-----  terminal
+# dd if=/dev/sdb1 of=/home/kenji/floppy.bin
+
+（floppy.binをautopsyで解析可能）
+
+-----
+
+　というわけで、フォーマットは完全にデータを消す方法としては必ずしも正し
+くないわけですが、では、「完全にデータを消すにはどうしたらよいか？」とい
+うと、同じくddコマンドを使います。
+
+-----  terminal
+# dd if=/dev/zero of=/dev/sdb1
+-----
+
+　USBメモリへ可能な限りゼロを書き込みます。また、ゼロではなく乱数を使って
+もよいです。
+
+-----  terminal
+# dd if=/dev/uramdom of=/dev/sdb1
+-----
+
+　このような方法で物理メモリを埋めることで、データを完全に消去できます。
+詳しくは以下を参照のこと。
+
+Linux(UNIX)標準コマンドによるデータ抹消
+http://www.cybernetic-survival.net/dd.htm
+
+
+■0x06.) さいごに
+
+　正直、今回書いたものは、まったく専門分野ではありません(^^;。というか、
+実は今回はたまたまフォレンジックを少し学ぶ機会があったため、それの記念に
+書いたものです（覚え書き）。
+　コンピュータセキュリティはかなり幅が広いので、ある分野では天才的なエン
+ジニアでも、専門を少し外れれば初心者レベルだったりもします。でも、だから
+こそ常に学ぶ姿勢が大切だなぁと、最近改めて感じました。
+
+
+

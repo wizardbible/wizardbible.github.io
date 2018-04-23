@@ -1,0 +1,1452 @@
+[-]=======================================================================[-]
+
+                      Wizard Bible vol.27 (2006,6,7)
+
+[-]=======================================================================[-]
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+  ---- 第0章：目次 ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+○第1章：換字式暗号の解読にチャレンジ                             PSY 著
+
+○第2章：Intel x86命令の構造                                   muffin 著
+
+○第3章：初心者のためのハッキング入門（Hack This Site!）   Kenji Aiko 著
+
+○第4章：基礎暗号学講座 ～ 第2回 ～                          IPUSIRON 著
+
+○第5章：お知らせ
+
+○第6章：著者プロフィール
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第1章: 換字式暗号の解読にチャレンジ ---
+
+著者：PSY
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+■0x01.) はじめに
+
+　a->z、b->nなど、ある文字を特定の別の文字に変換する暗号を、換字式暗号と
+いう。暗号の歴史を取り上げた文書には必ずこの暗号が取り上げられ、古い方式
+の「弱い暗号」として紹介されている。
+　換字式暗号では、アルファベット26文字だけでも26の階乗すなわち、26!=26×
+25×24×…×1=403,291,461,126,605,635,584,000,000通りの鍵が存在する。なの
+に「弱い暗号」といわれているのは、文字の出現頻度をカウントすることで、ど
+の文字がどの文字に変換されているか、予想できてしまうからである。この攻撃
+方法はアラビア人達が発見したもので、それまでの何世紀もの間、換字式暗号は
+安全であると信じられてきた。
+
+　今の時代こんな暗号は使われていないと思われるかもしれないが、コンピュー
+タの暗号にしても、文字を別の文字に置き換えるという意味では、換字式暗号の
+応用ということができる。
+　たとえばパスワードなどは、結局のところ、どこかしらに暗号化して格納して
+おくほかない。ハッシュを使って元の文字列に戻せないようにしたものもあるが、
+変換テーブルやXOR演算を使った古典的な暗号に近い手法が用いられているケース
+もある。
+
+　ところで、単一換字式暗号が弱いといっても、はたしてどのぐらい弱いものだ
+ろうか？　たしかに文字が1:1で対応しているのだから、平文と暗号文のペアが手
+に入れば、一瞬にして「鍵」がわかってしまうことは容易に想像できる。しかし、
+暗号文のみ手に入った場合、どのぐらい簡単に解けるのか？　専門家でなくとも
+簡単に解けてしまうのだろうか？
+　自分で解いたこともない人が、したり顔で「脆弱だ」というのには、どうにも
+納得がいかないので、実際にいくつかの文章で試してみた。
+
+　今回は、換字式暗号の解読方法を解説し、読者の皆さんにも、実際に暗号を解
+いていただこうと思う。
+
+
+■0x02.) 一般的な解読方法
+
+　予備知識として、一般的な換字式暗号の解き方について解説しよう。
+
+1：はじめに、その暗号の書かれた言語の出現頻度表を用意する。出現頻度表は、
+Googleなどで検索するとヒットするので参考にしてほしい。既存の文章を集めて
+自分でカウントしてみてもよい。原文の内容がおおまかに推測できる場合、類似
+の文章の出現頻度をカウントしておけばなおよい。たとえばニュースならニュー
+スサイトの、日記ならブログなどの文章の出現頻度表を用いる。元の言語がわか
+らない場合は、複数の言語の出現頻度表を用意しておく必要がある。
+
+2：暗号文の文字および文字の組み合わせの出現頻度をカウントする。暗号がどの
+言語で書かれているかわからない場合は、この段階でどの言語かということも推
+測する必要がある。たとえば、英語では"e"がもっとも多く、13%近くある。英語
+で10%を超える文字は"e"のみである。ドイツ語では"e"の割合が19%となる。日本
+語では母音の割合が多いが、特に"o"が多い。
+
+3:頻度分布を手がかりにいくつかの文字を推測し、復号化してみる。復号化した
+文章を見て、不自然なところがあれば文字を修正する。
+
+4:単語や文章を推測し、文字を推測し、復号化してみる。復号化した文章を見て、
+不自然なところがあれば別の文字にする。
+
+
+■0x03.) 演習課題
+
+　では、実際に暗号解析を行ってみよう。演習用に次のような暗号文を用意して
+みた。
+
+-----  演習用課題
+IHZHNTQARGPIRNRFOHQXHIHZHNTQARGRCEHKOKJXIAKQWXAJXFRMFTZHXALQRKXRWXAKKHIZTGQKWXTQLOKQKRRGQTDHPNTJHXHLTMHAQDGRWGSBKHGMAGFXAKTGFHNQRXAKKHIZTGQERXGWXRQHKQACAHKQRHZHIBQXAGFXHKTWQXTQAKQXHWRIMRCFRMTGMQXHQHKQALRGBRCEHKOKJXIAKQSNHKKHMAKQXHRGHWXRIHTMKQXHWRIMKRCQXAKPIRPXHJBTGMSNHKKHMTIHQXRKHWXRXHTIAQTGMQTDHQRXHTIQWXTQAKWIAQQHGAGAQSHJTOKHQXHQALHAKGHTIFIHHQAGFKTGMMRURNRFBERXGQRQXHKHZHGJXOIJXHKAGQXHPIRZAGJHRCTKATFITJHTGMPHTJHQRBROCIRLXALWXRAKTGMWXRWTKTGMWXRAKQRJRLHTGMCIRLQXHKHZHGKPAIAQKSHCRIHXAKQXIRGHTGMCIRLEHKOKJXIAKQWXRAKQXHCTAQXCONWAQGHKKQXHCAIKQSRIGCIRLQXHMHTMTGMQXHIONHIRCQXHDAGFKRCQXHHTIQXQRXALWXRNRZHKOKTGMXTKCIHHMOKCIRLROIKAGKSBXAKSNRRMTGMXTKLTMHOKQRSHTDAGFMRLTGMPIAHKQKQRKHIZHXAKFRMTGMCTQXHIQRXALSHFNRIBTGMPRWHICRIHZHITGMHZHITLHGNRRDXHAKJRLAGFWAQXQXHJNROMKTGMHZHIBHBHWANNKHHXALHZHGQXRKHWXRPAHIJHMXALTGMTNNQXHPHRPNHKRCQXHHTIQXWANNLROIGSHJTOKHRCXALKRKXTNNAQSHTLHGATLQXHTNPXTTGMQXHRLHFTKTBKQXHNRIMFRMWXRAKTGMWXRWTKTGMWXRAKQRJRLHQXHTNLAFXQBRGHNADHTKRGRCLTGAERXGBROISIRQXHITGMJRLPTGARGAGQXHKOCCHIAGFTGMDAGFMRLTGMPTQAHGQHGMOITGJHQXTQTIHROIKAGEHKOKWTKRGQXHAKNTGMRCPTQLRKSHJTOKHRCQXHWRIMRCFRMTGMQXHQHKQALRGBRCEHKOKRGQXHNRIMKMTBAWTKAGQXHKPAIAQTGMAXHTIMSHXAGMLHTNROMZRAJHNADHTQIOLPHQWXAJXKTAMWIAQHRGTKJIRNNWXTQBROKHHTGMKHGMAQQRQXHKHZHGJXOIJXHKQRHPXHKOKKLBIGTPHIFTLOLQXBTQAITKTIMAKPXANTMHNPXATTGMNTRMAJHTAQOIGHMTIROGMQRKHHQXHZRAJHQXTQWTKKPHTDAGFQRLHTGMWXHGAQOIGHMAKTWKHZHGFRNMHGNTLPKQTGMKTGMTLRGFQXHNTLPKQTGMKWTKKRLHRGHNADHTKRGRCLTGMIHKKHMAGTIRSHIHTJXAGFMRWGQRXAKCHHQTGMWAQXTFRNMHGKTKXTIROGMXAKJXHKQXAKXHTMTGMXTAIWHIHWXAQHNADHWRRNTKWXAQHTKKGRWTGMXAKHBHKWHIHNADHSNTVAGFCAIHXAKCHHQWHIHNADHSIRGVHFNRWAGFAGTCOIGTJHTGMXAKZRAJHWTKNADHQXHKROGMRCIOKXAGFWTQHIKAGXAKIAFXQXTGMXHXHNMKHZHGKQTIKTGMROQRCXAKLROQXJTLHTKXTIPMROSNHHMFHMKWRIMXAKCTJHWTKNADHQXHKOGKXAGAGFAGTNNAQKSIANNATGJHWXHGAKTWXALACHNNTQXAKCHHQTKQXROFXMHTMQXHGXHPNTJHMXAKIAFXQXTGMRGLHTGMKTAMMRGRQSHTCITAMATLQXHCAIKQTGMQXHNTKQATLQXHNAZAGFRGHAWTKMHTMTGMSHXRNMATLTNAZHCRIHZHITGMHZHIGMAXRNMQXHDHBKRCMHTQXTGMXTMHKWIAQHQXHIHCRIHWXTQBROXTZHKHHGWXTQAKGRWTGMWXTQWANNQTDHPNTJHNTQHIQXHLBKQHIBRCQXHKHZHGKQTIKQXTQBROKTWAGLBIAFXQXTGMTGMRCQXHKHZHGFRNMHGNTLPKQTGMKAKQXAKQXHKHZHGKQTIKTIHQXHTGFHNKRCQXHKHZHGJXOIJXHKTGMQXHKHZHGNTLPKQTGMKTIHQXHKHZHGJXOIJXHK
+-----
+
+　簡単にするため、元の文章は英文であることを付記しておく。自力で解かれる
+方は、英語の頻度分布表を用意すればよい。
+　英語はすべて大文字にし、スペースやピリオドなどは取り除いてある。スペー
+スを除かない場合、もっとずっと簡単になる。ワードが一文字であれば、"a"、"I"
+など、使われる語が限られてくるからだ。
+
+　手動で解いていただいてもよいが、慣れていないとかなりの手間がかかる。面
+倒な方はプログラムを使うとよいだろう。
+　私はJavaScriptで簡単な暗号化／復号化ツールを作ってみた。
+
+http://projectseven.jp/code/substitution.htm
+
+　次の節では、私がこのツールを使って実際に暗号を解読した手順を説明する。
+
+
+■0x04.) 解読手順
+
+　説明のない画面で申し訳ないが、このツールの各部には次のようになっている。
+
+1：1番上のテキストボックス…変換元の文字列
+2：2番目のテキストボックス…変換先の文字列
+3：3番目のテキストボックス…変更前の文章
+4：4番目のテキストボックス…変更後の文章
+
+　たとえば、1番上の欄に"a"、2番目の欄に"b"と入力し、下向き矢印を押すと、
+3番目に入力した文字列の"a"がすべて"b"と変換されて4番目の欄に出力される。
+反対に、上向き矢印を押すと、四番目の欄の文字列の"b"がすべて"a"と変換され
+て3番目の欄に出力される。
+
+●準備
+
+　はじめに、[ABC]ボタンを押して、一番上の欄に変換元の文字列を自動挿入する。
+　次のように表示されたはずだ。
+
+-----
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+-----
+
+　まだどの文字が何に復号化されるかわからないため、下の復号用の欄には、何
+か適当な文字、たとえばすべてピリオドにして、次のように入力すればよい。
+
+-----
+..........................
+-----
+
+　3番目の欄に暗号文をコピー＆ペーストれば、準備完了である。
+
+●解読
+
+　さて、セオリーどおり出現頻度解析からはじめよう。
+　まず一文字レベルでの出現頻度をチェックする。出現頻度の欄に"."（ワイルド
+カードで全ての文字にヒット）を入力し、[出現頻度]ボタンをクリックしてみよ
+う。別ウィンドウで、文字、出現回数、出現のパーセンテージが表示されるはず
+だ。
+　出力結果で一番頻度の高いのが"H"で、277回、12.7%も出現していることがわか
+る。英語において10%以上の高い出現頻度を誇るのは、一般的に"e"だといわれて
+いる。仮にここでそれをあてはめてみよう。
+　"H"にあたる部分に"e"を、次のように入力する。
+
+-----
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+.......e..................
+-----
+
+　下向きの矢印をクリックすると、4番目の枠に復号化された文字列が現れる。な
+んとなくそれっぽい感じだが、これだけではまだ本当に"H"→"e"なのかどうかわ
+からない。2番目、3番目に多い文字についても同じ方法で仮にあてはめてみても
+よいが、その前に文字の並びに着目してみよう。英語の単語でもっともよく出現
+するのは、"the"である。そこで、出現頻度の欄に"..H"と入力し、[出現頻度]ボ
+タンをクリックしてみる。
+
+-----
+QXH,49,2.2518382352941177%
+-----
+
+　"QXH"が、この文章の中でなんと49回も出現していることがわかる。これは"th
+e"と想定してもほぼ間違いないだろう。つまり、"Q"→"t"、"X"→"h"、"H"→"e"
+である。
+
+-----
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+.......e........t......h..
+-----
+
+　もう一度、下向きの矢印を押してみよう。復号化された文章を確認する。とく
+に英文としておかしなところは見当たらない。
+　では、もう一度一文字での解析に戻ろう。
+
+-----
+H,277,12.729779411764704%
+T,190,8.731617647058822%
+K,180,8.272058823529411%
+X,172,7.904411764705882%
+Q,163,7.490808823529411%
+R,160,7.352941176470589%
+G,156,7.169117647058823%
+A,153,7.03125%
+-----
+
+　英語において一番出現頻度が高いのは"e"だが、次は"t"または"a"、続いて"o"、
+"i"、"n"と続く。現在、"H"→"e"、"Q"→"t"、"X"→"h"であることがわかってい
+るので、仮に"T"→"a"、"K"→"o"としてみる。
+
+-----
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+.......e..o.....t..a...h..
+-----
+
+　下向きの矢印をクリックしてみよう。
+　"that"など判別できる単語が出てきて、だいぶ文章らしくなってきた。だが、
+同時になんとなく違和感を感じるのではないだろうか。たとえば、3行目には"eo
+oe"などの文字が見える。英語にこんなずらずらと母音が続く単語はない。間にピ
+リオドやカンマが入ったとしても、なんだかおかしい。
+　どうやら"K"→"o"は間違っているようだ。ここは子音を当てはめたほうがいい
+だろう。"enne"も考えられなくはないが、"esse"であればより自然である。"K"→
+"s"、"R"→"o"としたらどうだろうか。
+
+-----
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+.......e..s.....to.a...h..
+-----
+
+　"test"、"these"、"those"などの単語が浮かび上がってきた。"K"→"s"は間違
+いなさそうだ。
+　あとはクロスワードの要領である。
+　2行目に"that.sthe"という文字列が見えるが、これは"that is the"であると想
+像できる。該当する暗号文は、"QXTQ?KQXH"となるので、これを探すと、"?"の部
+分は"A"なので、"A"→"i"であることがわかる。同様に、"theea.thto"を"the ea
+rth to"と推測して"I"→"r"、"arethose.hohearit"は"are those who hear it"と
+推測して、"W"→"w"、"whatiswritte."は"what is written"で"G"→"n"などと予
+測すれば、驚くなかれ、あとはもうわずかな虫食いを残すのみである。
+
+-----
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+i.....ner.s.....to.a..wh..
+-----
+
+　長くなるので、ここから先は自分で解いていってみてほしい。わかりにくけれ
+ば、任意の文字を"-"など適当な記号に置き換えてみて、何になるのか推測してみ
+るとやりやすい。
+　すべて解き終わると、最終的に、次のようになるはずだ。
+
+-----
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+iyfkjgnercsmdluptobaxzwhqv
+-----
+
+　"Y"→"q"は本文中に出てこないが、他がすべて埋まるので想像できるだろう。
+解読された本文は、次のようになる。
+
+-----
+revelationprologuetherevelationofjesuschristwhichgodgavehimtoshowhisservantswhatmustsoontakeplacehemadeitknownbysendinghisangeltohisservantjohnwhotestifiestoeverythinghesawthatisthewordofgodandthetestimonyofjesuschristblessedistheonewhoreadsthewordsofthisprophecyandblessedarethosewhohearitandtaketoheartwhatiswritteninitbecausethetimeisneargreetingsanddo.ologyjohntothesevenchurchesintheprovinceofas…（中略）…
+enisawhimifellathisfeetasthoughdeadthenheplacedhisrighthandonmeandsaiddonotbeafraidiamthefirstandthelastiamthelivingoneiwasdeadandbeholdiamaliveforeverandeverndiholdthekeysofdeathandhadeswritethereforewhatyouhaveseenwhatisnowandwhatwilltakeplacelaterthemysteryofthesevenstarsthatyousawinmyrighthandandofthesevengoldenlampstandsisthisthesevenstarsaretheangelsofthesevenchurchesandthesevenlampstandsarethesevenchurches
+-----
+
+　本文を単語ごとに区切りなおせば、元の文が浮かびあがってくる。
+
+-----
+revelation
+prologue
+the revelation of jesus christ which god gave him to show his servants what must soon take place.  he made it known by sending his angel to his servant john who testifies to everything he saw.  that is the word of god and the testimony of jesus christ.  blessed is the one who reads the words of this prophecy and blessed are those who hear it and take to heart what is written in it because the time is near.  greetings and doxology.  john to the seven churches in the province...
+-----
+
+　お気づきの方がおられるかどうか、本文は聖書のヨハネの黙示録の冒頭から引
+用させてもらった。
+
+
+■0x05.) おわりに
+
+　単純な換字式暗号は、言われているどおりかなり脆弱であるようだ。インター
+ネット上のニュースやブログの文書など、ランダムに暗号化して解読を試してみ
+ると、たいがいの文章がこの方法で復号化できることがわかった。またドイツ語
+などよく知らない言語でも、頻度表と辞書があればある程度復号化できることも
+確認できた。
+
+　最後に、ご自分で試してみたいという方のため、先のツールでランダムな暗号
+文を作成する方法をご紹介する。
+　まずは原文から大文字小文字の区別をなくし、空白などを取り除く必要がある。
+1番上の欄に[ABC]ボタンを押して大文字のアルファベットを入力し、[コピー]ボ
+タンを押して2番目の欄にアルファベットをコピーする。[clear]ボタンを押し、
+[abc]ボタンを押して1番上の欄に小文字のアルファベットを入力する。最後に取
+り除きたい文字、空白や"."、";"などを入れる。
+
+-----
+abcdefghijklmnopqrstuvwxyz ,.;:-!?
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+-----
+
+　本文を3番目の欄に入れ、下向き矢印を押すと、空白の除かれた小文字のみの文
+章ができあがる。
+　[clear]ボタン＞[ABC]ボタンを押して1番目の欄に大文字英字を入れ、[コピー]
+ボタン＞[random]ボタンを押して、下にランダムな順番に並びかえられた英字を
+表示する。
+
+-----
+ABCDEFGHIJKLMNOPQRSTUVWXYZ
+POLTCFKDIWJUVSZMARBNQHXGYE　←置換の鍵となる。生成の都度異なる。
+-----
+
+　上向き矢印のボタンを押せば、3番目の欄にランダムな置換暗号文ができあがる。
+　[random]ボタンの代わりに[rot]ボタンを押せば、カエサルシフト（シーザー暗
+号）と呼ばれる文字を移動文字数に指定した文字ずつシフトした暗号が作れる。
+　ひらがなの暗号も作れるので、友達といろいろな文章を送りあって楽しんでみ
+てもよい。パズルとしてもよいし、お互いに鍵を交換しておいて、簡単な暗号と
+しても使える。ごく短い文であればそう簡単には見破られないかもしれない。た
+だし、慣れた人が見ればすぐに解読できてしまうことを忘れずに！
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第2章: Intel x86命令の構造 ---
+
+著者：muffin
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　MOVとかNOPとかの意味はわかった。それはCPUが理解できる数字に対応してるの
+もわかった。でも実際の詳しい変換がわからない。「Intelのマニュアル（※1）
+を読めといわれた」→「難しい」→「挫折」。
+　Intelのマニュアルは非常に詳細に書いてるため簡単なことまで難しく感じてし
+まいます。まったくの初心者が読むと発狂しそうです。とりあえず余計な知識を
+抜いて骨格となるx86の命令の構造を知ることで、あまりにも詳しすぎるIntelの
+マニュアルから必要なところだけ取捨選択ができるようになると思います。
+　もちろんこれはIntelのマニュアルを読むためのマニュアルではありません。I
+ntel x86の命令の基本構造はディスアセンブラの作成やらデバッガの作成やらコ
+ードジェネレーターの作成やらポリモフィックエンジンの作成やらプロテクター
+の作成やらに必須な知識なので、この辺に興味を持ってる方に読んでもらえれば
+と思います。
+
+【注釈】
+（※1）http://www.intel.com/jp/developer/download/index.htm#ia32
+
+
+■0x02.) Intel x86命令の基本的な構造
+
+　基本的なx86命令の構造は次のようになっています。
+
++--------+--------+--------+-----+--------------+-----------+
+| Prefix | Opcode | ModR/M | SIB | Displacement | Immediate |
++--------+--------+--------+-----+--------------+-----------+
+
+●Prefix
+　0～4バイトのプリフィックス
+
+●Opcode
+　1バイトまたは2バイトのオペコード
+
+●ModR/M
+　1バイトまたはなし。
+
+○ModR/Mの構造
+
+7    6 5          3 2    0
++-----+------------+-----+
+| Mod | Reg/opcode | R/M |
++-----+------------+-----+
+
+●SIB
+　1バイトまたはなし。
+
+○SIBの構造
+
+ 7     6 5     3 2    0
++-------+-------+------+
+| scale | index | base |
++-------+-------+------+
+
+●Displacement
+　1、2、4バイトのアドレスディスプレイスメントまたはなし。
+
+●Immediate
+　1、2、4バイトの即値またはなし
+
+
+　では、ここからそれぞれの詳細な構造を順を追って解説していきます。
+
+
+■0x03.) Prefix
+
+●Prefixのタイプ
+
+　5つのタイプのPrefixがあります。Prefixなし（0バイト）から最大4バイトまで
+のPrefixが使用され、それにより命令の挙動が決定されます。
+
+○Segment Prefix
+　セグメントを決定するプリフィックスです。
+　2E, 36, 3E, 26, 64, 65
+
+○Operand Size Prefix
+　オペランドのサイズを指定するプリフィックスです。ディフォルト以外のオペ
+ランドサイズにするときに使用されます。
+　66
+
+○Address Size Prefix
+　ディフォルト以外のアドレスサイズに変更するときに使用します。
+　67
+
+○REP/REPNE Prefix
+　ループ命令で使用されるプリフィックスです。
+　F3, F2
+
+○Bus LOCK Prefix
+　プロセッサのBUSを制御するプリフィックスです。
+　F0
+
+　一つのオペコードに対して複数のプリフィックスを利用できます。順番は特に
+決まっていません。
+
+●Segment Prefix
+
+　DSが通常デフォルトのセグメントとなっています。これを変更するのがSegmen
+t Prefixです。
+
+2Eh : CS
+36h : SS
+3Eh : DS
+26h : ES
+64h : FS
+65h : GS
+
+---- ex ----
+MOV EAX, DWORD DS:[EAX]   ;   8B00
+MOV EAX, DWORD CS:[EAX]   ; 2E8B00
+----
+
+●Operand size Prefix
+
+　オペランドサイズを変更します。Windowsの32ビット環境なら当然32ビットオペ
+ランドがデフォルトで使用されることになりますが、オペランドサイズプリフィ
+ックスを置くことによって16ビットのオペランドが使用できます。
+
+---- ex ----
+MOV EAX, EAX              ;   89C0
+MOV EAX, EAX              ; 6689C0
+----
+
+●Address Size Prefix
+
+　Operand size prefixと同様にデフォルトのアドレッシングのサイズを変更しま
+す。
+
+---- ex ----
+MOV EAX, DWORD [EAX]     ;   8B00
+MOV EAX, DWROD [BX+SI]   ; 678B00
+-----
+
+●REP/REPNE Prefix
+
+　ストリング命令のループプリフィックスです。
+
+---- ex ----
+LODSD                         ;      AD
+REP LODSD                     ;    F3AD
+REPNE LODSD                   ;    F2AD
+----
+
+●Bus LOCK Prefix
+
+　Busの制御をするプリフィックスです。
+
+
+■0x03.) Opcode
+
+●1バイトオペコード - パターン1
+
+　簡単な1バイトオペコードにPUSHがあります。
+
+PUSH REG --> 01010reg
+
+　上のように変換されます。REGはレジスタの意味で、regは3ビットの値でどのレ
+ジスタを使うかを指定しています。
+
+PUSH EAX --> 50h --> 01010000
+
+　つまり、regが000のときEAXを表しています。
+
+7      3 2    0
++-------+-----+
+| 01010 | 000 |
++-------+-----+
+ opcode   reg
+
+　最初の5ビットがオペコードPUSHを表し、後の3ビットがレジスタEAXを表し、ト
+ータル1バイトで一つの命令を意味しています。
+
+　3ビットで表すレジスタは次の表の通りになります。
+
++-----+--------+---------+---------+
+| reg | 8 bits | 16 bits | 32 bits |
++=====+========+=========+=========+
+| 000 |     AL |      AX |     EAX |
++-----+--------+---------+---------+
+| 001 |     CL |      CX |     ECX |
++-----+--------+---------+---------+
+| 010 |     DL |      DX |     EDX |
++-----+--------+---------+---------+
+| 011 |     BL |      BX |     EBX |
++-----+--------+---------+---------+
+| 100 |     AH |      SP |     ESP |
++-----+--------+---------+---------+
+| 101 |     CH |      BP |     EBP |
++-----+--------+---------+---------+
+| 110 |     DH |      SI |     ESI |
++-----+--------+---------+---------+
+| 111 |     BH |      DI |     EDI |
++-----+--------+---------+---------+
+
+　その他のreg指定をする1バイトオペコードに次のようなものがあります。
+
+INC  REG        --> 01000reg
+DEC  REG        --> 01001reg
+PUSH REG        --> 01010reg
+POP  REG        --> 01011reg
+XCHG EAX, REG   --> 10010reg
+MOV  REG, IMM32 --> 10111reg IMM32
+
+
+----
+MOV EAX,12345678h --> B8 78563412 --> 10111000 IMM32
+                         ^^^^^^^^
+                          IMM32 
+----
+
+　NOPという有名な1バイトオペコードがあります。他のオペコードのことは知ら
+なくてもNOPが90hで表されることだけは知っているという方も多いかもしれませ
+ん。上の表と下の2進数への変換を見比べてみてください。
+
+90h --> 10010 000
+
+　「XCHG EAX, REG」が「10010reg」、regは000なのでEAXとなります。つまり
+
+90h --> 10010 000 --> XCHG EAX, EAX
+
+　これがNOPの正体です。
+
+
+●1バイトオペコード - パターン2
+
+　次に別の型の1バイトオペコードを見てみます。
+
+89C1h --> 10001001 11000001 --> MOV ECX, EAX
+
+　2バイトになっていますが、C1h部分は ModR/Mフィールドというもので実際に命
+令を表す部分は1バイトです。
+
+　では、構造を見ていきます。
+
+MOV ECX, EAX -->
+             89h                  C1h
+       10001001b            11000001b
+
++--------+---+---++-----+------+------+
+| instr  | d | w || Mod | REG1 | REG2 |
++--------+---+---++-----+------+------+
+| 100010 | 0 | 1 ||  11 |  000 |  001 |
++--------+---+---++-----+------+------+
+
+instr  : オペコード命令を表す部分
+    d  : d=0 のとき REG2 REG1の順
+         d=1 のとき REG1 REG2の順
+    w  : 32ビット環境において w=0 のとき  8ビットモード
+                              w=1 のとき 32ビットモード
+         16ビット環境において w=0 のとき  8ビットモード
+                              w=1 のとき 16ビットモード
+ModR/M : （2バイトオペコードのところで解説）
+
+　次に例を示します。
+
+---- dのビットが0のときと1のとき
+
++--------+---+---++-----+------+------+
+| instr  | d | w || Mod | REG1 | REG2 |
++--------+---+---++-----+------+------+
+| 100010 | 0 | 1 ||  11 |  000 |  001 |
++--------+---+---++-----+------+------+
+ instr : 100010 = MOV命令
+     d : 0 -> レジスタの順番がREG2 REG1
+     w : 1 -> （32ビット環境で）32ビットモードを使用
+   Mod : （今は無視）
+  REG1 : 000 -> EAX, AX, ALのどれか
+  REG2 : 001 -> ECX, CX, CLのどれか
+-> MOV ECX, EAX
+
++--------+---+---++-----+------+------+
+| instr  | d | w || Mod | REG1 | REG2 |
++--------+---+---++-----+------+------+
+| 100010 | 1 | 1 ||  11 |  000 |  001 |
++--------+---+---++-----+------+------+
+ instr : 100010 = MOV命令
+     d : 1 -> レジスタの順番がREG1 REG2
+     w : 1 -> （32ビット環境で）32ビットモードを使用
+   Mod : （今は無視）
+  REG1 : 000 -> EAX, AX, ALのどれか
+  REG2 : 001 -> ECX, CX, CLのどれか
+-> MOV EAX, ECX
+
+----
+
+　上の例ではdのビットを変化させることで命令の後にくるREG1とREG2の順が逆に
+なることが分かったと思います。次にwビットの変化の例を見てみます。
+
+---- wのビットが0のとき
+
++--------+---+---++-----+------+------+
+| instr  | d | w || Mod | REG1 | REG2 |
++--------+---+---++-----+------+------+
+| 100010 | 0 | 0 ||  11 |  000 |  001 |
++--------+---+---++-----+------+------+
+ instr : 100010 = MOV命令
+     d : 0 -> レジスタの順番がREG2 REG1
+     w : 0 -> （32ビット環境で）8ビットモードを使用
+   Mod : （今は無視）
+  REG1 : 000 -> EAX, AX, ALのどれか
+  REG2 : 001 -> ECX, CX, CLのどれか
+-> MOV CL, AL
+
+----
+
+　dの特徴を考慮すれば、同じ命令でも2つの表現が作れるものがあることがわか
+ります。
+
+MOV EDI, EAX -> 8B F8 -> 100010 1 1  11 111 000
+MOV EDI, EAX -> 89 C7 -> 100010 0 1  11 000 111
+
+　次にこの型で使用される1バイトオペコードのリストを示します。
+
+OR  REG, REG --> 000010dw
+AND REG, REG --> 001000dw
+SUB REG, REG --> 001010dw
+XOR REG, REG --> 001100dw
+CMP REG, REG --> 001110dw
+ADD REG, REG --> 100000dw
+MOV REG, REG --> 100010dw
+
+●2バイトオペコード
+
+　基本的なことは同じです。インテルのマニュアル参照。
+
+
+■0x04.) ModR/M
+
+　ModR/Mにより命令がどのような型のオペランドを使用するかを指定します。
+　ModR/Mは以下のような構造になっています。
+
+  7   6 5          3 2   0
+ +-----+------------+-----+
+ | Mod | Reg/Opcode | R/M |
+ +-----+------------+-----+
+
+●Mod
+
+00 : メモリアドレス
+     例) EAX, [EAX]
+01 : 1バイトのディスプレイスメントを伴ったメモリアドレス
+     例）[EAX+11]
+10 : 1ダブルワードのディスプレイスメントを伴ったメモリアドレス
+     例）[EAX+11111111]
+11 : 両方のオペランドがレジスタ
+
+●Reg/Opcode
+
+　オペコードには1つのオペランドを必要とするものと2つのオペランドを必要と
+するものがあります。1つのオペランドの命令ではReg/Opcodeの3ビットはコード
+拡張としての役割をもち、2つのオペランドの命令ではレジスタを表すものとなり
+ます。
+
+　コード拡張の例を示します。次の例を見てください。
+
+NOT EAX  --> F7 D0 --> 11110111 11 010 000
+MUL EAX  --> F7 E0 --> 11110111 11 100 000
+DIV EAX  --> F7 F0 --> 11110111 11 110 000
+
+　Reg/Opcodeのところが異なるだけで3つの異なる命令を表しています。Reg/Opc
+odeの部分が命令を決定している部分となっているわけです。
+
+　次にレジスタを表している例を示します。
+
+CMP EDX, EAX --> 39 D0
+
+D0 --> 11 010 000
+[
+ Mod        :  11 --> 両オペランドがレジスタ
+ Reg/Opcode : 010 --> EDX
+ R/M        : 000 --> EAX
+]
+
+●R/M
+
+　ここはModの部分によって意味が変わってきます。
+
+Mod 00, R/M 101 : レジスタは使用されない。代わりにModR/Mの後のにDWORD値がきます。
+                  例） XOR EAX, [12345678h] -> 3305 78563412
+Mod 00, R/M 100 : SIBがModR/Mの直後に置かれることを意味しています。
+Mod 01, R/M 100 : SIBがModR/Mの直後に置かれることを意味しています。
+Mod 10, R/M 100 : SIBがModR/Mの直後に置かれることを意味しています。
+Mod 11          : レジスタを表すことを意味しています。
+
+
+■0x05.) SIB
+
+　SIBはScale, Index, Baseの略です。SIBの構造を次に示します。
+
+ 7     6 5     3 2    0
++-------+-------+------+
+| Scale | Index | Base |
++-------+-------+------+
+  Scale * Index + Base
+
+●Scale
+
+00 : 2^0 = 1
+01 : 2^1 = 2
+10 : 2^2 = 4
+11 : 2^3 = 8
+
+●Index
+
+Scaleで乗算するレジスタを指定します。
+
+●Base
+
+ベースレジスタを指定します。
+
+
+---- 例：----
++-------+-------+------+-------------+
+| Scale | Index | Base |             |
++-------+-------+------+-------------+
+|    00 |   000 |  001 | [1*EAX+ECX] | = [EAX+ECX]
++-------+-------+------+-------------+
+|    01 |   001 |  010 | [2*ECX+EDX] |
++-------+-------+------+-------------+
+|    10 |   010 |  111 | [4*EDX+EBX] |
++-------+-------+------+-------------+
+|    11 |   000 |  011 | [8*EAX+EBX] |
++-------+-------+------+-------------+
+----
+
+
+■0x06.) Displacement
+
+　ModR/MでModが01または10のときディスプレイスメントを伴ったアドレス指定に
+なります。
+
+Mod 01 : 1バイトのディスプレイスメント
+Mod 10 : 1ダブルワードのディスプレイスメント
+
+---- 例 ----
+8B BD 78563412 --> MOV EDI, [EBP+12345678h]
+
+       instr : 100010 --> MOV r32, r/m32
+           d : 1 --> REG1 REG2 の順
+           w : 1 --> 32ビットモード
+         Mod : 10 --> 1ダブルワードのディスプレイスメントを伴うメモリアドレス
+  Reg/Opcode : 111 --> EDI
+         R/M : 101 --> EBP
+displacement : 12345678h *
+-----
+
+■0x07.) Immediate
+
+　即値を表す領域です。
+　例えば「05h」が「ADD EAX,imm32」を表すので、「05 78 56 34 12」で「ADD 
+EAX,12345678h」となります。
+
+■0x08.) あとがき
+
+　これでIntelの基本的な命令のフォーマットが理解できたと思います。細かい命
+令の詳細についてはIntelの命令レファレンスにすべて載っているのでそれを参考
+にすればいいでしょう。
+　これでディスアセンブラを作れるね！
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第3章: 初心者のためのハッキング入門（Hack This Site!） ---
+
+著者：Kenji Aiko
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　前々から、WBで一度、初心者のための解説記事を書きたいと思っていたのです
+が、なかなか書く機会がありませんでした。また、前々から、ハッキングゲーム
+の攻略ネタを書きたいと思っていたのですが、これもなかなか書く機会がなく困
+っていました。そんなこんなで、この2つの悩みを同時に解決してくれる今回の内
+容は「初心者のためのハッキング入門」です（なんだこれ？）。実はタイトルは
+すごい悩んだのですが、思い切って、とことん思い切ったものにしました(^^;。
+　というわけで、今回はハッキングゲーム「Hack This Site!」の攻略をやってい
+くことにします。
+
+　「Hack This Site!」http://www.hackthissite.org/
+
+　「ユーザー登録ページ」http://www.hackthissite.org/user/create
+
+　ユーザー登録にはメールアドレスのみ必要になります。あとはユーザー名とパ
+スワードを入力するだけです。英語サイトですが、それほど難しくはないので苦
+労することはないと思います。ユーザー登録が終わったら、さっそくログインし
+て、「challenges」以下にある「Basic Web」へ進んでください。これでLevel1が
+始まります。
+
+
+■0x02.) Level 1
+
+　http://www.hackthissite.org/missions/basic/
+
+　ヒントはないですが、とても簡単な問題です。このページのHTMLを参照すれば、
+入力フォームの上にパスワードが書いてあるのが確認できます。
+
+-----  http://www.hackthissite.org/missions/basic/
+This level is what we call "The Idiot Test", if you can't complete it, 
+don't give up on learning all you can, but, don't go begging to someone
+ else for the answer, thats one way to get you hated/made fun of. Enter
+ the password and you can continue. <br /><br />
+<!-- the first few levels are extremely easy: password is 3853d321 -->
+<center><b>password:</b><br /><form action="/missions/basic/2/index.php
+" method="post"><input type="password" name="password"><br /><br /><inp
+ut type="submit" value="submit"></form></center>
+-----
+
+　HTMLに「the first few levels are extremely easy: password is 3853d321」
+という一文が見つかります。というわけで、パスワード「3853d321」で次に進め
+ます。
+
+
+■0x03.) Level 2
+
+　http://www.hackthissite.org/missions/basic/2/index.php
+
+　2問目は「開発者のサムはパスワード認証のためのスクリプトを書いたが、肝心
+のパスワードファイルをアップロードするのを忘れてしまった。ということで、
+この認証を突破してくれ！」という問題です。とりあえず、適当なパスワードを
+入れてみると、「ファイルがありません」と言われスクリプトエラーとなります。
+　この問題はある種の推測が必要です。「パスワードを比較しなければならない」
+から、そのために「ファイルを参照する」という流れでプログラムが組まれてい
+ることを推測しなければなりません。つまり、パスワードが入力されていると、
+それを比較しようとして、ファイルを参照しようとするわけであり、もしパスワ
+ードが入力されていなかったらどうだろうか？　と考えることで問題を解くこと
+ができます。よって、何も入力せずに「submit」ボタンを押せばよいわけです。
+まぁまだ2問目なので、それほど難しいものはないでしょう。
+
+
+■0x04.) Level 3
+
+　http://www.hackthissite.org/missions/basic/3/index.php
+
+　開発者サムは「今度はちゃんとパスワードファイルをアップロードした」らし
+く、その状態で脆弱性を発見して攻略することが今回の問題です。そして、今回
+重要なのはHTMLのformタグです。
+
+-----  http://www.hackthissite.org/missions/basic/3/index.php
+<form action="/missions/basic/4/index.php" method="post">
+<input type="hidden" name="file" value="password.php">
+<input type="password" name="password"><br /><br />
+<input type="submit" value="submit"></form>
+-----
+
+　POSTメソッドで「/missions/basic/4/index.php」へ「file」として「passwor
+d.php」を渡していることがわかります。よって、このpassword.phpへブラウザで
+アクセスします（ディレクトリはもちろん/missions/basic/4/）。
+
+-----  http://www.hackthissite.org/missions/basic/4/password.php
+25329228
+-----
+
+　これが、Level4へのパスワードとなります。まだまだ簡単ですね。
+
+
+■0x05.) Level 4
+
+　http://www.hackthissite.org/missions/basic/4/index.php
+
+　「開発者サムは忘れっぽいので、パスワードもすぐに忘れてしまう。だから、
+忘れても大丈夫なように自分のメールアドレスにだけ送信してくれるパスワード
+取得ボタンを作成したようだ」
+　というわけで、このパスワード送信ボタンの脆弱性をつくのが今回の問題です。
+毎度のごとくHTMLのformタグを参照します。
+
+-----  http://www.hackthissite.org/missions/basic/4/index.php
+<form action="/missions/basic/4/level4.php" method="post">
+<input type="hidden" name="to" value="webmaster@hulla-balloo.com">
+<input type="submit" value="Send password to Sam"></form>
+-----
+
+　すると、「to」に「webmaster@hulla-balloo.com」というメールアドレスが設
+定されていることがわかります。というわけで、ここを自分のメールアドレスに
+変更したデータをaction先の「/missions/basic/4/level4.php」へ送ってやるこ
+とで、Level4クリアとなります。が、これにはいろいろと攻略法があって、例え
+ば、次のようなファイルを作成し、ブラウザで開いてボタンを押してもよいです。
+
+-----  test.html
+<form action="http://www.hackthissite.org/missions/basic/4/level4.php" method="post">
+<input type="hidden" name="to" value="test@test.com">
+<input type="submit" value="Send password to Sam"></form>
+-----
+
+　多分、これが一番簡単な方法だと思います。あと、IEならアドレスバーで利用
+できる JavaScriptを使ってもよいです。
+
+-----  IEのアドレスバーに入力
+javascript:void(document.forms[1].to.value="test@test.com");void(document.forms[1].submit());
+-----
+
+　この方法だと、いちいちローカル環境にファイルを保存せずともよいので、手
+軽な方法だと思います。自分のメールアドレスをlevel4.phpへPOSTしたら次のデ
+ータが出力されます。
+
+-----  http://www.hackthissite.org/missions/basic/4/level4.php
+password: 67cbb3a7
+-----
+
+　これでLevel4攻略完了です。
+
+
+■0x06.) Level 5
+
+　http://www.hackthissite.org/missions/basic/5/index.php
+
+　Level4の問題にRefererの識別を追加したのが、Level5の問題です。Refererが
+識別されるため、他のページからフォーム情報を投稿することはできません。と
+いうわけで、ローカル環境にファイルを保存して、そこからデータをPOSTすると
+いう芸当はできないことになります。しかし、IEのアドレスバーで扱えるJavaSc
+riptは利用できるため、それを使って攻略できます。
+
+-----  IEのアドレスバーに入力するデータ
+javascript:void(document.forms[1].to.value="test@test.com");void(document.forms[1].submit());
+-----
+
+　また、Refererを吐き出さないproxy（ローカルproxyでも可）や、Refererを操
+作できるブラウザなどを使ってもよいです。
+
+-----  http://www.hackthissite.org/missions/basic/5/level5.php
+Password: cb32e9e9
+-----
+
+　これでLevel5攻略完了です。
+
+
+■0x07.) Level 6
+
+　http://www.hackthissite.org/missions/basic/6/index.php
+
+　Level6は暗号化の問題です。暗号化スクリプトの「平文→暗号文」の変換プロ
+グラムは公開されており、それを使ってパスワードの平文を求めるのが今回の問
+題となります。そして、パスワードを暗号化したものが「6e5gjf>l」であり、こ
+れの平文を探すことになります。
+　暗号化といっても、アルゴリズムはとても簡単なものなので、よく考えればわ
+かります。とりあえず「aaaaa」や「11223344」などをやってみてください。する
+と「abcde」や「124578:;」となります。もうお分かりの通り、1文字目はそのま
+まの文字、2文字目は1つ進めた文字、3文字目は2つ進めた文字（以下同）となっ
+ています。つまり、暗号文「「6e5gjf>l」」に対して、これの逆の処理を行えば、
+平文が求まることになります。いや、実にメンドクサイ（笑）。
+　ちなみに、この暗号化はASCIIコードの順によりスライドされるので、ASCIIコ
+ード表を持って解読に挑んでください。
+
+
+■0x08.) Level 7
+
+　http://www.hackthissite.org/missions/basic/7/index.php
+
+　とりあえず、calコマンドを実行してくれる入力ボックスが存在し、開発者サム
+は、次のレベルへのパスワードが書かれてあるファイルを、同じディレクトリ内
+に「よくわからないあいまいな（bscurely）」名前で保存しているらしいという
+ことがわかっている状態です。calコマンドはカレンダーを表示するUNIXコマンド
+なので、実際に入力してみると、事実カレンダーが出力されます。
+　この問題は結構ハッキングっぽくて、まずこちら側が入力したデータは、その
+ままUNIX環境のコマンドプロンプト（というかターミナル）へ入力されるであろ
+うことが推測できます。
+
+-----
+>cal [input]
+-----
+
+　つまり、以下のinputの部分をこちら側がいくらでも変更することができること
+になります。そして、UNIXでは同時に実行させたいコマンドを「;」で区切ること
+ができるので、lsコマンドとcallコマンドを「;」で区切って同時に実行させれば、
+そのままファイル一覧が取得できることになります。
+　ファイル一覧の中には「k1kh31b1n55h.php」というよくわからないファイルが
+あるので、それにアクセスすることでパスワードを取得できます。
+
+
+■0x09.) Level 8
+
+　http://www.hackthissite.org/missions/basic/8/index.php
+
+　Level8ではSSIの知識が必要になります。
+　SSIに関しては「http://www.openspc2.org/reibun/SSI/」を参照してください。
+
+　SSIには「exec cmd」という任意のコマンドを実行できる命令があります。そし
+て、開発者のステファニーが作ったプログラムは、SHTMLファイルを作成するもの
+であり、つまり、攻撃者が任意のSSI命令を書き込むことが可能になるものです。
+よって、例えば、「<!--#exec cmd="ls" -->」という命令を書き込めば、ディレ
+クトリ内のファイルが列挙されることになります。
+
+-----  「<!--#exec cmd="ls" -->」の入力例
+Hi, tshngmww.shtml hipykpqu.shtml ztxdhjxn.shtml avpfeoie.shtml 
+fviqpmaw.shtml kqbybdzc.shtml dzrnmzgx.shtml npcsygfl.shtml whqx
+xojt.shtml ylomcmvu.shtml uhdppswp.shtml gzntiicx.shtml dzwbqiuu
+.shtml qvzuieng.shtml smcerykh.shtml qjhnmhmq.shtml znodwztr.shtml!
+
+Your name contains 254 characters.
+-----
+
+　しかし、この中にパスワードが書かれてありそうなファイルはありません。と
+いうのも、これはtmpディレクトリ内のファイル一覧であり、パスワードが書かれ
+てあるファイルはそのひとつ下のディレクトリだからです。よって、「ls ../」
+というコマンドを実行させる必要があります。
+
+-----  「<!--#exec cmd="ls ../" -->」の入力例
+Hi, au12ha39vc.php index.php level8.php tmp!
+
+Your name contains 39 characters.
+-----
+
+　すると「au12ha39vc.php」という怪しいファイルが見つかります。このファイ
+ルにアクセスして、Level8クリアとなります。
+
+
+■0x0A.) Level 9
+
+　http://www.hackthissite.org/missions/basic/9/index.php
+
+　Level9はLevel8と同じ脆弱性を利用します。というのも、Level8の脆弱性を利
+用して取得できるのは、Level8のパスワードだろうか？　もちろん違います。任
+意のコードを実行できるというのなら、Level9のパスワードだって取得すること
+は可能じゃないでしょうか。Level9 のパスワードファイルは「/var/www/hackth
+issite.org/html/missions/basic/9/」に存在することが問題文に書かれてあるの
+で、そこに移動してlsコマンドを実行するようなものを「exec cmd」へ渡せばよ
+いことになります。
+　この問題はLevel8の動作を理解していれば簡単に解くことができます。ぜひチ
+ャレンジしてみてください。
+
+
+■0x0B.) Level 10
+
+　http://www.hackthissite.org/missions/basic/10/index.php
+
+　いよいよ最終レベルです。Level10はcookieの問題です。どうやら最終レベルの
+スクリプトは、cookieを取得して、そのデータから閲覧の許可、非許可を出すス
+クリプトらしい。とりあえず適当なパスワードを入力して試してみると、「You 
+are not authorized to view this page」と怒られてしまいます。そして、その
+状態でブラウザが持っているcookieを調べると「level11_authorized=no」という
+cookieが「www.hackthissite.org」からブラウザに与えられているのがわかりま
+す。
+　つまり、この「level11_authorized=no」を「level11_authorized=yes」に変更
+して、このページへアクセスすればよいというわけですが、この問題、IEならば
+level4-5で使用したアドレスバーでのJavaScriptを使うことできます。アドレス
+バーでのJavaScriptでcookieを変更したあと、再度ページをリロードするだけで
+OKです。
+　また、cookieを操作できるブラウザならば、そのまま直接cookie情報を書き換
+えてもよいです。あと、その気になればcookieを変更したデータを送信するクラ
+イアントプログラムをCなりPerlなりで自作してもよいですが、それは結構手間が
+かかるので、あまりお勧めはしません(^^;。
+
+
+■0x0B.) クリアすると？
+
+　すべてのレベルを攻略できたら「Congratulations, you have successfully c
+ompleted every basic level!」というテキストが表示されます。ちなみに、これ
+だけです。これ以外には何のごほうびもありません（笑）。
+　ただ、これはあくまでもBasic（基本）問題であり、楽しいのはこれからです。
+Basicをクリアしたら次は「realistic」へと進んでください。もっと高度で面白
+い問題がたくさんあります。
+
+
+■0x0C.) さいごに
+
+　さて、いかがだったでしょうか。実は世の中にハッキングゲームサイトという
+のは結構あるのですが、日本語版はなかなかなく、日本人の私たちにしてみれば
+ちょっと面白くないものです。出来れば「誰か作って～」という感じなのですが、
+「お前が作れ！」と言われそうなのでダンマリします（ぉぃ。
+　ここで解説したのはあくまで、Basic（基本）問題であり、「Hack This Site!」
+では、まだまだ難易度の高い問題が多数あります。「Realistic」を始めとして、
+暗号問題、プログラム問題、リバースエンジニアリング問題などなど、様々なも
+のがあります。そういう問題も、いずれ攻略記事を書いてみたいのですが、今は
+いかんせん時間と技術がないので無理です(^^;。
+　というわけで、今回の攻略ネタ、楽しんでいただけたなら幸いです。最後にな
+りましたが、ここまで読んでくれて本当にありがとうございます。
+
+　では、また会う日まで...
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第4章: 基礎暗号学講座 ～ 第2回 ～ ---
+
+著者：IPUSIRON
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　今回は前回の暗号講座の続きになります。今回からはちょっと数式が多くなっ
+てきますが、じっくり理解すれば怖くありませんので、安心してください。
+　それでは、早速解説に入ります。
+
+■0x02.) 置換と関数
+
+　関数とは、ある変数に依存して決まる値あるいはその対応を表す式のことです。
+簡単にいうと、何か数値を代入すると、その数値に対応した何らかの数値が出力
+される数式のことです。
+　例えば、y=x+1という関数があった場合、xに3を代入（入力）すれば、yは4にな
+ります（出力）。このように入力と出力の関係を示す式のことを関数というわけ
+です。この辺りの話はプログラミングをやってる人なら既知だと思います。数学
+をやっている人なら、写像といったほうがわかりやすいでしょうか。
+
+　置換とは、あるものを別のものに置き換えることである。
+　例えば、(1,2,3)という3つの数値の並びがあったとする。このとき3つの数値を
+入れ替えて何種類のパターンが存在するでしょうか。ここでは手動でやってみま
+しょう。並びの順番は左からカウントするという決まりにします。まず、(1,2,3)
+の1番目と2番目を入れ替えると、(2,1,3)となります。他には1番目と3番目を入れ
+替えた(3,2,1)、2番目と3番目を入れ替えた(1,3,2)になります。このように2つの
+数値を入れ替えるパターンはこの3種類だけです。
+　それでは3つの数値を全部動かす操作を考えます。(1,2,3)という並びを右にス
+ライドさせてみます。すると(□,1,2,3)となります。3つの並びでなければならな
+いので、飛び出した一番右側を1番目の持ってきます。(3,1,2)になります。プロ
+グラミングで登場するシフトと同じような操作をすることになります。それでは、
+(3,1,2)をもう一度右にシフトさせます。(2,3,1)になります。さらに、もう一度
+右にシフトすると(1,2,3)に戻ってしまうことがわかります。
+　これですべてが登場しました。1,2,3という3つの数の並びのパターンは、次の
+6パターンだけということになります。
+
+(1,2,3)
+(2,1,3)、(1,3,2)、(3,2,1)
+(3,1,2)、(2,3,1)
+
+　もっと簡単に調べる方法もあります。（□,□,□）を考えます。最初の□に1,
+2,3の3つのどれかが入ることができます。仮に1を入れたとします。(1,□,□)と
+なります。すると、2番目の□には1以外の2または3が入ることができます。つま
+り、2通り。ここで2を入れたとします。(1,2,□)の最後の□には残っている3しか
+入ることができません。重複は考えないのでそうならざるえません。ということ
+は、総数のパターンは3×2×1＝6通りということになります。
+　一般的に(□,□,…,□)（□の数はn個）なら、すべてのパターンはn×(n-1)×
+…×2×1通りとなります。数学の世界ではこれを簡単にn!と表記し、「!」マーク
+を階乗といいます。例えば、3!（「3階乗」という）なら、3×2×1となります。
+また、5!=5×4×3×2×1となります。以降、この記号はよく使うので、しっかり
+慣れておいてください。
+
+　階乗を使えば簡単に計算することができるのに、わざわざ手動の方法を取り上
+げたのは自分で考える作業によってそこに存在する法則を発見してもらいたいか
+らです。こういった経験をたくさんやらないと、新しい問題にぶつかったときに
+それを解くアプローチさえも思いつかなくなってしまいます。どんな簡単な問題
+であっても、皆さんには考える癖を付けてもらいたいです。解法をたくさん考え
+るというのも訓練としては大事です。
+　ちょっと話が脱線しました。手動で調べた操作を考えると置換がどのような操
+作かということが実感されたと思います。
+
+　それでは関数と置換を比べてみます。関数の場合はy=x^2のグラフを書くとわか
+るように、横のx軸にある値は、y軸上のx^2の値に対応します。このグラフの場合
+は実数でものを考えていますが、ここでは数値の列だけの世界でとりあえず考え
+てみてください。そうすると、関数の場合は重複が可能で、置換の場合は重複が
+不可能な変換と考えることができます。
+　例えば、(1,2,3)をある関数で操作すると(1,1,1)や(1,2,2)というのもありとし
+て考えるわけです。では、この(1,2,3)を関数操作したときに考えられるパターン
+の総数はいくつあるでしょうか？　皆さんは手動で調べてみてください。答えを
+いうと27通りあります。計算方法としては、置換同様に(□,□,□)で考えます。
+1番目の□には1,2,3の3通り入れることができます。また、2番目の□に入るパタ
+ーン数を考えますが、置換の場合は1番目で入れた数値と違う数値しか入れないの
+で3-1＝2通りでしたが、関数の場合は重複がありなので1番目に入れた数など考え
+ることなく2番目の□には1,2,3の3通りが入ることができます。同様に3番目の□
+も3通りあります。よって、3通り×3通り×3通りで合計27通りあるわけです。
+
+　つまり、関数と置換を比較すると、関数のほうが総数が多いことがわかります。
+これは関数が置換を内包しているからです。実際に置換した結果の並びが関数の
+結果の並びにすべて登場していることを確認してみればわかると思います。
+
+
+■0x03.) ランダム置換と疑似ランダム置換
+
+[定義]すべてのnビット列の集合を{0,1}^nと表し、集合{0,1}^nの要素を並び替え
+る置換πの集合をP_n={{0,1}^n上のすべての置換}と書くことにする。このような
+置換の集合P_nを長さnのランダム置換族と呼ぶ。
+
+　族というのは集合の集合と考えてもらっても問題ありません。
+　例えば、nビット列（n桁あるという意味）は2^n通りあります。(0,0,…,0,0),
+…,(0,1,…,0,1),…,(1,1,…,1,1)の総数が2^n通りあるということです。{0,1}^n
+という集合から{0,1}^nという集合への置換πの総数を考えます。これは2^n通り
+から2^n通りへの置換なので、(2^n)!通りあります。
+　次の図をじっくり見て、理解しておいてください。特に置換の総数が(2^n)!通
+りあるというところが最初はピンと来ないかもしれません。0x02で置換の総数は
+△!通りになるという話をしました。△は(□,□,…,□)における□の数です。つ
+まり、△＝#□となります（#は個数という記号。今後もよく使う）。ここでは2^n
+桁の数値列を考えていたので、□の個数は2^n、即ち#□＝2^nということです。と
+いうことは、△＝#□＝2^nとなり、置換の総数の△!に代入すれば、(2^n)!になる
+わけです。
+　それでもわからなければ、紙に何度も図を描いて考察してみてください。PCの
+画面を見ただけで理解できる人はあまりいないと思います。私も実際そうです。
+PDFファイルの論文などがあっても、かならず印刷しないと理解だけではなく、読
+む気にさえなりません。特に、数学を学ぶうえでは、自分の手を動かして練習問
+題をたくさん解くという訓練が重要です。そうすることでその世界に慣れて、自
+然と脳で考えることができるようになるのです。数学は写経と呼ばれ、多くの数
+学者が写経を通じて数学を理解してきたということを忘れてはなりません。
+
+（図）http://akademeia.info/main/image8/giji1.jpg
+
+[定義]ブロック長nのブロック暗号において、鍵kをひとつ決めたとき、暗号化ア
+ルゴリズムE_Kは平文空間{0,1}^nから暗号文空間{0,1}^nへの置換であり、復号ア
+ルゴリズムD_Kはその逆置換である。
+
+（図）http://akademeia.info/main/image8/block1.jpg
+
+[定義]ENC_c:={E_K|K∈{0,1}^κ}と提議する。このENC_nは、長さnのランダム置
+換族P_nの部分集合になる。つまり、「ENC_n⊂P_n」である。
+
+[考察1]κ=κ(n)～n
+κ(n)は設計の意味で、nに関係するという意味。
+[考察2]#ENC_n=2^κ＜＜#P_n=(2^n)!
+
+　それでは次のような選択平文攻撃を考えます。
+　敵（無限の能力は持たない）はENC_nまたはP_nからランダムに選ばれた置換π
+に平文m_iを送り、c_i=π(m_i)を受け取ることができます。
+
+（図）http://akademeia.info/main/image8/sentaku1.jpg
+
+　このような敵が現実的な時間において、ENC_nとP_nを識別することが困難であ
+るとき、ENC_nを長さnの疑似ランダム置換族といいます。
+　もう少しわかりやすく解説してみます。仮に、πがランダム置換から持ってき
+たものであれば、そのπで暗号化されたものはランダム値です。一方、ENC_nから
+π'を持ってきたとします。これは上記の定義を満たすP_nの部分集合です。この
+π'を使ったとしても、敵にとって平文に対応する暗号文だけを見たとき、そのπ'
+がP_nから持ってきたのかENC_nから持ってきたのかわからななければ、即ちそれ
+がランダム値に見えてしまえば、πは疑似ランダム置換で、ENC_nは疑似ランダム
+置換族ということです。
+
+[定義]疑似ランダム置換の厳密な定義
+
+（図）http://akademeia.info/main/image8/giji3.jpg
+
+[定理]理想的なブロック暗号とは、ENC_nが長さnの疑似ランダム置換族となるよ
+うな暗号となる。
+
+
+■0x04.) ランダム関数と疑似ランダム関数
+
+　置換のときと同様にしてランダム置換族と疑似ランダム置換族を定義できます。
+
+[定義]集合{0,1}^nから集合{0,1}^nへのすべての関数の集合を、R_n={{0,1}^n上
+のすべての関数}と書き、長さnのランダム関数族と呼ぶ。
+
+（図）http://akademeia.info/main/image8/giji2.jpg
+
+[定義]F_nをR_nの部分集合とする。選択平文攻撃を行う敵が、F_nとR_nを識別す
+ることが困難なとき、F_nを長さnの疑似ランダム関数族と呼ぶ。
+
+
+■0x05.) 直観的な意味と乱数について
+
+　0x03と0x04ではちょっと数式がたくさん登場して、わからない人も多いのでは
+ないでしょうか。私自身最初は意味不明でした。とりあえずこの世界に慣れるま
+では直観的に考えても暗号の世界に触れることはできます。
+　直観的に考えると、ランダム関数とは与えられた入力に対して、その出力が決
+定されるものの、その出力はどんな情報からも推測できないランダムな値である
+ような関数のことです。もっと直感的にいうと、ランダム関数から出力された値
+は完全なランダム値（よく口語では乱数、ランダムバリューとかいわれる）にな
+っていて、何を入力したかは推測できないということです。
+　このような関数が現実に存在するかどうかは別として、そのような関数の振る
+舞いをブロック暗号の性質に見立ててて、利用モードの安全性を議論します。簡
+単にランダムと言葉に出していますが、ランダム値を実現することは実際には非
+常に困難です。
+　その困難性を見ていく前に、まず簡単にランダム値とはどのようなものを知っ
+ておかなければなりません。乱数には次の3つの性質を考えることができ、それを
+何個満たすかどうかで乱数のランクが異なります。
+
+---------------------------------------------------------------------------
+無作為性     | 統計的な偏りがなく、でたらめな数列になっているという性質。
+-------------+-------------------------------------------------------------
+予測不可能性 | 過去の数列から次の数を予測できないという性質。
+-------------+-------------------------------------------------------------
+再現不可能性 | 同じ数列を再現できないという性質。
+             | 再現するためには、数列そのものを保存しておくしかない。
+---------------------------------------------------------------------------
+
+　例えば、無作為性の性質を持っていたとしても、再現不可能性を必ず持ってい
+るとは限りません。このように下の性質にいくほど厳しい制限、即ち完全なラン
+ダムに近くなります。
+　この3つの性質を満たすものが完全なランダム値（真のランダム値）です。しか
+し、このような真のランダム値は、コンピュータのソフトウェアでは作り出すこ
+とは不可能です。もしそうしたランダム値を作るとしたらハードウェアの助けが
+必要となります。しかも、かなり複雑でよいアイデアでなければ、偏りが出てし
+まうので、現実的には真のランダム値は使われません。そこで、普通の暗号では、
+無作為性と予測不可能性の2つの性質のみを持つランダム値を使われます。これは
+真のランダムではないので、疑似ランダムと呼ばれます。そうした疑似ランダム
+を生成する関数のことを疑似ランダム関数と呼びます。
+　ブロック暗号には鍵入力があったことは前回のWBの記事で触れました。この鍵
+が求まってしまえば、どの入力がどの出力を出すかわかってしまうわけです。そ
+こで、ある程度の時間をかけたうえで破れるかもしれないわけです。
+
+
+■0x06.) 課題
+
+　いずれの問題も今回の記事をしっかり理解すれば解けると思います。紙に図を
+書きなぐって、きちんと置換と関数の違いについてわかっていれば、難しくない
+と思います。
+
+●問1：選択平文攻撃について簡単に解説せよ。
+
+●問2：{0,1}^5、即ち5ビット列について考える。
+（1）ビット列のパターンの総数は？
+（2）{0,1}^5から{0,1}^5への置換の総数は？
+（3）{0,1}^5から{0,1}^5への関数の総数は？
+
+●問3：P_n、R_n、ENC_nの3つの集合について、ベン図で記述せよ。
+
+
+■0x07.) おわりに
+
+　本当は今回の記事でブロック暗号の利用モードまで進むつもりでしたが、思っ
+たより疑似ランダム置換の解説に手間取ってしまったので、利用モードに関して
+は次回で解説したいと思います。利用モードの仕様自体は今回解説したことを知
+らなくても理解できますが、暗号を数学的に捉えるには今回の定義や概念は非常
+に重要なので、来月までにこの世界に慣れておいてください。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+ --- 第5章：お知らせ ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○Wizard Bible（http://akademeia.info/wizardbible/）では随時、執筆ライタ
+ーを募集しています。
+　扱う内容のテーマは広義での「under ground」です。例えば、ハッキングから
+サリンガスの合成法などと幅広い内容を考えています。また、各種、特殊な職業
+や趣味を持った方のレクチャーなども含まれます。
+　一回きりでも構いません。また、必ず、毎回連載する義務もありませんのでで
+きる範囲で構いません。気軽に声をかけてください。もちろん一回書いたことが
+ある人も気軽に声をかけてください（全く気にしていない性格なので）。
+
+○Kenji AikoさんがQ&Aを作ってくれました。初めて参加する人でもわかりやすく
+書かれていますので、参考にしてください。
+
+http://akademeia.info/wizardbible/wbQandA.html
+
+○支援者、参加希望者用のスレッドを立てました。
+
+http://ruffnex.oc.to/ipusiron/cgi/forum/patio.cgi?mode=view&no=17
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+  ---- 第6章：著者プロフィール ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■PSY
+●Job:IT関係、作家
+●Web:http://projectseven.jp
+●Mail:nanasehikaru [at] gmail.com
+●Team（Group）:none
+●Comment:
+　ひさびさに投稿させていただきました。あまりhackと関係ありませんが、今回
+は暗号ネタについて書いてみました。
+　暗号解読に取り組んだきっかけは、執筆のネタの一環でして、現在、アルファ
+ポリスのメールマガジンで連載中の小説、『Project Angel』でも暗号を取り上げ
+ています。
+ http://www.alphapolis.co.jp/maga.php?maga_id=1000166
+　興味のある方はどうぞ。
+　ちなみに、URLとメールアドレス、前回から変更になっています。SPAM対策のた
+めメールアドレス少しいじってますが、[at]の部分を@に変更していただければ。
+お手数かけてすみません。
+　前回の投稿読み返したら文体がだいぶ違っていて自分でびっくりしましたが、
+きっとキャラ作ってたんでしょう。今回の方が地です。真面目で真っ当な人間で
+す。本当です。
+●携帯電話について:
+　げげ、よりによって今回のお題は携帯電話ですかっ？！
+　えーと、持ってません。生きた化石です、はい。
+　なんというか、電話苦手なんですよね……。親指一本でメール打つのもめんど
+くさいし、外出先からネットにアクセスできるのは便利だとは思うんですが……。
+　コミュニケーションはもっぱらメールか対面です。待ち合わせの時だけ家族か
+ら借りてます。
+　まぁいずれは買うことになるんでしょうが、今は携帯電話よりも、10本指でタ
+イピングできる携帯端末が欲しいですね。どこでもすぐに執筆可能♪　ってこと
+で。ドコモさん、FOMAはいいから、シグマリオン4出してくれ、頼む！
+
+
+■まひん
+●Job: いんちきサラリーマン
+●Web: なし
+●Mail: muffin-man@gmx.co.uk
+●Team (Group): Backsection
+●Comment:
+　クラック本に続いてコンピュータウイルスの技術本書いてます。ずっといって
+ますけど、進みません。だいたい普通に仕事しながら本書くなんて無理な話です。
+人を殺す気か！ゴーストライター募集中です（爆。
+　趣味は音楽機材集めとサイケデリックトランス。本を書くために誘いを断りま
+くって、さらにDJする暇も音楽作る暇もありません。
+●携帯電話について：
+　使っている機種は古いやつです。教えません。1年半ぐらい使ってます。こだわ
+りは特にないので何でもいいです。一つだけ注文があるとしたら充電が切れるの
+が早すぎ。毎日充電とかやってられない。電話がくるときは以上に多いので1日も
+たない。こないときは全然こないけど、それでも2日ぐらいで充電切れるし。余計
+な機能いらんから長持ちするやつ希望です。
+
+
+■Kenji Aiko
+●Job: Student
+●Web: http://ruffnex.oc.to/kenji/
+●Mail: kenji@ruffnex.oc.to
+●Team（Group): N/A
+●Comment:
+　カーネルプログラムネタにしようか、それともAPIフックネタにしようか、それ
+とも解析ネタにしようか、うーん、どうしよう…、と、散々考えたあげく、今回
+のものになりました。実は優柔不断なのかな…。
+●携帯電話について:
+　電話とメールができればそれでモウマンタイだ！！
+
+
+■IPUSIRON
+●Job: Student
+●Web: http://akademeia.info/
+●Mail: ipusiron@ruffnex.oc.to
+●Team（Group): 
+●Comment:
+　muffinさんのコメントに大きく頷いてしまいました…。今は家でごろごろして
+いる暇なんてありません。1日1時間さえ自由時間が作れるかも微妙なところです。
+現在スパムの本を書いていますが、最近になってやっとドーパミンが出る状態に
+やっとなりました。まどさん、ごめんなさい。
+●携帯電話について:
+　もう3年ぐらいずっと同じものを使っています。もうボロボロで新しい機種が欲
+しいのですが、ナンバーポータビリティまで待っているところです。といっても
+一年契約だと割引という携帯電話事業者の作戦に乗ってしまったので、結局は事
+業者変更はしないかもしれません…。vodafoneさん、もっと魅力的な携帯出して
+ください。
+　外で待ち合わせをするときなどはもう携帯電話があるという前提の身体になっ
+てしまいました。ちょっと昔は携帯電話なんて普及していなかったわけですし、
+慣れとは怖いものですね。

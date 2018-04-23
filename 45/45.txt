@@ -1,0 +1,1856 @@
+[-]=======================================================================[-]
+
+                      Wizard Bible vol.45 (2009,3,5)
+
+[-]=======================================================================[-]
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+  ---- 第0章：目次 ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○第1章: マニアックJavaプログラミング第10回: ～ SSLのベンチマーク ～ 金床 著
+
+○第2章: FreeBSD Kernel Hacking                              Kenji Aiko 著
+
+○第3章: 裁判員制度で日本の司法は変わるのか？ 
+		　　民事訴訟における日本の司法の硬直性           理事長 著
+
+○第4章: 基礎暗号学講座・第20回 ～ヤコビ記号とBlum数～         IPUSIRON 著
+
+○第5章: お知らせ
+
+○第6章: 著者プロフィール
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第1章: マニアックJavaプログラミング第10回: ～ SSLのベンチマーク ～ ---
+
+著者：金床
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　ﾎﾟﾝﾁﾜ。なんだかﾌﾟﾛｷｼばかり作り続けて10年経ったらしい。こんど名刺の肩書
+きを「ﾌﾟﾛｷｼ職人」にしよう。
+
+　さて今回のWBで、なんとマニアックJavaプログラミングも10回目である。最近
+はSSLでゴソゴソする機会が多いので、前回に引き続きSSL関連である。
+
+　IPUロム様と違って漏れは暗号の原理的な部分はさっぱり理解不能なので、もっ
+ぱら使うだけである。しかし最近数冊の暗号関連の書籍を読破したので、以下の
+ような知識は身につけることができた。
+
+　・RC4は鍵長が40bitしかないので脆弱で、使うべきでない。WEPが破られたのは
+全部こいつのせい
+　・DESは米国の輸出規制のせいで日本では56bitの鍵長しか使えない。本土のや
+つらは256bitでウハウハ
+　・AESはAsynmmetric Encryption Signatureの略である
+　・RSAはRandom Sign Algorithmの略で、楕円を意味する
+　・最近、32bitでは鍵長が短く危険なので、64bitのOSを使う人が増えた
+　・TLSはファルケンの特殊装備の名前であって、プロトコルのことではない
+　・フグとかいうふざけた名前の暗号が存在する
+　・アリスとボブはできてる
+　・SSLv4ではナヴァホ暗号が利用できるようになる
+
+　上記のうち1つくらいは間違っている可能性があるので注意すること。
+
+
+■0x02.) データ送受信ベンチ
+
+　SSLは奥の深いプロトコルで、ひとくちに「SSLで通信する」といってもブラウ
+ザやウェブサーバーの設定などによっていろいろなアルゴリズムが選択され暗号
+化に使われる。最近の流行はAESで、いつのまにか256bitまで使えるような組み合
+わせが増えたようだ。筆者としてはCPUへの負荷が知りたかったので、簡単にJav
+aを使ってベンチマークを取ってみた。
+
+　まず、SSLSocketｸﾗｽのgetEnabledCipherSuites()を呼び出すと、以下のような
+ｻｲﾌｧｰ（編注: ｴｽｺﾝZeroの主役のことではありません）が使えることがわかる。
+
+　降ってきたな…。
+
+-----
+SSL_RSA_WITH_RC4_128_MD5
+SSL_RSA_WITH_RC4_128_SHA
+TLS_RSA_WITH_AES_128_CBC_SHA
+TLS_RSA_WITH_AES_256_CBC_SHA
+TLS_DHE_RSA_WITH_AES_128_CBC_SHA
+TLS_DHE_RSA_WITH_AES_256_CBC_SHA
+TLS_DHE_DSS_WITH_AES_128_CBC_SHA
+TLS_DHE_DSS_WITH_AES_256_CBC_SHA
+SSL_RSA_WITH_3DES_EDE_CBC_SHA
+SSL_DHE_RSA_WITH_3DES_EDE_CBC_SHA
+SSL_DHE_DSS_WITH_3DES_EDE_CBC_SHA
+SSL_RSA_WITH_DES_CBC_SHA
+SSL_DHE_RSA_WITH_DES_CBC_SHA
+SSL_DHE_DSS_WITH_DES_CBC_SHA
+SSL_RSA_EXPORT_WITH_RC4_40_MD5
+SSL_RSA_EXPORT_WITH_DES40_CBC_SHA
+SSL_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA
+SSL_DHE_DSS_EXPORT_WITH_DES40_CBC_SHA
+SSL_RSA_WITH_NULL_MD5
+SSL_RSA_WITH_NULL_SHA
+SSL_DH_anon_WITH_RC4_128_MD5
+TLS_DH_anon_WITH_AES_128_CBC_SHA
+TLS_DH_anon_WITH_AES_256_CBC_SHA
+SSL_DH_anon_WITH_3DES_EDE_CBC_SHA
+SSL_DH_anon_WITH_DES_CBC_SHA
+SSL_DH_anon_EXPORT_WITH_RC4_40_MD5
+SSL_DH_anon_EXPORT_WITH_DES40_CBC_SHA
+TLS_KRB5_WITH_RC4_128_SHA
+TLS_KRB5_WITH_RC4_128_MD5
+TLS_KRB5_WITH_3DES_EDE_CBC_SHA
+TLS_KRB5_WITH_3DES_EDE_CBC_MD5
+TLS_KRB5_WITH_DES_CBC_SHA
+TLS_KRB5_WITH_DES_CBC_MD5
+TLS_KRB5_EXPORT_WITH_RC4_40_SHA
+TLS_KRB5_EXPORT_WITH_RC4_40_MD5
+TLS_KRB5_EXPORT_WITH_DES_CBC_40_SHA
+TLS_KRB5_EXPORT_WITH_DES_CBC_40_MD5
+SSL_RSA_WITH_RC4_128_MD5
+-----
+
+　つーかSSLでケルベロスとか使うこともできるんだ。わけわかめ…というのはさ
+ておき、今回のテストではRSAの鍵しか用意しなかったので、DSS系については試
+していない。
+
+　単純に127.0.0.1でSSLサーバーソケットをlistenし、そこにSSLクライアントソ
+ケットで接続して、100MBのデータを送る。そしてこのときかかった時間（ミリ秒）
+をｻｲﾌｧｰごとに並べたのが以下である。もちろんベンチマークを取っている最中、
+CPUの使用率はきっちり100%であった。テストのSauceｺｰﾄﾞは簡単なので省略。
+
+-----
+SSL_RSA_WITH_RC4_128_MD5
+3656
+
+SSL_RSA_WITH_RC4_128_SHA
+4578
+
+TLS_RSA_WITH_AES_128_CBC_SHA
+6781
+
+TLS_RSA_WITH_AES_256_CBC_SHA
+7938
+
+TLS_DHE_RSA_WITH_AES_128_CBC_SHA
+7140
+
+TLS_DHE_RSA_WITH_AES_256_CBC_SHA
+7891
+
+SSL_RSA_WITH_3DES_EDE_CBC_SHA
+26469
+
+SSL_DHE_RSA_WITH_3DES_EDE_CBC_SHA
+26734
+
+SSL_RSA_WITH_DES_CBC_SHA
+11359
+
+SSL_DHE_RSA_WITH_DES_CBC_SHA
+11657
+
+SSL_RSA_EXPORT_WITH_RC4_40_MD5
+3625
+
+SSL_RSA_EXPORT_WITH_DES40_CBC_SHA
+11515
+
+SSL_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA
+11500
+
+SSL_RSA_WITH_NULL_MD5
+2203
+
+SSL_RSA_WITH_NULL_SHA
+3421
+
+SSL_DH_anon_WITH_RC4_128_MD5
+3469
+
+TLS_DH_anon_WITH_AES_128_CBC_SHA
+7109
+
+TLS_DH_anon_WITH_AES_256_CBC_SHA
+7735
+
+SSL_DH_anon_WITH_3DES_EDE_CBC_SHA
+26485
+
+SSL_DH_anon_WITH_DES_CBC_SHA
+11062
+
+SSL_DH_anon_EXPORT_WITH_RC4_40_MD5
+3265
+
+SSL_DH_anon_EXPORT_WITH_DES40_CBC_SHA
+12594
+-----
+
+　RC4速い。DES遅ぇﾜﾛﾀ。という感じである。40bitでも遅いDESの悲しさよ…。と
+いうことで、鯖管の立場でSSLのｺﾈｸｼｮﾝを監視していると、たまに3DESでやってく
+る人がいますが、エコじゃないのでやめましょう。
+
+　しかし気になるのはSSL_RSA_WITH_NULL_MD5である。これ速いじゃん。超速いじ
+ゃん。ということで筆者のお薦めはSSL_RSA_WITH_NULL_MD5。オトコは裸で勝負。
+ﾇﾙ暗号が2009年の流行な悪寒。なわけない。
+
+
+■0x03.) コネクション生成ベンチ
+
+　SSLではコネクションの確立が重い処理となる。そして、SSLセッションの再利
+用を行うと2度目以降のコネクションの確立が比較的軽く行われると言われている。
+筆者はこの辺りが具体的にはどの程度の数字になるのか興味があったので、Java
+を使って実験してみた。
+
+　Javaではクライアント側でSSLContextのインスタンスを使い回すことで（サー
+バー側が再利用を行おうとしている時に限り）セッションを再利用できる。SSLS
+ocketクラスのインスタンスからgetSession().getId()を呼び出すことでセッショ
+ンIDを意味するバイト配列を取得できるので、実験ではこの値を使ってセッショ
+ンの再利用が行われたかどうかを確かめることができる。
+
+　まずは単純にSSL接続を確立させ、1バイトだけデータを送るという操作を1000
+回繰り返してみた。このときかかった時間（ミリ秒）は以下の通りである。
+
+-----
+SSL_RSA_WITH_RC4_128_MD5
+8750
+
+SSL_RSA_WITH_RC4_128_SHA
+8562
+
+TLS_RSA_WITH_AES_128_CBC_SHA
+8578
+
+TLS_RSA_WITH_AES_256_CBC_SHA
+8562
+
+TLS_DHE_RSA_WITH_AES_128_CBC_SHA
+24360
+
+TLS_DHE_RSA_WITH_AES_256_CBC_SHA
+24031
+
+SSL_RSA_WITH_3DES_EDE_CBC_SHA
+8469
+
+SSL_DHE_RSA_WITH_3DES_EDE_CBC_SHA
+24375
+
+SSL_RSA_WITH_DES_CBC_SHA
+8532
+
+SSL_DHE_RSA_WITH_DES_CBC_SHA
+23968
+
+SSL_RSA_EXPORT_WITH_RC4_40_MD5
+10000
+
+SSL_RSA_EXPORT_WITH_DES40_CBC_SHA
+10031
+
+SSL_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA
+16125
+
+SSL_RSA_WITH_NULL_MD5
+8265
+
+SSL_RSA_WITH_NULL_SHA
+8438
+
+SSL_DH_anon_WITH_RC4_128_MD5
+16609
+
+TLS_DH_anon_WITH_AES_128_CBC_SHA
+16782
+
+TLS_DH_anon_WITH_AES_256_CBC_SHA
+16735
+
+SSL_DH_anon_WITH_3DES_EDE_CBC_SHA
+16734
+
+SSL_DH_anon_WITH_DES_CBC_SHA
+16641
+
+SSL_DH_anon_EXPORT_WITH_RC4_40_MD5
+8906
+
+SSL_DH_anon_EXPORT_WITH_DES40_CBC_SHA
+9000
+-----
+
+　RSAよりもDHの方が重いという傾向があるようだ。また、SSL_DHE_RSA_WITH_3D
+ES_EDE_CBC_SHAなどについては1000回のコネクション確立（と1バイト送信）に24
+秒もかかっており、つまり1コネクションあたり24ミリ秒もかかることになる。こ
+れはかなり遅いという印象を受けた。
+
+　次にSSLContextｸﾗｽを使い回し、SSLｾｯｼｮﾝの再利用を行った場合のベンチマーク
+結果を示す。
+
+-----
+SSL_RSA_WITH_RC4_128_MD5
+1829
+
+SSL_RSA_WITH_RC4_128_SHA
+1312
+
+TLS_RSA_WITH_AES_128_CBC_SHA
+1516
+
+TLS_RSA_WITH_AES_256_CBC_SHA
+1312
+
+TLS_DHE_RSA_WITH_AES_128_CBC_SHA
+1312
+
+TLS_DHE_RSA_WITH_AES_256_CBC_SHA
+1313
+
+SSL_RSA_WITH_3DES_EDE_CBC_SHA
+1297
+
+SSL_DHE_RSA_WITH_3DES_EDE_CBC_SHA
+1297
+
+SSL_RSA_WITH_DES_CBC_SHA
+1140
+
+SSL_DHE_RSA_WITH_DES_CBC_SHA
+1110
+
+SSL_RSA_EXPORT_WITH_RC4_40_MD5
+1172
+
+SSL_RSA_EXPORT_WITH_DES40_CBC_SHA
+1281
+
+SSL_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA
+1250
+
+SSL_RSA_WITH_NULL_MD5
+969
+
+SSL_RSA_WITH_NULL_SHA
+1015
+
+SSL_DH_anon_WITH_RC4_128_MD5
+1094
+
+TLS_DH_anon_WITH_AES_128_CBC_SHA
+1328
+
+TLS_DH_anon_WITH_AES_256_CBC_SHA
+1375
+
+SSL_DH_anon_WITH_3DES_EDE_CBC_SHA
+1297
+
+SSL_DH_anon_WITH_DES_CBC_SHA
+1156
+
+SSL_DH_anon_EXPORT_WITH_RC4_40_MD5
+1156
+
+SSL_DH_anon_EXPORT_WITH_DES40_CBC_SHA
+1188
+-----
+
+　非常に大きな効果があり、5倍～22倍近く速くなっている。
+
+　ちなみに今回すべてのベンチマークは
+
+・Core2Duo 2.4GHz
+・Win2k（そうです、ﾜﾀｼがWin2k厨です）
+・jdk1.6系統
+
+　で計測した。Sauceコードは全体的に省略しているが、特に難しいところはない
+はずだ。
+
+
+■0x04.) まとめ
+
+　そんなわけで今回はSSLのベンチマークを取ってみた。もちろんこれはJavaの実
+装に依存しているものなのでOpenSSLを使っている場合にはもっと別の傾向が出る
+ことも考えられる。
+
+　個人的にはセッション再利用の効果の大きさが実感できたので、Guardian@JUMP
+ERZ.NETなどにこの成果をフィードバックするつもりだ。
+
+
+■0x05.) おまけ1
+
+　SSL+Javaに関連したおまけ1つめ。JREの1.6系列では、ﾃﾞﾌｫではAESは128bitまで
+しか使えないようになっている。しかしSunのｻｲﾄからjce-policy-6.zipをSunから
+ダウンロードしてきてjre/lib/security以下にjarファイルを2つﾋﾟｰｺすれば、256
+bitが使えるようになる。
+
+
+■0x06.) おまけ2
+
+　http://forums.sun.com/thread.jspa?threadID=5172531&tstart=60で話題にな
+っているように、1.6系列ではSSLｻｰﾊﾞｰｿｹｯﾄでDHE関連のﾋﾞｯﾄ数が768しかない。そ
+のためOperaで接続すると「今時これじゃﾋﾞｯﾄ数が足りないぽ」というｶﾝｼﾞでﾀﾞﾒ
+判定を喰らう。そこでDHE系のｻｲﾌｧｰをあらかじめ無効にしておけばこれを避ける
+ことができる。これにより当然ながらSSLにおいて使用できるｻｲﾌｧｰの数は減るが、
+今時のﾌﾞﾗｳｻﾞは多くのｻｲﾌｧｰをｻﾎﾟｰﾄしているのでたぶん問題ない。
+
+　筆者はsetEnabledCypherSuites()をDHE関連を抜いた引数で呼び出すことにより
+対策している。ただしTomcatなどでやる場合はこのように直接ｿｰｽｺｰﾄﾞをいじるの
+はかったるいと思われるので、何かﾎﾟﾘｼｰﾌｧｲﾙ系で対策できるとよいと思われるが、
+どうやるかわからないので誰か教えてくだちい。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第2章: FreeBSD Kernel Hacking ---
+
+著者：Kenji Aiko
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　最近FreeBSDを使い始めたので、メモ的な意味もこめて、今回自分が学んだ過程
+を書くことにしました。実際使い始めて数ヶ月ですが、個人的にFreeBSDもなかな
+か洗練されてて良い感じです。興味があればぜひ使ってみてください。
+　ちなみに、この記事はFreeBSD環境で行いますが、他の環境（Linux, Windows）
+のカーネルについて知りたければ、ローレイヤー勉強会の資料がとても参考にな
+ります。
+
+　「ローレイヤー勉強会」公開資料
+　http://groups.google.co.jp/group/lowlayer/files
+
+　ちなみに、この記事では、FreeBSD 7.0を使います。
+
+
+■0x02.) 環境構築
+
+　FreeBSDのカーネルモジュールを作る（コンパイルする）場合、FreeBSD自体の
+ソースコードが必要です。よって、最初に、FreeBSDのソースコードをダウンロー
+ドします。
+
+-----  terminal
+# pkg_add ftp://ftp.jp.freebsd.org/pub/FreeBSD/ports/i386/packages/All/cvsup-without-gui-16.1h_4.tbz
+# cp /usr/share/examples/cvsup/stable-supfile ./
+# vi stable-supfile
+（"CHANGE_THIS.FreeBSD.org" を "cvsup.jp.FreeBSD.org" に変更）
+# cvsup stable-supfile（現在はcsup推奨）
+
+（/usr/src以下にカーネルのソースコードがダウンロードされる）
+
+-----
+
+　以上の手順で、/usr/src以下にカーネルのソースコードが展開されます。
+
+
+■0x03.) コンパイル
+
+　FreeBSDのカーネルモジュールプログラミングについては、以下のサイトが参考
+になります。
+
+　FreeBSD Architecture Handbook
+　http://www.freebsd.org/doc/en/books/arch-handbook/
+　http://www.freebsd.org/doc/en/books/arch-handbook/driverbasics-kld.html
+
+　上記のサンプルプログラムをコピーし、試しにカーネルモジュールを作ります。
+カーネルソースの/usr/src/sys/modules/以下に新しいディレクトリを作成し、そ
+の中でサンプルモジュールをコンパイルします。
+
+-----  terminal
+# cd /usr/src/sys/modules/
+# mkdir skeleton
+# cd skeleton
+# cat >skeleton.c
+/*
+ * KLD Skeleton
+ * Inspired by Andrew Reiter's Daemonnews article
+ */
+
+#include <sys/types.h>
+#include <sys/module.h>
+#include <sys/systm.h>  /* uprintf */ 
+#include <sys/errno.h>
+#include <sys/param.h>  /* defines used in kernel.h */
+#include <sys/kernel.h> /* types used in module initialization */
+
+/* 
+ * Load handler that deals with the loading and unloading of a KLD.
+ */
+
+static int
+skel_loader(struct module *m, int what, void *arg)
+{
+  int err = 0;
+  
+  switch (what) {
+  case MOD_LOAD:                /* kldload */
+    uprintf("Skeleton KLD loaded.\n");
+    break;
+  case MOD_UNLOAD:
+    uprintf("Skeleton KLD unloaded.\n");
+    break;
+  default:
+    err = EOPNOTSUPP;
+    break;
+  }
+  return(err);
+}
+
+/* Declare this module to the rest of the kernel */
+
+static moduledata_t skel_mod = {
+  "skel",
+  skel_loader,
+  NULL
+};  
+
+DECLARE_MODULE(skeleton, skel_mod, SI_SUB_KLD, SI_ORDER_ANY);
+^C（Ctrl + C）
+# cat >Makefile
+SRCS=skeleton.c
+KMOD=skeleton
+
+.include <bsd.kmod.mk>
+^C（Ctrl + C）
+# make
+Warning: Object directory not changed from original /usr/src/sys/modules/skeleton
+@ -> /usr/src/sys
+machine -> /usr/src/sys/i386/include
+cc -O2 -fno-strict-aliasing -pipe  -D_KERNEL -DKLD_MODULE -std=c99 -nostdinc   
+-I. -I@ -I@/contrib/altq -finline-limit=8000 --param inline-unit-growth=100 --p
+aram large-function-growth=1000 -fno-common  -mno-align-long-strings -mpreferre
+d-stack-boundary=2  -mno-mmx -mno-3dnow -mno-sse -mno-sse2 -mno-sse3 -ffreestan
+ding -Wall -Wredundant-decls -Wnested-externs -Wstrict-prototypes  -Wmissing-pr
+ototypes -Wpointer-arith -Winline -Wcast-qual  -Wundef -Wno-pointer-sign -fform
+at-extensions -c skeleton.c
+ld  -d -warn-common -r -d -o skeleton.kld skeleton.o
+:> export_syms
+awk -f /usr/src/sys/modules/skeleton/../../conf/kmod_syms.awk skeleton.kld  exp
+ort_syms | xargs -J% objcopy % skeleton.kld
+ld -Bshareable  -d -warn-common -o skeleton.ko skeleton.kld
+objcopy --strip-debug skeleton.ko
+# ls skeleton*
+skeleton.c      skeleton.kld    skeleton.ko     skeleton.o
+# kldload ./skeleton.ko
+Skeleton KLD loaded.
+# kldstat
+Id Refs Address    Size     Name
+ 1    8 0xc0400000 906518   kernel
+ 2    1 0xc0d07000 6a32c    acpi.ko
+ 3    1 0xc1afc000 22000    linux.ko
+ 4    1 0xc1c67000 2000     skeleton.ko（←追加されている）
+# kldunload ./skeleton.ko
+Skeleton KLD unloaded.
+# kldstat
+Id Refs Address    Size     Name
+ 1    7 0xc0400000 906518   kernel
+ 2    1 0xc0d07000 6a32c    acpi.ko
+ 3    1 0xc1afc000 22000    linux.ko
+#
+-----
+
+　実行すると、モジュールのロード時に「Skeleton KLD loaded.」という文字列
+が出力され、アンロード時に「Skeleton KLD unloaded.」が出力されます。また、
+現在カーネルにロードされているモジュールはkldstatを実行することで確認でき
+ます。
+　あとは、「FreeBSD Architecture Handbook」のサイトの「II. Device Drivers」
+の項目を読むことで、カーネルモジュールに関する一通りのことが分かります。
+
+
+■0x04.) カーネルへの移行
+
+　ユーザーランドからカーネルに移行する際、割り込み「int 80h」を呼び出して
+いることを確認します。
+
+-----  terminal
+$ cat > test.c
+int main(void)
+{
+    write(1, "Hello", 5, 0);
+    return 0;
+}
+^C（Ctrl + C）
+$ gcc test.c -o test
+$ gdb test
+GNU gdb 6.1.1 [FreeBSD]
+Copyright 2004 Free Software Foundation, Inc.
+GDB is free software, covered by the GNU General Public License, and you are
+welcome to change it and/or distribute copies of it under certain conditions.
+Type "show copying" to see the conditions.
+There is absolutely no warranty for GDB.  Type "show warranty" for details.
+This GDB was configured as "i386-marcel-freebsd"...(no debugging symbols found)...
+(gdb) b main
+Breakpoint 1 at 0x8048400
+(gdb) r
+Starting program: /usr/home/ctf/test
+(no debugging symbols found)...(no debugging symbols found)...
+Breakpoint 1, 0x08048400 in main ()
+(gdb) b write
+Breakpoint 2 at 0x281533ac
+(gdb) c
+Continuing.
+
+Breakpoint 2, 0x281533ac in write () from /lib/libc.so.7
+(gdb) x/4i write
+0x281533ac <write>:     mov    $0x4,%eax
+0x281533b1 <write+5>:   int    $0x80（←ココ）
+0x281533b3 <write+7>:   jb     0x28153398 <close+12>
+0x281533b5 <write+9>:   ret
+(gdb)
+-----
+
+　アドレス「0x281533b1」で、「int $0x80」を呼び出し、カーネルに処理を渡し
+ています。
+
+
+■0x05.) IDT（Interrupt Descriptor Table）の内容を確認
+
+　割り込みに対するジャンプ先が記述されているIDTを確認します。割り込みや例
+外に関する詳細は以下のサイトが参考になります（検索しても結構ヒットします）。
+
+　プロテクトモードの割り込み/例外
+　http://caspar.hazymoon.jp/OpenBSD/annex/interrupt_protect.html
+
+　割り込み「int 80h」で、カーネルランドに処理が移り、まず、IDTRレジスタが
+参照されます。このレジスタにはIDTのアドレスが格納されています。IDTのアド
+レスが分かったら、テーブルの先頭から80h番目の情報を読み取り、そこに記述さ
+れているアドレスへジャンプします。
+　IDTの80h番目の情報を確認するプログラムを以下に示します。
+
+-----  printidt.c
+
+/*
+ * print IDT
+ */
+
+#include <sys/types.h>
+#include <sys/module.h>
+#include <sys/systm.h>  /* uprintf */ 
+#include <sys/errno.h>
+#include <sys/param.h>  /* defines used in kernel.h */
+#include <sys/kernel.h> /* types used in module initialization */
+
+typedef struct _idta
+{
+    unsigned short size;
+    unsigned long  addr __attribute__((packed));
+
+} IDTA, *PIDTA;
+
+typedef struct _idt
+{
+    unsigned short offl;
+    unsigned short seg;
+    unsigned char  pad;
+    unsigned char  flags;
+    unsigned short offh;
+
+} IDT, *PIDT;
+
+
+void get_idtr(IDTA *pidta);
+void print_info(void);
+void mod_load(void);
+void mod_unload(void);
+
+
+void get_idtr(IDTA *pidta)
+{
+    IDTA idta;
+    __asm("sidt %0" : "=m" (idta));
+    memcpy(pidta, &idta, sizeof(IDTA));
+}
+
+void print_info(void)
+{
+    IDTA idta;
+    IDT idt;
+    int offset;
+    
+    get_idtr(&idta);
+    
+    uprintf(
+        "IDTR\n"
+        "  size  = %04X\n"
+        "  addr  = %08lX\n", 
+        idta.size, idta.addr
+    );
+    
+    offset = 0x80 * sizeof(IDT);
+    idt = *((PIDT)((unsigned char *)idta.addr + offset));
+    
+    uprintf(
+        "IDT(80h)\n"
+        "  offl  = %04X\n"
+        "  seg   = %04X\n"
+        "  pad   = %02X\n"
+        "  flags = %02X\n"
+        "  offh  = %04X\n",
+        idt.offl,
+        idt.seg,
+        idt.pad,
+        idt.flags,
+        idt.offh);
+}
+
+void mod_load(void)
+{
+    print_info();
+}
+
+void mod_unload(void)
+{
+    uprintf("call mod_unload\n");
+}
+
+/* 
+ * Load handler that deals with the loading and unloading of a KLD.
+ */
+
+static int printidt_loader(struct module *m, int what, void *arg)
+{
+    int err = 0;
+    
+    switch(what)
+    {
+    case MOD_LOAD:
+        mod_load();
+        break;
+    
+    case MOD_UNLOAD:
+        mod_unload();
+        break;
+    
+    default:
+        err = EOPNOTSUPP;
+        break;
+    }
+    
+    return err;
+}
+
+/* Declare this module to the rest of the kernel */
+
+static moduledata_t printidt_mod =
+{
+    "printidt", 
+    printidt_loader, 
+    NULL
+};
+
+DECLARE_MODULE(printidt, printidt_mod, SI_SUB_KLD, SI_ORDER_ANY);
+-----
+
+　以下のMakefileを用意します。
+
+-----  Makefile
+SRCS=printidt.c
+KMOD=printidt
+
+.include <bsd.kmod.mk>
+-----
+
+　コンパイルし、実行します。
+
+-----  terminal
+# make
+Warning: Object directory not changed from original /usr/src/sys/modules/printidt
+@ -> /usr/src/sys
+machine -> /usr/src/sys/i386/include
+cc -O2 -fno-strict-aliasing -pipe  -D_KERNEL -DKLD_MODULE -std=c99 -nostdinc   
+-I. -I@ -I@/contrib/altq -finline-limit=8000 --param inline-unit-growth=100 --p
+aram large-function-growth=1000 -fno-common  -mno-align-long-strings -mpreferre
+d-stack-boundary=2  -mno-mmx -mno-3dnow -mno-sse -mno-sse2 -mno-sse3 -ffreestan
+ding -Wall -Wredundant-decls -Wnested-externs -Wstrict-prototypes  -Wmissing-pr
+ototypes -Wpointer-arith -Winline -Wcast-qual  -Wundef -Wno-pointer-sign -fform
+at-extensions -c printidt.c
+ld  -d -warn-common -r -d -o printidt.kld printidt.o
+:> export_syms
+awk -f /usr/src/sys/modules/printidt/../../conf/kmod_syms.awk printidt.kld  exp
+ort_syms | xargs -J% objcopy % printidt.kld
+ld -Bshareable  -d -warn-common -o printidt.ko printidt.kld
+objcopy --strip-debug printidt.ko
+# kldload ./printidt.ko
+IDTR
+  size  = 07FF
+  addr  = C0C00240
+IDT(80h)
+  offl  = FC50
+  seg   = 0020
+  pad   = 00
+  flags = EF
+  offh  = C0A2
+# kldunload ./printidt.ko
+call mod_unload
+#
+-----
+
+　IDTの場所と「int 80h」が実行された時に処理されるコードは分かりました。
+この部分を任意のアドレスに変更することで「int 80h」のフックができます。
+　システムコールフックに関する全般的な話は以下の文献が参考になります。
+
+　システムコールフックを使用した攻撃検出
+　http://www.fourteenforty.jp/research/research_papers/SystemCall.pdf
+
+
+■0x06.) int80hフック
+
+　IDTを変更することで「int 80h」をフックできます。よって、次はサンプルプ
+ログラムとして、「int 80h」命令が、毎秒何回呼び出されているのかを調べるプ
+ログラムを作成します。
+
+-----  int80hook.c
+
+/*
+ * int 80h hook
+ */
+
+#include <sys/types.h>
+#include <sys/module.h>
+#include <sys/systm.h>  /* uprintf */ 
+#include <sys/errno.h>
+#include <sys/param.h>  /* defines used in kernel.h */
+#include <sys/kernel.h> /* types used in module initialization */
+#include <sys/time.h>   /* nanotime */
+
+/* int 80h call counter */
+unsigned long g_counter;
+
+/* module load time */
+unsigned long g_start_t;
+
+typedef struct _idta
+{
+    unsigned short size;
+    unsigned long  addr __attribute__((packed));
+
+} IDTA, *PIDTA;
+
+typedef struct _idt
+{
+    unsigned short offl;
+    unsigned short seg;
+    unsigned char  pad;
+    unsigned char  flags;
+    unsigned short offh;
+
+} IDT, *PIDT;
+
+
+unsigned long get_idt_addr(void);
+unsigned long get_int_addr(unsigned int intp);
+int exec_hook(unsigned int intp, unsigned long new_func, unsigned long *old_func);
+void new_int80h_func(void);
+void stub_func(void);
+void stub_handler(void);
+void mod_load(void);
+void mod_unload(void);
+
+
+unsigned long get_idt_addr(void)
+{
+    IDTA idta;
+    __asm("sidt %0" : "=m" (idta));
+    return idta.addr;
+}
+
+unsigned long get_int_addr(unsigned int intp)
+{
+    IDT idt;
+    unsigned long idt_addr;
+
+    idt_addr = get_idt_addr() ;
+    idt = *((PIDT)idt_addr + intp);
+
+    return (idt.offh << 16 | idt.offl);
+}
+
+int exec_hook(unsigned int intp, unsigned long new_func, unsigned long *old_func)
+{
+    IDT idt;
+    unsigned long idt_addr;
+
+    if(old_func)
+        *old_func = get_int_addr(intp);
+
+    idt_addr = get_idt_addr();
+
+    idt = *((PIDT)idt_addr + intp);
+
+    idt.offh = (unsigned short)(new_func >> 16 & 0xFFFF);
+    idt.offl = (unsigned short)(new_func & 0xFFFF) ;
+
+    *((PIDT)idt_addr + intp) = idt;
+    return 0;
+}
+
+unsigned long new_handler = (unsigned long)&new_int80h_func;
+unsigned long old_handler;
+
+void stub_handler(void)
+{
+    __asm(
+        ".globl stub_func \n"
+        ".align 4,0x90    \n"
+        "stub_func:       \n"
+        "    pushal       \n"
+        "    call *%0     \n"
+        "    popal        \n"
+        "    jmp  *%1     \n"
+        :: "m" (new_handler), "m" (old_handler));
+}
+
+void new_int80h_func(void)
+{
+    g_counter++;
+}
+
+void mod_load(void)
+{
+    struct timespec ts;
+    
+    nanotime(&ts);
+    g_start_t = ts.tv_sec;
+    
+    g_counter = 0;
+    
+    exec_hook(0x80, (unsigned long)&stub_func, &old_handler);
+}
+
+void mod_unload(void)
+{
+    unsigned long n;
+    struct timespec ts;
+    
+    exec_hook(0x80, (unsigned long)old_handler, NULL);
+    
+    nanotime(&ts);
+    
+    n = (ts.tv_sec - g_start_t);
+    
+    if(n != 0)
+        n = g_counter / n;
+
+    uprintf("counter = %ld/s\n", n);
+}
+
+/* 
+ * Load handler that deals with the loading and unloading of a KLD.
+ */
+
+static int int80hook_loader(struct module *m, int what, void *arg)
+{
+    int err = 0;
+    
+    
+    switch(what)
+    {
+    case MOD_LOAD:
+        mod_load();
+        break;
+    
+    case MOD_UNLOAD:
+        mod_unload();
+        break;
+    
+    default:
+        err = EOPNOTSUPP;
+        break;
+    }
+    
+    return err;
+}
+
+/* Declare this module to the rest of the kernel */
+
+static moduledata_t int80hook_mod = 
+{
+    "int80hook",
+    int80hook_loader,
+    NULL
+};
+
+DECLARE_MODULE(int80hook, int80hook_mod, SI_SUB_KLD, SI_ORDER_ANY);
+-----
+
+-----  Makefile
+SRCS=int80hook.c
+KMOD=int80hook
+
+.include <bsd.kmod.mk>
+-----
+
+　モジュールをロードし、適当な時間待った後、アンロードすると、毎秒あたり
+の「int 80h」の呼び出し回数が分かります。
+
+-----  terminal
+# kldload ./int80hook.ko
+# kldunload ./int80hook.ko
+counter = 74/s
+-----
+
+　正常に「int 80h」がフックされています。
+
+　なお、今回のソースコードは以下のサイトの記事を参考にしています。
+
+　hiding processes (understanding the linux scheduler)
+　http://phrack.org/issues.html?issue=63&id=18
+
+　上記の記事はLinux環境でのコードですが、FreeBSDも基本は同じ概念です。
+
+
+■0x07.) さいごに
+
+　Windows系だと、XP以降、sysenterを使っているわけですが、FreeBSDは「int 
+80h」を使っているようだったので、こちらのフックを行いました。また、「DEF
+CON CTF 2008」の問題にも、FreeBSD環境での「int 80h」フックを行うプログラ
+ムをリバースエンジニアリングにより解析する問題があったため、それも関連し
+て今回この記事を書きました。
+
+　Binary Leetness 400
+　http://nopsr.us/ctf2008qual/reversing400-b05c8059389c8ade8e1a10314f458be5
+　http://nopsr.us/ctf2008qual/walk-binary.html#400
+
+　FreeBSDはまだ使い始めて日が浅いですが、結構良い印象を持っている状態なの
+で、このまま少しずつですが、使っていこうかなと思っています。
+　検索のヒット数などを見ても、Linuxと比べるとFreeBSDはまだまだユーザー数
+が少ないのかな、とも思えますが、なかなか洗練されたOSなので、興味があれば
+ぜひ使ってみてください。
+
+　では、また次回お会いしましょう。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第3章: 裁判員制度で日本の司法は変わるのか？ 
+		　　民事訴訟における日本の司法の硬直性 ---
+
+著者：理事長
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) 初めに
+
+　我々は世の中の歯車となるよりも、世の中の味付けをする調味料になろうでは
+ないか！＞＞挨拶。
+
+　さて、司法改革が叫ばれる中、裁判員制度がようやくスタートしますが（平成
+２１年５月２１日）辞退希望者が多く、早くも制度に危機感を覚えますが、これ
+までの日本の裁判（主に民事裁判）はどうなっているのか、簡潔に述べようと思
+いますので、しばし、お読み頂ければ幸いです。
+　ちなみに、裁判員制度は刑事裁判のみを対象とし、民事裁判は対象になりませ
+ん。ご注意ください。
+
+
+■0x02.) 裁判は闘争だ
+
+　ワタシも仮の仕事の関係も含めつつ、個人的な裁判も携わってますが、兎にも
+角にも日本の裁判は時間がかかる。
+　最近の法務省は迅速な処理を掲げ、法曹界の改革を高らかに宣言していますが、
+はっきりいってDr.マシリトもとい、元小泉内閣の構造改革の流れにそって、ただ
+お題目を並べているにすぎないです。
+
+　なぜならば、全然裁判官の人数が足りないから。
+　東京地方裁判所の裁判官一人当たり平均300件以上の案件を処理してる、統計が
+あるからです。そして、裁判は訴えた方は一刻も早く裁判が終われば良いと思っ
+ているわけですが、当然、訴えられた方は裁判が長引けば良いと思っている。「
+金返せ」と訴えた方は早く決着させたいのだけど、訴えられた方は裁判が長引け
+ばそれだけ有利な訳ですな。裁判は、早めるのは非常に難しいが、長引かせるの
+は非常に簡単です。
+
+　例えば、お金を貸した方が金返せと言う裁判を東京で起こした場合、訴えられ
+た方は住民票を移してしまい東京から大阪に形だけでも、引っ越した事にする。
+そして大阪で、脅迫まがいの取立てを受けたなどとでっち上げ、その裁判を大阪
+で提訴したりする。
+
+　この場合、東京と大阪では双方の負担が大きいため（交通費など）、間を取っ
+て静岡等で裁判をする方法もあるが、そのためには、今度は裁判をどこでするか？
+という裁判を開始するわけです……。
+
+　訴えられた方はどうしても払いたくないものだから、過去に脅迫を受けたなど
+とありもしない脅迫事件をでっち上げて、訳のわからない損害賠償請求等と言う
+裁判を大阪で起こしておいて、訳のわからない準備書面をだらだらと長く書いて
+訴訟を起こす。
+
+　裁判というものは、このように実にうんざりするものです。かくして裁判は長
+引き、ワタシの関わったこの案件はいまだに終わってないです。
+
+　裁判なんて延ばそうと思えばいくらでも延ばせる。裁判制度自体が利用者たる
+国民の為に全然なっていない。
+
+　でもって判決になるとどうなるか？
+　刑事事件の場合だと「被告人を懲役三年の刑に処す」とか言って、弁護士もい
+て、傍聴人もいてそれなりにドラマチックなんですが、民事事件だとだーれも聞
+きにい
+かない。
+
+　静まり返った法廷で、裁判官が「主文…………。」と読み上げるだけ。
+「被告は原告に対し、金五十万円及びこれに対する訴状送達の翌日から、
+　支払済みの日に到るまで年8%の金利を支払え。訴訟費用は被告の負担とする」
+と、しゃべるだけ。
+
+　訴訟当事者どころか弁護士さえも行かない場合が殆ど。
+
+　ではどのようにして判決の言い渡しを知るかというと、夕方頃に裁判所の書記官
+室に電話をかけて判決の主文だけを聞いて、判決は後日取りに行くだけ。
+
+　当事者双方、弁護士、裁判官にとっても判決が出ると言うのは大変な訳です。
+　特に「自分が勝つ」と思っているほうは、やーとこさ判決ｷﾀ━━━━━━(ﾟ∀ﾟ)
+━━━━━━!! と待ち望んでいる日であり、弁護士も判決が出たら依頼者から金
+を貰おうと待ち遠しい日であり、裁判官に至っては徹夜して一生懸命書いた判決
+だから、三者三様に尋常ならざる思いが判決にはこもっているはずなんですが、
+実態は裁判官がガランとした法廷で「原告の請求を認める」というような事を読
+み上げてそれでおしまい。
+
+　じゃぁ、判決が出た後はどうなるか？強制執行の話しに繋がるわけですが、そ
+れはまたの機会に読者の反響が良ければ書くことにします（長くなります故）。
+
+　2ｃｈのひろゆきとか、損害賠償請求は養育費と同じで、踏み倒すなんて、仰っ
+ておりますが－…元貸金回収業法務部だったワタシから、言わせればふざけるの
+もたいがいにしろ、と殺意を覚えます。しかし、現実は被害者は、泣き寝入りす
+るだけです。司法の硬直性はこういうところにあります。司法改革？
+　建前だけなのがよく解りますね。
+
+　まぁ、ワタシが言いたい事は仕事が法律関係ならいざ知らず、裁判に関ると大
+抵はロクな目に遭わないという冷たい現実がある、と言う事を知ってもらいたい
+という事です。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第4章: 基礎暗号学講座・第20回 ～ヤコビ記号とBlum数～ ---
+
+著者：IPUSIRON
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　Rabin暗号を拡張した暗号であるWilliams暗号を紹介のために、これまでWB43,
+WB44と続けて数学的準備をしてきた。その数学的準備も今回で終わりとなる。
+　今回の記事の前半はWB43,WB44の知識無しでも読める内容になっていて、後半は
+必要に応じてWB43,WB44と比較してもらいたいと思う。
+
+
+■0x02.) x^2+1の素因数分解
+
+　少し唐突だが、xを整数としたとき、x^2+1の値がどうなるかどうかを見ていく。
+
+・x=1のとき、x^2+1=1+1=2
+・x=2のとき、x^2+1=4+1=5
+・x=3のとき、x^2+1=9+1=10=2・5
+・x=4のとき、x^2+1=16+1=17
+・x=5のとき、x^2+1=25+1=26=2・13
+・x=6のとき、x^2+1=36+1=37
+・x=7のとき、x^2+1=49+1=50=2・5^2
+・x=8のとき、x^2+1=64+1=65=5・13
+・…
+
+　これから簡単にわかるのはxが奇数のときはx^2+1は因数に2を含むことである。
+即ち、x^2+1は偶数ということである。それは（奇数）×（奇数）＝（奇数）とい
+う性質から自明である。
+
+　次に2以外の因数に注目してみる。それらを取り出してみると、5,13,17,37であ
+る。これらに何か共通しているものがあるだろうか。2の次の素数である3は登場
+するのだろうか？　xは整数なのでx=3n or 3n+1 or 3n+2の3パターンに場合分け
+できる。これらをx^2+1に代入してみる。
+
+[1]x=3nのとき、x^2+1=(3n)^2+1=3・3n^2+1≡1 (mod 3)
+[2]x=3n+1のとき、x^2+1=(3n+1)^2+1=3(3n^2+2n)+2≡2 (mod 3)
+[3]x=3n+2のとき、x^2+1=(3n+2)^2+2=3(3n^2+4n+1)+2≡2 (mod 3)
+
+　よって、すべての場合において3で割り切れないので、x^2+1の因数には3は必ず
+存在しないことがわかった。
+
+　ここで、素数を2つに大別する。
+　pを2以外の素数、即ち奇素数とする。このpを4で割ると1あるいは3が余る。つ
+まり、p=4k+1 or p=4k+3が成り立つ。前者を1型（の素数）、後者を3型（の素数）
+と呼ぶことにする。
+　3は3型の最も代表的な数である。では3の次に大きな3型の素数である7は登場し
+ているだろうか？　これも同様にして登場しないことがわかるはずである（各自
+確かめて欲しい）。
+
+　また、4で割ってみると、次のようにすべての結果が1と合同であることがわか
+る。
+
+・5≡1 (mod 4)
+・13≡1 (mod 4)
+・17≡1 (mod 4)
+・37≡1 (mod 4)
+
+　xの値が小さいときだからかもしれないので、x=12345としてみる。すると、x^2
++1=12345^2+1=2・13・5861501であり、5861501≡1 (mod 4)となる。
+　これらの実験からx^2+1を素因数分解すると、2以外の因数は1型の素数しかない
+のではないかと推測できる。これを証明すべき主張としてまとめると次のように
+なる。
+
+[予想]x^2+1（x∈Z）を素因数分解すると、2以外の因数は1型の素数になる。
+
+[証明]（背理法）
+　p：4型の素数とする。このとき、∃x∈{1,2,…}；x^2+1≡0 (mod p)と仮定す
+る。　←(1)
+　pは奇数なので、q:=(p-1)/2も奇数である。
+
+　ここでy=x^qを考える。
+　このとき、xはpの倍数ではない。　←(2)　（∵x：pの倍数⇒x^2 (mod p)≡0よ
+り(1)に反するから）
+
+　また、
+
+y^2
+=(x^q)^2
+=x^2q
+=x^(p-1)
+=1 (mod p)　←(3)　（∵フェルマーの小定理）
+
+　このとき
+
+y^2+1
+=(x^2)^q-(-1)^q　（y=x^2q、qは奇数なので-(-1)^q=1）
+≡0 (mod x^2-(-1))
+
+∴y^2+1≡0 (mod p)　（∵x^2-(-1)=x^2+1、(1)）
+
+　しかし、y^2+1≡0 (mod p)かつy^2-1≡0 (mod p)（(3)より）はありえない。よ
+って、矛盾。　□
+
+　証明できたので、この主張を定理として再掲しておく。
+
+[定理]x^2+1（x∈Z）を素因数分解すると、2以外の因数は1型の素数になる。
+
+
+■0x03.) 1型・3型の素数の個数
+
+　ところで、100までには奇数が25個あり、唯一の偶素数である2を除外すれば、
+残りの24個はすべて奇素数である。これを1型の素数と3型の素数で分類すると次
+のようになる。
+
+・1型の素数は、5,13,17,29,37,41,53,61,73,89,97の計11個
+・3型の素数は、3,7,11,19,23,31,43,47,59,67,71,79,83の計13個
+
+　さらに500までの場合は1型は44個、3型は50個である。1000までの場合は1型は
+80個、3型は87個ある。1型・3型の両方ともどんどん増えていくようであるが、実
+は整数上においてどちらも無限に存在することが証明されている（可算の概念に
+はここでは立ち入らない。直観的に想像できる無限のイメージで今のところ問題
+なし）。
+
+　まず、補題として（1型の素数）×（1型の素数）＝（1型の素数）であることを
+示す。
+
+[補題]（1型の素数）×（1型の素数）＝（1型の素数）
+
+[証明](4a+1)×(4b+1)=4ab+4a+4b+1=4(ab+a+b)+1　□
+
+　それでは3型が無限に存在することを示す。
+
+[定理]3型の素数は無限に存在する。
+
+[直観的な証明]3以外の3型の素数として、例えば7を見つける。
+
+N=4・7+3=31
+       ~
+　これは新しい3型の素数になっている。
+
+　この結果を用いて、N=4(7・31)+3=871=13・67となる。因数の67は3型の素数で
+ある。
+
+　さらに、N=4(7・31・67)+3=58159=19・3061
+
+…のように次々と3型の素数を作れる。
+（∵上記のように作った3型のNの素因数がすべて1型であったとすると、それらの
+積は1型であるが、Nは3型である。そこで、Nの素因数の中には3型の素数がある）
+
+　この証明方針を一般化すればよい。　□
+
+　この証明方針を使うと、6n+5型の素数、即ち法を6としたときの余りが5の素数
+が無限に存在することも示すことができる。
+
+　次に、1型の素数が無限に存在することを示す。
+
+[定理]1型の素数は無限に存在する。
+
+[証明]（原論に載っているユークリッドによる素数が無限に存在することの証明
+と似たアプローチで証明可能）
+
+　1型の素数が有限個あったと仮定する。それらの積をb=p1p2…pk、a=(2b)^2+1と
+おく。
+
+　aが素数でなければ素因数の1つをqとする。qは奇数だから、q=2t+1とおける（
+q＞2)。
+　q|aであるから、(2b)^2≡-1 (mod q)
+
+　ここで(q,2b)=1であるから、フェルマーの小定理より次が成り立つ。
+
+(2b)^(q-1)≡(2b)^2t≡1 (mod q)
+(2b)^2t≡((2b)^2)^t≡(-1)^t (mod q)
+(-1)^t≡1 (mod q)
+∴t=2n,n∈{1,2,…}
+
+　q=4n+1なので、pたちとは異なる1型の素数であるため、仮定に反する。　□
+
+　実はディリクレによってさらに一般的な次の主張が証明されている。
+
+[定理]初項aと公差dとが互いに素な等比数列中には、素数が無限に存在する。
+
+　また3型の素数が無限に存在することの証明は、3型の素数はガウスの整数上に
+おいて(a+bi)(a-bi)のように因数分解できることと、ガウスの整数での複素数の
+素数が無限にあることより、見通しよく証明できる。
+　さらに、1型の素数はa^2+b^2と表現できることが知られている。この性質はラ
+グランジュが18世紀に証明し、pからa,bを効率的に求める方法も示した。その後、
+19世紀にガウスが複素平面の世界からさらに見通しよくした。
+　こうした興味深い話もあるが、Williams暗号のための準備としては脱線しすぎ
+るので、これ以上は触れないことにする。自分も理解しているわけではないので、
+いずれWBで紹介したいと思う。
+
+
+■0x04.) 1型・3型の素数と平方非剰余
+
+　 (a,p)=1とする。このとき、x^2≡a (mod p)が解を持つとき、a：pを法とする
+平方剰余と呼ぶこれはすでにWB43で定義した。またルジャンドル記号を使うと、
+次が成り立つ。
+
+・「a：（pを法とする）平方剰余」
+⇔「(a/p)=1」
+⇔「a^{(p-1)/2}≡1 (mod p)」　（∵オイラー基準）
+
+・「a：（pを法とする）平方非剰余」
+⇔「(a/p)=-1」
+⇔「a^{(p-1)/2}=-1 (mod p)」　（∵オイラー基準）
+
+　これを踏まえて話を進める。
+　pを1型の素数とする。そして、q=(p-1)/2とおけば、qは偶数である。
+
+　ここで平方非剰余QNR_pの集合から1つ選択し、それをxとする。平方非剰余の定
+義より、x^{(p-1)]/2}=-1 (mod p)　←(1)が成り立つ。
+　また、u=x^(q/2)=x^{(p-1)/4}とおく。
+
+　すると、u^2=x^{(p-1)/2}≡-1 (mod p)　（∵(1)）
+
+　よって、u^2+1≡0 (mod p)が成り立つ。
+　この合同方程式の左辺は0x04で登場した「x^2+1」という形と一致する。また、
+pは1型の素数で、xはpの平方非剰余である。これで1型の素数と平方非剰余の関連
+が得られたことになる。
+
+　以上より、u^2+1は1型の素数で割り切れることを意味する。つまり、u^2+1を素
+因数分解すると、因数として必ず1型の素数が現れることがわかった。
+　せっかくなので、きちんと定理の形にしておこう。
+
+[定理]ある2以上の整数xに対して、x^2+1の素因数の中に必ず1型の素数が存在する。
+
+　さて先に進もう。今度はpが3型の素数のときである。
+
+[定理]pを3型の素数としたとき、任意のa∈Z_pに対して、a,-aのうちどちらか一
+方が平方剰余で、もう片方が平方非剰余になる。
+
+　証明はWB44で紹介した第1補充法則からスタートする。
+
+[証明]
+
+(-1/p)
+=(-1)^{(p-1)/2}　(∵pは素数なので第1補充法則が成り立つ）
+=(-1)^{(4k+3-1)/2}　（∵pは3型の素数なので、p=4k+3、k∈Zとおいた）
+=(-1)^{(4k+2)/2}
+=(-1)^{(2k+1)/2}
+=-1　←(*)　（∵2k+1は奇数）
+
+　よって、∀a∈Z_p（a≠0）に対して、次のように式を展開できる。
+
+(a/p)(-a/p)
+=(-1/p)(a/p)^2
+=-(a/p)^2　（∵(*)）
+=-1　（∵(a/p)=1,-1どちらにせよ(a/p)^2=1）
+
+　ゆえに「(a/p)=1∧(-a/p)=-1」または「(a/p)=-1∧(-a/p)=1」が成り立つ。こ
+れはa,-aのうちどちらか一方が平方剰余で、他方が平方非剰余であることを意味
+している。　□
+
+　最後に、与えられたa∈QR_pに対して、x^2≡a (mod p)となる（平方根）xを求
+める方法を考察する。1型と3型に場合分けする。
+
+[1]3型のとき、即ちp=4k+3のとき
+
+p+1
+=(4k+3)+1
+=4(k+1)
+
+となり、p+1は4で割り切れる。
+
+　まずa∈QR_pより、x^2≡a (mod p)となるxが必ず存在する。
+
+a^{(p-1)/2}
+≡x^{2・(p-1)/2}　（∵a≡x^2 (mod p)）
+≡x^(p-1)
+≡1 (mod p)　←(1)　（∵フェルマーの小定理）
+
+　よって、
+
+(±a^{(p+1)/4})^2
+≡a^{(p+1)/2}
+≡a^[{(p-1)+2}/2]
+≡a^{(p-1)/2}×a
+≡1×a　（∵(1)）
+≡a (mod p)
+
+　x^2≡a (mod p)を求めるとx=±a^{(p+1)/4} (mod p)が解になる。言い換えれば
+x=±a^{(p+1)/4}はaの平方根である。
+
+[2]1型のとき、即ちp=4k+1のとき
+
+　次のアルゴリズムによりaの平方根±rを求めることができる。
+
+1：(b/p)=-1を満たすb（法pにおける平方非剰余）を求める。
+
+2：「p-1=(2^s)t ∧ t：奇数」を満たすs,tを求める。
+
+3：c=b^t (mod p)、r=a^{(t+1)/2} (mod p)を求める。
+
+4：iを1からs-1まで以下を実行する。
+
+　(4a) d=(r^2/a)^{2^(s-i-1)} (mod p)を求める。
+
+　(4b) d≡-1 (mod p)であれば、r←rc (mod p)とおく。
+
+　(4c) c←c^2 (mod p)とおく。
+
+5：(r,-r)を出力する。
+
+　これで(pを法とする）平方剰余aが与えれたときに、平方根xを効率的に解くこ
+とができるアルゴリズムを得た。Willams暗号ではこのアルゴリズムを積極的に利
+用する。
+
+
+■0x05.) ヤコビ記号
+
+　ルジャンドル記号の計算には素因数分解が必要であった。大きな整数の素因数
+分解は困難であるので、ルジャンドル記号に大きな整数を含む場合はその値を求
+めるのが困難である。この問題を解決するのがここで紹介するヤコビ記号である。
+ヤコビ記号においてもルジャンドル記号の計算に便利であった補充法則・相互法
+則が成り立ち、さらに素因数分解をせずに計算をしていくことができるのである。
+
+[定理]mを1以外の奇数、(a,m)=1とする。
+このとき、「a≡a' (mod m)」⇒「(a/m)=(a'/m)」が成り立つ。
+
+[証明]mの素因数分解をp1p2…p_λとする（素因数に重複があってもよい）。
+
+(a/m)
+=(a/p1p2…p_λ)
+=(a/p1)(a/p2)…(a/p_λ)　（∵ヤコビ記号の定義より、ここの括弧はルジャンド
+ル記号）
+=(a'/p1)(a'/p2)…(a'/p_λ)　（∵仮定＋ルジャンドル記号における性質）
+=(a'/m)　　（∵ヤコビ記号の定義より、ここの括弧はヤコビ記号）　□
+
+[定理]mを1以外の奇数とする。
+(1/m)=1
+
+[証明]m＞1であるから、1はmに関する平方剰余である。よって、(1/m)=1である。　□
+
+[定理]
+
+・(ab/m)=(a/m)(b/m)
+・(a/mn)=(a/m)(a/n)
+
+[証明]mの素因数分解をp1p2…p_λとする（素因数に重複があってもよい）。
+
+(ab/m)
+=(ab/p1p2…p_λ)
+=(ab/p1)(ab/p2)…(ab/p_λ)　（∵ヤコビ記号の定義より、ここの括弧はルジャ
+ンドル記号になる）
+={(a/p1)(b/p1)}{(a/p2)(b/p2)}…{(a/p_λ)(b/p_λ)}（∵[定理]「p：2以外の素
+数、(a,p)=1かつ(b,p)=1とするとき、(ab/p)=(a/p)(b/p)が成り立つ」）
+={(a/p1)(a/p2)…(a/p_λ)}{(b/p1)(b/p2)…(b/p_λ)}
+=(a/m)(b/m)　（∵ヤコビ記号の定義より、ここの括弧はヤコビ記号に戻る）
+
+　また、nの素因数分解をq1q2…q_μとする（素因数に重複があってもよい）。
+
+(a/mn)
+=(a/p1p2…p_λ・q1q2…q_μ)
+=(a/p1)(a/p2)…(a/p_λ)(a/q1)(a/q2)…(a/q_μ)　（∵ヤコビ記号の定義より、
+ここの括弧はルジャンドル記号になる）
+=(a/m)(a/n)　（∵ヤコビ記号の定義より、ここの括弧はヤコビ記号に戻る）　□
+
+　ヤコビ記号においても、ルジャンドル記号の第1、第2補充法則に相当する定理
+が成立する。
+
+[定理]ヤコビ記号の第1補充法則
+mを1以外の奇数とする。
+(-1/m)=(-1)^{(m-1)/2}
+
+[証明]mの素因数分解をp1p2…p_λとする（素因数に重複があってもよい）。
+
+(-1/m)
+=(-1/p1)(-1/p2)…(-1/p_λ)　（∵ヤコビ記号の定義より、ここの括弧はルジャ
+ンドル記号になる）
+=(-1)^{(p1-1)/2}・(-1)^{(p2-1)/2}・…・(-1)^{(p_λ-1)/2}　（∵ルジャンド
+ル記号の第1補充法則）
+=(-1)^[{(p1-1)/2}+{(p2-1)/2}+…+{(p_λ-1)/2}]
+
+　よって、累乗の性質に注目すれば、(m-1)/2≡{(p1-1)/2}+{(p2-1)/2}+…+{(p_λ
+-1)/2} (mod 2)であることが示されればよい。
+
+(m-1)/2
+=(p1p2…p_λ-1)/2　（∵m=p1p2…p_λ）
+=(1/2)[{1+2・(p1-1)/2}{1+2・(p2-1)/2}…{1+2・(p_λ-1)/2}-1]　（∵p_i=1+2・
+(p_i-1)/2　ただし、i=1,…,λ）
+=(1/2)[{1+2Σ[i=i;λ](p_i-1)/2+2^2K}-1]　（ここでKはある整数）
+=Σ[i=1;λ](p_i-1)/2+2K
+
+　したがって、(m-1)/2≡{(p1-1)/2}+{(p2-1)/2}+…+{(p_λ-1)/2} (mod 2)　□
+
+[定理]ヤコビ記号の第2補充法則
+mを1以外の奇数とする。
+(2/m)=(-1)^{(m^2-1)/8}
+
+[証明]証明方針はヤコビ記号の第1補充法則と同様である。
+
+　mの素因数分解をp1p2…p_λとする（素因数に重複があってもよい）。
+
+(2/m)
+=(2/p1)(2/p2)…(2/p_λ)　（∵ヤコビ記号の定義より、ここの括弧はルジャンド
+ル記号になる）
+=(-1)^{(p1^2-1)/8}・(-1)^{(p2^2-1)/8}・…・(-1)^{(p_λ^2-1)/8}　（∵ルジ
+ャンドル記号の第2補充法則）
+=(-1)^[{(p1^2-1)/8}+{(p2^2-1)/8}+…+{(p_λ^2-1)/8}]
+
+　よって、累乗の性質に注目すれば、(m^2-1)/8≡[{(p1^2-1)/8}+{(p2^2-1)/8}+
+…+{(p_λ^2-1)/8}] (mod 2)であることが示されればよい。
+
+(m^2-1)/8
+=(p1^2・p2^2・…・p_λ^2-1)/8
+=(1/8)[{1+8・(p1^2-1)/8}{1+8・(p2^2-1)/8}…{1+8・(p_λ^2-1)/8}-1]
+=(1/8)[{1+8Σ[i=1;λ](pi^2-1)/8+16L}-1]　（ここでLはある整数）
+=Σ[i=1;λ](p_i^2-1)/8+2L
+
+　したがって、(m^2-1)/8≡[{(p1^2-1)/8}+{(p2^2-1)/8}+…+{(p_λ^2-1)/8}] 
+(mod 2)　□
+
+　最後にヤコビ記号の相互法則を証明する。
+
+[定理]m,nを互いに素な正の奇数とする。
+このとき、(m/n)(n/m)=(-1)^{(m-1)/2}{(n-1)/2}
+
+[証明]mの素因数分解をp1p2…p_λ、nの素因数分解をq1q2…q_μとする（素因数
+に重複があってもよい）。
+
+(n/m)
+=(n/p1p2…p_λ)
+=(n/p1)(n/p2)…(n/p_λ)　（∵ヤコビ記号の性質）
+=(q1q2…q_μ/p1)(q1q2…q_μ/p2)…(q1q2…q_μ/p_λ)
+={(q1/p1)(q2/p1)…(q_μ/p1)}{(q1/p2)(q2/p2)…(q_μ/p2)}…{(q1/p_λ)(q2/
+p_λ)…(q_μ/p_λ)}　（∵ヤコビ記号の定義より、ここの括弧はルジャンドル
+記号）
+=Σ[i≦j≦μ][1≦i≦λ](q_j/p_i)　←(1)
+
+　同様にして、
+
+(m/n)=Σ[i≦j≦μ][1≦i≦λ](p_i/q_j)　←(2)
+
+　(1)(2)を両辺掛け合わせる。
+
+(n/m)(m/n)=Σ[i≦j≦μ][1≦i≦λ](q_j/p_i)(p_i/q_j)
+
+（右辺）
+=Σ[i≦j≦μ][1≦i≦λ](q_j/p_i)(p_i/q_j)
+=Σ[i≦j≦μ][1≦i≦λ](-1)^{(p_i-1)/2}{(q_j-1)/2}　（∵ルジャンドル記号
+の相互法則）
+=(-1)^Σ[i≦j≦μ][1≦i≦λ]{(p_i-1)/2}{(q_j-1)/2}
+=(-1)^Σ[i=1;λ]{(p_i-1)/2}・Σ[j=1;μ]{(q_j-1)/2}
+=(-1)^{(m-1)/2}{(n-1)/2}　（∵ヤコビ記号の第1補充補足の証明内で示したよう
+に、m-1)/2≡{(p1-1)/2}+{(p2-1)/2}+…+{(p_λ-1)/2}≡Σ[i=1;λ](p_i-1)/2 
+(mod 2)が成り立つ）　□
+
+　以上の結果を利用して、ヤコビ記号(365/2009)の値を求めてみる。
+
+　365=5・73、2009=7^2・41であり、この2つの数は互いに素な奇数なので、ヤコ
+ビ記号の相互法則が利用できる。
+
+(365/2009)(2009/365)
+=(-1)^{(365-1)/2}{(2009-1)/2}
+=(-1)^182・1004
+=1
+
+よって、
+
+(365/2009)
+=(2009/365)
+=(184/365)　（∵2009≡184 (mod 365)）
+=(2/365)(92/365)　←素因数分解ではなく、2で割れたので外に出した。
+=(2/365)(2/365)(46/365)
+=(2/365)(2/365)(2/365)(46/365)
+=(2/365)^3・(23/365)　←(1)　（∵(ab/m)=(a/m)(b/m)）
+
+ここでヤコビ記号の第2補充法則より、
+
+(2/365)=(-1)^{(365^2-1)/8}=(-1)^(91・183)=-1　←(2)
+
+またヤコビ記号の相互法則より
+
+(23/365)
+=(365/23)・(-1)^{(23-1)/2}{(365-1)/2}
+=(-1)^(11・182)
+=-1　←(3)
+
+　(1)に(2)(3)を代入すると、(365/2009)=1　◇
+
+
+■0x06.) Blum数
+
+[定義]Blum数
+p≡q≡3 (mod 4)となるN=pqをBlum数と呼ぶ。
+
+　暗号理論の世界でBlum数が使われるときには一般にはp,qは同程度の大きさの素
+数が選ばれる。NがBlum数のとき、Nから素因数分解を解くことと、平方剰余問題
+を解くことは共に難しいと信じられている。
+
+　このように定義したBlum数は平方剰余と次の関係が成り立つ。
+
+[定理]
+a：法Nの平方剰余とする。
+このとき、次が成り立つ。
+「N=pqがBlum数」⇒「x^2≡a (mod N)の4つの平方根のうち必ずひとつが平方剰余
+である（残りの3つは平方非剰余）」
+
+[証明]仮定より、p≡3 (mod 4)∧q≡3 (mod 4)となる。
+
+　ここで、4つの平方根x1～x4を次のように定義する。
+
+・x1=[α,β]
+・x2=[-α,β]
+・x3=[α,-β]
+・x4=[-α,-β]
+
+　なお、N=pqのときのx=[a,b]は、a≡x (mod p)∧b≡x (mod q)となるx∈Z_Nを意
+味する（WB42で導入済み）。
+
+　このとき仮定より、α,-αのうち一方だけが平方剰余である（∵0x02で「pを3
+型の素数としたとき、任意のa∈Z_pに対して、a,-aのうちどちらか一方が平方剰
+余になる」という定理を証明済み）。
+　また同様に、β,-βのうち一方だけが平方剰余である。
+
+[1]α,β：平方剰余のとき、
+
+　x1=[α,β]、即ちα≡x1 (mod p)∧β≡x1 (mod q)を満たすx1が平方剰余にな
+る。なぜならばZ_N=Z_p×Z_q、a=[α,β]としたとき、「a∈QR_N」⇔「α∈QR_N
+∧β∈QR_N」が成り立つからである。
+
+[2]-α,β：平方剰余のとき
+
+　x2=[-α,β]、即ち-α≡x2 (mod p)∧β≡x2 (mod q)を満たすx2が平方剰余に
+なる。
+
+[3]α,-β：平方剰余のとき
+
+　x3=[α,-β]、即ちα≡x2 (mod p)∧-β≡x2 (mod q)を満たすx2が平方剰余に
+なる。
+
+[4]-α,-β：平方剰余のとき
+
+　x4=[-α,-β]、即ち-α≡x4 (mod p)∧-β≡x4 (mod q)を満たすx4が平方剰余
+になる。　□
+
+　例えば、p=3,q=7とする（p,qどちらも3型の素数）。このとき、{1,…,N=pq=21}
+のうちNと素な整数は1,2,4,5,8,10,11,13,16,17,19,20である。オイラー関数で計
+算するとφ(21)=φ(3)φ(7)=(3-1)(7-1)=2・6=12となり、ちょうど12個揃ってい
+ることが確かめられる。なお、オイラー関数については次のWebページを参照せよ
+（WBで解説したつもりでしたが、実はまだ解説してないことがわかった）。
+
+http://akademeia.info/index.php?%B5%D7%CE%B1%C5%E7%A1%A6%A5%AA%A5%A4%A5%E9%A1%BC%B4%D8%BF%F4
+
+　これら12つの数をそれぞれ2乗して、法N=21においての値を調べる。
+
+・1^2≡1
+・2^2≡4
+・4^2≡16
+・5^2≡25≡4 (mod 21)
+・8^2≡64≡1 (mod 21)
+・10^2≡100≡16 (mod 21)
+・11^2≡121≡16 (mod 21)
+・13^2≡169≡1 (mod 21)
+・16^2=256≡4 (mod 21)
+・17^2=289≡16 (mod 21)
+・19^2=361≡4 (mod 21)
+・20^2=400≡1 (mod 21)
+
+　2乗して登場した数は1,4,16だけである。これらは法N=21の平方剰余に相当する。
+残りの9(=12-3)つの数は平方非剰余である。
+　つまり、Z_21の元のうち1,4,16だけがQR_21に含まれる。さらにこの3つの数をそ
+れぞれ法21の世界で2乗してみる。
+
+・1^2≡1
+・4^2≡16
+・16^2=256≡4 (mod 21)
+
+　よって、2乗した結果は完全にQR_21の並び替えにすぎず、その写像は全単射に
+なっている。つまり長さを保った一対一対応（一方向性）の関数なので、一方向
+性置換である。
+
+（図）http://security2600.sakura.ne.jp/main2/image4/blum1.jpg
+
+　以上を踏まえて、上記の主張を確認してみる。
+
+　aは21を法とする平方剰余であることを考慮して、a=1,4,16の3通りに場合分け
+する。
+
+[1]a=1のとき
+
+　x^2≡1 (mod 21)の4つの平方根はx=1,8,13,20である。このうち21を法とする平
+方剰余1,4,16と合致するのは、1の1つだけである。つまり、4つのうちの1つだけ
+が平方剰余であり、主張が成り立つ。
+
+[2]a=4のとき
+
+　x^2≡4 (mod 21)の4つの平方根はx=2,5,16,19である。このうち21を法とする平
+方剰余1,4,16と合致するのは、16の1つだけである。つまり、4つのうちの1つだけ
+が平方剰余であり、主張が成り立つ。
+
+[3]a=16のとき
+
+　x^2≡4 (mod 21)の4つの平方根はx=4,10,11,17である。このうち21を法とする
+平方剰余1,4,16と合致するのは、4の1つだけである。つまり、4つのうちの1つだ
+けが平方剰余であり、主張が成り立つ。
+
+　以上より、N=15のときに主張が成り立つことが確認できた。
+
+
+■0x07.) 終わりに
+
+　ようやく数学的準備を終えることができた。Rabin暗号が持つ一意に復号できな
+いという課題を解決したWilliams暗号を次回紹介する。結論から言えば、William
+s暗号は公開鍵NをBlum数とし、平文空間を限定することで、素因数分解が困難であ
+るという仮定の下でOW-CPA安全を満たすことが証明されている。証明アプローチは
+Rabin暗号のときと似ているので、次回までにWB42を理解しておいてもらえればと
+思う。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+ --- 第5章: お知らせ ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○Wizard Bible（http://wizardbible.org/）では随時、執筆ライターを募集して
+います。
+　扱う内容のテーマは広義での「under ground」です。例えばハッキングやセキ
+ュリティからピッキングなどと幅広い内容を考えています。また特殊な職業や趣
+味の解説などでも構いません。
+　一回きりでも構いません。また必ず毎回連載する義務もありませんので、でき
+る範囲で構いません。気軽に声をかけてください。
+
+○Kenji AikoさんがQ&Aを作ってくれました。初めて参加する人でもわかりやすく
+書かれていますので、参考にしてください。
+
+http://wizardbible.org/wbQandA.html
+
+○Wizard Bibleに参加希望の方は気軽にメール（ipusiron@gmail.com）ください。
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+  ---- 第6章: 著者プロフィール ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■金床
+●Job: プログラマー
+●Web: http://guardian.jumperz.net/, http://www.jumperz.net/
+●Mail: anvil@jumperz.net
+●Comment:
+　最近XBOX360を購入してエースコンバット6にﾊﾏっています。これでｴｽｺﾝｼﾘｰｽﾞは
+1,2,3以外全部やっていることになります。最初にやりこんだX（PSPのやつ）がぶ
+っちぎりで一番難しかったため、据え置き機のｼﾘｰｽﾞ（4,5,Zero,6）は比較的簡単
+にクリアできちゃいます。Zeroのｶﾞﾝﾄﾚｯﾄにでてくるﾓﾋﾞｳｽが少し強くて面白かっ
+たので、モビウスが5匹くらいおそってくるステージが欲しいです（さすがに死ぬ
+かｗ）。そんなわけで次作エースコンバットでは難易度が上がることを期待。
+●よく使う便利なツール
+　「よくできているソフトウェアを使うことの大切さ」を最近見直しているとこ
+ろです。ということでまずrsyncを挙げておきます。-nオプションの便利さは異常。
+Cygwinでも動いてくれるので、持ち歩き用のWinXPとメインのWin2kのファイル同
+期に使ってます。
+　次にFirebug。ウェブ開発にはかかせません。ページを開いた際にどのようなタ
+イミングでファイルが取得されているかをミリ秒単位で知ることができて便利。
+　そしてあまりにも使いすぎていて思いつくのが遅れたscreen。いつもインスコ
+直後に入っていなくてキレそうになりながらyum -y install screenしますが何か。
+　あとはiptablesとかipvsadmとかmdadmとかiSCSIとかviとかxargsとかシェルと
+か。
+
+
+■Kenji Aiko
+●Job: engineer
+●Web: http://ruffnex.oc.to/kenji/
+●Mail: kenji@ruffnex.oc.to
+●Comment:
+　FreeBSD関連はユーザー数が少ないためか、検索しても情報があまり出てこない
+…orz。今回はそこが少し困りどころでした。でもFreeBSDもなかなか良い感じで
+す。MacBookを買って以来、FreeBSDとMacOSXに興味が移り気味なこの頃…。
+●よく使う便利なツール:
+　これは難しいところだと思うのですが、最近だとほとんどVM上でいろいろやっ
+ているので、VMWare、VirtualPCなどの仮想環境は本当に便利でよく使います。
+　あと、バイナリエディタについて、基本的にはstirlingを使うのですが、stir
+lingは巨大すぎるファイルを扱えないので、そのために「バイナリエディタ Bz」
+というバイナリエディタを使っています。機能面はstirlingの方が優秀ですが、
+巨大なファイルを扱えるという点では、Bzはかなりすばらしい性能です。2GB、3
+GBのファイルもほぼ一瞬で読み込んでくれるため、その一点において、Bzも併用
+しています。
+
+
+■理事長（Rudolph von Gartheimer）
+●Job:Der vollstreckende Vorsitzender des zentralen Exekutivkomitees
+●Web:http://www.gartheimer.com/
+●Mail:gartheimer@hotmail.com
+●Team（Group）：宗凶法人 愛連合
+●よく使う便利なツール：Yahoo!Auctionのキーワードアラート機能
+　ナチ稀覯本収集や趣味に通じる品物、お気に入りのブランドの製品を探すのに、
+とても重宝しています。「すぐに通知」設定にしているので、一日に届く、Mail
+の量が凄いことになっていますが、その中から掘り出し物を発見し、落札する快
+感は辞められませんね。財布は軽くなりますがッ！！
+
+
+■IPUSIRON
+●Job: プログラマー
+●Web: http://akademeia.info
+●Mail: ipusiron@gmail.com
+●Comment:
+　今回の記事はWilliams暗号の数学的準備だとしても、正直なところもう少しス
+トーリーのある内容にしたかったです。次回以降はもう少し考えたいと思います。
+　実は次のWBの原稿もほとんどできていたのですが、もう少し自分なりに考察し
+たいのとストーリーを持たせたいという理由から、次回にまわすことにしました。
+●よく使う便利なツール:
+　一番よく使っているのはやっぱり秀丸です。アウトラインプロセッサ機能が備
+わっていることを発見してから、WzEditorを使わなくなりました。
+　後はサイト更新用にMS Visioをよく使っています。Visioで作った図はそのまま
+Officeソフト（WordやPowerPoint）に貼り付けられるので、WordやPowerPoint側
+でちまちま絵を描くよりもはるかに効率的です。しかも画像として貼り付けられ
+るのではなく、Visio形式のオブジェクトとして保持されているので、PowerPoint
+⇔Visioという使い方ができます。
+　最近よく使うようになったのがWinMergeです。xdocdiff WinMerge Pluginなども
+導入すれば、Office文書の比較もできます。TortoiseSVNの差分表示にもWinMerge
+を使えます（別に他のDiffソフトでも使えますが）。ディレクトリの比較もでき、
+個別の差分に対して同期する側を切り替えるという使い方もできます。
+

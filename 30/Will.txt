@@ -1,0 +1,94 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: PEditorの改造 ---
+
+著者：Will
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) 準備
+
+・OllyDbg
+http://www.ollydbg.de/
+
+・PEditor
+http://www.softpedia.com/get/Programming/File-Editors/PEditor.shtml
+
+・PEiD 0.94
+http://www.softpedia.com/get/Programming/Packers-Crypters-Protectors/PEiD-updated.shtm
+
+・OllyDump
+http://dd.x-eye.net/file/ollydump300110.zip
+
+
+■0x02.) PEditorとは
+
+　krackをしている人ならば知らない人はいないと思いますが、PEditorとはPEヘ
+ッダなどを編集したりできるソフトウェアです。PEヘッダについては次のURLを参
+照してください。
+
+http://codezine.jp/a/article.aspx?aid=403
+
+
+■0x03.) なぜ改造する？
+
+　PEditorは大変使いやすい（個人的には）のですが、これがまた困ったやつで編
+集後にセクションテーブルに以下の文字列を追加します。
+
+-----
+**************** Modified with    PEditor 1.7   by yoda & M.o.D. -> come.to/f2f ****************
+-----
+
+　これのせいでパッチが多くなったり、ソフトウェアによっては正常にセクショ
+ンテーブルを認識しなくなります。そういうわけでPEditorを改造してこの文字列
+を追加しないようにします。
+
+
+■0x04.) 改造開始
+
+　まずはパックされていないかをPEiDで調べます。結果は次の通りだったとします。
+
+-----
+UPX 0.89.6 - 1.02 / 1.05 - 1.24 -> Markus & Laszlo
+-----
+
+　そこでUPXをダウンロードしてきて、アンパック…といいたいところです。しか
+し実はPEditorはヘッダなどが変更されているので、UPXではアンパックできません。
+では他のアンパッカーで…というのも邪魔くさいので、自分でアンパックしてしま
+いましょう。
+
+　それではOllyDbgでPEditor.exeを開きましょう。UPXのアンパックではコマンド
+検索でpopadを検索するのがセオリーなのですが、今回はステップ実行で探してい
+きます。
+
+-----
+0061B703   .- E9 DC27E8FF   JMP PEditor.0049DEE4
+-----
+
+　これで別セクションにジャンプします。ジャンプ後、よく見てみるとOEPっぽい
+のがわかると思います。ここら辺は慣れです。
+　そこでOllyDumpでダンプしましょう。ダンプが終了したら、一度OllyDbgを終了
+して、今度はダンプしたファイルを開きます。すべての参照文字列の中にセクシ
+ョンテーブルに追加される文字列が見つかるでしょう。しかしこれは文字列のア
+ドレスを保持しているだけなので、0049FD68で右クリック→内容表示-ダンプ→定
+数をクリックするとダンプ画面に文字列が表示されます。後は文字列を選択して
+ゼロクリアしてファイルに保存すれば終わりです。
+
+　以上でPEditorの改造は終わりです。
+
+
+■0x05.) 駄文
+
+　時間がない＆ネタがないということで、しょぼい文章を書かしていただきまし
+たｗ　今度出すときはもう少しましなことを書きたいと思います。
+　そういや、OllyDbg2.0はもう少しで公開！…でもないみたい…。詳しくは次の
+URLを参考にしてみてください。
+
+http://d.hatena.ne.jp/Will_net/20061121
+
+　ではでは。
+
+

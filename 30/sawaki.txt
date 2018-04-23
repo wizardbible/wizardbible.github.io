@@ -1,0 +1,549 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: Internet Explorer 6.0の表示URLを取得する方法 - グローバルフック編 ---
+
+著者：沢木正人
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　今回の記事は、グローバルフックを使用してInternet Explorer 6.0で表示され
+ているURLを取得してしまおうというものです。ちなみにこのプログラムでは、取
+得したURLを「C:\MyURL.txt」に1行ずつ保存していくことにします。この機能を
+キーロガーに組み込むことで、どのウェブサイトにアクセスした時のキー入力か
+を把握することができ、キーロガーの機能が強化されます。ただし来年発売予定
+のWindows Vistaではこのプログラムは正常に動かないかもしれません。詳細はM
+SDNをご参照ください。
+
+・「ユーザー インターフェイス特権の分離 （UIPI）」
+http://www.microsoft.com/japan/msdn/windowsvista/general/AppComp.aspx#appcomp_new_topic22
+
+　なおこの記事で使用されている図、およびこの記事で作成したプログラムはす
+べて「http://mixlogger.the-ninja.jp/hook/」にアップロードされていますので
+よろしければご参照ください。
+
+　この記事で行っているグローバルフック以外の方法で、Internet Explorer 6.0
+の表示URLを取得する方法は愛甲健二さんの著作『ハッカー・プログラミング大全
+　攻撃編』に載っていますのでご興味のあるかたはご参照ください。
+
+・『ハッカー・プログラミング大全　攻撃編』
+http://www.amazon.co.jp/gp/product/4887188676
+
+
+■0x02.) 開発環境
+
+　開発環境は以下の通りです。Visual StudioではVisual C++でMFCを使用します。
+
+・Microsoft Windows XP Service Pack 2
+・Microsoft Visual Studio 2005 Professional Edition
+
+
+■0x03.) 動作環境
+
+　このプログラムはMicrosoft Windows XP Service Pack 2上で、Internet Expl
+orer 6.0の表示URLを取得します。
+
+
+■0x04.) 開発の大まかな流れ
+
+　開発の大まかな流れは以下の通りです。
+
+1：ソリューションの作成
+
+2：グローバルフック用DLLのスケルトンを作成
+
+3：グローバルフック用DLLをロードするためのEXEのスケルトンを作成
+
+4：グローバルフック用DLL内にSetWindowsHookEx()を使用したグローバルフック
+を記述
+
+5：ロード用EXE内にグローバルフック用DLLをロードする処理を記述
+
+6：実際に起動して動作テストをしてみる
+
+
+■0x05.) 実際に開発してみる
+
+1：ソリューションの作成します。
+　まずはグローバルフック用DLLとロード用EXEのプロジェクトを管理するための、
+空のソリューションを作成します。ソリューションとはアプリケーションの作成
+に必要な参照、データ接続、フォルダ、およびファイルを表す項目が含まれてい
+るものです。ソリューションには複数のプロジェクトを含めることができます。
+このプロジェクトでグローバルフック用DLLとロード用EXEを作成します。
+　Visual Studioを起動したら「ファイル(F) -> 新規作成(N) -> プロジェクト(
+P)...」を選択します。次に「プロジェクトの種類(P)」で「その他のプロジェク
+トの種類 -> Visual Studio ソリューション」を選択し、「テンプレート」で「
+空のソリューション」を選択します。今回は「プロジェクト名(N)」を「GetURL」
+にしましょう。「場所(L)」にソリューションを保存するディレクトリを設定して
+「OK」ボタンを押下します（図1参照）。
+
+（図1）image1.jpg
+
+　これで空のソリューションが作成されました。
+
+2：グローバルフック用DLLのスケルトンを作成します。
+　グローバルフック用DLLのスケルトンを作成を作成します。まず「ファイル(F)
+ -> 新規作成(N) -> プロジェクト(P)...」を選択します。次に「プロジェクトの
+種類(P)」で「Visual C++ -> MFC」を選択し、「テンプレート」で「MFC DLL」を
+選択します。「プロジェクト名(N)」は「Hook」にしましょう。「ソリューション
+(S)」は「ソリューションに追加」を選択し、「OK」ボタンを押下します（図2参
+照）。
+
+（図2）image2.jpg
+
+　「OK」ボタンを押下すると、「MFC DLLウィザード」ダイアログが表示されます。
+ここでは「アプリケーションの種類」で「MFC拡張DLL」を選択し、「完了」ボタ
+ンを押下します。ちなみにこのオプションは実行時にプログラムからMFCライブラ
+リを呼び出す場合、および作成したDLLと呼び出し元のアプリケーション間でMFC
+オブジェクトを共有する場合に選択します（図3参照）。
+
+（図3）image3.jpg
+
+　「完了」ボタンを押下後、ソリューションエクスプローラでファイルが正常に
+追加されているか確認してください（図4参照）。
+
+（図4）image4.jpg
+
+　このままではユニコード文字セットを使用した状態になってしまいますので、
+マルチバイト文字セットを使用するように変更します。ソリューションエクスプ
+ローラでHookプロジェクトを右クリックして「プロパティ(R)」を選択します。
+「Hookプロパティページ」ダイアログが表示されるので、「構成(C)」を「すべて
+の構成」、「構成プロパティ -> 文字セット」を「マルチバイト文字セットを使
+用する」に設定して「OK」ボタンを押下します（図5参照）。
+
+（図5）image5.jpg
+
+　これでグローバルフック用DLLのスケルトンの作成は終了です。
+
+3：グローバルフック用DLLをロードするためのEXEのスケルトンを作成します。
+　グローバルフック用DLLをロードするためのEXEのスケルトンを作成します。ま
+ず「ファイル(F) -> 新規作成(N) -> プロジェクト(P)...」を選択します。次に
+「プロジェクトの種類(P)」で「Visual C++ -> MFC」を選択し、「テンプレート」
+で「MFC アプリケーション」を選択します。「プロジェクト名(N)」は「Load」に
+しましょう。「ソリューション(S)」は「ソリューションに追加」を選択し、「O
+K」ボタンを押下します（図6参照）。
+
+（図6）image6.jpg
+
+　「OK」ボタンを押下すると「MFCアプリケーションウィザード」ダイアログが表
+示されます。ここでは「アプリケーションの種類」で「ダイアログベース(D)」を
+選択し、「ユニコードライブラリを使用する(N)」チェックボックスをオフにした
+ら「完了」ボタンを押下します（図7参照）。
+
+（図7）image7.jpg
+
+　「完了」ボタンを押下後、ソリューションエクスプローラでファイルが正常に
+追加されているか確認してください（図8参照）。
+
+（図8）image8.jpg
+
+　これでグローバルフック用DLLをロードするためのEXEのスケルトンを作成は終
+了です。
+
+4：グローバルフック用DLL内にSetWindowsHookEx()を使用したグローバルフック
+を記述します。
+　いよいよグローバルフック用DLL内にSetWindowsHookEx()を使用したグローバル
+フックを記述していきます。ここではKAB-studioさんのシステムフックという記
+事がとても分かりやすいので、これに倣ってグローバルフックを記述していきま
+す。KAB-studioさんの記事ではキーボードフックを扱っていますので、ご興味の
+ある方はご参考にするといいかもしれません。
+
+http://www.kab-studio.biz/Programing/Codian/DLL_Hook_SClass/08.html
+
+　ちょっと長いので、大まかな流れを書いておきます。
+
+A)GetThisHInstanceの作成
+B)CGlobalHookクラスの作成とエクスポート
+C)CGlobalHook::Setの作成
+D)CGlobalHook::Releaseの作成
+E)CGlobalHook::CallWndRetProcの作成
+
+　それでは作成していきます。
+
+A)GetThisHInstanceの作成
+　DLLのインスタンスハンドルを返す関数GetThisHInstanceを作成します。これは
+後で述べるSetWindowsHookExでの引数に使用します。
+　まずHook.cppを開きます。DllMain付近に以下のように記述します。
+
+-----
+static HINSTANCE g_hInstance = NULL;
+HINSTANCE GetThisHInstance()
+{
+       return g_hInstance;
+}
+// 上の5行を追加
+
+extern "C" int APIENTRY
+DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
+{
+       g_hInstance = hInstance;        //この行を追加。
+       // あとはそのまま
+-----
+
+　次にこのGetThisHInstanceを呼び出すためのヘッダーファイルを新規作成しま
+す。ソリューションエクスプローラで「Hook」プロジェクトを選択し、「プロジ
+ェクト(P) -> 新しい項目の追加(W)」を選択します。「新しい項目の追加」ダイ
+アログが開かれるので、「カテゴリ(C)」は「コード」、「テンプレート(T)」は
+「ヘッダーファイル(.h)」を選択し、「ファイル名(N)」に「Hook.h」と記述して、
+「追加(A)」ボタンを押下します（図9参照）。
+
+（図9）image9.jpg
+
+　新規作成したHook.hの一番上に以下の1行を追加します。
+
+-----
+HINSTANCE GetThisHInstance();
+-----
+
+　GlobalHook.cppの上部に以下のように記述します。
+
+-----
+#include "StdAfx.h"
+#include "GlobalHook.h"
+#include "Hook.h" // この行を追加
+-----
+
+　これでGetThisHInstanceを呼び出す準備ができました。
+
+B)CGlobalHookクラスの作成とエクスポート
+
+　グローバルフック用の処理を格納するクラスを追加していきます。クラスビュ
+ーでHookクラスを選択し、「プロジェクト(P) -> クラスの追加(C)」を選択し「
+クラスの追加」ダイアログを開きます。「カテゴリ(C)」で「C++」を、「テンプ
+レート(T)」で「C++クラス」を選択し「追加」ボタンを押下します（図10参照）。
+
+（図10）image10.jpg
+
+　「追加」ボタンを押下すると「汎用C++クラスウィザード」が開きますので、
+「クラス名(L)」に「CGlobalHook」と入力し「完了」ボタンを押下します（図11
+参照）。
+
+（図11）image11.jpg
+
+　「完了」ボタンを押下後、クラスビューでCGlobalHookがちゃんと追加されてい
+るかどうか確認します（図12参照）。
+
+（図12）image12.jpg
+
+　ちゃんと追加されていたら、今度はCGlobalHookをEXE側から呼び出せるように
+エクスポートします。GlobalHook.hを開き、以下のようにして「class CGlobalH
+ook」の部分に「__declspec(dllexport)」を追加します。
+
+-----
+class __declspec(dllexport) CGlobalHook
+-----
+
+　これでCGlobalHookのエクスポートが完成しました。
+
+C)CGlobalHook::Setの作成
+
+　グローバルフックを開始する関数CGlobalHook::SetをCGlobalHookに追加します。
+クラスビューでCGlobalHookを右クリックし、「追加 -> 関数の追加(U)...」を選
+択します。すると「メンバ関数の追加ウィザード」が開かれます。「戻り値の型
+(Y)」を「BOOL」、「関数名(U)」に「Set」と記述し、「完了」ボタンを押下しま
+す（図13参照）。
+
+（図13）image13.jpg
+
+　次にCGlobalHook::Setの内部等を記述し、実際にグローバルフックが実行され
+るようにしていきます。CGlobalHook.cppを開き、CGlobalHook::Set内部に以下の
+ように記述します。
+
+-----
+BOOL CGlobalHook::Set()
+{
+       m_hHook = ::SetWindowsHookEx(
+                                                                       WH_CALLWNDPROCRET,
+                                                                       (HOOKPROC)CGlobalHook::CallWndRetProc,
+                                                                       GetThisHInstance(),
+                                                                       0
+                                                               );
+
+       if( ! m_hHook )
+       {
+               return FALSE;
+       }
+
+       return TRUE;
+}
+-----
+
+　MSDNを参考にしてSetWindowsHookExの引数を解説していきます。
+　1つ目の「WH_CALLWNDPROCRET」によって目的のウィンドウプロシージャが処理
+したばかりのメッセージを監視する 1 個のフックプロシージャをインストールし
+ます。
+　2つ目の「(HOOKPROC)CGlobalHook::CallWndRetProc」はフックプロシージャへ
+のポインタを指定します。上の2つを具体的に解説しますと、Internet Explorer
+ 6.0がWM_SETTEXTメッセージを使用してアドレスバーに「http://www.hoge.jp」
+などのURLを描画した後、フックプロシージャであるCallWndRetProcに処理が入っ
+てくるわけです。
+　3つ目の「GetThisHInstance()」ですが、ここにDLLのインスタンスハンドルを
+指定することによってグローバルフックを実現します。ここにNULLを指定すると
+ローカルフックとなります。
+　4つ目の「0」ですが、フックプロシージャを関連付けるべきスレッドの識別子
+を指定します。0で構いません。
+
+　次にSetWindowsHookExの戻り値であるフックプロシージャのハンドル「m_hHoo
+k」を宣言します。この変数はHook.dllを使用するすべてのプロセス間で同じ値を
+共有できるようにしなければなりません。でないと後で説明するCGlobalHook::C
+allWndRetProc内でm_hHookを使用できなくなってしまいます。クラスビューでCG
+lobalHookを右クリックし、「追加 -> 変数の追加(B)...」を選択します。「メン
+バ変数の追加」ダイアログが開かれますので、「アクセス(A)」を「private」、
+「変数の種類(V)」に「HHOOK」、「変数名(N)」に「m_hHook」と記述して「完了」
+ボタンを押下します（図14参照）。
+
+（図14）image14.jpg
+
+　CGlobalHook.hを開き、以下のように「HHOOK m_hHook」の前にstaticを追加し
+ます。
+
+-----
+static HHOOK m_hHook;
+-----
+
+　CGlobalHook.cppを開き上部に以下のように記述します。ここでは「HHOOK CGl
+obalHook::m_hHook = NULL;」と書いてあるように、必ず初期化しなければなりま
+せん。
+
+-----
+#include "StdAfx.h"
+#include "GlobalHook.h"
+#include "Hook.h"
+
+//以下の３行を追加
+#pragma data_seg( ".CHookData" )
+       HHOOK CGlobalHook::m_hHook = NULL;
+#pragma data_seg()
+-----
+
+　Hook.defを開き、一番下に以下のように記述します。
+
+-----
+SECTIONS
+       .CHookData      READ WRITE SHARED
+-----
+
+　これでHook.dllを使用する全てのプロセス間でm_hHookを共有できるようになり
+ました。
+
+D)CGlobalHook::Releaseの作成
+　グローバルフックを終了する関数CGlobalHook::ReleaseをCGlobalHookに追加し
+ます。クラスビューでCGlobalHookを右クリックし、「追加 -> 関数の追加(U)...
+」を選択します。すると「メンバ関数の追加ウィザード」が開かれます。「戻り
+値の型(Y)」を「BOOL」、「関数名(U)」に「Release」と記述し、「完了」ボタン
+を押下します（図15参照）。
+
+（図15）image15.jpg
+
+　追加が成功したらCGlobalHook::Release内に処理を書いていきます。これは以
+下のようにします。
+
+-----
+BOOL CGlobalHook::Release(void)
+{
+       if( m_hHook )
+       {
+               if( ! ::UnhookWindowsHookEx( m_hHook ) )
+               {
+                       return FALSE;
+               }
+               m_hHook = NULL;
+       }
+       return TRUE;
+}
+-----
+
+　次にCGlobalHook::~CGlobalHookからこのCGlobalHook::Releaseを呼び出すよう
+にします。
+
+-----
+CGlobalHook::~CGlobalHook(void)
+{
+       Release();
+}
+-----
+
+　これでCGlobalHook::Releaseが完成しました。
+
+E)CGlobalHook::CallWndRetProcの作成
+　CGlobalHook::CallWndRetProcを記述していきます。このメンバ関数はInterne
+t Explorer 6.0のアドレスバーに「http://hoge.jp」等とURLが描画されたときに、
+グローバルフックを使用してそれらを取得した後ファイルに保存する処理を担っ
+ています。クラスビューでCGlobalHookを右クリックし、「追加 -> 関数の追加(
+U)...」を選択します。すると「メンバ関数の追加ウィザード」が開かれます。
+「戻り値の型(Y)」を「LRESULT」、「関数名(U)」に「CallWndRetProc」、「ア
+クセス制御」に「private」と設定します。その後「パラメータの一覧(L)」に「
+int nCode」、「WPARAM wParam」、「LPARAM lParam」を追加したら「完了」ボタ
+ンを押下します（図16参照）。
+
+（図16）image16.jpg
+
+　GlobalHook.hを開き、今追加した1行に以下のように「static」と「CALLBACK」
+を加えます。
+
+-----
+static LRESULT CALLBACK CallWndRetProc(int nCode, WPARAM wParam, LPARAM lParam);
+-----
+
+　GlobalHook.cppを開き、メンバ関数CGlobalHook::CallWndRetProcを以下のよう
+に修正します。
+
+-----
+LRESULT CALLBACK CGlobalHook::CallWndRetProc
+(
+       int nCode,
+       WPARAM wParam,
+       LPARAM lParam
+)
+{
+       // ヘルプによりこの場合は処理しない
+       if( nCode < 0 )
+               return ::CallNextHookEx( m_hHook, nCode, wParam, lParam );
+
+       CWPRETSTRUCT* pcwprs = (CWPRETSTRUCT*)lParam;
+
+       switch( pcwprs->message )
+       {
+               // Internet Explorer 6.0のアドレスバーに描画されるURLは
+               // WM_SETTEXTによって描画されるのでこれを処理する
+               case WM_SETTEXT:
+                       CString strURL = (LPCTSTR)(pcwprs->lParam);
+
+                       // 文字列内に「://」が含まれているものをURLとみなし、
+                       // URLで無い場合はリターン
+                       if( strURL.Find( _T("://") ) == -1 )
+                               return ::CallNextHookEx( m_hHook, nCode, wParam, lParam );
+
+                       // 空白を含む場合は「://」を含んでいてもURLとみなさずリターン
+                       if( strURL.Find( _T(" ") ) != -1 )
+                               return ::CallNextHookEx( m_hHook, nCode, wParam, lParam );
+
+                       // URLの末尾に改行を付加
+                       CString strTemp;
+                       strTemp.Format( _T("%s\r\n"), strURL.GetBuffer() );
+                       strURL.ReleaseBuffer();
+                       strURL = strTemp;
+
+                       // ファイルが存在すれば開く、無ければ新規作成する
+                       CFile f;
+                       CFileException ex;
+                       if( ! f.Open( _T("C:\\MyURL.txt"),
+                                                 CFile::modeCreate             |
+                                                 CFile::modeWrite              |
+                                                 CFile::modeNoTruncate |
+                                                 CFile::shareDenyNone,
+                                                 &ex
+                                               )
+                         )
+                       {
+                               TCHAR szError[100];
+                               ex.GetErrorMessage(szError, 100);
+                               return FALSE;
+                       }
+
+                       // ファイル ポインタの値をファイルの論理的な末尾に設定
+                       f.SeekToEnd();
+
+                       // 文字列の長さを得る
+                       int nLength = strURL.GetLength();
+
+                       // ファイルに書き込む
+                       f.Write( strURL.GetBuffer(), nLength );
+                       f.Close();
+
+                       break;
+       }
+
+       return ::CallNextHookEx( m_hHook, nCode, wParam, lParam );
+}
+-----
+
+　これでCGlobalHook::CallWndRetProcが完成しました。
+
+5：ロード用EXE内にグローバルフック用DLLをロードする処理を記述します。
+　ステップ3で作成したグローバルフック用DLLをロードするためのEXEのスケルト
+ンに、処理を記述していきます。まずLoadプロジェクトのstdafx.hを開いて、一
+番下に以下の処理を追加します。stdafx.hはHookプロジェクトにも同名のものが
+ありますのでそちらと間違えないよう注意してください。
+
+-----
+// デバッグビルドとリリースビルドでリンクするlibファイルを切り替える
+#ifdef _DEBUG
+#pragma comment(lib, "..\\debug\\Hook.lib")
+#else
+#pragma comment(lib, "..\\release\\Hook.lib")
+#endif
+
+// CGloablHookを使用できるようにする
+#include "..\Hook\GlobalHook.h"
+-----
+
+　次にクラスビューでCLoadDlgを右クリックし、「追加 -> 変数の追加(B)」を選
+択します。「メンバ変数の追加」ダイアログが表示されますので、「アクセス(A
+)」を「private」、「変数の種類(V)」を「CGlobalHook」、「変数名(N)」を「m
+_globalhook」と設定し「完了」ボタンを押下します（図17参照）。
+
+（図17）image17.jpg
+
+　次にLoad.cppを開き、「CLoadDlg::OnInitDialog」の下部を以下のように修正
+します。
+
+-----
+// TODO: 初期化をここに追加します。
+m_globalhook.Set(); // この行を追加
+
+return TRUE;  // フォーカスをコントロールに設定した場合を除き、TRUE を返します。
+-----
+
+　これでDLLを読み込む処理が完成しました。
+
+6：実際に起動して動作テストをしてみます。
+　コードが書き終わったので、ビルドして動作テストしてみましょう。その前に
+いくつかやることがあります。メンバ関数の追加ウィザードを利用してCGlobalH
+ook::Setなどのメンバ関数やメンバ変数を追加した場合、CGlobalHookの中にpub
+lic:やprivate:が何回も記述されることになってしまい、少々煩雑な気がします。
+これは手作業で整理しておきましょう。
+　整理したソースコードは「http://mixlogger.the-ninja.jp/hook/」にアップロ
+ードされていますので、もしよければご参照ください。
+
+　次にプロジェクトの依存関係を設定して、ビルドの順序を設定します。ソリュ
+ーションエクスプローラでLoadプロジェクトを右クリックし「プロジェクトの依
+存関係(S)」を選択します。「プロジェクトの依存関係」ダイアログが表示されま
+すので、「プロジェクト(R)」を「Load」に、「依存先(D)」の「Hook」の左側の
+チェックボックスをONにして「OK」ボタンを押下します。これでHook.dllがビル
+ドされてからLoad.exeがビルドされるようになりました（図18参照）。
+
+（図18）image18.jpg
+
+　最後にいよいよビルドです。「ビルド(B) -> ソリューションのビルド(B)」を
+選択しビルドします。ビルドが終了したら「デバッグ(D) -> デバッグ開始(S)」
+を選択します。すると「デバッグセッションの実行可能ファイル」ダイアログが
+表示されますので、「実行ファイル名(E)」のコンボボックスから「参照...」を
+選択して、今ビルドした「Load.exe」を指定して「OK」ボタンを押下してくださ
+い。
+
+　どうでしょうか、Internet Explorer 6.0で表示したURLが「C:\MyURL.txt」に
+1行ずつ保存されているでしょうか。
+
+
+■0x06.) 今後の課題
+
+　このプログラムを実行しながらしばらくネットサーフィンをしていると気付か
+れると思うのですが、「C:\MyURL.txt」に同じURLが何行にも渡って連続されて記
+録されることがあると思います。この問題を解消して、同じURLが続く場合は最初
+の1回のみ記録するにはどうしたらよいのでしょうか。
+　またインターネットブラウザにはInternet Explorerの他にFireFoxやOperaなど
+があります。これらの表示URLを取得するにはどうしたらよいのでしょうか。ヒン
+トを出しますと、これらの取得にはDDEというのを使用します。DDEのサンプルコー
+ドは平林純さんが作成されたものが参考になりますので、ご興味のある方はご参照
+ください。
+
+http://www.hirax.net/misc/browser_window/BrowserWindow.cpp
+
+　今後の課題としてご一考いただければと思います。
+
+

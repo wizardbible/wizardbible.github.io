@@ -1,0 +1,59 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- ëÊÅõèÕ: The Evolution of Bookmarklet ---
+
+íòé“ÅFã‡è∞
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+Å°0x01.) Preface
+
+ I just visited the KENJI's Blog website and found that he says that "I'll 
+write my English Blog, this year!!!123!!!2008!!". Wow. That is very cool. 
+He is always cool. So I decided to write this article in English. 
+
+ Don't worry. My English is almost perfect. If you can not understand my 
+English, it's your fault. Not mine. he he he...
+
+
+Å°0x02.) The problems of Bookmarklet
+
+ If you understand JavaScript, you know Bookmarklet. I don't explain what 
+Bookmarklet is here, because you have G00gle. 
+
+ Though Bookmarklets are powerful and convenient, there are two big problems. 
+First, there is a size limitation. Second, We have to write the JavaScript 
+code in one line. Those problems are really painful. We need cure.
+
+
+Å°0x03.) Using DOM
+
+ #Of course DOM is the Document Object Model, not the Download Only Member, 
+he he he...
+
+ We can solve these problems of Bookmarklets using the code like below.
+
+-----
+javascript:var a=document.createElement( 'script' );a.setAttribute('src','http://www.jumperz.net/exploits/wb38.js?'+(new Date-0));document.childNodes[0].appendChild(a);void(0);
+-----
+
+ You can register a new bookmarklet with this value as URL. If you execute 
+the bookmarklet, the code will run on your web browser. The code itself is 
+located on the server ( http://www.jumperz.net/exploits/wb38.js ). We can 
+use multiple lines in the remote JavaScript file and there is no size 
+limitation. Enjoy!!!
+
+
+Å°0x04.) 3 Years Later...
+
+ I just found another person have found the same technique.
+
+http://codinginparadise.org/weblog/2005/08/ajax-creating-huge-bookmarklets.html 
+
+ The entry was written three years ago! OMG :pppppppp
+
+
+

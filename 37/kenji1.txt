@@ -1,0 +1,365 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: 64ビット環境でのリバースエンジニアリング ---
+
+著者：Kenji Aiko
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　64ビット環境では、32ビット環境に比べ、マシン語に多少の違いがある。その
+違いによって、リバースエンジニアリング行為に、どの程度の影響が出るのかを
+調べた。今回は、その過程をテキストにまとめたものである。
+　なお、OSはWindows XP（x64）、デバッガはWinDbg（x64）、コンパイラはVisu
+al Stdio 2005を使用した。
+
+
+■0x02.) 関数呼び出し
+
+　とりあえず、どの程度の違いがあるのか、マシン語を読んでみる。
+
+-----  prog1.cpp（http://07c00.com/text/x64rev1/prog1.cpp）
+#include <windows.h>
+
+int WINAPI WinMain(HINSTANCE hInstance,
+                   HINSTANCE hPrevInstance,
+                   PSTR lpCmdLine,
+                   int nCmdShow)
+{
+    MessageBox(GetActiveWindow(), 
+        L"This is test program.", L"Message", MB_OK);
+    return 0;
+}
+-----
+
+　これを64ビット用にコンパイルして、WinDbgに読み込ませる。
+　そして、ブレイクポイントを設置して実行すると、WinMainで止まる。
+
+-----  WinDbg（http://07c00.com/text/x64rev1/prog1.exe）
+0:000> bp WinMain
+0:000> bl
+ 0 e 00000000`00401000     0001 (0001)  0:**** prog1!WinMain
+0:000> g
+ModLoad: 000007ff`7d1f0000 000007ff`7d229000   C:\WINDOWS\system32\IMM32.DLL
+ModLoad: 000007ff`7fed0000 000007ff`7ffe4000   C:\WINDOWS\system32\ADVAPI32.dll
+ModLoad: 000007ff`7fd20000 000007ff`7fec9000   C:\WINDOWS\system32\RPCRT4.dll
+ModLoad: 000007ff`67b60000 000007ff`67b6d000   C:\WINDOWS\system32\LPK.DLL
+ModLoad: 000007ff`78be0000 000007ff`78c6a000   C:\WINDOWS\system32\USP10.dll
+Breakpoint 0 hit
+prog1!WinMain:
+00000000`00401000 4883ec28        sub     rsp,28h
+-----
+
+　ここで、アセンブルコードを出力する。
+
+-----  WinDbg
+00000000`00401000 4883ec28        sub     rsp,28h
+00000000`00401004 ff1536110000    call    qword ptr [_imp_GetActiveWindow]
+00000000`0040100a 4c8d05af110000  lea     r8,[prog1!`string']
+00000000`00401011 488d15b8110000  lea     rdx,[prog1!`string']
+00000000`00401018 488bc8          mov     rcx,rax
+00000000`0040101b 4533c9          xor     r9d,r9d
+00000000`0040101e ff1524110000    call    qword ptr [_imp_MessageBoxW]
+00000000`00401024 33c0            xor     eax,eax
+00000000`00401026 4883c428        add     rsp,28h
+00000000`0040102a c3              ret
+-----
+
+　よく分からないレジスタが多く使われているが、あまり気にしなくてよい。多
+分、すぐ慣れる。64ビット環境では、レジスタのサイズが64ビットになって、レ
+ジスタの種類が約2倍になった以外はあまり変わらないので、とりあえず、64ビッ
+ト版の汎用レジスタrax、rcx、rdx、rbx、rsp、rbp、rsi、rdi辺りと、r8～r15辺
+りを覚えておけばよいだろう。
+　まぁレジスタの話は置いておいて、関数呼び出しを見てみると、スタックが使
+われず、変わりにレジスタが使われている。
+　MessageBoxWの引数と照らし合わせてみると、どのレジスタが何番目の引数か分
+かるだろう。まず、GetActiveWindowの戻り値はraxに格納されているはずだから、
+00401018より、rcxが第一引数と分かる。また、MessageBoxWの最後の引数MB_OKは、
+数値にすると0なので、0が入れられているレジスタを探すと、どうやらr9が該当
+する（r9dはr9の下位32ビット）。ここまでくると、あとはrdxが第二引数、r8が
+第三引数であると推測できる。つまり、次のようになる。
+
+-----  MessageBoxW（ASM版）
+MessageBox(rcx, edx, r8, r9);
+-----
+
+　引数に関しては4つまでレジスタ、以後スタックという流れだが、call命令のリ
+ターン値については、スタックに積まれる。
+
+-----  WinDbg
+0:000> bp WinMain
+0:000> g
+ModLoad: 000007ff`7d1f0000 000007ff`7d229000   C:\WINDOWS\system32\IMM32.DLL
+ModLoad: 000007ff`7fed0000 000007ff`7ffe4000   C:\WINDOWS\system32\ADVAPI32.dll
+ModLoad: 000007ff`7fd20000 000007ff`7fec9000   C:\WINDOWS\system32\RPCRT4.dll
+ModLoad: 000007ff`67b60000 000007ff`67b6d000   C:\WINDOWS\system32\LPK.DLL
+ModLoad: 000007ff`78be0000 000007ff`78c6a000   C:\WINDOWS\system32\USP10.dll
+Breakpoint 0 hit
+prog1!WinMain:
+00000000`00401000 4883ec28        sub     rsp,28h
+0:000> t
+prog1!WinMain+0x4:
+00000000`00401004 ff1536110000    call    qword ptr [prog1!_imp_GetActiveWindow]
+0:000> t
+USER32!GetActiveWindow:
+00000000`78bfe020 b901000000      mov     ecx,1
+0:000> r
+rax=0000000000000000 rbx=000000000015312e rcx=0000000000400000
+rdx=0000000000000000 rsi=0000000000000000 rdi=0000000000000000
+rip=0000000078bfe020 rsp=000000000012fe98 rbp=0000000000000000
+ r8=000000000015312e  r9=000000000000000a r10=0000000050000161
+r11=0000000000000000 r12=0000000000000000 r13=0000000000000000
+r14=0000000000000000 r15=0000000000000000
+iopl=0         nv up ei pl nz na po nc
+cs=0033  ss=002b  ds=002b  es=002b  fs=0053  gs=002b             efl=00000206
+USER32!GetActiveWindow:
+00000000`78bfe020 b901000000      mov     ecx,1
+0:000>
+-----
+
+　GetActiveWindow関数呼び出し元は00401004だから、次の命令は0040100aとなる。
+そして、rspは000000000012fe98となっているため、このアドレス（スタック）の
+値を見ると、次のようになっている。
+
+-----  WinDbg
+00000000`0012fe98 0a 10 40 00 00 00 00 00 
+-----
+
+　スタックには、次の命令のアドレス（戻り場所）が記録されている。つまり、
+関数呼び出しの際に引数をpushすることはないが、call命令による戻り場所は、
+スタックに積まれることが分かった。
+　続いて、引数がどこまでレジスタに頼るのかを調べる。スタック（メモリ）を
+使わないといっても、レジスタには限界がある。それを調べるため、次のプログ
+ラムを書いた。
+
+-----  prog2.cpp（http://07c00.com/text/x64rev1/prog2.cpp）
+#include <windows.h>
+
+int WINAPI WinMain(HINSTANCE hInstance,
+                   HINSTANCE hPrevInstance,
+                   PSTR lpCmdLine,
+                   int nCmdShow)
+{
+    CreateProcessAsUser(0,0,0,0,0,0,0,0,0,0,0);
+    return 0;
+}
+-----
+
+　実行するわけではなく、マシン語が見たいだけなので、引数は適当だ。このコ
+ードをコンパイルしてマシン語にすると次のようになる。
+
+-----  WinDbg（http://07c00.com/text/x64rev1/prog2.exe）
+00000000`00401000 4883ec68        sub     rsp,68h
+00000000`00401004 33c0            xor     eax,eax
+00000000`00401006 4533c9          xor     r9d,r9d
+00000000`00401009 4533c0          xor     r8d,r8d
+00000000`0040100c 4889442450      mov     qword ptr [rsp+50h],rax
+00000000`00401011 4889442448      mov     qword ptr [rsp+48h],rax
+00000000`00401016 4889442440      mov     qword ptr [rsp+40h],rax
+00000000`0040101b 4889442438      mov     qword ptr [rsp+38h],rax
+00000000`00401020 89442430        mov     dword ptr [rsp+30h],eax
+00000000`00401024 89442428        mov     dword ptr [rsp+28h],eax
+00000000`00401028 33d2            xor     edx,edx
+00000000`0040102a 33c9            xor     ecx,ecx
+00000000`0040102c 4889442420      mov     qword ptr [rsp+20h],rax
+00000000`00401031 ff15c90f0000    call    qword ptr [_imp_CreateProcessAsUserW]
+00000000`00401037 33c0            xor     eax,eax
+00000000`00401039 4883c468        add     rsp,68h
+00000000`0040103d c3              ret
+-----
+
+　どうやら、レジスタで渡すのは引数4つまでで、それ以上はスタックを利用する
+ようだ。しかし、pushやpopは使わず、ローカル変数のような形で、使用するメモ
+リ領域を確保している。
+
+
+■0x03.) マイクロソフトx64呼出規約
+
+　マイクロソフト呼出規約によると、「rcx、rdx、r8、r9は整数型とポインタ型
+の引数に使用し、xmm0、xmm1、xmm2、xmm3は浮動小数点型引数に用いられる。そ
+して、レジスタが足りなくなれば、スタックが使われ、戻り値はraxに格納される」
+ということだ。
+　とにかく、プロトコルと同じように、レジスタを使うにも決まり事があるのだ
+ろう。詳しく知りたい方は「Calling Convention for x64 64-Bit Environments
+（※1）」を参照のこと。最後に、ブログにてこれを教えてくれたiya氏サンクス！。
+
+（※1）Calling Convention for x64 64-Bit Environments
+http://msdn2.microsoft.com/en-us/library/ms794533.aspx
+
+
+■0x04.) デバッガで解析
+
+　64ビット環境用のcrackmeを作成する。今回は、64ビットでもリバースエンジニ
+アリングが可能かどうかを調べるのが目的なので、もっとも容易なcrackmeを作成
+する。
+
+-----  crackme1.cpp（http://07c00.com/text/x64rev1/crackme1.cpp）
+#include <windows.h>
+
+int WINAPI WinMain(HINSTANCE hInstance,
+                   HINSTANCE hPrevInstance,
+                   PSTR lpCmdLine,
+                   int nCmdShow)
+{
+    SYSTEMTIME st;
+    GetSystemTime(&st);
+    if(st.wYear != 1192 || st.wMonth != 5 || st.wDay != 15){
+        TCHAR szErrorStr[2048];
+        wsprintf(szErrorStr, 
+            L"このプログラムはUTC（世界標準時刻）で"
+            L"「1192年05月15日」にしか起動できません\r\n"
+            L"現在の日付は「%04d年%02d月%02d日」です\r\n", 
+            st.wYear, st.wMonth, st.wDay);
+        MessageBox(GetActiveWindow(), szErrorStr, L"Message", MB_OK);
+        return 0;
+    }
+    MessageBox(GetActiveWindow(), L"OK!", L"Message", MB_OK);
+    return 0;
+}
+-----
+
+実行画面：http://07c00.com/text/x64rev1/a.png
+
+　見ての通り、時間指定の制限だ。GetSystemTime関数の戻り値で評価しているの
+で、この部分を変更してやればOK。というわけで、さっそくデバッガで開く。
+
+-----  WinDbg（http://07c00.com/text/x64rev1/crackme1.exe）
+ntdll!DbgBreakPoint:
+00000000`78ed3320 cc              int     3
+0:000> bp WinMain
+0:000> bl
+ 0 e 00000000`00401000     0001 (0001)  0:**** crackme1!WinMain
+0:000> g
+ModLoad: 000007ff`7d1f0000 000007ff`7d229000   C:\WINDOWS\system32\IMM32.DLL
+ModLoad: 000007ff`7fed0000 000007ff`7ffe4000   C:\WINDOWS\system32\ADVAPI32.dll
+ModLoad: 000007ff`7fd20000 000007ff`7fec9000   C:\WINDOWS\system32\RPCRT4.dll
+ModLoad: 000007ff`67b60000 000007ff`67b6d000   C:\WINDOWS\system32\LPK.DLL
+ModLoad: 000007ff`78be0000 000007ff`78c6a000   C:\WINDOWS\system32\USP10.dll
+Breakpoint 0 hit
+crackme1!WinMain:
+00000000`00401000 b858100000      mov     eax,1058h
+0:000>
+-----
+
+　WinMainでブレイクポイントを設置して実行する。当然WinMainで停止する。こ
+こで逆アセンブルする。
+
+-----  WinDbg
+crackme1!WinMain:
+00000000`00401000 b858100000      mov     eax,1058h
+00000000`00401005 e8060a0000      call    crackme1!__chkstk
+00000000`0040100a 482be0          sub     rsp,rax
+00000000`0040100d 488b05ec1f0000  mov     rax,qword ptr [crackme1!__security_cookie]
+00000000`00401014 4833c4          xor     rax,rsp
+00000000`00401017 4889842440100000 mov     qword ptr [rsp+1040h],rax
+00000000`0040101f 488d4c2430      lea     rcx,[rsp+30h]
+00000000`00401024 ff15d60f0000    call    qword ptr [crackme1!_imp_GetSystemTime]
+00000000`0040102a 0fb7542430      movzx   edx,word ptr [rsp+30h]
+00000000`0040102f 440fb75c2436    movzx   r11d,word ptr [rsp+36h]
+00000000`00401035 6681faa804      cmp     dx,4A8h
+00000000`0040103a 0fb74c2432      movzx   ecx,word ptr [rsp+32h]
+00000000`0040103f 751c            jne     crackme1!WinMain+0x5d
+00000000`00401041 6683f905        cmp     cx,5
+00000000`00401045 7516            jne     crackme1!WinMain+0x5d
+00000000`00401047 664183fb0f      cmp     r11w,0Fh
+00000000`0040104c 750f            jne     crackme1!WinMain+0x5d
+00000000`0040104e ff15f4100000    call    qword ptr [crackme1!_imp_GetActiveWindow]
+00000000`00401054 488d151d120000  lea     rdx,[crackme1!`string']
+00000000`0040105b eb2d            jmp     crackme1!WinMain+0x8a
+00000000`0040105d 440fb7c9        movzx   r9d,cx
+00000000`00401061 440fb7c2        movzx   r8d,dx
+00000000`00401065 410fb7c3        movzx   eax,r11w
+00000000`00401069 488d1560110000  lea     rdx,[crackme1!`string']
+00000000`00401070 488d4c2440      lea     rcx,[rsp+40h]
+00000000`00401075 89442420        mov     dword ptr [rsp+20h],eax
+00000000`00401079 ff15d9100000    call    qword ptr [crackme1!_imp_wsprintfW]
+00000000`0040107f ff15c3100000    call    qword ptr [crackme1!_imp_GetActiveWindow]
+00000000`00401085 488d542440      lea     rdx,[rsp+40h]
+00000000`0040108a 4c8d05d7110000  lea     r8,[crackme1!`string']
+00000000`00401091 4533c9          xor     r9d,r9d
+00000000`00401094 488bc8          mov     rcx,rax
+00000000`00401097 ff15b3100000    call    qword ptr [crackme1!_imp_MessageBoxW]
+00000000`0040109d 33c0            xor     eax,eax
+00000000`0040109f 488b8c2440100000 mov     rcx,qword ptr [rsp+1040h]
+00000000`004010a7 4833cc          xor     rcx,rsp
+00000000`004010aa e821000000      call    crackme1!__security_check_cookie
+00000000`004010af 4881c458100000  add     rsp,1058h
+00000000`004010b6 c3              ret
+-----
+
+　普段OllyDbgを使っているせいなのか、レジスタが多いせいなのか分からないが
+、少し読みにくい。しかし、慣れればそんなでもないだろう。重要な部分は以下
+だ。
+
+-----  条件分岐
+00000000`0040101f 488d4c2430      lea     rcx,[rsp+30h]
+00000000`00401024 ff15d60f0000    call    qword ptr [crackme1!_imp_GetSystemTime]
+00000000`0040102a 0fb7542430      movzx   edx,word ptr [rsp+30h]
+00000000`0040102f 440fb75c2436    movzx   r11d,word ptr [rsp+36h]
+00000000`00401035 6681faa804      cmp     dx,4A8h
+00000000`0040103a 0fb74c2432      movzx   ecx,word ptr [rsp+32h]
+00000000`0040103f 751c            jne     crackme1!WinMain+0x5d
+00000000`00401041 6683f905        cmp     cx,5
+00000000`00401045 7516            jne     crackme1!WinMain+0x5d
+00000000`00401047 664183fb0f      cmp     r11w,0Fh
+00000000`0040104c 750f            jne     crackme1!WinMain+0x5d
+-----
+
+　GetSystemTime関数が呼び出されているが、この関数の引数はひとつで、構造体
+のアドレスだ。よって、0040101fにて、rcxに構造体のアドレスが入れられたと分
+かる。さらに、呼び出されたあと、dxレジスタに値が転送されている。よって、
+アドレス00401035で、dxレジスタと0x04A8が比較されている。ちなみに04A8hは十
+進数で1192。同じく、0040102fにて、r11wへ、GetSystemTime関数にて取得された
+値が転送されている。ちなみに、r11は64ビットサイズで、r11dはr11の下位32ビ
+ット、r11wはr11dの下位16ビットだ。
+　このような感じで、レジスタへの転送と比較が行われ、jne命令でジャンプ先が
+示されている。しかし、ジャンプしてしまったら、エラーメッセージが表示され
+るため、ここはジャンプさせないようにバイナリを変更しなければならない。よ
+って、これら3つのjne命令すべてを逆転させてやれば、クラックは完了となる。
+
+
+■0x05.) バイナリ変更
+
+　続いてバイナリを変更する。crackme1.exeをバイナリエディタで開くと、アド
+レス00000400以下から、コードが書かれてあるのが分かる。もしかしたらPEフォ
+ーマットも大幅な変更が加えられているかもしれない、と思ったが、コードセク
+ションのアドレスなどはいたって普通だった。64ビット環境のEXEファイルも、少
+々興味があるので、見てみたい気もするが、とりあえずはjne命令の変更を行うこ
+とにする。
+
+-----  crackme1.exe（変更前）（http://07c00.com/text/x64rev1/crackme1.exe）
+00000430  0F B7 5C 24 36 66 81 FA A8 04 0F B7 4C 24 32 75 
+00000440  1C 66 83 F9 05 75 16 66 41 83 FB 0F 75 0F FF 15 
+-----
+
+　0000043Fから「75」が3回ほど出現しているのが分かる。よって、これら3つを
+「74」に変更する。
+
+-----  crackme1.exe（変更後）（http://07c00.com/text/x64rev1/crackme1c.exe）
+00000430  0F B7 5C 24 36 66 81 FA A8 04 0F B7 4C 24 32 74 
+00000440  1C 66 83 F9 05 74 16 66 41 83 FB 0F 74 0F FF 15 
+-----
+
+実行画面：http://07c00.com/text/x64rev1/b.png
+
+
+■0x06.) さいごに
+
+　今回は、64ビット環境でも、マシン語解析を中心としたリバースエンジニアリ
+ングが行えるのか、を試した。32ビット環境と比べると、レジスタのサイズが64
+ビットになっていたり、アドレス（ポインタ）が64ビットになっていたりで、慣
+れるまでは少々苦労するかもしれないが、やろうと思えば十分可能であることが
+分かった。
+　32ビット環境だと、どうしても搭載するメモリは（例外はあるが一般的な考え
+方としては）4Gバイトまでなので、今後コンピュータをさらに高性能化していく
+ためには、64ビット化は必須なのかもしれない。しかし、その場合においても、
+マシン語解析によるリバースエンジニアリングが可能ならば、まだアセンブラを
+やる意味もあるのではないかと思う。
+　興味があれば、ぜひともx64のアセンブラもやってみてほしい。
+
+
+

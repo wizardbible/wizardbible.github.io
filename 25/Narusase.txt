@@ -1,0 +1,234 @@
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第○章: ハニーポットを作ろう（連載第9回） ---
+
+著者：Narusase
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　前回はhoneydのネットワーク周りの機能について説明しました。
+　今回はhoneydの個々の仮想PCの設定に関して説明したいと思います。
+
+
+■0x02.) 設定ファイル等の準備
+
+　今回はhoneydの設定ファイル（test.config）、perlのスクリプト（test.pl）、
+bashのスクリプト（test.sh）を使用します。
+
+-----　/usr/local/share/honeyd/test.config
+create template
+set template default tcp action reset
+set template default udp action block
+set template default icmp action open
+
+set template personality "Microsoft Windows XP Professional SP1"
+set template ethernet "3com"
+add template tcp port 80 "./test.pl"
+add template udp port 22 proxy 192.168.1.1:22
+add template tcp port 1000 "nmap $ipsrc"
+add template tcp port 2000 "./test.sh $ipsrc $sport $ipdst $dport"
+
+bind 192.168.1.125 template
+-----
+
+-----　/usr/local/share/honeyd/test.pl
+#! /usr/bin/perl
+print "<html><head><title>Hoge</title></head>\n";
+print "<body>\n";
+print "<hr>\n";
+print "<font size=5>This is honeypots</font>\n";
+print "<hr>\n";
+print "</body>\n";
+print "</html>\n";  
+-----
+
+-----　/usr/local/share/honeyd/test.sh
+#! /bin/bash
+echo "SRC=${1},${2} DST=${3},${4}" >> test.log
+-----
+
+　なお、次のように入力して、各ファイルに関してに作成と権限を付加します。
+
+-----
+# echo "Log" > /usr/local/share/honeyd/test.log
+# chmod 755 /usr/local/share/honeyd/test.log
+# chmod 755 /usr/local/share/honeyd/test.pl
+# chmod 755 /usr/local/share/honeyd/test.sh
+-----
+
+　また、PerlとSSHが導入されている状態で、SSHサービスが動作していることを
+前提とします。
+
+
+■0x03.) プロトコルごとのデフォルト動作の設定
+
+　さて、それではこれらの設定ファイルを使って、早速honeydを動かしてみまし
+ょう。起動のためのコマンドでは、honeyd自体が持つWebサーバーの機能を無効に
+する--disable-webserverオプションを使います。
+
+-----
+# cd /usr/local/share/honeyd/
+# honeyd -d -f test.config -i eth1 -u 1000 -g 32767 192.168.1.125-192.168.1.126 --disable-webserver
+-----
+
+　設定ファイルの次のような部分ではプロトコルごとのデフォルトの動作を指定
+しています。
+
+-----
+set template default tcp action reset
+set template default udp action block
+set template default icmp action open
+-----
+
+　ここの設定ではTCP、UDP、ICMPの各プロトコルへのアクセスに対してデフォル
+トではどのように対応するかを設定できます。対応の種類はアクセスを受け付け
+るopenと、アクセスを受け入れた後に即座に接続を切断するreset、アクセスを無
+視するblockがあります。
+　では実際の動作をみていきましょう。
+　まず、honeydを起動した状態で192.168.1.125のTCPのポート20～30をリモート
+からポートスキャンしてみてください。
+　すると、すぐに完了して22番ポートが開いているように見えるはずです。
+
+　次は、resetとなっている部分をblockに変更し、honeydを再起動してから同様
+にポートスキャンしてみてください。
+
+-----
+set template default tcp action reset
+-----
+↓
+-----
+set template default tcp action block
+-----
+
+　今度は、先ほどとは違い少し余計に時間がかかり22番ポートが開いているよう
+に見えるはずです。この差はresetの場合即座に接続を切るのに対して、blockの
+場合はツールなどがタイムアウトが発生するまで待っていることに起因します。
+
+
+では、次にICMPに対する設定の確認を行います。
+192.168.1.125に対してpingを実行してみてください。
+
+-----
+C:\>ping 192.168.1.125
+
+Pinging 192.168.1.125 with 32 bytes of data:
+
+Reply from 192.168.1.125: bytes=32 time<10ms TTL=128
+Reply from 192.168.1.125: bytes=32 time<10ms TTL=128
+Reply from 192.168.1.125: bytes=32 time<10ms TTL=128
+Reply from 192.168.1.125: bytes=32 time<10ms TTL=128
+
+Ping statistics for 192.168.1.125:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum =  0ms, Average =  0ms
+-----
+
+　このようにきちんとPingに応答が返ってきます。
+
+　次に下記のようにICMPの設定をopenからblockに変更してhoneydを再起動します。そして、再度Pingを実行します。
+
+-----
+set default default icmp action open
+-----
+↓
+-----
+set default default icmp action block
+-----
+
+　結果は次のようにタイムアウトしてしまいます。
+
+-----
+C:\>ping 192.168.1.125
+
+Pinging 192.168.1.125 with 32 bytes of data:
+
+Request timed out.
+Request timed out.
+Request timed out.
+Request timed out.
+
+Ping statistics for 192.168.1.125:
+    Packets: Sent = 4, Received = 0, Lost = 4 (100% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum =  0ms, Average =  0ms
+-----
+
+　このように、honeydではTCP、UDP、ICMPに対するデフォルトの動作を設定する
+ことができます。
+
+
+■0x04.) プロトコルごとの個別動作の設定
+
+　ここからはプロトコルのポートごとの動作を変更する機能について説明します。
+
+●コマンド実行機能
+
+　次に、下記の部分の設定について説明します。
+
+-----
+# add template tcp port 80 "./test.pl"
+-----
+
+　まず、試しにWebブラウザで192.168.1.125にアクセスしてみてください。する
+と、test.plに書いたようなWebページが表示されます。これは、ポート80番に対
+するアクセスに対してはtest.plの実行結果を返すように設定がされているためで
+す。つまり、引数として指定されたコマンドを実行し、その結果を返しているの
+です。このため、引数の部分をたとえば「ls / -al」などとすると、ルートディ
+レクトリの内容が表示されます。
+
+●プロキシ機能
+
+　次に、下記の部分の設定について説明します。
+
+-----
+# add template tcp port 22 proxy 192.168.1.1:22
+-----
+
+　では、次にSSHのクライアントで192.168.1.125の22番ポートにアクセスしてみ
+てください。すると、SSHで普通にアクセスできてしまいます。これは、192.168
+.1.125のポート22番に対するアクセスを192.168.1.1にリダイレクトしているため、
+本来そのIPアドレスでは起動していないはずのサービスを利用できるのです。つ
+まり、この例ではhoneyがプロキシサーバのような機能を担っているのです。
+
+●展開可能な変数
+
+　次に、下記の部分の設定について説明します。
+
+-----
+# add template tcp port 1000 "nmap $ipsrc"
+# add template tcp port 2000 "./test.sh $ipsrc $sport $ipdst $dport"
+-----
+
+　honeydのコマンド実行機能では、$ipsrc、$sport、$ipdst、$dportの4種類の展
+開可能な変数があります。それぞれ、パケットの送信元IP、送信元ポート、送信
+先IP、送信先ポートを意味しています。これらをうまく使うことで、様々な処理
+を実現できます。
+　これは本来の使い方ではないのですがリモートからのnmapの結果を知りたい場
+合があります。この場合、上段の設定で充足できます。ブラウザから192.168.1.
+125:1000にアクセスしてみてください。少々見難いですがnmapの結果が返される
+のがわかるかと思います。
+
+　また、下段の設定ではいったんシェルスクリプトをかませてやることで、各変
+数をファイルに記録しています。ブラウザから192.168.1.125:2000にアクセスし
+てから、test.logファイルに各変数の値が書き込まれていることを確認してみて
+ください。
+
+　ただ、これらのコマンド実行機能を利用した方法はセキュリティ的は色々と問
+題があるためその使用に当たっては十分な注意を払ってください。
+
+
+■0x05.) おわりに
+
+　今回はhoneydの個々の仮想PCの設定に関して説明しました。これでhoneydで簡
+単なハニーポットを作るのに必要な機能については説明が終了しました。他にも
+honeydには細かな機能がいろいろとあるのですが、これらに関しては次回以降で
+必要になった場合に順次説明していきたいと思います。
+　次回は、どうするか悩んでいます…。
+
+

@@ -1,0 +1,11 @@
+■黒林檎
+●Job:自宅警備員
+●Web: http://profile.ameba.jp/r00tapple/
+●Web2:http://www.packr.org/
+●Twitter: @r00tapple
+●Mail: packr@packr.org
+●Comment:
+　今回はLINEの記事です。
+　talk.sqli自体は結構昔の段階で見つけていたのですが、なりすましに使用できる?と考えて記事にしました。
+　余談ですが、LINEの発表資料を公開した次の日にバンコクの方からメッセージがありjsonファイルをどう見つけたか聞かれました。バンコクの方は通信を解析して地道に見つけた様な事を言っていました（僕は.dbを漁った）。
+　雑な記事ですが最後まで読んでいただければ光栄です。
