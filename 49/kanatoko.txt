@@ -1,121 +1,121 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- �恛��: �����J�T����Ȃ�VMware Server�Ǘ��� ---
+--- 第○章: もう憂鬱じゃないVMware Server管理者 ---
 
-���ҁF����
+著者：金床
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x00.) �͂��߂�
+■0x00.) はじめに
 
-�@Wizard Bible vol.43�ɂāAVMware Server��Linux��ő��点��ۂ̋�J�ɂ�
-�Ă̋L�����������B���̌コ��Ɏ��s������J��Ԃ��Ă��������ɂ��Ȃ�[����
-���郌�x���܂ł��ǂ蒅�����Ƃ��ł����̂ŁA�����WB43�̑��҂Ƃ������ʒu��
-���ł̋L���Ƃ������B
+　Wizard Bible vol.43にて、VMware ServerをLinux上で走らせる際の苦労につい
+ての記事を書いた。その後さらに試行錯誤を繰り返していくうちにかなり納得で
+きるレベルまでたどり着くことができたので、今回はWB43の続編といった位置づ
+けでの記事としたい。
 
-�@�u�ǂ�ȂɈÂ���ł��A�K����������v
+　「どんなに暗い夜でも、必ず朝が来る」
 
-�@�p�t�H�[�}���X���オ�炸�l�ꔪ�ꂵ������VMware Server�̊Ǘ��҂����ɁA��
-�̌��t�𑡂肽���B
+　パフォーマンスが上がらず四苦八苦し続けたVMware Serverの管理者たちに、こ
+の言葉を贈りたい。
 
-�@���Ȃ݂ɕM�҂��g���Ă���o�[�W������Linux�ł�VMware Server 1.0�n��ŁA
-�z�X�gOS��X86_64��CentOS5.2�ł���B���̃o�[�W�������g���Ă���l�ɂ͎Q�l��
-�Ȃ�Ȃ��_�����X���邩�Ǝv�����������肢�����B
-
-
-��0x01.) �O��̌��_�Ǝc�����ۑ�
-
-�@WB43�ł̕M�҂̌��_�͈ȉ��̂悤�ɂȂ��Ă����B
-
-�@�E���ׂĂ̹޽�OS���ق���؂�����Ă����v�ȗʂ���؂�ν�OS�ɍڂ��Ă���
-�@�EνĂ���؂����ۂɂ��������Ă���̂��͂Ԃ����Ⴏ�킩��Ȃ��̂ŁA
-�C�ɂ��Ȃ�������
-�@�E�ǂ����Ă��C�ɂȂ�ꍇ��/proc/meminfo������
-�@�EmainMem.useNamedFile = "FALSE"�͎g��Ȃ�
-�@�E���̂ق��͕��ʂɂ��iFit all virtual�c��Disable memory page trimming
-�Ȃǁj
-
-�@�����̕��j�ʂ�ɂ��΂炭�T�[�o�[�^�p�𑱂����̂����A�ǂ��ɂ���Ԃ���
-�낵���Ȃ��B���T�Ԃ���1�����ȏ㗧���グ���ςȂ��ɂ��Ă���Q�X�gOS�̃p�t�H
-�[�}���X���v�킵���Ȃ��A���X�ɒ��q�������Ȃ��Ă���̂��B���ɋ��������
-��i�������ʂŒx���Ȃ�j�̂��A�z�X�gOS��ŋ���ȃt�@�C���̃R�s�[�Ȃ�
-�̍�Ƃ��s�����ゾ�B�܂�A�z�X�gOS�̃f�B�X�N�L���b�V�����傫�ȉe����^
-���Ă�����̂Ɨ\�z�����B
-
-�@�Q�X�gOS�i�M�҂̏ꍇ�͎��Linux�����AWindows�����l�ɒ��q�������Ȃ�j��
-�ċN������Β��q�͗ǂ��Ȃ�̂����A����ł͂���������Linux�T�[�o�[���܂��
-Windows NT4.0�̂悤�ŁA���_������낵���Ȃ��B
-
-�@�Ƃ͂����ċN������Β��q�悭�Ȃ��Ă��܂����߁A���������ǂ̂悤�Ȍ��ۂ�
-�N�����Ă���̂����߂������͗���Ă������B
+　ちなみに筆者が使っているバージョンはLinux版のVMware Server 1.0系列で、
+ホストOSはX86_64のCentOS5.2である。他のバージョンを使っている人には参考に
+ならない点が多々あるかと思うがご了承願いたい。
 
 
-��0x02.) .vmem�t�@�C���̓ǂݍ��݂��x��
+■0x01.) 前回の結論と残った課題
 
-�@����Ƃ��Q�X�gOS�̃��W���[�������܂ł����Ă��I���Ȃ��̂ŁA.vmem�t�@
-�C���̓ǂݍ��݂ɖ�肪����̂ł́H�ƌ�����t�����B������1�����ȏ�A���ғ�
-���Ă���Q�X�gOS��.vmem�t�@�C����dd�œǂݍ��݁A���̓ǂݍ��݂̑��x�𑪒肵
-�Ă݂�B����ƂȂ���2MB/s�������x���łȂ��B�n�[�h�f�B�X�N�ɂ͓��ɖ��͂�
-���A�V�[�P���V�����̓ǂݍ��݂ł�80MB/s���炢�͏o��̂ɁA�ł���B
+　WB43での筆者の結論は以下のようになっていた。
 
-�@�Ȃ�����Ȃɓǂݍ��݂��x���̂��낤���H�ƍl�������ʁA���̃t�@�C�����Ђ�
-���f�Љ����Ă���̂ł͂Ȃ����Ƃ��������ɂ��ǂ蒅�����B�Ƃ����̂́A�N����
-��̃Q�X�gOS���T�X�y���h�E���W���[���������ꍇ�A��r�I�X���[�Y�Ƀ��W���[
-������������̂ɑ΂��A�����ԉғ�������̃Q�X�gOS���T�X�y���h�E���W���[��
-������ƂЂǂ����ƂɂȂ邩�炾�B
+　・すべてのゲストOSがフルにメモリを消費しても大丈夫な量のメモリをホストOSに載せておく
+　・ホストのメモリが実際にいくつ消費されているのかはぶっちゃけわからないので、
+気にしないｗｗｗ
+　・どうしても気になる場合は/proc/meminfoを見る
+　・mainMem.useNamedFile = "FALSE"は使わない
+　・そのほかは普通にやる（Fit all virtual…やDisable memory page trimming
+など）
 
-�@�܂��A�z�X�gOS�̃f�B�X�N�L���b�V���̏�Ԃ����W���[���̃p�t�H�[�}���X��
-�傫�ȉe����^���Ă���悤�Ɋ����Ă������A���̓_�ɂ��āA���̒f�Љ�����
-.vmem�t�@�C�����f�B�X�N�L���b�V���ɂ̂��Ă��Ȃ��ꍇ�ɂЂǂ��p�t�H�[�}��
-�X�������Ȃ�̂ł͂Ȃ����Ɨ\�z�����B
+　これらの方針通りにしばらくサーバー運用を続けたのだが、どうにも状態がよ
+ろしくない。数週間から1ヶ月以上立ち上げっぱなしにしているゲストOSのパフォ
+ーマンスが思わしくなく、徐々に調子が悪くなってくるのだ。特に具合が悪くな
+る（あらゆる場面で遅くなる）のが、ホストOS上で巨大なファイルのコピーなど
+の作業を行った後だ。つまり、ホストOSのディスクキャッシュが大きな影響を与
+えているものと予想される。
 
+　ゲストOS（筆者の場合は主にLinuxだが、Windowsも同様に調子が悪くなる）を
+再起動すれば調子は良くなるのだが、それではせっかくのLinuxサーバーがまるで
+Windows NT4.0のようで、精神安定上よろしくない。
 
-��0x03.) 1�߂̉��i/dev/shm�ɒu���j�ɓ��B
-
-�@�����ŁA�n�[�h�f�B�X�N��ł̒f�Љ������Ȃ̂��낤�Ƃ����\���̂��ƂɁA
-.vmem�t�@�C������������ɍ쐬�����悤�ɂ��Ă݂��B�z�X�gOS�ɂ�����/tmp��
-/dev/shm�ւ̃����N�ɕύX������ŁAvmx�t�@�C����mainMem.useNamedFile = "F
-ALSE"���L�q����B�����.vmem�t�@�C���̓�������ɉB���t�@�C���Ƃ��č쐬��
-���B��������ł��t�@�C���Ƃ��Ēf�Љ�����������̂��ǂ����͂킩��Ȃ����A
-HDD���������_���A�N�Z�X�����|�I�ɑ������߁A����ŏ󋵂����P����̂ł́H
-�Ɗ��҂����B
-
-�@���ʂ͊��Ғʂ�ŁA�����ԉғ������Ă��p�t�H�[�}���X�͈��肵�A�T�X�y���h
-�ƃ��W���[�������܂������Ă����悤�ɂȂ����B���̕��@�̌��_�͏�Ƀz�X�g
-OS�̃������������Ƃ������Ƃ����A�������������Ղ�ς�ł���ꍇ�͖��
-�Ȃ��B��y�Ɏ��s�ł���̂ł������߂̕��@�ł���B
-
-�@���̕��@��/etc/vmware/config��tmpDirectory = "/dev/shm"�Ə����A�����v
-mx�t�@�C����mainMem.useNamedFile = "FALSE"�Ə������Ƃł������\�ł���B
-
-�@��Ɍ����ɂ���Ă��ǂ蒅����������VMware�֘A�̃t�H�[�����Ȃǂ��̂�����
-�����ł́A���̎�@�͈�萔�̃��[�U����x������Ă���悤�������B
+　とはいえ再起動すれば調子よくなってしまうため、いったいどのような現象が
+起こっているのかつかめず月日は流れていった。
 
 
-��0x04.) �f�Љ��̓x���𒲂ׂ�
+■0x02.) .vmemファイルの読み込みが遅い
 
-�@����̒����ł͖^�Ђ̋C�s�̃G���W�j�A�ł���INB���ɑ���Ȃ鋦�͂𒸂����B
-�M�҂��u�t�@�C�����ǂ̂��炢�f�Љ����Ă��邩�𒲂ׂ���@��T���Ă���v��
-�`�����Ƃ���Ahdparm��--fibmap�I�v�V�����ŉ\�ł��邱�Ƃ������Ă��ꂽ�B
-�܂��A�O����tmpDirectory�Ƃ������ڂ̑��݂������Ă��ꂽ�̂��ނł���B����
-����؂�Ă����\���グ��B
+　あるときゲストOSのリジュームがいつまでたっても終わらないので、.vmemファ
+イルの読み込みに問題があるのでは？と見当を付けた。そこで1ヶ月以上連続稼働
+しているゲストOSの.vmemファイルをddで読み込み、その読み込みの速度を測定し
+てみる。するとなぜか2MB/sしか速度がでない。ハードディスクには特に問題はな
+く、シーケンシャルの読み込みでは80MB/sくらいは出るのに、である。
 
-�@hdparm��--fibmap�I�v�V�����͔�r�I�V�����o�[�W������hdparm�Ɏ��������
-����B�M�҂̊��ł���CentOS5.2�ɓ����Ă���hdparm�ł̓T�|�[�g����Ă��Ȃ�
-�����̂ŁA�ŐV�ł̃\�[�X���_�E�����[�h���ăR���p�C�������imake���邾����
-�����ɃR���p�C�����邱�Ƃ��ł����j�B
+　なぜこんなに読み込みが遅いのだろうか？と考えた結果、このファイルがひど
+く断片化しているのではないかという仮説にたどり着いた。というのは、起動直
+後のゲストOSをサスペンド・リジュームさせた場合、比較的スムーズにリジュー
+ムが完了するのに対し、長い間稼働した後のゲストOSをサスペンド・リジューム
+させるとひどいことになるからだ。
 
-�@.vmem�t�@�C���ɑ΂��Ĉȉ��̂悤��--fibmap�I�v�V�������g�p����B
+　また、ホストOSのディスクキャッシュの状態がリジュームのパフォーマンスに
+大きな影響を与えているように感じていたが、この点について、この断片化した
+.vmemファイルがディスクキャッシュにのっていない場合にひどくパフォーマン
+スが悪くなるのではないかと予想した。
+
+
+■0x03.) 1つめの解（/dev/shmに置く）に到達
+
+　そこで、ハードディスク上での断片化が問題なのだろうという予測のもとに、
+.vmemファイルがメモリ上に作成されるようにしてみた。ホストOSにおいて/tmpを
+/dev/shmへのリンクに変更した上で、vmxファイルでmainMem.useNamedFile = "F
+ALSE"を記述する。すると.vmemファイルはメモリ上に隠しファイルとして作成さ
+れる。メモリ上でもファイルとして断片化が発生するのかどうかはわからないが、
+HDDよりもランダムアクセスが圧倒的に速いため、これで状況が改善するのでは？
+と期待した。
+
+　結果は期待通りで、長い間稼働させてもパフォーマンスは安定し、サスペンド
+とリジュームもうまく動いてくれるようになった。この方法の欠点は常にホスト
+OSのメモリを消費するということだが、メモリをたっぷり積んでいる場合は問題
+ない。手軽に実行できるのでおすすめの方法である。
+
+　この方法は/etc/vmware/configにtmpDirectory = "/dev/shm"と書き、さらにv
+mxファイルにmainMem.useNamedFile = "FALSE"と書くことでも実現可能である。
+
+　後に検索によってたどり着いた多くのVMware関連のフォーラムなどをのぞいた
+感じでは、この手法は一定数のユーザから支持されているようだった。
+
+
+■0x04.) 断片化の度合を調べる
+
+　今回の調査では某社の気鋭のエンジニアであるINB氏に多大なる協力を頂いた。
+筆者が「ファイルがどのくらい断片化しているかを調べる方法を探している」と
+伝えたところ、hdparmの--fibmapオプションで可能であることを教えてくれた。
+また、前項のtmpDirectoryという項目の存在を教えてくれたのも彼である。この
+場を借りてお礼を申し上げる。
+
+　hdparmの--fibmapオプションは比較的新しいバージョンのhdparmに実装されて
+いる。筆者の環境であるCentOS5.2に入っていたhdparmではサポートされていなか
+ったので、最新版のソースをダウンロードしてコンパイルした（makeするだけで
+無事にコンパイルすることができた）。
+
+　.vmemファイルに対して以下のように--fibmapオプションを使用する。
 
 -----
 hdparm --fibmap 'Windows XP Professional.vmem'
 ------
 
-�@����ƈȉ��̂悤�Ɍ��ʂ��o�͂����B�ꍇ�ɂ���Ă͔��ɑ�ʂ̏o�͂���
-������̂Œ��ӂ��K�v�ł���B
+　すると以下のように結果が出力される。場合によっては非常に大量の出力が発
+生するので注意が必要である。
 
 -----
 Windows XP Professional.vmem: underlying filesystem begins at LBA 63; assuming 512 byte sectors.
@@ -126,125 +126,125 @@ Windows XP Professional.vmem: underlying filesystem begins at LBA 63; assuming 5
      8237056  679051391  679051782        392
      8437760  679051791  679059982       8192
     12632064  679059991  679067710       7720
-�i���j
+（略）
 -----
 
-�@�������ғ������Ă����Q�X�gOS��.vmem�t�@�C���𒲂ׂĂ݂��Ƃ���i���ɏo��
-���~�܂�Ȃ��������������̂ŁAwc -l�Ƀp�C�v����hdparm�̏o�͂̍s��������
-�ׂĂ݂邱�Ƃɂ����B���̃Q�X�g�Ɋ��蓖�ĂĂ����������͖�650MB�������̂�.v
-mem�t�@�C���̃T�C�Y�����̂��炢�������̂����A�Ȃ��hdparm --fibmap�̏o��
-��140���s�ȏ�ɋy�񂾁Bdd�ŃV�[�P���V�����ɓ������炢�̃T�C�Y�̃t�@�C����
-�쐬���Ē��ׂĂ݂��Ƃ���킸��359�s�������B�c�f�Љ����ă��x������ˁ[���I
-(`�D�L)�m��ק
+　数ヶ月稼働させていたゲストOSの.vmemファイルを調べてみたところ永遠に出力
+が止まらないｗ感じだったので、wc -lにパイプしてhdparmの出力の行数だけを調
+べてみることにした。このゲストに割り当てていたメモリは約650MBだったので.v
+memファイルのサイズもそのくらいだったのだが、なんとhdparm --fibmapの出力
+は140万行以上に及んだ。ddでシーケンシャルに同じくらいのサイズのファイルを
+作成して調べてみたところわずか359行だった。…断片化ってレベルじゃねーぞ！
+(`Д´)ノゴラァ
 
-�@�Ƃɂ�������Łu.vmem�t�@�C�����Ђǂ��f�Љ����邱�Ƃ��p�t�H�[�}���X��
-�̌����ł���v�Ƃ������Ƃ͂قڊm�肵���B�����Łuvmware vmem fragmentation�v
-�ȂǂŃO�O���Ă݂�ƁA�Ă̒肽������̃E�F�u�T�C�g���q�b�g�����B���̂��Ƃ�
-�����Ƒ����C�Â��Ă���΁c�B
+　とにかくこれで「.vmemファイルがひどく断片化することがパフォーマンス劣化
+の原因である」ということはほぼ確定した。そこで「vmware vmem fragmentation」
+などでググってみると、案の定たくさんのウェブサイトがヒットした。このことに
+もっと早く気づいていれば…。
 
-�@���Ȃ݂ɂ��̌����̒i�K�Łufilefrag�v�Ƃ������̂܂�ܒf�Љ��̋�𒲍�
-����R�}���h�����邱�Ƃ�m�����B�茳��Ubuntu�ł̓f�t�H���g�œ����Ă����
-���ł���B
-
-
-��0x05.) �f�Љ��̗��R
-
-�@�Ȃ�.vmem�t�@�C���͂����܂łЂǂ��f�Љ�����̂��낤���BWB43�ł���������
-���ɁA.vmem�t�@�C���̓X�p�[�X�t�@�C���Ƃ��Đ��������B�����ăQ�X�gOS��
-�����ԉғ������Ă����ɂ�āA���X�Ɏ��ۂ̃T�C�Y���傫���Ȃ��Ă����B
-
-�@�ǂ����vmware-vmx�v���Z�X��.vmem�t�@�C����1MB���̗̈�ɂ킯��mmap��
-�s���Ă���炵���B����́A/proc/PID/smaps��less�ȂǂŌ��邱�ƂŊm�F���邱
-�Ƃ��ł���iPID��vmware-vmx�v���Z�X�̃v���Z�XID�j�B�Y������.vmem�t�@�C��
-�ɂ��āASize���ڂ�1024KB�̗̈悪��ʂɌ�����B
-
-�@�����炭vmware-vmx�v���Z�X�́A�u���΂炭�A�N�Z�X����Ă��Ȃ��v���̉���
-���̊�ɏ]���āA������1MB�̗̈���ʂɃt�@�C���ɓ��������Ă���̂���
-���B�S�̂Ő�G�ɂ��Ȃ�悤�ȃX�p�[�X�t�@�C���ł���.vmem�t�@�C���ɁA�΂��
-��̏��Ԃ�1MB���������݂��s���Ă��邽�߂ɒf�Љ����������Ă���̂��Ɨ\�z
-�����B
+　ちなみにこの検索の段階で「filefrag」というそのまんま断片化の具合を調査
+するコマンドもあることを知った。手元のUbuntuではデフォルトで入っているよ
+うである。
 
 
-��0x05.) 2�߂̉��i.vmem�t�@�C�����R�s�[���ē���ւ���j�ɓ��B
+■0x05.) 断片化の理由
 
-�@�M�҂Ɠ�����.vmem���ɂ͂܂��Ă���l�����̃G���g������ʂɌ���������
-�œK���ɖڂ�ʂ��Ă݂�ƁA�u��x�T�X�y���h�����A.vmem�t�@�C�����R�s�[����
-����ւ��A���W���[������v�Ƃ�����킪���������B�f�Љ����N����O�ɁA�t
-�@�C�����̂���������HDD��ɍ쐬���Ă��܂����Ƃ������ł���B
+　なぜ.vmemファイルはここまでひどく断片化するのだろうか。WB43でも書いたよ
+うに、.vmemファイルはスパースファイルとして生成される。そしてゲストOSを長
+い時間稼働させていくにつれて、徐々に実際のサイズが大きくなっていく。
 
-�@�����ڂ̃T�C�Y���傫���ɂ�������炸�A���ۂɂ͏����ȃX�p�[�X�t�@�C����
-����Ƃ���B���̃t�@�C����dd�œǂݍ��ނ��Ƃŕʂ̃t�@�C���Ƃ��ăR�s�[����
-�ƁA�X�p�[�X�t�@�C���ł͂Ȃ��ʏ�́i����ȁj�t�@�C�������������B�R�s�[
-�̍ۂɁA�X�p�[�X�t�@�C�����̂܂��������݂��s���Ă��Ȃ����������́A�R�s
-�[��̃t�@�C���ł͂��ׂ�0x00�ƂȂ�B
+　どうやらvmware-vmxプロセスは.vmemファイルを1MBずつの領域にわけてmmapを
+行っているらしい。これは、/proc/PID/smapsをlessなどで見ることで確認するこ
+とができる（PIDはvmware-vmxプロセスのプロセスID）。該当する.vmemファイル
+について、Size項目が1024KBの領域が大量に見つかる。
 
-�@����Ȃ��Ƃ����ĉ������ꂵ���̂��Ƃ����ƁA�R�s�[���Ɉ�C�ɑ傫�ȃt�@�C
-�����쐬����̂ŁA�t�@�C����HDD��ɂقڃV�[�P���V�����ɍ쐬����A�f�Љ���
-���ɏ��Ȃ��`��.vmem�t�@�C�����쐬���邱�Ƃ��ł���̂��B�܂��A���̃t�@�C
-���͂��łɑS�̂��f�B�X�N��Ɋ��蓖�Ă��Ă��邽�߁A����ȏ��剻���邱
-�Ƃ��Ȃ��B�܂�f�Љ����i�܂Ȃ��B���̌ア���璷���Q�X�gOS���ғ���������
-�悤�Ƃ��A�܂������f�Љ��͐i�s�����A���肵���p�t�H�[�}���X�𔭊�����̂�
-����B
-
-�@�M�҂̎茳�ł�cp�R�}���h�ł̃R�s�[�ł̓X�p�[�X�t�@�C���̂܂܃R�s�[����
-�Ă��܂��悤�������B���̂���dd���g�������A�C���^�[�l�b�g��Ō��������ł�
-���̂�����͊��ˑ�������悤���icp�R�}���h�ł��܂������Ă���l�������
-���ł���j�B
-
-�@���̕��@���ȒP�ɂ܂Ƃ߂�Ǝ��̂悤�ɂȂ�
-
-�E���̕��@�́AmainMem.useNamedFile = "FALSE"���w�肵�Ȃ��ꍇ�Ɏg�p�ł���
-���@�ł���B�܂�A.vmem�t�@�C����/tmp���ł͂Ȃ��A.vmx�t�@�C���Ɠ����f�B
-���N�g���ɍ쐬�����ꍇ�Ɏg�����@�ƂȂ�
-�E�Q�X�gOS���N��������A�����ɃT�X�y���h������B
-�E���̒i�K�ŁA���ۂ̃T�C�Y�͔��ɏ��������A�����ڂ̃T�C�Y�͊��蓖�Ă���
-�����̗ʂɓ�����.vmem�t�@�C�����쐬�����i���ɃT�X�y���h�������̂܂܎g�p
-�𑱂���ƁA�Ђǂ��f�Љ����Ȃ����傷�邱�ƂɂȂ�j�B
-�Edd�Ȃǂ��g���Ă���.vmem�t�@�C�����R�s�[����B�����ŃR�s�[��̃t�@�C����
-���ۂɋ���ȃT�C�Y�̂��̂ɂȂ�B�R�s�[�ɂ͐��\�b������ꍇ������B
-�E�R�s�[���I��������A�R�s�[���̃X�p�[�X�t�@�C�����폜����
-�E�R�s�[��̃t�@�C�������l�[�����A����.vmem�t�@�C���Ɠ������O�ɂ���
-�E�Q�X�gOS�����W���[������
-�E����ғ�(*�L�D`)������������
-
-�@���̕��@���g���Β����ғ���������ɂ����S���ăT�X�y���h�E���W���[������
-�邱�Ƃ��ł���B���_�͖���N����ɃV�F�����瑀�삪�K�v�ł��邱�ƂƁA�R�s
-�[�̎��ԁi���\�b�j���|���邱�Ƃł���B
+　おそらくvmware-vmxプロセスは、「しばらくアクセスされていない」等の何ら
+かの基準に従って、これらの1MBの領域を個別にファイルに同期させているのだろ
+う。全体で数Gにもなるようなスパースファイルである.vmemファイルに、ばらば
+らの順番で1MBずつ書き込みを行っているために断片化が発生しているのだと予想
+される。
 
 
-��0x06.) 3�߂̉��iLD_PRELOAD��.vmem�t�@�C�������j
+■0x05.) 2つめの解（.vmemファイルをコピーして入れ替える）に到達
 
-�@�O���Ő����������@�łقږ��Ȃ��̂����A����V�F������t�@�C���R�s�[��
-�ǂ̑��삷��̂����޸���Ǝv�����̂ŁA�����������ݍ���ł݂��BWB�炵���A�
-�ް��ݼ�Ʊ�ݸނ̗̈�ɓ˓��ł���B�Q�X�gOS�̎��̂ł���vmware-vmx�v���Z�X
-�̓�����ꕔ���I�ɃR���g���[������B�����āA.vmem�t�@�C�����X�p�[�X�t�@�C
-���ł͂Ȃ��A�ʏ�̃t�@�C���Ƃ��č쐬�����Ă��܂��̂��B
+　筆者と同じく.vmem問題にはまっている人たちのエントリが大量に見つかったの
+で適当に目を通してみると、「一度サスペンドさせ、.vmemファイルをコピーして
+入れ替え、リジュームする」という作戦が見つかった。断片化が起こる前に、フ
+ァイル自体をきっちりHDD上に作成してしまおうという作戦である。
 
-�@�K���Ȃ��Ƃ�WB43�ɂ�vmware-vmx�v���Z�X��strace�Œǂ����ۂɁA�X�p�[�X�t
-�@�C�����쐬�����ӏ��͓���ς݂ł���B�ȉ���strace�̃��O����̔������B
+　見た目のサイズが大きいにもかかわらず、実際には小さなスパースファイルが
+あるとする。このファイルをddで読み込むことで別のファイルとしてコピーする
+と、スパースファイルではない通常の（巨大な）ファイルが生成される。コピー
+の際に、スパースファイル中のまだ書き込みが行われていなかった部分は、コピ
+ー先のファイルではすべて0x00となる。
+
+　こんなことをして何がうれしいのかというと、コピー時に一気に大きなファイ
+ルを作成するので、ファイルがHDD上にほぼシーケンシャルに作成され、断片化が
+非常に少ない形で.vmemファイルを作成することができるのだ。また、このファイ
+ルはすでに全体をディスク上に割り当てられているため、これ以上肥大化するこ
+とがない。つまり断片化も進まない。この後いくら長くゲストOSを稼働させ続け
+ようとも、まったく断片化は進行せず、安定したパフォーマンスを発揮するので
+ある。
+
+　筆者の手元ではcpコマンドでのコピーではスパースファイルのままコピーされ
+てしまうようだった。そのためddを使ったが、インターネット上で見た感じでは
+このあたりは環境依存があるようだ（cpコマンドでうまくいっている人もいるよ
+うである）。
+
+　この方法を簡単にまとめると次のようになる
+
+・この方法は、mainMem.useNamedFile = "FALSE"を指定しない場合に使用できる
+方法である。つまり、.vmemファイルが/tmp等ではなく、.vmxファイルと同じディ
+レクトリに作成される場合に使う方法となる
+・ゲストOSを起動したら、すぐにサスペンドさせる。
+・この段階で、実際のサイズは非常に小さいが、見た目のサイズは割り当てたメ
+モリの量に等しい.vmemファイルが作成される（仮にサスペンドせずこのまま使用
+を続けると、ひどく断片化しながら肥大することになる）。
+・ddなどを使ってこの.vmemファイルをコピーする。ここでコピー先のファイルは
+実際に巨大なサイズのものになる。コピーには数十秒かかる場合もある。
+・コピーが終了したら、コピー元のスパースファイルを削除する
+・コピー先のファイルをリネームし、元の.vmemファイルと同じ名前にする
+・ゲストOSをリジュームする
+・安定稼働(*´Д`)長期実現ポワワ
+
+　この方法を使えば長期稼働させた後にも安心してサスペンド・リジュームさせ
+ることができる。欠点は毎回起動後にシェルから操作が必要であることと、コピ
+ーの時間（数十秒）が掛かることである。
+
+
+■0x06.) 3つめの解（LD_PRELOADで.vmemファイル生成）
+
+　前項で説明した方法でほぼ問題ないのだが、毎回シェルからファイルコピーな
+どの操作するのはメンドクチイと思ったので、もう少し踏み込んでみた。WBらしく、リ
+バースエンジニアリングの領域に突入である。ゲストOSの実体であるvmware-vmxプロセス
+の動作を一部動的にコントロールする。そして、.vmemファイルをスパースファイ
+ルではなく、通常のファイルとして作成させてしまうのだ。
+
+　幸いなことにWB43にてvmware-vmxプロセスをstraceで追った際に、スパースフ
+ァイルが作成される箇所は特定済みである。以下はstraceのログからの抜粋だ。
 
 -----
 pwrite64(106, "\0", 1, 3774873599) = 1
 -----
 
-�@���̂悤�ɁA�N������܂��Ȃ��A���Ȃ�Ȃ̂��������pwrite64�����s�����B
-4�߂̈����i�I�t�Z�b�g�j���ɒ[�ɑ傫���̂ɑ΂��A������1�o�C�g����������
-�݂��s��Ȃ����ƂŁA���̌Ăяo�����X�p�[�X�t�@�C���̐����ł��邱�Ƃ��e��
-�Ɋm�F�ł���B���̎��_�Ńt�@�C�����V�[�P���V�����ɂ�������쐬���Ă��΁A
-�O���Ő��������u2�߂̉��v�Ɠ��������������ł���͂����B
+　このように、起動からまもなく、かなり癖のある引数でpwrite64が実行される。
+4つめの引数（オフセット）が極端に大きいのに対し、たった1バイトしか書き込
+みを行わないことで、この呼び出しがスパースファイルの生成であることが容易
+に確認できる。この時点でファイルをシーケンシャルにきっちり作成してやれば、
+前項で説明した「2つめの解」と同じ動きを実現できるはずだ。
 
-�@Linux�ł̓��C�u�����̌Ăяo����LD_PRELOAD���g���t�b�N���邱�ƂŁA�C�ӂ�
-�֐��̓��e�����������A�A�v���P�[�V�����̓����ύX���邱�Ƃ��ł���B����
-�ł�pwrite64�̌Ăяo�����t�b�N���A�X�p�[�X�t�@�C���̍쐬��j�~���A��
-�ۂɑ傫�ȃt�@�C���𐶐�����悤�ɂ���΂����B������pwrite64��vmware-vmx
-�̓��쒆�ŉ��x���g�p����邽�߁A�X�p�[�X�t�@�C���̍쐬���s���Ă���ꍇ��
-�݁A����������������悤�ɂ���B��ɏ������悤��4�Ԗڂ̈����ł���I�t�Z�b
-�g���ɒ[�ɑ傫���A����1�o�C�g�����������܂Ȃ��ꍇ�ɋ�����ύX����B���̂�
-��pwrite64�ł͂Ȃ����ʂ�write���Ăяo���A�傫��.vmem�t�@�C�������������
-������B�����łȂ��ꍇ�͂��̂܂ܖ{����pwrite64�Ƀt�H���[�h���A�߂�l����
-�̂܂ܕԂ��悤�ɂ���B
+　Linuxではライブラリの呼び出しをLD_PRELOADを使いフックすることで、任意の
+関数の内容を書き換え、アプリケーションの動作を変更することができる。ここ
+ではpwrite64の呼び出しをフックし、スパースファイルの作成を阻止しつつ、実
+際に大きなファイルを生成するようにすればいい。ただしpwrite64はvmware-vmx
+の動作中で何度も使用されるため、スパースファイルの作成を行っている場合の
+み、挙動を書き換えるようにする。上に書いたように4番目の引数であるオフセッ
+トが極端に大きく、かつ1バイトしか書き込まない場合に挙動を変更する。このと
+きpwrite64ではなく普通にwriteを呼び出し、大きな.vmemファイルをきっちり作
+成する。そうでない場合はそのまま本物のpwrite64にフォワードし、戻り値もそ
+のまま返すようにする。
 
-�@�\�[�X�R�[�h�͈ȉ��̂悤�ɂȂ�B
+　ソースコードは以下のようになる。
 
 -----
 #include <dlfcn.h>
@@ -329,140 +329,140 @@ else
 }
 -----
 
-�@�\�[�X�̃_�E�����[�h��http://www.jumperz.net/tools/nosparse.cpp����A�o
-�C�i���̃_�E�����[�h��http://www.jumperz.net/tools/nosparse.so����s����
-�Ƃ��ł���B
+　ソースのダウンロードはhttp://www.jumperz.net/tools/nosparse.cppから、バ
+イナリのダウンロードはhttp://www.jumperz.net/tools/nosparse.soから行うこ
+とができる。
 
-�@���̃R�[�h�̓`�[�����؂̽��߰ʶ�yoggy�����쐬����hook_tcp.cpp���x�[�X��
-���Ă���B�I���W�i���̃t�@�C���̓`�[�����؂̃T�C�g����_�E�����[�h�ł���
-�ihttp://www.t-dori.net/?hook_tcp.so�j�B��߼�ٻݸ���I�I��Yoggy����&����
+　このコードはチームチドリのスーパーハカーyoggy氏が作成したhook_tcp.cppをベースに
+している。オリジナルのファイルはチームチドリのサイトからダウンロードできる
+（http://www.t-dori.net/?hook_tcp.so）。スペシャルサンクスコ！！＞Yoggyさん&チドリ
 
-�@���̃R�[�h��nosparse.cpp�Ƃ������O�ŕۑ����A���̂悤�ɃR���p�C�����ċ�
-�L���C�u�����i.so�t�@�C���j���쐬����B
+　このコードをnosparse.cppという名前で保存し、次のようにコンパイルして共
+有ライブラリ（.soファイル）を作成する。
 
 -----
 g++ -Wall -fPIC  -shared -o nosparse.so nosparse.cpp -ldl
 -----
 
-�@�����Œ��ӂ������̂́A���̃R���p�C����32bit��Linux�}�V���ōs���K�v����
-��Ƃ������Ƃ��ig++��-m32�I�v�V�������g�p���Ă��悢�̂�������Ȃ����A�M��
-�̊��ł͂��܂��܂ȃw�b�_�t�@�C���������肸���܂������Ȃ������j�B�M�҂�
-�ŏ�X86_64��Linux��ŃR���p�C�������̂����Avmware-vmx�̃o�C�i����32bit�p
-�̂��̂��������߂ɂ��܂�PRELOAD���邱�Ƃ��ł����ς����iVMware Server 1.0
-�n���32bit�o�C�i���Ȃ̂ł���j�B
+　ここで注意したいのは、このコンパイルは32bitのLinuxマシンで行う必要があ
+るということだ（g++の-m32オプションを使用してもよいのかもしれないが、筆者
+の環境ではさまざまなヘッダファイル等が足りずうまくいかなかった）。筆者は
+最初X86_64のLinux上でコンパイルしたのだが、vmware-vmxのバイナリが32bit用
+のものだったためにうまくPRELOADすることができずハマった（VMware Server 1.0
+系列は32bitバイナリなのである）。
 
-�@32bit�̃}�V���ŃR���p�C������nosparse.so�t�@�C����X86_64�}�V���Ɏ�����
-���邱�ƂŁA���Ȃ����������Ƃ��ł���B�������z�X�gOS��32bit�̏ꍇ�͂�
-�̂܂܂Ŗ��Ȃ����܂������Ǝv����B
+　32bitのマシンでコンパイルしたnosparse.soファイルをX86_64マシンに持って
+くることで、問題なく動かすことができる。もちろんホストOSが32bitの場合はそ
+のままで問題なくうまく動くと思われる。
 
-�@�R���p�C�������܂��ł�����A�ȉ��̂悤�ɂ���vmware-vmx�v���Z�X���V�F��
-����N������B�����ł�nosparse.so��/root/vmware/�ɁAvmware-vmx��/usr/lib
-/vmware/bin/�ɁA�����ċN���������Q�X�gOS��vmx�t�@�C����/vmware/Linux/�ȉ�
-�ɂ�����̂Ɖ��肷��B
+　コンパイルがうまくできたら、以下のようにしてvmware-vmxプロセスをシェル
+から起動する。ここではnosparse.soは/root/vmware/に、vmware-vmxは/usr/lib
+/vmware/bin/に、そして起動したいゲストOSのvmxファイルは/vmware/Linux/以下
+にあるものと仮定する。
 
 -----
 LD_PRELOAD=/root/vmware/nosparse.so /usr/lib/vmware/bin/vmware-vmx -x -C /vmware/Linux/Linux.vmx -@ \"\"
 -----
 
-�@�ʏ�̓Q�X�gOS�̋N����VMware Server Console���s���ꍇ���قƂ�ǂ��Ǝv��
-���A����̃e�N�j�b�N��p����ꍇ�ɂ͂��̂悤�ɃV�F������Q�X�gOS�ivmware
--vmx�v���Z�X�j���N������B���̂Ƃ��ACD-ROM�����݂��Ȃ����̂悤�ȃG���[��
-�ǂ�����ꍇ�ɂ�VMware Server Console�ɑ΂��ă_�C�A���O���|�b�v�A�b�v����
-�P�[�X�����邽�߁AVMware Server Console������ڑ�������ԂŕʃE�B���h�E��
-�V�F������N��������@���������߂ł���B
+　通常はゲストOSの起動はVMware Server Consoleか行う場合がほとんどだと思う
+が、今回のテクニックを用いる場合にはこのようにシェルからゲストOS（vmware
+-vmxプロセス）を起動する。このとき、CD-ROMが存在しない等のようなエラーな
+どがある場合にはVMware Server Consoleに対してダイアログがポップアップする
+ケースがあるため、VMware Server Consoleからも接続した状態で別ウィンドウの
+シェルから起動する方法がおすすめである。
 
-�@���܂��N�������ꍇ�i��̃R�}���h�����s���A�����G���[�����o�͂���Ȃ���
-���j�A�܂��͂��߂�.vmem�t�@�C�����f�B�X�N��ɂقڃV�[�P���V�����ȏ�Ԃō�
-�������B�Ⴆ�΃Q�X�gOS�̃�������2GB���x���蓖�Ă��ꍇ�ɂ͐��\�b�̎��Ԃ�
-�v����̂ŁA�����Ƒ҂B�����Ŏ��Ԃ�������̂����_�����A�N����̃p�t�H�[
-�}���X�͂����Ԃ���肷��̂ł����Ƒ҂��l�͂���B
+　うまく起動した場合（上のコマンドを実行し、何もエラー等が出力されない場
+合）、まずはじめに.vmemファイルがディスク上にほぼシーケンシャルな状態で作
+成される。例えばゲストOSのメモリを2GB程度割り当てた場合には数十秒の時間を
+要するので、じっと待つ。ここで時間がかかるのが欠点だが、起動後のパフォー
+マンスはすこぶる安定するのでじっと待つ価値はある。
 
-�@.vmem�t�@�C���𐶐�����ۂɁAsyslog�Ɂi�ʏ��/var/log/messages�Ɂj�ȉ�
-�̂悤�ȃ��O���o�͂����B
+　.vmemファイルを生成する際に、syslogに（通常は/var/log/messagesに）以下
+のようなログが出力される。
 
 -----
 Nov 17 18:27:06 raptor vmware-vmx[21321]: pwrite64 is hooked. ARGS: nbyte=1, offset=2017460223 
 Nov 17 18:27:06 raptor vmware-vmx[21321]: creating .vmem file... 
 -----
 
-�@.vmem�t�@�C�����������������ƁA�����Ēʏ�Ɠ����悤��VMware Server C
-onsole��BIOS��ʂ��\������A�����ăQ�X�gOS�̋N�����n�܂�B�����Ŏ�����hd
-parm --fibmap���Ă݂�ƁA�o�͂͂킸��1000�`1500�s���x�ɗ}�����Ă���A�f
-�Љ��̖h�~�ɐ����������Ƃ��킩��B
+　.vmemファイルが無事生成されると、続いて通常と同じようにVMware Server C
+onsoleにBIOS画面が表示され、続いてゲストOSの起動が始まる。ここで試しにhd
+parm --fibmapしてみると、出力はわずか1000〜1500行程度に抑えられており、断
+片化の防止に成功したことがわかる。
 
-�@���̌�͕��ʂɃQ�X�gOS���g�p�ł���B�T�X�y���h�E���W���[�����s���ꍇ��
-�ēxPRELOAD����K�v�͂Ȃ��̂Łi.vmem�t�@�C���͂��łɊ������Ă���̂Łj�A
-�R���\�[�����畁�ʂɑ��삷���OK�ł���B
-
-
-��0x07.) �܂Ƃ�
-
-�@����́ALinux���z�X�gOS�Ƃ��Ďg��VMware Server 1.0.x�n��ɂ��āA�T�X
-�y���h&���W���[���Ⓑ���g�p���̃p�t�H�[�}���X�򉻂̌�����.vmem�t�@�C����
-�f�Љ��ł��邱�Ƃ���肵�A�܂����̑΍�Ƃ���3�̈Ă�񎦂����B.
-
-�@vmem�t�@�C���̒f�Љ���h�~����΁AVMware Server�͂����Ԃ�ǍD�Ȏg�p����
-�Ȃ�A���ɖ����x�̍������z���Z�p��񋟂��Ă����B�M�҂͂������N������
-��J���ăp�t�H�[�}���X�򉻂Ɛ���Ă������A���ɖ��_���������邱�Ƃ���
-���A���ɐ��ꐰ��Ƃ����C���ł���BVMware�ɂ�ESXi�Ȃǂ�����̂�Server��
-1�n��ɂ������K�v�͂Ȃ��Ǝv����������Ȃ����A�M�҂̓z�X�gOS�Ƃ��Ă�Lin
-ux�̋@�\�iiSCSI�A�\�t�g�E�F�ARAID�A�����[�g����g�p�ł���[�������Ǘ��@�\
-�Ȃǁj��K�v�Ƃ��Ă���̂�Server�ɂ�������Ă����肷��B��������΂炭��
-�Ԃ͎g�������邱�ƂɂȂ邾�낤�B
+　この後は普通にゲストOSを使用できる。サスペンド・リジュームを行う場合は
+再度PRELOADする必要はないので（.vmemファイルはすでに完成しているので）、
+コンソールから普通に操作すればOKである。
 
 
-��0x08.) ���܂���Q&A
+■0x07.) まとめ
 
-�Ȃ�ł���̧���VMware�͂���Ȃɋ���������̧���H
-�@.vmem�t�@�C�����f�Љ����Ă��邩��
+　今回は、LinuxをホストOSとして使うVMware Server 1.0.x系列について、サス
+ペンド&リジュームや長期使用時のパフォーマンス劣化の原因が.vmemファイルの
+断片化であることを特定し、またその対策として3つの案を提示した。.
 
-.vmem�t�@�C���̎��ۂ̃T�C�Y�̊m�F���@�́H
-�@ls -lsuh���邢��du�Ŋm�F���\
+　vmemファイルの断片化を防止すれば、VMware Serverはすこぶる良好な使用感と
+なり、非常に満足度の高い仮想化技術を提供してくれる。筆者はここ数年長い間
+苦労してパフォーマンス劣化と戦ってきたが、ついに問題点を解決することがで
+き、非常に晴れ晴れとした気分である。VMwareにはESXiなどもあるのでServerの
+1系列にこだわる必要はないと思うかもしれないが、筆者はホストOSとしてのLin
+uxの機能（iSCSI、ソフトウェアRAID、リモートから使用できる充実した管理機能
+など）を必要としているのでServerにこだわっていたりする。今後もしばらくの
+間は使い続けることになるだろう。
 
-.vmem�t�@�C���͂��쐬�����́H
-�@�Q�X�gOS�N������
 
-.vmem�t�@�C���͂ǂ��ɍ쐬�����́H
-�@�ʏ�.vmx�t�@�C���Ɠ����f�B���N�g�������Avmx�t�@�C���̐ݒ��useNamedFile
-��false�ɂ��Ă�����/tmp�ȉ��̉B��̧�قɂȂ�B����/tmp�̈ʒu�͕ύX�\�i�{
-���Q�Ɓj
+■0x08.) おまけでQ&A
 
-.vmem�t�@�C���͂��������܂��́H
-�@vmware-vmx�v���Z�X���}�^�[���ƃ������Ɠ���������B����������Ŋώ@����
-�Ə��X�ɑ傫���Ȃ邱�Ƃ��m�F�ł���
+なんでこのファッキンVMwareはこんなに具合悪いのマダファッカ？
+　.vmemファイルが断片化しているから
 
-.vmem�t�@�C���͂��ǂݍ��܂��i���ɗ��j�́H
-�@���W���[������Ƃ��B���邢��memory page trimming���L���ȏꍇ�ɂ́Avmwa
-re-vmx�v���Z�X�����f���Đ����ǂݍ���
+.vmemファイルの実際のサイズの確認方法は？
+　ls -lsuhあるいはduで確認が可能
 
-.vmem�t�@�C���̒f�Љ��̒��x�͂ǂ�����Ċm�F����́H
-�@hdparm�̍ŋ߂̃o�[�W������ hdparm --fibmap *.vmem | wc -l����΂ǂ̒��x
-�������߂�B���邢��filefrag�R�}���h���g��
+.vmemファイルはいつ作成されるの？
+　ゲストOS起動直後
 
-.vmem�t�@�C���̒f�Љ���h�����@�́H
-�@�N������ɃT�X�y���h�����Add�Ńt�@�C�����R�s�[���ē���ւ��A���W���[��
-���邩�ALD_PRELOAD���ăX�p�[�X�t�@�C��������j�~����i�ڍׂ͖{���Q�Ɓj
+.vmemファイルはどこに作成されるの？
+　通常.vmxファイルと同じディレクトリだが、vmxファイルの設定でuseNamedFile
+をfalseにしておくと/tmp以下の隠しファイルになる。この/tmpの位置は変更可能（本
+文参照）
 
-.vmem�t�@�C�����g�p���Ȃ����@�͂Ȃ��́H
-�@�Ȃ�
+.vmemファイルはいつ書き込まれるの？
+　vmware-vmxプロセスがマターリとメモリと同期させる。数日がかりで観察する
+と徐々に大きくなることが確認できる
 
-.vmem�t�@�C�����Ȃ��Ȃ����݂��������ǁH
-�@/tmp�ȉ��ɉB���t�@�C���Ƃ��đ��݂��Ă���Blsof��vmware-vmx�v���Z�X����
-��ƌ����邱�Ƃ��ł���
+.vmemファイルはいつ読み込まれる（役に立つ）の？
+　レジュームするとき。あるいはmemory page trimmingが有効な場合には、vmwa
+re-vmxプロセスが判断して随時読み込む
 
-�T�X�y���h�͎g��Ȃ����������H
-�@�f�Љ����Ȃ��悤�ɑ΍􂵂Ă���Ε��ʂɎg����
+.vmemファイルの断片化の程度はどうやって確認するの？
+　hdparmの最近のバージョンで hdparm --fibmap *.vmem | wc -lすればどの程度
+かをつかめる。あるいはfilefragコマンドを使う
 
-memory page trimming�͎g��Ȃ����������H
-�@�z�X�gOS�̃�����������Ȃ��Ȃ�\��������Ȃ�i���f�Љ���h�~���Ă�
-��Ȃ�j�֗��Ɏg����B�������ɗ]�T������Ȃ�g��Ȃ���������
+.vmemファイルの断片化を防ぐ方法は？
+　起動直後にサスペンドさせ、ddでファイルをコピーして入れ替え、リジューム
+するか、LD_PRELOADしてスパースファイル生成を阻止する（詳細は本文参照）
 
-useNamedFile="False"�̈Ӗ��́H
-�@.vmem�t�@�C����/tmp�ȉ��̉B���t�@�C���ɂ���Ƃ����Ӗ��B�������Ă��Ȃ���
-�n��
+.vmemファイルを使用しない方法はないの？
+　ない
 
-�Q�X�gOS������Ă��郁�����ʂ̊m�F�́H
-�@vmware-vmx�v���Z�X�ɂ��āA/proc/PID/status��RSS������B���邢��top��
-SHR���ڂ��m�F
+.vmemファイルがなくなったみたいだけど？
+　/tmp以下に隠しファイルとして存在している。lsofでvmware-vmxプロセスを見
+ると見つけることができる
+
+サスペンドは使わない方がいい？
+　断片化しないように対策してあれば普通に使える
+
+memory page trimmingは使わない方がいい？
+　ホストOSのメモリが足りなくなる可能性があるなら（かつ断片化を防止してい
+るなら）便利に使える。メモリに余裕があるなら使わない方がいい
+
+useNamedFile="False"の意味は？
+　.vmemファイルを/tmp以下の隠しファイルにするという意味。理解していないと
+地雷
+
+ゲストOSが消費しているメモリ量の確認は？
+　vmware-vmxプロセスについて、/proc/PID/statusのRSSを見る。あるいはtopで
+SHR項目を確認
 
 

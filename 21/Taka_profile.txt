@@ -1,10 +1,10 @@
-¡Taka John Brunkhorst
-œJob: Training Corporate Aviation Pilot
-œWeb: http://www.antiwmac.com/
-œMail: contact[at]antiwmac[dot]com
-œTeamiGroup): Anti-WMAC,ECC,XH,SecGate
-œComment: 
-@‚ ‚ç‚Ü‚Á‚­BŒÃ‚¢ƒjƒ…[ƒX‚Å‚·‚ªPhrackI‚í‚Á‚¿‚á‚¢‚Ü‚µ‚½‚ËB62,63‚ÌLoopb
-ack‚Í“Á‚É‚¨‚à‚ë‚©‚Á‚½‚Å‚·‚ËBˆê”ÔˆóÛ“I‚¾‚Á‚½‚Ì‚Í49-14‚Å‚·B‚±‚Ì”Ô†‚ÍŠF
-—l‚Ì‹L‰¯‚Éc‚Á‚Ä‚¢‚é‚Æv‚¢‚Ü‚·B/bin/sh BoF & SUID‚Ì‚â‚Â‚Í‘å•Ï—Ç‚©‚Á‚½‚Å
-‚·BŸŠú‚ÌPhrackŠy‚µ‚İ‚É‚µ‚Ä‚Ü‚·B
+â– Taka John Brunkhorst
+â—Job: Training Corporate Aviation Pilot
+â—Web: http://www.antiwmac.com/
+â—Mail: contact[at]antiwmac[dot]com
+â—Teamï¼ˆGroup): Anti-WMAC,ECC,XH,SecGate
+â—Comment: 
+ã€€ã‚ã‚‰ã¾ã£ãã€‚å¤ã„ãƒ‹ãƒ¥ãƒ¼ã‚¹ã§ã™ãŒPhrackçµ‚ã‚ã£ã¡ã‚ƒã„ã¾ã—ãŸã­ã€‚62,63ã®Loopb
+ackã¯ç‰¹ã«ãŠã‚‚ã‚ã‹ã£ãŸã§ã™ã­ã€‚ä¸€ç•ªå°è±¡çš„ã ã£ãŸã®ã¯49-14ã§ã™ã€‚ã“ã®ç•ªå·ã¯çš†
+æ§˜ã®è¨˜æ†¶ã«æ®‹ã£ã¦ã„ã‚‹ã¨æ€ã„ã¾ã™ã€‚/bin/sh BoF & SUIDã®ã‚„ã¤ã¯å¤§å¤‰è‰¯ã‹ã£ãŸã§
+ã™ã€‚æ¬¡æœŸã®Phrackæ¥½ã—ã¿ã«ã—ã¦ã¾ã™ã€‚

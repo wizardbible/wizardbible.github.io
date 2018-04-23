@@ -1,99 +1,99 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-  ---- ��V�́F���҃v���t�B�[�� ---
+  ---- 第７章：著者プロフィール ---
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-�@����͊e���҂ɃI�X�X���̖{���R���s���[�^�̕���Ɍ��炸�P���I��ł��炢
-�܂����B������A�I�X�X���c�[����{�Ȃǂ��Љ�Ă��炢�����Ǝv���܂��B
+　今回は各著者にオススメの本をコンピュータの分野に限らず１冊選んでもらい
+ました。今後も、オススメツールや本などを紹介してもらいたいと思います。
 
-��PaiN
+■PaiN
 Job: Student
-Web: Hex51�ihttp://hex51.darktech.org/�j
+Web: Hex51（http://hex51.darktech.org/）
 Mail:ss@comeon.to
-Team�iGroup�j:Secret
+Team（Group）:Secret
 Comment:
-�@�ǂ����B�^BBS�̏Z�lPaiN�ł��B��́A�v���O���~���O�APerl��C������Ă�
-�܂��B
-�@�ĂɌ����ċ؃g�����ł�����܂��B
-�I�X�X���{�F�wLinux�V�X�e���R�[���x�ˉz��Y���i�Z�p�]�_�Ёj
-�@�^�C�g���̒ʂ�ALinux�̃V�X�e���R�[���{�ł��B�P�̒i�K���ɃT���v���v��
-�O�������ڂ��Ă���̂ŕ�����₷���A����҂ɂ͂҂����肾�Ǝv���܂��B���e
-��������̂ł͂���܂��񂪁AC�̒m���͗\�ߕK�v�ł��B
+　どうも。某BBSの住人PaiNです。趣味は、プログラミング、PerlやCをやってい
+ます。
+　夏に向けて筋トレ中でもあります。
+オススメ本：『Linuxシステムコール』塚越一雄著（技術評論社）
+　タイトルの通り、Linuxのシステムコール本です。１つの段階毎にサンプルプロ
+グラムが載っているので分かりやすく、入門者にはぴったりだと思います。内容
+も難しいものではありませんが、Cの知識は予め必要です。
 
 
-�����L
+■黒猫
 Job:Secret
 Web:N/A
 Mail:Secret
-Team�iGroup�j:N/A
+Team（Group）:N/A
 Comment:
-�@net��N�ŃE�F�A�[�Y�̖����o���Ĉȗ��A����}�V���̃p�[�c�I����������
-�̑I�����A�S�Ă��E�F�A�[�Y���S�ɍl���Ă���u�E�F�A�[�Y���Łv���ҁB��́A
-�N�w�E�S���w�E�Ǐ��E�����E�X�L�[�E�o�R�E���y���t�Enet�ł̎���񓚌W �� ��
-��ɂ킽�邪�u�ǂ��Ƃ��ă��m�ɂȂ��Ă��Ȃ��v�Ƃ����A�T�^�I�Ȉڂ�C��
-���B���_�ɏ�Q������u�m���Ă鎞�͂̂߂荞�ނ��A�m��Ȃ��Ƃ��͈�����Q��
-����v���J��Ԃ��Ă���B�\�[�E�c�a���ȁH�����N�t������Ƃ��Ɂu���сv�u��
-�сv�u���i�v�u��i�v�E�E�E�u�t�́v�ƕ����Ɋ��Z���Ă����Ȃ��ƃs���Ƃ���
-���A�R�����I�Ȉ�ʂ�����(��)�B
-�I�X�X���{�FN/A
+　net暦数年でウェアーズの味を覚えて以来、自作マシンのパーツ選択も回線種類
+の選択も、全てをウェアーズ中心に考えている「ウェアーズ中毒」患者。趣味は、
+哲学・心理学・読書・武道・スキー・登山・音楽演奏・netでの質問回答係 等 多
+岐にわたるが「どれ一つとしてモノになっていない」という、典型的な移り気体
+質。精神に障害があり「ノってる時はのめり込むが、ノらないときは一日中寝て
+いる」を繰り返している。ソーウツ病かな？ランク付けするときに「白帯」「茶
+帯」「初段」「二段」・・・「師範」と武道に換算してもらわないとピンとこな
+い、山下清的な一面もある(笑)。
+オススメ本：N/A
 
 
-��D
+■D
 Job:SE
-Web:SE�̏����ihttp://iron_beasty.tripod.co.jp/�j
+Web:SEの小箱（http://iron_beasty.tripod.co.jp/）
 Mail:death_beasty@hotmail.com
-Team�iGroup�j:N/A
+Team（Group）:N/A
 Comment:
-�@�V�Q�҂̂c�ł��B
-�@�l�X�ȉ�Ђ̃l�b�g���[�N�̊�Ȃ��������w�E�������Ǝv���Ă��܂��B��̓w
-���B�E���^���𕠂̂�������̂����ƁB
-�@�܂��܂��׋�������Ȃ��Ƃ��낪����Ǝv���܂����A�D�����ڂŌ�����Ă�����
-���B
-�I�X�X���{�F�������w�l�b�g���[�N�}�K�W���x
-�@��Ƃ���������ׂ��l�b�g���[�N�Z�p���킩��₷���������Ă���̂ŁA��x
-�w�K���Ă��Ă��ǂ�ł݂�Ƃ����炢�����S�ɏo���邽�߂ɔ��ɏd�󂵂܂��B
-�@�܂��A�V�����@��̐�`������Ă��邽�߂ɐV�Z�p�Z�L�����e�B�̕׋��ɂ���
-��܂��B
-�@����̎G���Ƃ��ēǂނɂ͍œK�ł��B
+　新参者のＤです。
+　様々な会社のネットワークの危ない部分を指摘したいと思っています。趣味はヘ
+ヴィ・メタルを腹のそこから歌うこと。
+　まだまだ勉強が足りないところがあると思いますが、優しい目で見守ってくださ
+い。
+オススメ本：月刊誌『ネットワークマガジン』
+　企業が導入するべきネットワーク技術をわかりやすく説明しているので、一度
+学習していても読んでみるとおさらいが完全に出来るために非常に重宝します。
+　また、新しい機器の宣伝もやっているために新技術セキュリティの勉強にもな
+ります。
+　月一の雑誌として読むには最適です。
 
 
-��MaD
+■MaD
 Job:DATA HOUSE
 Web:http://www.data-house.co.jp/
 Mail:mad@data-house.co.jp
-Team�iGroup�j:ruffnex,ad200x,etc...
+Team（Group）:ruffnex,ad200x,etc...
 Comment:
-�@���n�J�[�W���p�\�Ɗ�Ȃ�28���̕S�~���C�^�[�B��́A�󂫊ʏE���Ƌ����r
-�̃t�^�W�߁B�Q�����˂�ł́u���}�T���L�v�A�u���߁E�ہv�A�u�哯�Ȍ|�l
-�v�A�u�D�_�E���\�t�v�Ƃ��Ēʂ��Ă���B�E�\�΂�����̂ŗF�B�͂��Ȃ��B
-�@���݂͉�ЂŃq�b�L�[�����Ă��邪�A�����̓l�b�g�J�t�F�̓X���Ȃ�Ƃ�����
-�W�Ɍ������Ă܂�������B�Ƃ����I(`�D�L)�B
-�I�X�X���{�FN/A
+　元ハカージャパソと危ない28号の百円ライター。趣味は、空き缶拾いと牛乳瓶
+のフタ集め。２ちゃんねるでは「矢崎マサユキ」、「白鶴・丸」、「大同曲芸人
+」、「泥棒・詐欺師」として通っている。ウソばかりつくので友達はいない。
+　現在は会社でヒッキーをしているが、将来はネットカフェの店員なるという目
+標に向かってまっしぐら。とぁっ！(`Д´)。
+オススメ本：N/A
 
 
-��IPUSIRON
+■IPUSIRON
 Job:N/A
-Web:- Security Akademeia -�ihttp://akademeia.info/�j
+Web:- Security Akademeia -（http://akademeia.info/）
 Mail:ipusiron@ruffnex.oc.to
-Team�iGroup�j:TeamSA,ruffnex,etc...
+Team（Group）:TeamSA,ruffnex,etc...
 Comment:
-�@���̓x�͏��߂Ă̕ҏW��S�����܂����B�܂�����Ȃ��_����������������܂�
-�񂪁A����Ƃ��wWizard Bible�x��������Ă��������B
-�@�ŋ߂͘_���w���ӂɋ���������܂��B
-�I�X�X���{�F�w���w�҂̂��߂̐����_�xA.���F�C���i���㐔�w�Ёj
-�@�Í����_���w�Ԃɂ͏����I�Ȑ����_��m���Ă����K�v������܂��B���̐����_
-�̑厖�ȕ�����I�m�ɉ�����Ă���̂����̖{�ł��B19���I�̑吔�w�҃K�E�X��
-�u���w�͉Ȋw�̏����ł���A���_�i�����_�̂��Ɓj�͐��w�̏����ł���v�ƌ���
-���悤�ɁA�����_�͉����[���A�T�����悤�Ƃ���΂����玞�Ԃ������Ă������
-�����炢�ł����A���̖{��ǂނ��Ƃɂ���Ċ�{�͉��������܂��B
-�@���ؒ��́w���������_�u�`�x�Ɩ����܂������A���؂̖{�͐��S�y�[�W�����
-���A���F�C���̖{��120�y�[�W�i�������O��60�y�[�W���藝�Ȃǂ̉���A�㔼60�y
-�[�W����艉�K�̉𓚁j�ƃR���p�N�g�ɂ܂Ƃ߂��Ă����̂ŁA�������I�т�
-�����B�܂��A���F�C���̖{�́A�ȒP�ɌQ�╔���Q�ɂ��G����Ă���_���]����
-�܂����B
-�@���Ȃ݂ɁA���̖{�ł͈Í��ɂ��Ă͈���G����܂��񂪁A���w�I�v�l��
-�_�����Ɋ����ɂ͂悢�ł��傤�B
+　この度は初めての編集を担当しました。まだ至らない点があったかもしれませ
+んが、今後とも『Wizard Bible』を見守ってください。
+　最近は論理学周辺に興味があります。
+オススメ本：『初学者のための整数論』A.ヴェイユ（現代数学社）
+　暗号理論を学ぶには初等的な整数論を知っておく必要があります。その整数論
+の大事な部分を的確に解説しているのがこの本です。19世紀の大数学者ガウスが
+「数学は科学の女王であり、数論（整数論のこと）は数学の女王である」と言っ
+たように、整数論は奥が深く、探求しようとすればいくら時間があっても足りな
+いぐらいですが、この本を読むことによって基本は押さえられます。
+　高木貞二の『初等整数論講義』と迷いましたが、高木の本は数百ページある一
+方、ヴェイユの本は120ページ（しかも前半60ページが定理などの解説、後半60ペ
+ージが問題演習の解答）とコンパクトにまとめられていたので、こちらを選びま
+した。また、ヴェイユの本は、簡単に群や部分群にも触れられている点も評価し
+ました。
+　ちなみに、この本では暗号については一つも触れられませんが、数学的思考や
+論理性に慣れるにはよいでしょう。
 

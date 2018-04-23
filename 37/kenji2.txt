@@ -1,51 +1,51 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- �恛��: Windows�V�X�e���v���O���~���O Part3�@�`SYSENTER��SYSEXIT�` ---
+--- 第○章: Windowsシステムプログラミング Part3　〜SYSENTERとSYSEXIT〜 ---
 
-���ҁFKenji Aiko
+著者：Kenji Aiko
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@���̃e�L�X�g�́AWindows�V�X�e���Ɋւ���v���O���~���O�𒆐S�ɋL�q���Ă�
-��B�J�[�l�������h�̃f�o�b�O�ASYSENTER�ASYSEXIT�Ȃǂ𒆐S�ɉ�����Ă���B
+　このテキストは、Windowsシステムに関するプログラミングを中心に記述してい
+る。カーネルランドのデバッグ、SYSENTER、SYSEXITなどを中心に解説している。
 
 
-��0x02.) SYSENTER
+■0x02.) SYSENTER
 
-�@Wizard Bible vol.36�́uWindows�V�X�e���v���O���~���O Part2�v�ɂāA�uSY
-SENTER�̓��[�U�[�����h�ƃJ�[�l�������h���q�����߂ł���A������t�b�N�ł�
-��v���Ƃ��q�ׂ��B�����āASYSENTER���s���Ɉȉ��̏��������邱�Ƃ��������B
+　Wizard Bible vol.36の「Windowsシステムプログラミング Part2」にて、「SY
+SENTERはユーザーランドとカーネルランドを繋ぐ命令であり、これをフックでき
+る」ことを述べた。そして、SYSENTER実行時に以下の処理が走ることを書いた。
 
------  sysenter���s���̏������e
-1. CS���W�X�^��SYSENTER_CS_MSR(MSR-174H)�̒l�����[�h
-2. EIP���W�X�^��SYSENTER_EIP_MSR(MSR-176H)�̒l�����[�h
-3. SS���W�X�^��SYSENTER_CS_MSR�̒l��8�����Z�����l�����[�h
-4. ESP���W�X�^��SYSENTER_ESP_MSR(MSR-175H)�̒l�����[�h
-5. �������x��0�ɐ؂�ւ��āA�J�[�l�����[�h���[�`���̎��s���J�n 
+-----  sysenter実行時の処理内容
+1. CSレジスタにSYSENTER_CS_MSR(MSR-174H)の値をロード
+2. EIPレジスタにSYSENTER_EIP_MSR(MSR-176H)の値をロード
+3. SSレジスタにSYSENTER_CS_MSRの値に8を加算した値をロード
+4. ESPレジスタにSYSENTER_ESP_MSR(MSR-175H)の値をロード
+5. 特権レベル0に切り替えて、カーネルモードルーチンの実行を開始 
 -----
 
-�@����́A��������ۂɃf�o�b�K�Œǂ��A�m�F����B
-�@�Ȃ��A���́A�Q�X�gOS�uWindowsXPSP2�v�A�z�X�gOS�uWindowsXPSP2�v�ACOM1
-����WinDbg�Ń����[�g�A�N�Z�X���Ă����ԂƂ���B
+　今回は、これを実際にデバッガで追い、確認する。
+　なお、環境は、ゲストOS「WindowsXPSP2」、ホストOS「WindowsXPSP2」、COM1
+からWinDbgでリモートアクセスしている状態とする。
 
 -----  WinDbg
 nt!RtlpBreakWithStatusInstruction:
 804e5b25 cc              int     3
 -----
 
-�@�܂��́Abreak�iCtrl + Break�j�ŃQ�X�gOS���~�߂�B�����āA���ݓ��쒆�̃v
-���Z�X��񋓂���B
+　まずは、break（Ctrl + Break）でゲストOSを止める。続いて、現在動作中のプ
+ロセスを列挙する。
 
 -----  WinDbg
 kd> !process 0 0
 **** NT ACTIVE PROCESS DUMP ****
 
-�i�ȗ��j
+（省略）
 
 PROCESS 8194b608  SessionId: 0  Cid: 0798    Peb: 7ffdf000  ParentCid: 0364
     DirBase: 09117000  ObjectTable: e206a078  HandleCount: 143.
@@ -60,9 +60,9 @@ PROCESS 81944d50  SessionId: 0  Cid: 05fc    Peb: 7ffdf000  ParentCid: 0604
     Image: conime.exe
 -----
 
-�@�񋓂��ꂽ�v���Z�X�̒�����A�K���ȃv���Z�X�ɃA�^�b�`���A���̃v���Z�X��
-ntdll!KiFastSystemCall�Ƀu���C�N�|�C���g��ݒu����B�����āA�Q�X�gOS��
-�����B
+　列挙されたプロセスの中から、適当なプロセスにアタッチし、そのプロセスの
+ntdll!KiFastSystemCallにブレイクポイントを設置する。そして、ゲストOSを動
+かす。
 
 -----  WinDbg
 kd> .process /r /p 818e3020
@@ -80,9 +80,9 @@ ntdll!KiFastSystemCall:
 001b:7c94eb8b 8bd4            mov     edx,esp
 -----
 
-�@�����o�����Q�X�gOS�́A�u���C�N�|�C���gntdll!KiFastSystemCall�ɂāA����
-���~�܂�A���䂪�f�o�b�K�Ɉڂ�B�����ŏ������ЂƂi�߂�ƁASYSENTER����
-��������B
+　動き出したゲストOSは、ブレイクポイントntdll!KiFastSystemCallにて、処理
+が止まり、制御がデバッガに移る。ここで処理をひとつ進めると、SYSENTER命令
+が見える。
 
 -----  WinDbg
 kd> t
@@ -96,10 +96,10 @@ ntdll!KiFastSystemCall+0x2:
 001b:7c94eb8d 0f34            sysenter
 -----
 
-�@SYSENTER���߂��Ăяo���O�Ɂu���W�X�^�̏󋵁v���m�F���Ă����B
-�@�����āA���x�́Antdll!KiFastSystemCall�̃u���C�N�|�C���g���������ASYSE
-NTER�Ăяo����Ɏ��s����鏈���int!KiFastCallEntry�j�Ƀu���C�N�|�C���g��
-�d�|���Ă����B���̏�Ԃ�Windows�����s����B
+　SYSENTER命令を呼び出す前に「レジスタの状況」を確認しておく。
+　そして、今度は、ntdll!KiFastSystemCallのブレイクポイントを解除し、SYSE
+NTER呼び出し後に実行される処理（nt!KiFastCallEntry）にブレイクポイントを
+仕掛けておく。この状態でWindowsを実行する。
 
 -----  WinDbg
 kd> bp nt!KiFastCallEntry
@@ -120,23 +120,23 @@ nt!KiFastCallEntry:
 804e0f6f b923000000      mov     ecx,23h
 -----
 
-�@���R�A�u���C�N�|�C���g���d�|����nt!KiFastCallEntry�ŏ������~�܂�B����
-�ŁA�ēx���W�X�^�̒l���m�F���ASYSENTER�Ăяo���O�ƁASYSENTER�Ăяo�����
-�Ⴂ������B
+　当然、ブレイクポイントを仕掛けたnt!KiFastCallEntryで処理が止まる。ここ
+で、再度レジスタの値を確認し、SYSENTER呼び出し前と、SYSENTER呼び出し後の
+違いを見る。
 
------  SYSENTER�Ăяo���O
+-----  SYSENTER呼び出し前
 eax=00000032 ebx=00000110 ecx=00abfc44 edx=00abfbe8 esi=00abfca8 edi=00000000
 eip=7c94eb8d esp=00abfbe8 ebp=00abfc6c iopl=0         nv up ei pl zr na pe nc
 cs=001b  ss=0023  ds=0023  es=0023  fs=003b  gs=0000             efl=00000246
 -----
 
------  SYSENTER�Ăяo����
+-----  SYSENTER呼び出し後
 eax=00000032 ebx=00000110 ecx=00abfc44 edx=00abfbe8 esi=00abfca8 edi=00000000
 eip=804e0f6f esp=f9e73000 ebp=00abfc6c iopl=0         nv up di pl zr na pe nc
 cs=0008  ss=0010  ds=0023  es=0023  fs=0030  gs=0000             efl=00000046
 -----
 
------  WinDbg�iMSR�̒l�j
+-----  WinDbg（MSRの値）
 kd> rdmsr 174
 msr[174] = 00000000`00000008
 kd> rdmsr 175
@@ -145,22 +145,22 @@ kd> rdmsr 176
 msr[176] = 00000000`804e0f6f
 -----
 
-�@���m��cs�Ass�Aeip�Aesp��msr�̒l�ɕς���Ă��邱�Ƃ��m�F�ł���B�m����S
-YSENTER�̏������A���ʂ�ł���ƕ��������B�܂��A���ɂ��Afs��efl���ύX��
-��Ă���B
-�@�Ȃ��A����𒲂ׂ邽�߂ɁArootkit���̃u���O�u���������Ano life�i��1�j�v
-�̋L����傢�ɎQ�l�ɂ����Ă����������B
+　正確にcs、ss、eip、espがmsrの値に変わっていることが確認できる。確かにS
+YSENTERの処理が、情報通りであると分かった。また、他にも、fsやeflが変更さ
+れている。
+　なお、これを調べるために、rootkit氏のブログ「そもそも、no life（※1）」
+の記事を大いに参考にさせていただいた。
 
-�i��1�j���������Ano life
+（※1）そもそも、no life
 http://d.hatena.ne.jp/rootkit/20071008
 
 
-��0x03.) SYSEXIT
+■0x03.) SYSEXIT
 
-�@SYSENTER�Ƒ΂��Ȃ����߂Ƃ��āuSYSEXIT�v���߂�����BSYSEXIT�́A�J�[�l��
-�����h���烆�[�U�[�����h�֖߂邽�߂̖��߂��B
-�@nt!KiSystemCallExit�ȉ����t�A�Z���u������ƁASYSEXIT���߂��g���Ă���
-���Ƃ��m�F�ł���B
+　SYSENTERと対をなす命令として「SYSEXIT」命令がある。SYSEXITは、カーネル
+ランドからユーザーランドへ戻るための命令だ。
+　nt!KiSystemCallExit以下を逆アセンブルすると、SYSEXIT命令が使われている
+ことが確認できる。
 
 -----  WinDbg
 nt!KiSystemCallExit:
@@ -177,7 +177,7 @@ nt!KiSystemCallExit2:
 001b:804e1184 0f35            sysexit
 -----
 
-�@SYSEXIT���߂Ƀu���C�N�|�C���g��ݒu����B�����Ď��s����B
+　SYSEXIT命令にブレイクポイントを設置する。そして実行する。
 
 -----  WinDbg
 kd> bp 804e1184
@@ -205,8 +205,8 @@ ntdll!KiFastSystemCallRet:
 001b:7c94eb94 c3              ret
 -----
 
-�@SYSEXIT����Antdll!KiFastSystemCallRet�֏������ڂ������Ƃ�������B����
-�݂ɁAntdll!KiFastSystemCallRet�́ASYSENTER�̎��̏����ł���B
+　SYSEXITから、ntdll!KiFastSystemCallRetへ処理が移ったことが分かる。ちな
+みに、ntdll!KiFastSystemCallRetは、SYSENTERの次の処理である。
 
 -----  WinDbg
 ntdll!KiFastSystemCall:
@@ -222,18 +222,18 @@ ntdll!KiFastSystemCallRet:
 001b:7c94eb94 c3              ret
 -----
 
-�@�܂��A�ꍇ�ɂ���ẮASYSEXIT�̌�Antdll!KiFastSystemCallRet�ł͂Ȃ��A
-ntdll!KiUserApcDispatcher�֔�΂���邱�Ƃ����邩������Ȃ����A���x������
-�΁Antdll!KiFastSystemCall�֗��邱�Ƃ��m�F�ł��邾�낤�B
+　また、場合によっては、SYSEXITの後、ntdll!KiFastSystemCallRetではなく、
+ntdll!KiUserApcDispatcherへ飛ばされることもあるかもしれないが、何度か試せ
+ば、ntdll!KiFastSystemCallへ来ることが確認できるだろう。
 
 
-��0x04.) SYSEXIT�t�b�N
+■0x04.) SYSEXITフック
 
-�@SYSENTER�ɂ��cs�Ass�Aeip�Aesp���ύX�����̂Ȃ�΁ASYSEXIT�ɂ���āA��
-���̃��W�X�^�����ɖ߂����͂����B�ł́A��������SYSEXIT���Ă΂ꂽ�Ƃ��A
-�����̒l�͂ǂ�����߂�̂��H�@�܂��ASYSEXIT�ɂ��t�b�N�͉\�Ȃ̂��H�@
-���ۂɃf�o�b�K�Œǂ��Ē��ׂĂ݂�B
-�@�܂���SYSEXIT�Ƀu���C�N�|�C���g���d�|����B
+　SYSENTERによりcs、ss、eip、espが変更されるのならば、SYSEXITによって、こ
+れらのレジスタが元に戻されるはずだ。では、いったいSYSEXITが呼ばれたとき、
+これらの値はどこから戻るのか？　また、SYSEXITによるフックは可能なのか？　
+実際にデバッガで追って調べてみる。
+　まずはSYSEXITにブレイクポイントを仕掛ける。
 
 -----  WinDbg
 kd> bp 804e1184
@@ -258,10 +258,10 @@ ntdll!KiFastSystemCallRet:
 001b:7c94eb94 c3              ret
 -----
 
-�@SYSEXIT�ɂ���Ė߂�����̃A�h���X�ieip�j�́u7c94eb94�v���B���̒l��SYSE
-XIT�Ăяo���O��edx���W�X�^�Ɋi�[����Ă���B�܂��A�����悤��ESP�̒l�́AS
-YSEXIT�Ăяo���O��ecx���W�X�^�ɂ���B�����Ă����̃��W�X�^�́A�X�^�b�N��
-��n����Ă���B
+　SYSEXITによって戻った先のアドレス（eip）は「7c94eb94」だ。この値はSYSE
+XIT呼び出し前のedxレジスタに格納されている。また、同じようにESPの値は、S
+YSEXIT呼び出し前のecxレジスタにある。そしてこれらのレジスタは、スタックか
+ら渡されている。
 
 -----  WinDbg
 nt!KiSystemCallExit:
@@ -278,28 +278,28 @@ nt!KiSystemCallExit2:
 804e1184 0f35            sysexit
 -----
 
-�@�ł́Acs��ss�͂ǂ����痈��̂��H�@�ǂ���烌�W�X�^�̒��ɂ͂Ȃ��������B
-�uSystem Call Optimization with the SYSENTER Instruction�i��2�j�v�ɂ��ƁA
-������GDT�ɕۑ�����Ă���悤���B
+　では、csやssはどこから来るのか？　どうやらレジスタの中にはなさそうだ。
+「System Call Optimization with the SYSENTER Instruction（※2）」によると、
+これらはGDTに保存されているようだ。
 
-�i��2�jSystem Call Optimization with the SYSENTER Instruction
+（※2）System Call Optimization with the SYSENTER Instruction
 http://www.codeguru.com/cpp/w-p/system/devicedriverdevelopment/article.php/c8223/
 
-�@SYSENTER�́A�Œ�̏ꏊ�iMSR�j�ɃW�����v��A�h���X���i�[����Ă������AS
-YSEXIT��EIP�ɓ����l���X�^�b�N��������Ă��Ă��邽�߁A�Œ�̏ꏊ�Ƃ͌���
-�Ȃ��������B�܂�A�A�h���X�㏑���ɂ��SYSEXIT�t�b�N�͂ł��Ȃ��悤�Ɏv��
-��B�����A���̍l���͊ԈႢ�ł���B
-�@�m���ɁAnt!KiSystemCallExit�����ł́A�X�^�b�N����W�����v������o����
-����B����͊ԈႢ�Ȃ��B�������A�u�����������̃X�^�b�N�ɒl����ꂽ������
-�ǂ��ɂ���̂��H�v����肾�B
-�@�X�^�b�N����pop���Ă����l�́u7c94eb94�v���B����͊m����SYSENTER���߂̎�
-�̏������w���Ă���B�܂�A���m�Ƀ��[�U�[�����h�ɖ߂��Ă���B����͕���
-��B�����ASYSENTER�ɂ���ăJ�[�l�������h�֓����Ă���Ant!KiSystemCallExi
-t�֐i��ł���܂ł̊Ԃ̂ǂ����ŁA�K���X�^�b�N�Ɂu7c94eb94�v��push����Ă�
-��͂����B�łȂ���΁Ant!KiSystemCallExit�ȍ~�̏����ŁA�X�^�b�N����u7c9
-4eb94�v��pop�ł��Ȃ��B
-�@����āAnt!KiFastCallEntry����nt!KiSystemCallExit�܂ł̏�����ǂ��āA��
-�[�U�[�����h�ւ̖߂�A�h���X���A�X�^�b�N��push����Ă���ӏ�����肷��B
+　SYSENTERは、固定の場所（MSR）にジャンプ先アドレスが格納されていたが、S
+YSEXITはEIPに入れる値をスタックからもってきているため、固定の場所とは言え
+なさそうだ。つまり、アドレス上書きによるSYSEXITフックはできないように思え
+る。だが、この考えは間違いである。
+　確かに、nt!KiSystemCallExit内部では、スタックからジャンプ先を取り出して
+いる。これは間違いない。しかし、「そもそもそのスタックに値を入れた処理は
+どこにあるのか？」が問題だ。
+　スタックからpopしてきた値は「7c94eb94」だ。これは確かにSYSENTER命令の次
+の処理を指している。つまり、正確にユーザーランドに戻っている。これは分か
+る。だが、SYSENTERによってカーネルランドへ入ってから、nt!KiSystemCallExi
+tへ進んでくるまでの間のどこかで、必ずスタックに「7c94eb94」がpushされてい
+るはずだ。でなければ、nt!KiSystemCallExit以降の処理で、スタックから「7c9
+4eb94」をpopできない。
+　よって、nt!KiFastCallEntryからnt!KiSystemCallExitまでの処理を追って、ユ
+ーザーランドへの戻りアドレスが、スタックへpushされている箇所を特定する。
 
 -----  WinDbg
 nt!KiFastCallEntry:
@@ -322,27 +322,27 @@ nt!KiFastCallEntry:
 804e0f9c 6a00            push    0
 -----
 
-�@nt!KiFastCallEntry����ЂƂ����Ă����ƁA���Ȃ葁���i�K�ł���͌���
-����B�����炩�ȌŒ�l���X�^�b�N��push����Ă��邢�����̉ӏ���H��A��
-�̒��ɁA�Œ�A�h���X�̐�̒l��push����Ă���ӏ��i804e0f96�j��������B
+　nt!KiFastCallEntryからひとつずつ見ていくと、かなり早い段階でそれは見つ
+かる。あきらかな固定値がスタックへpushされているいくつかの箇所を辿り、そ
+の中に、固定アドレスの先の値がpushされている箇所（804e0f96）が見つかる。
 
------  �Œ�A�h���X�̒l���X�^�b�N�֊i�[���鏈��
+-----  固定アドレスの値をスタックへ格納する処理
 804e0f96 ff350403dfff    push    dword ptr ds:[0FFDF0304h]
 -----
 
-�@���̃n�[�h�R�[�h���ꂽ�A�h���X0FFDF0304h�̒l�����Ă݂�Ɓu94 eb 94 7c�v
-�ƂȂ��Ă���B�܂���SYSEXIT�̖߂��A�h���X�ł���B
+　このハードコードされたアドレス0FFDF0304hの値を見てみると「94 eb 94 7c」
+となっている。まさにSYSEXITの戻り先アドレスである。
 
 -----  WinDbg
 ffdf0304  94 eb 94 7c 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 -----
 
-�@�܂�ASYSENTER���l�ASYSEXIT���t�b�N�ł��邱�Ƃ����������B
-�@�ł́ASYSENTER���l�ASYSEXIT���t�b�N���Ă݂�BSYSENTER�ł́A�t�b�N��̃R
-�[�h���J�[�l����Ԃɒu���Ȃ���΂Ȃ�Ȃ������̂ŁA�d���Ȃ��h���C�o��p��
-�������ASYSEXIT�̏ꍇ�́A���[�U�[��Ԃł悢�̂ŁA�V���Ƀh���C�o���C���X�g
-�[������K�v�͂Ȃ��B�܂��ASYSENTER�̂�����ɂ́A�t�b�N���Ă���ƌ�����
-�����NOP���A5�o�C�g���󂯂��Ă���B
+　つまり、SYSENTER同様、SYSEXITもフックできることが分かった。
+　では、SYSENTER同様、SYSEXITもフックしてみる。SYSENTERでは、フック先のコ
+ードをカーネル空間に置かなければならなかったので、仕方なくドライバを用意
+したが、SYSEXITの場合は、ユーザー空間でよいので、新たにドライバをインスト
+ールする必要はない。また、SYSENTERのうしろには、フックしてくれと言わんば
+かりのNOPが、5バイト分空けられている。
 
 -----  WinDbg
 ntdll!KiFastSystemCall:
@@ -358,8 +358,8 @@ ntdll!KiFastSystemCallRet:
 7c94eb94 c3              ret
 -----
 
-�@����͂܂��ɁA�t�b�N���邽�߂̗̈悾�B�Ⴆ�΁A����5�o�C�g�����̂悤�ɏ�
-��������B
+　これはまさに、フックするための領域だ。例えば、この5バイトを次のように書
+き換える。
 
 -----  WinDbg
 ntdll!KiFastSystemCall:
@@ -375,34 +375,34 @@ ntdll!KiFastSystemCallRet:
 7c94eb94 90              nop
 -----
 
-�@���łɁu7c94eb94�v�̖��߂�NOP�ɂ��Ă������B�����āA�n�[�h�R�[�h���ꂽ
-�uffdf0304�v�̒l����5�o�C�g�����Z����B
+　ついでに「7c94eb94」の命令もNOPにしておこう。そして、ハードコードされた
+「ffdf0304」の値から5バイト分減算する。
 
 -----  WinDbg
 ffdf0304  8f eb 94 7c 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 -----
 
-�@�����OS�����s����B���R�A����ɓ��삷��B�{���Ȃ��7c94eb94�̖��߂�NO
-P�ɂȂ��Ă��邽�߁A�����炩�ȃG���[�ƂȂ�͂������ASYSEXIT�̃W�����v���
-�ύX���A5�o�C�g�����炵�Ă��邽�߁A���Ȃ����삷��B
-�@�ł́A�����Ɂuffdf0304�v�̒l���A�u8f eb 94 7c�v���猳�̒l�u94 eb 94 7c�v
-�֖߂��āA�ēxOS�����s���Ă݂�B7c94eb94�̖��߂�NOP�̂܂܂Ȃ�΁ASYSEXIT
-����߂����悪RET�ł͂Ȃ��ANOP�Ƃ������ƂɂȂ�AOS�͂������ȓ�������邾
-�낤�BSYSEXIT�ɂāA���łɃ��[�U�[�����h�ɖ߂��Ă��邽�߁A�u���[�X�N���[��
-�Ȃǂ̒v���I�ȃ_���[�W�ɂ͂Ȃ�Ȃ��͂������AOS�Ƃ��Ă̋@�\�͉ʂ����Ȃ��B
+　これでOSを実行する。当然、正常に動作する。本来ならば7c94eb94の命令がNO
+Pになっているため、あきらかなエラーとなるはずだが、SYSEXITのジャンプ先を
+変更し、5バイト分ずらしているため、問題なく動作する。
+　では、試しに「ffdf0304」の値を、「8f eb 94 7c」から元の値「94 eb 94 7c」
+へ戻して、再度OSを実行してみる。7c94eb94の命令がNOPのままならば、SYSEXIT
+から戻った先がRETではなく、NOPということになり、OSはおかしな動作をするだ
+ろう。SYSEXITにて、すでにユーザーランドに戻っているため、ブルースクリーン
+などの致命的なダメージにはならないはずだが、OSとしての機能は果たせない。
 
-�@����̗�ł́ASYSEXIT���t�b�N���āAxchg���߂�2���s���������������A��
-�����A�t�b�N���͂���Ƃ����鏈�����}���ł���BSYSEXIT�̎��s�����O�ɕ�
-�����邱�Ƃ��\���B�Ƃ����Ă��A��������SYSEXIT�Ăяo�������O�ɕۑ����闝
-�R���Ȃ����A�u�\�ł���v�ƕ������Ă��邱�Ƃ͏d�v�Ȃ��Ƃ��Ǝv���B
+　今回の例では、SYSEXITをフックして、xchg命令を2つ実行させただけだが、も
+ちろん、フック中はありとあらゆる処理が挿入できる。SYSEXITの実行をログに保
+存することも可能だ。といっても、そもそもSYSEXIT呼び出しをログに保存する理
+由がないが、「可能である」と分かっていることは重要なことだと思う。
 
 
-��0x05.) ��������
+■0x05.) さいごに
 
-�@���āA�O��Ɉ��������A�����SYSEXIT���t�b�N�����BSYSENTER���t�b�N���āA
-����SYSEXIT���t�b�N���āA�͂����茾���ĉ�Ȃ��疳�Ӗ��Ȃ��Ƃ�����Ă����
-���A�Ƃ��Â��v���B�Ȃ̂ŁA���񂩂�͏��X�Ӗ��̂��邱�Ƃ�����Ă�������
-�Ȃ��Ǝv���B
+　さて、前回に引き続き、今回はSYSEXITをフックした。SYSENTERをフックして、
+次にSYSEXITをフックして、はっきり言って我ながら無意味なことをやっているな
+ぁ、とつくづく思う。なので、次回からは少々意味のあることをやっていきたい
+なぁと思う。
 
 
 

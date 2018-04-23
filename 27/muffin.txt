@@ -1,112 +1,112 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- �恛��: Intel x86���߂̍\�� ---
+--- 第○章: Intel x86命令の構造 ---
 
-���ҁFmuffin
+著者：muffin
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@MOV�Ƃ�NOP�Ƃ��̈Ӗ��͂킩�����B�����CPU�������ł��鐔���ɑΉ����Ă��
-���킩�����B�ł����ۂ̏ڂ����ϊ����킩��Ȃ��B�uIntel�̃}�j���A���i��1�j
-��ǂ߂Ƃ���ꂽ�v���u����v���u���܁v�B
-�@Intel�̃}�j���A���͔��ɏڍׂɏ����Ă邽�ߊȒP�Ȃ��Ƃ܂œ�������Ă�
-�܂��܂��B�܂������̏��S�҂��ǂނƔ����������ł��B�Ƃ肠�����]�v�Ȓm����
-�����č��i�ƂȂ�x86�̖��߂̍\����m�邱�ƂŁA���܂�ɂ��ڂ�������Intel��
-�}�j���A������K�v�ȂƂ��낾����̑I�����ł���悤�ɂȂ�Ǝv���܂��B
-�@������񂱂��Intel�̃}�j���A����ǂނ��߂̃}�j���A���ł͂���܂���BI
-ntel x86�̖��߂̊�{�\���̓f�B�X�A�Z���u���̍쐬���f�o�b�K�̍쐬���R
-�[�h�W�F�l���[�^�[�̍쐬���|�����t�B�b�N�G���W���̍쐬���v���e�N�^�[
-�̍쐬���ɕK�{�Ȓm���Ȃ̂ŁA���̕ӂɋ����������Ă���ɓǂ�ł��炦���
-�Ǝv���܂��B
+　MOVとかNOPとかの意味はわかった。それはCPUが理解できる数字に対応してるの
+もわかった。でも実際の詳しい変換がわからない。「Intelのマニュアル（※1）
+を読めといわれた」→「難しい」→「挫折」。
+　Intelのマニュアルは非常に詳細に書いてるため簡単なことまで難しく感じてし
+まいます。まったくの初心者が読むと発狂しそうです。とりあえず余計な知識を
+抜いて骨格となるx86の命令の構造を知ることで、あまりにも詳しすぎるIntelの
+マニュアルから必要なところだけ取捨選択ができるようになると思います。
+　もちろんこれはIntelのマニュアルを読むためのマニュアルではありません。I
+ntel x86の命令の基本構造はディスアセンブラの作成やらデバッガの作成やらコ
+ードジェネレーターの作成やらポリモフィックエンジンの作成やらプロテクター
+の作成やらに必須な知識なので、この辺に興味を持ってる方に読んでもらえれば
+と思います。
 
-�y���߁z
-�i��1�jhttp://www.intel.com/jp/developer/download/index.htm#ia32
+【注釈】
+（※1）http://www.intel.com/jp/developer/download/index.htm#ia32
 
 
-��0x02.) Intel x86���߂̊�{�I�ȍ\��
+■0x02.) Intel x86命令の基本的な構造
 
-�@��{�I��x86���߂̍\���͎��̂悤�ɂȂ��Ă��܂��B
+　基本的なx86命令の構造は次のようになっています。
 
 +--------+--------+--------+-----+--------------+-----------+
 | Prefix | Opcode | ModR/M | SIB | Displacement | Immediate |
 +--------+--------+--------+-----+--------------+-----------+
 
-��Prefix
-�@0�`4�o�C�g�̃v���t�B�b�N�X
+●Prefix
+　0〜4バイトのプリフィックス
 
-��Opcode
-�@1�o�C�g�܂���2�o�C�g�̃I�y�R�[�h
+●Opcode
+　1バイトまたは2バイトのオペコード
 
-��ModR/M
-�@1�o�C�g�܂��͂Ȃ��B
+●ModR/M
+　1バイトまたはなし。
 
-��ModR/M�̍\��
+○ModR/Mの構造
 
 7    6 5          3 2    0
 +-----+------------+-----+
 | Mod | Reg/opcode | R/M |
 +-----+------------+-----+
 
-��SIB
-�@1�o�C�g�܂��͂Ȃ��B
+●SIB
+　1バイトまたはなし。
 
-��SIB�̍\��
+○SIBの構造
 
  7     6 5     3 2    0
 +-------+-------+------+
 | scale | index | base |
 +-------+-------+------+
 
-��Displacement
-�@1�A2�A4�o�C�g�̃A�h���X�f�B�X�v���C�X�����g�܂��͂Ȃ��B
+●Displacement
+　1、2、4バイトのアドレスディスプレイスメントまたはなし。
 
-��Immediate
-�@1�A2�A4�o�C�g�̑��l�܂��͂Ȃ�
-
-
-�@�ł́A�������炻�ꂼ��̏ڍׂȍ\��������ǂ��ĉ�����Ă����܂��B
+●Immediate
+　1、2、4バイトの即値またはなし
 
 
-��0x03.) Prefix
+　では、ここからそれぞれの詳細な構造を順を追って解説していきます。
 
-��Prefix�̃^�C�v
 
-�@5�̃^�C�v��Prefix������܂��BPrefix�Ȃ��i0�o�C�g�j����ő�4�o�C�g�܂�
-��Prefix���g�p����A����ɂ�薽�߂̋��������肳��܂��B
+■0x03.) Prefix
 
-��Segment Prefix
-�@�Z�O�����g�����肷��v���t�B�b�N�X�ł��B
-�@2E, 36, 3E, 26, 64, 65
+●Prefixのタイプ
 
-��Operand Size Prefix
-�@�I�y�����h�̃T�C�Y���w�肷��v���t�B�b�N�X�ł��B�f�B�t�H���g�ȊO�̃I�y
-�����h�T�C�Y�ɂ���Ƃ��Ɏg�p����܂��B
-�@66
+　5つのタイプのPrefixがあります。Prefixなし（0バイト）から最大4バイトまで
+のPrefixが使用され、それにより命令の挙動が決定されます。
 
-��Address Size Prefix
-�@�f�B�t�H���g�ȊO�̃A�h���X�T�C�Y�ɕύX����Ƃ��Ɏg�p���܂��B
-�@67
+○Segment Prefix
+　セグメントを決定するプリフィックスです。
+　2E, 36, 3E, 26, 64, 65
 
-��REP/REPNE Prefix
-�@���[�v���߂Ŏg�p�����v���t�B�b�N�X�ł��B
-�@F3, F2
+○Operand Size Prefix
+　オペランドのサイズを指定するプリフィックスです。ディフォルト以外のオペ
+ランドサイズにするときに使用されます。
+　66
 
-��Bus LOCK Prefix
-�@�v���Z�b�T��BUS�𐧌䂷��v���t�B�b�N�X�ł��B
-�@F0
+○Address Size Prefix
+　ディフォルト以外のアドレスサイズに変更するときに使用します。
+　67
 
-�@��̃I�y�R�[�h�ɑ΂��ĕ����̃v���t�B�b�N�X�𗘗p�ł��܂��B���Ԃ͓���
-���܂��Ă��܂���B
+○REP/REPNE Prefix
+　ループ命令で使用されるプリフィックスです。
+　F3, F2
 
-��Segment Prefix
+○Bus LOCK Prefix
+　プロセッサのBUSを制御するプリフィックスです。
+　F0
 
-�@DS���ʏ�f�t�H���g�̃Z�O�����g�ƂȂ��Ă��܂��B�����ύX����̂�Segmen
-t Prefix�ł��B
+　一つのオペコードに対して複数のプリフィックスを利用できます。順番は特に
+決まっていません。
+
+●Segment Prefix
+
+　DSが通常デフォルトのセグメントとなっています。これを変更するのがSegmen
+t Prefixです。
 
 2Eh : CS
 36h : SS
@@ -120,30 +120,30 @@ MOV EAX, DWORD DS:[EAX]   ;   8B00
 MOV EAX, DWORD CS:[EAX]   ; 2E8B00
 ----
 
-��Operand size Prefix
+●Operand size Prefix
 
-�@�I�y�����h�T�C�Y��ύX���܂��BWindows��32�r�b�g���Ȃ瓖�R32�r�b�g�I�y
-�����h���f�t�H���g�Ŏg�p����邱�ƂɂȂ�܂����A�I�y�����h�T�C�Y�v���t�B
-�b�N�X��u�����Ƃɂ����16�r�b�g�̃I�y�����h���g�p�ł��܂��B
+　オペランドサイズを変更します。Windowsの32ビット環境なら当然32ビットオペ
+ランドがデフォルトで使用されることになりますが、オペランドサイズプリフィ
+ックスを置くことによって16ビットのオペランドが使用できます。
 
 ---- ex ----
 MOV EAX, EAX              ;   89C0
 MOV EAX, EAX              ; 6689C0
 ----
 
-��Address Size Prefix
+●Address Size Prefix
 
-�@Operand size prefix�Ɠ��l�Ƀf�t�H���g�̃A�h���b�V���O�̃T�C�Y��ύX����
-���B
+　Operand size prefixと同様にデフォルトのアドレッシングのサイズを変更しま
+す。
 
 ---- ex ----
 MOV EAX, DWORD [EAX]     ;   8B00
 MOV EAX, DWROD [BX+SI]   ; 678B00
 -----
 
-��REP/REPNE Prefix
+●REP/REPNE Prefix
 
-�@�X�g�����O���߂̃��[�v�v���t�B�b�N�X�ł��B
+　ストリング命令のループプリフィックスです。
 
 ---- ex ----
 LODSD                         ;      AD
@@ -151,25 +151,25 @@ REP LODSD                     ;    F3AD
 REPNE LODSD                   ;    F2AD
 ----
 
-��Bus LOCK Prefix
+●Bus LOCK Prefix
 
-�@Bus�̐��������v���t�B�b�N�X�ł��B
+　Busの制御をするプリフィックスです。
 
 
-��0x03.) Opcode
+■0x03.) Opcode
 
-��1�o�C�g�I�y�R�[�h - �p�^�[��1
+●1バイトオペコード - パターン1
 
-�@�ȒP��1�o�C�g�I�y�R�[�h��PUSH������܂��B
+　簡単な1バイトオペコードにPUSHがあります。
 
 PUSH REG --> 01010reg
 
-�@��̂悤�ɕϊ�����܂��BREG�̓��W�X�^�̈Ӗ��ŁAreg��3�r�b�g�̒l�łǂ̃�
-�W�X�^���g�������w�肵�Ă��܂��B
+　上のように変換されます。REGはレジスタの意味で、regは3ビットの値でどのレ
+ジスタを使うかを指定しています。
 
 PUSH EAX --> 50h --> 01010000
 
-�@�܂�Areg��000�̂Ƃ�EAX��\���Ă��܂��B
+　つまり、regが000のときEAXを表しています。
 
 7      3 2    0
 +-------+-----+
@@ -177,10 +177,10 @@ PUSH EAX --> 50h --> 01010000
 +-------+-----+
  opcode   reg
 
-�@�ŏ���5�r�b�g���I�y�R�[�hPUSH��\���A���3�r�b�g�����W�X�^EAX��\���A�g
-�[�^��1�o�C�g�ň�̖��߂��Ӗ����Ă��܂��B
+　最初の5ビットがオペコードPUSHを表し、後の3ビットがレジスタEAXを表し、ト
+ータル1バイトで一つの命令を意味しています。
 
-�@3�r�b�g�ŕ\�����W�X�^�͎��̕\�̒ʂ�ɂȂ�܂��B
+　3ビットで表すレジスタは次の表の通りになります。
 
 +-----+--------+---------+---------+
 | reg | 8 bits | 16 bits | 32 bits |
@@ -202,7 +202,7 @@ PUSH EAX --> 50h --> 01010000
 | 111 |     BH |      DI |     EDI |
 +-----+--------+---------+---------+
 
-�@���̑���reg�w�������1�o�C�g�I�y�R�[�h�Ɏ��̂悤�Ȃ��̂�����܂��B
+　その他のreg指定をする1バイトオペコードに次のようなものがあります。
 
 INC  REG        --> 01000reg
 DEC  REG        --> 01001reg
@@ -218,29 +218,29 @@ MOV EAX,12345678h --> B8 78563412 --> 10111000 IMM32
                           IMM32 
 ----
 
-�@NOP�Ƃ����L����1�o�C�g�I�y�R�[�h������܂��B���̃I�y�R�[�h�̂��Ƃ͒m��
-�Ȃ��Ă�NOP��90h�ŕ\����邱�Ƃ����͒m���Ă���Ƃ�������������������܂�
-��B��̕\�Ɖ���2�i���ւ̕ϊ�������ׂĂ݂Ă��������B
+　NOPという有名な1バイトオペコードがあります。他のオペコードのことは知ら
+なくてもNOPが90hで表されることだけは知っているという方も多いかもしれませ
+ん。上の表と下の2進数への変換を見比べてみてください。
 
 90h --> 10010 000
 
-�@�uXCHG EAX, REG�v���u10010reg�v�Areg��000�Ȃ̂�EAX�ƂȂ�܂��B�܂�
+　「XCHG EAX, REG」が「10010reg」、regは000なのでEAXとなります。つまり
 
 90h --> 10010 000 --> XCHG EAX, EAX
 
-�@���ꂪNOP�̐��̂ł��B
+　これがNOPの正体です。
 
 
-��1�o�C�g�I�y�R�[�h - �p�^�[��2
+●1バイトオペコード - パターン2
 
-�@���ɕʂ̌^��1�o�C�g�I�y�R�[�h�����Ă݂܂��B
+　次に別の型の1バイトオペコードを見てみます。
 
 89C1h --> 10001001 11000001 --> MOV ECX, EAX
 
-�@2�o�C�g�ɂȂ��Ă��܂����AC1h������ ModR/M�t�B�[���h�Ƃ������̂Ŏ��ۂɖ�
-�߂�\��������1�o�C�g�ł��B
+　2バイトになっていますが、C1h部分は ModR/Mフィールドというもので実際に命
+令を表す部分は1バイトです。
 
-�@�ł́A�\�������Ă����܂��B
+　では、構造を見ていきます。
 
 MOV ECX, EAX -->
              89h                  C1h
@@ -252,30 +252,30 @@ MOV ECX, EAX -->
 | 100010 | 0 | 1 ||  11 |  000 |  001 |
 +--------+---+---++-----+------+------+
 
-instr  : �I�y�R�[�h���߂�\������
-    d  : d=0 �̂Ƃ� REG2 REG1�̏�
-         d=1 �̂Ƃ� REG1 REG2�̏�
-    w  : 32�r�b�g���ɂ����� w=0 �̂Ƃ�  8�r�b�g���[�h
-                              w=1 �̂Ƃ� 32�r�b�g���[�h
-         16�r�b�g���ɂ����� w=0 �̂Ƃ�  8�r�b�g���[�h
-                              w=1 �̂Ƃ� 16�r�b�g���[�h
-ModR/M : �i2�o�C�g�I�y�R�[�h�̂Ƃ���ŉ���j
+instr  : オペコード命令を表す部分
+    d  : d=0 のとき REG2 REG1の順
+         d=1 のとき REG1 REG2の順
+    w  : 32ビット環境において w=0 のとき  8ビットモード
+                              w=1 のとき 32ビットモード
+         16ビット環境において w=0 のとき  8ビットモード
+                              w=1 のとき 16ビットモード
+ModR/M : （2バイトオペコードのところで解説）
 
-�@���ɗ�������܂��B
+　次に例を示します。
 
----- d�̃r�b�g��0�̂Ƃ���1�̂Ƃ�
+---- dのビットが0のときと1のとき
 
 +--------+---+---++-----+------+------+
 | instr  | d | w || Mod | REG1 | REG2 |
 +--------+---+---++-----+------+------+
 | 100010 | 0 | 1 ||  11 |  000 |  001 |
 +--------+---+---++-----+------+------+
- instr : 100010 = MOV����
-     d : 0 -> ���W�X�^�̏��Ԃ�REG2 REG1
-     w : 1 -> �i32�r�b�g���Łj32�r�b�g���[�h���g�p
-   Mod : �i���͖����j
-  REG1 : 000 -> EAX, AX, AL�̂ǂꂩ
-  REG2 : 001 -> ECX, CX, CL�̂ǂꂩ
+ instr : 100010 = MOV命令
+     d : 0 -> レジスタの順番がREG2 REG1
+     w : 1 -> （32ビット環境で）32ビットモードを使用
+   Mod : （今は無視）
+  REG1 : 000 -> EAX, AX, ALのどれか
+  REG2 : 001 -> ECX, CX, CLのどれか
 -> MOV ECX, EAX
 
 +--------+---+---++-----+------+------+
@@ -283,43 +283,43 @@ ModR/M : �i2�o�C�g�I�y�R�[�h�̂Ƃ���ŉ���j
 +--------+---+---++-----+------+------+
 | 100010 | 1 | 1 ||  11 |  000 |  001 |
 +--------+---+---++-----+------+------+
- instr : 100010 = MOV����
-     d : 1 -> ���W�X�^�̏��Ԃ�REG1 REG2
-     w : 1 -> �i32�r�b�g���Łj32�r�b�g���[�h���g�p
-   Mod : �i���͖����j
-  REG1 : 000 -> EAX, AX, AL�̂ǂꂩ
-  REG2 : 001 -> ECX, CX, CL�̂ǂꂩ
+ instr : 100010 = MOV命令
+     d : 1 -> レジスタの順番がREG1 REG2
+     w : 1 -> （32ビット環境で）32ビットモードを使用
+   Mod : （今は無視）
+  REG1 : 000 -> EAX, AX, ALのどれか
+  REG2 : 001 -> ECX, CX, CLのどれか
 -> MOV EAX, ECX
 
 ----
 
-�@��̗�ł�d�̃r�b�g��ω������邱�ƂŖ��߂̌�ɂ���REG1��REG2�̏����t��
-�Ȃ邱�Ƃ����������Ǝv���܂��B����w�r�b�g�̕ω��̗�����Ă݂܂��B
+　上の例ではdのビットを変化させることで命令の後にくるREG1とREG2の順が逆に
+なることが分かったと思います。次にwビットの変化の例を見てみます。
 
----- w�̃r�b�g��0�̂Ƃ�
+---- wのビットが0のとき
 
 +--------+---+---++-----+------+------+
 | instr  | d | w || Mod | REG1 | REG2 |
 +--------+---+---++-----+------+------+
 | 100010 | 0 | 0 ||  11 |  000 |  001 |
 +--------+---+---++-----+------+------+
- instr : 100010 = MOV����
-     d : 0 -> ���W�X�^�̏��Ԃ�REG2 REG1
-     w : 0 -> �i32�r�b�g���Łj8�r�b�g���[�h���g�p
-   Mod : �i���͖����j
-  REG1 : 000 -> EAX, AX, AL�̂ǂꂩ
-  REG2 : 001 -> ECX, CX, CL�̂ǂꂩ
+ instr : 100010 = MOV命令
+     d : 0 -> レジスタの順番がREG2 REG1
+     w : 0 -> （32ビット環境で）8ビットモードを使用
+   Mod : （今は無視）
+  REG1 : 000 -> EAX, AX, ALのどれか
+  REG2 : 001 -> ECX, CX, CLのどれか
 -> MOV CL, AL
 
 ----
 
-�@d�̓������l������΁A�������߂ł�2�̕\����������̂����邱�Ƃ��킩
-��܂��B
+　dの特徴を考慮すれば、同じ命令でも2つの表現が作れるものがあることがわか
+ります。
 
 MOV EDI, EAX -> 8B F8 -> 100010 1 1  11 111 000
 MOV EDI, EAX -> 89 C7 -> 100010 0 1  11 000 111
 
-�@���ɂ��̌^�Ŏg�p�����1�o�C�g�I�y�R�[�h�̃��X�g�������܂��B
+　次にこの型で使用される1バイトオペコードのリストを示します。
 
 OR  REG, REG --> 000010dw
 AND REG, REG --> 001000dw
@@ -329,73 +329,73 @@ CMP REG, REG --> 001110dw
 ADD REG, REG --> 100000dw
 MOV REG, REG --> 100010dw
 
-��2�o�C�g�I�y�R�[�h
+●2バイトオペコード
 
-�@��{�I�Ȃ��Ƃ͓����ł��B�C���e���̃}�j���A���Q�ƁB
+　基本的なことは同じです。インテルのマニュアル参照。
 
 
-��0x04.) ModR/M
+■0x04.) ModR/M
 
-�@ModR/M�ɂ�薽�߂��ǂ̂悤�Ȍ^�̃I�y�����h���g�p���邩���w�肵�܂��B
-�@ModR/M�͈ȉ��̂悤�ȍ\���ɂȂ��Ă��܂��B
+　ModR/Mにより命令がどのような型のオペランドを使用するかを指定します。
+　ModR/Mは以下のような構造になっています。
 
   7   6 5          3 2   0
  +-----+------------+-----+
  | Mod | Reg/Opcode | R/M |
  +-----+------------+-----+
 
-��Mod
+●Mod
 
-00 : �������A�h���X
-     ��) EAX, [EAX]
-01 : 1�o�C�g�̃f�B�X�v���C�X�����g�𔺂����������A�h���X
-     ��j[EAX+11]
-10 : 1�_�u�����[�h�̃f�B�X�v���C�X�����g�𔺂����������A�h���X
-     ��j[EAX+11111111]
-11 : �����̃I�y�����h�����W�X�^
+00 : メモリアドレス
+     例) EAX, [EAX]
+01 : 1バイトのディスプレイスメントを伴ったメモリアドレス
+     例）[EAX+11]
+10 : 1ダブルワードのディスプレイスメントを伴ったメモリアドレス
+     例）[EAX+11111111]
+11 : 両方のオペランドがレジスタ
 
-��Reg/Opcode
+●Reg/Opcode
 
-�@�I�y�R�[�h�ɂ�1�̃I�y�����h��K�v�Ƃ�����̂�2�̃I�y�����h��K�v��
-������̂�����܂��B1�̃I�y�����h�̖��߂ł�Reg/Opcode��3�r�b�g�̓R�[�h
-�g���Ƃ��Ă̖����������A2�̃I�y�����h�̖��߂ł̓��W�X�^��\�����̂ƂȂ�
-�܂��B
+　オペコードには1つのオペランドを必要とするものと2つのオペランドを必要と
+するものがあります。1つのオペランドの命令ではReg/Opcodeの3ビットはコード
+拡張としての役割をもち、2つのオペランドの命令ではレジスタを表すものとなり
+ます。
 
-�@�R�[�h�g���̗�������܂��B���̗�����Ă��������B
+　コード拡張の例を示します。次の例を見てください。
 
 NOT EAX  --> F7 D0 --> 11110111 11 010 000
 MUL EAX  --> F7 E0 --> 11110111 11 100 000
 DIV EAX  --> F7 F0 --> 11110111 11 110 000
 
-�@Reg/Opcode�̂Ƃ��낪�قȂ邾����3�̈قȂ閽�߂�\���Ă��܂��BReg/Opc
-ode�̕��������߂����肵�Ă��镔���ƂȂ��Ă���킯�ł��B
+　Reg/Opcodeのところが異なるだけで3つの異なる命令を表しています。Reg/Opc
+odeの部分が命令を決定している部分となっているわけです。
 
-�@���Ƀ��W�X�^��\���Ă����������܂��B
+　次にレジスタを表している例を示します。
 
 CMP EDX, EAX --> 39 D0
 
 D0 --> 11 010 000
 [
- Mod        :  11 --> ���I�y�����h�����W�X�^
+ Mod        :  11 --> 両オペランドがレジスタ
  Reg/Opcode : 010 --> EDX
  R/M        : 000 --> EAX
 ]
 
-��R/M
+●R/M
 
-�@������Mod�̕����ɂ���ĈӖ����ς���Ă��܂��B
+　ここはModの部分によって意味が変わってきます。
 
-Mod 00, R/M 101 : ���W�X�^�͎g�p����Ȃ��B�����ModR/M�̌�̂�DWORD�l�����܂��B
-                  ��j XOR EAX, [12345678h] -> 3305 78563412
-Mod 00, R/M 100 : SIB��ModR/M�̒���ɒu����邱�Ƃ��Ӗ����Ă��܂��B
-Mod 01, R/M 100 : SIB��ModR/M�̒���ɒu����邱�Ƃ��Ӗ����Ă��܂��B
-Mod 10, R/M 100 : SIB��ModR/M�̒���ɒu����邱�Ƃ��Ӗ����Ă��܂��B
-Mod 11          : ���W�X�^��\�����Ƃ��Ӗ����Ă��܂��B
+Mod 00, R/M 101 : レジスタは使用されない。代わりにModR/Mの後のにDWORD値がきます。
+                  例） XOR EAX, [12345678h] -> 3305 78563412
+Mod 00, R/M 100 : SIBがModR/Mの直後に置かれることを意味しています。
+Mod 01, R/M 100 : SIBがModR/Mの直後に置かれることを意味しています。
+Mod 10, R/M 100 : SIBがModR/Mの直後に置かれることを意味しています。
+Mod 11          : レジスタを表すことを意味しています。
 
 
-��0x05.) SIB
+■0x05.) SIB
 
-�@SIB��Scale, Index, Base�̗��ł��BSIB�̍\�������Ɏ����܂��B
+　SIBはScale, Index, Baseの略です。SIBの構造を次に示します。
 
  7     6 5     3 2    0
 +-------+-------+------+
@@ -403,23 +403,23 @@ Mod 11          : ���W�X�^��\�����Ƃ��Ӗ����Ă��܂��B
 +-------+-------+------+
   Scale * Index + Base
 
-��Scale
+●Scale
 
 00 : 2^0 = 1
 01 : 2^1 = 2
 10 : 2^2 = 4
 11 : 2^3 = 8
 
-��Index
+●Index
 
-Scale�ŏ�Z���郌�W�X�^���w�肵�܂��B
+Scaleで乗算するレジスタを指定します。
 
-��Base
+●Base
 
-�x�[�X���W�X�^���w�肵�܂��B
+ベースレジスタを指定します。
 
 
----- ��F----
+---- 例：----
 +-------+-------+------+-------------+
 | Scale | Index | Base |             |
 +-------+-------+------+-------------+
@@ -434,37 +434,37 @@ Scale�ŏ�Z���郌�W�X�^���w�肵�܂��B
 ----
 
 
-��0x06.) Displacement
+■0x06.) Displacement
 
-�@ModR/M��Mod��01�܂���10�̂Ƃ��f�B�X�v���C�X�����g�𔺂����A�h���X�w���
-�Ȃ�܂��B
+　ModR/MでModが01または10のときディスプレイスメントを伴ったアドレス指定に
+なります。
 
-Mod 01 : 1�o�C�g�̃f�B�X�v���C�X�����g
-Mod 10 : 1�_�u�����[�h�̃f�B�X�v���C�X�����g
+Mod 01 : 1バイトのディスプレイスメント
+Mod 10 : 1ダブルワードのディスプレイスメント
 
----- �� ----
+---- 例 ----
 8B BD 78563412 --> MOV EDI, [EBP+12345678h]
 
        instr : 100010 --> MOV r32, r/m32
-           d : 1 --> REG1 REG2 �̏�
-           w : 1 --> 32�r�b�g���[�h
-         Mod : 10 --> 1�_�u�����[�h�̃f�B�X�v���C�X�����g�𔺂��������A�h���X
+           d : 1 --> REG1 REG2 の順
+           w : 1 --> 32ビットモード
+         Mod : 10 --> 1ダブルワードのディスプレイスメントを伴うメモリアドレス
   Reg/Opcode : 111 --> EDI
          R/M : 101 --> EBP
 displacement : 12345678h *
 -----
 
-��0x07.) Immediate
+■0x07.) Immediate
 
-�@���l��\���̈�ł��B
-�@�Ⴆ�΁u05h�v���uADD EAX,imm32�v��\���̂ŁA�u05 78 56 34 12�v�ŁuADD 
-EAX,12345678h�v�ƂȂ�܂��B
+　即値を表す領域です。
+　例えば「05h」が「ADD EAX,imm32」を表すので、「05 78 56 34 12」で「ADD 
+EAX,12345678h」となります。
 
-��0x08.) ���Ƃ���
+■0x08.) あとがき
 
-�@�����Intel�̊�{�I�Ȗ��߂̃t�H�[�}�b�g�������ł����Ǝv���܂��B�ׂ�����
-�߂̏ڍׂɂ��Ă�Intel�̖��߃��t�@�����X�ɂ��ׂčڂ��Ă���̂ł�����Q�l
-�ɂ���΂����ł��傤�B
-�@����Ńf�B�X�A�Z���u��������ˁI
+　これでIntelの基本的な命令のフォーマットが理解できたと思います。細かい命
+令の詳細についてはIntelの命令レファレンスにすべて載っているのでそれを参考
+にすればいいでしょう。
+　これでディスアセンブラを作れるね！
 
 

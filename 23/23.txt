@@ -8,92 +8,92 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-  ---- ��0�́F�ڎ� ---
+  ---- 第0章：目次 ---
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-����1�́FAntiCracking Techniques �` Obfuscating API Call         Suma ��
+○第1章：AntiCracking Techniques 〜 Obfuscating API Call         Suma 著
 
-����2�́FSQL�C���W�F�N�V�����ɑ΂���C���`�L�h��                 ���� ��
+○第2章：SQLインジェクションに対するインチキ防御                 金床 著
 
-����3�́FOllydbg���͂��߂悤                                   marodc ��
+○第3章：Ollydbgをはじめよう                                   marodc 著
 
-����4�́FC# Programming 0x1                                      Will ��
+○第4章：C# Programming 0x1                                      Will 著
 
-����5�́F�}���m�� vol.1                          Taka John Brunkhorst ��
+○第5章：マメ知識 vol.1                          Taka John Brunkhorst 著
 
-����6�́F�n�j�[�|�b�g����낤�i�A�ڑ�7��j                   Narusase ��
+○第6章：ハニーポットを作ろう（連載第7回）                   Narusase 著
 
-����7�́F�p�P�b�g�t�B���^�����O�@�`�f�o�C�X�h���C�o�с`    Kenji Aiko ��
+○第7章：パケットフィルタリング　〜デバイスドライバ篇〜    Kenji Aiko 著
 
-����8�́F�s�b�L���O�̎G�w ����1                              IPUSIRON ��
+○第8章：ピッキングの雑学 その1                              IPUSIRON 著
 
-����9�́F���m�点
+○第9章：お知らせ
 
-����10�́F���҃v���t�B�[��
+○第10章：著者プロフィール
 
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- ��1��: AntiCracking Techniques �` Obfuscating API Call �` ---
+--- 第1章: AntiCracking Techniques 〜 Obfuscating API Call 〜 ---
 
-���ҁFsuma
+著者：suma
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@AntiCracking�Ƃ̓v���O�����̃��o�[�X�G���W�j�A�����O��h���Z�p�ł��B�A
-�Z���u���R�[�h���R���s���[�^��Ŏ��s�����ȏ�A���o�[�X�G���W�j�A�����O
-���̂��̂�h�����Ƃ͂ł��܂���B���̂��߁u�h���v�ł͂Ȃ��u���o�[�X�G���W
-�j�A�����O�̎ז�������v���d�_�ɂ����܂��B�܂��AAntiCracking�ɂ�������
-���\�Ȍ���ŏ����ɂƂǂ߂邱�Ƃ��l���Ă݂܂��B
+　AntiCrackingとはプログラムのリバースエンジニアリングを防ぐ技術です。ア
+センブリコードがコンピュータ上で実行される以上、リバースエンジニアリング
+そのものを防ぐことはできません。そのため「防ぐ」ではなく「リバースエンジ
+ニアリングの邪魔をする」を重点におきます。また、AntiCrackingにかかる手間
+を可能な限り最小限にとどめることも考えてみます。
 
-�@�R���p�C����Visual Studio .NET 2003���g�p���A����ɂ�C++���g�p���܂��B
-��{�I�ȋU���̎d�g�݂�C��C++�œ��ɈႢ���Ȃ��̂ŁAC++���킩��Ȃ��Ă�����
-�ł���Ǝv���܂��B�R���p�C����Borland C/C++ Compiler�i�Ȍ�BCC�ƌĂт܂��j
-���g�p���Ă��\���܂���B
+　コンパイラはVisual Studio .NET 2003を使用し、言語にはC++を使用します。
+基本的な偽装の仕組みはCとC++で特に違いがないので、C++がわからなくても理解
+できると思います。コンパイラはBorland C/C++ Compiler（以後BCCと呼びます）
+を使用しても構いません。
 
 
-��0x02.) Win32API�Ăяo���̋U��
+■0x02.) Win32API呼び出しの偽装
 
-�@Win32API��DLL�iDynamic Link Library�j�ɂ���Ē񋟂���Ă��܂��BWin32AP
-I��Windows�v���O����������Ŕ��ɏd�v�ł��B�����ŁA���o�[�X�G���W�j�A
-�����O�̃q���g�ƂȂ�Win32API�̌Ăяo�����U��������@�ɂ��Đ������܂��B
+　Win32APIはDLL（Dynamic Link Library）によって提供されています。Win32AP
+IはWindowsプログラムを作る上で非常に重要です。そこで、リバースエンジニア
+リングのヒントとなるWin32APIの呼び出しを偽装する方法について説明します。
 
-��OllyDbg�ŌĂяo���𒲂ׂ�
+●OllyDbgで呼び出しを調べる
 
-�@OllyDbg���g����Win32API�̌Ăяo���𒲂ׂ܂��B�U�����ĂȂ��v���O�����ƋU
-�������v���O�����̈Ⴂ�����Ă݂܂��傤�B
-�@�\�[�X�R�[�h�A�v���W�F�N�g�t�@�C���A���s�t�@�C�����܂Ƃ߂��A�[�J�C�u��
-�p�ӂ��Ă��܂��B�܂Ƃ߂ă_�E�����[�h����������������ǂ����B
+　OllyDbgを使ってWin32APIの呼び出しを調べます。偽装してないプログラムと偽
+装したプログラムの違いを見てみましょう。
+　ソースコード、プロジェクトファイル、実行ファイルをまとめたアーカイブを
+用意しています。まとめてダウンロードしたい方こちらをどうぞ。
 
 http://wizardbible.org/file/suma/1/obf_all.zip
 
 
-�����ʂ�MessageBox���Ăяo���v���O����
+●普通にMessageBoxを呼び出すプログラム
 
-�@���ʂ�MessageBox���Ăяo���v���O�����͎���URL����_�E�����[�h�ł��܂��B
+　普通にMessageBoxを呼び出すプログラムは次のURLからダウンロードできます。
 
-http://wizardbible.org/file/suma/1/msgbox.cpp�i�\�[�X�R�[�h�j
-http://wizardbible.org/file/suma/1/msgbox.vcproj�i�v���W�F�N�g�t�@�C���j
-http://wizardbible.org/file/suma/1/msgbox.exe�i���s�t�@�C���j
+http://wizardbible.org/file/suma/1/msgbox.cpp（ソースコード）
+http://wizardbible.org/file/suma/1/msgbox.vcproj（プロジェクトファイル）
+http://wizardbible.org/file/suma/1/msgbox.exe（実行ファイル）
 
 -----
 const char *title = "title", *msg = "message";
 MessageBox(NULL, msg, title, MB_OK);
 -----
 
-�@OllyDbg�ł́A�v���O�������J���Ă���Ctrl+N�������A�����̒m�肽���֐���I
-������Enter�������ƁA�֐����Ăяo���Ă���i�Q�Ƃ��Ă���j�A�h���X��m�邱
-�Ƃ��ł��܂��B�쐬�������s�t�@�C����OllyDbg�Ō��Ă݂܂��傤�B�s���菇�́u
-Ctrl+N��MessageBoxA��I������Enter���A�h���X0040100E�ŎQ�Ƃ���Ă��镔��
-��I������Enter�v�ƂȂ�܂��B
+　OllyDbgでは、プログラムを開いてからCtrl+Nを押し、自分の知りたい関数を選
+択してEnterを押すと、関数を呼び出している（参照している）アドレスを知るこ
+とができます。作成した実行ファイルをOllyDbgで見てみましょう。行う手順は「
+Ctrl+N→MessageBoxAを選択してEnter→アドレス0040100Eで参照されている部分
+を選択してEnter」となります。
 
 -----
 00401000  /$ 6A 00          PUSH 0                                   ; /Style = MB_OK|MB_APPLMODAL
@@ -103,25 +103,25 @@ Ctrl+N��MessageBoxA��I������Enter���A�h���X0040100E�ŎQ�Ƃ���Ă��镔��
 0040100E  |. FF15 C4504000  CALL DWORD PTR DS:[<&USER32.MessageBoxA>>; \MessageBoxA
 -----
 
-�@OllyDbg���g���ƊȒP��MessageBox���Ăяo���������邱�Ƃ��ł��܂����B�R
-�[�h������ƁAMessageBoxA���Ăяo���������܂ŕ\������Ă��܂��B
+　OllyDbgを使うと簡単にMessageBoxが呼び出しを見つけることができました。コ
+ードを見ると、MessageBoxAを呼び出した引数まで表示されています。
 
-�@��������������܂��񂪔O�̂��ߐ������܂��BMessageBox���Ăяo���Ă����
-���Ȃ̂ɁAOllyDbg�ł�MessageBoxA���\������Ă��܂��BWin32API�̒���UNICOD
-E�ɑΉ����Ă���֐�������܂��BANSI�ł�UNICODE�ł�����APlatformSDK�̃w�b
-�_�t�@�C�����Ő錾����Ă��܂��BMessageBox�̏ꍇMessageBoxA��MessageBoxW
-������܂��BA��ANSI�AW��Wide�̗��ł��B
+　ご存じかもしれませんが念のため説明します。MessageBoxを呼び出しているは
+ずなのに、OllyDbgではMessageBoxAが表示されています。Win32APIの中にUNICOD
+Eに対応している関数があります。ANSI版とUNICODE版があり、PlatformSDKのヘッ
+ダファイル内で宣言されています。MessageBoxの場合MessageBoxAとMessageBoxW
+があります。AはANSI、WはWideの略です。
 
 
-���萔�̃X�N�����u��1
+●定数のスクランブル1
 
-�@�萔�̃X�N�����u��1�̃v���O�����͎���URL����_�E�����[�h�ł��܂��B
+　定数のスクランブル1のプログラムは次のURLからダウンロードできます。
 
-http://wizardbible.org/file/suma/1/obf1.cpp�i�\�[�X�R�[�h�j
-http://wizardbible.org/file/suma/1/obf1.vcproj�i�v���W�F�N�g�t�@�C���j
-http://wizardbible.org/file/suma/1/obf1.exe�i���s�t�@�C���j
+http://wizardbible.org/file/suma/1/obf1.cpp（ソースコード）
+http://wizardbible.org/file/suma/1/obf1.vcproj（プロジェクトファイル）
+http://wizardbible.org/file/suma/1/obf1.exe（実行ファイル）
 
-�@���x�͋U��������ԂŌĂяo���Ă݂܂��B�\�[�X�R�[�h�����Ă��������B
+　今度は偽装した状態で呼び出してみます。ソースコードを見てください。
 
 -----
 const DWORD_PTR msgbox = ((DWORD_PTR)MessageBox + 0x7F12AE11);
@@ -135,31 +135,31 @@ int main()
 }
 -----
 
-�@DWORD_PTR�^��msgbox�Ƃ����萔��錾���Ă��܂��B���̐錾�ɂ����Message
-Box�̃A�h���X��0x7F12AE11�𑫂����l��msgbox�ɓ��邱�ƂɂȂ�܂��Bmain����
-��msgbox�̒l����0x7F12AE11���������ƂŁAMessageBox�̃A�h���X�𕜌����A��
-�яo���Ă��܂��B0x7F12AE11�̑���ɕʂ̒l�𑫂���������Ă��\���܂���B
-�����E�������t�ɂ�����AXOR�Ȃǂ̕ʂ̉��Z���g�����Ƃ��ł��܂��B
+　DWORD_PTR型のmsgboxという定数を宣言しています。この宣言によってMessage
+Boxのアドレスに0x7F12AE11を足した値がmsgboxに入ることになります。main内で
+はmsgboxの値から0x7F12AE11を引くことで、MessageBoxのアドレスを復元し、呼
+び出しています。0x7F12AE11の代わりに別の値を足したり引いても構いません。
+足す・引くを逆にしたり、XORなどの別の演算を使うこともできます。
 
-�@������msgbox�̐錾��main�֐����ɂȂ����ƁAconst�C���q�����Ă��邱�Ƃ�
-�Y��Ă͂����܂���B�Ⴆ��VC++�̏ꍇ�Amain���ɐ錾������Aconst��t���Y��
-��ƃR���p�C���̍œK���ŕ��ʂ�MessageBox�̌Ăяo�����ꍇ�Ƃ����Ȃ��R�[
-�h����������邱�ƂɂȂ�܂��BBCC�ł͊m�F���Ă��܂��񂪁A�R���p�C���E�œK
-���I�v�V�����̈Ⴂ�ɂ���ĈӐ}���Ȃ��R�[�h�����������\��������܂��B
-���̂��߃R���p�C������������R�[�h��c�����Ă����K�v������܂��B
+　ここでmsgboxの宣言がmain関数内にないこと、const修飾子がついていることを
+忘れてはいけません。例えばVC++の場合、main内に宣言したり、constを付け忘れ
+るとコンパイラの最適化で普通にMessageBoxの呼び出した場合とかわらないコー
+ドが生成されることになります。BCCでは確認していませんが、コンパイラ・最適
+化オプションの違いによって意図しないコードが生成される可能性があります。
+そのためコンパイラが生成するコードを把握しておく必要があります。
 
-�@�R���p�C�������������R�[�h�𒲂ׂ�ɂ́A�쐬�������s�t�@�C����OllyDbg��
-�J���Ă��璲�ׂ���@������܂����ʂ̕��@������܂��B�R���p�C���̒��ɂ́A
-�A�Z���u������̃\�[�X�R�[�h�𐶐����T�|�[�g���Ă�����̂�����܂��BVisu
-al Studo .NET�̏ꍇ�́u�v���W�F�N�g�I�v�V������\����C/C++���o�̓t�@�C��
-���A�Z���u���̏o�́v����I���ł��܂��B�\�[�X�R�[�h�ƃA�Z���u���R�[�h�̗�
-���Ɣ�ׂČ��邱�Ƃ��ł���u�A�Z���u�� �R�[�h�ƃ\�[�X �R�[�h (/Fas)�v����
-�����߂ł��B
+　コンパイラが生成したコードを調べるには、作成した実行ファイルをOllyDbgで
+開いてから調べる方法もありますが別の方法もあります。コンパイラの中には、
+アセンブリ言語のソースコードを生成をサポートしているものがあります。Visu
+al Studo .NETの場合は「プロジェクトオプションを表示→C/C++→出力ファイル
+→アセンブリの出力」から選択できます。ソースコードとアセンブリコードの両
+方と比べて見ることができる「アセンブリ コードとソース コード (/Fas)」がお
+すすめです。
 
-�@��قǂƓ����悤��OllyDbg�Œ��ׂĂ݂܂��B�������A�uCtrl+N��MessageBoxA
-��I������Enter�c�v�Ƃ����������ǂ��Ă�MessageBoxA�̌Ăяo���𔭌��ł���
-����B�Ăяo�����U������Ă��邱�Ƃ��킩��܂��B�Ƃ肠�����AHome�L�[����
-�����A�A�h���X00401000�ɃW�����v���Ă��������B
+　先ほどと同じようにOllyDbgで調べてみます。しかし、「Ctrl+N→MessageBoxA
+を選択してEnter…」という順をたどってもMessageBoxAの呼び出しを発見できま
+せん。呼び出しが偽装されていることがわかります。とりあえず、Homeキーを押
+すか、アドレス00401000にジャンプしてください。
 
 ------
 00401000  /$ A1 C0724000    MOV EAX,DWORD PTR DS:[4072C0]
@@ -171,43 +171,43 @@ al Studo .NET�̏ꍇ�́u�v���W�F�N�g�I�v�V������\����C/C++���o�̓t�@�C��
 00401018  |. FFD0           CALL EAX
 ------
 
-�@���ʂ�MessageBox���Ăяo�����ꍇ�ƍ\�������Ă��܂��B����Ă���̂�MOV��
-�߁AADD���߁AXOR���߂ł��B�g���Ă���l��MessageBoxA�̃A�h���X���Ȃ����߁A
-OllyDbg��MessageBoxA���Ăяo����Ă��邱�Ƃ����o�ł��Ă��܂���B
+　普通にMessageBoxを呼び出した場合と構成が似ています。違っているのはMOV命
+令、ADD命令、XOR命令です。使われている値にMessageBoxAのアドレスがないため、
+OllyDbgはMessageBoxAが呼び出されていることを検出できていません。
 
-�@���łɓ�����m���߂Ă݂܂��B�A�h���X00401000��F2�L�[�������ău���[�N
-�|�C���g���������AF9�L�[�������Ď��s���Ă݂܂��傤�B�A�h���X00401000�ł�
-������~�܂�̂�F8�L�[��������1���߂����s���܂��B�A�h���X00401013��ADD
-���߂����s��Ƀ��W�X�^EAX�ɉ��������Ă���̂��m�F���Ă��������B�uEAX 77D
-304EA USER32.MessageBoxA�v�̂悤�ɕ\������Ă���Ǝv���܂��BEAX�ɂ�Messa
-geBoxA�̃A�h���X�������Ă��܂��B������xF8�L�[�������Ǝ��̂悤�ɕ\������
-�܂��B
+　ついでに動作を確かめてみます。アドレス00401000でF2キーを押してブレーク
+ポイントをしかけ、F9キーを押して実行してみましょう。アドレス00401000でい
+ったん止まるのでF8キーを押して1命令ずつ実行します。アドレス00401013のADD
+命令を実行後にレジスタEAXに何が入っているのか確認してください。「EAX 77D
+304EA USER32.MessageBoxA」のように表示されていると思います。EAXにはMessa
+geBoxAのアドレスが入っています。もう一度F8キーを押すと次のように表示され
+ます。
 
 -----
 00401018  |. FFD0           CALL EAX                                 ;  USER32.MessageBoxA
 -----
 
-�@�����F8�L�[��������MessageBoxA���Ăяo����܂��BOllyDbg�ł̓��W�X�^��
-Win32API�A�h���X�������Ă���ƌ��o�ł��邱�Ƃ��킩��܂����B
+　さらにF8キーを押すとMessageBoxAが呼び出されます。OllyDbgではレジスタに
+Win32APIアドレスが入っていると検出できることがわかりました。
 
 
-���萔�̃X�N�����u��2
+●定数のスクランブル2
 
-�@�萔�̃X�N�����u��2�̃v���O�����͎���URL����_�E�����[�h�ł��܂��B
+　定数のスクランブル2のプログラムは次のURLからダウンロードできます。
 
-http://wizardbible.org/file/suma/1/obf2.cpp�i�\�[�X�R�[�h�j
-http://wizardbible.org/file/suma/1/obf2.vcproj�i�v���W�F�N�g�t�@�C���j
-http://wizardbible.org/file/suma/1/obf2.exe�i���s�t�@�C���j
+http://wizardbible.org/file/suma/1/obf2.cpp（ソースコード）
+http://wizardbible.org/file/suma/1/obf2.vcproj（プロジェクトファイル）
+http://wizardbible.org/file/suma/1/obf2.exe（実行ファイル）
 
-�@�����͗����悤�Ɍ��č\���܂���B�C�����C���A�Z���u�����g�p������@�ł��B
-�C�����C���A�Z���u���ŋL�q�����R�[�h��VC++�ł͍œK������܂���B���̂��߁A
-��قǔ�ׂď���������R�[�h����������܂��B
+　ここは流すように見て構いません。インラインアセンブラを使用する方法です。
+インラインアセンブラで記述したコードはVC++では最適化されません。そのため、
+先ほど比べて少し違ったコードが生成されます。
 
-�@BCC���g���ăR���p�C������ꍇ�ATurbo Assembler���C���X�g�[������Ă���
-�K�v������܂��BTurbo Assembler��Borland C/C++ Compiler 5.5�ɂ͓��������
-���炸�AC++ Builder�܂���C++ BuilderX�Ȃǂɕt�����Ă��܂��BC++ BuilderX 
-Personal�ł͖����Ŏg�����ATurbo Assemlber���t�����Ă���̂ł�������g��
-�������܂��B
+　BCCを使ってコンパイルする場合、Turbo Assemblerがインストールされている
+必要があります。Turbo AssemblerはBorland C/C++ Compiler 5.5には同梱されて
+おらず、C++ BuilderまたはC++ BuilderXなどに付属しています。C++ BuilderX 
+Personal版は無料で使える上、Turbo Assemlberも付属しているのでそちらを使う
+手もあります。
 
 -----
 const char *title = "title", *msg = "message";
@@ -238,16 +238,16 @@ _asm {
 -----
 
 
-��LoadLibrary�̎g�p
+●LoadLibraryの使用
 
-�@LoadLibrary���g�p�����v���O�����͎���URL����_�E�����[�h�ł��܂��B
+　LoadLibraryを使用したプログラムは次のURLからダウンロードできます。
 
-http://wizardbible.org/file/suma/1/obf3.cpp�i�\�[�X�R�[�h�j
-http://wizardbible.org/file/suma/1/obf3.vcproj�i�v���W�F�N�g�t�@�C���j
-http://wizardbible.org/file/suma/1/obf3.exe�i���s�t�@�C���j
+http://wizardbible.org/file/suma/1/obf3.cpp（ソースコード）
+http://wizardbible.org/file/suma/1/obf3.vcproj（プロジェクトファイル）
+http://wizardbible.org/file/suma/1/obf3.exe（実行ファイル）
 
-�@LoadLibrary��GetProcAddress���g���ČĂяo���܂��BLoadLibrary��user32.d
-ll�����[�h���A GetProcAddress��MessageBoxA�̃A�h���X���擾���Ă��܂��B
+　LoadLibraryとGetProcAddressを使って呼び出します。LoadLibraryでuser32.d
+llをロードし、 GetProcAddressでMessageBoxAのアドレスを取得しています。
 
 -----
 HINSTANCE hUser = LoadLibrary("user32.dll");
@@ -261,7 +261,7 @@ if (!msgbox) {
 }
 ------
 
-�@OllyDbg�Ō���Ǝ��̂悤�ɂȂ�܂��B
+　OllyDbgで見ると次のようになります。
 
 ------
 00401000  /$ 68 E4504000    PUSH obf2.004050E4                       ; /FileName = "user32.dll"
@@ -276,7 +276,7 @@ if (!msgbox) {
 0040101F  |> 83C8 FF        OR EAX,FFFFFFFF
 ------
 
-�@������MessageBoxA���Ăяo�������ł��B
+　続いてMessageBoxAを呼び出す部分です。
 
 ------
 const char *title = "title", *msg = "message";
@@ -291,50 +291,50 @@ msgbox(NULL, msg, title, MB_OK);
 00401031  |. FFD0           CALL EAX
 -----
 
-�@���̒i�K�ł́ALoadLibrary�œ��I�Ƀ��[�h�������߁AMessageBoxA�̌Ăяo��
-��OllyDbg�Ɍ��o����Ă��܂���B�����ł�������m���߂Ă݂܂��B�A�h���X004
-01031�Ńu���[�N�|�C���g���������Ē�~������ƁAEAX��MessageBoxA�̃A�h���X
-�������Ă��邱�Ƃ��킩��܂��BLoadLibrary��GetProcAddress���g�����ꍇ�ł��A
-OllyDbg��Win32API�̃A�h���X�����o�ł��邱�Ƃ��킩��܂����B
+　この段階では、LoadLibraryで動的にロードしたため、MessageBoxAの呼び出し
+はOllyDbgに検出されていません。ここでも動作を確かめてみます。アドレス004
+01031でブレークポイントをしかけて停止させると、EAXにMessageBoxAのアドレス
+が入っていることがわかります。LoadLibraryとGetProcAddressを使った場合でも、
+OllyDbgはWin32APIのアドレスを検出できることがわかりました。
 
 
-��0x03.) ��Ԃ����炷
+■0x03.) 手間を減らす
 
-�@�U���̎d�g�݂ɂ��ė������Ē������ł��傤���BWin32API�̃A�h���X���o��
-���Ȃ����Ƃ��̂ƂȂ�܂��B�����ŏI��肽���Ƃ���ł����A�ŏ��ɁuAntiCrac
-king�ɂ������Ԃ��\�Ȍ���ŏ����ɂƂǂ߂邱�Ƃ��l���Ă݂܂��v�Ə�����
-�悤�ɁA��Ԃ����炷���Ƃ��l���Ă݂܂��B
+　偽装の仕組みについて理解して頂けたでしょうか。Win32APIのアドレスを出さ
+せないことが肝となります。ここで終わりたいところですが、最初に「AntiCrac
+kingにかかる手間を可能な限り最小限にとどめることも考えてみます」と書いた
+ように、手間を減らすことも考えてみます。
 
-���\�[�X�R�[�h�̉ǐ�
+●ソースコードの可読性
 
-�@MessageBox���Ăяo�����\�[�X�R�[�h���r���܂��Bmsgbox.cpp�̏ꍇ�A����
-���₷�����Ȃ��A���Â炭������܂���B�������Aobf1.cpp�`obf3.cpp�̃\�[�X
-�R�[�h�͂ǂ��ł��傤���B��s�ōςޏ������킴�킴�����s�ɓW�J���邱�ƂŃ\
-�[�X�R�[�h�����Â炭�Ȃ��Ă��܂��B���ۂɃv���O���������ꍇ�͑�����Win3
-2API���Ăяo�����߁A�ǐ��ɑ傫�ȉe����^����ƍl�����܂��B
+　MessageBoxを呼び出したソースコードを比較します。msgbox.cppの場合、特に
+見やすくもなく、見づらくもありません。しかし、obf1.cpp〜obf3.cppのソース
+コードはどうでしょうか。一行で済む処理をわざわざ複数行に展開することでソ
+ースコードが見づらくなっています。実際にプログラムを作る場合は多くのWin3
+2APIを呼び出すため、可読性に大きな影響を与えると考えられます。
 
-���U��������
+●偽装する手間
 
-�@�������\�[�X�R�[�h�Ɏ�������邱�ƁA�R�[�f�B���O���ɋU�����Ă������ƁA
-�����Ƃ��ЂƂЂƂ̌Ăяo�������ƂŕύX���邱�ƂɂȂ�܂��B�P���ȍ�
-�Ƃ̌J��Ԃ����R�[�f�B���O�̈�Ɏ������킯�ɂ͂����܂���B
+　完成たソースコードに手を加えること、コーディング時に偽装していくこと、
+両方ともひとつひとつの呼び出しを手作業で変更することになります。単調な作
+業の繰り返しをコーディングの一環に取り入れるわけにはいきません。
 
 
-��0x04.) ��Ԃ����炷���߂�
+■0x04.) 手間を減らすために
 
-�@�P���ȍ�Ƃ̌J��Ԃ��ƁA�\�[�X�R�[�h�̉ǐ��ɂ��Ď��グ�܂����B�P
-���ȍ�Ƃ���������̂ɖ𗧂c�[���Ƃ͉��ł��傤���BC/C++�̃v���v���Z�b�T
-�ł��B�}�N����錾���邱�ƂŁA�v���v���Z�b�T�������I�ɓW�J���܂��B���ۂ�
-�g�����v���O����������Ă݂܂��B
+　単調な作業の繰り返しと、ソースコードの可読性について取り上げました。単
+調な作業を解決するのに役立つツールとは何でしょうか。C/C++のプリプロセッサ
+です。マクロを宣言することで、プリプロセッサが自動的に展開します。実際に
+使ったプログラムを作ってみます。
 
-http://wizardbible.org/file/suma/1/obf4.cpp�i�\�[�X�R�[�h�j
-http://wizardbible.org/file/suma/1/obf4.h�i�w�b�_�t�@�C���j
-http://wizardbible.org/file/suma/1/obf4.vcproj�i�v���W�F�N�g�t�@�C���j
-http://wizardbible.org/file/suma/1/obf4.exe�i���s�t�@�C���j
+http://wizardbible.org/file/suma/1/obf4.cpp（ソースコード）
+http://wizardbible.org/file/suma/1/obf4.h（ヘッダファイル）
+http://wizardbible.org/file/suma/1/obf4.vcproj（プロジェクトファイル）
+http://wizardbible.org/file/suma/1/obf4.exe（実行ファイル）
 
-�@�\�[�X�R�[�h��msgbox.cpp�Ɣ�ׂāAobf4.h���C���N���[�h���Ă��邾���ł��B
+　ソースコードはmsgbox.cppと比べて、obf4.hをインクルードしているだけです。
 
------�@obf4.cpp
+-----　obf4.cpp
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include "obf4.h"
@@ -347,10 +347,10 @@ int main()
 }
 -----
 
-�@�����ăw�b�_�t�@�C���ł��Bobf1.cpp�ł̐錾�������w�b�_�t�@�C���Ɉڂ��A
-MessageBox���}�N���ōĐ錾���Ă��܂��B
+　続いてヘッダファイルです。obf1.cppでの宣言部分をヘッダファイルに移し、
+MessageBoxをマクロで再宣言しています。
 
------�@obf4.h
+-----　obf4.h
 #pragma once
 typedef int (WINAPI *_MessageBox)(HWND, LPCTSTR, LPCTSTR, UINT);
 
@@ -359,120 +359,120 @@ const DWORD_PTR p_MessageBox = ((DWORD_PTR)MessageBox + 0x7F12AE11);
 #define MessageBox ((_MessageBox)(p_MessageBox - 0x7F12AE11))
 -----
 
-�@�R���p�C�������ƌ��ǁA�v���v���Z�b�T�ɓW�J�����obf1.cpp�ƕς��Ȃ�
-�Ȃ�܂��B
+　コンパイルされると結局、プリプロセッサに展開されてobf1.cppと変わらなく
+なります。
 
 
-��0x05.) GetProcAddress�̎���
+■0x05.) GetProcAddressの自作
 
-�A�[�J�C�u�i�\�[�X�R�[�h�E�v���W�F�N�g�t�@�C���̂݁j
+アーカイブ（ソースコード・プロジェクトファイルのみ）
 http://wizardbible.org/file/suma/1/apicaller.zip
 
-�@LoadLibrary��GetProcAddress���g�p���邱�ƂŌĂяo�����U�����邱�Ƃ��ł�
-�܂����B�������A����ł�OllyDbg�ŃX�e�b�v���s����΃A�h���X�����o�ł��܂�
-���B�����Ŏ��́uOllyDbg��GetProcAddress�̌Ăяo����Hook���邱�Ƃ�Win32AP
-I�̃A�h���X�𒲂ׂĂ���v�ƍl���A���̉���̂���GetProcAddress���쐬���܂�
-�����A�������Ƃ���GetProcAdderss�͊֌W����܂���ł����B�����炭�ALoadLi
-brary���Ă΂ꂽ�i�K�ŃA�h���X����͂���Ă���̂ł��傤�B
+　LoadLibraryとGetProcAddressを使用することで呼び出しを偽装することができ
+ました。しかし、それでもOllyDbgでステップ実行すればアドレスが検出できまし
+た。そこで私は「OllyDbgはGetProcAddressの呼び出しをHookすることでWin32AP
+Iのアドレスを調べている」と考え、この仮定のもとGetProcAddressを作成しまし
+たが、試したところGetProcAdderssは関係ありませんでした。おそらく、LoadLi
+braryが呼ばれた段階でアドレスが解析されているのでしょう。
 
-�@GetProcAddress�̎���ɉ����āA���̂��Ƃ��l���č쐬���܂����B
+　GetProcAddressの自作に加えて、次のことを考えて作成しました。
 
-1�F���삵��GetProcAddress�ɕ�����̃n�b�V�����g�p����
-2�F�擾�����A�h���X�̓X�N�����u�����ă������ɕۑ�����
-3�FWin32API���Ăяo���ۂ̓X�N�����u�������l�����ɖ߂��Ă���Ăяo��
-4�FGetProcAddress�������API Hook�̑΍�����˂�
-5�F�Ăяo���̓v���v���Z�b�T�Ɏ����W�J������
+1：自作したGetProcAddressに文字列のハッシュを使用する
+2：取得したアドレスはスクランブルしてメモリに保存する
+3：Win32APIを呼び出す際はスクランブルした値を元に戻してから呼び出す
+4：GetProcAddressを自作にAPI Hookの対策もかねる
+5：呼び出しはプリプロセッサに自動展開させる
 
-�@GetProcAddress�����삷�邱�Ƃ�DLL����A�h���X���擾����ĂȂ��悤�ɂ݂�
-�����A������̃n�b�V�������ێ����Ȃ����ƂŁA���o�[�X�G���W�j�A�����O����
-���ڂ���ɂɂ������܂��BLoadLibrary�Ǝ����GetProcAddress���g�����ƂŁAI
-AT��������������@���g��API Hook�̑΍􂪉\�ł��B
+　GetProcAddressを自作することでDLLからアドレスが取得されてないようにみせ
+かけ、文字列のハッシュしか保持しないことで、リバースエンジニアリング時に
+注目されににくくします。LoadLibraryと自作のGetProcAddressを使うことで、I
+ATを書き換える方法を使うAPI Hookの対策が可能です。
 
-�@�����܂��񂪎��Ԃ̓s����AGetProcAddress�̍쐬���@�ƁA�\�[�X�R�[�h�̍�
-���������͏Ȃ����Ē����܂��B���߂�Ȃ����B
-
-
-��0x06.) �w�b�_�t�@�C���̐���
-
-�@�w�b�_�t�@�C���ɐ錾���܂Ƃ߂邱�Ƃ�Win32API���Ăяo�����̃\�[�X�R�[�h
-�̕ύX���ӎ�����K�v�͂Ȃ��Ȃ�܂����B�������A�錾��������Ԃ͉������Ă�
-�܂���B�����ŁA�w�b�_�t�@�C����������������c�[�����쐬���܂��B
-
-�@PlatformSDK�̃w�b�_�t�@�C������S�Ă̐錾�𒊏o���邩�A�������Ăяo��W
-in32API�̂ݒ��o���ăw�b�_�t�@�C�����쐬����c�[�������Ƃ悢�ł��傤�B��
-���Ń\�[�X�R�[�h�ƃv���O���������J�������Ƃ���ł����A�p�����������ƂɎ�
-�������񏈗������ŁA���̋L���������܂łɍ쐬���邱�Ƃ��ł��܂���ł����B
-�����Œ��킵�Ă݂Ă��������B
+　すいませんが時間の都合上、GetProcAddressの作成方法と、ソースコードの細
+かい説明は省かせて頂きます。ごめんなさい。
 
 
-��0x07.) �I����
+■0x06.) ヘッダファイルの生成
 
-�@��Ԃ����炷���߂Ɂu�v���v���Z�b�T�����p����v�u�w�b�_�t�@�C����������
-������v�̂ӂ��̎�i���Љ�܂����B�P���ȍ�Ƃ̓v���O�����ɂ�点�܂�
-�傤�B
+　ヘッダファイルに宣言をまとめることでWin32APIを呼び出す側のソースコード
+の変更を意識する必要はなくなりました。しかし、宣言を書く手間は解決してい
+ません。そこで、ヘッダファイルを自動生成するツールを作成します。
 
-�@�����Win32API�Ăяo���̋U���ł����BWin32API�Ɍ��炸�ADLL�̊֐����Ăяo
-���ۂɂ��̃e�N�j�b�N���g�����Ƃ��ł��܂��B���o�[�X�G���W�j�A�����O��h��
-���߂̕��@�͂��ꂾ���ł͂���܂��񂵁A���ꂾ���ŏ\���Ƃ͂����܂���B����
-�̂�����͂��Ў����Œ��ׂĂ݂Ă��������B�܂��A���ʂƂ͈�������_�ōl���A
-���ۂɃv���O����������Ă͂��������ł��傤���B
+　PlatformSDKのヘッダファイルから全ての宣言を抽出するか、自分が呼び出すW
+in32APIのみ抽出してヘッダファイルを作成するツールを作るとよいでしょう。こ
+こでソースコードとプログラムを公開したいところですが、恥ずかしいことに私
+が文字列処理が苦手で、この記事を書くまでに作成することができませんでした。
+自分で挑戦してみてください。
 
 
+■0x07.) 終わりに
 
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+　手間を減らすために「プリプロセッサを活用する」「ヘッダファイルを自動生
+成する」のふたつの手段を紹介しました。単純な作業はプログラムにやらせまし
+ょう。
 
---- ��2��: SQL�C���W�F�N�V�����ɑ΂���C���`�L�h�� ---
+　今回はWin32API呼び出しの偽装でした。Win32APIに限らず、DLLの関数を呼び出
+す際にこのテクニックを使うことができます。リバースエンジニアリングを防ぐ
+ための方法はこれだけではありませんし、これだけで十分とはいえません。興味
+のある方はぜひ自分で調べてみてください。また、普通とは違った視点で考え、
+実際にプログラムを作ってはいいかがでしょうか。
 
-���ҁF����
+
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
+--- 第2章: SQLインジェクションに対するインチキ防御 ---
 
-��0x01.) �͂��߂�
+著者：金床
 
-�@�ȑO������hosts�t�@�C���̖��O�ύX�Ǝ����悤�ȃl�^�ł���B�܂����Ă��C��
-�`�L�I���z�ɂ��䗬���׍H�h��e�N�j�b�N��҂ݏo���Ă��܂����̂ŁA���肸
-�Ɍ��J�������Ǝv���B�薼�̒ʂ�A����̃e�N�j�b�N��SQL�C���W�F�N�V�����U��
-�ɑ΂���h��Ƃ��Ďg�p�ł�����̂��BSQL�C���W�F�N�V�����U���̓f�r���[�ȗ��A
-���ɓ��{�����ł͂ς��Ƃ��Ȃ��������������̂́A���N�ɂȂ��Ĕ��������J�J�N
-�R���i�ꕔ�������j�̉�₁E�y�ьl��񗬏o�����ň��X�^�[�_���ɂ̂��オ
-�����A�E�F�u�A�v���P�[�V�����ɑ΂���U����@�̈��ł���B�����̃P�[�X��
-�̓f�[�^�x�[�X�̒��g���E�F�u�A�v���P�[�V�����o�R�œ��܂ꂽ���₂��ꂽ��
-���鑼�A�J���N�R���i�ꕔ�������j�̂悤��Microsoft��SQL Server���g���Ă���
-�ꍇ�ɂ́Axp_cmdshell�Ƃ����Ƃ��Ă��i�N���b�J�[�ɂƂ��āj�֗��ȋ@�\�ɂ��
-��OS�̃R�}���h�����s����A���̌��ʃE�F�u�T�C�g�̉�₂��s��ꂽ������Ă�
-�܂��B�j��͂̑傫���ł͑����񂹕t���Ȃ��A���ɔ��������U���̂ЂƂ��B
-���Ȃ݂ɂ��̋L���ŏo�Ă���u�N���b�J�[�v�Ƃ����p��͈����ȃR���s���[�^��
-�ߎ҂��w�����̂ł���A�u�ǁ[�����~���ł��v�ȂǂƖ����^�R�Ă����D���Ȑl
-�����̂��Ƃł͂Ȃ��̂Œ��ӂ��ꂽ���B
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x02.) �R���Z�v�g
+■0x01.) はじめに
 
-�@�����̃\�t�g�E�F�A��v���g�R���ł͎��X�ɋ@�\�g�����s���A���@�\�łƂ�
-���֗��ȕ����ւƊJ�����i�߂��Ă����B���������́u�֗��v�������҂ŁA���[
-�U�ɂƂ��ĕ֗��ł���悤�݌v���ꂽ�@�\���A�N���b�J�[�ɂƂ��Ă��������֗�
-�ɂȂ��Ă��邱�Ƃ����X����B�Ђǂ��ꍇ�ɂ͐��K�̃��[�U���w�ǎg�p���Ȃ���
-�ɁA�N���b�J�[�ɂ��N���̍ۂɂ͒�Ԃ̋@�\�Ƃ��Ďg�p�����悤�Ȃ��̂���
-�݂���B�Ⴆ��HTTP��TRACE���\�b�h�B����Ȃ��́A���ʂ̃��[�U�͂܂��g��Ȃ��B
-�ɂ��ւ�炸Apache�Ȃǂ�Web�T�[�o�[�͒��J�Ɏ������Ă��܂��Ă��邽�߂ɁA��
-���s��Ajax�Ŏg�p�����XMLHttpRequest�i���������ȁj�Ƒg�ݍ��킹��Cross Si
-te Tracing�Ƃ����V���ȍU����@���҂ݏo����Ă��܂����B�܂��A��q��xp_cmd
-shell�Ȃǂ����������ʂ͎g���Ȃ��̂Ɂi�g��Ȃ���ˁH�j�N���b�J�[�ɂƂ���
-�͐N���̂��߂̌���I�ȕ���ƂȂ��Ă��܂��Ă���B
-�@���̂悤�ȋ@�\�́A�������g���Ă���\�t�g�E�F�A����͍폜�������B�����s
-�ւł��Z�L���A�ȕ����C�C�I���ꂪ��{�I�ȃR���Z�v�g�ł���B
+　以前書いたhostsファイルの名前変更と似たようなネタである。またしてもイン
+チキ的発想による我流小細工防御テクニックを編み出してしまったので、懲りず
+に公開したいと思う。題名の通り、今回のテクニックはSQLインジェクション攻撃
+に対する防御として使用できるものだ。SQLインジェクション攻撃はデビュー以来、
+特に日本国内ではぱっとしない扱いだったものの、今年になって発生したカカク
+コ○（一部伏せ字）の改竄・及び個人情報流出事件で一躍スターダムにのし上が
+った、ウェブアプリケーションに対する攻撃手法の一種である。多くのケースで
+はデータベースの中身をウェブアプリケーション経由で盗まれたり改竄されたり
+する他、カ○クコム（一部伏せ字）のようにMicrosoftのSQL Serverを使っている
+場合には、xp_cmdshellというとっても（クラッカーにとって）便利な機能によっ
+てOSのコマンドが実行され、その結果ウェブサイトの改竄が行われたりもしてし
+まう。破壊力の大きさでは他を寄せ付けない、非常に避けたい攻撃のひとつだ。
+ちなみにこの記事で出てくる「クラッカー」という用語は悪質なコンピュータ犯
+罪者を指すものであり、「どーも○×△です」などと名乗るタコ焼きが好きな人
+たちのことではないので注意されたい。
 
 
-��0x03.) ����폜����@�\��UNION��
+■0x02.) コンセプト
 
-�@���č���폜����@�\�́ASQL���Ŏg�����Ƃ̂ł���uUNION�v�L�[���[�h�ł�
-��B�����ɂ���X�[�p�[�ł͂Ȃ����A�܂��Ă�f�B�X�NUNION�ł��Ȃ��B�ŋߍs��
-�ĂȂ��Ȃ��f�B�X�NUNION�B
-�@����UNION�͕�����select���̌��ʂ𓝍����邽�߂Ɏg����B�ł��ȒP�ȗ��
-���̂悤�Ȃ��̂��B
+　多くのソフトウェアやプロトコルでは次々に機能拡張が行われ、多機能でとて
+も便利な方向へと開発が進められていく。しかしこの「便利」がくせ者で、ユー
+ザにとって便利であるよう設計された機能が、クラッカーにとっても激しく便利
+になっていることが多々ある。ひどい場合には正規のユーザが殆ど使用しないの
+に、クラッカーによる侵入の際には定番の機能として使用されるようなものも存
+在する。例えばHTTPのTRACEメソッド。こんなもの、普通のユーザはまず使わない。
+にも関わらずApacheなどのWebサーバーは丁寧に実装してしまっているために、今
+流行のAjaxで使用されるXMLHttpRequest（だったかな）と組み合わせてCross Si
+te Tracingという新たな攻撃手法が編み出されてしまった。また、先述のxp_cmd
+shellなども同じく普通は使われないのに（使わないよね？）クラッカーにとって
+は侵入のための決定的な武器となってしまっている。
+　このような機能は、自分が使っているソフトウェアからは削除したい。多少不
+便でもセキュアな方がイイ！これが基本的なコンセプトである。
+
+
+■0x03.) 今回削除する機能はUNIONだ
+
+　さて今回削除する機能は、SQL文で使うことのできる「UNION」キーワードであ
+る。元町にあるスーパーではないし、ましてやディスクUNIONでもない。最近行っ
+てないなぁディスクUNION。
+　さてUNIONは複数のselect文の結果を統合するために使われる。最も簡単な例は
+次のようなものだ。
 
 -----
 mysql> select 1 union select 2 union select 3;
@@ -486,30 +486,30 @@ mysql> select 1 union select 2 union select 3;
 3 rows in set (0.00 sec)
 -----
 
-�@�R��̓f�[�^�x�[�X�ɂ��Ă͏��S�҂ɖт����������炢�̃X�L������������
-���Ȃ��̂ł��̂�����������Ȃ����A�͂����肢���Ďg��Ȃ��ł��BUNION�BSEL
-ECT���͓������Ȃ��ł��B�f�[�^�x�[�X�n�J�[�ɂȂ��UNION���������肷��̂�
-�낤���B�Ƃɂ����R��͎g��Ȃ��B�����Ă���UNION�Ƃ����@�\�ASQL�C���W�F�N
-�V�����U�������肠����̂ɂ��邽�߂́A�N���b�J�[�ɂƂ��Č������Ȃ��@�\��
-�Ȃ��Ă��܂��Ă���̂��BSQL�C���W�F�N�V�����U���̍ۂ�UNION���ǂ̂悤�Ɏg
-���邩�ɂ��Ă̓l�b�g��ɖL�x�ɂ��镶�����Q�Ƃ��Ă��炤�Ƃ��āA�Ƃɂ�
-������UNION�Ƃ��������ȋ@�\�������̃V�X�e������폜�������B����폜�����
-�ۂƂȂ�V�X�e���i�f�[�^�x�[�X�j�́A���ɃI�[�v���\�[�X�ŃV�F�A������MySQ
-L��PostgreSQL���B���Ȃ݂�MySQL�͌Â��o�[�W�����ł͂�������UNION�̋@�\���T
-�|�[�g����Ă��炸�A���̂�����SQL�C���W�F�N�V�����U���ɑ΂���ϐ��������Z
-�L���A���ƕ]������Ă����肷��B�������ŋ߂̃o�[�W�����ł͂�������T�|�[
-�g����Ă���A���̃f�[�^�x�[�X�Ɠ��l��SQL�C���W�F�N�V�����U���̍ۂɃN���b
-�J�[�Ɏg�p����Ă��܂��^����H�����B
+　漏れはデータベースについては初心者に毛が生えたくらいのスキルしか持って
+いないのでそのせいかもしれないが、はっきりいって使わないです。UNION。SEL
+ECT文は統合しないです。データベースハカーになるとUNION乱発したりするのだ
+ろうか。とにかく漏れは使わない。そしてこのUNIONという機能、SQLインジェク
+ション攻撃を実りあるものにするための、クラッカーにとって欠かせない機能と
+なってしまっているのだ。SQLインジェクション攻撃の際にUNIONがどのように使
+われるかについてはネット上に豊富にある文献を参照してもらうとして、とにか
+くこのUNIONという物騒な機能を自分のシステムから削除したい。今回削除する対
+象となるシステム（データベース）は、共にオープンソースでシェアも高いMySQ
+LとPostgreSQLだ。ちなみにMySQLは古いバージョンではそもそもUNIONの機能がサ
+ポートされておらず、そのせいでSQLインジェクション攻撃に対する耐性が高くセ
+キュアだと評価されていたりする。しかし最近のバージョンではしっかりサポー
+トされており、他のデータベースと同様にSQLインジェクション攻撃の際にクラッ
+カーに使用されてしまう運命を辿りつつある。
 
 
-��0x04.) PostrgeSQL����UNION������
+■0x04.) PostrgeSQLからUNIONを除去
 
-�@�܂�PostgreSQL�̏ꍇ�ł���B���Ȃ݂Ɏ茳�Ŏ������̂͑����Â��o�[�W����
-�Ȃ̂ŁA�ŋ߂̐V������ł����l�ɏ����ł��邩�ǂ����͕�����Ȃ��B
-�@PostgreSQL�̃\�[�X��W�J����ƁAsrc/backend/parser�Ƃ����f�B���N�g����
-keywords.c�Ƃ����t�@�C��������B���̃t�@�C���ɂ́A���̂悤�Ƀf�[�^�x�[�X
-�G���W����SQL�������߂��Ă������Ɏg����A�e��̃L�[���[�h����`����Ă�
-��B
+　まずPostgreSQLの場合である。ちなみに手元で試したのは多少古いバージョン
+なので、最近の新しいやつでも同様に除去できるかどうかは分からない。
+　PostgreSQLのソースを展開すると、src/backend/parserというディレクトリに
+keywords.cというファイルがある。このファイルには、次のようにデータベース
+エンジンがSQL文を解釈していく時に使われる、各種のキーワードが定義されてい
+る。
 
 -----
 static ScanKeyword ScanKeywords[] = {
@@ -519,30 +519,30 @@ static ScanKeyword ScanKeywords[] = {
         {"access", ACCESS},
         {"action", ACTION},
         {"add", ADD},
-...�i��)
+...（略)
 -----
 
-�@���̒���{"union", UNION},�Ƃ����s������̂ŁA���̍s��ύX����Ηǂ��B��
-���� {"onion", UNION},�ƕύX����΁AUNION�̑����ONION�Ƃ����L�[���[�h
-���g�p�ł���A���ɃC�J����PostgreSQL�̏o���オ�肾�B�L�[���[�h��������
-���m��Ȃ����̂ɕύX������@�ł��ǂ����A���邢�͂��̍s����������폜����
-���ǂ���������Ȃ��B���Ȃ݂ɒ��ӓ_�Ƃ��āA�L�[���[�h��ύX����ۂɂ͔z��
-���A���t�@�x�b�g���Ƀ\�[�g���ꂽ��Ԃ�ۂ悤�ɂ��邱�ƁB�܂��A�R��͑�
-�ۂ̍s���폜������@�͎����Ă��Ȃ��̂ŁA�폜���Ă��������@�\���邩�ǂ���
-�͕�����Ȃ��B
-�@UNION�̍s��ύX�i�������͍폜�j������ēxmake���Asrc/backend���ɐ�����
-���o�C�i��postgres�����ݎg�p���Ă�����̂ƒu�������āA�f�[�^�x�[�X����
-�N������B�����UNION�̏�������������B
+　この中に{"union", UNION},という行があるので、この行を変更すれば良い。例
+えば {"onion", UNION},と変更すれば、UNIONの代わりにONIONというキーワード
+が使用できる、非常にイカしたPostgreSQLの出来上がりだ。キーワードを自分し
+か知らないものに変更する方法でも良いし、あるいはこの行をさっくり削除して
+も良いかもしれない。ちなみに注意点として、キーワードを変更する際には配列
+がアルファベット順にソートされた状態を保つようにすること。また、漏れは対
+象の行を削除する方法は試していないので、削除しても正しく機能するかどうか
+は分からない。
+　UNIONの行を変更（もしくは削除）したら再度makeし、src/backend内に生成さ
+れるバイナリpostgresを現在使用しているものと置き換えて、データベースを再
+起動する。これでUNIONの除去が完了する。
 
 
-��0x05.) MySQL����UNION������
+■0x05.) MySQLからUNIONを除去
 
-�@����MySQL�̏ꍇ���B�茳�ł̓o�[�W����4.1.15���g�����B�o�[�W����5�n���
-�ǂœ������@���g���邩�ǂ����͕�����Ȃ��B�܂��A��q�̒ʂ�Â��o�[�W����
-�ł͂�������UNION���T�|�[�g����Ă��Ȃ��̂ŁA��������K�v�͂Ȃ��B
-�@MySQL�̃\�[�X��W�J����ƁAsql�Ƃ����f�B���N�g����lex.h�Ƃ����t�@�C����
-����BPostgreSQL��keyword.c�Ɠ��l�ɁA���̃t�@�C���Ɋe�L�[���[�h����`����
-�Ă��镔��������B
+　次にMySQLの場合だ。手元ではバージョン4.1.15を使った。バージョン5系列な
+どで同じ方法が使えるかどうかは分からない。また、先述の通り古いバージョン
+ではそもそもUNIONがサポートされていないので、除去する必要はない。
+　MySQLのソースを展開すると、sqlというディレクトリにlex.hというファイルが
+ある。PostgreSQLのkeyword.cと同様に、このファイルに各キーワードが定義され
+ている部分がある。
 
 -----
 static SYMBOL symbols[] = {
@@ -552,322 +552,322 @@ static SYMBOL symbols[] = {
   { "<>",               SYM(NE)},
   { "!=",               SYM(NE)},
   { "=",                SYM(EQ)},
-...�i���j
+...（略）
 -----
 
-�@�����ł́u{ "UNION",            SYM(UNION_SYM)},�v�Ƃ����s���ړI�̕���
-�ɂȂ�BUNION��ONION�Ȃǂɕς�����A�ēxmake����B������sql�f�B���N�g����
-�ɐ��������mysqld�����ݎg�p���Ă�����̂ƒu�������A�f�[�^�x�[�X���ċN��
-����Ώo���オ�肾�B
+　ここでは「{ "UNION",            SYM(UNION_SYM)},」という行が目的の部分
+になる。UNIONをONIONなどに変えたら、再度makeする。そしてsqlディレクトリ内
+に生成されるmysqldを現在使用しているものと置き換え、データベースを再起動
+すれば出来上がりだ。
 
 
-��0x06.) �܂Ƃ�
+■0x06.) まとめ
 
-�@���̂悤�ɁAPostgreSQL��MySQL����A���Ɏ�y��UNION�@�\�̍폜���s����
-�Ƃ��ł����B�R��̓N���b�J�[�ł͖������A�E�F�u�A�v���̃Z�L�����e�B������
-����ۂɂ͓��R�A�U���҂̎��_�ō�Ƃ���B���̎��̃N���b�J�[�I���_����l��
-��ƁA��͂�UNION���폜����Ă���Ƒ啪�Ⴄ�B���׍H�ɂ͈Ⴂ�Ȃ����A�����
-��Ɍ��ʂ̂�����@�ł͂Ȃ����Ǝv���B
-�@�I�[�v���\�[�X�\�t�g�E�F�A�̃\�[�X�R�[�h�������ł�����Ƃ������Ƃ͕~��
-�����������邩������Ȃ����A�u�@�\�̍폜�v�Ƃ����ϓ_�����������Ă݂�ƁA
-��r�I�ȒP�ł��邱�ƂɋC�t���B���̂悤�Ɏ��R�Ɏ�������ėV�ׂ邱�Ƃ́A��
-���Ŏg���邱�ƂƓ������A�I�[�v���\�[�X�\�t�g�E�F�A���g����ł̑傫�ȃ���
-�b�g�ł���B���󂳂ꂽ���B
+　このように、PostgreSQLとMySQLから、非常に手軽にUNION機能の削除を行うこ
+とができた。漏れはクラッカーでは無いが、ウェブアプリのセキュリティを検査
+する際には当然、攻撃者の視点で作業する。この時のクラッカー的視点から考え
+ると、やはりUNIONが削除されていると大分違う。小細工には違いないが、それな
+りに効果のある方法ではないかと思う。
+　オープンソースソフトウェアのソースコードを自分でいじるということは敷居
+が高く感じるかもしれないが、「機能の削除」という観点から手を加えてみると、
+比較的簡単であることに気付く。このように自由に手を加えて遊べることは、無
+料で使えることと同じく、オープンソースソフトウェアを使う上での大きなメリ
+ットである。享受されたし。
 
 
-
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-
---- ��3��: Ollydbg���͂��߂悤 ---
-
-���ҁFmarodc
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
+--- 第3章: Ollydbgをはじめよう ---
 
-��0x01.) �͂��߂�
+著者：marodc
 
-�@���āA�N���b�N�ƊE�i�H�j���w�N���b�L���O�E�o�C�u���x�Ȃǂ̔����łɂ킩
-�Ɋ��C�Â��Ă�����������܂����AOllydbg�͒��ł�Windows�ŃN���b�N���s����
-�ɂ͏d�v�x�ł�3�{�̎w�ɓ���i�Ǝv���j�c�[���̂ЂƂł��B�Ƃ��낪�ӊO�Ǝg
-�����ɂƂ܂ǂ��l������炵���A�ǂ����u�Ȃ񂩂Ƃ肠����������Ă͂��邯�ǁA
-�g���ĂȂ��v��ԂɂȂ��Ă�l�������悤�ł��B�Ƃ������A���\�g���₷���悤
-�ɍ���Ă���̂ŁA��{����������΂��Ȃ艞�p�������͂��ł��B
-�@����́Acrackme��A���̑���ʂɌ��J����Ă���\�t�g�E�F�A���g���ẴN��
-�b�N�̏Љ�ł͂Ȃ��A�P����Ollydbg�̑���̐����Ƃ��������łł������ėp��
-���������ď����i�߂Ă��������Ǝv���܂��B
-
-�@�Ȃ��A�ȉ������ɂĂ̓A�Z���u������̈ꕔ�m���Ƃ�����x��Windows�̑����
-�ւ��Ēm���Ă�����̂Ƃ��Đ������Ă���ӏ�������܂��̂ŁA�������Ȃ����
-���̓s�x���ׂĂ���������΂ƁB
-�@Ollydbg��Windows XP���Version 1.10����{�ꉻ�������̂��g�p���܂����B��
-�{�ꉻ����Ă��Ȃ��ꍇ�́A���̓s�x�ǂݑւ��邩���{�ꉻ���邩�̂����ꂩ��
-�Ή������肢���܂��B
-�@�܂�Windows 9x�n�ł̉�͂́A�ꕔ��͌��ʂɑ����̈Ⴂ��������i�炵���j
-�̂ŁANT�nOS�ŉ�͂���邱�Ƃ��������߂��܂��B
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x02.) Olly�̑O��
+■0x01.) はじめに
 
-�@�܂��A�E�B���X�`�F�b�N�����܂��傤�B��͂̑Ώۂ��E�B���X�Ɋ������Ă���
-�ꍇ�A�Ƃ������E�B���X���̂��̂ł������ꍇ�������Ă��܂������ꂪ�傢�ɂ�
-��܂��B�������ꂪ�ʓ|�Ȃ�AVMWare�Ȃ�Virtual PC�Ȃ�̏�ł��΂悢�ł�
-�傤�B
-�@�����ăp�b�J�[�̌��o���s�����߂�PEiD�iPE iDentifier�j�ɂ����܂��BUPX��
-�ǂ��L���ł��ˁB�������蓮�ŃA���p�b�N�i�p�b�J�[�Ńp�b�N�����k���ꂽ��
-�̂��𓀂��邱�Ɓj���邱�Ƃ��ł���̂ł����A�X�L������ɂ͂Ȃ�Ƃ͂�����
-�ϖʓ|�ł��i�����̂�����͌Í�������ʂ̃`���[�g���A��������܂��̂Œ���
-�Ă݂Ă��������j�B�A���p�b�N�c�[���iUPX�Ȃ�UPX�{�̂���upx -d�R�}���h�ŉ�
-���ł��܂��j�������Ɖ𓀂��Ă��܂��܂��傤�B
+　さて、クラック業界（？）も『クラッキング・バイブル』などの発売でにわか
+に活気づいてきた感がありますが、Ollydbgは中でもWindowsでクラックを行う際
+には重要度では3本の指に入る（と思う）ツールのひとつです。ところが意外と使
+い方にとまどう人がいるらしく、どうも「なんかとりあえず常備してはあるけど、
+使ってない」状態になってる人が多いようです。というか、結構使いやすいよう
+に作られているので、基本を押さえればかなり応用が利くはずです。
+　今回は、crackmeや、その他一般に公開されているソフトウェアを使ってのクラ
+ックの紹介ではなく、単純にOllydbgの操作の説明という感じでできる限り汎用性
+を持たせて書き進めていきたいと思います。
+
+　なお、以下文中にてはアセンブリ言語の一部知識とある程度のWindowsの操作に
+関して知っているものとして説明している箇所がありますので、ご存じなければ
+その都度調べていただければと。
+　OllydbgはWindows XP上でVersion 1.10を日本語化したものを使用しました。日
+本語化されていない場合は、その都度読み替えるか日本語化するかのいずれかの
+対応をお願いします。
+　またWindows 9x系での解析は、一部解析結果に多少の違いが見られる（らしい）
+ので、NT系OSで解析されることをおすすめします。
 
 
-��0x03.) �����W������
+■0x02.) Ollyの前に
 
-�@�܂���͂��n�߂邽�߂ɁA�ڕW���m�F���Ă����܂��傤�B�������������͉���
-�������̂��H�u�V���A���L�[�����߁A�g�p������������������v�uCD�`�F�b�N��
-��������v�c���낢�날��܂����Ƃ������m�ł���ڕW��ݒ肷��̂��厖�ł��B
-�ڕW����������ݒ肵�Ă����΁A��̉�͂ɕK���𗧂ł��傤�i���Ă������A
-�ڕW���킩��Ȃ��Ɖ����ł��܂���B�΂��j�B
+　まず、ウィルスチェックをしましょう。解析の対象がウィルスに感染していた
+場合、というかウィルスそのものであった場合感染してしまうおそれが大いにあ
+ります。もしこれが面倒なら、VMWareなりVirtual PCなりの上でやればよいでし
+ょう。
+　続いてパッカーの検出を行うためにPEiD（PE iDentifier）にかけます。UPXな
+どが有名ですね。もちろん手動でアンパック（パッカーでパック＝圧縮されたも
+のを解凍すること）することもできるのですが、スキル向上にはなるとはいえ大
+変面倒です（興味のある方は古今東西大量のチュートリアルがありますので調べ
+てみてください）。アンパックツール（UPXならUPX本体からupx -dコマンドで解
+凍できます）さくっと解凍してしまいましょう。
 
-�@���āA���ۂ̉�͂ɂ͂���̂ł����A�܂��͂��̑O�ɍŏI�ڕW�ɍs�������܂�
-�̓��̂���l���Ă����̂��������@�ł���Ǝv���܂��B�Ƃ������Ƃ͓��̂���l
-����ɓ������āA�v���O�������̂��̂̋������m���߂�K�v������ł��傤�B��
-�������ƂŁA�܂���͂̍ŏ��̍ŏ��̑����Ƃ��ăv���O������Olly��ʂ�����
-��x�N�����Ă݂�Ƃ�����Ƃ��K�v�ɂȂ�܂��B�����čŏI�ڕW�Ɍ����Ă̏��
-���W���J�n����킯�ł��ˁB�Ⴆ�΁A�悭����crackme�̏ꍇ�̍ŏI�ڕW�́u�V��
-�A���L�[�����߂�v���Ƃł���i���A�V���A���L�[�����߂邱�Ƃ��ŏI�ڕW�ł�
-��crackme�����݂��܂��j�A����ɂ����ɍs�������܂ł̃v���O�����̋�������
-�ł�notepad.exe�ł����ł����܂�Ȃ��̂ŏ����Ă݂�Ƃ������Ƃ����Ă݂�A
-�Ƃ�����Ƃ��������ɂȂ�܂��B��͂̑O�ł����瓖�R�V���A���L�[�͕s���Ȃ�
-�ł����A����ł��K���ȃL�[����͂��Ă݂��肷���Ƃ��K�v�ł��B�����K�v��
-�Ƃ����ƃG���[���b�Z�[�W���K�v�ł��B�G���[���b�Z�[�W�͉�͂��s���ɂ�����
-�Ă̑傫�Ȍ��A�L�[�|�C���g�ɂȂ�܂��B�_�~�[�L�[����͂�����ł��G���[��
-�b�Z�[�W�i�u�V���A���L�[���Ⴂ�܂��I�v�u�s�����ł��I�v�Ȃǁj�͕K��������
-�Ă����܂��傤�B��ʉ�����ƁA�����ڕW�̋����iCDROM �`�F�b�N�̉����Ȃǂ�
-�ǁc�j��������ɂ������āA��͂��s���O�͓��R������m��܂��񂩂�A���̖�
-�W�̋����͍s��ꂸ�A�G���[���b�Z�[�W�Ȃǂ��\�������킯�ł��B���̃G���[
-���b�Z�[�W���������Ă����܂��傤�B����͌�Ŗ��ɗ����܂��B
 
-�@�ł́A��͂̑ΏۂƂȂ�t�@�C����Ollydbg�ŊJ���ƁA�܂��t�A�Z���u�����ꂽ
-���X�g�A���W�X�^�Ȃǂ̉�ʂ��ڂɂ��܂��B����ɁACtrl+N�������ƁA���x��
-�E�l�[���̈ꗗ�Ƃ����̂��o�Ă��܂��ˁB���ꂪ�Ώۂ��g�p���Ă���API�֐��̈�
-���ɂȂ�܂��B�܂��͂����������C���E�B���h�E�̋t�A�Z���u�����X�g�A���ꂩ
-�烉�x���l�[���̈ꗗ��2��������W���邱�ƂɂȂ�܂��B
-�@�����W�̂��߂̃A�v���[�`�͖ڕW�ɂ���ĈႢ�܂����A�����Ő����̕֋X��A
-���ނ��g�p���邱�Ƃɂ��܂��Beagle0wl�������삳�ꂽcrackme Vol.1���#03��
-�g�p�������Ǝv���܂��̂Ŋe�����B���Ă��������i�΂�)�B�������Ȃ��Ă���
-����x�͗����ł���悤�ɏ����i�߂܂��B
+■0x03.) 情報収集をする
 
-�@�Ȃ��Acarckme��eagle0wl���̃T�C�g����_�E�����[�h�ł��܂��B
+　まず解析を始めるために、目標を確認しておきましょう。いったい自分は何が
+したいのか？「シリアルキーを求め、使用期限制限を解除する」「CDチェックを
+解除する」…いろいろありますがともかく確固たる目標を設定するのが大事です。
+目標をしっかり設定しておけば、後の解析に必ず役立つでしょう（っていうか、
+目標がわからないと何もできません。笑い）。
+
+　さて、実際の解析にはいるのですが、まずはその前に最終目標に行き着くまで
+の道のりを考えておくのが賢い方法であると思います。ということは道のりを考
+えるに当たって、プログラムそのものの挙動を確かめる必要があるでしょう。と
+いうことで、まず解析の最初の最初の第一歩としてプログラムをOllyを通さずに
+一度起動してみるという作業が必要になります。そして最終目標に向けての情報
+収集を開始するわけですね。例えば、よくあるcrackmeの場合の最終目標は「シリ
+アルキーを求める」ことであり（注、シリアルキーを求めることが最終目標でな
+いcrackmeも存在します）、さらにそこに行き着くまでのプログラムの挙動を紙
+でもnotepad.exeでも何でもかまわないので書いてみるということをしてみる、
+という作業が下準備になります。解析の前ですから当然シリアルキーは不明なの
+ですが、それでも適当なキーを入力してみたりする作業も必要です。何が必要か
+というとエラーメッセージが必要です。エラーメッセージは解析を行うにあたっ
+ての大きな鍵、キーポイントになります。ダミーキーを入力した後でたエラーメ
+ッセージ（「シリアルキーが違います！」「不正解です！」など）は必ずメモし
+ておきましょう。一般化すると、何か目標の挙動（CDROM チェックの解除などな
+ど…）をさせるにあたって、解析を行う前は当然正解を知りませんから、その目
+標の挙動は行われず、エラーメッセージなどが表示されるわけです。そのエラー
+メッセージをメモしておきましょう。これは後で役に立ちます。
+
+　では、解析の対象となるファイルをOllydbgで開くと、まず逆アセンブルされた
+リスト、レジスタなどの画面が目につきます。さらに、Ctrl+Nを押すと、ラベル
+・ネームの一覧というのが出てきますね。これが対象が使用しているAPI関数の一
+覧になります。まずはだいたいメインウィンドウの逆アセンブルリスト、それか
+らラベルネームの一覧の2つから情報収集することになります。
+　情報収集のためのアプローチは目標によって違いますが、ここで説明の便宜上、
+教材を使用することにします。eagle0wl氏が制作されたcrackme Vol.1より#03を
+使用したいと思いますので各自調達してください（笑い)。もちろんなくてもあ
+る程度は理解できるように書き進めます。
+
+　なお、carckmeはeagle0wl氏のサイトからダウンロードできます。
 
 http://www.mysys.org/eagle0wl/re/crackme/crackme.html
 
-�@�Ƃ���ŋt�A�Z���u�����X�g�Ƃ����̂́A�ォ�牺�ցi�W�����v���߂��̂���
-�΁j���ԂɎ��s����Ă����悤�ɏo�͂���Ă��܂��i�����ꕾ������܂����j�B
-�Ƃ������Ƃ́A�t���ɒǂ��Ă����Ƌt�Ƀv���O���������s����A�^�C�����C����
-�t�ɑ��邱�Ƃ��\�ɂȂ�܂��B
-�@�ڕW���u�V���A���L�[�����߂�v���ƂȂ�A�v���O�����́u���͂��ꂽ�V���A
-�����擾���A�`�F�b�N���A���۔�����s���o�͂���v�Ƃ������ɏ�����Ă����
-���ł���A�Ȃ����t�A�Z���u�����X�g�����̏��ɖ��߂�����ł���͂��A�Ɨ�
-���ł��܂��B�Ƃ������Ƃ́A�u�o�͂���v�Ƃ���𔭌�����΁A�u���۔�����s
-���v�ꏊ�A�u�`�F�b�N����v�������ł���A���Â鎮�ɕ������Ă����͂��ł��B
-�����ŃV���A���𔻒肵�Ă��郋�[�`�����ǂ��ɂ��邩�Ƃ������Ƃ�������܂��B
+　ところで逆アセンブルリストというのは、上から下へ（ジャンプ命令をのぞけ
+ば）順番に実行されていくように出力されています（少し語弊がありますが）。
+ということは、逆順に追っていくと逆にプログラムを実行する、タイムラインを
+逆に走ることが可能になります。
+　目標が「シリアルキーを求める」ことなら、プログラムは「入力されたシリア
+ルを取得し、チェックし、正否判定を行い出力する」という風に書かれているは
+ずであり、なおかつ逆アセンブルリストもその順に命令が並んでいるはず、と理
+解できます。ということは、「出力する」ところを発見すれば、「正否判定を行
+う」場所、「チェックする」も発見できる、芋づる式に分かっていくはずです。
+ここでシリアルを判定しているルーチンがどこにあるかということも分かります。
 
-�@�Ƃ������ƂŁA���́u�ꏊ�v���ǂ��ɂ��邩����肷�邽�߂ɂ́A���̂��߂�
-�v���O������������Ă���A�t�A�Z���u�����X�g�ɂ����R�ڂ��Ă���͂��ł���
-��A���́u�ꏊ�v�ɂ��鉽�炩�̍s����\�����߂̃��[�`��������͂��ł��B��
-��������΁A���̏ꏊ���ꂼ��ł́A�K���u�s���v���s�����߂̃��[�`�����L�q
-����Ă��邩�A���邢��CALL���߂Ŋ֐����Ăяo����Ă���͂��ł��B�⑫����
-�ƁAWindows�ł́A�ώG�ȃR�[�h���������ƂȂ��u�������擾����v�Ƃ��u���b�Z
-�[�W�{�b�N�X���o�͂���v�Ƃ�������Ƃ��s�����߂�API�֐��Ƃ������̂��p�ӂ�
-��Ă��܂��B���Ƃ��΃��b�Z�[�W�{�b�N�X���o�͂��Ă���ꏊ�ł̋t�A�Z���u��
-�R�[�h�́uCALL DWORD PTR DS:[<&USER32.MessageBoxA>>; \MessageBoxA�v�Ƃ���
-�悤��"MessageBoxA"�Ƃ���API�֐����Ăяo����Ă��܂��B�Ƃ������Ƃ́A����
-���̍s���i�����Ă��ꂪAPI�֐����g�p���˂΂Ȃ�Ȃ��悤�ȁj���N�����Ă����
-������肷�邽�߂ɂ́A�Ƃ����Ɏv�����̂́uAPI�֐��𐄑�����v�Ƃ�������
-����ł��傤���B�����Ă��A���������������擾�n�Ȃ�A�uGetWindowTextA�v��
-���uGetDlgItemTextA�v�ȂǂƂȂ��Ă����肵�܂��BAPI�֐��̖��O�Ƃ����̂͂�
-�����������͂킩��₷���悤�ɂ��Ă���̂ŁACtrl+N�ŏo�Ă���u���x���l
-�[���̈ꗗ�v�E�B���h�E�Œ��߂āA�K���ɖڐ������ău���[�N�|�C���g���Z�b
-�g�Ƃ������Ƃł��i���̂�����͌�قǉ�����܂��j�B
+　ということで、その「場所」がどこにあるかを特定するためには、そのために
+プログラムが書かれてあり、逆アセンブルリストにも当然載っているはずですか
+ら、その「場所」にある何らかの行動を表すためのルーチンがあるはずです。言
+い換えれば、その場所それぞれでは、必ず「行動」を行うためのルーチンが記述
+されているか、あるいはCALL命令で関数が呼び出されているはずです。補足する
+と、Windowsでは、煩雑なコードを書くことなく「文字を取得する」とか「メッセ
+ージボックスを出力する」といった作業を行うためにAPI関数というものが用意さ
+れています。たとえばメッセージボックスを出力している場所での逆アセンブル
+コードは「CALL DWORD PTR DS:[<&USER32.MessageBoxA>>; \MessageBoxA」という
+ように"MessageBoxA"というAPI関数が呼び出されています。ということは、何ら
+かの行動（そしてそれがAPI関数を使用せねばならないような）を起こしている場
+所を特定するためには、とっさに思いつくのは「API関数を推測する」といったと
+ころでしょうか。たいてい、こういった文字取得系なら、「GetWindowTextA」と
+か「GetDlgItemTextA」などとなっていたりします。API関数の名前というのはま
+あだいたいはわかりやすいようにつけてあるので、Ctrl+Nで出てくる「ラベルネ
+ームの一覧」ウィンドウで眺めて、適当に目星をつけてブレークポイントをセッ
+トということです（このあたりは後ほど解説します）。
 
-�@�������A�Ȃ��Ȃ��킩��Ȃ����Ƃ�����ƁB�Ƃ������킩��Ȃ����Ƃ�������
-���������肷�饥��ƁB�ł͂ǂ�����΂����ł��傤�H�Ƃ������ƂŁA���̍��ڂ�
-��ԍŏ��ɂ��b�������G���[���b�Z�[�W�������Ă���킯�ł��B�G���[���b�Z�[
-�W�͋t�A�Z���u�����X�g�̉E���ɕ\������܂��B�G���[���b�Z�[�W�͓��R�v���O
-�����̒��ɏ������܂�Ă��邩��ł��i�V���A���L�[�̃`�F�b�N���[�`�����P��
-��if���œ��͕�����Ɛ������L�[�𔻕ʂ��Ă��邾���̎��ȂǁA�o�C�i���G�f�B
-�^�ŃG���[���b�Z�[�W��ǂ��Ă����Ǝ��ߋ����ɃV���A���L�[�������Ă���ꍇ
-������܂��B���̂Ƃ���ʏ́u�{���v�Ƃ����܂��j�B
+　しかし、なかなかわからないこともあると。というかわからないことがたいて
+いだったりする・・・と。ではどうすればいいでしょう？ということで、この項目で
+一番最初にお話ししたエラーメッセージが生きてくるわけです。エラーメッセー
+ジは逆アセンブルリストの右側に表示されます。エラーメッセージは当然プログ
+ラムの中に書き込まれているからです（シリアルキーのチェックルーチンが単純
+にif文で入力文字列と正しいキーを判別しているだけの時など、バイナリエディ
+タでエラーメッセージを追っていくと至近距離にシリアルキーが書いてある場合
+もあります。このときを通称「倍直」といいます）。
 
-�@���āA��������͗���o���ĉ�����܂��B���Ƃ��΁A��q��crackme #03�̒���
-�͂��̂悤�Ȃ����肪����܂��F
+　さて、ここからは例を出して解説します。たとえば、先述のcrackme #03の中に
+はこのようなくだりがあります：
 
 -----
 00401218   .^72 E6          JB SHORT crkme03.00401200
 0040121A   . 6A 00          PUSH 0                                   ; /Style = MB_OK|MB_APPLMODAL
-0040121C   . 68 E7304000    PUSH crkme03.004030E7                    ; |Title = "�o�^���"
-00401221   . 68 FD304000    PUSH crkme03.004030FD                    ; |Text = "�����ł��I"
+0040121C   . 68 E7304000    PUSH crkme03.004030E7                    ; |Title = "登録情報"
+00401221   . 68 FD304000    PUSH crkme03.004030FD                    ; |Text = "正解です！"
 00401226   . FF75 08        PUSH DWORD PTR SS:[EBP+8]                ; |hOwner
 00401229   . E8 42000000    CALL <JMP.&USER32.MessageBoxA>           ; \MessageBoxA
 0040122E   .^E9 6BFEFFFF    JMP crkme03.0040109E
 00401233   > 6A 00          PUSH 0                                   ; /Style = MB_OK|MB_APPLMODAL
-00401235   . 68 E7304000    PUSH crkme03.004030E7                    ; |Title = "�o�^���"
-0040123A   . 68 F0304000    PUSH crkme03.004030F0                    ; |Text = "�s�����ł��B"
+00401235   . 68 E7304000    PUSH crkme03.004030E7                    ; |Title = "登録情報"
+0040123A   . 68 F0304000    PUSH crkme03.004030F0                    ; |Text = "不正解です。"
 0040123F   . FF75 08        PUSH DWORD PTR SS:[EBP+8]                ; |hOwner
 00401242   . E8 29000000    CALL <JMP.&USER32.MessageBoxA>           ; \MessageBoxA
 -----
 
-�@����crackme���N�����ēK���ȃp�X�����A�o�^�������Ɓu�s�����ł��B�v�ƃ�
-�b�Z�[�W���ł邱�Ƃ��킩��܂��B�ł́A�v���O�����̒��Łu�s�����ł��v�Ƃ�
-�����b�Z�[�W���o�͂��Ă��镔���́A���R��Ɏ������������ƕ�����܂����A��
-�͂��̕����͂ǂ�����ĒT���΂悢�ł��傤���H�����ŁA��قǂ̍l���������p
-���Ă݂�ƁA�܂��uAPI�֐��𐄑����Ă݂�v���ƂɂȂ�܂��B���b�Z�[�W�{�b�N
-�X���o�͂���API�֐��͉����H�ƍl����ƁAMessageBoxA�Ƃ���API�֐��������Ɏv
-�����c�悤�ɂȂ�܂��傤�B����ƁA�ŏ��ɏq�ׂ��u���x���l�[���̈ꗗ�v�E
-�B���h�E����MessageBoxA���\������Ă��܂�����A�J�[�\���𓖂Ă�Enter����
-����MessageBoxA���g���Ă���ӏ��������Əo�Ă��܂��BCALL�ŌĂяo�����
-����̂����b�Z�[�W�{�b�N�X�o�͕����ł�����A�_�u���N���b�N��Enter��������
-�g���Ă���A�h���X�ɔ�т܂��B
+　このcrackmeを起動して適当なパスを入れ、登録を押すと「不正解です。」とメ
+ッセージがでることがわかります。では、プログラムの中で「不正解です」とい
+うメッセージを出力している部分は、当然先に示した部分だと分かりますが、で
+はこの部分はどうやって探せばよいでしょうか？そこで、先ほどの考え方を引用
+してみると、まず「API関数を推測してみる」ことになります。メッセージボック
+スを出力するAPI関数は何か？と考えると、MessageBoxAというAPI関数がすぐに思
+いつく…ようになりましょう。すると、最初に述べた「ラベルネームの一覧」ウ
+ィンドウ内にMessageBoxAも表示されていますから、カーソルを当ててEnterを押
+すとMessageBoxAが使われている箇所がずらりと出てきます。CALLで呼び出されて
+いるのがメッセージボックス出力部分ですから、ダブルクリックかEnterを押すと
+使われているアドレスに飛びます。
 
-�@�ł͂Ȃ��Ȃ��킩��Ȃ��Ƃ�������Ƃ������Ƃ͐��������Ƃ���ł����A����
-�Łu�Q�ƕ�����v������������@���Ƃ�܂��B���C���E�B���h�E�ɕ\�����ꂽ�t
-�A�Z���u�����X�g�̂ǂ��ł��ǂ��ł�����E�N���b�N���āA�u�����v���u���ׂ�
-�̎Q�ƕ�����v�ōs�������邻���ɂ͑�ʂ̃G���[���b�Z�[�W���̂Ȃ񂾂̂���
-���ς�����܂��ˁB�܂��Q�ƕ����񂪑�������ꍇ�͉E�N���b�N���āu�e�L�X�g
-�������v��I������ƌ������\�ł��B���Ȃ킿���̂Ƃ��ɃG���[���b�Z�[�W��
-�����Ă���Ƃ������Ƃł��B�G���[���b�Z�[�W�̕�������肪����Ɍ���������
-��ƃq�b�g����Ƃ������Ƃł��B��������l��Enter���_�u���N���b�N�ŊY���̃A
-�h���X�ɔ�ׂ܂��B
+　ではなかなかわからないときもあるということは説明したとおりですが、そこ
+で「参照文字列」を検索する方法をとります。メインウィンドウに表示された逆
+アセンブルリストのどこでも良いですから右クリックして、「検索」→「すべて
+の参照文字列」で行き着けるそこには大量のエラーメッセージだのなんだのがい
+っぱいありますね。また参照文字列が多すぎる場合は右クリックして「テキスト
+を検索」を選択すると検索も可能です。すなわちこのときにエラーメッセージが
+生きてくるということです。エラーメッセージの文字列を手がかりに検索をかけ
+るとヒットするということです。これも同様にEnterかダブルクリックで該当のア
+ドレスに飛べます。
 
-�@���̂悤�ɁA�����W�̎�i�Ƃ��ẮA�܂��uAPI�֐��̖��O�v���肪����ɂ�
-�邱�ƁB�܂��u�_�C�A���O�{�b�N�X���̕����v�u���b�Z�[�W�{�b�N�X�ɕ\������
-�������v�����l�Ɏ肪����ɂȂ蓾�܂��B���̕ӂł͂܂������W�̈Ӗ��́u�H�v
-���Ǝv���܂����A��X�̃u���[�N�|�C���g�̐ݒ��A�X�e�b�v���s�̘b�������
-���ɑ�Ϗd�v�ƂȂ�̂Ő�ɐ������Ă������Ƃɂ��Ă݂܂����B�����W�̎�i
-�͂����ŏЉ������ł͂������Ȃ��AeXeScope��Process Walker�Ȃǂ��g��
-���Ƃ��ł��܂��B���̕��@�Ɋւ��Ă��̕��͒��ł͈����܂���B
-
-
-��0x04.) ���������u���[�N�|�C���g�̐ݒ�
-
-�@�ł́A�u���[�N�|�C���g�̐ݒ�̘b�Ɉڂ�܂����A�u���[�N�|�C���g�͂�����
-�Ɛݒ肵�Ă܂����i��)�H�@�Ȃ񂩐ݒ肵�Ȃ��l������悤�ł����A�ݒ肵�Ȃ���
-�����Ƃ�������Ƃ͂ƂĂ������܂��񂪁A�܂��A��ɐݒ肷�邭�������Ă�
-���������ǂ��̂ł͂Ȃ����ȂƁi�l�I�ɂ́j�v���܂��B����ɁA�d�v�Ȃ��Ƃ�
-�����A�u���������u���[�N�|�C���g���ݒ�ł���ƁA���������X�e�b�v���s�ɂ�
-�邩��������͂��\�ɂȂ�v�Ƃ����Ȃ񂩃J�V�R�J�V�R�Ȗ@���������o�����
-���B
-
-�@���āA�u���[�N�|�C���g��u���ꏊ�ł����A�u�u���[�N�|�C���g�ȑO���ǂ���
-�����������ŁA�u���[�N�|�C���g�Ȍオ�X�e�b�v���s�Ō������ꏊ�v�ɒu���Ί�
-�Ⴂ�Ȃ��ł��傤�B���̂ق��ɂ��ڈ�Ƃ��Ďg�����肷�邱�Ƃ��ł��܂����A��
-�{�I�Ȓu�����͐�̒ʂ�ł��B�r�f�I�����Ă���Ƃ��A�C�ɂȂ����V�[���ňꎞ
-��~����̂Ɠ����悤�Ȃ��̂��Ǝv���Ă���������Α��v�ł��B���o�I�ɂ���
-�Ȃ�h��������̓���Łu�����~�߂�v�݂����Ȋ����Ŏg���΂����ł��i�΂��j�B
-
-�@�Ƃ���ŁA�u���[�N�|�C���g��ݒ肷��O�ɁAOlly�̏�ł͑�܂��ɕ�����3��
-��Ƀv���O���������s���邱�Ƃ��ł��܂��B�܂��ЂƂ߂̓u���[�N�|�C���g��
-�ň�؎~�܂炸�Ɏ��s����u���s�iF9�L�[�j�v�A2�߂̓A�h���X�ʂ�1�s����
-�s���A1�s���ƂɎ~�܂�u�X�e�b�v���s�iF8�L�[�j�v�A�����X�e�b�v���s�ł��AC
-ALL���߂̓����ɐ���u�ڍ׃X�e�b�v���s�iF7�L�[�j�v�ł��ˁB�X�e�b�v���s�Ə�
-�׃X�e�b�v���s�̈Ⴂ�͌�قǐ����������Ǝv���܂����A�u���[�N�|�C���g�͊�
-�{�I�ɁA�t�A�Z���u�����X�g���c��ȗʂɂȂ�v���O��������͂���ۂɁA�u�u
-���[�N�|�C���g�O�܂ł͂ǂ��ł����������v�u�u���[�N�|�C���g���������Ƃ���
-����悪�i�ڕW�B���ɂ������āj�d�v�ȏ����v�ƂȂ�Ƃ���Ƀu���[�N�|�C���g
-��u���Ă����ƁA�܂��ŏ���F9�L�[�������ău���[�N�|�C���g�܂ł�����΂��A
-��������X�e�b�v���s�A�܂��͏ڍ׃X�e�b�v���s�ŉ�͂�i�߂邱�Ƃ��ł��A��
-�ό����I�ł��B������񂻂ꂾ���łȂ��A�P�Ȃ�ڈ�Ɏg�����Ƃ��ł��܂��B�}
-�C���X�C�[�p�̊��̂悤�ɁA�������Ăǂ��ɂ��Ȃ�悤�Ȃ��̂ł͂Ȃ��̂ŁA��
-�肠������������u���Ă����Ηǂ��ł��B��������͂�i�߂Ă��������Ɏ�̑I
-����i�߂邱�Ƃ͑厖�ł��B��قǂ��������悤�Ɍ����u���[�N�|�C���g��ݒ�
-����Ƃ����̂͌�����͂̂��߂ɕK�{�����Ȃ̂ł�����B
-
-�@���āA�ł͎��ۂɃu���[�N�|�C���g���ǂ��ɒu�����ł����A��{�I�ɂ�API�֐�
-�ɂ����̂��܂���΂Ȃ̂��ȁA�Ƃ������Ƃ���Ȃ̂ł����A�ǂ�API�֐��ɂ�����
-���ڕW�ɂ���Ă͕ς���Ă��܂��B���̏ꍇ�ɂ��A�u�ǂ��܂ł��ǂ��ł�������
-���ŁA�ǂ����炪�������茩�Ă������������Ȃ̂��v��O���ɒu���ău���[�N�|
-�C���g��ݒu����Ζ�肠��܂���B���Ƃ���crackme���ƁA�u�V���A�����v���O
-�����Ɏ擾�����܂ł��ǂ��ł����������ŁA�V���A�����擾���ꂽ�オ������
-�茩�Ă������������v�ƂȂ�܂�����u���[�N�|�C���g��ݒu����ꏊ�́u�V��
-�A�����擾����API�֐��v�ɂȂ�܂��B�������A�i�O�����̂������A���邢�̓G��
-�[���b�Z�[�W�������������̂��̂́A���b�Z�[�W�o�͕����Ƀu���[�N�|�C���g��
-�d�|���������悢���Ƃ�����܂��B����͓���CD-ROM�`�F�b�N�ɂ����Ă悭����
-�p�^�[���ł����A���̃`���[�g�̂悤�ɁAOK���N���b�N�����Ɩ߂�Ƃ����p�^
-�[���ɂ����āA���b�Z�[�W�{�b�N�X�����Ƀu���[�N�|�C���g���d�|���Ă����ƕ�
-���Ȃ��Ƃ�����܂��B
-
-CD�������Ă��邩�������ĂȂ����G���[���b�Z�[�W�iCD-ROM�����Ă��������j
-���y�u���[�N�|�C���g�z��OK���N���b�N�����Ɩ߂遨�����Ă遨�N��
-
-�@������ɂ���A���̕ӂ͂��Ȃ�o���ɍ��E����܂�����A�Ƃɂ����ǂ�ǂ�u
-���[�N�|�C���g��ݒ肵�Ďg���Ă݂�Ƃ����̂���B�ɂ����Ƃ��߂����ł��傤�B
-�@�Ƃ���ł��̌�X�e�b�v���s�ɂ������āA�u���[�N�|�C���g��������Ǝd�|��
-���Ă����ꍇ�A�������e�Ղɐi�ނ̂ł����A�S���I�͂���ȂƂ���ɐݒ肳��
-�Ă����ꍇOlly�ɂ��܂��������ڂ��Ă���Ȃ����Ƃ�����܂��B���������Ƃ���
-�u���[�N�|�C���g�̐ݒu�����蒼���ł��傤�BF9���������Ƃ��ɁA���Ƃ��΃V
-���A���̃N���b�N�Ȃ�V���A�������͂��ꂽ��Ԃ�Olly�ɏ������ڂ�Ƃ��ACD-R
-OM�`�F�b�N����̃N���b�N�Ȃ�CD-ROM�`�F�b�N�����ŏ������ڂ�A���������̂�
-���z�I���Ǝv���܂��B
+　このように、情報収集の手段としては、まず「API関数の名前」を手がかりにす
+ること。また「ダイアログボックス内の文字」「メッセージボックスに表示され
+た文字」も同様に手がかりになり得ます。この辺ではまだ情報収集の意味は「？」
+だと思いますが、後々のブレークポイントの設定や、ステップ実行の話をすると
+きに大変重要となるので先に説明しておくことにしてみました。情報収集の手段
+はここで紹介した限りではもちろんなく、eXeScopeやProcess Walkerなどを使う
+こともできます。その方法に関してこの文章中では扱いません。
 
 
-��0x05.) ���������X�e�b�v���s�̎d��
+■0x04.) かしこいブレークポイントの設定
 
-�@�X�e�b�v���s�͐�قǂ�����Ə����܂������A�v�����F9/F8/F7�̎g��������
-�b�ł��B�u���[�N�|�C���g�͐�̏͂ŏq�ׂ��Ƃ���g���Ă��炦��Ǝv���܂����A
-�悤����ɍŏ���F9�Ńu���[�N�|�C���g�܂Ŕ�ԂƁB�����ău���[�N�|�C���g��
-���̓X�e�b�v���s�ŋl�߂Ă������ƂɂȂ�܂��B
-�@�����ŁA�X�e�b�v���s�Əڍ׃X�e�b�v���s�̈Ⴂ���ȒP�ɐ������Ă����܂����A
-�܂�CALL���߂͂��������Ǝv���܂��B�v����ɕʂ̏ꏊ�ɏ�����Ă��郋�[�`��
-���Ăяo���c���o�I�ɂ́u���s�ɂ܂����������߂���s�Ɉ��k���Ă���v�ƍl��
-�Ă��悢�Ǝv���܂��BCALL�͉��炩�̓y�Y�������ċA���Ă��܂��B����͒l�ł�
-������A�l�X�ł��ˁB���̃��[�`���̓����ɓ���̂��ڍ׃X�e�b�v���s�A������
-1���߂Ƃ��ď�������̂��X�e�b�v���s�ł��BAPI�֐����Ăяo���Ă���CALL����
-��F8�ŃX���[���������悢�ł��傤�B�v���O���������̃A�h���X���Ăяo�����
-����ꍇ�́A�ꍇ�ɂ���Ĕ��f���܂����A�����Ă��͐��������������������
-�邱�Ƃ������i�悤�ȋC�����܂��j�B
-�@�X�e�b�v���s���́A���Ƀ��W�X�^�E�t���O�̕ω��ƁA�t�A�Z���u�����X�g�̉�
-�ƃ_���v�E�B���h�E�̏�ɕ\������Ă��锒���{�b�N�X�ɒ��ڂ��܂��傤�B�t��
-�����΂���ȊO�͂��܂蒍������K�v�͂���܂���B
-�@�u���[�N�|�C���g�����́A�t�A�Z���u�����X�g�����[���ƌ��߂ĉ�͂���
-�݂�A�ꍇ�ɂ���Ă͎��ɏ����ʂ��ăg�C���Ȃ�d�ԂȂ�ŉ�͂��Ă݂�Ƃ���
-�̂��������낢�ł����A�܂��Ƃ肠������s�����s���ăt���O��烌�W�X�^��
-�l��ω������Đ����Ɂi������j�����Ƃ����̂����\�y�����ł����A���g����
-��������i�p�b�`�����j�ꍇ�ɂ́A�������������s���낪�d�v�Ȃ��Ƃ������
-���B���Ƃ��΁A��قǗ�ɏo���� crackme #03�ł����A�p�X�擾��API�֐��i�u��
-�[�N�|�C���g�ݒ�n�_�j����搔�s�̃��X�g���݂Ă݂܂��B
+　では、ブレークポイントの設定の話に移りますが、ブレークポイントはきちん
+と設定してますか（笑)？　なんか設定しない人もいるようですが、設定しない癖
+がつくとやっかいとはとてもいえませんが、まあ、常に設定するくせをつけてお
+いた方が良いのではないかなと（個人的には）思います。さらに、重要なことで
+すが、「かしこいブレークポイントが設定できると、かしこいステップ実行によ
+るかしこい解析が可能になる」というなんかカシコカシコな法則が導き出されま
+す。
+
+　さて、ブレークポイントを置く場所ですが、「ブレークポイント以前がどうで
+もいい処理で、ブレークポイント以後がステップ実行で見たい場所」に置けば間
+違いないでしょう。そのほかにも目印として使ったりすることもできますが、基
+本的な置き方は先の通りです。ビデオを見ているとき、気になったシーンで一時
+停止するのと同じようなものだと思っていただければ大丈夫です。感覚的にいう
+ならドラえもんの道具で「時を止める」みたいな感じで使えばいいです（笑い）。
+
+　ところで、ブレークポイントを設定する前に、Ollyの上では大まかに分けて3通
+りにプログラムを実行することができます。まずひとつめはブレークポイントま
+で一切止まらずに実行する「実行（F9キー）」、2つめはアドレス通り1行ずつ実
+行し、1行ごとに止まる「ステップ実行（F8キー）」、同じステップ実行でも、C
+ALL命令の内部に潜る「詳細ステップ実行（F7キー）」ですね。ステップ実行と詳
+細ステップ実行の違いは後ほど説明したいと思いますが、ブレークポイントは基
+本的に、逆アセンブルリストが膨大な量になるプログラムを解析する際に、「ブ
+レークポイント前まではどうでもいい処理」「ブレークポイントをおいたところ
+から先が（目標達成にあたって）重要な処理」となるところにブレークポイント
+を置いておくと、まず最初にF9キーを押してブレークポイントまですっ飛ばし、
+そこからステップ実行、または詳細ステップ実行で解析を進めることができ、大
+変効率的です。もちろんそれだけでなく、単なる目印に使うこともできます。マ
+インスイーパの旗のように、乱発してどうにかなるようなものではないので、と
+りあえず迷ったら置いておけば良いです。しかし解析を進めていくうちに取捨選
+択を進めることは大事です。先ほども言ったように賢いブレークポイントを設定
+するというのは賢い解析のために必須条件なのですから。
+
+　さて、では実際にブレークポイントをどこに置くかですが、基本的にはAPI関数
+におくのがまあ定石なのかな、といったところなのですが、どのAPI関数におくか
+も目標によっては変わってきます。その場合にも、「どこまでがどうでもいい処
+理で、どこからがじっくり見ていきたい処理なのか」を念頭に置いてブレークポ
+イントを設置すれば問題ありません。たとえばcrackmeだと、「シリアルがプログ
+ラムに取得されるまでがどうでもいい処理で、シリアルが取得された後がじっく
+り見ていきたい処理」となりますからブレークポイントを設置する場所は「シリ
+アルを取得するAPI関数」になります。しかし、ナグ消しのたぐい、あるいはエラ
+ーメッセージを消すたぐいのものは、メッセージ出力部分にブレークポイントを
+仕掛けた方がよいこともあります。これは特にCD-ROMチェックにおいてよくある
+パターンですが、下のチャートのように、OKがクリックされると戻るというパタ
+ーンにおいて、メッセージボックス部分にブレークポイントを仕掛けておくと便
+利なこともあります。
+
+CDが入っているか→入ってない→エラーメッセージ（CD-ROMを入れてください）
+→【ブレークポイント】→OKがクリックされると戻る→入ってる→起動
+
+　いずれにせよ、この辺はかなり経験に左右されますから、とにかくどんどんブ
+レークポイントを設定して使ってみるというのが上達にもっとも近い道でしょう。
+　ところでこの後ステップ実行にあたって、ブレークポイントがきちんと仕掛け
+られていた場合、調査も容易に進むのですが、全く的はずれなところに設定され
+ていた場合Ollyにうまく処理が移ってくれないこともあります。こういうときは
+ブレークポイントの設置からやり直しでしょう。F9を押したときに、たとえばシ
+リアルのクラックならシリアルが入力された状態でOllyに処理が移るとか、CD-R
+OMチェック回避のクラックならCD-ROMチェック部分で処理が移る、そういうのが
+理想的だと思います。
+
+
+■0x05.) かしこいステップ実行の仕方
+
+　ステップ実行は先ほどさらっと書きましたが、要するにF9/F8/F7の使い分けの
+話です。ブレークポイントは先の章で述べたとおり使ってもらえると思いますが、
+ようするに最初はF9でブレークポイントまで飛ぶと。そしてブレークポイントか
+ら先はステップ実行で詰めていくことになります。
+　ここで、ステップ実行と詳細ステップ実行の違いを簡単に説明しておきますが、
+まずCALL命令はご存じかと思います。要するに別の場所に書かれてあるルーチン
+を呼び出す…感覚的には「数行にまたがった命令を一行に圧縮している」と考え
+てもよいと思います。CALLは何らかの土産を持って帰ってきます。それは値であ
+ったり、様々ですね。このルーチンの内部に入るのが詳細ステップ実行、ただの
+1命令として処理するのがステップ実行です。API関数を呼び出しているCALL命令
+はF8でスルーした方がよいでしょう。プログラム内部のアドレスが呼び出されて
+いる場合は、場合によって判断しますが、たいていは潜った方が何か見つけられ
+ることが多い（ような気がします）。
+　ステップ実行中は、特にレジスタ・フラグの変化と、逆アセンブルリストの下
+とダンプウィンドウの上に表示されている白いボックスに注目しましょう。逆に
+いえばそれ以外はあまり注視する必要はありません。
+　ブレークポイントから先は、逆アセンブルリストをじーっと見つめて解析して
+みる、場合によっては紙に書き写してトイレなり電車なりで解析してみるという
+のもおもしろいですが、まあとりあえず一行ずつ実行してフラグやらレジスタの
+値を変化させて正解に（無理矢理）導くというのが結構楽しいですし、中身を書
+き換える（パッチを作る）場合には、そういった試行錯誤が重要なこともありま
+す。たとえば、先ほど例に出した crackme #03ですが、パス取得のAPI関数（ブレ
+ークポイント設定地点）から先数行のリストをみてみます。
 
 -----
 004011F4   . E8 6B000000    CALL <JMP.&USER32.GetDlgItemTextA>       ; \GetDlgItemTextA
 -----
 
-�����œ��͂����p�X���擾���āA
+ここで入力したパスを取得して、
 
 -----
 004011F9   . BE 2C304000    MOV ESI,crkme03.0040302C                 ;  ASCII "qwertyu"
 -----
 
-�Ń��W�X�^�ɓ���Ă�悤�ł��ˁB
+でレジスタに入れてるようですね。
 
 -----
 004011FE   . 33C9           XOR ECX,ECX
 -----
 
-ECX���W�X�^���������iXOR ?,?�͏������ł�����o���Ă����܂��傤�j
+ECXレジスタを初期化（XOR ?,?は初期化ですから覚えておきましょう）
 
 -----
 00401200   > BF 08314000    MOV EDI,crkme03.00403108                 ;  ASCII "vP12NGgoQa"
 -----
 
-����́c�������ۂ����̂��������Ă܂��ˁB
+これは…正解っぽいものが代入されてますね。
 
 -----
 00401205   . 8A0439         MOV AL,BYTE PTR DS:[ECX+EDI]
 -----
 
-��قǂ̐������ۂ��p�X����1�������������Ă��܂��B
+先ほどの正解っぽいパスから1文字が代入されています。
 
 -----
 00401208   . 8BD9           MOV EBX,ECX
@@ -876,16 +876,16 @@ ECX���W�X�^���������iXOR ?,?�͏������ł�����o���Ă����܂��傤�j
 0040120F   . 3A0431         CMP AL,BYTE PTR DS:[ECX+ESI]
 -----
 
-�����Ă��ꂪ�����炭��r�����ł��낤�Ƃ������Ƃ͗e�Ղɑz�������܂��ˁB
-CMP���߂����ɃA���V�C�ł��B
+そしてこれがおそらく比較部分であろうということは容易に想像がつきますね。
+CMP命令が特にアヤシイです。
 
 -----
 00401212   . 75 1F          JNZ SHORT crkme03.00401233
 -----
 
-����ɁA00401233���s�������b�Z�[�W���o�͂���A�h���X�ɔ�Ԃ��Ƃ���A����
-���_��Z�t���O�������Ă��邩�~��Ă��邩�������ꂪ�������s�������𕪂��鋫
-�ڂɂȂ�Ƃ������Ƃł��B
+さらに、00401233＝不正解メッセージを出力するアドレスに飛ぶことから、この
+時点でZフラグが立っているか降りているかが即これが正解か不正解かを分ける境
+目になるということです。
 
 -----
 00401214   . 41             INC ECX
@@ -893,125 +893,125 @@ CMP���߂����ɃA���V�C�ł��B
 00401218   .^72 E6          JB SHORT crkme03.00401200
 -----
 
-�ŁA1������r������͎��̕����𒲂ׂ�̂ł��傤���B
+で、1文字比較した後は次の文字を調べるのでしょうか。
 
-�i�ȉ��͏�̕��ɏ������̂ŏȗ��j
+（以下は上の方に書いたので省略）
 
-�ƂȂ��Ă��܂��B
+となっています。
 
-�@�����ŁA00401200�`00401218���V���A�����`�F�b�N���郋�[�`���ɂȂ��Ă���
-���Ƃ͂������킩�肾�Ǝv���܂����A�X�e�b�v���s��i�߂Ă����ƁA���߂ɉ���
-�āA�ǂ�ǂ񃌃W�X�^��t���O���ω����Ă����̂��킩��܂��B����ɁA���W�X
-�^�̓_�u���N���b�N�ŏ��������E�B���h�E���ł܂����A�t���O�͈�x�N���b�N��
-�Ă���0��1���ω����܂��B�t��������ƁA�t�A�Z���u�����X�g�̉��ɂ���{�b
-�N�X�쒆�ɕ\������Ă��郌�W�X�^�̒��g�Ȃǂł����A�E�N���b�N���ăf�[�^�C
-����I�ԂƏ��������E�B���h�E���o�����܂��B���̂悤�ɂǂ�����ł�Olly�̏�
-�ŗx���Ă���v���O�����͏��������������܂��̂ŁA�Ƃɂ��������������Ȃ���
-�i�߂čs���ƁA�����ꋭ���I�ɐ����ɂ��ǂ蒅���ł��傤�B�t�ɍl����΁A����
-�������ӏ����p�b�`�𓖂Ă�ׂ��ӏ��ƂȂ�܂��B�p�b�`�𓖂Ă�ɂ͊Y���̖�
-�߂̏�ɃJ�[�\���𓖂Ă�Space�L�[��@���Ə���������ʂ��o�Ă��܂�����C��
-�̖��߂ɏ��������Ă��΂�낵���ł��B
-
-
-��0x06.) �Ƃ肠���������炢�c
-
-�E���s����O�ɃE�B���X�`�F�b�N�����āA�p�b�J�[�����o���Ă������ƁB
-�E�Ƃ肠����Olly��ʂ�����͑Ώۂ��N�����Ă݂Ē��߂ď����W�����Ă݂邱
-�ƁB
-�E�u���[�N�|�C���g�����s���낵�Ȃ��炫����Ɛݒ肵�A�ϋl�߂邱�ƁB
-�E�u���[�N�|�C���g���Q�l�ɁA�l��t���O�������������肵�Ȃ���p�b�`�̑Ώ�
-��T���A���邢�̓V���A�����Z�o���Ă��郋�[�`����T���ĖڕW��B�����邱�ƁB
-
-�@eagle0wl�������삳�ꂽcrackme�́AVol.1�ɂ���Vol.2�ɂ���A�ꉞ��΂݂���
-�Ȃ��̂����݂��܂��B�������A����������crackme�ɂ����炸�A�قƂ�ǂ̃N��
-�b�N�V�[���Œ�΂ɂȂ�����Ȃ̂ł����A�܂��ŏ��Ƀ^�[�Q�b�g�̃\�t�g�E�F
-�A���N�����A�ǂ������`�ŃV���A�����擾�A���邢�̓L�[�t�@�C���ł��Ȃ�ł�
-�ł����A�ǂ������֐����g�p����Ă��邩�z�����܂��B�����Ă���"Get�Ȃ񂽂�
-���񂽂�"�Ƃ��ł����A�L�[�t�@�C���Ȃ�"CreateFileA"�ɂȂ��Ă��܂��B������
-Olly�̃��x���l�[���̈ꗗ�ł��̊֐�����T���A�Ƃ肠�����u���[�N�|�C���g��
-�d�|���āA��̓X�e�b�v���s�ƃ��W�X�^�E�t���O�̏������d�˂Ȃ���ϋl�߂Ă�
-���Ƃ�����ƂɂȂ邩�Ǝv���܂��B
+　ここで、00401200〜00401218がシリアルをチェックするルーチンになっている
+ことはもうおわかりだと思いますが、ステップ実行を進めていくと、命令に応じ
+て、どんどんレジスタやフラグが変化していくのがわかります。さらに、レジス
+タはダブルクリックで書き換えウィンドウがでますし、フラグは一度クリックし
+てやると0と1が変化します。付け加えると、逆アセンブルリストの下にあるボッ
+クス野中に表示されているレジスタの中身などですが、右クリックしてデータ修
+正を選ぶと書き換えウィンドウが出現します。このようにどこからでもOllyの上
+で踊っているプログラムは書き換えが効きますので、とにかく書き換えしながら
+進めて行くと、いずれ強制的に正解にたどり着くでしょう。逆に考えれば、書き
+換えた箇所がパッチを当てるべき箇所となります。パッチを当てるには該当の命
+令の上にカーソルを当ててSpaceキーを叩くと書き換え画面が出てきますから任意
+の命令に書き換えてやればよろしいです。
 
 
-��0x07.) ������
+■0x06.) とりあえずおさらい…
 
-�@���āA�����܂łƂ肠�����ǂ�ł������������܂��ȗ���͂��߂�c����
-�H�@�Ǝv���܂��̂ŁA�uDigital Travesia�v����̃R���e���c�AOllydbg Q&A����
-�肠������ǂ���Ί�b�m���Ƃ��Ă͂قڊ����ɂȂ�Ǝv���܂��̂ŁA����ǂ�
-�ł����Ă��������B�܂����p�͂�{�����߂�crackme�ɂ��ǂ�ǂ񒧐킵�Ă�����
-�����Ɛg�ɕt���͂��ł��B���̍ۂ͐��񂻂���ӂɂ���eagle0wl's crackme tut
-orial���E���Ă��܂��傤�B�Ƃ肠�������̃��x���ɒB���邽�߂ɂ͌o��������
-�������͂��Ȃ̂ŁA�Ƃɂ����������Ȃ��΃��x���A�b�v���邱�Ɛ��������ł��B
-�@���āA�ȏ㉽������Ȃǂ���Ύ󂯕t���܂��̂ŁA�ق��ɂ����z�Ƃ��A���Əd
-�v�ł����ԈႢ�Ȃǂ���΃��[�����Ђ��肢���܂��B
+・実行する前にウィルスチェックをして、パッカーを検出しておくこと。
+・とりあえずOllyを通さず解析対象を起動してみて眺めて情報収集をしてみるこ
+と。
+・ブレークポイントを試行錯誤しながらきちんと設定し、煮詰めること。
+・ブレークポイントを参考に、値やフラグを書き換えたりしながらパッチの対象
+を探し、あるいはシリアルを算出しているルーチンを探して目標を達成すること。
 
-�@�ł͂܂�������܂��傤�B
+　eagle0wl氏が制作されたcrackmeは、Vol.1にせよVol.2にせよ、一応定石みたい
+なものが存在します。もちろん、こういったcrackmeにかぎらず、ほとんどのクラ
+ックシーンで定石になるやり方なのですが、まず最初にターゲットのソフトウェ
+アを起動し、どういう形でシリアルが取得、あるいはキーファイルでもなんでも
+ですが、どういう関数が使用されているか想像します。たいていは"Getなんたら
+かんたら"とかですし、キーファイルなら"CreateFileA"になっています。そこで
+Ollyのラベルネームの一覧でその関数名を探し、とりあえずブレークポイントを
+仕掛けて、後はステップ実行とレジスタ・フラグの処理を重ねながら煮詰めてい
+くという作業になるかと思います。
 
 
+■0x07.) おわりに
 
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+　さて、ここまでとりあえず読んでいただけたら大まかな流れはつかめる…かな
+？　と思いますので、「Digital Travesia」さんのコンテンツ、Ollydbg Q&Aをと
+りあえず一読すれば基礎知識としてはほぼ完成になると思いますので、是非読ん
+でおいてください。また応用力を養うためにcrackmeにもどんどん挑戦していけば
+自ずと身に付くはずです。その際は是非そこら辺にあるeagle0wl's crackme tut
+orialを拾ってきましょう。とりあえず一定のレベルに達するためには経験がもの
+をいうはずなので、とにかく数をこなせばレベルアップすること請け合いです。
+　さて、以上何か質問などあれば受け付けますので、ほかにも感想とか、あと重
+要ですが間違いなどあればメールぜひお願いします。
 
---- ��4��: C# Programming 0x1 ---
+　ではまたお会いしましょう。
 
-���ҁFWill
+
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
+--- 第4章: C# Programming 0x1 ---
 
-��0x01.) ����쐬����\�t�g
+著者：Will
 
-�@�O���.NET�A�v���P�[�V��������͂��鎞�Ɏg�p�����AReflector�̕�������
-�{��ɕϊ�����\�t�g���쐬���܂��B
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x02.) �p��
+■0x01.) 今回作成するソフト
 
-���g�p�\�t�g
+　前回の.NETアプリケーションを解析する時に使用した、Reflectorの文字列を日
+本語に変換するソフトを作成します。
 
-�EVisual C# 2005 Express Edition�i�p��Łj
-�@�C���X�g�[���ς݂�O��ɐi�߂܂��B
+
+■0x02.) 用意
+
+●使用ソフト
+
+・Visual C# 2005 Express Edition（英語版）
+　インストール済みを前提に進めます。
 http://msdn.microsoft.com/vstudio/express/visualcsharp/
 
-�EStirling
+・Stirling
 http://www.vector.co.jp/soft/win95/util/se079072.html
-�@�@�@�@�@�@�@
-�E�\�[�X�R�[�h
+　　　　　　　
+・ソースコード
 http://will.wbjapan.com/archive/programming/source/RDforNET.zip
 
-�E����`�����C
+・かる〜いやる気
 
 
-��0x03.) �O����
+■0x03.) 前準備
 
-�@�܂���Reflector�ŋt�R���p�C������crackme0xc���̕�������Q�l�ɂ���ƁA
-�u\u4e0d\u6b63\u306a\u30d1\u30b9\u3067\u3059�v�́u�s���ȃp�X�ł��v���Ƃ�
-�����Ƃ��킩��܂��B
-�@�Ȃ��A.NET�A�v���P�[�V�����ł͕������UNICODE�ň����Ă���̂ŁA1����
-���Ƃɂ킯��ƁA�u4e0d�v�u6b63�v�u306a�v�u30d1�v�u30b9�v�u3067�v�u3059�v
-�ƂȂ�܂��B�����Stirling�̃L�����N�^�[�Z�b�g��UNICODE�ɂ��āA���͂����
-���ꂼ��ɑΉ������������\�������͂��Ȃ̂ł����A�\������܂���B�����ŁA
-���������g���G���f�B�A���Ƃ݂āu4e0d�v���u0d4e�v����͂��Ă݂�Ɓu�s�v
-�ƕ\������܂����B
+　まずはReflectorで逆コンパイルしたcrackme0xc内の文字列を参考にすると、
+「\u4e0d\u6b63\u306a\u30d1\u30b9\u3067\u3059」は「不正なパスです」だとい
+うことがわかります。
+　なお、.NETアプリケーションでは文字列はUNICODEで扱われているので、1文字
+ごとにわけると、「4e0d」「6b63」「306a」「30d1」「30b9」「3067」「3059」
+となります。これをStirlingのキャラクターセットをUNICODEにして、入力すれば
+それぞれに対応した文字が表示されるはずなのですが、表示されません。そこで、
+これらをリトルエンディアンとみて「4e0d」を「0d4e」を入力してみると「不」
+と表示されました。
 
-�@���̂��Ƃ���u\u�v����؂蕶���ɂ��ĕϊ�����\�t�g���쐬����΂����̂�
-�����G�X�P�[�v�V�[�P���X��Reflector��ASCII�����͕��ʂɏo�͂���Ȃǂ̗�O
-�����邽�߁A���������ז����������ƂɂȂ��Ă��܂��܂��B
-�@�����ō���͕ʂ̕��@���Ƃ邱�Ƃɂ��܂��B�F�X�ƒ��ׂ����ʁA�������UNIC
-ODE�𒼐ڎw�肵�Ă�OK�Ȃ悤�Ȃ̂ŁA���͂��ꂽ��������\�[�X�R�[�h�ɑ}���A
-�����ăR���p�C���Ƃ������@�ō쐬���Ă݂܂����B
+　このことから「\u」を区切り文字にして変換するソフトを作成すればいいので
+すがエスケープシーケンスやReflectorはASCII文字は普通に出力するなどの例外
+があるため、けっこう邪魔くさいことになってしまいます。
+　そこで今回は別の方法をとることにします。色々と調べた結果、文字列にUNIC
+ODEを直接指定してもOKなようなので、入力された文字列をソースコードに挿入、
+そしてコンパイルという方法で作成してみました。
 
 
-��0x04.) �\�[�X�R�[�h�̉��
+■0x04.) ソースコードの解説
 
-�@�ȉ��̏����Ō��̕�������擾���܂��B�\�[�X�R�[�h�̐����̓R�����g������
-���������B
+　以下の処理で元の文字列を取得します。ソースコードの説明はコメントを見て
+ください。
 
 -----
 private void decode_button_Click(object sender, EventArgs e)
 {
-    //System.CodeDom.Compiler.ICodeCompiler�͔p�~�\��Ȃ̂Ŏg�p���Ȃ��������悢
+    //System.CodeDom.Compiler.ICodeCompilerは廃止予定なので使用しない方ががよい
     Microsoft.CSharp.CSharpCodeProvider CSharpcompiler = new Microsoft.CSharp.CSharpCodeProvider();
     System.Diagnostics.Process process = null;
     string source = null;
@@ -1019,9 +1019,9 @@ private void decode_button_Click(object sender, EventArgs e)
     System.CodeDom.Compiler.CompilerParameters compilerParameters = new System.CodeDom.Compiler.CompilerParameters();
     System.CodeDom.Compiler.CompilerResults compilerResults;
 
-    //�R���p�C���̃I�v�V����
+    //コンパイラのオプション
     compilerParameters.IncludeDebugInformation = false;
-    compilerParameters.CompilerOptions += "/target:winexe";//�����t���Ȃ��ƃR���\�[���A�v���P�[�V�����ɂȂ�B
+    compilerParameters.CompilerOptions += "/target:winexe";//これを付けないとコンソールアプリケーションになる。
     compilerParameters.GenerateExecutable = true;
     compilerParameters.ReferencedAssemblies.AddRange(new string[]
     {
@@ -1035,19 +1035,19 @@ private void decode_button_Click(object sender, EventArgs e)
         source += str.ReadLine();
     }
 
-�@�@//�}��
+　　//挿入
     source += "Clipboard.SetDataObject(\"" + string_textBox.Text + "\", true);";
     source += str.ReadToEnd();
     str.Close();
 
-    //�R���p�C���J�n
+    //コンパイル開始
     compilerResults = CSharpcompiler.CompileAssemblyFromSource(compilerParameters, source);
 
      if (compilerResults.Errors.Count == 0)
     {
         process = System.Diagnostics.Process.Start(compilerParameters.OutputAssembly);
 
-        //�I������܂ő҂�
+        //終了するまで待つ
         process.WaitForExit();
         IDataObject iData = Clipboard.GetDataObject();
 
@@ -1062,35 +1062,35 @@ private void decode_button_Click(object sender, EventArgs e)
     }
 -----
 
-�@�\�[�X�R�[�h�̓��e�Ƃ��Ă͓��͂��ꂽ�������source.txt�̃\�[�X�R�[�h��
-�}�����ăR���p�C�����܂��B�Ȃ��A�R���p�C���Ő������ꂽ�A�v���P�[�V������
-��������N���b�v�{�[�h�ɓ]�����鏈�������܂��B�]�����I���΁A�]�����ꂽ
-��������e�L�X�g�{�b�N�X�ɕ\�����ďI���ł��B
+　ソースコードの内容としては入力された文字列をsource.txtのソースコードに
+挿入してコンパイルします。なお、コンパイルで生成されたアプリケーションは
+文字列をクリップボードに転送する処理をします。転送が終われば、転送された
+文字列をテキストボックスに表示して終わりです。
 
 
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- ��5��: �}���m�� vol.1 ---
+--- 第5章: マメ知識 vol.1 ---
 
-���ҁFTaka John Brunkhorst
+著者：Taka John Brunkhorst
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@����m���Ă������炢���𗧂�������Ȃ��Ƃ����}���m�����Љ�Ă���
-�܂��B
+　これ知っておいたらいつか役立つかもしれないというマメ知識を紹介していき
+ます。
 
 
-��0x02.) sudo��root�V�F���ɂȂ��ėV��
+■0x02.) sudoでrootシェルになって遊ぶ
 
-�@sudo�͌䑶���̒ʂ�root�����ŉ��������s����ꍇ�Ɏg���܂��B�Ƃ����Ă���
-���ł͕ʂ�visudo���ǁ[�̂��[�̂�sudoers���ǁ[�̂��[�̂��͏����܂���B��
-�i��sudo passwd�݂����Ɏg���܂����A�����sudo��root�V�F�����J���܂��B
+　sudoは御存じの通りroot権限で何かを実行する場合に使います。といってもこ
+こでは別にvisudoがどーのこーのやsudoersがどーのこーのやらは書きません。普
+段はsudo passwdみたいに使いますが、今回はsudoでrootシェルを開きます。
 
 -----
 sudo vi
@@ -1098,16 +1098,16 @@ sudo vi
 bash~#
 ------
 
-�@���႟��͍D���Ȃ����V��ł��������B
+　じゃぁ後は好きなだけ遊んでください。
 
 
-��0x03.) perl�ŃV�F��������ėV��
+■0x03.) perlでシェルを作って遊ぶ
 
-�@�����ł�Peerl���g���ă����[�g�V�F���p��CGI������ėV�т܂��B������̕�
-�̓X�N���b�`����R�[�h���Ȃ��Ƃ��D�G�ȃX�N���v�g���o����Ă���܂��B���
-�����̃j�[�Y��hack���Ă��������B
+　ここではPeerlを使ってリモートシェル用のCGIを作って遊びます。こちらの方
+はスクラッチからコードしなくとも優秀なスクリプトが出回っております。後は
+自分のニーズにhackしてください。
 
-�@�C�ɓ����Ă���X�N���v�g���Љ�v���܂��iby ���܁j�B
+　気に入っているスクリプトを紹介致します（by がま）。
 
 -----
 $ownname="http://$ENV{'SERVER_NAME'}$ENV{'SCRIPT_NAME'}";
@@ -1188,10 +1188,10 @@ sub pwd {
 -----
 
 
-��0x04.) PHP�ŃV�F��������ėV��
+■0x04.) PHPでシェルを作って遊ぶ
 
-�@PHP�ł̃����[�g�V�F����safe_mode�ŋN������Ă��Ȃ��ꍇ�Ɏg�p�ł��܂��B
-�ȉ��͂��Ȃ�x�[�V�b�N�Ȃ��̂ł��B��͎��R��mod���Ă��������B
+　PHPでのリモートシェルはsafe_modeで起動されていない場合に使用できます。
+以下はかなりベーシックなものです。後は自由にmodしてください。
 
 -----
 <html><body>
@@ -1215,89 +1215,89 @@ endif;
 -----
 
 
-��0x05.) man�y�[�W�̍\��
+■0x05.) manページの構造
 
-�@man�y�[�W�͌䑶���̒ʂ�K�v�s���ł��B�傫���A�v���P�[�V�����͓��R�̂�
-�ƂȂ���man�y�[�W���ł����ł��B������man�y�[�W�̍\���������Ă����ƁA�u/�v
-�Ɓun�v�΂���������Ă������葬���K�v�ȏ����Q�b�g���邱�Ƃ��ł��܂��B
-
-=====================================================================
-�Z�N�V���� | ���e
-=====================================================================
-1          | �o�C�i����V�F���R�}���h
----------------------------------------------------------------------
-8          | �V�X�e���Ǘ��֌W�̃R�}���h
----------------------------------------------------------------------
-2          | �V�X�e���R�[��
----------------------------------------------------------------------
-3          | ���C�u�����R�[��
----------------------------------------------------------------------
-4          | /dev/�Ȃǂ̓��ʂȃt�@�C��
----------------------------------------------------------------------
-5          | �t�@�C���t�H�[�}�b�g�Ȃ�
----------------------------------------------------------------------
-6          | �Q�[���֌W
----------------------------------------------------------------------
-7          | �}�N���p�b�P�[�W�Ȃ�
----------------------------------------------------------------------
-9          | �J�[�l�����[�`��
----------------------------------------------------------------------
-N          | Tcl/TK�R�}���h
-=====================================================================
-
-��man�y�[�W�t�H�[�}�b�g
+　manページは御存じの通り必要不可欠です。大きいアプリケーションは当然のこ
+とながらmanページがでかいです。そこでmanページの構造をしっておくと、「/」
+と「n」ばかりを押しているよりより速く必要な情報をゲットすることができます。
 
 =====================================================================
-Name          | ���̖��̒ʂ�u���O�v�ł��B�悭����ɂ��Ă̐���������܂��B
+セクション | 内容
+=====================================================================
+1          | バイナリやシェルコマンド
 ---------------------------------------------------------------------
-Synoposis     | syntax�Ȃǂ̐���
+8          | システム管理関係のコマンド
 ---------------------------------------------------------------------
-Description   | ���̃A�v���P�[�V�����Ȃǂ̐���������܂�
+2          | システムコール
 ---------------------------------------------------------------------
-Options       | �I�v�V����
+3          | ライブラリコール
 ---------------------------------------------------------------------
-Return Values | �����͂��܂茩�|���܂��񂪁A�t�@���N�V�������^�[���o�����[���L�q����Ă���悤�ł��B
+4          | /dev/などの特別なファイル
 ---------------------------------------------------------------------
-See also      | ����Ɋւ��Ă���man�y�[�W�A�܂�conf�Ȃǂւ�man�y�[�W�ւ̃����N������܂�
+5          | ファイルフォーマットなど
 ---------------------------------------------------------------------
-Bugs          | ���ݔ��o���Ă���o�O�Ȃǂ����X�g����Ă��܂�
+6          | ゲーム関係
 ---------------------------------------------------------------------
-Files         | �ݒ�t�@�C���iconf�t�@�C���j�ȂǁA���̃A�v���P�[�V�����Ɋ֘A���Ă���t�@�C����������Ă���܂��B
+7          | マクロパッケージなど
 ---------------------------------------------------------------------
-Copying       | ���C�Z���X
+9          | カーネルルーチン
 ---------------------------------------------------------------------
-Authors       | ���C���f�x���b�p���̓����[�X�����l�Ȃ�
+N          | Tcl/TKコマンド
 =====================================================================
 
-�����܂�
+●manページフォーマット
 
-�@man :num: app �œ���̃Z�N�V����������\�����邱�Ƃ��ł��܂��B:num:�ɂ�
-�Z�N�V�����i���o�[�����Ă��������B
+=====================================================================
+Name          | その名の通り「名前」です。よくそれについての説明があります。
+---------------------------------------------------------------------
+Synoposis     | syntaxなどの説明
+---------------------------------------------------------------------
+Description   | そのアプリケーションなどの説明があります
+---------------------------------------------------------------------
+Options       | オプション
+---------------------------------------------------------------------
+Return Values | 自分はあまり見掛けませんが、ファンクションリターンバリューが記述されているようです。
+---------------------------------------------------------------------
+See also      | それに関しているmanページ、まはconfなどへのmanページへのリンクがあります
+---------------------------------------------------------------------
+Bugs          | 現在発覚しているバグなどがリストされています
+---------------------------------------------------------------------
+Files         | 設定ファイル（confファイル）など、そのアプリケーションに関連しているファイルが書かれてあります。
+---------------------------------------------------------------------
+Copying       | ライセンス
+---------------------------------------------------------------------
+Authors       | メインデベロッパ又はリリースした人など
+=====================================================================
+
+●おまけ
+
+　man :num: app で特定のセクションだけを表示することができます。:num:には
+セクションナンバーを入れてください。
 
 
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- ��6��: �n�j�[�|�b�g����낤�i�A�ڑ�7��j ---
+--- 第6章: ハニーポットを作ろう（連載第7回） ---
 
-���ҁFNarusase
+著者：Narusase
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@�O���honeyd��arpd�̘A�g�Ɋւ��Đ������s���A������Ƃ��������o�肵��
-�����B����͂��̉𓚂�honeyd�̉��z�l�b�g���[�N�@�\�ɂ��Đ������܂��B
+　前回はhoneydとarpdの連携に関して説明を行い、ちょっとした問題を出題しま
+した。今回はその解答とhoneydの仮想ネットワーク機能について説明します。
 
 
-��0x02.) ��
+■0x02.) 解答
 
-�@�܂��A���L�̂悤�ȃl�b�g���[�N�����肵�܂��B
-�@A�̓|�[�g�X�L�������s���}�V���ŁAB��honeyd�Ɠ����IP���w�肵��PC�Ƃ���
-���B
+　まず、下記のようなネットワークを仮定します。
+　Aはポートスキャンを行うマシンで、Bはhoneydと同一のIPを指定したPCとしま
+す。
 
  +--+
  |HP|
@@ -1309,335 +1309,335 @@ x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 |A| |B|
 +-+ +-+
 
-�@�����ŁAB����~���̏ꍇ�AA�ɂ��|�[�g�X�L�����ł͂܂��AB��IP�A�h���X��
-�΂���ARP���N�G�X�g�����M����܂��BHP���arpd��ARP���N�G�X�g���󂯎���
-���������IP�ɑ΂���ARP���N�G�X�g�𑗐M���A��莞�ԑ҂��܂��A���RB�͒�~
-���ł��̂ŉ��������ł��܂���B��莞�Ԃ��߂���ƁAHP�͂���IP��MAC�A�h���X
-��HP�̂��̂���ARP���X�|���X��Ԃ��܂��B����ɂ���āAA��HP��B�ł���Ǝv��
-���ށA������ARP Spoofing������������ԂɂȂ�AB�ɑ΂���A�N�Z�X�͑S��H
-P���󂯎���悤�ɂȂ�܂��B
-�@�����ŁAB���N�������Ƃ��܂��B���̏ꍇ�AA�͂܂�HP��B�ł���Ǝv������ł�
-�܂����A����B�ɑ΂���ARP���N�G�X�g�����������ꍇ�AHP���arpd�͎��������M
-����ARP���N�G�X�g�ɑ΂��ĕԓ������邽�߁AARP Spoofing���s���܂���B
-�@���������āAA��B�̖{����MAC�A�h���X��B�����ARP���X�|���X�Œm�邱�Ƃ���
-���A�ȍ~�͐�����B�ɑ΂��ĒʐM���s����悤�ɂȂ�܂��B
+　ここで、Bが停止中の場合、Aによるポートスキャンではまず、BのIPアドレスに
+対するARPリクエストが送信されます。HP上のarpdはARPリクエストを受け取ると
+自らも同じIPに対するARPリクエストを送信し、一定時間待ちます、当然Bは停止
+中ですので何も反応できません。一定時間が過ぎると、HPはそのIPのMACアドレス
+はHPのものだとARPレスポンスを返します。これによって、AはHPがBであると思い
+こむ、いわゆるARP Spoofingが成功した状態になり、Bに対するアクセスは全てH
+Pが受け取れるようになります。
+　ここで、Bが起動したとします。この場合、AはまだHPがBであると思いこんでい
+ますが、次にBに対するARPリクエストが発生した場合、HP上のarpdは自分が送信
+するARPリクエストに対して返答があるため、ARP Spoofingを行いません。
+　したがって、AはBの本当のMACアドレスをBからのARPレスポンスで知ることがで
+き、以降は正しくBに対して通信を行えるようになります。
 
-�@�ȏ�ŉ𓚂͏I���ł��B
-�@�ǂ��ł������H�@�v�����ʂ�ł������H����Ƃ��c�B
+　以上で解答は終わりです。
+　どうでしたか？　思った通りでしたか？それとも…。
 
-�@�Ƃ����킯�ŁA��������{�҂ɓ����Ă��������Ǝv���܂��B
+　というわけで、ここから本編に入っていきたいと思います。
 
 
-��0x03.) ���z�l�b�g���[�N�@�\
+■0x03.) 仮想ネットワーク機能
 
-�@honeyd�ɂ͉��z�I�ȃl�b�g���[�N�𐶐����A���z�l�b�g���[�N��ɉ��z�I��PC
-��ݒu���邱�Ƃ��ł���G�~�����[�V�����@�\������Ă��܂��B�����ł͂��̃G
-�~�����[�V�����@�\�̂������z�l�b�g���[�N�@�\�̐ݒ�ɂ��ďq�ׂĂ����܂��B
+　honeydには仮想的なネットワークを生成し、仮想ネットワーク上に仮想的なPC
+を設置することができるエミュレーション機能を備えています。ここではこのエ
+ミュレーション機能のうち仮想ネットワーク機能の設定について述べていきます。
 
-�@honeyd�̉��z�I�ȃl�b�g���[�N�̐ݒ�̗���Ƃ��Ă͎��̂悤�Ȍ`�ɂȂ�܂��B
+　honeydの仮想的なネットワークの設定の流れとしては次のような形になります。
 
-1�F�V�������[�^��IP�A�h���X�̊��蓖�ĂƉ��z�I��PC�̐ݒu�iroute�j
-2�F���[�^�̃��[�e�B���O�e�[�u���̒ǉ��iroute link�j
-3�F��ʓI�ȉ��z�I��PC�̑����̃e���v���[�g�̍쐬�icreate�j
-4�F�e���v���[�g�̊�{�I�Ȑݒ�iset�j
-5�F�e���v���[�g�̊g���I�Ȑݒ�iadd�j
-6�F�X�̉��z�I��PC�̑����̐ݒ�ibind�Aset�j
+1：新しいルータのIPアドレスの割り当てと仮想的なPCの設置（route）
+2：ルータのルーティングテーブルの追加（route link）
+3：一般的な仮想的なPCの属性のテンプレートの作成（create）
+4：テンプレートの基本的な設定（set）
+5：テンプレートの拡張的な設定（add）
+6：個々の仮想的なPCの属性の設定（bind、set）
 
-�@����A��ɐ������s���̂�1��2�̕����ɂȂ�܂��B
+　今回、主に説明を行うのは1と2の部分になります。
 
-�@�ł͑����A���ۂ̐ݒ�t�@�C�����쐬���t�@�C���̃R�����g�Ƃ��ď��ɐ�����
-�s�������Ǝv���܂��B
+　では早速、実際の設定ファイルを作成しファイルのコメントとして順に説明を
+行いたいと思います。
 
 -----
 vi /usr/local/share/honeyd/config
 
-# �V�������z�I�ȃ��[�^���쐬���A���z�I��IP�A�h���X�Ƃ���
-# 192.168.1.2�����蓖�Ă܂��B
-# �܂��A���̃��[�^�����ڒʐM�ł���͈͂Ƃ���192.168.1.2/32��
-# �l�b�g���[�N��ݒ肵�܂��B
-# �C���[�W�Ƃ��Ă͊��ɂ���l�b�g���[�N�Ƀ��[�^��ݒu���銴���ł��B
+# 新しい仮想的なルータを作成し、仮想的なIPアドレスとして
+# 192.168.1.2を割り当てます。
+# また、そのルータが直接通信できる範囲として192.168.1.2/32の
+# ネットワークを設定します。
+# イメージとしては既にあるネットワークにルータを設置する感じです。
 route entry 192.168.1.2 network 192.168.1.2/32
 
-# ���[�^192.168.1.2�̃��[�e�B���O�e�[�u���ɒ��ڒʐM�\��
-# �l�b�g���[�N�Ƃ���192.168.1.2/32�̃l�b�g���[�N��ǉ����܂��B
+# ルータ192.168.1.2のルーティングテーブルに直接通信可能な
+# ネットワークとして192.168.1.2/32のネットワークを追加します。
 route 192.168.1.2 link 192.168.1.2/32
 
-# ���[�^192.168.1.2�̃��[�e�B���O�e�[�u���ɒ��ڒʐM�\��
-# �l�b�g���[�N�Ƃ���192.168.2.0/25�̃l�b�g���[�N��ǉ����܂��B
+# ルータ192.168.1.2のルーティングテーブルに直接通信可能な
+# ネットワークとして192.168.2.0/25のネットワークを追加します。
 route 192.168.1.2 link 192.168.2.0/25
 
-# ���[�^192.168.1.2�̉��z�l�b�g���[�N�ɐV���ȉ��z���[�^��ǉ����A
-# IP�A�h���X�Ƃ���192.168.2.2�����蓖�Ă܂��B
-# �܂��A���̃��[�^�����ڒʐM�ł���͈͂Ƃ���192.168.2.128/25��
-# �l�b�g���[�N��ݒ肵�A�f�t�H���g�̐ݒ�̉��z�I��PC��ݒu���܂��B
-# �C���[�W�Ƃ��Ă͉��z�l�b�g���[�N�̒��Ƀ��[�^�ƐV���ȃl�b�g
-# ���[�N��ݒu���銴���ł��B
-# �܂��A�I�v�V������t���邱�ƂŃl�b�g���[�N�̓����̐ݒ���\
-# �ł��B
+# ルータ192.168.1.2の仮想ネットワークに新たな仮想ルータを追加し、
+# IPアドレスとして192.168.2.2を割り当てます。
+# また、そのルータが直接通信できる範囲として192.168.2.128/25の
+# ネットワークを設定し、デフォルトの設定の仮想的なPCを設置します。
+# イメージとしては仮想ネットワークの中にルータと新たなネット
+# ワークを設置する感じです。
+# また、オプションを付けることでネットワークの特性の設定も可能
+# です。
 route 192.168.1.2 add net 192.168.2.128/25 192.168.2.2
 
 
-# ���[�^192.168.2.2�̃��[�e�B���O�e�[�u���ɒ��ڒʐM�\��
-# �l�b�g���[�N�Ƃ���192.168.2.128/25�̃l�b�g���[�N��ǉ����܂��B
+# ルータ192.168.2.2のルーティングテーブルに直接通信可能な
+# ネットワークとして192.168.2.128/25のネットワークを追加します。
 route 192.168.2.2 link 192.168.2.128/25
 
-# default �̃e���v���[�g���쐬���Ă��܂��B
+# default のテンプレートを作成しています。
 create default
 
-# default �̃e���v���[�g�ɑ΂��ăf�t�H���g�̓���Ƃ��āA
-# tcp�Audp�ɂ��Ă͑S�ăp�P�b�g���u���b�N���Aicmp�ɂ��Ă�
-# �S�Ď󂯕t����悤�ɐݒ肵�Ă��܂��B
+# default のテンプレートに対してデフォルトの動作として、
+# tcp、udpについては全てパケットをブロックし、icmpについては
+# 全て受け付けるように設定しています。
 set default default tcp action block
 set default default udp action block
 set default default icmp action open
 
-# create �ł� router �̃e���v���[�g���쐬���Ă��܂��B
+# create では router のテンプレートを作成しています。
 create router
 
-# ��i�ł� router �̃e���v���[�g�ɑ΂��� personality �Ƃ���
-# "Cisco 1601R router running IOS 12.1(5)"�����蓖�ĂĂ��܂��B
-# ������ personality �Ƃ́A���̃e���v���[�g���֘A�Â���ꂽIP
-# ���ǂ̗l��OS�AOS�̃o�[�W�����A�n�[�h�E�F�A�œ��삵�Ă���̂�
-# �ɂ��Đݒ肷����̂ł��B
-# ���i�ł� router �̃e���v���[�g�ɑ΂��ăf�t�H���g�̓���Ƃ��āA
-# tcp�ɂ��Ă͑S�ăp�P�b�g�����Z�b�g����悤�ɐݒ肵�Ă��܂��B
+# 上段では router のテンプレートに対して personality として
+# "Cisco 1601R router running IOS 12.1(5)"を割り当てています。
+# ここで personality とは、そのテンプレートが関連づけられたIP
+# がどの様なOS、OSのバージョン、ハードウェアで動作しているのか
+# について設定するものです。
+# 下段では router のテンプレートに対してデフォルトの動作として、
+# tcpについては全てパケットをリセットするように設定しています。
 set router personality "Cisco 1601R router running IOS 12.1(5)"
 set router default tcp action reset
 
-# create �ł� template �̃e���v���[�g���쐬���Ă��܂��B
+# create では template のテンプレートを作成しています。
 create template
 
-# ��i�ł� template �̃e���v���[�g�ɑ΂��� personality �Ƃ���
-# "Microsoft Windows XP Professional SP1"�����蓖�ĂĂ��܂��B
-# ���i�ł� template �̃e���v���[�g�ɑ΂��ăf�t�H���g�̓���Ƃ��āA
-# tcp�ɂ��Ă͑S�ăp�P�b�g�����Z�b�g����悤�ɐݒ肵�Ă��܂��B
+# 上段では template のテンプレートに対して personality として
+# "Microsoft Windows XP Professional SP1"を割り当てています。
+# 下段では template のテンプレートに対してデフォルトの動作として、
+# tcpについては全てパケットをリセットするように設定しています。
 set template personality "Microsoft Windows XP Professional SP1"
 set template default tcp action reset
 
-# �쐬�������[�^��IP�A�h���X�ɑ΂���router �e���v���[�g��K�p����
-# ���܂��B
-# ����bind�ɂ��Ă͍쐬�������[�^�[�Ɋւ��Ă͂�����Ɛݒ肵��
-# ���Ǝv��ʂƂ���ŁA�Z�O�����e�[�V�����ᔽ���������邽�ߕK��
-# �ݒ���s���Ă��������B
+# 作成したルータのIPアドレスに対してrouter テンプレートを適用して
+# います。
+# このbindについては作成したルーターに関してはきちんと設定しな
+# いと思わぬところで、セグメンテーション違反が発生するため必ず
+# 設定を行ってください。
 bind 192.168.1.2 router
 bind 192.168.2.2 router
 
-# template�̃e���v���[�g��K�p�������z�I��PC�����[�J����LAN��
-# �ɔz�u���Ă��܂��B
-# �Ȃ��A���̉��z�I��PC�ɃA�N�Z�X����ɂ�arpd�̏������K�v�ł��B
-# ���������āA����̓R�����g�A�E�g���Ă����܂��B
+# templateのテンプレートを適用した仮想的なPCをローカルのLAN上
+# に配置しています。
+# なお、この仮想的なPCにアクセスするにはarpdの助けが必要です。
+# したがって、今回はコメントアウトしておきます。
 # bind 192.168.1.3 template
 
-# template�̃e���v���[�g��K�p�������z�I��PC�����z�I��LAN��
-# �ɔz�u���Ă��܂��B
+# templateのテンプレートを適用した仮想的なPCを仮想的なLAN上
+# に配置しています。
 bind 192.168.2.3 template
 
-# template�̃e���v���[�g��K�p�������z�I��PC�����z�I��LAN��
-# �ɔz�u���Ă��܂��B
+# templateのテンプレートを適用した仮想的なPCを仮想的なLAN上
+# に配置しています。
 bind 192.168.2.201 template
 bind 192.168.2.202 template
 -----
 
-�@���āA����ł͂��̐ݒ�t�@�C���𑁑��������Ă݂܂��傤�B
-�@�N���̂��߂̃R�}���h�́A�ΏۂƂȂ�IP�͈̔͂������A�ݒ�t�@�C���̖��O��
-�ς�������ߎ��̂悤�ɂȂ�܂��B
+　さて、それではこの設定ファイルを早速動かしてみましょう。
+　起動のためのコマンドは、対象となるIPの範囲が増え、設定ファイルの名前が
+変わったため次のようになります。
 
 -----
 honeyd -d -f config -i eth0 -u 1000 -g 32767 192.168.1.1-192.168.2.255
 -----
 
-�@����LAN��̑��̃}�V������ping���g���āA�쐬�������z���[�^�Ɖ��zPC�ɂ���
-��ƃA�N�Z�X�ł��邩�m�F���Ă݂܂��傤�B
+　次にLAN上の他のマシンからpingを使って、作成した仮想ルータと仮想PCにきち
+んとアクセスできるか確認してみましょう。
 
 -----
 ping 192.168.1.2 -c 1
 PING 192.168.1.2 (192.168.1.2) 56(84) bytes of data.
-64 �o�C�g���� ���M�� 192.168.1.2: icmp_seq=0 ttl=64 ����=0.548�~���b
+64 バイト応答 送信元 192.168.1.2: icmp_seq=0 ttl=64 時間=0.548ミリ秒
 
---- 192.168.1.2 ping ���v ---
-���M�p�P�b�g�� 1, ��M�p�P�b�g�� 1, �p�P�b�g���� 0%, ���� 0�~���b
-rtt �ŏ�/����/�ő�/mdev = 0.548/0.548/0.548/0.000�~���b, pipe 2
+--- 192.168.1.2 ping 統計 ---
+送信パケット数 1, 受信パケット数 1, パケット損失 0%, 時間 0ミリ秒
+rtt 最小/平均/最大/mdev = 0.548/0.548/0.548/0.000ミリ秒, pipe 2
 
 ping 192.168.2.2 -c 1
 PING 192.168.2.2 (192.168.2.2) 56(84) bytes of data.
 
---- 192.168.2.2 ping ���v ---
-���M�p�P�b�g�� 1, ��M�p�P�b�g�� 0, �p�P�b�g���� 100%, ���� 0�~���b
+--- 192.168.2.2 ping 統計 ---
+送信パケット数 1, 受信パケット数 0, パケット損失 100%, 時間 0ミリ秒
 
 ping 192.168.2.3 -c 1
 PING 192.168.2.3 (192.168.2.3) 56(84) bytes of data.
 
---- 192.168.2.3 ping ���v ---
-���M�p�P�b�g�� 1, ��M�p�P�b�g�� 0, �p�P�b�g���� 100%, ���� 0�~���b
+--- 192.168.2.3 ping 統計 ---
+送信パケット数 1, 受信パケット数 0, パケット損失 100%, 時間 0ミリ秒
 
 ping 192.168.2.201 -c 1
 PING 192.168.2.201 (192.168.2.201) 56(84) bytes of data.
 
---- 192.168.2.201 ping ���v ---
-���M�p�P�b�g�� 1, ��M�p�P�b�g�� 0, �p�P�b�g���� 100%, ���� 0�~���b
+--- 192.168.2.201 ping 統計 ---
+送信パケット数 1, 受信パケット数 0, パケット損失 100%, 時間 0ミリ秒
 
 ping 192.168.2.202 -c 1
 PING 192.168.2.202 (192.168.2.202) 56(84) bytes of data.
 
---- 192.168.2.202 ping ���v ---
-���M�p�P�b�g�� 1, ��M�p�P�b�g�� 0, �p�P�b�g���� 100%, ���� 0�~���b
+--- 192.168.2.202 ping 統計 ---
+送信パケット数 1, 受信パケット数 0, パケット損失 100%, 時間 0ミリ秒
 -----
 
-�@���������ł��ˁA192.168.2.X�ɂ̓A�N�Z�X�ł��Ȃ��悤�ł��B���āA�Ȃ��ł�
-�傤���H
-�@����́Aping�𑗐M����}�V����192.168.2.0/25�ƁA192.168.2.128/25�̃l�b
-�g���[�N���ǂ��ɂ��邩�m��Ȃ����߂ł��B�܂�A���[�e�B���O�̏�񂪑���
-���Ȃ����߃l�b�g���[�N�̏ꏊ������Ȃ��Ƃ������Ƃł��B
-�@�Ƃ����킯�ŁAroute�R�}���h���g���āA�o�H����ǉ����܂��B
+　おかしいですね、192.168.2.Xにはアクセスできないようです。さて、なぜでし
+ょうか？
+　これは、pingを送信するマシンが192.168.2.0/25と、192.168.2.128/25のネッ
+トワークがどこにあるか知らないためです。つまり、ルーティングの情報が存在
+しないためネットワークの場所が解らないということです。
+　というわけで、routeコマンドを使って、経路情報を追加します。
 
 -----
 route add -net 192.168.2.0/24 gw 192.168.1.2 dev eth1
 -----
 
-�@����ŁA�ēxping�����s����Ɩ��Ȃ��������Ԃ��Ă��܂��̂ŁA����ɂ��
-�ĉ��z�I�ȃl�b�g���[�N���\�z����Ă��邱�Ƃ����邩�Ǝv���܂��B
+　これで、再度pingを実行すると問題なく反応が返ってきますので、これによっ
+て仮想的なネットワークが構築されていることが解るかと思います。
 
 
-��0x03.) ������
+■0x03.) おわりに
 
-�@�����honeyd�̃l�b�g���[�N����̊�{�I�ȋ@�\�ɂ��Đ������܂����B
-�@����́A�l�b�g���[�N����̊g���I�ȋ@�\�Ɋւ��Đ����������Ǝv���܂��B
+　今回はhoneydのネットワーク周りの基本的な機能について説明しました。
+　次回は、ネットワーク周りの拡張的な機能に関して説明したいと思います。
 
 
-
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-
---- ��7��: �p�P�b�g�t�B���^�����O�@�`�f�o�C�X�h���C�o�с` ---
-
-���ҁFKenji Aiko
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
+--- 第7章: パケットフィルタリング　〜デバイスドライバ篇〜 ---
 
-��0x01.) �͂��߂�
+著者：Kenji Aiko
 
-�@�p�P�b�g�t�B���^�����O��p�P�b�g�L���v�`���Ƃ������e�N�j�b�N�̓A�v���P
-�[�V�������x���ł��\���ɍ쐬���邱�Ƃ��\�ł��B�������A�{�i�I�Ȃ��̂���
-��Ȃ�΁A�f�o�C�X�h���C�o�𗘗p���������悢��������܂���B�Ƃ����킯�ŁA
-����̓f�o�C�X�h���C�o�𗘗p�����p�P�b�g�t�B���^�����O�i�p�P�b�g�L���v�`
-���j���s���Ă݂悤�Ǝv���܂��B�A�v���P�[�V�������x���ł̃p�P�b�g�t�B���^
-�����O�ɂ��Ắu�p�P�b�g�t�B���^�����O�@�`�A�v���P�[�V�����с`�v�i��1�j
-���Q�Ƃ��Ă��������B
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-�@�f�o�C�X�h���C�o�𗘗p�����v���O���~���O�̓���e�L�X�g�́A�uWindows De
-vice Driver Programming Part 1�v�i��2�j�ƁuWindows Device Driver Program
-ming Part 2�v�i��3�j���Q�Ƃ��Ă��������B
 
-�@����g�p����v���O�����͈ȉ��ł��B
+■0x01.) はじめに
+
+　パケットフィルタリングやパケットキャプチャといったテクニックはアプリケ
+ーションレベルでも十分に作成することが可能です。しかし、本格的なものを作
+るならば、デバイスドライバを利用した方がよいかもしれません。というわけで、
+今回はデバイスドライバを利用したパケットフィルタリング（パケットキャプチ
+ャ）を行ってみようと思います。アプリケーションレベルでのパケットフィルタ
+リングについては「パケットフィルタリング　〜アプリケーション篇〜」（※1）
+を参照してください。
+
+　デバイスドライバを利用したプログラミングの入門テキストは、「Windows De
+vice Driver Programming Part 1」（※2）と「Windows Device Driver Program
+ming Part 2」（※3）を参照してください。
+
+　今回使用するプログラムは以下です。
 
 http://ruffnex.oc.to/kenji/windriver/packet/DrvHookIp.zip
 
-�@�����āA���񎄂��g�p������́uWindowsXP + VC++.NET + DDK_XP�v�ł��B
+　そして、今回私が使用する環境は「WindowsXP + VC++.NET + DDK_XP」です。
 
-�i��1�j�p�P�b�g�t�B���^�����O�@�`�A�v���P�[�V�����с`
+（※1）パケットフィルタリング　〜アプリケーション篇〜
 http://ruffnex.oc.to/kenji/text/fire_a/
 
-�i��2�jWindows Device Driver Programming Part 1
+（※2）Windows Device Driver Programming Part 1
 http://ruffnex.oc.to/kenji/windriver/
 
-�i��3�jWindows Device Driver Programming Part 2
+（※3）Windows Device Driver Programming Part 2
 http://ruffnex.oc.to/kenji/windriver/driver2.html
 
 
-��0x02.) 2�̃A�v���[�`
+■0x02.) 2つのアプローチ
 
-�@Windows��Ńp�P�b�g�t�B���^�����O���s���ꍇ�A�����Ƃ��ȒP�ȕ��@�Ƃ���2
-�̃A�v���[�`������܂��B�܂��ЂƂڂ́uPacket Filtering API�v���g����
-�@�ł��B����͊ȒP�ȃ��[�U�[���[�h�̃A�v���P�[�V�������x���Ŏ����ł��邽
-�߁A�t�B���^�����O���s�������Ȃ�΂����Ƃ���y�ȕ��@���Ƃ����܂��B�����
-�g���΃t�@�C���[�E�H�[�����쐬���邱�Ƃ��e�Ղł��B�������A���̕��@�͂���
-�܂ł��u�t�B���^�����O�v���s�������ł���A�p�P�b�g���̂��̂��L���v�`����
-�邱�Ƃ��ł��܂���B����̓��[�U�[���[�h�A�v���P�[�V�����̌��E�Ƃ�������
-���B���Ȃ݂ɂ��̕��@�ɂ��ẮA�u�p�P�b�g�t�B���^�����O�@�`�A�v���P�[�V
-�����с`�v�i��1�j�ɂĉ�����Ă��܂��B
+　Windows上でパケットフィルタリングを行う場合、もっとも簡単な方法として2
+つのアプローチがあります。まずひとつ目は「Packet Filtering API」を使う方
+法です。これは簡単なユーザーモードのアプリケーションレベルで実装できるた
+め、フィルタリングを行うだけならばもっとも手軽な方法だといえます。これを
+使えばファイヤーウォールを作成することも容易です。しかし、この方法はあく
+までも「フィルタリング」を行うだけであり、パケットそのものをキャプチャす
+ることができません。これはユーザーモードアプリケーションの限界ともいえま
+す。ちなみにこの方法については、「パケットフィルタリング　〜アプリケーシ
+ョン篇〜」（※1）にて解説しています。
 
-�i��1�j�p�P�b�g�t�B���^�����O�@�`�A�v���P�[�V�����с`
+（※1）パケットフィルタリング　〜アプリケーション篇〜
 http://ruffnex.oc.to/kenji/text/fire_a/
 
-�@2�ڂ́uFilter Hook Driver�v���쐬������@�ł��B���̕��@�̓J�[�l�����[
-�h�̃h���C�o���쐬���APacketFilterExtensionPtr�̃R�[���o�b�N�֐���o�^��
-�܂��B�o�^��AIP�w�b�_�ȏ�̃p�P�b�g�͂��ׂăt�b�N���邱�Ƃ��\�ɂȂ�A
-�p�P�b�g�̓����𒲂ׂĔj�����邩�ʉ߂����邩�̔��f���ł��܂��B�܂��A����
-���@���ƁA�t�B���^�����O�����ł͂Ȃ��A�L���v�`�����s�����Ƃ��ł��邽�߁A
-���ɂ����낢��Ǝg���������肻���ł��B
+　2つ目は「Filter Hook Driver」を作成する方法です。この方法はカーネルモー
+ドのドライバを作成し、PacketFilterExtensionPtrのコールバック関数を登録し
+ます。登録後、IPヘッダ以上のパケットはすべてフックすることが可能になり、
+パケットの内部を調べて破棄するか通過させるかの判断ができます。また、この
+方法だと、フィルタリングだけではなく、キャプチャも行うこともできるため、
+他にもいろいろと使い道がありそうです。
 
-�@MSDN�ɂ̓t�B���^�t�b�N�Ɋւ���e�L�X�g�i��2�j������܂��B�悯��ΎQ�l��
-���Ă��������B
+　MSDNにはフィルタフックに関するテキスト（※2）があります。よければ参考に
+してください。
 
-�i��2�jFilter-Hook Drivers
+（※2）Filter-Hook Drivers
 http://msdn.microsoft.com/library/default.asp?url=/library/en-us/NetXP_r/hh/NetXP_r/fltrref_16b29dd7-dd36-4f22-a828-24a6820dfeb3.xml.asp
 
 
-��0x03.) Filter-Hook Driver
+■0x03.) Filter-Hook Driver
 
-�@�ˑR�uFilter-Hook Driver�𗘗p���܂��v�Ƃ����Ă����P��������Ȃ��̂ŁA
-�܂��́A���̊֐����݂Ă��������B�ڍׂ͌�قǐ������܂��̂ŁA�Ƃ肠������
-���̊֐��ɂ��Ă̐������s���܂��B
+　突然「Filter-Hook Driverを利用します」といわれてもワケが分からないので、
+まずは、この関数をみてください。詳細は後ほど説明しますので、とりあえずは
+この関数についての説明を行います。
 
------  PacketFilterExtensionPtr�֐�
+-----  PacketFilterExtensionPtr関数
 typedef  PF_FORWARD_ACTION 
   (*PacketFilterExtensionPtr)(
-    IN unsigned char  *PacketHeader,     // IP�w�b�_�̃A�h���X
-    IN unsigned char  *Packet,           // IP���ЂƂ�ʂ̃w�b�_�̃A�h���X
-    IN unsigned int  PacketLength,       // Packet�̃T�C�Y�i�o�C�g�P�ʁj
-    IN unsigned int  RecvInterfaceIndex, // NIC�����̎�M�p�P�b�g���擾�������Ԑ�
-    IN unsigned int  SendInterfaceIndex, // NIC�����̑��M�p�P�b�g���擾�������Ԑ�
-    IN IPAddr  RecvLinkNextHop,          // �p�P�b�g����M����NIC�̃A�h���X
-    IN IPAddr  SendLinkNextHop           // �p�P�b�g�𑗐M����NIC�̃A�h���X
+    IN unsigned char  *PacketHeader,     // IPヘッダのアドレス
+    IN unsigned char  *Packet,           // IPよりひとつ上位のヘッダのアドレス
+    IN unsigned int  PacketLength,       // Packetのサイズ（バイト単位）
+    IN unsigned int  RecvInterfaceIndex, // NICがこの受信パケットを取得した順番数
+    IN unsigned int  SendInterfaceIndex, // NICがこの送信パケットを取得した順番数
+    IN IPAddr  RecvLinkNextHop,          // パケットを受信したNICのアドレス
+    IN IPAddr  SendLinkNextHop           // パケットを送信したNICのアドレス
 ); 
 -----
 
-�@PacketHeader�͎擾����IP�w�b�_�̃A�h���X�ł��BPacket��IP���ЂƂ��
-�ɂ���v���g�R���f�[�^�iTCP��UDP�Ȃǁj�̃A�h���X�ł��BPacketLength��Pack
-et�̃T�C�Y�ł��i�o�C�g�P�ʁj�B�����Ė߂�l��PF_FORWARD_ACTION�ł����A����
-�͈ȉ��̂����ꂩ�̒l�������܂��B
+　PacketHeaderは取得したIPヘッダのアドレスです。PacketはIPよりひとつ上位
+にあるプロトコルデータ（TCPやUDPなど）のアドレスです。PacketLengthはPack
+etのサイズです（バイト単位）。そして戻り値のPF_FORWARD_ACTIONですが、これ
+は以下のいずれかの値を持ちます。
 
-�EPF_FORWARD  �p�P�b�g�����̃h���C�o�֓n���܂��i�ʉ߁j�B
-�EPF_DROP     �p�P�b�g�����̃h���C�o�֓n���܂���i�j���j�B
-�EPF_PASS     �p�P�b�g���������Ȃ��ꍇ�ɂ����Ԃ��܂��B
+・PF_FORWARD  パケットを次のドライバへ渡します（通過）。
+・PF_DROP     パケットを次のドライバへ渡しません（破棄）。
+・PF_PASS     パケットを処理しない場合にこれを返します。
 
-�@�����|�󂵂�����̏��ł��̂ŁA�Ƃ���ǂ���Ԉ���Ă����ł����A������
-����Ă����烁�[���ikenji@ruffnex.oc.to�j��������(^^;�B
+　私が翻訳した限りの情報ですので、ところどころ間違ってそうですが、もし間
+違っていたらメール（kenji@ruffnex.oc.to）ください(^^;。
 
-�@�Ƃ肠�����APacketFilterExtensionPtr�֐��Ƃ������̂��ǂ��������̂�����
-�����Ă��炦���ł��傤���B�݂Ă̒ʂ�ANIC�ɗ����p�P�b�g��IP���x���ȏ��
-�擾���邱�Ƃ��\�ł��B
+　とりあえず、PacketFilterExtensionPtr関数というものがどういうものかをわ
+かってもらえたでしょうか。みての通り、NICに流れるパケットをIPレベル以上で
+取得することが可能です。
 
-�@����ŁA���̊֐���ipfltdrv.sys�Ƃ����h���C�o�ɃZ�b�g���܂��B���̊���
-�́A�uC:\windows\system32\DRIVERS\ipfltdrv.sys�v�ɂ���܂��B���̃h���C�o
-��PacketFilterExtensionPtr�֐����Z�b�g���邱�Ƃ�NIC�𗬂��p�P�b�g���擾
-���邱�Ƃ��ł��܂��B
+　それで、この関数をipfltdrv.sysというドライバにセットします。私の環境で
+は、「C:\windows\system32\DRIVERS\ipfltdrv.sys」にあります。このドライバ
+にPacketFilterExtensionPtr関数をセットすることでNICを流れるパケットを取得
+することができます。
 
-�@�������A�c�O�Ȃ���ipfltdrv.sys��WindowsXP�ł̓f�t�H���g�œ��삵�Ă��܂�
-��B���W�X�g�������Ă����ꂪ������܂��B�uHKLM\SYSMTEM\CurrentControlSet
-\Services\IpFilterDriver�v�ɐݒ肳��Ă��܂����A�f�t�H���g�ł̓X�^�[�g��
-�ԂɂȂ��Ă��܂���B�Ȃ̂ŁA�܂��́A���̃h���C�o���X�^�[�g������K�v����
-��܂��B
+　しかし、残念ながらipfltdrv.sysはWindowsXPではデフォルトで動作していませ
+ん。レジストリを見てもそれが分かります。「HKLM\SYSMTEM\CurrentControlSet
+\Services\IpFilterDriver」に設定されていますが、デフォルトではスタート状
+態になっていません。なので、まずは、このドライバをスタートさせる必要があ
+ります。
 
 
-��0x04.) �t�B���^�����O�̗���
+■0x04.) フィルタリングの流れ
 
-�@�ŏ���ipfltdrv.sys�h���C�o���X�^�[�g�����܂��B����͒ʏ�̃h���C�o�N��
-�Ɠ��l�ɃT�[�r�X�}�l�[�W�����g�����Ƃŉ\�ł��B�����āA���ɂ����瑤���p
-�ӂ���DrvHookIp.sys�h���C�o�𓯂����T�[�r�X�}�l�[�W�����g���ăX�^�[�g����
-�܂��B����DrvHookIp.sys�h���C�o�́A�p�P�b�g���t�b�N�����邽�߂ɁAipfltdr
-v.sys�h���C�o��PacketFilterExtensionPtr�֐����Z�b�g���܂��B���Ƃ́ADrvHo
-okIp.sys�h���C�o���A�v���P�[�V�����v���O��������Ǘ����邱�ƂŃt�B���^��
-���O��p�P�b�g�L���v�`�����s�����Ƃ��ł��܂��B
+　最初にipfltdrv.sysドライバをスタートさせます。これは通常のドライバ起動
+と同様にサービスマネージャを使うことで可能です。そして、次にこちら側が用
+意したDrvHookIp.sysドライバを同じくサービスマネージャを使ってスタートさせ
+ます。このDrvHookIp.sysドライバは、パケットをフックさせるために、ipfltdr
+v.sysドライバへPacketFilterExtensionPtr関数をセットします。あとは、DrvHo
+okIp.sysドライバをアプリケーションプログラムから管理することでフィルタリ
+ングやパケットキャプチャを行うことができます。
 
 -----
 
                                       +--------------+
  +--------------+                     |              |
  | ipfltdrv.sys | ------------------> |      OS      |
- +--------------+  OS�փC���X�g�[��   |              |
+ +--------------+  OSへインストール   |              |
                                       +--------------+
 
 
@@ -1646,7 +1646,7 @@ okIp.sys�h���C�o���A�v���P�[�V�����v���O��������Ǘ����邱�ƂŃt�B���^��
                                       +--------------+
  +---------------+                    |              |
  | DrvHookIp.sys | -----------------> |      OS      |
- +---------------+  OS�փC���X�g�[��  |              |
+ +---------------+  OSへインストール  |              |
                                       +--------------+
 
 
@@ -1654,7 +1654,7 @@ okIp.sys�h���C�o���A�v���P�[�V�����v���O��������Ǘ����邱�ƂŃt�B���^��
                                       | ipfltdrv.sys |
  +---------------+                   +---------------+
  | User Mode App | ----------------> | DrvHookIp.sys |
- +---------------+ ����I�ɃA�N�Z�X  +---------------+
+ +---------------+ 定期的にアクセス  +---------------+
                                       |              |
                                       |      OS      |
                                       |              |
@@ -1662,19 +1662,19 @@ okIp.sys�h���C�o���A�v���P�[�V�����v���O��������Ǘ����邱�ƂŃt�B���^��
 
 -----
 
-�@�h���C�o��OS�փC���X�g�[�������鏈���͂��ׂă��[�U�[���[�h�̃v���O����
-���s���܂��B�܂�A���̗���̓��[�U�[���[�h�v���O��������̎��_�Ƃ�����
-���B
+　ドライバをOSへインストールさせる処理はすべてユーザーモードのプログラム
+が行います。つまり、この流れはユーザーモードプログラムからの視点といえま
+す。
 
-�@������v���O�����ɂ����̂��ȉ��ł��B
+　これをプログラムにしたのが以下です。
 
 http://ruffnex.oc.to/kenji/windriver/packet/DrvHookIpTest.cpp
 
-�@�R���\�[���A�v���P�[�V�����ƂȂ��Ă���Amain�֐���ǂ��Ă����Ə�L�̏�
-�����s���Ă���̂��킩��܂��B�܂��A�������I���ƃh���C�o��OS������
-�O���Ȃ���΂Ȃ�Ȃ��̂ŁAOS����̃A���C���X�g�[���������ǉ����Ă��܂��B
+　コンソールアプリケーションとなっており、main関数を追っていくと上記の処
+理が行われているのがわかります。また、処理が終わるとドライバはOSから取り
+外さなければならないので、OSからのアンインストール処理も追加しています。
 
-�@�p�P�b�g�̎擾�ƕ\�����s���Ă��镔���͈ȉ��̃R�[�h�ł��B
+　パケットの取得と表示を行っている部分は以下のコードです。
 
 -----  DrvHookIpTest.cpp
     unsigned char szBuffer[8192];
@@ -1702,84 +1702,84 @@ http://ruffnex.oc.to/kenji/windriver/packet/DrvHookIpTest.cpp
     }
 -----
 
-�@GetAsyncKeyState�֐��ŃL�[�{�[�h���Ď����Az�L�[�������ꂽ��I�����܂��B
-�܂��A�ŏ��ɑ�����Ă���0xFF�Ƃ����l�͎��ʎq�̖������ʂ����܂��BszBuffer
-�ɂ�IP�w�b�_���i�[����܂����A������ɂ�IP�w�b�_��1�o�C�g�ڂ�0xFF�ɂȂ邱
-�Ƃ͂��肦�܂���i���0x45�ƂȂ�j�B����āA�h���C�o�փA�N�Z�X���������
-��1�o�C�g�ڂ�0xFF�Ȃ�΁A�l�b�g���[�N�p�P�b�g���󂯂Ƃ��Ă��Ȃ��Ɣ��f���A
-1�b�̃E�F�C�g�������čēx�擾���擾�����݂܂��B
+　GetAsyncKeyState関数でキーボードを監視し、zキーが押されたら終了します。
+また、最初に代入している0xFFという値は識別子の役割を果たします。szBuffer
+にはIPヘッダが格納されますが、万が一にもIPヘッダの1バイト目が0xFFになるこ
+とはありえません（大抵0x45となる）。よって、ドライバへアクセスした後もこ
+の1バイト目が0xFFならば、ネットワークパケットを受けとっていないと判断し、
+1秒のウェイトをかけて再度取得を取得を試みます。
 
 
-��0x05.) �p�P�b�g�t�B���^�h���C�o
+■0x05.) パケットフィルタドライバ
 
-�@���āA����܂ŉ��x���o�Ă���DrvHookIp.sys�h���C�o�̃R�[�h�͈ȉ��ɂȂ��
-���B
+　さて、これまで何度か出てきたDrvHookIp.sysドライバのコードは以下になりま
+す。
 
 http://ruffnex.oc.to/kenji/windriver/packet/DrvHookIp.cpp
 
-�@DriverEntry�֐��̓h���C�o�̃C���X�g�[�����Ɏ��s����܂��B��{�I�ɏ�����
-�����s���Ă��܂���BUnloadFunction�֐������l�ɂ����܂�̏��������s���Ă�
-�܂���B
+　DriverEntry関数はドライバのインストール時に実行されます。基本的に初期化
+しか行っていません。UnloadFunction関数も同様にお決まりの処理しか行ってい
+ません。
 
-�@CreateFunction�֐��̓h���C�o���I�[�v�����ꂽ���ɌĂ΂�A�t�B���^�֐���
-�Z�b�g���s���Ă܂��B�܂�A���[�U�[�v���O������CreateFile�֐������s����
-�����ォ��A�h���C�o�̓p�P�b�g�̎�M���s�����ƂɂȂ�܂��B�����āACloseF
-unction�֐��ɂăt�B���^�֐�����������̂ŁACloseHandle�֐����Ăяo���ꂽ
-��p�P�b�g��M���I����Ƃ����킯�ł��B
+　CreateFunction関数はドライバがオープンされた時に呼ばれ、フィルタ関数の
+セットを行ってます。つまり、ユーザープログラムのCreateFile関数が実行され
+た直後から、ドライバはパケットの受信を行うことになります。そして、CloseF
+unction関数にてフィルタ関数を解除するので、CloseHandle関数が呼び出された
+らパケット受信を終えるというわけです。
 
-�@SetFilterFunction�֐��̓t�B���^�֐��̃Z�b�g���s���֐��ł��BDD_IPFLTRDR
-VR_DEVICE_NAME��ipfltdrv.sys���Ӗ����܂��B������PacketFilterFunction�֐�
-�̓Z�b�g�����t�B���^�֐��ł��B���Ēʂ�A�p�P�b�g�f�[�^���擾�����炷��
-����GetPacketData�֓n���Ă��܂��B
+　SetFilterFunction関数はフィルタ関数のセットを行う関数です。DD_IPFLTRDR
+VR_DEVICE_NAMEはipfltdrv.sysを意味します。そしてPacketFilterFunction関数
+はセットされるフィルタ関数です。見て通り、パケットデータを取得したらすぐ
+さまGetPacketDataへ渡しています。
 
-�@�h���C�o�̎�ȏ����́A�p�P�b�g�̎擾�ƕێ��A�����ă��[�U�[�v���O������
-�̉�b�����ł��B�p�P�b�g�̎擾�ƕێ��ɂ��Ă�PACKETDATA�\���̂��g���Ă�
-�܂��B
+　ドライバの主な処理は、パケットの取得と保持、そしてユーザープログラムと
+の会話部分です。パケットの取得と保持についてはPACKETDATA構造体を使ってい
+ます。
 
------  PACKETDATA�\����
+-----  PACKETDATA構造体
 typedef struct _PacketData {
-    unsigned char *pBuffer;   // �p�P�b�g�f�[�^�̃|�C���^
-    int pBufferSize;          // �p�P�b�g�f�[�^�̃T�C�Y
-    struct _PacketData *next; // ���̃p�P�b�g�f�[�^�̃|�C���^
+    unsigned char *pBuffer;   // パケットデータのポインタ
+    int pBufferSize;          // パケットデータのサイズ
+    struct _PacketData *next; // 次のパケットデータのポインタ
 } PACKETDATA, *PPACKETDATA;
 
-PPACKETDATA g_first_ppd = NULL; // ��ԌÂ��p�P�b�g�f�[�^
-PPACKETDATA g_last_ppd  = NULL; // ��ԐV�����p�P�b�g�f�[�^
+PPACKETDATA g_first_ppd = NULL; // 一番古いパケットデータ
+PPACKETDATA g_last_ppd  = NULL; // 一番新しいパケットデータ
 -----
 
-�@�p�P�b�g���擾����^�C�~���O�ƁA���[�U�[�v���O��������A�N�Z�X������^
-�C�~���O�͕K�����������ł͂Ȃ����߁A��莞�ԃh���C�o���Ńf�[�^��ێ�����
-�����K�v������܂��B���̂��߁ADrvHookIp.cpp�ł̓`�F�[�����Ƀf�[�^��A����
-��A���S���Y�����g���܂����B
+　パケットを取得するタイミングと、ユーザープログラムからアクセスがあるタ
+イミングは必ずしも同じではないため、一定時間ドライバ側でデータを保持して
+おく必要があります。そのため、DrvHookIp.cppではチェーン式にデータを連結す
+るアルゴリズムを使いました。
 
-�@����10�̃p�P�b�g��ێ����Ă���ƍl���܂��B����ƁA��ԍŏ��Ɏ擾����
-�p�P�b�g�i�Â��j�̃A�h���X��g_first_ppd�ɁA�����Ĉ�ԍŌ�Ɏ擾�����p�P�b
-�g�i�V�����j�̃A�h���X��g_last_ppd�ɓ���Ă����܂��B���̏�ԂŃ��[�U�[��
-��̃A�N�Z�X���������ꍇ�A��ԍŏ��Ɏ擾�����A��ԌÂ��p�P�b�g��n���K�v
-������܂��̂ŁAg_first_ppd���w���f�[�^��n���܂��B�����āA�n���I�����p�P
-�b�g�̃������̈�͊J�����Ag_first_ppd�͂��̎���2�ԖڂɎ擾�����p�P�b�g��
-�A�h���X�ɍX�V���܂��B
+　仮に10個のパケットを保持していると考えます。すると、一番最初に取得した
+パケット（古い）のアドレスをg_first_ppdに、そして一番最後に取得したパケッ
+ト（新しい）のアドレスをg_last_ppdに入れておきます。この状態でユーザーか
+らのアクセスがあった場合、一番最初に取得した、一番古いパケットを渡す必要
+がありますので、g_first_ppdが指すデータを渡します。そして、渡し終えたパケ
+ットのメモリ領域は開放し、g_first_ppdはその次の2番目に取得したパケットの
+アドレスに更新します。
 
-�@�܂��A���̏�ԂŁA�V����11�Ԗڂ̃p�P�b�g���擾�����ꍇ�A�V����PACKETDA
-TA�\���̃T�C�Y�̃����������蓖�āA���̃A�h���X��g_last_ppd->next�ɓ����
-���B�����āAg_last_ppd��V�������蓖�Ă�PACKETDATA�\���̂̃A�h���X�ɍX�V
-���܂��B
+　また、この状態で、新しい11番目のパケットを取得した場合、新しくPACKETDA
+TA構造体サイズのメモリを割り当て、そのアドレスをg_last_ppd->nextに入れま
+す。そして、g_last_ppdを新しく割り当てたPACKETDATA構造体のアドレスに更新
+します。
 
-�@�������邱�Ƃɂ���āA�����p�P�b�g�ƃ��[�U�[�v���O��������̃A�N�Z�X
-�̗����ɑΉ����邱�Ƃ��ł��܂��B�������s���Ă���̂��ȉ��̊֐��ł��B
+　こうすることによって、流れるパケットとユーザープログラムからのアクセス
+の両方に対応することができます。それらを行っているのが以下の関数です。
 
 -----  DrvHookIp.cpp
 PPACKETDATA GetPacketData(unsigned char *pHeader,
                           unsigned char *pBuffer,
                           int pBufferSize)
 {
-    // �\���̃������m��
+    // 構造体メモリ確保
     PPACKETDATA ppd = (PPACKETDATA)ExAllocatePool(
         NonPagedPool, sizeof(PACKETDATA));
     if(ppd == NULL)
         return NULL;
 
-    // �o�b�t�@�������m��
+    // バッファメモリ確保
     ppd->pBuffer = (unsigned char *)ExAllocatePool(
         NonPagedPool, IP_HEADER_SIZE + pBufferSize);
     if(ppd->pBuffer == NULL){
@@ -1787,16 +1787,16 @@ PPACKETDATA GetPacketData(unsigned char *pHeader,
         return NULL;
     }
 
-    // �\���̍쐬�i1�p�P�b�g�j
+    // 構造体作成（1パケット）
     RtlCopyMemory(ppd->pBuffer, pHeader, IP_HEADER_SIZE);
     RtlCopyMemory(ppd->pBuffer + IP_HEADER_SIZE, pBuffer, pBufferSize);
     ppd->pBufferSize = (IP_HEADER_SIZE + pBufferSize);
 
-    // �擾�f�[�^���}�X�N
+    // 取得データをマスク
     for(int i=0; i < ppd->pBufferSize; i++)
         ppd->pBuffer[i] = ppd->pBuffer[i] & 0xff;
 
-    // �p�P�b�g���̊֌W���X�V
+    // パケット情報の関係を更新
     if(g_last_ppd == NULL)
         g_first_ppd = ppd;
     else
@@ -1814,7 +1814,7 @@ int PutPacketData(unsigned char *pOutputBuffer,
     if(g_first_ppd == NULL)
         return 0;
 
-    // �o�b�t�@�T�C�Y���m�F���ăR�s�[
+    // バッファサイズを確認してコピー
     if(g_first_ppd->pBufferSize > pOutputBufferSize){
         MyDbgPrint("pOutputBufferSize is small.\r\n");
     }else{
@@ -1822,10 +1822,10 @@ int PutPacketData(unsigned char *pOutputBuffer,
             g_first_ppd->pBuffer, g_first_ppd->pBufferSize);
     }
 
-    // �߂�lret�ɃR�s�[�����f�[�^�̃T�C�Y����
+    // 戻り値retにコピーしたデータのサイズを代入
     int ret = g_first_ppd->pBufferSize;
 
-    // �o�͂����f�[�^���J��
+    // 出力したデータを開放
     PPACKETDATA ppd = g_first_ppd->next;
     ExFreePool(g_first_ppd->pBuffer);
     ExFreePool(g_first_ppd);
@@ -1849,22 +1849,22 @@ VOID FreePacketData(VOID)
 }
 -----
 
-�@GetPacketData�֐��͎�M�����p�P�b�g�f�[�^���i�[���郁�����̈���m�ۂ���
-���B���̊֐��́A�t�B���^�����O�֐��ł���PacketFilterFunction����Ăяo��
-��Ă��܂��B�t��PutPacketData�֐��̓��[�U�[�v���O�����̑�������܂��̂�I
-oControlFunction�֐�����Ăяo����Ă��܂��B���[�U�[�v���O��������A�N�Z
-�X����������A�f�[�^��n���A���������J�����܂��B
+　GetPacketData関数は受信したパケットデータを格納するメモリ領域を確保しま
+す。この関数は、フィルタリング関数であるPacketFilterFunctionから呼び出さ
+れています。逆にPutPacketData関数はユーザープログラムの相手をしますのでI
+oControlFunction関数から呼び出されています。ユーザープログラムからアクセ
+スがあったら、データを渡し、メモリを開放します。
 
-�@FreePacketData�́A���ݕێ����Ă��邷�ׂẴp�P�b�g�f�[�^���J������֐�
-�ł��B����̓h���C�o���N���[�Y�����Ƃ��ɌĂяo���܂��B�I�����ɂ悯����
-���������m�ۂ����܂܂��ƍs�V�������̂ŁA���̂悤�Ȋ֐���p�ӂ��Ă��܂��B
+　FreePacketDataは、現在保持しているすべてのパケットデータを開放する関数
+です。これはドライバがクローズされるときに呼び出します。終了時によけいな
+メモリを確保したままだと行儀が悪いので、このような関数を用意しています。
 
 
-��0x06.) ���s����
+■0x06.) 実行結果
 
-�@���s���ʂ͈ȉ��̂悤�ɂȂ�܂��B
+　実行結果は以下のようになります。
 
------  �R�}���h�v�����v�g
+-----  コマンドプロンプト
 C:\wb23>DrvHookIpTest
 Install c:\windows\system32\DRIVERS\ipfltdrv.sys...OK
 Install C:\wb23\DrvHookIp.sys...OK
@@ -1889,276 +1889,276 @@ Packet Capture Stop!
 Uninstall C:\wb23\DrvHookIp.sys...OK
 Uninstall c:\windows\system32\DRIVERS\ipfltdrv.sys...OK
 
-�i�����ŁAz�L�[���́j
+（ここで、zキー入力）
 
 C:\wb23>z
 -----
 
-�@�h���C�o��ʂ��āA���[�U�[�v���O�������Ńp�P�b�g���������Ă��܂��B
+　ドライバを通じて、ユーザープログラム側でパケットを処理しています。
 
 
-��0x07.) ��������
+■0x07.) さいごに
 
-�@���āA�������������ł��傤���B�f�o�C�X�h���C�o��g�߂΁A�p�P�b�g�t�B��
-�^�����O��p�P�b�g�L���v�`���Ƃ������჌�x���Ȃ��Ƃ��ȒP�Ɏ����ł��܂��B
-����͂ƂĂ��ʔ������Ƃ��Ǝv���܂��B����Ƀf�o�C�X�h���C�o�̓��A�����[�h
-�œ��삷�邽�߁A��������ԏ�̂�����ꏊ�����������邱�Ƃ��ł��܂��BDD
-K����肷��̂͑��������h�N�T�C�Ƃ���ł����A���ꂾ�����l���锭���������
-�v���܂��B������@��ɂ��ЂƂ��f�o�C�X�h���C�o�v���O���~���O��̌����Ă�
-�Ă͂������ł��傤���B
+　さて、いかがだったでしょうか。デバイスドライバを組めば、パケットフィル
+タリングやパケットキャプチャといった低レベルなことが簡単に実現できます。
+これはとても面白いことだと思います。さらにデバイスドライバはリアルモード
+で動作するため、メモリ空間上のあらゆる場所を書き換えることができます。DD
+Kを入手するのは多少メンドクサイところですが、それだけ価値ある発見があると
+思います。これを機会にぜひともデバイスドライバプログラミングを体験してみ
+てはいかがでしょうか。
 
-�@���āA�Ō�ɂȂ�܂������A�����܂œǂ�ł���Ė{���ɂ��肪�Ƃ���������
-���B
+　さて、最後になりましたが、ここまで読んでくれて本当にありがとうございま
+す。
 
-�@�ł́A�܂�����܂�...
+　では、また会う日まで...
 
 
-
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-
---- ��8��: �s�b�L���O�̎G�w ����1 ---
-
-���ҁFIPUSIRON
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
+--- 第8章: ピッキングの雑学 その1 ---
 
-��0x01.) �͂��߂�
+著者：IPUSIRON
 
-�@���N��10�����炢����s�b�L���O�M���Ăя㏸���Ă����̂ŁA�����WB�̋L��
-�̓s�b�L���O�l�^�ɂȂ�܂����B
-�@���X�s�b�L���O�l�^�͒n���ɍu���ɍX�V���Ă�����A�w�\�[�V�������B�G�G��
-���̃X�p�C����x�i�f�[�^�n�E�X���j�i��1�j�ɂ��싞���̉������@��������
-�����肵�܂������A��i�y���ăs�b�L���O�ւ̏�M����߂Ă��܂����B�Ƃ��낪
-����Ăё傫�ȏ�M���N���Ă��܂����̂ŁA�������̂��ƔM����߂�O�ɓ��ʍu
-�����s�b�L���O�ҁ��i��2�j���\�Ȍ��芮���ɋ߂Â������Ǝv���Ă��܂��B
-�@�u����A4��������170�y�[�W�𒴂���Ƃ�����e�ʂɂȂ��Ă��܂����i1HTML
-�t�@�C���ɂ��ꂾ�����l�ߍ��ނ̂����{�I�ɖ��d�c�j�A����ł��܂��u���͕s��
-�S�ȏ�ԂƂ����܂��B�����ŁA�����\�Ȍ�������W�߂Ă��܂��B�w�n�b�J�[
-�̋��ȏ��E���S�Łx�̈�ł̑������s�b�L���O���̎��W�ɉ񂵂Ă��܂��B����
-���ߐ����ɂ�����Ǝx�Ⴊ�o�n�߂Ă��܂��i��΁j�B��̓I�ɂ����΁A�C�O�T�C
-�g��C�O�t�H�[�����̃`�F�b�N�A���t�I�N�ł̗L�����̍w���A���@���w������
-��T��ł̒����Ȃǂ��s���Ă��܂��B�܂��A�喇�@���Č��X�N�[���ɂ��ʂ��\��
-�ł��i���̌��ʂ��ǂ������֌W�Ȃ��A�ʂ����҂�����������L��������Ǝv����
-���̂Łj�B����ł��l�����ł̏��̎��W�ɂ͌��E������܂��B�����ŁA�L��
-�F���񂩂���̒񋟂��W���Ă��܂��B�C�y�Ɏ���X���b�h�́u�����s�b�L��
-�O�X���v�i��3�j�ɏ�������ł��炦��Ə�����܂��B
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-�@������x��񂪏W�܂�A�̌n�����ꂽ�Ȃ�΁A�s�b�L���O�֌W�̖{�̎��M�ɂ�
-���킵�����ł��iWB��ǂ�ł��ꂽ�l�����ւ̔閧�j�B�w�s�b�L���O�̋��ȏ��x
-�Ƃ��w�s�b�L���O��S�x�Ƃ��ǂ��ł��傤���i�΁j�B�܂��A�A�J�f���C�A�p�̃s
-�b�L���O����DVD�����������Ă݂������̂ł��ˁB
 
-�y���߁z
-�i��1�jhttp://www.amazon.co.jp/exec/obidos/ASIN/4887187971/securityakade-22
-���@���w�����A���ۂɎ�ŐG��A�A�^�b�J�[�̎��_�ɗ����ƂŁA�V�����l�^��
-�A�C�f�A����ɓ����Ƃ������̃X�^�C�����m��������܂��B���׏グ��
-�����Ƃ����X�^�C���̎��@�o�[�W�����ł��ˁB���ہA���̖{�͂��������X�^�C��
-�ŏ����ꂽ�{�ł��B�Ⴆ�΁A���̖{�Ŏ��グ�����@�ł����A�n���f�B��M�@IC
-OM IC-R20��50k���A����LAN�W���}�[��70k���炢�A�g�уW���}�[��7k�`20k�A�n�[
-�h�E�F�A�^�L�[���K�[��10k�O��ƌ��\�����������Ă��܂��c�B���ɂ��u���̂���
-�ɍw���������@�i���l���猩����K���N�^�j���������񂠂�܂��B�܂������̔\
-�͂��ǂ����Ă��Ȃ����߁A�u���Ɋ��S�ɔ��f�����邱�Ƃ��ł��Ȃ��@�킪�唼
-�ł��B�������Ė{�̃l�^�ɂȂ������@�͒��������ł��B�΂̌��O�d�b�A�J�[�h��
-�[�_�[�E���C�^�[�n���܂��܂��u���ɂ��܂����f�ł��Ă��܂���B���̖�����
-�����邽�߂ɁA�d�q��H�̊w�K�Ɍq�������킯�ł��i���͓d�q��H�̔M����߂�
-���܂��܂������c�����܂����̔M���オ��͂��j�B
-�i��2�jhttp://akademeia.info/main/lecture3/tokubetu_picking.htm
-���̑O�T�[�o�[�̃A�N�Z�X���O����͂������ʁA�s�b�L���O�̍u���̓A�J�f���C
-�A���̍u���̒���3�Ԗڂ̃A�N�Z�X���ł��邱�Ƃ��킩��܂����B�����s�b�L���O
-�ɋ���������l������قǑ����Ƃ͈ӊO�ł����B���̕ӂ�̘b�͓��L�ŐG��Ă�
-�܂��B
+■0x01.) はじめに
+
+　今年の10月ぐらいからピッキング熱が再び上昇してきたので、今回のWBの記事
+はピッキングネタになりました。
+　元々ピッキングネタは地道に講座に更新していたり、『ソーシャル娘。萌絵ち
+ゃんのスパイ大作戦』（データハウス刊）（※1）にも南京錠の解錠方法を書いて
+いたりしましたが、一段楽してピッキングへの情熱が冷めていました。ところが
+今回再び大きな情熱が湧いてきましたので、いっそのこと熱が冷める前に特別講
+座＜ピッキング編＞（※2）を可能な限り完成に近づけたいと思っています。
+　講座をA4印刷すると170ページを超えるという大容量になっていますが（1HTML
+ファイルにそれだけを詰め込むのが根本的に無謀…）、それでもまだ講座は不完
+全な状態といえます。そこで、私も可能な限り情報を集めています。『ハッカー
+の教科書・完全版』の印税の多くをピッキング情報の収集に回しています。その
+ため生活にちょっと支障が出始めています（苦笑）。具体的にいえば、海外サイ
+トや海外フォーラムのチェック、ヤフオクでの有料情報の購入、実機を購入して
+手探りでの調査などを行っています。また、大枚叩いて鍵スクールにも通う予定
+です（その結果が良い悪い関係なく、通った者だけがかける記事があると思いま
+すので）。それでも個人だけでの情報の収集には限界があります。そこで、広く
+皆さんから情報の提供を募集しています。気軽に質問スレッドの「総合ピッキン
+グスレ」（※3）に書き込んでもらえると助かります。
+
+　ある程度情報が集まり、体系化されたならば、ピッキング関係の本の執筆にも
+挑戦したいです（WBを読んでくれた人だけへの秘密）。『ピッキングの教科書』
+とか『ピッキング大全』とかどうでしょうか（笑）。また、アカデメイア用のピ
+ッキング教則DVDもいずれ作ってみたいものですね。
+
+【注釈】
+（※1）http://www.amazon.co.jp/exec/obidos/ASIN/4887187971/securityakade-22
+実機を購入し、実際に手で触り、アタッカーの視点に立つことで、新しいネタや
+アイデアを手に入れるという一種のスタイルが確立しつつあります。調べ上げて
+書くというスタイルの実機バージョンですね。実際、この本はそうしたスタイル
+で書かれた本です。例えば、この本で取り上げた実機ですが、ハンディ受信機IC
+OM IC-R20は50k超、無線LANジャマーは70kぐらい、携帯ジャマーは7k〜20k、ハー
+ドウェア型キーロガーは10k前後と結構お金かかっています…。他にも講座のため
+に購入した実機（他人から見たらガラクタ）もたくさんあります。まだ自分の能
+力が追いついていないため、講座に完全に反映させることができない機器が大半
+です。こうして本のネタになった実機は珍しい方です。緑の公衆電話、カードリ
+ーダー・ライター系もまだまだ講座にうまく反映できていません。この問題を解
+決するために、電子回路の学習に繋がったわけです（今は電子回路の熱が冷めて
+しまいましたが…多分またその熱が上がるはず）。
+（※2）http://akademeia.info/main/lecture3/tokubetu_picking.htm
+この前サーバーのアクセスログを解析した結果、ピッキングの講座はアカデメイ
+ア内の講座の中で3番目のアクセス数であることがわかりました。正直ピッキング
+に興味がある人がこれほど多いとは意外でした。この辺りの話は日記で触れてい
+ます。
 http://d.hatena.ne.jp/ipusiron/20051103
-�i��3�jhttp://ruffnex.oc.to/ipusiron/cgi/forum/patio.cgi?mode=view&no=589
-���{��̃s�b�L���O���ɂ��Č���Ă���f����ڎw���B�ŏI�I�ɂ�lock
-pick101�i�C�O�T�C�g�j�𒴂������ł��B
+（※3）http://ruffnex.oc.to/ipusiron/cgi/forum/patio.cgi?mode=view&no=589
+日本一のピッキング情報について語られている掲示板を目指せ。最終的にはlock
+pick101（海外サイト）を超えたいです。
 
-�@����ł́A�s�b�L���O�⌮�J���Ɋւ��鏬�l�^���Љ�Ă��������Ǝv���܂��B
-�@�u���̂��߂ɗ~�������̕�W���ł���̂�Web�}�K�W���̂悢�Ƃ���ł��ˁB
-�G���Ȃ�M���M���ł��Ă��A�{���Ƃ��ꂪ�ł��܂��񂩂�B
-
-
-��0x02.) �����܂ɂ���
-
-�@���̌����ɐ��������āA���̊J���߂��X���[�Y�ɂ��鏁�����X�v���[������
-���܂��B���ʂ̋@�B�����g���Ă��܂��ƁA���̂��߂ɃS�~��ق��肪�t���₷��
-�Ȃ��Ă��܂��A�t�Ƀs���̓������݂��Ă��܂��̂ŁA����p�̏������łȂ����
-�Ȃ�܂���B
-�@���������������́A�s�����l�܂��Ă��܂��s�b�L���O�ł��Ȃ��Ƃ���A�{�C��
-�[�h�Ńs�b�L���O���������Ƃ��Ɏg���Ƃ悢�ł��傤�B
-�@���́A2B�`4B���炢�̉��M�̐c������ĕ�����ɂ������̂ł���p�ł��Ă���
-���܂��B�����ɓ���Đ��񌮂𔲂���������΂悢�̂ł��B
+　それでは、ピッキングや鍵開けに関する小ネタを紹介していきたいと思います。
+　講座のために欲しい情報の募集ができるのもWebマガジンのよいところですね。
+雑誌ならギリギリできても、本だとこれができませんから。
 
 
-��0x03.) Shim�s�b�N
+■0x02.) 潤滑剤について
 
-�@Shim�s�b�N�́A�싞����U���^�Ɩ{�̂̊Ԃ̌��Ԃɑ}����������̂��Ƃł��B��
-���}�����邱�Ƃɂ���āA�����I�Ƀ��b�`���������āA�싞�����J���Ă��܂�
-�̂ł��B�g�����͊ȒP�ŁA�P��U���̃��b�N����鑤�̌��Ԃɍ�������ŁA�ォ��
-�͂�����΂悢�����ł��B�ꍇ�ɂ���ẮA180�x��]������K�v������܂��B
-hackaday.com�̓�������Ă�������ق��������ł��傤�B
+　錠の鍵穴に吹きかけて、鍵の開け閉めがスムーズにする潤滑油スプレーが存在
+します。普通の機械油を使ってしまうと、油のためにゴミやほこりが付きやすく
+なってしまい、逆にピンの動きが鈍ってしまうので、鍵専用の潤滑油でなけれな
+なりません。
+　こうした潤滑油は、ピンが詰まってうまくピッキングできないときや、本気モ
+ードでピッキングをしたいときに使うとよいでしょう。
+　実は、2B〜4Bぐらいの鉛筆の芯を削って粉末状にしたものでも代用できてしま
+います。鍵穴に入れて数回鍵を抜き差しすればよいのです。
+
+
+■0x03.) Shimピック
+
+　Shimピックは、南京錠のU字型と本体の間の隙間に挿入する金属のことです。こ
+れを挿入することによって、強制的にラッチを解除して、南京錠を開けてしまう
+のです。使い方は簡単で、単にU字のロックされる側の隙間に差し込んで、上から
+力を入れればよいだけです。場合によっては、180度回転させる必要もあります。
+hackaday.comの動画を見てもらったほうが早いでしょう。
 
 http://akademeia.info/main/douga/x04d_masterlock.avi
 
-�@HPC���́uPSA-20�v�́AShim�s�b�N��20�s�[�X�������Z�b�g�ł��B�������i30�h
-���O��B�����Ƃ���ł́A40�h���߂��Ŕ����Ă���Ƃ��������̂Œ��ӂ��Ă�
-�������B�ň��l�ł�18.50�h�����������Ƃ�����܂��B
-�@�܂��A�󂫊ʂ���Shim�s�b�N�����삵�Ă��܂��L����i-hacked.com�Ŕ�������
-�����B
+　HPC製の「PSA-20」は、Shimピックが20ピース入ったセットです。実売価格30ド
+ル前後。高いところでは、40ドル近くで売っているところもあるので注意してく
+ださい。最安値では18.50ドルを見たことがあります。
+　また、空き缶からShimピックを自作してしまう記事をi-hacked.comで発見しま
+した。
 
 http://www.i-hacked.com/content/view/189/48/
 
-�@�������A����Shim�s�b�N�ŊJ�����{�̓싞����������Ȃ��̂ł��c�B100�~�V
-���b�v�Ashop 99�A���}�n���Y�Ȃǂ̓싞���𔃂�����܂������i���}�n���Y�Ŕ�
-���Ă���싞���͑S���͔����Ă��Ȃ��j�A���̂Ƃ���ЂƂ��������Ă���
-����B�J�������Ȃ���΁A�A�J�f���C�A�I���W�i���̓������邱�Ƃ��ł��܂�
-��ˁB
-�@���Ȃ݂ɁA���{�Ŕ����Ă�_�C�������킹���i�싞���Ƀ_�C�������t���Ă���
-�^�C�v�j�ł��J���܂���ł����Bhackaday.com�̓���ł̓_�C�������킹���ŊJ
-���Ă���̂ł����c�B
-�@���̐����ł͓싞���̃��b�`�\���̖�肾�Ǝv���Ă��܂��B���̃f�b�h�{��
-�g�̂悤�Ȃ��̂�����΁AShim�s�b�N�ł͊J���͂����Ȃ��ł�����c�B�ƂȂ��
-�Â��싞���łȂ���΂Ȃ�Ȃ���������܂���B���̕ӂ̏���m���Ă������
-���܂�����A�����Ă��������B
+　しかし、このShimピックで開く日本の南京錠が見つからないのです…。100円シ
+ョップ、shop 99、東急ハンズなどの南京錠を買い漁りましたが（東急ハンズで売
+られている南京錠は全部は買っていない）、今のところひとつも見つかっていま
+せん。開く錠がなければ、アカデメイアオリジナルの動画を作ることもできませ
+んね。
+　ちなみに、日本で売ってるダイヤル合わせ錠（南京錠にダイヤルが付いている
+タイプ）でも開きませんでした。hackaday.comの動画ではダイヤル合わせ錠で開
+いているのですが…。
+　私の推測では南京錠のラッチ構造の問題だと思っています。一種のデッドボル
+トのようなものがあれば、Shimピックでは開くはずがないですから…。となると
+古い南京錠でなければならないかもしれません。この辺の情報を知っている方が
+いましたら、教えてください。
 
 
-��0x04.) �s�b�N�K���_�b
+■0x04.) ピックガン神話
 
-�@�s�b�N�K���́A�e�̌`�����Ă���s�b�N�̑���ɂȂ�s�b�L���O�c�[���̂�
-�Ƃł��B�������������ƁA��[�̖_�������㉺�ɋ@�B�I�ȐU�������āA�s���ɏ�
-����^���A�u�ԓI�ɃV�A���C����Ƀs�����Ȃ���Ԃ���肠���܂��B���̂Ƃ��A
-�����Ƀe���V������������΁A�������񂵂ĊJ���ł��Ă��܂��̂ł��B
-�@�ꌩ�A�s�b�N�K���͖��̂悤�ȍH��̂悤�Ɍ����邩������܂��񂪁A�s�b�L
-���O�c�[���ł̃s�b�L���O�Ɋ���Ă��Ȃ��ƁA�s�b�N�K�����g���Ă��Ȃ��Ȃ��J
-���܂���B�{����1��ő�������̂Ȃ̂ŉ��x���J�`�J�`�������������K�v�����
-����B���x���J�`�J�`���Ȃ���΂Ȃ�Ȃ��Ƃ������Ƃ́A�s�b�N�K�������܂��g
-���Ă��Ȃ��؋��Ƃ����܂��B�C�O�̓���ɂ̓s�b�N�K���̏Љ�����Ă���V�[��
-������܂����A���܂��J���Ȃ��ŉ��x���J�`�J�`���Ă����ʂ��悭����܂��i
-��΁j�B
-�@�s�b�N�K�����g��������i�A�J�f���C�A�I���W�i���j���Љ�܂��B���͖{��
-��[�̖_���t�ɐڑ����Ȃ���΂Ȃ�܂��񂪁A�s�b�L���O���K�̓y��̉��̕���
-���ז��Ŏd���Ȃ��t�Ɏ��t���Ă��܂��B���̂��߁A�����ɂĂ������Ă���̂�
-���B
+　ピックガンは、銃の形をしているピックの代わりになるピッキングツールのこ
+とです。引き金を引くと、先端の棒部分が上下に機械的な振動をして、ピンに衝
+撃を与え、瞬間的にシアライン上にピンがない常態を作りあげます。このとき、
+鍵穴にテンションをかければ、内筒を回して開錠できてしまうのです。
+　一見、ピックガンは夢のような工具のように見えるかもしれませんが、ピッキ
+ングツールでのピッキングに慣れていないと、ピックガンを使ってもなかなか開
+きません。本当は1回で揃えるものなので何度もカチカチ引き金を引く必要ありま
+せん。何度もカチカチしなければならないということは、ピックガンがうまく使
+えていない証拠といえます。海外の動画にはピックガンの紹介をしているシーン
+がありますが、うまく開かないで何度もカチカチしている場面がよくあります（
+苦笑）。
+　ピックガンを使った動画（アカデメイアオリジナル）を紹介します。実は本来
+先端の棒を逆に接続しなければなりませんが、ピッキング練習の土台の下の部分
+が邪魔で仕方なく逆に取り付けています。そのため、解錠にてこずっているので
+す。
 
 http://akademeia.info/main/douga/akademeia_picking3.AVI
 
-�@����āA���̌����𗝉����A��Ԋ�{�ƂȂ�s�b�N�ƃe���V�����ɂ�������
-�@�ɂ��ďn�m���Ă����Ȃ���΂Ȃ�Ȃ��킯�ł��B�������čl����ƃs�b�N�K
-���̓R���N�^�[�̂��߂̃A�C�e���ƍl���Ă��悢�ł��傤�B
-�@���[���s�b�N��p���ĕ��ʂɃs�b�L���O���Ă��铮��i�A�J�f���C�A�I���W�i
-���j���Љ�Ă����܂��B
+　よって、鍵の原理を理解し、一番基本となるピックとテンションによる解錠方
+法について熟知しておかなければならないわけです。こうして考えるとピックガ
+ンはコレクターのためのアイテムと考えてもよいでしょう。
+　レールピックを用いて普通にピッキングしている動画（アカデメイアオリジナ
+ル）を紹介しておきます。
 
 http://akademeia.info/main/douga/akademeia_picking2.AVI
 
-�@�Ƃ���ŁA�d���s�b�N�K���Ƃ����s�b�N�K���̐�[�̋@�B�I�U����d�C�I�ɍ�
-��o���s�b�L���O�c�[��������܂����A����͎蓮�̃s�b�N�K���Ɣ�ׂĈ�����
-�����ł��B�������A�������[����Ȃ��قǂ��邳���ł��B
-�@�d���s�b�N�K�����g��������i�A�J�f���C�A�I���W�i���j���Љ�Ă����܂�
-�傤�B���炩�ɕ��ʂ̃s�b�N�K����肤�܂������Ă��邱�Ƃ���ڗđR�ł��ˁB
-�Ȃ��A���̓d���s�b�N�K���́uHigh Output Battery Pick�v�Ƃ�����ԕ��y����
-����^�C�v�ł��B�������i120�h���O��B�l�i�͈������ނɓ���܂��B
+　ところで、電動ピックガンというピックガンの先端の機械的振動を電気的に作
+り出すピッキングツールがありますが、これは手動のピックガンと比べて扱いや
+すいです。しかし、音が半端じゃないほどうるさいです。
+　電動ピックガンを使った動画（アカデメイアオリジナル）も紹介しておきまし
+ょう。明らかに普通のピックガンよりうまく働いていることが一目瞭然ですね。
+なお、この電動ピックガンは「High Output Battery Pick」という一番普及して
+いるタイプです。実売価格120ドル前後。値段は安い部類に入ります。
 
 http://akademeia.info/main/douga/akademeia_picking4.AVI
 
 
-��0x05.) �N���b�`�@�\�ƃN���b�`��
+■0x05.) クラッチ機構とクラッチ回し
 
-�@���֏��A���^�܂��͑�^�̏��O���ƁA�N���b�`�Ƃ����@�\���g�ݍ��܂�Ă���
-���Ƃ�����܂��B���ɁA�f�B�X�N�^���u���[���̒��ɂ̓N���b�`�@�\���݂����
-�Ă��邱�Ƃ������ł��B���̌`��̌��͓����ƈꏏ�ɃN���b�`���񂳂Ȃ��ƊJ��
-���邱�Ƃ��ł��܂���B�N���b�`���ꏏ�ɉ񂳂Ȃ��Ɠ���������]���āA�h�A��
-�J���Ȃ��̂ł��B
-�@�s�b�L���O�����܂������āA�V�A���C���������āA��������]�����Ă��J����
-����������܂��B����́A���̃N���b�`�@�\�ł��܂������J���ɓ����Ă��Ȃ���
-������̂ł��B���̂Ƃ����p���铹��A�N���b�`�񂵂ł��B�N���b�`�̍\����
-�m���Ă���΂킩��̂ł����A�t�b�N�s�b�N��傫�������悤�Ȃ��̂ł�������A
-�_�Ƀu�����N�L�[�̐�[�����i�N���b�`�ɂЂ������镔���j�����t�������̂�
-�������肵�܂��B
-�@�N���b�`�񂵂�����ۂɃe���V�����͂������܂܂ɂ��Ă����܂��B�Ƃ�����
-���g�b�v�s����������\�������邩��ł��i���ɂ���Ă܂��܂��j�B�g�����́A
-����������ԂɂȂ�����A�N���b�`�񂵂��L�[�E�F�C�ɑ}�����āA�N���b�`��
-�Ђ������Č����񂷕����ɉ񂵂܂��B�N���b�`���񂻂��Ƃ���Ƃ��Ȃ�̏d����
-������͂��ł��B
+　玄関錠、中型または大型の錠前だと、クラッチという機構が組み込まれている
+ことがあります。特に、ディスクタンブラー錠の中にはクラッチ機構が設けられ
+ていることが多いです。この形状の鍵は内筒と一緒にクラッチも回さないと開錠
+することができません。クラッチも一緒に回さないと内筒だけ回転して、ドアが
+開かないのです。
+　ピッキングがうまくいって、シアラインが揃って、内筒が回転させても開かな
+い錠があります。これは、このクラッチ機構でうまく内部カムに働いていないと
+いえるのです。このとき利用する道具が、クラッチ回しです。クラッチの構造を
+知っていればわかるのですが、フックピックを大きくしたようなものであったり、
+棒にブランクキーの先端だけ（クラッチにひっかかる部分）を取り付けたもので
+あったりします。
+　クラッチ回しを入れる際にテンションはかけたままにしておきます。というの
+もトップピンが落ちる可能性があるからです（鍵によってまちまち）。使い方は、
+内筒が回る状態になったら、クラッチ回しをキーウェイに挿入して、クラッチに
+ひっかけて鍵を回す方向に回します。クラッチを回そうとするとかなりの重さを
+感じるはずです。
 
-�@��Ԃ̖��̓N���b�`�񂵂̓�����@�ł��B���Ă̓s�b�L���O�c�[���͓��{
-�̃V���b�v�ł��g���ؖ���������Δ������Ƃ��ł��܂������A���݂͈�ʂ̐l��
-���{�Ńs�b�L���O�c�[�����w���ł���V���b�v��Web�T�C�g�͊F���Ƃ����Ă�����
-�Ԃł��B�C�O�V���b�v�ɗ���Ƃ����������܂����A���X�N���b�`�@�\�͓��{��
-MIWA���ɂ���s�b�L���O�΍�̎d�g�݂Ȃ̂ŁA�C�O�ɃN���b�`�񂵒P�Ƃł͔���
-��Ă��Ȃ��̂ł��i���Ȃ��Ƃ����͔����ł��܂���ł����j�B��������ƁA���t
-�Ƃ����������������ē��ʂȕ��@�œ��肷�邩�A���삵�Ă��܂��Ƃ������@���l
-�����܂��B����l�^�͐�����W���Ă���̂ŁA�u�����s�b�L���O�X���v�ɓ��e
-���Ă��炦��Ɗ������ł��i��1�j�B
-�@�����ł́A�����U���Љ�܂��B�C�O�V���b�v�ł��V���b�g�h���C�o�[�͔���
-��Ă��܂��B���̃V���b�g�h���C�o�[�Ƃ́A�����ɋ���ȉ�]�͂������邽�߂�
-�c�[���ł���A�N���b�`�񂵂Ƃ͈قȂ�̂ł����ADINO�V���b�g�h���C�o�[�ɂ�
-���{��MIWA�А���p�̃N���b�`�񂵂Ƃ��ē����K���j�[�h����1�{�t�����Ă����
-�ł��B�܂�ADINO�V���b�g�h���C�o�[������΁A�N���b�`�񂵔ł̃s�b�N�K��
-�Ƃ��Ďg����킯�ł��B�ł��A�����ł��c�B
+　一番の問題はクラッチ回しの入手方法です。かつてはピッキングツールは日本
+のショップでも身分証明書があれば買うことができましたが、現在は一般の人が
+日本でピッキングツールを購入できるショップのWebサイトは皆無といっていい状
+態です。海外ショップに頼るという手もありますが、元々クラッチ機構は日本の
+MIWA錠にあるピッキング対策の仕組みなので、海外にクラッチ回し単独では売ら
+れていないのです（少なくとも私は発見できませんでした）。そうすると、鍵師
+という肩書きを持って特別な方法で入手するか、自作してしまうという方法が考
+えられます。自作ネタは随時募集しているので、「総合ピッキングスレ」に投稿
+してもらえると嬉しいです（※1）。
+　ここでは、裏ワザを紹介します。海外ショップでもショットドライバーは売ら
+れています。このショットドライバーとは、内筒に強烈な回転力を加えるための
+ツールであり、クラッチ回しとは異なるのですが、DINOショットドライバーには
+日本のMIWA社製専用のクラッチ回しとして働くガンニードルが1本付属しているの
+です。つまり、DINOショットドライバーがあれば、クラッチ回し版のピックガン
+として使えるわけです。でも、高いです…。
 
-�y���߁z
-�i��1�j�u�����N�L�[�𗘗p���Ď��삷����ցB�u�����N�L�[�͓��}�n���Y�Ȃǂ�
-���ԍ������`����΍w���ł��܂��B
+【注釈】
+（※1）ブランクキーを利用して自作する方へ。ブランクキーは東急ハンズなどで
+鍵番号さえ伝えれば購入できます。
 
 
-��0x06.) ���j�o�[�T���e���V����
+■0x06.) ユニバーサルテンション
 
-�@���j�o�[�T���e���V�����i���Ƀh���S���e���V�����A�܂��͒P�Ƀh���S���ƌĂ�
-�炵���j�́A��������ɑΉ������e���V�����ł��B�摜�����Ă݂�Ƃ킩��܂�
-���A�^�C�K�[�f���A���e���V���������`�i�u���̃}�j�A�p�̃Z�b�g��C�j�⃍�[�h
-�����i�[�����e���V���������`�i�u���̃}�j�A�p�̃Z�b�g��F�j�̐i���łƂ�����
-�ł��傤�B
+　ユニバーサルテンション（俗にドラゴンテンション、または単にドラゴンと呼ぶ
+らしい）は、あらゆる錠に対応したテンションです。画像を見てみるとわかります
+が、タイガーデュアルテンションレンチ（講座のマニア用のセットのC）やロード
+ランナーリムテンションレンチ（講座のマニア用のセットのF）の進化版といえる
+でしょう。
 
 http://akademeia.info/main/image8/doragon1.jpg
 
-�@����ЂƂŁA6�̈قȂ�e���V�����Ƃ��Ďg�p�ł��邻���ł��B
-�E�`���[�u���[���i�傫�������V�����_�[���AAce�����V�����_�[���AGem�����V
-�����_�[���j
-�E�_�u���f�B�X�N�^���u���[��
-�E�W���I�ȃs���^���u���[��
-�E�I�[�g���b�N
+　これひとつで、6つの異なるテンションとして使用できるそうです。
+・チューブラー錠（大きいリムシリンダー錠、Aceリムシリンダー錠、Gemリムシ
+リンダー錠）
+・ダブルディスクタンブラー錠
+・標準的なピンタンブラー錠
+・オートロック
 
-�@�R���N�^�[�̎��Ƃ��Ắi�A�J�f���C�A�̂��߂ɂ��j�A���̃��j�o�[�T���e��
-�V�������~�����ė~�����Ă��܂�܂���B�C�O�T�C�g�ŏ���T������A�摜��
-�T�����肵�܂������A������܂���ł����B�������V���b�v�ł���������
-���܂���B
-�@����Ɋւ��ď���m���Ă���l�����܂�����A�u�����s�b�L���O�X���v�ɓ�
-�e���Ă��炦��Ɗ������ł��B��͂莩�삵���c����Ă��Ȃ��̂ł��傤���c�B
-
-
-��0x07.) ��������
-
-�@�A�J�f���C�A�ł́A���̏o���ɂ��݂Ȃǂ����K�₵�Ă��ꂽ�l�����ɂ��ׂ�
-�񋟂���Ƃ����M���̌��ō\�z����Ă��܂��B����A�{�⓮��iVHS�r�f�I��DVD�j
-�œ��肵�����͍u���ɊҌ����Ă����\��ł��B���y���݂ɁB
+　コレクターの私としては（アカデメイアのためにも）、このユニバーサルテン
+ションが欲しくて欲しくてたまりません。海外サイトで情報を探したり、画像を
+探したりしましたが、見つかりませんでした。もちろんショップでも見つかって
+いません。
+　これに関して情報を知っている人がいましたら、「総合ピッキングスレ」に投
+稿してもらえると嬉しいです。やはり自作しか残されていないのでしょうか…。
 
 
+■0x07.) さいごに
 
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+　アカデメイアでは、情報の出し惜しみなどせず訪問してくれた人たちにすべて
+提供するという信条の元で構築されています。今後、本や動画（VHSビデオやDVD）
+で入手した情報は講座に還元していく予定です。お楽しみに。
 
- --- ��9�́F���m�点 ---
+
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-��Wizard Bible�ihttp://akademeia.info/wizardbible/�j�ł͐����A���M���C�^
-�[���W���Ă��܂��B
-�@�������e�̃e�[�}�͍L�`�ł́uunder ground�v�ł��B�Ⴆ�΁A�n�b�L���O����
-�T�����K�X�̍����@�Ȃǂƕ��L�����e���l���Ă��܂��B�܂��A�e��A����ȐE��
-�������������̃��N�`���[�Ȃǂ��܂܂�܂��B
-�@��񂫂�ł��\���܂���B�܂��A�K���A����A�ڂ���`��������܂���̂ł�
-����͈͂ō\���܂���B�C�y�ɐ��������Ă��������B��������񏑂������Ƃ�
-����l���C�y�ɐ��������Ă��������i�S���C�ɂ��Ă��Ȃ����i�Ȃ̂Łj�B
+ --- 第9章：お知らせ ---
 
-��Kenji Aiko����Q&A������Ă���܂����B���߂ĎQ������l�ł��킩��₷��
-������Ă��܂��̂ŁA�Q�l�ɂ��Ă��������B
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○Wizard Bible（http://akademeia.info/wizardbible/）では随時、執筆ライタ
+ーを募集しています。
+　扱う内容のテーマは広義での「under ground」です。例えば、ハッキングから
+サリンガスの合成法などと幅広い内容を考えています。また、各種、特殊な職業
+や趣味を持った方のレクチャーなども含まれます。
+　一回きりでも構いません。また、必ず、毎回連載する義務もありませんのでで
+きる範囲で構いません。気軽に声をかけてください。もちろん一回書いたことが
+ある人も気軽に声をかけてください（全く気にしていない性格なので）。
+
+○Kenji AikoさんがQ&Aを作ってくれました。初めて参加する人でもわかりやすく
+書かれていますので、参考にしてください。
 
 http://akademeia.info/wizardbible/wbQandA.html
 
-���x���ҁA�Q����]�җp�̃X���b�h�𗧂Ă܂����B
+○支援者、参加希望者用のスレッドを立てました。
 
 http://ruffnex.oc.to/ipusiron/cgi/forum/patio.cgi?mode=view&no=17
 
@@ -2167,95 +2167,95 @@ http://ruffnex.oc.to/ipusiron/cgi/forum/patio.cgi?mode=view&no=17
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-  ---- ��10�́F���҃v���t�B�[�� ---
+  ---- 第10章：著者プロフィール ---
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��suma
-��Job: Student
-��Web: http://beautiful.homelinux.net/~sky-software/
-��Mail: shu_2001jp@yahoo.co.jp
-��Team�iGroup�j: secret
-��Comment:
-�@���߂Ă̓��e�ł��B�y����Œ������ł��傤���B
-�@�ꕔ�������������A�c�[�������Ă��Ȃ�������ƕs���������Ă����܂���B
-�l�^������Ύ�����Q�������Ē��������Ǝv���܂��B
+■suma
+●Job: Student
+●Web: http://beautiful.homelinux.net/~sky-software/
+●Mail: shu_2001jp@yahoo.co.jp
+●Team（Group）: secret
+●Comment:
+　初めての投稿です。楽しんで頂けたでしょうか。
+　一部解説が抜けたり、ツールが作れていなかったりと不備があってすいません。
+ネタがあれば次回も参加させて頂きたいと思います。
 
 
-������
-��Job: �v���O���}�[
-��Web: http://guardian.jumperz.net/�Ahttp://www.jumperz.net/
-��Mail: anvil@jumperz.net
+■金床
+●Job: プログラマー
+●Web: http://guardian.jumperz.net/、http://www.jumperz.net/
+●Mail: anvil@jumperz.net
 
 
-��marodc
-��Job:Student
-��Web:http://mrdc.169.xrea.com/
-��Mail:mr00dc@gmail.com
-��Team�iGroup):n/a
-��Comment:
-�@marodc�i�ɂ����߁j�ł��B�ْ��̂����z�͂������������ł��傤���B�����1��
-���ϋl�߂Ă܂������A�ϋl�߂����ď����s�ǂɂȂ�����������܂��ˁi��΁j�B
-�Ƃ�����A���������l�^�͏����Ă��ĉ��ƂȂ��y�����̂ŁA�܂��������������
-�����Ă������Ǝv���܂��B
-�@����WinMX.com����~���������ł��ˁB������ꂸ�Ƃ͂���2,3�N����Ă����
-�ł����AWinMX�͂��܂��Ɋ��S�[���Ƃ������A�v���o�̃\�t�g�E�F�A�̂ЂƂł��B
-��~�𕷂��Awinmx.com�ɃA�N�Z�X����"no longer available"�̕\���������Ƃ�
-�ɂ͎v�킸�܂������ɂȂ�܂����iBGM�u�߂����Ă�肫��Ȃ��v�j�B�ŋ߂̓E��
-�O�������C�������āc1�����炢�s���A�N�Z�X�֎~�@���K�p����Ȃ����������Ă�
-�����ł��ˁi�΂��c���Ƃ���Ȃ����j�B
+■marodc
+●Job:Student
+●Web:http://mrdc.169.xrea.com/
+●Mail:mr00dc@gmail.com
+●Team（Group):n/a
+●Comment:
+　marodc（にかいめ）です。拙著のご感想はいかがだったでしょうか。今回は1ヶ
+月煮詰めてましたが、煮詰めすぎて消化不良になった感がありますね（苦笑）。
+ともあれ、こういうネタは書いていて何となく楽しいので、また今後も何かしら
+書いていこうと思います。
+　さてWinMX.comが停止したそうですね。もうわれずとはここ2,3年離れているの
+ですが、WinMXはいまだに感慨深いというか、思い出のソフトウェアのひとつです。
+停止を聞き、winmx.comにアクセスして"no longer available"の表示を見たとき
+には思わず涙しそうになりました（BGM「悲しくてやりきれない」）。最近はウン
+グラも元気が無くて…1日ぐらい不正アクセス禁止法が適用されない日があっても
+いいですね（笑い…ごとじゃないか）。
 
 
-��Will
-��Job:Student
-��Web:http://will.wbjapan.com/
-��Mail:will_net@hotmail.co.jp
-��Team�iGroup): Anti-WMAC
+■Will
+●Job:Student
+●Web:http://will.wbjapan.com/
+●Mail:will_net@hotmail.co.jp
+●Team（Group): Anti-WMAC
 
 
-��Taka John Brunkhorst
-��Job: Commercial Aviation Pilot
-��Mail: antiwmac[at]gmail[dot]com
-��Web: http://www.antiwmac.com/�Ahttp://www.overclock.ch/crew/antiwmac/�Aetc
-��Team: Anti-WMAC, Endorphine Coding Crew, etc
-��Comment: 2.6.14.* kicksass!
+■Taka John Brunkhorst
+●Job: Commercial Aviation Pilot
+●Mail: antiwmac[at]gmail[dot]com
+●Web: http://www.antiwmac.com/、http://www.overclock.ch/crew/antiwmac/、etc
+●Team: Anti-WMAC, Endorphine Coding Crew, etc
+●Comment: 2.6.14.* kicksass!
 
 
-��Narusase
-��Job: Student
-��Web: (��)�G�w�̔����فihttp://k-o-m.hp.infoseek.co.jp/�j
-��Mail: narusase@mcn.ne.jp
-��Team�iGroup): N/A
-��Comment:
-�@����ɂ���ANarusase�i�i���T�X�j�ł��B
-�ŋ߁A�Ȃ񂩂܂��ǂ��߂��͂��߂��Ⴂ�܂����i���B
-�@�����͂�����Ƌ�B�܂ōs���ė��܂����B����ł����āA100�N�Ԃ�H�̐V�݂�
-���������ق炵����B���������قƑ��ɕ{�V���{�ցc�B
-�@��A���l���[������������ƐH�ׂĂ��܂����B�܁A�`���[�V���[�͔���������
-���ł����ǁA�v������薡���������������܂����B
-�@�T�C�g�̕��͂܂��A�w�^���ȕ��͂ƁA���n�ȋZ�p�A�w�{���v���O�������Љ
-��T�C�g�Ƃ������ƂŁA�ɂ��������炠��T���ł����Ă݂Ă��������B��A�Ƃ�
-�~�X�Ƃ���BBS�ɂł������Ă�������΁A��������C�����Ƃ��܂��i�΁B
+■Narusase
+●Job: Student
+●Web: (裏)雑学の博物館（http://k-o-m.hp.infoseek.co.jp/）
+●Mail: narusase@mcn.ne.jp
+●Team（Group): N/A
+●Comment:
+　こんにちわ、Narusase（ナルサス）です。
+最近、なんかまた追いつめられはじめちゃいました（汗。
+　今月はちょっと九州まで行って来ました。そんでもって、100年ぶり？の新設の
+国立博物館らしい九州国立博物館と太宰府天満宮へ…。
+　後、長浜ラーメンをちょっと食べてきました。ま、チャーシューは美味しかっ
+たですけど、思ったより味が薄い感じがしました。
+　サイトの方はまあ、ヘタレな文章と、未熟な技術、ヘボいプログラムを紹介す
+るサイトということで、暇があったらあら探しでもしてみてください。誤植とか
+ミスとかはBBSにでも書いてくだされば、こっそり修正しときます（笑。
 
 
-��Kenji Aiko
-��Job: Student
-��Web: http://ruffnex.oc.to/kenji/
-��Mail: kenji@ruffnex.oc.to
-��Team�iGroup): N/A
-��Comment:
-�@�X�[�p�[�}���I�u���U�[�Y�Q�Ƀn�}�b�Ă܂��B�Ƃ肠�����m�[�R���e�j���[��
-�S�ʃN���A�����̂ŁA���x�͈�x�����Ȃ��ɑS�ʃN���A��ڎw���܂��B
+■Kenji Aiko
+●Job: Student
+●Web: http://ruffnex.oc.to/kenji/
+●Mail: kenji@ruffnex.oc.to
+●Team（Group): N/A
+●Comment:
+　スーパーマリオブラザーズ２にハマッてます。とりあえずノーコンテニューで
+全面クリアしたので、今度は一度も死なずに全面クリアを目指します。
 
 
-��IPUSIRON
-��Job:�T�C�g�X�V
-��Web:http://akademeia.info/
-��Mail:ipusiron@ruffnex.oc.to
-��Team�iGroup): ruffnex,backsection
-��Comment:
-�@�ŋ߂́A���i�E�s�b�L���O�ɗ͂����Ă��܂��B���i�̕���1�����ɂЂƂ���
-�m���Ɏ擾���Ă��������Ǝv���Ă��܂��B���t�́u�e�N�j�J���G���W�j�A�i�Z�L
-�����e�B�j�v�̎������y���݂ł��ˁB
+■IPUSIRON
+●Job:サイト更新
+●Web:http://akademeia.info/
+●Mail:ipusiron@ruffnex.oc.to
+●Team（Group): ruffnex,backsection
+●Comment:
+　最近は、資格・ピッキングに力を入れています。資格の方は1ヶ月にひとつずつ
+確実に取得していきたいと思っています。来春の「テクニカルエンジニア（セキ
+ュリティ）」の試験が楽しみですね。

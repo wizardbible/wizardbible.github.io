@@ -1,13 +1,13 @@
-��kains
-��Job: �t���[�^�[
-��Web: http://kains.dip.jp/
-��Mail: sophie@a-net.ne.jp
-��Comment:
-�@�����ŋ߁u�Ȃ�炩�̌`�ɂ��ďo���v�Ƃ������Ƃ��ӎ����Ă��܂��BWeb�T�C�g
-����邱�Ƃł��̈ӎ�������ɋ��܂����C�����܂��B
-�@����͂��Ă����A����͏��X��IPv6�ֈڍs���Ă��܂����AIPv4�̉^�s���~��
-��̂͂��Ȃ̂ł��傤���BIPv4�̎g�p���������m�Ɏ�����邱�Ƃ͖����悤��
-�C�����Ă��܂��B�A�i���O�����̂悤�Ɍ��؂�����ăX�p�b�Ɛ؂����ق�����
-�����肷��Ǝv���̂ł����B
+■kains
+●Job: フリーター
+●Web: http://kains.dip.jp/
+●Mail: sophie@a-net.ne.jp
+●Comment:
+　ここ最近「なんらかの形にして出す」ということを意識しています。Webサイト
+を作ることでその意識がさらに強まった気がします。
+　それはさておき、時代は徐々にIPv6へ移行していますが、IPv4の運行を停止す
+るのはいつなのでしょうか。IPv4の使用期限が明確に示されることは無いような
+気がしています。アナログ放送のように見切りをつけてスパッと切ったほうがす
+っきりすると思うのですが。
 
 

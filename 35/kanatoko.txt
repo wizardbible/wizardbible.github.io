@@ -1,126 +1,126 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- �恛��: �}�j�A�b�NJava�v���O���~���O��6��: �` Java�Ń��^�v���O���~���O �` ---
+--- 第○章: マニアックJavaプログラミング第6回: 〜 Javaでメタプログラミング 〜 ---
 
-���ҁF����
+著者：金床
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@�A�v���P�[�V�������œ��I�ɃR�[�h�𐶐����A����ɂ�������s�������ꍇ��
-����B���̂悤�Ƀv���O���������I�Ƀv���O�����𐶐������s����悤�Ƀv���O
-�������v���O�������邱�Ƃ����^�v���O���~���O�Ƃ�ԁB
+　アプリケーション内で動的にコードを生成し、さらにそれを実行したい場合が
+ある。このようにプログラムが動的にプログラムを生成し実行するようにプログ
+ラムをプログラムすることをメタプログラミングとよぶ。
 
 
-��0x02.) �R�[�h�̐���
+■0x02.) コードの生成
 
-�@���ă��^�v���O���~���O�́u�R�[�h�̐����v�Ɓu�R�[�h�̎��s�v���琬�藧��
-�킯�����A�u�R�[�h�̐����v�͒P�Ȃ镶���񏈗��ł���B�Ⴆ�Ύ��̗�͗��h��
-�R�[�h�𐶐����Ă���B
+　さてメタプログラミングは「コードの生成」と「コードの実行」から成り立つ
+わけだが、「コードの生成」は単なる文字列処理である。例えば次の例は立派に
+コードを生成している。
 
 -----
 System.out.println( "System.out.println( \"hoge\" )" );
 -----
 
-�@����A������������o�͂��邾���Ȃ̂�System.out�Ƃ��ł̂��ğT����ˁH
-�������_�u���N�I�[�g���G�X�P�[�v�����肵�Ē��ǂ݂ɂ����ˁH�q�A�h�L������
-�g�����Ƃ����肦�Ȃ��ˁHJava������ƃ_�T���ˁH����ނ��납�Ȃ�_�T���ˁH
+　うわ、ただ文字列を出力するだけなのにSystem.outとか打つのって鬱じゃね？
+しかもダブルクオートをエスケープしたりして超読みにくくね？ヒアドキュメン
+ト無いとかありえなくね？Javaちょっとダサくね？いやむしろかなりダサくね？
 
-�@�ȂǂƂ�����Ƃł��v�����L�~�̓{�N�Ƃ̓g���_�`�ɂȂ�Ȃ��Ǝv���̂ŁA��
-�̋L���ɔ��ł��������B
+　などとちょっとでも思ったキミはボクとはトモダチになれないと思うので、次
+の記事に飛んでくだちい。
 
-�@�Ƃ������ƂŁu�R�[�h�̐����v�͕��i�v���O���}�[�������őł�����ł���\
-�[�X�R�[�h���v���O�������̂ɏo�͂����邾���Ȃ̂ŁA�p�r�ɂ���ēK�؂ȃ��[
-�`����g�ނ����Ŋ�������B�����ł͓��ɓ�����Ƃ͂Ȃ��B
-
-
-��0x03.) �R�[�h�̎��s
-
-�@���͐��������R�[�h�̎��s�Ȃ̂ł���B
-
-�@�c�́H
-�@�c���Aeval�ĂԂ�������ˁH�܂���Java�ɂ�eval�����Ƃ��H����www�������
-���肦�Ȃ��ˁH
-
-�@�ȂǂƏ����ł��]���������߂��L�~��CIA�ɐ��]����Ă��邩�A���邢�͔]����
-��̏o�߂��ŃI�[�o�[�h�[�Y�C���ɂȂ��Ă���Ǝv����̂ŁA��������������
-���Ղ�Ƃ��ċx�{���邱�ƁB
-
-�@����Ȃ킯��Java�ɂ�eval���Ȃ��i�܁j�̂ŁA���I�ɃR�[�h�����s����ɂ͈�
-�H�v�K�v�ƂȂ�B�Ƃ��������s�̑O�ɃR���p�C�����Ȃ��Ă͂Ȃ�Ȃ��B����͉B
-��API�Ƃ��Ĉꕔ�̃}�j�A�ɒm���Ă���AJava�\�[�X�R�[�h�̃R���p�C���@�\��
-���p���Ă݂邱�Ƃɂ���B
+　ということで「コードの生成」は普段プログラマーが自分で打ち込んでいるソ
+ースコードをプログラム自体に出力させるだけなので、用途によって適切なルー
+チンを組むだけで完成する。ここでは特に難しいことはない。
 
 
-��0x04.) tools.jar
+■0x03.) コードの実行
 
-�@Sun��JDK���_�E�����[�h���Ďg�p���Ă���ꍇ�ɂ́Alib�̉���tools.jar�Ƃ�
-���t�@�C��������͂����B�����Java�̃\�[�X�t�@�C�����R���p�C������R�}��
-�h�ł���javac����g������̂ł���B���������Ɏ�����Java�A�v���������
-��ł��܂��̂��B
+　問題は生成したコードの実行なのである。
 
-�@�R���p�C���ŕK�v�ɂȂ�̂�tools.jar�̒��Ɋi�[����Ă���com.sun.tools.j
-avac.Main�Ƃ����N���X�ł���B���̃N���X��compile�Ƃ������\�b�h�i���̂܂�
-�܂̖��O�ł���j���Ăяo�����Ƃ�Java�̃\�[�X�R�[�h���R���p�C������A�N��
-�X�t�@�C�������������B
+　…は？
+　…つか、eval呼ぶだけじゃね？まさかJavaにはeval無いとか？ちょwwwそれって
+ありえなくね？
 
-�@�������Runtime.exec�Ȃǂ��g����javac�R�}���h��ʂ̃v���Z�X�Ƃ��ė�����
-������@�ł��R���p�C���͂ł���̂����A���̃N���X�𒼐ڌĂяo�����ƂŃp�t
-�H�[�}���X�I�ɗL���ƂȂ�ijavac�R�}���h��JVM���N�����邽�߁A���ۂ̃R���p
-�C�������O�̏����ł��������CPU�T�C�N���������j�B
+　などと少しでも脳裏をかすめたキミはCIAに洗脳されているか、あるいは脳内麻
+薬の出過ぎでオーバードーズ気味になっていると思われるので、今すぐ水分をた
+っぷりとって休養すること。
+
+　そんなわけでJavaにはevalがない（涙）ので、動的にコードを実行するには一
+工夫必要となる。というか実行の前にコンパイルしなくてはならない。今回は隠
+れAPIとして一部のマニアに知られている、Javaソースコードのコンパイル機能を
+利用してみることにする。
 
 
-��0x05.) javaShell
+■0x04.) tools.jar
 
-�@����ł�Java�A�v�������œ��I�Ƀ\�[�X�R�[�h���R���p�C�����邱�Ƃɂ��A
-�C���^���N�e�B�u��Java�̃R�[�h�����s����A�����Java�̃V�F���̂悤�ȃA�v
-���P�[�V����������Ă݂邱�Ƃɂ���B�\�[�X�R�[�h�͎���URL����_�E�����[�h
-�ł���B
+　SunのJDKをダウンロードして使用している場合には、libの下にtools.jarとい
+うファイルがあるはずだ。これはJavaのソースファイルをコンパイルするコマン
+ドであるjavacから使われるものである。これを勝手に自分のJavaアプリ内から呼
+んでしまうのだ。
+
+　コンパイルで必要になるのはtools.jarの中に格納されているcom.sun.tools.j
+avac.Mainというクラスである。このクラスのcompileというメソッド（そのまん
+まの名前である）を呼び出すことでJavaのソースコードがコンパイルされ、クラ
+スファイルが生成される。
+
+　もちろんRuntime.execなどを使ってjavacコマンドを別のプロセスとして立ち上
+げる方法でもコンパイルはできるのだが、このクラスを直接呼び出すことでパフ
+ォーマンス的に有利となる（javacコマンドはJVMを起動するため、実際のコンパ
+イルよりも前の処理でたくさんのCPUサイクルを消費する）。
+
+
+■0x05.) javaShell
+
+　それではJavaアプリ内部で動的にソースコードをコンパイルすることにより、
+インタラクティブにJavaのコードを実行する、いわばJavaのシェルのようなアプ
+リケーションを作ってみることにする。ソースコードは次のURLからダウンロード
+できる。
 
 http://src.jumperz.net/javaShell.java
 
-�@���̃A�v���P�[�V�������J�n����ƁA�W�����͂���Java�\�[�X�R�[�h�̓��͂�
-�s�����Ƃ��ł���悤�ɂȂ�B��s��ł����ނƂ����܂łɓ��͂���Java�\�[�X
-�R�[�h�������ŃR���p�C������Ď��s�����B
+　このアプリケーションを開始すると、標準入力からJavaソースコードの入力を
+行うことができるようになる。空行を打ち込むとそこまでに入力したJavaソース
+コードが内部でコンパイルされて実行される。
 
-�@�Ⴆ�Ή�ʂɁupatch Kenji�v�Əo�͂��邽�߂ɂ͎��̂悤�ɂ���B
+　例えば画面に「patch Kenji」と出力するためには次のようにする。
 
 -----
-[anvil@supernova ~]# java javaShell   �� javaShell���N��
-System.out.println( "patch Kenji" );  �� Java�̃\�[�X�R�[�h��ł�����
-�@�@�@�@�@�@�@�@�@�@�@�@�@�@�@�@�@�@�@�� ��s��ł�����
-patch Kenji�@�@�@�@�@�@�@�@�@�@�@�@�@ ���R�[�h�����s�����
+[anvil@supernova ~]# java javaShell   ← javaShellを起動
+System.out.println( "patch Kenji" );  ← Javaのソースコードを打ち込む
+　　　　　　　　　　　　　　　　　　　← 空行を打ち込む
+patch Kenji　　　　　　　　　　　　　 ←コードが実行される
 -----
 
-�@�����s�ɓn���ă\�[�X�R�[�h��ł����ނ��Ƃ��ł���B�Ⴆ�΁u1234+2222�v��
-�v�Z�������ꍇ�ɂ͎��̂悤�ɂ���B
+　複数行に渡ってソースコードを打ち込むこともできる。例えば「1234+2222」を
+計算したい場合には次のようにする。
 
 -----
 int a = 1234;
 int b = 2222;
 System.out.println( a + b );
 
-3456�@�@���R�[�h�����s�����
+3456　　←コードが実行される
 -----
 
-�@���̃v���Z�X���D���Ȃ����J��Ԃ����Ƃ��ł���B�V�F�����甲����ɂ́uqu
-it�v���邢�́uexit�v�Ƒł����ށB
+　このプロセスを好きなだけ繰り返すことができる。シェルから抜けるには「qu
+it」あるいは「exit」と打ち込む。
 
 
-��0x06.) �\�[�X�R�[�h���
+■0x06.) ソースコード解説
 
-�@����ł͂��҂����˂̃\�[�X�R�[�h����ł���B
+　それではお待ちかねのソースコード解説である。
 
 -----
 String javaHome = System.getProperty( "java.home" );
 -----
 
-�@�܂����ϐ�java.home���擾���A���ݎ��s����JRE�̃z�[���f�B���N�g������
-������B
+　まず環境変数java.homeを取得し、現在実行中のJREのホームディレクトリを取
+得する。
 
 -----
 File tools = new File( javaHome + "/../lib/tools.jar" );
@@ -131,16 +131,16 @@ if( !tools.exists() )
 	}
 -----
 
-�@JDK���C���X�g�[������Ă���ꍇ�ɂ́Atools.jar��JRE�̂ЂƂ�̊K�w��l
-ib�f�B���N�g���ȉ��ɂ���B���̃t�@�C����������Ȃ��ꍇ�ɂ�javaShell�͓�
-�삵�Ȃ��̂ŁA�G���[���b�Z�[�W���o�͂��ďI������B
+　JDKがインストールされている場合には、tools.jarはJREのひとつ上の階層のl
+ibディレクトリ以下にある。このファイルが見つからない場合にはjavaShellは動
+作しないので、エラーメッセージを出力して終了する。
 
 -----
 String classStr = "public class otf { public String toString() { try { CODE } catch( Throwable e ) { e.printStackTrace(); } return \"\"; } }";
 -----
 
-�@���̕�����͓��I�ɐ��������N���X�t�@�C���̌��ɂȂ镶����ł���B���`
-����Ǝ��̂悤�ɂȂ�B
+　この文字列は動的に生成されるクラスファイルの元になる文字列である。整形
+すると次のようになる。
 
 -----
 public class otf
@@ -162,12 +162,12 @@ return "";
 }
 -----
 
-�@�uCODE�v�̕����Ƀ��[�U�����͂����R�[�h���}������A���s����邱�ƂɂȂ�B
-toString�𗘗p���Ă���̂͒P�Ȃ�蔲���ł���i���ꂪ�Ȃ��蔲���ɂȂ�̂�
-�ɂ��Ă͌�قǐG���j�B
+　「CODE」の部分にユーザが入力したコードが挿入され、実行されることになる。
+toStringを利用しているのは単なる手抜きである（これがなぜ手抜きになるのか
+については後ほど触れる）。
 
-�@�����ă��[�U����̓��͂𒀎��󂯎�邽�߂̃��[�v���J�n�����Bwhile����
-�ɂ��Ă͂����܂�Ȃ̂Ő����͏ȗ�����B
+　続いてユーザからの入力を逐次受け取るためのループが開始される。while周辺
+についてはお決まりなので説明は省略する。
 
 -----
 	if( line == null || line.equalsIgnoreCase( "quit" ) || line.equalsIgnoreCase( "exit" ) )
@@ -176,8 +176,8 @@ toString�𗘗p���Ă���̂͒P�Ȃ�蔲���ł���i���ꂪ�Ȃ��蔲���ɂȂ�̂�
 		}
 -----
 
-�@����ɂ�胆�[�U���uquit�v���邢�́uexit�v����͂����ꍇ�i���邢�͕W��
-���͂�����ꂽ�ꍇ�j�Ƀ��[�v���甲���邱�ƂɂȂ�B
+　これによりユーザが「quit」あるいは「exit」を入力した場合（あるいは標準
+入力が閉じられた場合）にループから抜けることになる。
 
 -----
 	else if( line.equals( "" ) )
@@ -187,11 +187,11 @@ toString�𗘗p���Ă���̂͒P�Ȃ�蔲���ł���i���ꂪ�Ȃ��蔲���ɂȂ�̂�
 		}
 -----
 
-�@���[�U����s����͂����ꍇ�A�N���X�t�@�C���̌��ƂȂ镶����classStr�ƁA
-���̎��_�܂łɓ��͂��ꂽJava�\�[�X�R�[�h��ێ����Ă���C���X�^���X��buf��
-������^�ɕϊ��������̂�exec�֐��ɓn���B
+　ユーザが空行を入力した場合、クラスファイルの元となる文字列classStrと、
+その時点までに入力されたJavaソースコードを保持しているインスタンスのbufを
+文字列型に変換したものをexec関数に渡す。
 
-�@exec�֐����ł͂��悢��Java�̓��I�R���p�C���Ǝ��s���s����B
+　exec関数内ではいよいよJavaの動的コンパイルと実行が行われる。
 
 -----
 	//Generate java source
@@ -202,23 +202,23 @@ classStr = replaceAll( classStr, "public class otf", "public class " + className
 saveStringToFile( classStr, javaFileName );
 -----
 
-�@���I�ɐ��������N���X�͖���g���̂Ă�B���̂��ߖ���ʂ̃N���X�����K�v��
-�Ȃ�B�����ł͌��ݎ������~���b�P�ʂŎ擾��������g���ăN���X�������肷��B
-�Ⴆ�΃N���X���́uotf_118663679990�v�̂悤�ɂȂ�B���Ȃ݂Ɂuotf�v�̓I���U
-�t���C�A�܂�t���C�̏�ɂ̂��Ă���}���l�[�Y�Ȃǂ̂��Ƃ��w���Ă���B�}
-���l�[�Y�͖��̌ł܂�Ȃ̂ŁA���^�{�ȃL�~�͐H�ׂ���_�������B
+　動的に生成したクラスは毎回使い捨てる。そのため毎回別のクラス名が必要と
+なる。ここでは現在時刻をミリ秒単位で取得しそれを使ってクラス名を決定する。
+例えばクラス名は「otf_118663679990」のようになる。ちなみに「otf」はオンザ
+フライ、つまりフライの上にのっているマヨネーズなどのことを指している。マ
+ヨネーズは油の固まりなので、メタボなキミは食べちゃダメだぞ。
 
-�@replaceAll�Ƃ����̂͂����̕�����u���֐��ł���B�܂�uCODE�v�̕�����
-�uSystem.out.println( "patch Kenji" );�v�̂悤�ȃ��[�U�����͂����\�[�X�R
-�[�h�ɁA�����ăN���X���̕������upublic class otf�v����upublic class otf
-_118663679990�v�̂悤�ɕϊ����Ă���B�ϊ���̕�����͐������t�@�C������
-�i�܂�otf_118663679990.java�̂悤�ɃN���X���ƑΉ������t�@�C�����Łj�ۑ�
-����B
+　replaceAllというのはただの文字列置換関数である。つまり「CODE」の部分を
+「System.out.println( "patch Kenji" );」のようなユーザが入力したソースコ
+ードに、そしてクラス名の部分を「public class otf」から「public class otf
+_118663679990」のように変換している。変換後の文字列は正しいファイル名で
+（つまりotf_118663679990.javaのようにクラス名と対応したファイル名で）保存
+する。
 
-�@�����ăR���p�C�����s���Btools.jar�͒ʏ��JRE����͌����Ȃ��ʒu�ɂ��邽
-�߁A�����I�ɃN���X�̃��[�h���s�����Ƃ��ł��Ȃ��B�����Ń��[�J���ȃN���X��
-�[�_���쐬����B�N���X�t�@�C�����i�[����Ă���jar�t�@�C���itools.jar�̂�
-�Ɓj�͂킩���Ă���̂ŁAfile:��URL��^����URLClassLoader���쐬����B
+　続いてコンパイルを行う。tools.jarは通常はJREからは見えない位置にあるた
+め、自動的にクラスのロードを行うことができない。そこでローカルなクラスロ
+ーダを作成する。クラスファイルが格納されているjarファイル（tools.jarのこ
+と）はわかっているので、file:のURLを与えてURLClassLoaderを作成する。
 
 -----
 String javaHome = System.getProperty( "java.home" );
@@ -229,25 +229,25 @@ URL toolsURL = new URL( "file:" + toolsFileName );
 URLClassLoader cl = new URLClassLoader( new URL[]{ toolsURL } );
 -----
 
-�@�����ĖړI�ł���Main�N���X�����[�h����B
+　そして目的であるMainクラスをロードする。
 
 -----
 Class javac = cl.loadClass( "com.sun.tools.javac.Main" );
 -----
 
-�@���̓\�[�X�R�[�h����
+　実はソースコード中に
 
 -----
 com.sun.tools.javac.Main javac = ...
 -----
 
-�@�Ƃ���R�[�f�B���O���\�Ȃ̂����A���̏ꍇ�ɂ�javaShell.java�̃R���p�C
-���̍ۂɃN���X�p�X�Ƃ���tools.jar��^����K�v������B����͖ʓ|�Ȃ̂ŁA��
-��̓��t���N�V������p���Ă���B����ɂ��ujavac javaShell.java�v������
-�R���p�C�����邱�Ƃ��\�ƂȂ��Ă���B
+　とするコーディングも可能なのだが、この場合にはjavaShell.javaのコンパイ
+ルの際にクラスパスとしてtools.jarを与える必要がある。これは面倒なので、今
+回はリフレクションを用いている。これにより「javac javaShell.java」だけで
+コンパイルすることが可能となっている。
 
-�@���t���N�V������p���Ă��邽�߁AMain�N���X��compile���\�b�h�̌Ăяo����
-���̂悤��Method�N���X��p���čs���B
+　リフレクションを用いているため、Mainクラスのcompileメソッドの呼び出しは
+次のようにMethodクラスを用いて行う。
 
 -----
 Method m = javac.getDeclaredMethod( "compile", new Class[]{ String[].class } );
@@ -255,8 +255,8 @@ String[] args = new String[]{ javaFileName  };
 Object result = m.invoke( null, new Object[]{ args } );
 -----
 
-�@����ɂ���ăR���p�C�����J�n�����B�G���[������ꍇ�ɂ̓G���[�o�͂ɃG
-���[���b�Z�[�W�Ȃǂ��o�͂����B�R���p�C�������������ꍇ�ɂ�0���Ԃ����B
+　これによってコンパイルが開始される。エラーがある場合にはエラー出力にエ
+ラーメッセージなどが出力される。コンパイルが成功した場合には0が返される。
 
 -----
 if( resultInt != 0 )
@@ -266,11 +266,11 @@ if( resultInt != 0 )
 	}
 -----
 
-�@�R���p�C�����G���[�ɂȂ����ꍇ�ɂ̓R�[�h�����s�����A�֐��𔲂���B
+　コンパイルがエラーになった場合にはコードを実行せず、関数を抜ける。
 
-�@�R���p�C�������������ꍇ�ɂ́A���̂悤�ɓ��I�ɐ��������N���X�i�uotf_11
-8663679990.class�v�Ȃǁj�����[�h���AnewInstance���g���ăC���X�^���X�𐶐�
-����B
+　コンパイルが成功した場合には、次のように動的に生成したクラス（「otf_11
+8663679990.class」など）をロードし、newInstanceを使ってインスタンスを生成
+する。
 
 -----
 	//Execute
@@ -278,38 +278,38 @@ Class otfClass = cl.loadClass( className );
 Object o = otfClass.newInstance();
 -----
 
-�@�R�[�h�����s���邽�߂ɂ����P��toString���Ăяo���BtoString��Object�N��
-�X�ɔ�����Ă�����̂Ȃ̂ŁA�����ł̓��t���N�V�����Ȃǂ̂�₱������Ԃ�
-�������ɓ��I�ɐ������ꂽ�N���X�̃��\�b�h�����s���邱�Ƃ��ł���B���ɂ�
-�˂��ꂽ�`�̃|�����[�t�B�Y���̗��p���ƌ����邾�낤�B
+　コードを実行するためにただ単にtoStringを呼び出す。toStringはObjectクラ
+スに備わっているものなので、ここではリフレクションなどのややこしい手間を
+かけずに動的に生成されたクラスのメソッドを実行することができる。非常にひ
+ねくれた形のポリモーフィズムの利用だと言えるだろう。
 
 -----
 o.toString();
 -----
 
-�@�����܂ł��Ȃ������̃R�[�h�̓l�^�Ȃ̂ŁA��Ђŏ����Ȃ��悤�ɂ��Ă�����
-�������i�R���X�g���N�^�ł��ł���C�����邪�A�����Ă��Ȃ��j�B�\�[�X�R�[�h
-�̉���͈ȏ�ł���B
+　言うまでもないがこのコードはネタなので、会社で書かないようにしていただ
+きたい（コンストラクタでもできる気がするが、試していない）。ソースコード
+の解説は以上である。
 
 
-��0x07.) �܂Ƃ�
+■0x07.) まとめ
 
-�@�����javac���g���Ă���B��API���g���A����ɃN���X���g���̂Ă邱�Ƃ�Ja
-va�œ��I�Ƀ\�[�X�R�[�h��������ɂ��Đ����������Ȃ����B���ۂ̊J���ł��i
-�f�U�C���p�^�[���́jFactory���\�b�h�ȂǂƑg�ݍ��킹�邱�ƂŖʔ������Ƃ���
-���邾�낤�B
+　今回はjavacが使っている隠れAPIを使い、さらにクラスを使い捨てることでJa
+vaで動的にソースコードを扱う例について説明をおこなった。実際の開発でも（
+デザインパターンの）Factoryメソッドなどと組み合わせることで面白いことがで
+きるだろう。
 
-�@�M�҂͎��ۂɂ��̃e�N�j�b�N���g���A�ݒ�t�@�C���̋L�q�ɂ��̂܂�Java���g
-���Ƃ������Ƃ�����Ă���B����ɂ���Đݒ�t�@�C������if���Ȃǂɂ�����
-����Ȃǂ����ɊȒP�ɋL�q�ł���悤�ɂȂ����B
+　筆者は実際にこのテクニックを使い、設定ファイルの記述にそのままJavaを使
+うということをやっている。これによって設定ファイル中でif文などによる条件
+分岐などが非常に簡単に記述できるようになった。
 
-�@���Ȃ݂�Java�ł̃��^�v���O���~���O�ɋ����̂���l��javassist�������Ă݂�
-���Ƃ��������߂���B������͂��Ȃ�������ꂽ�C���^�[�t�F�[�X�œ��I�ɃN��
-�X�̒��g�����������邱�Ƃ��ł���ʔ������C�u�������B�g���̂Ăł͂ł��Ȃ�
-���Ƃ�������ł͉\�ƂȂ邾�낤�B
+　ちなみにJavaでのメタプログラミングに興味のある人はjavassistを試してみる
+ことをおすすめする。こちらはかなり洗練されたインターフェースで動的にクラ
+スの中身を書き換えることができる面白いライブラリだ。使い捨てではできない
+こともこちらでは可能となるだろう。
 
-�@�܂��A����ɐ[�����肽���L�~��Java�o�C�g�R�[�h��׋�����Ƃ悢���낤�i
-�M�҂͂߂�ǂ������̂ŕ׋����Ă܂���c�X�}�����i����K���j�j
+　また、さらに深く潜りたいキミはJavaバイトコードを勉強するとよいだろう（
+筆者はめんどくさいので勉強してません…スマン○（自主規制））
 
 
 

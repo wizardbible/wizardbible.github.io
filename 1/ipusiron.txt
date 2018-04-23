@@ -1,113 +1,113 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
- --- ��T�́FMAC�A�h���X�čl ---
+ --- 第５章：MACアドレス再考 ---
 
- ���ҁFIPUSIRON
+ 著者：IPUSIRON
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) MAC�A�h���X�Ƃ�
+■0x01.) MACアドレスとは
 
-�@�l�b�g���[�N�J�[�h�ȂǁA�l�b�g���[�N���i�͂��ꂼ��MAC�A�h���X(MAC:Media 
-Acess Control)�Ƃ����U�o�C�g�̒l�������Ă��܂��B���̒l�́A�V���A���i���o�[
-�̂悤�Ȃ��̂ŁA��{�I�ɂ̓��[�U�[�������Őݒ肵���肷��̂ł͂Ȃ��A���ʂR
-�o�C�g���g���ă��[�J�[�����炩���ߐݒ肩�o�^���Ă���܂��B��ʂR�o�C�g��
-IEEE����߂郁�[�J�[�R�[�h�ł���܂��B
+　ネットワークカードなど、ネットワーク製品はそれぞれMACアドレス(MAC:Media 
+Acess Control)という６バイトの値をもっています。この値は、シリアルナンバー
+のようなもので、基本的にはユーザーが自分で設定したりするのではなく、下位３
+バイトを使ってメーカーがあらかじめ設定かつ登録してあります。上位３バイトは
+IEEEが定めるメーカーコードであります。
 
-�@�Ⴆ�΁A�u00:00:4C:12:34:56�v�Ȃǂ�MAC�A�h���X�ɓ�����܂��B�{�ɂ����
-�́A��؂蕶���Ƃ��āA�u:�v�̕ς��Ɂu-�v���g���Ă���ꍇ������܂��B
+　例えば、「00:00:4C:12:34:56」などがMACアドレスに当たります。本によって
+は、区切り文字として、「:」の変わりに「-」を使っている場合もあります。
 
-�@OSI�V�w�\�����f���ɂ�����n�[�h�E�F�A�w�i�����w�j�ƃf�[�^�����N�w�͎��
-�n�[�h�E�F�A�̋K�i�ł��B
-�@�����w�ł̓l�b�g���[�N�`���}�̂̕����I�ȓ������`����܂��B
-�@�����āA�f�[�^�����N�w�ł͐M����ϊ����鑊��̃R���s���[�^��F�����܂����A
-�P��̃l�b�g���[�N�w��IP�i�C���^�[�l�b�g�v���g�R���j�Ƃ͈قȂ�܂��B
-�@�f�[�^�����N�w�𗘗p�����v���g�R���ł���Ethernet�Ȃǂ�MAC�A�h���X�����p
-����܂��B
-�@�Ⴆ�΁AEthernet���Ńp�P�b�g�𑗏o����ꍇ�A�l�b�g���[�N�w�i�f�[�^����
-�N�w�̂P��̑w�j�ō��ꂽIP�p�P�b�g�iIP�f�[�^�O�����j�̐擪�ɁA�f�[�^��
-���N�w�ō��ꂽEthernet�w�b�_���t���܂��B����MAC�w�b�_�͑��M���ł��鎩��
-�̎���MAC�A�h���X�ƃf�[�^���󂯎�鑤��MAC�A�h���X�A�����ăt���[���̃^�C�v
-�̏��������Ă��܂��B�����āAIP�f�[�^�O�����̌��Ƀt���[���`�F�b�N�V�[�P
-���X��ǉ����܂��B 
-�@�ǉ����ꂽ��̃p�P�b�g��MAC�t���[���܂���Ethernet�p�P�b�g�ƌĂ΂�܂��B
+　OSI７層構造モデルにおけるハードウェア層（物理層）とデータリンク層は主に
+ハードウェアの規格です。
+　物理層ではネットワーク伝送媒体の物理的な特性を定義されます。
+　そして、データリンク層では信号を変換する相手のコンピュータを認識しますが、
+１つ上のネットワーク層のIP（インターネットプロトコル）とは異なります。
+　データリンク層を利用したプロトコルであるEthernetなどでMACアドレスが利用
+されます。
+　例えば、Ethernet環境でパケットを送出する場合、ネットワーク層（データリン
+ク層の１つ上の層）で作られたIPパケット（IPデータグラム）の先頭に、データリ
+ンク層で作られたEthernetヘッダが付きます。このMACヘッダは送信元である自分
+の持つMACアドレスとデータを受け取る側のMACアドレス、そしてフレームのタイプ
+の情報を持っています。そして、IPデータグラムの後ろにフレームチェックシーケ
+ンスを追加します。 
+　追加された後のパケットをMACフレームまたはEthernetパケットと呼ばれます。
 
-�@MAC�t���[���̍\���͎��̂悤�ɂȂ�܂��B
+　MACフレームの構造は次のようになります。
 
-[����MAC�A�h���X][���M��MAC�A�h���X][�t���[���̃^�C�v][IP�f�[�^�O����][�t
-���[���`�F�b�N�V�[�P���X]
+[宛先MACアドレス][送信元MACアドレス][フレームのタイプ][IPデータグラム][フ
+レームチェックシーケンス]
 
 =========================================================================
-�擪����       | ����              | �r�b�g�� | �T�v
+先頭から       | 役割              | ビット数 | 概要
 -------------------------------------------------------------------------
-0�`7�r�b�g��   | ����MAC�A�h���X   | 8        | ICMP�^�C�v�̎w��B
-               |                   |          | RFC792�Q�ƁB
+0〜7ビット目   | 宛先MACアドレス   | 8        | ICMPタイプの指定。
+               |                   |          | RFC792参照。
 -------------------------------------------------------------------------
-8�`15�r�b�g��  | ���M��MAC�A�h���X | 8        |
+8〜15ビット目  | 送信元MACアドレス | 8        |
 -------------------------------------------------------------------------
-16�`17�r�b�g�� | �t���[���̃^�C�v  | 2        | ��ʑw�̃v���g�R����IP��
-               |                   |          | �ꍇ�A����EYTPE�ɂ�16�i��
-               | �iETYPE�j         |          | ��0x0800���Z�b�g�����B
+16〜17ビット目 | フレームのタイプ  | 2        | 上位層のプロトコルがIPの
+               |                   |          | 場合、このEYTPEには16進数
+               | （ETYPE）         |          | で0x0800がセットされる。
 -------------------------------------------------------------------------
-18�r�b�g�ڈȍ~ | �f�[�^            |          | �f�[�^���̂��́B
+18ビット目以降 | データ            |          | データそのもの。
 =========================================================================
 
 
-��0x02.) MAC�A�h���X�̓���
+■0x02.) MACアドレスの特徴
 
-�@MAC�A�h���X�̓��������ɗ񋓂����܂��B
-�E48�r�b�g�̌Œ�A�h���X
-�E���24�r�b�g�̓x���_�R�[�h�ŁAIEEE�����蓖�Ă�B
-�E����24�r�b�g�̓x���_���R�[�h�ŁA�x���_�̐ӔC�őS���E�Ń��j�[�N�ɁB
-�E�u���[�h�L���X�g�A�h���X�́A�S�r�b�g���P�B�iff:ff:ff:ff:ff:ff�j
-
-
-��0x03.) MAC�A�h���X��IP�A�h���X�̑Ή��t���A������ARP�v���g�R��
-
-�@MAC�t���[���͓]������邲�ƂɁA����MAC�A�h���X�Ƒ��M��MAC�A�h���X�̃^�C
-�v�������������Ă����܂��B
-
-�@����AIP�f�[�^�O�������̃w�b�_�����ɂ��鈶��IP�A�h���X�́A�ŏI�I�܂œ��B
-����܂ŏ����������܂���B
-
-�@IP�A�h���X�������Ă���NIC��l�b�g���[�N�@���MAC�A�h���X�������Ă��܂��B
-
-�@��ʓI��LAN�ł�Ethernet�Ƃ����ʐM�v���g�R�����g���܂��B���̃v���g�R��
-�ł́AMAC�A�h���X�𗘗p���ăp�P�b�g�ʐM���s���̂ŁA�����炶�߈���̃R���s
-���[�^�ɓ�����MAC�A�h���X�𒲂ׂ�K�v������܂��B
-
-�@����MAC�A�h���X�𒲂ׂ邽�߂̒ʐM�v���g�R����ARP�iAddress Resolution Pro
-tocol�F�A�h���X�����v���g�R���j�ƌĂт܂��B
-
-�@ARP�̓��[�e�B���O���̒��ł�����߂ďd�v�Ȃ��̂ł��B�ȒP�Ɍ����΁AIP�A�h
-���X�����Ƃɂ���MAC�A�h���X�𒲂ׂ�v���g�R���ł��B 
-
-�@�f�[�^�𑗂�Ƃ��ɁAIP�p�P�b�g�ɓ���đ���킯�ł����A���̎��Ɉ����MAC
-�A�h���X���K�v�ɂȂ�܂��B�����ŁAARP���o�ꂵ�܂��BARP�v�����b�Z�[�W���A��
-��Ɍ������ău���[�h�L���X�g����A����A�܂��M���̓n�[�h�E�F�A�A�h���X
-�ł���ɉ������܂��B���̉����𑗐M���}�V�����߂炦�āA�]���v���Z�X���J�n��
-����悤�ɂȂ�̂ł��B 
-
-�@�܂��A�L���b�V���@�\�������܂��B�����[�g�}�V����l�b�g���[�N��MAC�A�h��
-�X���L���b�V���ɋL�����Ă����A���񂩂��ARP�v���̖₢���킹�����Ȃ��̂ł��B
-����ɂ��A���Ԃƃl�b�g���[�N���\�[�X�̐ߖ񂪉\�ł��BARP�ɂ���ē����
-��MAC�A�h���X�̏��́A�ꎞ�I�ۑ�����܂��B 
-
-�@DOS���Łuarp -a�v�Ɠ��͂���ƁA�uInternet Address�v�uPhysical Address�v
-�uType�v�̂R�ɕ������ARP�ɂ�����IP�A�h���X��MAC�A�h���X�̑Ή����\����
-��܂��B
+　MACアドレスの特徴を次に列挙きします。
+・48ビットの固定アドレス
+・上位24ビットはベンダコードで、IEEEが割り当てる。
+・下位24ビットはベンダ内コードで、ベンダの責任で全世界でユニークに。
+・ブロードキャストアドレスは、全ビットが１。（ff:ff:ff:ff:ff:ff）
 
 
-��0x04.) MAC�A�h���X�̊m�F�̎d��
+■0x03.) MACアドレスとIPアドレスの対応付け、そしてARPプロトコル
 
-��Windows95/98/ME�̏ꍇ
-�@�X�^�[�g���j���[���u�t�@�C�������w�肵�Ď��s�v���uwinipcfg�v�Ɠ��́B
+　MACフレームは転送されるごとに、宛先MACアドレスと送信元MACアドレスのタイ
+プが書き換えられていきます。
 
-��WindowsNT/2000/XP�̏ꍇ
-�@DOS���Łuipconfig /all�v�Ɠ��́B
+　一方、IPデータグラム内のヘッダ部分にある宛先IPアドレスは、最終的まで到達
+するまで書き換えられません。
+
+　IPアドレスを持っているNICやネットワーク機器はMACアドレスも持っています。
+
+　一般的にLANではEthernetという通信プロトコルが使われます。このプロトコル
+では、MACアドレスを利用してパケット通信を行うので、あからじめ宛先のコンピ
+ュータに当たるMACアドレスを調べる必要があります。
+
+　このMACアドレスを調べるための通信プロトコルをARP（Address Resolution Pro
+tocol：アドレス解決プロトコル）と呼びます。
+
+　ARPはルーティング情報の中でもきわめて重要なものです。簡単に言えば、IPアド
+レスをもとにしてMACアドレスを調べるプロトコルです。 
+
+　データを送るときに、IPパケットに入れて送るわけですが、その時に宛先のMAC
+アドレスが必要になります。ここで、ARPが登場します。ARP要求メッセージが、宛
+先に向かってブロードキャストされ、宛先、つまり受信側はハードウェアアドレス
+でこれに応答します。この応答を送信元マシンが捕らえて、転送プロセスが開始で
+きるようになるのです。 
+
+　また、キャッシュ機能も持ちます。リモートマシンやネットワークのMACアドレ
+スをキャッシュに記憶しておき、次回からはARP要求の問い合わせをしないのです。
+これにより、時間とネットワークリソースの節約が可能です。ARPによって得られ
+たMACアドレスの情報は、一時的保存されます。 
+
+　DOS窓で「arp -a」と入力すると、「Internet Address」「Physical Address」
+「Type」の３つに分かれてARPにおけるIPアドレスとMACアドレスの対応が表示さ
+れます。
+
+
+■0x04.) MACアドレスの確認の仕方
+
+●Windows95/98/MEの場合
+　スタートメニュー＞「ファイル名を指定して実行」＞「winipcfg」と入力。
+
+●WindowsNT/2000/XPの場合
+　DOS窓で「ipconfig /all」と入力。
 
 -----
 C:\>ipconfig /all
@@ -120,7 +120,7 @@ Windows 2000 IP Configuration
         IP Routing Enabled. . . . . . . . : No
         WINS Proxy Enabled. . . . . . . . : No
 
-Ethernet adapter ���[�J�� �G���A�ڑ�:
+Ethernet adapter ローカル エリア接続:
 
         Connection-specific DNS Suffix  . :
         Description . . . . . . . . . . . : Intel(R) PRO/1000 MT Desktop 
@@ -135,13 +135,13 @@ Adapter
         DHCP Server . . . . . . . . . . . : 192.168.1.1
         DNS Servers . . . . . . . . . . . : 218.176.253.65
                                             43.224.255.20
-        Lease Obtained. . . . . . . . . . : 2003�N7��10�� 20:02:16
+        Lease Obtained. . . . . . . . . . : 2003年7月10日 20:02:16
         Lease Expires . . . . . . . . . . :
 -----
 
-��Linux�̏ꍇ
-�@ipconfig��-a�I�v�V���������Ď��s����΂悢�B�P�Ԗڂ�NIC���̓f�t�H���g
-��eth0�̂͂��ł��B
+●Linuxの場合
+　ipconfigに-aオプションをつけて実行すればよい。１番目のNIC名はデフォルト
+でeth0のはずです。
 
 -----
 # ifconfig -a
@@ -153,9 +153,9 @@ eth0      Link encap:Ethernet  HWaddr 00:60:08:C4:99:AA
           Interrupt:10 Base address:0x300
 -----
 
-��Solaris/SunOS�̏ꍇ
-�@ipconfig��-a�I�v�V���������Ď��s����΂悢�B�P�Ԗڂ�NIC���̓f�t�H���g
-��le0�܂���ie0�̂͂��ł��B
+●Solaris/SunOSの場合
+　ipconfigに-aオプションをつけて実行すればよい。１番目のNIC名はデフォルト
+でle0またはie0のはずです。
 
 -----
 # ifconfig -a
@@ -164,12 +164,12 @@ le0: flags=863<UP,BROADCAST,NOTRAILERS,RUNNING,MULTICAST> mtu 1500
         ether 8:0:20:10:d2:ae
 -----
 
-��FreeBSD�̏ꍇ
-�@dmesg�R�}���h�����s���܂��B
+●FreeBSDの場合
+　dmesgコマンドを実行します。
 
-��HP-UX�̏ꍇ
-�@lanscan�R�}���h�����s����΂悢�B�P�Ԗڂ�NIC���̓f�t�H���g��lan0�̂͂�
-�ł��B
+●HP-UXの場合
+　lanscanコマンドを実行すればよい。１番目のNIC名はデフォルトでlan0のはず
+です。
 
 -----
 $ lanscan
@@ -178,41 +178,41 @@ Path     Address        lu  State    NameUnit State  ID  Methods            Num
 2.0.2    0x08000935C99D 0   UP       lan0     UP     4   ETHER              52
 -----
 
-��MacOS�̏ꍇ
+●MacOSの場合
 
-��Open Transport 
+◎Open Transport 
 
-�P�FAppleTalk�R���g���[���p�l�����J���܂��B
-�Q�FEdit���j���[�ɂ����AUser Mode��I�����܂��B
-�R�FAdvanced radio button��I�����āAOK���N���b�N���܂��B
-�S�Finfo���N���b�N���܂��B
-�T�F����ƁAAppleTalk Info�E�B���h�E��MAC�A�h���X���\�������͂��ł��B
+１：AppleTalkコントロールパネルを開きます。
+２：Editメニューにいき、User Modeを選択します。
+３：Advanced radio buttonを選択して、OKをクリックします。
+４：infoをクリックします。
+５：すると、AppleTalk InfoウィンドウにMACアドレスが表示されるはずです。
 
-��Apple System Profiler 2.1.2
-�@The Network Overview�i�V�X�e���v���t�B�[���^�u���j��MAC�A�h���X�̏ڍ׏�
-���\�����܂��B
+◎Apple System Profiler 2.1.2
+　The Network Overview（システムプロフィールタブ下）はMACアドレスの詳細情
+報を表示します。
 
-�@�������AGetMyAddress�̍ŋ߂̃o�[�W�����Ƒ��̃l�b�g���[�N���[�e�B���e�B
-��MacOS 7.5.2�i�Ⴆ�΁A7200,7500,8500,9500�̂悤��PCI�x�[�X��PowerMacinto
-sh�R���s���[�^�j�ł͓����܂���B
+　ただし、GetMyAddressの最近のバージョンと他のネットワークユーティリティ
+はMacOS 7.5.2（例えば、7200,7500,8500,9500のようなPCIベースのPowerMacinto
+shコンピュータ）では動きません。
 
-��No OS�̏ꍇ�iOS�������C���X�g�[�����Ă��Ȃ��ꍇ�j
-�@FCC3W��PREP���邢��WH8HW��Yolanda����AFermi Linux��FD����肵�Ă�����
-���B�����OS���C���X�g�[�����Ȃ��Ă����p�ł��܂��B�}�V�����u�[�g����ƁA
-�uChoose a Language�v�i�����I�ׁj�Ƃ����X�N���[�����\������܂��B���ꂩ
-��A[Ctrl]+[Alt]+[Fn4]�������܂��B����ƁA�u<6>eth0:�v�Ƃ��������񂩂�n
-�܂�s���\������܂��B���̍s�̏I���߂���16�i���̐�����������ĕ\������
-�܂��B���ꂪMAC�A�h���X�ł��B
+●No OSの場合（OSさえもインストールしていない場合）
+　FCC3WのPREPあるいはWH8HWのYolandaから、Fermi LinuxのFDを入手してくださ
+い。これはOSをインストールしなくても利用できます。マシンをブートすると、
+「Choose a Language」（言語を選べ）というスクリーンが表示されます。それか
+ら、[Ctrl]+[Alt]+[Fn4]を押します。すると、「<6>eth0:」という文字列から始
+まる行が表示されます。その行の終わり近くに16進数の数が分割されて表示され
+ます。それがMACアドレスです。
 
-�@�ŋ߂́A1CD Linux�Ȃǂ̗��p�̕�����ʓI��������܂���B
+　最近は、1CD Linuxなどの利用の方が一般的かもしれません。
 
-������OS��
-�@arp�R�}���h���g�����ƂŁALAN���ɐڑ�����Ă���@���MAC�A�h���X���ԐړI
-�ɒ��ׂ邱�Ƃ��ł��܂��B
+●他のOSや
+　arpコマンドを使うことで、LAN内に接続されている機器のMACアドレスを間接的
+に調べることができます。
 
-�@�������A�ʏ�ł͍L��ȋ@��܂ŔF������Ă��Ȃ����Ƃ������B�����ŁA��x
-�u���[�h�L���X�g���ixxx.xxx.xxx.255�j�i���P�j��Ping�p�P�b�g�𑗐M���Ă���A
-arp�R�}���h���g����LAN���ɂ�����ғ����̋@����Q�Ƃ��邱�Ƃ��\�ł��B
+　しかし、通常では広域な機器まで認識されていないことが多い。そこで、一度
+ブロードキャスト宛（xxx.xxx.xxx.255）（※１）にPingパケットを送信してから、
+arpコマンドを使えばLAN内における稼動中の機器を参照することが可能です。
 
 C:\>arp -a
 
@@ -246,449 +246,449 @@ Interface: 192.168.198.1 on Interface 0x2
 
 Interface: 192.168.1.11 on Interface 0x1000005
   Internet Address      Physical Address      Type
-  192.168.1.1           00-90-99-50-8b-e1     dynamic�@�����[�^�[
+  192.168.1.1           00-90-99-50-8b-e1     dynamic　←ルーター
   192.168.1.5           00-90-99-10-72-0f     dynamic
   192.168.1.10          00-90-cc-0d-a5-71     dynamic
 
-�@���̕��@�ŁALAN���ɐڑ����ꂽ���[�^�[�APS2�AXbox��MAC�A�h���X���ȒP�ɒ�
-�ׂ邱�Ƃ��ł��܂��B
+　この方法で、LAN内に接続されたルーター、PS2、XboxのMACアドレスを簡単に調
+べることができます。
 
-�i���P�j�u���[�h�L���X�g�A�h���X�Ƃ͓��Y�l�b�g���[�N�ɏ�������z�X�g�S��
-��\���A���̃l�b�g���[�N��IP�A�h���X�̂����A�ł��傫�Ȕԍ��i�N���XA�����
-�炷C�̏ꍇ�̓z�X�g�����S��1�̔ԍ��j�ŕ\���܂��B�l�b�g���[�N���̑S�Ẵz
-�X�g�Ƀf�[�^�iIP�p�P�b�g�Ȃǁj�𑗂�Ƃ��ɗp�����܂��B 
-
-
-��0x05.) MAC�A�h���X�̏��������̊T�v
-
-�@���̂�MAC�A�h���X�͏��������ł��Ȃ��Ƃ����_�b������܂����A���ۂɂ͂ł�
-�܂��B���������̕��@������܂��B
-�@�Ⴆ�΁A�̂�NIC�ɂ�MAC�A�h���X�����������邱�Ƃ��\�Ȃ��̂�����ALinux
-�̃R�}���h���g���ď�����������A���݂ł͂����p�̃c�[�������݂��܂��B��
-�ׂ͌�q���܂��B
-
-�@�A�^�b�J�[��MAC�A�h���X�����������邱�Ƃɂ���āA���̂悤�ȃA�^�b�N���s
-���\��������܂��B
-
-��MAC�A�h���X�X�v�[�t�B���O
-�@�����MAC�A�h���X�����炩�̕��@�ŏ��������E�ύX���邱�Ƃł��B����͂���
-�ɏœ_�𓖂ĂĂ����܂��B
-
-�@�ǂ�ȏ�ʂɂ��̃e�N�j�b�N�𗘗p����̂��ƌ����ƁA����LAN�̓����l�b�g��
-�[�N�ɕs���N���Ȃǂ��������܂��B
-�@����LAN���\�z����ۂɎg���A�N�Z�X�|�C���g�iAP�ƌĂт܂��j�̃Z�L�����e�B
-�@�\�̈��MAC�A�h���X�̐����Ƃ������̂�����܂��B���̋@�\��L���ɂ��Ă�
-�����Ƃɂ���āA�����炶�ߐݒ肵��MAC�A�h���X�ȊO�͂���AP�ɃA�N�Z�X�ł���
-���悤�ɂ��邱�Ƃ��ł��܂��B�������AMAC�A�h���X�͏�����������̂ŁAMAC
-�A�h���X��F�؂ɗ��p���悤�Ƃ��邱�Ƃ����{�I�ɊԈႢ�������킯�ł��B
-
-��ARP�X�v�[�t�B���O
-�@�ʐM�v���g�R����ARP�͔F�؂Ƃ��āAMAC�A�h���X�Ɋ�Â��Ă���̂ŁA�����
-�U�����邱�Ƃɂ���āA�M���֌W�̂���z�X�g��MAC�A�h���X�𑕂��A�s���A�N�Z
-�X���悤�Ƃ���e�N�j�b�N�ł��B
-�@ARP�̌�������A���̂R�ʂ肪�l������B
-�EARP�����p�P�b�g���U�����đ��M����
-�EARP�v���p�P�b�g���U�����Ă���A���M������
-�E�U������ARP�v���p�P�b�g�𑗐M����
+（※１）ブロードキャストアドレスとは当該ネットワークに所属するホスト全体
+を表し、そのネットワークのIPアドレスのうち、最も大きな番号（クラスAから暮
+らすCの場合はホスト部が全て1の番号）で表します。ネットワーク内の全てのホ
+ストにデータ（IPパケットなど）を送るときに用いられます。 
 
 
-��0x06.) �Â�NIC�ɂ�����MAC�A�h���X�̏�������
+■0x05.) MACアドレスの書き換えの概要
 
-==========================================================================
-�g����p�x | �� 
---------------------------------------------------------------------------
-�e�Ղ�       | ���i���荢�����j
---------------------------------------------------------------------------
-�^����e��   | ����
---------------------------------------------------------------------------
-����         | ��
---------------------------------------------------------------------------
-����         | ��
-==========================================================================
+　何故かMACアドレスは書き換えできないという神話がありますが、実際にはでき
+ます。それも幾つかの方法があります。
+　例えば、昔のNICにはMACアドレスを書き換えることが可能なものがあり、Linux
+のコマンドを使って書き換えたり、現在ではそれ専用のツールも存在します。詳
+細は後述します。
 
-�@�Â�NIC�̏ꍇ�́A���[�U�[����MAC�A�h���X��ύX�ł���\��������܂��B
+　アタッカーがMACアドレスを書き換えることによって、次のようなアタックを行
+う可能性があります。
+
+●MACアドレススプーフィング
+　これはMACアドレスを何らかの方法で書き換え・変更することです。今回はこれ
+に焦点を当てていきます。
+
+　どんな場面にこのテクニックを利用するのかと言うと、無線LANの内部ネットワ
+ークに不正侵入などが挙げられます。
+　無線LANを構築する際に使うアクセスポイント（APと呼びます）のセキュリティ
+機能の一つにMACアドレスの制限というものがあります。この機能を有効にしてお
+くことによって、あからじめ設定したMACアドレス以外はそのAPにアクセスできな
+いようにすることができます。しかし、MACアドレスは書き換えられるので、MAC
+アドレスを認証に利用しようとすることが根本的に間違いだったわけです。
+
+●ARPスプーフィング
+　通信プロトコルのARPは認証として、MACアドレスに基づいているので、これを
+偽装することによって、信頼関係のあるホストのMACアドレスを装い、不正アクセ
+スしようとするテクニックです。
+　ARPの原理から、次の３通りが考えられる。
+・ARP応答パケットを偽造して送信する
+・ARP要求パケットを偽造してから、送信し直す
+・偽造したARP要求パケットを送信する
 
 
-��0x07.) �c�[�����p�ɂ��MAC�A�h���X�̏�������
+■0x06.) 古いNICにおけるMACアドレスの書き換え
 
 ==========================================================================
-�g����p�x | ��������
+使われる頻度 | ★ 
 --------------------------------------------------------------------------
-�e�Ղ�       | ������
+容易さ       | ★（入手困難だから）
 --------------------------------------------------------------------------
-�^����e��   | ������
+与える影響   | ★★
 --------------------------------------------------------------------------
-����         | ��������
+効果         | ★
 --------------------------------------------------------------------------
-����         | ��������
+総合         | ★
 ==========================================================================
 
-�@SMAC�ihttp://www.klcconsulting.net/smac/�j��
-Drawbridge�ihttp://www.net.tamu.edu/drawbridge/index.html�j�Ȃǂ̃c�[����
-�g�����Ƃ�MAC�A�h���X�����������邱�Ƃ��\�ȏꍇ������܂��B
+　古いNICの場合は、ユーザー側でMACアドレスを変更できる可能性があります。
 
 
-��0x08.) �R���p�l�ݒ�ɂ��MAC�A�h���X�̏��������@��WindowsXP�ҁ� 
+■0x07.) ツール利用によるMACアドレスの書き換え
 
 ==========================================================================
-�g����p�x | ��
+使われる頻度 | ★★★★
 --------------------------------------------------------------------------
-�e�Ղ�       | ������
+容易さ       | ★★★
 --------------------------------------------------------------------------
-�^����e��   | ������
+与える影響   | ★★★
 --------------------------------------------------------------------------
-����         | ����������
+効果         | ★★★★
 --------------------------------------------------------------------------
-����         | ������
+総合         | ★★★★
 ==========================================================================
 
-�@����͎g�p���Ă���NIC�ɂ���Ă͉\�ł͂Ȃ����@�ł��B�����A���Ȃ���NIC
-���N���[��MAC�A�h���X�@�\���T�|�[�g���Ă��Ȃ���΁A�����ŉ��������@��M
-AC�A�h���X�����������邱�Ƃ��ł��܂��B 
-
-�P�F�X�^�[�g���j���[���uAll Programs�v���uControl Panel�v��ŁA
-�uNetwork Connections�v���_�u���N���b�N���܂��B
-
-�Q�F����ƁA�uNetwork Connections�v�E�B���h�E���\�������͂��ł��B
-
-�@�uLocal Area Connection�v���E�N���b�N���āA�u�v���p�e�B�v��I�����܂��B 
-
-�R�F�uLocal Area Connection�v�v���p�e�B�E�B���h�E���\������܂��B
-�uConfigure�v���N���b�N���āA�uAdvanced�v�^�u��I�����܂��B 
-
-�@�uProperty section�v���X�N���[���_�E�����āA�uNetwork Address�v���邢��
-�uLocally Administered Address�v�Ƃ������ڂ�T���A������N���b�N���܂��B 
-
-�@�E���ɁuValue�v�ƕ\�����ꂽ��A���̃��W�I�{�^���������ċU��������MAC�A
-�h���X�̒l����͂��܂��B���̍ہA��؂��-�ł��B��F12-34-56-AB-CD-EF�B
-
-�S�FDOS�����J���A�uipconfig /all�v���邢�́unet config rdr�v�Őݒ���m�F
-���܂��B
-
-�@�ݒ肪���f����Ă���΁A�����ł��B�}�V�����ċN������Ί����ł��B 
-
-�@�������܂��ݒ肪���f����Ă��Ȃ���΁A���́u���W�X�g���ύX�ɂ��MAC�A�h
-���X�̏��������@��WindowsXP�ҁ��v���Q�l�ɂ��Ă��������B
+　SMAC（http://www.klcconsulting.net/smac/）や
+Drawbridge（http://www.net.tamu.edu/drawbridge/index.html）などのツールを
+使うことでMACアドレスを書き換えることが可能な場合もあります。
 
 
-��0x09.) ���W�X�g���ύX�ɂ��MAC�A�h���X�̏��������@��WindowsXP�ҁ� 
+■0x08.) コンパネ設定によるMACアドレスの書き換え　＜WindowsXP編＞ 
 
 ==========================================================================
-�g����p�x | ��
+使われる頻度 | ★
 --------------------------------------------------------------------------
-�e�Ղ�       | ������
+容易さ       | ★★★
 --------------------------------------------------------------------------
-�^����e��   | ����������
+与える影響   | ★★★
 --------------------------------------------------------------------------
-����         | ����������
+効果         | ★★★★★
 --------------------------------------------------------------------------
-����         | ��������
+総合         | ★★★
 ==========================================================================
 
-�@���̕��@��Windows�̃��W�X�g���̒m�����K�v�Ƃ���܂��B�����A���Ȃ�������
-��Windows�̃��W�X�g���Ɋ���Ă��Ȃ���΁A���̕��@�͎~�߂��ق������Ǝv����
-���B�����A���̕��@�������Ȃ�A���W�X�g���̃L�[���o�b�N�A�b�v���Ă����ׂ�
-�ł��B 
+　これは使用しているNICによっては可能ではない方法です。もし、あなたのNIC
+がクローンMACアドレス機能をサポートしていなければ、ここで解説する方法でM
+ACアドレスを書き換えることができます。 
 
-�P�FDOS����Łuipconfig /all�v�Ɠ��͂��āA�l�b�g���[�N�̐ݒ���m�F���܂��B
-�uPhysical Address�v�ƁuDescription�v�ɒ��ڂ��Ă��������B���ɁuPhysical A
-ddress�v��MAC�A�h���X���\������܂��B
+１：スタートメニュー＞「All Programs」＞「Control Panel」上で、
+「Network Connections」をダブルクリックします。
 
-�Q�F���Ɂunet config rdr�v�Ɠ��͂��܂��B����Ǝ��̂悤�ɕ\������܂����B
+２：すると、「Network Connections」ウィンドウが表示されるはずです。
 
-�R�F�X�e�b�v�P�C�Q��莟�̂��Ƃ��������܂����B
+　「Local Area Connection」を右クリックして、「プロパティ」を選択します。 
 
-�EMAC�A�h���X��00-02-B3-0B-8B-08
-�EWorkstation�̓A�N�e�B�u
-�ENetbiosSmb (000000000000)
-�ENetBT_Tcpip_{20B93FCA-BE9F-44E6-A821-D8097219770F} (0002B30B8B08)
+３：「Local Area Connection」プロパティウィンドウが表示されます。
+「Configure」をクリックして、「Advanced」タブを選択します。 
 
-�@NetBT_Tcpip��{}����GUID�ł��B
+　「Property section」をスクロールダウンして、「Network Address」あるいは
+「Locally Administered Address」という項目を探し、それをクリックします。 
 
-�@�����̒l�͌�قǎg�p���܂��̂ŁA�e�L�X�g�G�f�B�^�ȂǂɃR�s�y���Ă����A
-�ۑ����Ă����Ă��������B
+　右側に「Value」と表示されたら、そのラジオボタンを押して偽装したいMACア
+ドレスの値を入力します。その際、区切りは-です。例：12-34-56-AB-CD-EF。
 
-�S�F�X�^�[�g���j���[���uRun�v���uregedt32�v�Ɠ��͂��ă��W�X�g���G�f�B�^��
-�N�����܂��B 
+４：DOS窓を開き、「ipconfig /all」あるいは「net config rdr」で設定を確認
+します。
 
-�T�F���W�X�g���̃o�b�N�A�b�v�Ǝ���Ă����܂��B
+　設定が反映されていれば、成功です。マシンを再起動すれば完了です。 
 
-�@�uHKEY_LOCAL_MACHINE on Local Machine�v�T�u�E�B���h�E���N���b�N���A���[
-�g�L�[�ł���uHKEY_LOCAL_MACHINE�v���N���b�N���A���j���[�́uRegistry�v���u
-Save Subtree As�v�Ń��W�X�g���̃o�b�N�A�b�v�����܂��B����͈��S�ȏꏊ��
-�ۊǂ��Ă����܂��BFD�ɕۑ����Ă����̂���ԗǂ���������܂���B
-
-�U�F�uHKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Class\{4D36E972-
-E325-11CE-BFC1-08002BE10318}�v���_�u���N���b�N���āA�؁itree�j��W�J���܂��B
-�܂�A�؍\�����@���Ă����Ƃ������Ƃł��B����ƁA�u0000�v�u0001�v�u0002�v
-�ȂǂƂ����S�̐������T�u�L�[�ɂȂ��Ă��܂��B�����͓��ʂ̃l�b�g���[�N�E
-�A�_�v�^�[��\���Ă��܂��B
-
-�V�F�u0000�v�Ƃ����T�u�L�[����n�߂܂��B�u0000�v���N���b�N���܂��B�����A��
-�ꂪMAC�A�h���X���U��������NIC�Ȃ�΁A�E���̃��X�g����uDriverDesc�v��I��
-���܂��B�ǂ̂悤�ɔ��f����̂��ƌ����ƁA�uDriverDesc�v�L�[������΂悢�킯
-�ł��B
-
-�@���ꂩ��A{}����GUID�ƈ�v���Ă��邩�ǂ������A�uNetCfgInstanceID�v�L�[��
-�`�F�b�N���܂��B 
-
-�@�ʏ�A0000���ŏ���NIC���܂�ł��܂��B���̗�ł́A0001��NIC��I�����Ęb��
-�i�߂܂��B 
-
-�W�F�uNetworkAddress�v�Ƃ����T�u�L�[�����݂��邩�ǂ����`�F�b�N���܂��B�����A
-���݂��Ȃ���ΐV�K�쐬���܂��B�K���ȂƂ�����E�N���b�N���āA�unew�v���uStr
-ing Value�v��I������ΐV�K�쐬�ł��܂��B
-
-�@����ƁA�uNew Value #1�v�Ƃ����T�u�L�[���ł��܂��̂ŁA���̃T�u�L�[����
-�uNetworkAddress�v�ɕύX���܂��B
-
-�X�F�uNetworkAddress�v�L�[�̒l����͂��܂��B
-
-�@�X�e�b�v�W�ō쐬�����T�u�L�[�ł���uNetworkAddress�v���_�u���N���b�N��
-�܂��B����ƁA�uEdit String�v�{�b�v�A�b�v�{�b�N�X���\������܂��B�uValue 
-name�v�ɂ́uNetworkAddress�v�A�uValue data�v�ɂ͐V����MAC�A�h���X�̒l�ɕ�
-�X���܂��B�����ł́A�u00-02-B3-0B-9B-09�v�ɕύX���Ă݂܂��B
-
-�P�O�F�ύX����MAC�A�h���X�𔽉f������ɂ́A�Q�̕��@������܂��B
-
-�@�P�Ԗڂ̕��@�̓V�X�e�����ċN������K�v������܂���B
-
-�����@�P
-
-(i)�X�^�[�g���j���[���uSetting�v���uControl Panel�v��I�����āA�uNetwork 
-Connections�v���_�u���N���b�N���܂��B
-
-[����]DHCP�N���C�A���g�ɂȂ��Ă���Ȃ�΁A�V����IP�A�h���X������U����
-�\��������܂��B
-
-(ii)MAC�A�h���X��ύX�������l�b�g���[�N�A�_�v�^��I�����āA�E�N���b�N���A
-�uDisable�v��I�т܂��B
-
-(iii)���x�́uEnable�v��I�сA�A�N�e�B�u�ɂ��܂��B����Ŕ��f����Ă���͂�
-�ł��B
-
-(iv)�X�e�b�v�R�Őݒ蔽�f����Ă���͂��ł����A���f����Ă��Ȃ��悤�Ȃ�΁A
-�ċN�����Ă��������B
-
-(v)�{���ɕύX����Ă��邩�ǂ����uipconfig /all�v�Ŋm�F���Ă��������B
-
-�����@�Q
-
-�@�}�V�����ċN������΂悢�B
-
-�P�P�F�ŏI�I��DOS����Łuipconfig /all�v�R�}���h�����s���āAMAC�A�h���X��
-�ύX����Ă��邩�ǂ����m�F���Ă��������B
+　もしうまく設定が反映されていなければ、次の「レジストリ変更によるMACアド
+レスの書き換え　＜WindowsXP編＞」を参考にしてください。
 
 
-��0x10.) EEPROM���������ɂ��MAC�A�h���X�̏�������
+■0x09.) レジストリ変更によるMACアドレスの書き換え　＜WindowsXP編＞ 
 
 ==========================================================================
-�g����p�x | ��
+使われる頻度 | ★
 --------------------------------------------------------------------------
-�e�Ղ�       | ��
+容易さ       | ★★★
 --------------------------------------------------------------------------
-�^����e��   | ��������
+与える影響   | ★★★★★
 --------------------------------------------------------------------------
-����         | ��������
+効果         | ★★★★★
 --------------------------------------------------------------------------
-����         | ����
+総合         | ★★★★
 ==========================================================================
 
-�@������A���Ȃ��͓��������I�ȃl�b�g���[�N�A�h���X�iMAC�A�h���X�̂��Ɓj��
-���Q�̃}�V�������K�v�����邩������܂���B�Ⴆ�΁A�X�v�[�t�B���O�̎�
-����MAC�A�h���X�ɂ��ڑ����ۂ�������ē����l�b�g���[�N�ɐڑ��������ꍇ�i
-����LAN��AP�⃋�[�^�[�ɂ�MAC�A�h���X�ɂ��ڑ����ۂƂ����Z�L�����e�B�@�\��
-������Ă���j�ɖ��ɗ���������܂���B
+　この方法はWindowsのレジストリの知識が必要とされます。もし、あなたがあま
+りWindowsのレジストリに慣れていなければ、この方法は止めたほういいと思いま
+す。もし、この方法を試すなら、レジストリのキーをバックアップしておくべき
+です。 
 
-�@�����m�̂悤��MAC�A�h���X��48�r�b�g�i�U�o�C�g�j�̃��j�[�N�Ȑ����l�ō\��
-�����BEthernet NIC�iNetwork Interface Card�j�n�[�h�E�F�A���[�J�[��IEEE
-�iInstitute for Electrical and Electronic Engineers�j����Ethenet�A�h���X
-�̋����w�����Ă��܂��B�����āA�X�̃}�V���i�����ɂ�NIC�ɂ��P�Ȃ̂�
-�P��̃}�V���ɕ�����NIC���h���΂��ꂾ��������MAC�A�h���X�����邱�ƂɂȂ�
-�j��F�������邽�߂ɁA���̋��𐻑����Ă���NIC��MAC�A�h���X�̈ꕔ�i�O��
-�R�o�C�g���j�Ɋ��蓖�ĂĂ���킯�ł��BIEEE�̃O���[�o���A�h���X�͈́AIEEE
-�ɂ���Ă͊��蓖�Ă��o�^����Ă��܂��B
+１：DOS窓上で「ipconfig /all」と入力して、ネットワークの設定を確認します。
+「Physical Address」と「Description」に着目してください。特に「Physical A
+ddress」にMACアドレスが表示されます。
 
-�@���p�ł���NIC�̑����ł́AMAC�A�h���X�͔����́isemiconductor�j�x�[�X�̃�
-�����ɋL�^����Ă���AMAC�A�h���X�̑��ɂ����̏�񂪋L�^����Ă��܂��B
+２：次に「net config rdr」と入力します。すると次のように表示されました。
 
-�EI/O�x�[�X�A�h���X
-�EInterrupt
-�E�C���^�t�F�[�X�̌^�i��A10BASE-T,AUI,10BASE-2�Ȃǁj
-�E�`�F�b�N�T���ichecksum�j
-�E���̐ݒ���
+３：ステップ１，２より次のことが判明しました。
 
-�@�����ONIC�͋���82S123�܂���74S288�Ƃ����P�񂾂��������ނ��Ƃ��ł���256
-�r�b�g�f�o�C�X���g�p���Ă��܂��B�����̃f�o�C�X�͑傫���i16�s���j�A�R�X
-�g�������邵�v���O��������ςł��B
+・MACアドレスは00-02-B3-0B-8B-08
+・Workstationはアクティブ
+・NetbiosSmb (000000000000)
+・NetBT_Tcpip_{20B93FCA-BE9F-44E6-A821-D8097219770F} (0002B30B8B08)
 
-�@�����ŁA����NIC�̑����́A�V���A��EEPROM�iElectrically Erasable Programm
-able Read-Only Memory�j���g���āA����ɏ����L�^���Ă���B�󂯎M�����Ŕ�
-�������\���邱�Ƃ����邪�A���т��ђʏ��Ղɂ��͂񂾕t�����܂��B�����
-�̃f�o�C�X��Microwire�ƌĂ΂��R�̃��C���C���^�t�F�[�X���g���A���e��]
-������BEEPROM�̓J�[�h���[�J�[���v���O�������܂��B���l�ɁA�V���A��EEPROM
-��Ethenet�R���g���[��IC���璼�ڃv���O��������܂��B����āAMAC�A�h���X��
-���̐ݒ����PC�̃\�t�g�E�F�A��ʂ��ċL�^�����킯�ł��B�����̃f�o�C
-�X�̂悢�Ƃ���́A�G���[��������Ή��x�ł��i�Ƃ����Ă������A������Ƃ�
-�������x�͂���j���������\�ȓ_�ł��B�K�v�ȃ������̏���̂��߂ɁA�����
-�̃f�o�C�X�͑��256�r�b�g�i93C06�j���邢��1024�r�b�g�i93C46�j�̗��X������
-�܂��B���̍��̖ړI�͂��̃V���A��EEPROM�̒��g�����������āA���R��MAC�A�h��
-�X�i�ƃ`�F�b�N�T���j���C�����邱�Ƃł��B
+　NetBT_Tcpipの{}内がGUIDです。
 
-�@NIC�̐S����Ethernet Interface���邢��Ethenet Controller�ƌĂ΂��IC�ł��B
-���̃f�o�C�X��Ethenet��PC�o�X�̊Ԃ�����肷��̂Ɏg���܂��B����IC�`�b
-�v�͖{���ɂ�����葖��܂��B�Ƃ����̂��ANIC��̂ق��̃R���|�[�l���g���ʏ�
-�C���^�t�F�[�X�iinterface�j/�ڒ��܁iglue�j���W�b�N������ł��B�������AE
-thernet�R���g���[���[�̃��[�J�[�ɂ���Ă͑����̈Ⴂ�͑��݂��܂��B����J�[
-�h��National Semiconductor����DP83905-EB AT/LANTIC
-�i�ڍׂ�http://www.national.com/an/AN/AN-897.pdf���Q�Ƃ���j���g�p���AISA
-�o�X�Ƃ���肵�܂��B���̃f�o�C�X�́APCI�o�X�Ƃ���肷�邽�߂ɁARealtek
- RTL8129��RTL8029 Fast Ethenet Controller
-�i�ڍׂ�http://www.realtek.com.tw/cn/NEW/doc/RTL8129-new.htm���Q�Ƃ���j��
-�܂�ł��܂��B���ʂ͌�҂̃J�[�h�������悤�ł��B
+　これらの値は後ほど使用しますので、テキストエディタなどにコピペしておき、
+保存しておいてください。
 
-�@Microsystems LAN9000�t�@�~����UMC UM9003�ł́AEthenet�R���g���[���[�E�C
-���^�t�F�[�X�����ڃV���A��EEPROM�ƃf�[�^������肵�܂��B
+４：スタートメニュー＞「Run」＞「regedt32」と入力してレジストリエディタを
+起動します。 
 
-�@���̍��ł́AAT/LANTIC�f�o�C�X���g����PC�x�[�X��NIC����舵���܂��BAT/LAN
-TIC���̃f�o�C�X��Novell NE2000 Plus�J�[�h���G�~�����[�g�ł��܂��B�ŏ��ɒ�
-�ׂ邱�Ƃ́AAT/LANTIC�f�[�^�V�[�g����ɂ���O�Ɏ��s�ł��邪�A���̌���EEP
-ROM�̒��g�������Ƀ}�b�`���A�m�F���邱�Ƃ������Ă���܂��B
+５：レジストリのバックアップと取っておきます。
 
-�@����ł́AMAC�A�h���X���ǂ̂悤�Ɍ����邾�낤���H 
+　「HKEY_LOCAL_MACHINE on Local Machine」サブウィンドウをクリックし、ルー
+トキーである「HKEY_LOCAL_MACHINE」をクリックし、メニューの「Registry」＞「
+Save Subtree As」でレジストリのバックアップが取れます。これは安全な場所に
+保管しておきます。FDに保存しておくのが一番良いかもしれません。
 
-�@���΂��΁ANIC��MAC�A�h���X�̓��x���Ɉ������Ă�����A�J�[�h���̂Ɉ��
-����Ă����肷��B�����J�[�h���P�[�X�̒��ɂ������肵�ăA�N�Z�X�ł��Ȃ���
-���́A�N�����Ȃ����@��MAC�A�h���X�𒲂ׂ����͂��ł��B����ȏꍇ�͂��łɑO
-�q�������@������ė~�����B
+６：「HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Class\{4D36E972-
+E325-11CE-BFC1-08002BE10318}」をダブルクリックして、木（tree）を展開します。
+つまり、木構造を掘っていくということです。すると、「0000」「0001」「0002」
+などという４つの数字がサブキーになっています。これらは特別のネットワーク・
+アダプターを表しています。
 
-�@�V���A��EEPROM�ɂ͂ǂ�Ȃ��̂�����̂��낤���B
+７：「0000」というサブキーから始めます。「0000」をクリックします。もし、こ
+れがMACアドレスを偽装したいNICならば、右側のリストから「DriverDesc」を選択
+します。どのように判断するのかと言うと、「DriverDesc」キーを見ればよいわけ
+です。
 
-�@�܂��A�قȂ�NIC��ɂ���V���A��EEPROM����f�[�^��P�ɓǂݏo�����Ƃɂ�
-�ĉ�����܂��B�������邱�Ƃɂ���āA�����̂悢�Ƃ����Ⴂ�𗝉����邱��
-���ł��AMAC�A�h���X�̑��݂��m�F�ł��邩��ł��B
+　それから、{}内のGUIDと一致しているかどうかを、「NetCfgInstanceID」キーで
+チェックします。 
 
-�����[�J�[�FNational Semiconductor
-���f���FNSC�H
-EEPROM�F93LC06
-MAC�A�h���X�F08:00:17:03:C0:E5
-�f�[�^�F
+　通常、0000が最初のNICを含んでいます。この例では、0001のNICを選択して話を
+進めます。 
+
+８：「NetworkAddress」というサブキーが存在するかどうかチェックします。もし、
+存在しなければ新規作成します。適当なところを右クリックして、「new」＞「Str
+ing Value」を選択すれば新規作成できます。
+
+　すると、「New Value #1」というサブキーができますので、このサブキー名を
+「NetworkAddress」に変更します。
+
+９：「NetworkAddress」キーの値を入力します。
+
+　ステップ８で作成したサブキーである「NetworkAddress」をダブルクリックし
+ます。すると、「Edit String」ボップアップボックスが表示されます。「Value 
+name」には「NetworkAddress」、「Value data」には新しいMACアドレスの値に変
+更します。ここでは、「00-02-B3-0B-9B-09」に変更してみます。
+
+１０：変更したMACアドレスを反映させるには、２つの方法があります。
+
+　１番目の方法はシステムを再起動する必要がありません。
+
+○方法１
+
+(i)スタートメニュー＞「Setting」＞「Control Panel」を選択して、「Network 
+Connections」をダブルクリックします。
+
+[注意]DHCPクライアントになっているならば、新しいIPアドレスが割り振れる可
+能性があります。
+
+(ii)MACアドレスを変更したいネットワークアダプタを選択して、右クリックし、
+「Disable」を選びます。
+
+(iii)今度は「Enable」を選び、アクティブにします。これで反映されているはず
+です。
+
+(iv)ステップ３で設定反映されているはずですが、反映されていないようならば、
+再起動してください。
+
+(v)本当に変更されているかどうか「ipconfig /all」で確認してください。
+
+○方法２
+
+　マシンを再起動すればよい。
+
+１１：最終的にDOS窓上で「ipconfig /all」コマンドを実行して、MACアドレスが
+変更されているかどうか確認してください。
+
+
+■0x10.) EEPROM書き換えによるMACアドレスの書き換え
+
+==========================================================================
+使われる頻度 | ★
+--------------------------------------------------------------------------
+容易さ       | ★
+--------------------------------------------------------------------------
+与える影響   | ★★★★
+--------------------------------------------------------------------------
+効果         | ★★★★
+--------------------------------------------------------------------------
+総合         | ★★
+==========================================================================
+
+　いずれ、あなたは同じ物理的なネットワークアドレス（MACアドレスのこと）を
+持つ２つのマシンを持つ必要があるかもしれません。例えば、スプーフィングの実
+験やMACアドレスによる接続拒否を回避して内部ネットワークに接続したい場合（
+無線LANのAPやルーターにはMACアドレスによる接続拒否というセキュリティ機能が
+備わっている）に役に立つかもしれません。
+
+　ご存知のようにMACアドレスは48ビット（６バイト）のユニークな整数値で構成
+される。Ethernet NIC（Network Interface Card）ハードウェアメーカーはIEEE
+（Institute for Electrical and Electronic Engineers）からEthenetアドレス
+の区域を購入しています。そして、個々のマシン（厳密にはNICにつき１個なので
+１台のマシンに複数のNICを刺せばそれだけ複数のMACアドレスがあることになる
+）を認識させるために、その区域を製造しているNICのMACアドレスの一部（前半
+３バイト分）に割り当てているわけです。IEEEのグローバルアドレス範囲、IEEE
+によっては割り当てられ登録されています。
+
+　利用できるNICの多くでは、MACアドレスは半導体（semiconductor）ベースのメ
+モリに記録されており、MACアドレスの他にも次の情報が記録されています。
+
+・I/Oベースアドレス
+・Interrupt
+・インタフェースの型（例、10BASE-T,AUI,10BASE-2など）
+・チェックサム（checksum）
+・他の設定情報
+
+　少し前NICは旧式82S123または74S288という１回だけ書き込むことができる256
+ビットデバイスを使用しています。これらのデバイスは大きく（16ピン）、コス
+トもかかるしプログラムも大変です。
+
+　そこで、今のNICの多くは、シリアルEEPROM（Electrically Erasable Programm
+able Read-Only Memory）を使って、これに情報を記録している。受け皿方式で抜
+き差し可能することもあるが、たびたび通常基盤にをはんだ付けします。それら
+のデバイスはMicrowireと呼ばれる３つのワイヤインタフェースを使い、内容を転
+送する。EEPROMはカードメーカーがプログラムします。同様に、シリアルEEPROM
+はEthenetコントローラICから直接プログラムされます。よって、MACアドレスと
+他の設定情報はPCのソフトウェアを通じて記録されるわけです。それらのデバイ
+スのよいところは、エラーが無ければ何度でも（といっても数千回、数万回とい
+った限度はある）書き換え可能な点です。必要なメモリの上限のために、それら
+のデバイスは大抵256ビット（93C06）あるいは1024ビット（93C46）の両々を持ち
+ます。この項の目的はこのシリアルEEPROMの中身を書き換えて、自由にMACアドレ
+ス（とチェックサム）を修正することです。
+
+　NICの心臓はEthernet InterfaceあるいはEthenet Controllerと呼ばれるICです。
+このデバイスはEthenetとPCバスの間をやり取りするのに使われます。このICチッ
+プは本当にゆっくり走ります。というのも、NIC上のほかのコンポーネントが通常
+インタフェース（interface）/接着剤（glue）ロジックだからです。もちろん、E
+thernetコントローラーのメーカーによっては多くの違いは存在します。あるカー
+ドはNational Semiconductor製のDP83905-EB AT/LANTIC
+（詳細はhttp://www.national.com/an/AN/AN-897.pdfを参照せよ）を使用し、ISA
+バスとやり取りします。他のデバイスは、PCIバスとやり取りするために、Realtek
+ RTL8129とRTL8029 Fast Ethenet Controller
+（詳細はhttp://www.realtek.com.tw/cn/NEW/doc/RTL8129-new.htmを参照せよ）を
+含んでいます。普通は後者のカードが多いようです。
+
+　Microsystems LAN9000ファミリとUMC UM9003では、Ethenetコントローラー・イ
+ンタフェースが直接シリアルEEPROMとデータをやり取りします。
+
+　この項では、AT/LANTICデバイスを使ったPCベースのNICを取り扱います。AT/LAN
+TICこのデバイスはNovell NE2000 Plusカードをエミュレートできます。最初に調
+べることは、AT/LANTICデータシートより上にくる前に実行できるが、その結果EEP
+ROMの中身を厳密にマッチし、確認することを助けてくれます。
+
+　それでは、MACアドレスをどのように見つけるだろうか？ 
+
+　しばしば、NICのMACアドレスはラベルに印刷されていたり、カード自体に印刷
+されていたりする。もしカードがケースの中にあったりしてアクセスできない場
+合は、侵入しない方法でMACアドレスを調べたいはずです。そんな場合はすでに前
+述した方法を取って欲しい。
+
+　シリアルEEPROMにはどんなものがあるのだろうか。
+
+　まず、異なるNIC上にあるシリアルEEPROMからデータを単に読み出すことについ
+て解説します。そうすることによって、それらのよいところや違いを理解すること
+ができ、MACアドレスの存在を確認できるからです。
+
+○メーカー：National Semiconductor
+モデル：NSC？
+EEPROM：93LC06
+MACアドレス：08:00:17:03:C0:E5
+データ：
 0008 0317 E5C0 0000 0500 010D 01DA 5757
 4242 0000 0000 0000 0000 0000 0020 0020
 
-�����[�J�[�FAnsel Communications
-���f���FN2000 Plus 3
-EEPROM�F93C46
-MAC�A�h���X�F00:40:90:80:07:7E
-�f�[�^�F
+○メーカー：Ansel Communications
+モデル：N2000 Plus 3
+EEPROM：93C46
+MACアドレス：00:40:90:80:07:7E
+データ：
 4000 8090 7E07 FFFF FFFF FFFF FFFF 5757
 4242 FFFF FFFF FFFF FFFF FFFF 0100 FF20
 
-�����[�J�[�FMicrodyne
-���f���FNE2000 Plus 3
-EEPROM�F93C06
-MAC�A�h���X�F00:80:29:E7:C2:9C
-�f�[�^�FN/A
+○メーカー：Microdyne
+モデル：NE2000 Plus 3
+EEPROM：93C06
+MACアドレス：00:80:29:E7:C2:9C
+データ：N/A
 
-�����[�J�[�FLinksys
-���f���FEther16
-EEPROM�F93C46
-MAC�A�h���X�F00:40:22:2A:82:82
-�f�[�^�F
+○メーカー：Linksys
+モデル：Ether16
+EEPROM：93C46
+MACアドレス：00:40:22:2A:82:82
+データ：
 4000 4405 A717 0108 020A 5464 00D8 0000
 0000 0000 0000 0000 0000 0000 0000 0000
 
-�����[�J�[�FGenius 
-���f���FGE2000 II 
-EEPROM�F93C46
-MAC�A�h���X�F00:40:33:2A:82:82
-�f�[�^�F
+○メーカー：Genius 
+モデル：GE2000 II 
+EEPROM：93C46
+MACアドレス：00:40:33:2A:82:82
+データ：
 4000 2A33 8283 5805 0000 0000 0000 5757
 4242 0000 0000 0000 0000 0000 2100 0020
 
-�����[�J�[�FWinbond
-���f���FHT-2003CT
-EEPROM�F93C46
-MAC�A�h���X48:54:33:01:48:24
-�f�[�^�F
+○メーカー：Winbond
+モデル：HT-2003CT
+EEPROM：93C46
+MACアドレス48:54:33:01:48:24
+データ：
 5448 0133 2448 0000 5448 0133 2448 5757
 4242 0000 0000 0000 0000 0000 4040 0020
 
 
-�@�ȏォ��AMAC�A�h���X���ǂ̂悤�ɋL�^����Ă��邩�������ł���ł��傤�B
-�Q�����Ƃɋt�]���Ă���̂������ł����A�f�[�^�̂O�`�P�Q�����܂ł̂Ƃ��낪MA
-C�A�h���X�ɑΉ����Ă��邱�Ƃ�������܂��B
-�@�����āA�����̃f�[�^��15�o�C�g�ڈȍ~�́u5757 4242�v�����ʂ��Ă��܂��B
-�@NIC��93C46 EEPROM���g���Ă��邽�߂ɁA32�r�b�g�̃f�[�^���S��J��Ԃ����
-���i128�o�C�g�̗e�ʂ𖞂������߁j�A0x00�Ŗ�������܂��BEEPROM���̃f�[�^��
-��Ethenet�R���g���[�� IC�Ɉˑ����܂��B�����̐V�����R���g���[����93C46�܂�
-�Ɛ݌v����Ă��܂��B�Ȃ�93C46���Ƃ����ƁA�L�����v���_�N�V������Ԃ̂��߂�
-���B
+　以上から、MACアドレスがどのように記録されているかが推測できるでしょう。
+２桁ごとに逆転しているのが特徴ですが、データの０〜１２部分までのところがMA
+Cアドレスに対応していることが分かります。
+　そして、多くのデータが15バイト目以降の「5757 4242」が共通しています。
+　NICが93C46 EEPROMを使っているために、32ビットのデータが４回繰り返される
+か（128バイトの容量を満たすため）、0x00で満たされます。EEPROM内のデータ量
+はEthenetコントローラ ICに依存します。多くの新しいコントローラは93C46まで
+と設計されています。なぜ93C46かというと、有効性プロダクション状態のためで
+す。
 
-�@Microdyne NE2000 NIC�̃f�[�^��N/A�ɂȂ��Ă��邱�Ƃ�������Ǝv���܂��B��
-��͌���ăf�[�^���㏑�����Ă��܂��A���f�[�^��������Ȃ��Ȃ��Ă��܂����Ƃ�
-���~�X������������ł��B
+　Microdyne NE2000 NICのデータがN/Aになっていることが分かると思います。こ
+れは誤ってデータを上書きしてしまい、元データが分からなくなってしまったとい
+うミスがあったからです。
 
-�@�����MAC�A�h���X��EEPROM�ɋL�^����Ă��邱�Ƃ�������܂����B���ɂ��f�o
-�C�X�ɋ��ʂ��āu5757 4242�v�Ƃ��������񂪂��������Ƃ�������܂����iLinksys
-�Ƃ�������O�͂���j�B����͉����낤���H
-�@�����AT/LANTIC�f�[�^�V�[�g��come into play���Ă���̂��Ӗ����܂��B
+　これでMACアドレスはEEPROMに記録されていることが分かりました。他にもデバ
+イスに共通して「5757 4242」という文字列があったことが分かりました（Linksys
+といった例外はある）。これは何だろうか？
+　これはAT/LANTICデータシートがcome into playしているのを意味します。
 
-�@���ɁAAT/LANTIC�̃V���A��EEPROM�̃������}�b�v�̕\�������B
+　次に、AT/LANTICのシリアルEEPROMのメモリマップの表を示す。
 
 ==========================================================================
-�Ԓn�iAddr�j | Bits 15-8               | Bits 7-0
+番地（Addr） | Bits 15-8               | Bits 7-0
 ==========================================================================
-00           | MAC�A�h���X�P           | MAC�A�h���X�O
+00           | MACアドレス１           | MACアドレス０
 --------------------------------------------------------------------------
-01           | MAC�A�h���X�R           | MAC�A�h���X�Q
+01           | MACアドレス３           | MACアドレス２
 --------------------------------------------------------------------------
-02           | MAC�A�h���X�T           | MAC�A�h���X�S
+02           | MACアドレス５           | MACアドレス４
 --------------------------------------------------------------------------
-03           | �`�F�b�N�T��            | 05�i8013�^�j
+03           | チェックサム            | 05（8013型）
 --------------------------------------------------------------------------
-04           | 00�i�g���Ȃ��j        | 00�i�g���Ȃ��j
+04           | 00（使われない）        | 00（使われない）
 --------------------------------------------------------------------------
-05           | 00�i�g���Ȃ��j        | 00�i�g���Ȃ��j
+05           | 00（使われない）        | 00（使われない）
 --------------------------------------------------------------------------
-06           | 00�i�g���Ȃ��j        | 00�i�g���Ȃ��j
+06           | 00（使われない）        | 00（使われない）
 --------------------------------------------------------------------------
-07           | 57�i�A�X�L�[�����uW�v�j | 57�i�A�X�L�[�����uW�v�j
+07           | 57（アスキー文字「W」） | 57（アスキー文字「W」）
 --------------------------------------------------------------------------
-08           | 42�i�A�X�L�[�����uB�v�j | 42�i�A�X�L�[�����uB�v�j
+08           | 42（アスキー文字「B」） | 42（アスキー文字「B」）
 --------------------------------------------------------------------------
-09           | 00�i�g���Ȃ��j        | 00�i�g���Ȃ��j
+09           | 00（使われない）        | 00（使われない）
 --------------------------------------------------------------------------
-0A           | 00�i�g���Ȃ��j        | 00�i�g���Ȃ��j
+0A           | 00（使われない）        | 00（使われない）
 ==========================================================================
 
-�@������NIC�ł́A�V���A��EEPROM�̓W�����p�[���X���������s����BEEPROM�͑S
-�Ă̕K�v�Ȑݒ�Ə����l�̏��iI/O�A�h���X�Ainterrput�Ȃǁj���L�^���Ă���B
-�W�����p�[���X�̐ݒ������NIC�͎���Config A,B,C�̎g�p�ɕK�v�Ƃ����B
+　多くのNICでは、シリアルEEPROMはジャンパーレス解決を実行する。EEPROMは全
+ての必要な設定と初期値の情報（I/Oアドレス、interrputなど）を記録している。
+ジャンパーレスの設定を持つNICは次のConfig A,B,Cの使用に必要とされる。
 
-��Config A�F
+○Config A：
 
 ==========================================================================
 Bit | Use
 ==========================================================================
-0   | I/O�A�h���X
+0   | I/Oアドレス
 --------------------------------------------------------------------------
-1   | I/O�A�h���X
+1   | I/Oアドレス
 --------------------------------------------------------------------------
-2   | I/O�A�h���X
+2   | I/Oアドレス
 --------------------------------------------------------------------------
 3   | Interrupt
 --------------------------------------------------------------------------
 4   | Interrupt
 --------------------------------------------------------------------------
-5   | Interrupt�i����8��I�񂾂�j
+5   | Interrupt（もし8を選んだら）
 --------------------------------------------------------------------------
 6   | Fast read
 --------------------------------------------------------------------------
 7   | NE2000/Shared Memory
 ==========================================================================
 
-��Config B�F
+○Config B：
 
 ==========================================================================
 Bit | Use
@@ -710,7 +710,7 @@ Bit | Use
 7   | -
 ==========================================================================
 
-��Config C�F
+○Config C：
 
 ==========================================================================
 Bit | Use
@@ -732,16 +732,16 @@ Bit | Use
 7   | Allow access to configure registers
 ==========================================================================
 
-�@����ł͔�r���Ă݂悤�B
+　それでは比較してみよう。
 
-�@Genius GE2000 II�̂T�̃G���g�����g���āA�l�������f�[�^�Ɗ��҂��ꂽ�f�[
-�^���r���Ă݂܂��B����ɂ��A�V���A��EEPROM���̏��Ɗe�o�C�g�̃}�b�`��
-�O�𒲂ׂ邱�Ƃ��ł��܂��B�����āAMAC�A�h���X��ύX���邽�߂Ƀv���O���~��
-�O����ׂ����Ƃ������ƕ�����͂��ł��B
-�@���ꂩ��A�V���A��EEPROM����MAC�A�h���X�ƃ`�F�b�N�T���̕ύX�̎d����_��
-�܂��B
+　Genius GE2000 IIの５つのエントリを使って、獲得したデータと期待されたデー
+タを比較してみます。これにより、シリアルEEPROM内の情報と各バイトのマッチン
+グを調べることができます。そして、MACアドレスを変更するためにプログラミン
+グするべきことが自ずと分かるはずです。
+　これから、シリアルEEPROM内のMACアドレスとチェックサムの変更の仕方を論じ
+ます。
 
-�@�o�C�g�P�ʂ�Genius GE2000 II�̃f�[�^�̃u���[�N�_�E�������Ɏ����܂��B
+　バイト単位のGenius GE2000 IIのデータのブレークダウンを次に示します。
 
 ==========================================================================
 Location | Data
@@ -779,50 +779,50 @@ Location | Data
 30       | 20
 ==========================================================================
 
-�@���łɕ������Ă���ʂ�A�ŏ��̂U�o�C�g�i���P�[�V�����O�`�T�j��MAC�A�h��
-�X�ł��B
-�@���̎��̃o�C�g�i���P�[�V�����U�j�̓`�F�b�N�T���ł��B�`�F�b�N�T����EEPROM
-���̎n�߂̂W�o�C�g�̍��v�̏d�v�ȍŏ��o�C�g��0xFF�ł���ƌv�Z����܂��B����
-��ł�0x58�ƂȂ�܂��B
+　すでに分かっている通り、最初の６バイト（ロケーション０〜５）はMACアドレ
+スです。
+　その次のバイト（ロケーション６）はチェックサムです。チェックサムはEEPROM
+内の始めの８バイトの合計の重要な最小バイトが0xFFであると計算されます。この
+例では0x58となります。
 
-0x40+0x00+0x2A+0x33+0x82+0x82+0x05+�`�F�b�N�T��(0x58)&0xFF=0xFF
+0x40+0x00+0x2A+0x33+0x82+0x82+0x05+チェックサム(0x58)&0xFF=0xFF
 
-�@�S�Ẵo�C�g�̓��P�[�V����27��ʂ��ă}�b�`���܂����B�c�����R�̃o�C�g
-�͐ݒ�o�C�g���B�J�[�h����J�[�h�֕ς��܂��B
+　全てのバイトはロケーション27を通じてマッチしました。残った３つのバイト
+は設定バイトだ。カードからカードへ変わります。
 
-Config A�i���P�[�V����29�j=0x00
+Config A（ロケーション29）=0x00
 
-Config B�i���P�[�V����38�j=0x21
+Config B（ロケーション38）=0x21
 
-Config C�i���P�[�V����31�j=0x20
+Config C（ロケーション31）=0x20
 
-�@���P�[�V����30�́A����0x73�ƂȂ��Ă��܂��B��X�����Ă����S�ẴJ�[�h��
-0x00���邢��0xFF�������Ă��܂����B���̃o�C�g�́AAT/LANTIC�̃`�b�v�̓�����
-���B
+　ロケーション30は、特別0x73となっています。我々が見てきた全てのカードは
+0x00あるいは0xFFを持っていました。このバイトは、AT/LANTICのチップの特徴で
+す。
 
-�@�V���A��EEPROM�v���O���~���O�̘b��ɓ���܂��B
+　シリアルEEPROMプログラミングの話題に入ります。
 
-�@NIC�J�[�h��MAC�A�h���X��ς��邽�߂ɁA�V���A��EEPROM���Ăуv���O������
-��K�v���o�Ă��܂��B�Œ�ł��V����MAC�A�h���X�ƃ`�F�b�N�T���̃o�C�g���V��
-�A��EEPROM�ɔ��f�����邽�߂ł��B���̃f�o�C�X�v���O���}�̓V���A��EEPROM
-���������Ƃ��ł��A�T���v���̃p�������|�[�g��RS232�o�R�Ńv���O�����𑗂荞
-�݂܂��BNIC���Ethenet�R���g���[�� IC�̂��߂̃f�[�^�V�[�g��T�������Ȃ�A
-�v���O�����̌o���������Ă��\�ł��B
+　NICカードのMACアドレスを変えるために、シリアルEEPROMを再びプログラムす
+る必要が出てきます。最低でも新しいMACアドレスとチェックサムのバイトをシリ
+アルEEPROMに反映させるためです。大抵のデバイスプログラマはシリアルEEPROM
+を扱うことができ、サンプルのパラレルポートとRS232経由でプログラムを送り込
+みます。NIC上のEthenetコントローラ ICのためのデータシートを探すだけなら、
+プログラムの経験が無くても可能です。
 
-�@Microchip�̓V���A��EEPROM�f�U�C�i�E�L�b�g��̔����Ă��܂��B����͂��̉�
-���ɂ����Ă����̃L�b�g�ł���A�����ɂ����Ă������]������Ă��܂��B�K�v��
-�\�t�g�E�F�A�ƃ}�j���A����Web�T�C�g�ォ���ɓ���܂��B
+　MicrochipはシリアルEEPROMデザイナ・キットを販売しています。これはこの解
+説にもってこいのキットであり、他方においても高く評価されています。必要な
+ソフトウェアとマニュアルはWebサイト上から手に入ります。
 
-�@�����A����ɋ����f�o�C�X�v���O���}�ɂȂ肽���Ȃ�΁A���̊J���\�t�g�E�F
-�A�Q�����p���邱�Ƃł��B�����͑����̃}�[�P�b�g��ŗ��p����Ă���B����
-��̑唼�́A�}�C�N���v���Z�b�T�Ƒ傫�ȃ������f�o�C�X�v���O���~���O�ɏœ_
-�𓖂ĂĂ���B�������A�S�đS�ăV���A��EEPROM���T�|�[�g���Ă���Ƃ͌����
-���B
+　もし、さらに強いデバイスプログラマになりたいならば、他の開発ソフトウェ
+ア群も利用することです。それらは多くのマーケット上で利用されている。それ
+らの大半は、マイクロプロセッサと大きなメモリデバイスプログラミングに焦点
+を当てている。しかし、全て全てシリアルEEPROMをサポートしているとは限らな
+い。
 
-�@���ɁA���p�ł���ቿ�i�̃v���O�����J���L�b�g���Љ�܂��B
+　次に、利用できる低価格のプログラム開発キットを紹介します。
 
 ==========================================================================
-���[�J�[        | Web�T�C�g               | ���f���i���o�[
+メーカー        | Webサイト               | モデルナンバー
 ==========================================================================
 BP Microsystems | http://www.bpmicro.com/ | Any,BP-1148,BP-1200
 --------------------------------------------------------------------------
@@ -831,10 +831,10 @@ Data I/O        | http://www.dataio.com/  | Any,ChipWriter Portable
 M2L Electronics | http://www.m21.com/     | EZ-EP
 ==========================================================================
 
-�@�����A�����Ńv���O��������K�v������������A�܂��ǂޑ�����ׂ��ł��B�V
-���A��EEPROM�̂��߂̃C���^�t�F�[�X�͍ŏ��̐ڑ���K�v�Ƃ��܂��B
+　もし、自分でプログラムする必要性を感じたら、まだ読む続けるべきです。シ
+リアルEEPROMのためのインタフェースは最小の接続を必要とします。
 
-�@���̐}��8�s��DIP��Microchip 93C46�f�o�C�X��\�������̂ł��B
+　次の図は8ピンDIPのMicrochip 93C46デバイスを表したものです。
 
      |------|
  CS--|1    8|-Vcc
@@ -843,9 +843,9 @@ M2L Electronics | http://www.m21.com/     | EZ-EP
  DO--|4    5|-Vss
      |------|
 
-���T�^�I�ȃV���A��EEPROM�iDIP�p�b�P�[�W�j
+↑典型的なシリアルEEPROM（DIPパッケージ）
 
-�@���̃f�o�C�X�͂R�̓��̓��C��������܂��BChip Select�iCS�j�AClock�iCLK
-�j�AData IN�iDI�j���B�����āA�P�̏o�̓��C��������BData Out�iDO�j�ł��B
+　そのデバイスは３つの入力ラインがあります。Chip Select（CS）、Clock（CLK
+）、Data IN（DI）だ。そして、１つの出力ラインがある。Data Out（DO）です。
 
 

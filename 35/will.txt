@@ -1,100 +1,100 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- �恛��: Quick Be�̃������[���[�N�C����Vista�Ή��p�b�`�̍쐬 ---
+--- 第○章: Quick Beのメモリーリーク修正＆Vista対応パッチの作成 ---
 
-���ҁFWill
+著者：Will
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@����̓u���O�ŏ���������Quick Be�̃������[���[�N�ɂ��ďڂ����Ƃ܂ł�
-�����܂��񂪁A���̏C�����@�ɂ��ď����Ă݂܂����BVista�łȂ��Ă��G���[��
-���o�͂ł���̂ł����AVista�̕����킩��₷���Ƃ������Ƃō���ɂ��Ă�V
-ista����z�肵�Ă��܂��B
+　今回はブログで少し書いたQuick Beのメモリーリークについて詳しくとまでは
+いきませんが、その修正方法について書いてみました。Vistaでなくてもエラーの
+検出はできるのですが、Vistaの方がわかりやすいということで今回についてはV
+ista環境を想定しています。
 
-�@�Ȃ��A�K�v�ȕ��Ƃ��Ĉȉ��̃\�t�g�E�F�A���K�v�ł��BOllyDbg�ɂ��Ă͂���
-�ɓ��{�ꉻ�ς݂Ƃ��Ęb����i�߂܂��B
+　なお、必要な物として以下のソフトウェアが必要です。OllyDbgについてはすで
+に日本語化済みとして話しを進めます。
 
-�EOllyDbg�@http://www.ollydbg.de/
-�EQuick Be Build 011�@http://cowscorpion.com/file/QuickBe.html
-
-
-��0x02.) Quick Be�Ƃ�
-
-�@krack�����Ă���l�Ȃ�Βm��Ȃ��l�͂��Ȃ��Ǝv���܂����AQuick Be�͂����
-��A���{�ł̓o�C�i���G�f�B�^�A�C�O�ł�hexadecimal editor�ȂǂƌĂ΂�Ă�
-��\�t�g�E�F�A�ł��B
+・OllyDbg　http://www.ollydbg.de/
+・Quick Be Build 011　http://cowscorpion.com/file/QuickBe.html
 
 
-��0x03.) �Ȃ��C������̂��H
+■0x02.) Quick Beとは
 
-�@Windows Vista���Quick Be�𓮍삳�����ꍇ�u�p�b�`�t�@�C�����s�v�́u����
-������t�@�C�������݂���t�H���_�v��I������Ɨ����Ă��܂��܂��B����Wind
-ows�ł͗����͂��܂��񂪁A�ȉ��̗l�ȃ��O���c���܂��B
+　krackをしている人ならば知らない人はいないと思いますが、Quick Beはいわゆ
+る、日本ではバイナリエディタ、海外ではhexadecimal editorなどと呼ばれてい
+るソフトウェアです。
+
+
+■0x03.) なぜ修正するのか？
+
+　Windows Vista上でQuick Beを動作させた場合「パッチファイル実行」の「書き
+換えるファイルが存在するフォルダ」を選択すると落ちてしまいます。他のWind
+owsでは落ちはしませんが、以下の様なログを残します。
 
 -----
- ү����=�f�o�b�O������: Invalid Address specified to RtlFreeHeap( 130000, 7d08e150 )
+ メッセージ=デバッグ文字列: Invalid Address specified to RtlFreeHeap( 130000, 7d08e150 )
 -----
 
-�@�Ƃ����킯�Ŏ����ŏC�����Ă݂܂��傤�B
+　というわけで自分で修正してみましょう。
 
 
-��0x04.) �C��
+■0x04.) 修正
 
-�i���Ӂj�ȉ��̍�Ƃ�Vista�ōs���܂��B
+（注意）以下の作業はVistaで行います。
 
-�@�܂��AOllyDbg��Quick Be���J���A���s�����܂��B�����ăt�H���_��I�������
-ntdll�̒��ňꎞ��~���A����ɐi�߂�ƏI�����Ă��܂��܂��B�Ƃ����킯�ōăX
-�^�[�g���A�g���[�X���s���s���܂��B�Ăуt�H���_��I�����A��~�����Ƃ����
-�����g���[�X�����܂��B
+　まず、OllyDbgでQuick Beを開き、実行させます。そしてフォルダを選択すると
+ntdllの中で一時停止し、さらに進めると終了してしまいます。というわけで再ス
+タートし、トレース実行を行います。再びフォルダを選択し、停止したところで
+ラントレースを見ます。
 
-�@ntdll�ɓ���O�Ɏ��s���ꂽ�̂��A���̖��߂��Ƃ킩��܂��B
+　ntdllに入る前に実行されたのが、次の命令だとわかります。
 
 -----
 0040E185  FF15 30564100 CALL NEAR DWORD PTR DS:[<&ole32.CoTaskMe>;  ole32.CoTaskMemFree
 -----
 
-�@���̊֐��������Ȃ̂ł��B
-�@�����āA����̂ǂ����ʖڂȂ̂��Ƃ����Ƃ��̑O��PUSH EAX�ł��B�{���Ȃ��
-SHBrowseForFolder�̖߂�l�������ɂ��ČĂяo���K�v������̂ł����ASHGetPa
-thFromIDList���Ăяo���O�ɖ߂�l��ޔ������Ă��Ȃ��̂ŁA���̖߂�l�ŏ㏑
-������Ă��܂��B�Ƃ����킯�ŏC���������̂ł����A���Ȃ�l�܂��Ă��܂��B��
-���Ă鏊�ɃW�����v���Ă���C������̂����������m��܂��񂪁A����̓p�b�`
-�������炷�����ŏC�����܂��傤�B
+　この関数が原因なのです。
+　そして、これのどこが駄目なのかというとその前のPUSH EAXです。本来ならば
+SHBrowseForFolderの戻り値を引数にして呼び出す必要があるのですが、SHGetPa
+thFromIDListを呼び出す前に戻り値を退避させていないので、その戻り値で上書
+きされています。というわけで修正したいのですが、かなり詰まっています。空
+いてる所にジャンプしてから修正するのがいいかも知れませんが、今回はパッチ
+数を減らす方向で修正しましょう。
 
-�@����������ŃG���[������
+　そういう訳でエラー処理の
 
 -----
 TEST EAX,EAX
 JE 0040E9AF
 -----
 
-�������Ďg�����Ƃɂ��܂��B
+を消して使うことにします。
 
-�@��L�̃R�[�h��
+　上記のコードを
 
 -----
 MOV DWORD PTR SS:[ESP+14],EAX
 -----
 
-�ɕύX���܂��B
+に変更します。
 
-�@��̓t�@�C���ɕۑ����邾���ł��B
+　後はファイルに保存するだけです。
 
-�@�ȏ��Quick Be�̏C���͏I���ł��B
+　以上でQuick Beの修正は終わりです。
 
 
-��0x05.) �ʕ�
+■0x05.) 駄文
 
-�@���Ԃ͂��邯�ǃl�^���Ȃ��Ƃ������ƂŁA�ēx����ڂ����͂��������Ă�����
-���܂������B���x�o�����͂��������܂��Ȃ��Ƃ����������Ǝv���܂��B�Ǝv����
-���čő��s�\���ƋC�Â��܂����B
+　時間はあるけどネタがないということで、再度しょぼい文章を書かしていただ
+きましたｗ。今度出す時はもう少しましなことを書きたいと思います。と思い続
+けて最早不可能だと気づきました。
 
-�@�ł͂ł́B
+　ではでは。
 
 
 

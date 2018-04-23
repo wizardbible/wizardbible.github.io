@@ -1,22 +1,22 @@
 
 
-�풓�v���O�����B���e�N�j�b�N�@�`Windows�с`
+常駐プログラム隠蔽テクニック　〜Windows篇〜
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@�^�X�N�}�l�[�W���[�ɔC�ӂ̃v���O������񋓂���Ȃ��悤�ɂ�����@�͂Ȃ����낤���H�@Windows�ɂ̓v���Z�X�Ƃ����T�O������A�v���P�[�V�����͂��ꂼ��v���Z�X�P�ʂœ��삵�Ă��܂��B�v���Z�X�́uCtr+Alt+Del�v�ŋN�������^�X�N�}�l�[�W���[�Ŋm�F�ł��A���������ƌ����_�ŋN�����Ă���v���Z�X�̂��ׂĂ��Ď����邱�Ƃ��ł��܂��B
+　タスクマネージャーに任意のプログラムを列挙されないようにする方法はないだろうか？　Windowsにはプロセスという概念がありアプリケーションはそれぞれプロセス単位で動作しています。プロセスは「Ctr+Alt+Del」で起動されるタスクマネージャーで確認でき、これを見ると現時点で起動しているプロセスのすべてを監視することができます。
 
-�@���āAWindows��Ŏ��s����Ă���A�v���P�[�V�����͂��ׂĂn�r�̊Ǘ����ɒu����Ă���킯�ł���A����Ă��ׂẴv���Z�X���n�r�͊Ǘ����Ă��邱�ƂɂȂ�܂��B�܂�́u�풓���������v���O�������^�X�N�}�l�[�W���[����������邱�Ƃ͓���̂ł́H�v�Ǝv���邩������܂���B�Ƃ������ƂŁA����͏풓�v���O�����B���e�N�j�b�N�Ƒ肵�Ă����肵�����Ǝv���܂��B
+　さて、Windows上で実行されているアプリケーションはすべてＯＳの管理下に置かれているわけであり、よってすべてのプロセスをＯＳは管理していることになります。つまりは「常駐させたいプログラムをタスクマネージャーから消し去ることは難しいのでは？」と思われるかもしれません。ということで、今回は常駐プログラム隠蔽テクニックと題してお送りしたいと思います。
 
-�@�����g�p�����n�r��WindowsXP�A�R���p�C����VC++.NET�ł��B�O��ƂȂ�m���́AWin32API�A�c�k�k�̎d�g�݁A����Ƀv���Z�X��X���b�h�Ƃ�����Windows�̊�{�I�T�O�𗝉����Ă��邱�Ƃł��B
+　私が使用したＯＳはWindowsXP、コンパイラはVC++.NETです。前提となる知識は、Win32API、ＤＬＬの仕組み、それにプロセスやスレッドといったWindowsの基本的概念を理解していることです。
 
 
-��0x02.) �v���Z�X�Ƃc�k�k
+■0x02.) プロセスとＤＬＬ
 
-�@�ł͍ŏ��ɁA�^�X�N�}�l�[�W���[�Ɏ��s�����v���O�������v���Z�X�Ƃ��ė񋓂����Ƃ�����ώ@���Ă݂܂��Btest.cpp���R���p�C�����A�^�X�N�}�l�[�W���[���N��������A�ȉ��̃v���O���������s���Ă݂Ă��������B
+　では最初に、タスクマネージャーに実行したプログラムがプロセスとして列挙されるところを観察してみます。test.cppをコンパイルし、タスクマネージャーを起動した後、以下のプログラムを実行してみてください。
 
------�@test.cpp
+-----　test.cpp
 #define WIN32_LEAN_AND_MEAN
 
 #include <windows.h>
@@ -32,11 +32,11 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 }
 -----
 
-�@���̃v���O���������s���ꂽ����Ƀ^�X�N�}�l�[�W���[��test.exe�Ƃ����v���Z�X���o�����܂��B���̃v���O�����͂����̂Ƃ���n�j�{�^���������ƏI������̂ŁA�����Ȃ��܂܂ł���ƁA�����ƃ^�X�N�}�l�[�W���[�Ƀv���Z�X�Ƃ��đ��݂��邱�ƂɂȂ�܂��B�������n�j�{�^���������ƃv���O�����͏I�����܂��̂ŁA�v���Z�X���^�X�N�}�l�[�W���[��������܂��B
+　このプログラムが実行された直後にタスクマネージャーにtest.exeというプロセスが出現します。このプログラムはご覧のとおりＯＫボタンを押すと終了するので、押さないままでいると、ずっとタスクマネージャーにプロセスとして存在することになります。もちろんＯＫボタンを押すとプログラムは終了しますので、プロセスもタスクマネージャーから消えます。
 
-�@���āA�A�v���P�[�V�����̓v���Z�X�P�ʂŊǗ�����Ă��ăv���O���������s�����΃v���Z�X�Ƃ��ă^�X�N�}�l�[�W���[�ɗ񋓂����Ƃ������ƂɂȂ�܂��B�u�ł͂c�k�k�̈����͂ǂ��Ȃ�̂��H�v���̃v���O�������݂Ă��������B
+　さて、アプリケーションはプロセス単位で管理されていてプログラムが実行されればプロセスとしてタスクマネージャーに列挙されるということになります。「ではＤＬＬの扱いはどうなるのか？」次のプログラムをみてください。
 
------�@dlltest.cpp
+-----　dlltest.cpp
 #define WIN32_LEAN_AND_MEAN
 
 #include <windows.h>
@@ -75,9 +75,9 @@ DWORD WINAPI MainThread(LPVOID pData)
 }
 -----
 
-�@�܂��͂��̂悤�Ȃc�k�k���쐬���܂��B���̂c�k�k�͌Ăяo���ꂽ��V�����X���b�h�𐶐����A���̃X���b�h��MessageBox��\�����āA�I������Ƃ����V���v���Ȃ��̂ł��B�ł͎��ɂ��̂c�k�k�𖾎��I�ɌĂяo��test2.cpp���쐬���܂��B
+　まずはこのようなＤＬＬを作成します。このＤＬＬは呼び出されたら新しいスレッドを生成し、そのスレッドはMessageBoxを表示して、終了するというシンプルなものです。では次にこのＤＬＬを明示的に呼び出すtest2.cppを作成します。
 
------�@test2.cpp
+-----　test2.cpp
 #define WIN32_LEAN_AND_MEAN
 
 #include <windows.h>
@@ -97,53 +97,53 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 }
 -----
 
-�@�ł́A���̃v���O�������R���p�C������exe�t�@�C���̐������m�F������Adlltest.cpp���R���p�C�����č쐬���ꂽdlltest.dll���Aexe�t�@�C���Ɠ����t�H���_�Ɉړ������Ď��s�����Ă��������B�������^�X�N�}�l�[�W���[���N�������Ă��������B
+　では、このプログラムをコンパイルしてexeファイルの生成を確認したら、dlltest.cppをコンパイルして作成されたdlltest.dllを、exeファイルと同じフォルダに移動させて実行させてください。もちろんタスクマネージャーも起動させてください。
 
-�@�ŏ���"I am EXE file."���\�����ꂽ�Ƃ��ɂ͂c�k�k�͂܂��ǂݍ��܂�Ă��܂���B�^�X�N�}�l�[�W���[�ɂ�test2.exe���񋓂���Ă��܂��B�n�j���N���b�N����Ǝ��͂c�k�k���ǂݍ��܂��"I am DLL file."���\������܂��B�����łn�j���������ɁA�^�X�N�}�l�[�W���[�����Ă݂Ă��A�v���Z�X�̗񋓂ɕω��͂���܂���B�܂�V���Ƀv���Z�X���������ꂽ�킯�ł͂Ȃ��Ƃ������Ƃł��B
+　最初の"I am EXE file."が表示されたときにはＤＬＬはまだ読み込まれていません。タスクマネージャーにはtest2.exeが列挙されています。ＯＫをクリックすると次はＤＬＬが読み込まれて"I am DLL file."が表示されます。ここでＯＫを押さずに、タスクマネージャーを見てみても、プロセスの列挙に変化はありません。つまり新たにプロセスが生成されたわけではないということです。
 
-�@����͂c�k�k�̎d�g�݂𗝉����Ă���Ȃ�Γ�����O�̂��Ƃł��ˁB�c�k�k��LoadLibrary���Ăяo���ꂽ���_�ŁA�Ăяo�����̃X���b�h�̃v���Z�X�Ƀ}�b�s���O�����킯�ł�����B�܂�c�k�k�̓v���Z�X�Ƀ}�b�s���O���ꂽ���ォ�炻�̃v���Z�X�̈ꕔ�ƂȂ�킯�ł���A�����ŐV����CreateThread���Ăяo���ꂽ�Ƃ��Ă��Atest2.exe�̃v���Z�X���ŐV���ɃX���b�h���������ꂽ����������ł��B����āAtest2.exe���I������΂��̃v���Z�X�Ƀ}�b�s���O����Ă���c�k�k�idlltest.dll�j���܂��I������͓̂�����O�ł���A�c�k�k���v���Z�X�Ƃ��ĐV���Ƀ^�X�N�}�l�[�W���[�ɗ񋓂���Ȃ��̂�������O�̂��Ƃł��B
+　これはＤＬＬの仕組みを理解しているならば当たり前のことですね。ＤＬＬはLoadLibraryを呼び出された時点で、呼び出し元のスレッドのプロセスにマッピングされるわけですから。つまりＤＬＬはプロセスにマッピングされた直後からそのプロセスの一部となるわけであり、そこで新たにCreateThreadが呼び出されたとしても、test2.exeのプロセス内で新たにスレッドが生成されただけだからです。よって、test2.exeが終了すればそのプロセスにマッピングされているＤＬＬ（dlltest.dll）もまた終了するのは当たり前であり、ＤＬＬがプロセスとして新たにタスクマネージャーに列挙されないのも当たり前のことです。
 
 
-��0x03.) �ʂ̃v���Z�X�ւ̂c�k�k�}�b�s���O
+■0x03.) 別のプロセスへのＤＬＬマッピング
 
-�@�|�C���g�͒N��LoadLibrary���Ă񂾂̂��H�@�Ƃ����Ƃ���ɂ���܂��B�c�k�k��LoadLibrary���Ăяo�����X���b�h�̃v���Z�X�Ƀ}�b�s���O�����킯�ł��Bdlltest.dll�̏ꍇ�ALoadLibrary���Ăяo�����̂�test2.exe�������̂�dlltest.dll��test2.exe�Ƀ}�b�s���O����܂����B�Ȃ̂ł��̃v���Z�X�itest2.exe�j���I�������Ȃ�΂c�k�k�idlltest.dll�j���܂��I������킯�ł��B
+　ポイントは誰がLoadLibraryを呼んだのか？　というところにあります。ＤＬＬはLoadLibraryを呼び出したスレッドのプロセスにマッピングされるわけです。dlltest.dllの場合、LoadLibraryを呼び出したのはtest2.exeだったのでdlltest.dllはtest2.exeにマッピングされました。なのでそのプロセス（test2.exe）が終了したならばＤＬＬ（dlltest.dll）もまた終了するわけです。
 
-�@�ł͗Ⴆ��LoadLibrary��IEXPLORE.EXE�i�h�d�̃v���Z�X�ł��j���Ăяo������ǂ��ł��傤���BIEXPLORE.EXE��������dlltest.dll�Ƃ���LoadLibrary���Ăяo�����Ȃ�΁A�������dlltest.dll��IEXPLORE.EXE�Ƀ}�b�s���O����邱�ƂɂȂ�܂��B�܂�test2.exe���I�������Ƃ��Ă��c�k�k�͏I�����܂���i������O�ł��ˁj�BIEXPLORE.EXE�Ƀ}�b�s���O���ꂽ�킯�ł��̂ŁAIEXPLORE.EXE���I������܂ł͏I�����Ȃ��킯�ł��B�������u��������IEXPLORE.EXE�ɁALoadLibrary���Ăяo�����邱�Ƃ͂ł��Ȃ�����Ȃ����B�c�k�k���Ăяo�����ǂ�����exe�t�@�C���iIEXPLORE.EXE�j�̍쐬�҂����߂邱�Ƃł����āA���l�����߂��邱�Ƃ���Ȃ��̂ł́H�v�Ǝv���邩������܂��񂪁A���ꂪ�\�Ȃ̂ł��BWindows�ɂ͕֗���API���������񂠂�̂ł�(^^;�B
+　では例えばLoadLibraryをIEXPLORE.EXE（ＩＥのプロセスです）が呼び出したらどうでしょうか。IEXPLORE.EXEが引数をdlltest.dllとしてLoadLibraryを呼び出したならば、もちろんdlltest.dllはIEXPLORE.EXEにマッピングされることになります。つまりtest2.exeが終了したとしてもＤＬＬは終了しません（当たり前ですね）。IEXPLORE.EXEにマッピングされたわけですので、IEXPLORE.EXEが終了するまでは終了しないわけです。しかし「そもそもIEXPLORE.EXEに、LoadLibraryを呼び出させることはできないじゃないか。ＤＬＬを呼び出すかどうかはexeファイル（IEXPLORE.EXE）の作成者が決めることであって、他人が決められることじゃないのでは？」と思われるかもしれませんが、それが可能なのです。Windowsには便利なAPIがたくさんあるのです(^^;。
 
-�ECreateRemoteThread
-�@http://www.microsoft.com/japan/developer/library/jpwinpf/_win32_createremotethread.htm
-�@�ʂ̃v���Z�X�̃A�h���X��Ԃŉғ�����X���b�h���쐬���܂��B
+・CreateRemoteThread
+　http://www.microsoft.com/japan/developer/library/jpwinpf/_win32_createremotethread.htm
+　別のプロセスのアドレス空間で稼働するスレッドを作成します。
 
-�@�����̂Ƃ���ʂ̃v���Z�X�̃A�h���X��ԂɃX���b�h���쐬���܂��B������g����IEXPLORE.EXE�̃A�h���X��ԂɃX���b�h���쐬�ł���킯�ł��B�Ⴆ�΂���ȕ��ɁB
+　説明のとおり別のプロセスのアドレス空間にスレッドを作成します。これを使えばIEXPLORE.EXEのアドレス空間にスレッドを作成できるわけです。例えばこんな風に。
 
 -----
 HANDLE hThread = CreateRemoteThread(RemoteProcess, NULL, 0,
                                     LoadLibrary, "c:\\dlltest.dll", 0, NULL);
 -----
 
-�@�u�߂�����ȒP��[��v�Ǝv���Ă���Ă݂�ƁA�ł��܂���i�΁@�����炭���́uIEXPLORE.EXE�̃A�h���X��Ԃ�"c:\\dlltest.dll"�Ƃ��������񂪂Ȃ��v�Ƃ������Ƃł��傤�B�܂��A�Ȃ��Ȃ�΍��΂悢�킯�ł��B
+　「めっちゃ簡単やーん」と思ってやってみると、できません（笑　おそらく問題は「IEXPLORE.EXEのアドレス空間に"c:\\dlltest.dll"という文字列がない」ということでしょう。まぁ、ないならば作ればよいわけです。
 
-�EVirtualAllocEx
-�@http://www.microsoft.com/japan/developer/library/jpwinpf/_win32_virtualallocex.htm
-�@�w�肳�ꂽ�v���Z�X�̉��z�A�h���X��ԓ��̃������̈�̗\��ƃR�~�b�g�̈���܂��͗������s���܂��B���̊֐��� MEM_RESET �t���O���Z�b�g����Ă��Ȃ�����A�m�ۂ���郁�����������I�� 0 �ŏ���������܂��B
+・VirtualAllocEx
+　http://www.microsoft.com/japan/developer/library/jpwinpf/_win32_virtualallocex.htm
+　指定されたプロセスの仮想アドレス空間内のメモリ領域の予約とコミットの一方または両方を行います。この関数は MEM_RESET フラグがセットされていない限り、確保されるメモリが自動的に 0 で初期化されます。
 
-�EWriteProcessMemory
-�@http://www.microsoft.com/japan/developer/library/jpwinpf/_win32_writeprocessmemory.htm
-�@�w�肳�ꂽ�v���Z�X�̃������̈�Ƀf�[�^���������݂܂��B�������݂����̈�S�̂��A�N�Z�X�\�łȂ���΂Ȃ�܂���B�����Ȃ��ƁA�֐��͎��s���܂��B
+・WriteProcessMemory
+　http://www.microsoft.com/japan/developer/library/jpwinpf/_win32_writeprocessmemory.htm
+　指定されたプロセスのメモリ領域にデータを書き込みます。書き込みたい領域全体がアクセス可能でなければなりません。さもないと、関数は失敗します。
 
-�@VirtualAllocEx��IEXPLORE.EXE�̃A�h���X��ԂɐV���Ƀ�������Ԃ��쐬���܂��B������WriteProcessMemory�ł��̃�������Ԃ�"c:\\dlltest.dll"���������߂΂悢�킯�ł��B�����Ă��̕�����̃A�h���X��CreateRemoteThread�̑�܈����ɓn���Ă��΁AIEXPLORE.EXE�̃A�h���X��ԓ��ɕ����񂪍쐬����邱�ƂɂȂ�܂��B�������A�܂��ł��܂���i�����B�ǂ�����l������LoadLibrary�����̂܂ܓn���̂͂܂����炵���ł��B�d�����Ȃ��̂�Kernel32.dll���猟�����Ă��Ă��̃A�h���X��n���Ă����܂��傤�B
+　VirtualAllocExでIEXPLORE.EXEのアドレス空間に新たにメモリ空間を作成します。そしてWriteProcessMemoryでそのメモリ空間に"c:\\dlltest.dll"を書き込めばよいわけです。そしてその文字列のアドレスをCreateRemoteThreadの第五引数に渡してやれば、IEXPLORE.EXEのアドレス空間内に文字列が作成されることになります。しかし、まだできません（ぉぃ。どうやら第四引数のLoadLibraryをそのまま渡すのはまずいらしいです。仕方がないのでKernel32.dllから検索してきてそのアドレスを渡してあげましょう。
 
-�EGetModuleHandle�i���{��łr�c�j���Ȃ��݂����ł��j
-�@http://nienie.com/~masapico/api_GetModuleHandle.html
-�@���݌Ăяo�����v���Z�X�Ƀ��[�h����Ă���exe��dll�̃�������̈ʒu�������A�h���X��Ԃ��B�]���āAGetModuleHandle�̕Ԃ��n���h����LoadLibrary�֐��ŕԂ��ꂽ�n���h���Ɠ��l�̈����ŁA����API�֐��ɓn�����Ƃ��ł���B
+・GetModuleHandle（日本語版ＳＤＫがないみたいです）
+　http://nienie.com/~masapico/api_GetModuleHandle.html
+　現在呼び出し元プロセスにロードされているexeやdllのメモリ上の位置を示すアドレスを返す。従って、GetModuleHandleの返すハンドルはLoadLibrary関数で返されたハンドルと同様の扱いで、他のAPI関数に渡すことができる。
 
-�EGetProcAddress
-�@http://www.microsoft.com/japan/msdn/library/default.asp?url=/japan/msdn/library/ja/jpdllpro/html/_win32_getprocaddress.asp
-�@�_�C�i�~�b�N�����N���C�u�����iDLL�j�����A�w�肳�ꂽ�G�N�X�|�[�g�ς݊֐��̃A�h���X���擾���܂��B
+・GetProcAddress
+　http://www.microsoft.com/japan/msdn/library/default.asp?url=/japan/msdn/library/ja/jpdllpro/html/_win32_getprocaddress.asp
+　ダイナミックリンクライブラリ（DLL）が持つ、指定されたエクスポート済み関数のアドレスを取得します。
 
-�@GetModuleHandle��Kernel32.dll�̃A�h���X�����炢�A�����GetProcAddress�ɓn����LoadLibrary�̃A�h���X���擾���܂��B�������A����LoadLibrary�Ȃ�Ċ֐��͑��݂����AUNICODE�Ȃ�LoadLibraryW�AASCII�R�[�h�Ȃ�LoadLibraryA�ɕϊ�����Ă��邾���ł��邱�Ƃ��AWinBase.h���݂邱�Ƃł킩��܂��B����Ăǂ��炩�̃A�h���X���擾���邱�Ƃɂ��܂��B
+　GetModuleHandleでKernel32.dllのアドレスをもらい、それをGetProcAddressに渡してLoadLibraryのアドレスを取得します。しかし、実はLoadLibraryなんて関数は存在せず、UNICODEならLoadLibraryW、ASCIIコードならLoadLibraryAに変換されているだけであることが、WinBase.hをみることでわかります。よってどちらかのアドレスを取得することにします。
 
------�@C:\Program Files\Microsoft Visual Studio .NET\Vc7\PlatformSDK\Include\WinBase.h
+-----　C:\Program Files\Microsoft Visual Studio .NET\Vc7\PlatformSDK\Include\WinBase.h
 #ifdef UNICODE
 #define LoadLibrary  LoadLibraryW
 #else
@@ -151,12 +151,12 @@ HANDLE hThread = CreateRemoteThread(RemoteProcess, NULL, 0,
 #endif // !UNICODE
 -----
 
-�@���āA�����̒m���𓥂܂�����ł��ׂ����Ƃ��܂Ƃ߂܂��B�ړI�͕ʂ̃v���Z�X�i�����ł�IEXPLORE.EXE�j�ɂc�k�k�𒍓������邱�Ƃł��B���̂��߂ɕK�v�Ȃ��Ƃ̓^�[�Q�b�g�̃v���Z�X�i�����ł�IEXPLORE.EXE�j��LoadLibrary���Ăяo�����邱�Ƃł���A����ɂ���Ă����瑤���p�ӂ����c�k�k���^�[�Q�b�g�̃v���Z�X�Ƀ}�b�s���O�����邱�Ƃł��B����ɂ��풓������v���O���������炩���߂c�k�k�Ƃ��č���Ă����΁A������^�[�Q�b�g�v���Z�X�Ƀ}�b�s���O�����邱�Ƃɂ��^�X�N�}�l�[�W���[�̃v���Z�X��Ԃɗ񋓂���邱�ƂȂ��C�ӂ̃v���O�����i�c�k�k�j�𒍓������A���s�����悤�Ƃ������Ƃł��B
+　さて、これらの知識を踏まえた上でやるべきことをまとめます。目的は別のプロセス（ここではIEXPLORE.EXE）にＤＬＬを注入させることです。そのために必要なことはターゲットのプロセス（ここではIEXPLORE.EXE）にLoadLibraryを呼び出させることであり、それによってこちら側が用意したＤＬＬをターゲットのプロセスにマッピングさせることです。それにより常駐させるプログラムをあらかじめＤＬＬとして作っておけば、それをターゲットプロセスにマッピングさせることによりタスクマネージャーのプロセス空間に列挙されることなく任意のプログラム（ＤＬＬ）を注入させ、実行させようということです。
 
 
-��0x04.) �v���O���~���O
+■0x04.) プログラミング
 
-�@�ȏ�̂��Ƃ��v���O�����ɂ����̂�in_dll.cpp�ł��B�܂��̓v���O�����̐��������܂��B
+　以上のことをプログラムにしたのがin_dll.cppです。まずはプログラムの説明をします。
 
 http://kenjinet.s26.xrea.com/windows/process/in_dll.cpp
 
@@ -174,7 +174,7 @@ http://kenjinet.s26.xrea.com/windows/process/in_dll.cpp
 #define DLL_FILE_NAME    "ClipBoard.dll"
 -----
 
-�@�u�Ȃ��UNICODE��˂�I�v�Ƃ����˂����݈ȊO�͂Ƃ��ɖ��Ȃ��Ǝv���܂�(^^;�@tlhelp32.h�̓v���Z�X�̌������s�����߂Ɏg���֐��̒�`�Ȃ̂ł����A�ڂ����͂̂��قǐ������܂��BTARGET_EXE_NAME�͂c�k�k�𒍓�����v���Z�X�̖��O�ADLL_FILE_NAME�͒�������c�k�k�̃t�@�C�����ł��B�c�k�k��exe�t�@�C���Ɠ����t�H���_�ɂ���Ȃ���΂Ȃ�܂���B
+　「なんでUNICODEやねん！」という突っ込み以外はとくに問題ないと思います(^^;　tlhelp32.hはプロセスの検索を行うために使う関数の定義なのですが、詳しくはのちほど説明します。TARGET_EXE_NAMEはＤＬＬを注入するプロセスの名前、DLL_FILE_NAMEは注入するＤＬＬのファイル名です。ＤＬＬはexeファイルと同じフォルダにいれなければなりません。
 
 -----
     HANDLE hSnap;
@@ -198,11 +198,11 @@ http://kenjinet.s26.xrea.com/windows/process/in_dll.cpp
     CloseHandle(hSnap);
 -----
 
-�@���������v���Z�X�̌������s���܂��BCreateToolhelp32Snapshot�̓v���Z�X�̗񋓂������Ȃ��^�X�N�}�l�[�W���[�I�ȃv���O���������ۂɗ��p�����v���O�����ŁA�����Ă��̏ꍇProcess32First��Process32Next�ƃZ�b�g�ɂ��Ďg���APROCESSENTRY32�\���̂�pe�Ƀv���Z�X�̏�񂪓���܂��B�v���Z�X�񋓂Ɋւ���T���v���I�ȃR�[�h�������܂����̂ŁA�悯��ΎQ�l�ɂ��Ă��������B
+　さっそくプロセスの検索を行います。CreateToolhelp32Snapshotはプロセスの列挙をおこなうタスクマネージャー的なプログラムを作る際に利用されるプログラムで、たいていの場合Process32FirstやProcess32Nextとセットにして使い、PROCESSENTRY32構造体のpeにプロセスの情報が入ります。プロセス列挙に関するサンプル的なコードを書きましたので、よければ参考にしてください。
 
 http://kenjinet.s26.xrea.com/windows/process/process.cpp
 
-�@�ł�in_dll.cpp�̐����𑱂��܂��B
+　ではin_dll.cppの説明を続けます。
 
 -----
     HANDLE hProcess;
@@ -214,7 +214,7 @@ http://kenjinet.s26.xrea.com/windows/process/process.cpp
          FALSE, dwProcessId);
 -----
 
-�@����̓v���Z�X���J���֐��ł��i�݂�΂킩��܂����j�B�v���Z�X�h�c��n���΂��̃v���Z�X���J���Ă����̂ŁA������Process32Next�Ȃǂ��g���Č������Ă���TARGET_EXE_NAME�̃v���Z�X�h�c�i�܂�c�k�k�𒍓�����^�[�Q�b�g�̃v���Z�X�h�c�j��n���Ă��܂��B�߂�l�͂��̃v���Z�X�̃n���h���ł��B
+　これはプロセスを開く関数です（みればわかりますが）。プロセスＩＤを渡せばそのプロセスを開いてくれるので、さっきProcess32Nextなどを使って検索してきたTARGET_EXE_NAMEのプロセスＩＤ（つまりＤＬＬを注入するターゲットのプロセスＩＤ）を渡しています。戻り値はそのプロセスのハンドルです。
 
 -----
     TCHAR szLibFile[256];
@@ -222,7 +222,7 @@ http://kenjinet.s26.xrea.com/windows/process/process.cpp
     _tcscpy(_tcsrchr(szLibFile, _TEXT('\\')) + 1, _TEXT(DLL_FILE_NAME));
 -----
 
-�@�c�k�k�̃p�X���쐬���Ă��܂��B�܂�GetModuleFileName�Ŏ������g�i�܂�exe�t�@�C���j�̐�΃p�X���擾���āA���̕�����̌�납��T���čŏ���'\'���������ꂽ�Ƃ��납��Ȍ�c�k�k�t�@�C���̖��O�ɒu�������Ă��܂��B�܂莩���Ɠ����t�H���_�ɂ���c�k�k�̐�΃p�X���쐬�����킯�ł��B
+　ＤＬＬのパスを作成しています。まずGetModuleFileNameで自分自身（つまりexeファイル）の絶対パスを取得して、その文字列の後ろから探して最初に'\'が発見されたところから以後ＤＬＬファイルの名前に置き換えています。つまり自分と同じフォルダにあるＤＬＬの絶対パスを作成したわけです。
 
 -----
     PWSTR RemoteProcessMemory;
@@ -240,7 +240,7 @@ http://kenjinet.s26.xrea.com/windows/process/process.cpp
     }
 -----
 
-�@�܂�VirtualAllocEx�Ń^�[�Q�b�g�v���Z�X�Ƀ�������Ԃ��쐬���Ă��܂��B����͂c�k�k�̐�΃p�X�����郁������Ԃł��B������WriteProcessMemory�łc�k�k�̐�΃p�X����������ł��܂��B�����VirtualAllocEx�̖߂�l���c�k�k��΃p�X�̈ʒu�i�|�C���^�j�Ƃ������ƂɂȂ�̂ŁA�����CreateRemoteThread�̈����Ƃ��ēn���܂��B
+　まずVirtualAllocExでターゲットプロセスにメモリ空間を作成しています。これはＤＬＬの絶対パスを入れるメモリ空間です。そしてWriteProcessMemoryでＤＬＬの絶対パスを書き込んでいます。するとVirtualAllocExの戻り値がＤＬＬ絶対パスの位置（ポインタ）ということになるので、これをCreateRemoteThreadの引数として渡します。
 
 -----
     PTHREAD_START_ROUTINE pfnThreadRtn;
@@ -252,7 +252,7 @@ http://kenjinet.s26.xrea.com/windows/process/process.cpp
     }
 -----
 
-�@GetProcAddress��Kernel32.dll����LoadLibraryW�iUNICODE�p�j��T���Ă��Ă��̃A�h���X��Ԃ��Ă��܂��B�����UNICODE�p�̃\�[�X�R�[�h�ł��̂�LoadLibraryW�ł����AASCII�Ȃ�LoadLibraryA�𗘗p���Ă��������BWindows2000/XP��LoadLibraryA���g���Ă������I��UNICODE�ɕϊ�����Č���LoadLibraryW���Ă�ł���悤�Ȃ̂ŁAUNICODE��ASCII���œ��ɋC�ɂ���K�v�͂Ȃ��ł��傤�B
+　GetProcAddressはKernel32.dllからLoadLibraryW（UNICODE用）を探してきてそのアドレスを返しています。これはUNICODE用のソースコードですのでLoadLibraryWですが、ASCIIならLoadLibraryAを利用してください。Windows2000/XPはLoadLibraryAを使っても内部的にUNICODEに変換されて結局LoadLibraryWを呼んでいるようなので、UNICODEかASCIIかで特に気にする必要はないでしょう。
 
 -----
     HANDLE hThread;
@@ -264,28 +264,28 @@ http://kenjinet.s26.xrea.com/windows/process/process.cpp
     }
 -----
 
-�@����CreateRemoteThread���Ă΂�܂����B��������OpenProcess�̖߂�l�ł���v���Z�X�̃n���h���ł��B��l������LoadLibraryW�̃A�h���X�B��܈����͂c�k�k��΃p�X�̃A�h���X�B�����CreateRemoteThread���Ăяo���΃^�[�Q�b�g�̃v���Z�X��LoadLibraryW�X���b�h����������A�����C�ӂ̂c�k�k���^�[�Q�b�g�v���Z�X�Ƀ}�b�s���O����邱�ƂɂȂ�܂��B
+　ついにCreateRemoteThreadが呼ばれました。第一引数はOpenProcessの戻り値であるプロセスのハンドルです。第四引数はLoadLibraryWのアドレス。第五引数はＤＬＬ絶対パスのアドレス。これでCreateRemoteThreadを呼び出せばターゲットのプロセスでLoadLibraryWスレッドが生成され、見事任意のＤＬＬがターゲットプロセスにマッピングされることになります。
 
-�@�����āA���̃v���O�����iin_dll.exe�j�͏I�����܂��B���̃v���O�����ɂc�k�k���}�b�s���O����Ă���Ȃ�΁A�I���Ɠ����ɂc�k�k���̂��I�����܂��B�������ʂ̃v���Z�X�Ƀ}�b�s���O�������Ȃ�Ύ������g���I�����Ă��c�k�k�̏����͐��������܂��BIEXPLORE.EXE�Ȃ�΂h�d���I������܂Ő��������܂����Aexplorer.exe�Ƃ�����Windows�̓���ɕs���ȃv���Z�X�ȂǂɃ}�b�s���O�������Ȃ��Windows�̏I���܂Ő��������邱�ƂɂȂ�܂��B
+　そして、このプログラム（in_dll.exe）は終了します。このプログラムにＤＬＬがマッピングされているならば、終了と同時にＤＬＬ自体も終了します。しかし別のプロセスにマッピングさせたならば自分自身が終了してもＤＬＬの処理は生き続けます。IEXPLORE.EXEならばＩＥが終了するまで生き続けますし、explorer.exeといったWindowsの動作に不可欠なプロセスなどにマッピングさせたならばWindowsの終了まで生き続けることになります。
 
-�@�^�X�N�}�l�[�W���[�̓v���Z�X��񋓂��܂��B�����IEXPLORE.EXE��explorer.exe�Ƃ������v���O�����́A�������񋓁A�\�������ł��傤�B�������A�}�b�s���O���ꂽ�c�k�k�̓v���Z�X�Ƃ��ė񋓂���܂���B����͓�����O�̂��Ƃł��ˁB
+　タスクマネージャーはプロセスを列挙します。よってIEXPLORE.EXEやexplorer.exeといったプログラムは、もちろん列挙、表示されるでしょう。しかし、マッピングされたＤＬＬはプロセスとして列挙されません。これは当たり前のことですね。
 
-�@���Ȃ݂ɂ��̕��@���Ɗ��S�ɉB���ł���̂��H�@�ƕ������΁u�������v�Ɠ����邵������܂���B���ۂɔC�ӂ̃v���Z�X�����p���Ă���c�k�k��񋓂�����v���O�����Ȃ񂩂����܂����A�^�X�N�}�l�W���[�ȏ�ɍ��@�\�ȃv���Z�X�Ǘ��c�[���ȂǂȂ炷���Ƀo���Ă��܂���������܂���B�����܂ł��^�X�N�}�l�[�W���[���猩���Ȃ����邾���ł��B����āA����͏풓���������v���O�������B���ЂƂ̕��@���ƍl���Ă��������B
+　ちなみにこの方法だと完全に隠蔽できるのか？　と聞かれれば「いいえ」と答えるしかありません。実際に任意のプロセスが利用しているＤＬＬを列挙させるプログラムなんかも作れますし、タスクマネジャー以上に高機能なプロセス管理ツールなどならすぐにバレてしまうかもしれません。あくまでもタスクマネージャーから見えなくするだけです。よって、これは常駐させたいプログラムを隠すひとつの方法だと考えてください。
 
-�@�ł͍Ō�ɏ풓���������v���O�����i�c�k�k�j���쐬���Ă݂܂��B
+　では最後に常駐させたいプログラム（ＤＬＬ）を作成してみます。
 
 http://kenjinet.s26.xrea.com/windows/process/ClipBoard.cpp
 
-�@����̓N���b�v�{�[�h�̃��O���Ƃ�c�k�k�ł��B�L�[�{�[�h�̃��O���Ƃ�̃c�[�����L�[���K�[�ƌ����܂����A����̓N���b�v�{�[�h�̃��O���Ƃ�̂ŃN���b�v���K�[�ł��ˁi�����B������R���p�C������in_dll.exe�Ɠ����t�H���_�ɂ����in_dll.exe�����s����ƁA���̂c�k�k���^�[�Q�b�g�̃v���Z�X�Ƀ}�b�s���O�����̂ŁA�Ȍ�N���b�v�{�[�h�̃��O��"c:\log.txt"�t�@�C���ɕۑ�����邱�ƂɂȂ�܂��B���Ȃ݂ɕ������p�ł��̂ŃN���b�v�{�[�h���̉摜��t�@�C���Ȃǂ̓��M���O���܂���B���̂c�k�k�Ɋւ��Ẳ���͂��܂���B����͍���̖{���ł͂Ȃ��̂�(^^;�B
+　これはクリップボードのログをとるＤＬＬです。キーボードのログをとるのツールをキーロガーと言いますが、これはクリップボードのログをとるのでクリップロガーですね（ぉぃ。これをコンパイルしてin_dll.exeと同じフォルダにいれてin_dll.exeを実行すると、このＤＬＬがターゲットのプロセスにマッピングされるので、以後クリップボードのログが"c:\log.txt"ファイルに保存されることになります。ちなみに文字列専用ですのでクリップボード内の画像やファイルなどはロギングしません。このＤＬＬに関しての解説はしません。これは今回の本質ではないので(^^;。
 
 
-��0x05.) ��������
+■0x05.) さいごに
 
-�@���āA�������������ł��傤���B�c�k�k�֘A�̃e�N�j�b�N�͈ȊO�ɖ��ɗ��񂶂�Ȃ����ȂƎv�������Ă݂܂����B���͂��ŋ߁A���p�I�ȃL�[���K�[�����܂��āA����̃l�^�͂��̎��Ɏg�����\�[�X�R�[�h�𗬗p���Ă܂��i�΁B���e�͑O���肳��ɓ���Ȃ��Ă܂����ǁA����̓l�^���؂�Ă����Ƃ������Ƃł��B���������l�^�؂�ł��B����͂��Ԃ�Linux�̋L���ɂȂ�Ǝv���܂�(^^;�B���āA�Ō�ɂȂ�܂����������܂ŕt�������ēǂ�ł������������{���ɗL���������܂����B
+　さて、いかがだったでしょうか。ＤＬＬ関連のテクニックは以外に役に立つんじゃないかなと思い書いてみました。実はつい最近、実用的なキーロガーを作りまして、今回のネタはその時に使ったソースコードを流用してます（笑。内容は前回よりさらに難しくなってますけど、それはネタが切れてきたということです。正直もうネタ切れです。次回はたぶんLinuxの記事になると思います(^^;。さて、最後になりましたがここまで付き合って読んでくださった方本当に有り難うございました。
 
-�ł́A�܂�����܂�...
+では、また会う日まで...
 
 
-��0x06.) �Q�l����
+■0x06.) 参考文献
 
-�@�uAdvanced Windows�v Jeffrey Richter��
+　「Advanced Windows」 Jeffrey Richter著

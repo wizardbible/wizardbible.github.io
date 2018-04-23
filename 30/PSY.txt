@@ -1,104 +1,104 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- �恛��: �����Ȃ��t�@�C���A�����Ȃ��t�@�C���H �`��փf�[�^�X�g���[��---
+--- 第○章: 見えないファイル、消せないファイル？ 〜代替データストリーム---
 
-���ҁFPSY
+著者：PSY
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@���邱�Ƃ��ł��Ȃ��A�������Ƃ��ł��Ȃ��B�����͂��납�A���݂���m�F�ł�
-�Ȃ��B�Ȃ̂ɂ��炩���ߑ��݂�m���Ă���΁A�{�������s���ł���B����ȃt�@
-�C���̍����������m���낤���B
-�@NTFS�t�@�C���V�X�e���ɂ́A��փf�[�^�X�g���[���Ȃ�@�\���������Ă���B
-�킩��ɂ������O�����A�v�̓t�@�C���ɂ���������"���܂����"�̂悤�Ȃ�
-�̂��i�܂萳�m�ɂ�"�t�@�C��"�ł͂Ȃ��j�B�ڂɌ�����t�@�C���i���C���X�g
-���[���ƌĂ΂��j�̂ق��ɁA�v���O���}�����̃t�@�C���̏����i�[���邽��
-�̖ڂɌ����Ȃ��X�g���[���𕡐��Ԃ牺���邱�Ƃ��ł���̂ł���B��փf�[�^
-�X�g���[���́AWindows�̃G�N�X�v���[���ł��R�}���h�v�����v�g�ł����݊m�F��
-���Ȃ����A�폜���ł��Ȃ��B�������쐬�͊ȒP�ɂł���̂��B
-�@����͑�փf�[�^�X�g���[�����g�p������@���Љ�A�E�C���X�Ȃǂ̃}���E
-�F�A�łǂ̂悤�Ɉ��p����Ă���̂����Љ�����Ǝv���B
+　見ることもできない、消すこともできない。検索はおろか、存在すら確認でき
+ない。なのにあらかじめ存在を知っていれば、閲覧も実行もできる。そんなファ
+イルの作り方をご存知だろうか。
+　NTFSファイルシステムには、代替データストリームなる機能が備えられている。
+わかりにくい名前だが、要はファイルにくっつけられる"おまけ情報"のようなも
+のだ（つまり正確には"ファイル"ではない）。目に見えるファイル（メインスト
+リームと呼ばれる）のほかに、プログラマがそのファイルの情報を格納するため
+の目に見えないストリームを複数ぶら下げることができるのである。代替データ
+ストリームは、Windowsのエクスプローラでもコマンドプロンプトでも存在確認で
+きないし、削除もできない。しかし作成は簡単にできるのだ。
+　今回は代替データストリームを使用する方法を紹介し、ウイルスなどのマルウ
+ェアでどのように悪用されているのかご紹介したいと思う。
 
 
-��0x02.) �t�@�C�����B���Ă݂悤
+■0x02.) ファイルを隠してみよう
 
-�@����ł́A���ۂɑ�փf�[�^�X�g���[�����쐬���Ă݂悤�B�����͂�������
-�P�B�t�@�C�����̌�ɃR����(:)�����邾�����B
+　それでは、実際に代替データストリームを作成してみよう。作り方はしごく簡
+単。ファイル名の後にコロン(:)をつけるだけだ。
 
-1�F�e�X�g�p�̃t�H���_���쐬����B�����ł͉���c:\test�Ƃ���B
+1：テスト用のフォルダを作成する。ここでは仮にc:\testとする。
 
-2�F�R�}���h�v�����v�g�i [�X�^�[�g���j���[]->[�t�@�C�������w�肵�Ď��s] �ŁA
-"cmd"�Ɠ��́j�𗧂��グ�Ac:\test�t�H���_�Ɉړ����A�e�L�X�g�t�@�C�����쐬
-����B
+2：コマンドプロンプト（ [スタートメニュー]->[ファイル名を指定して実行] で、
+"cmd"と入力）を立ち上げ、c:\testフォルダに移動し、テキストファイルを作成
+する。
 
 ----
 c:\test>echo hello > test.txt
 ----
 
-3�F�e�X�g�p�̃t�@�C�����_�~�[�̃e�L�X�g�t�@�C���̑�փX�g���[���ɃR�s�[��
-��B
+3：テスト用のファイルをダミーのテキストファイルの代替ストリームにコピーす
+る。
 
 ----
 c:\test>type test.txt > dummy.txt:secret.txt
 ----
 
-�@dir�R�}���h�Ŋm�F����ƁA�T�C�Y0�o�C�g��dummy.txt���쐬����Ă���͂����B
-�G�N�X�v���[���Ŋm�F���Ă��T�C�Y�͂�͂�0�o�C�g�Adummy.txt�̒��g���m�[�g
-�p�b�h�ȂǂŊJ���Ă�����ۂł���B
-�@�������A�m����secret.txt�Ƃ����X�g���[�����o���Ă���؋��ɁA���̂悤��
-�R�}���h���C������͑łĂ΁A�m�[�g�p�b�h�Ńt�@�C���̒��g���m�F���邱�Ƃ�
-�ł���B�i�������m�[�g�p�b�h��� [�t�@�C��]->[�J��] ��I��ł��A�J������
-���ł��Ȃ��j�B
+　dirコマンドで確認すると、サイズ0バイトのdummy.txtが作成されているはずだ。
+エクスプローラで確認してもサイズはやはり0バイト、dummy.txtの中身をノート
+パッドなどで開いても空っぽである。
+　しかし、確かにsecret.txtというストリームが出来ている証拠に、次のように
+コマンドラインからは打てば、ノートパッドでファイルの中身を確認することが
+できる。（ただしノートパッド上で [ファイル]->[開く] を選んでも、開くこと
+ができない）。
 
 ----
 c:\>test>notepad dummy.txt:secret.txt
 ----
 
-�@�Ȃ��A�ʏ�̃R�}���h�ł͍폜�͕s�\�ł���B���߂��Ɏ��̂悤�ɓ��͂���
-�݂悤�B
+　なお、通常のコマンドでは削除は不可能である。ためしに次のように入力して
+みよう。
 
 ----
 c:\>test>del dummy.txt:secret.txt
 ----
 
-�@�G���[���b�Z�[�W���\�������͂����B����������΁Adummy.txt���ƍ폜����
-�����Ȃ��̂��B
+　エラーメッセージが表示されるはずだ。消したければ、dummy.txtごと削除する
+しかないのだ。
 
-�@��փf�[�^�X�g���[�������݂���̂ɁA�t�@�C���T�C�Y��0�o�C�g�Ȃ͖̂��ȋC
-�����邪�A�����"���"�Ƃ������O�̂������낤�B�{���̖ړI�́A�����܂Ńt�@
-�C���̕t�������L�^���Ă��邾���Ȃ̂ł���B
-�@dummy.txt���E�N���b�N���� [�v���p�e�B]->[�T�v] �^�u���J���Ă݂悤�B�e��
-�ڂɓK���ȕ�������������ł��Adummy.txt�̃t�@�C���T�C�Y��0�o�C�g�̂܂܂��B
-���̊T�v���A��փf�[�^�X�g���[���Ɋi�[����Ă���B�t�@�C���ɂ��Ă̐���
-���������񂾂����ŁA�t�@�C���T�C�Y���ς���Ă��܂��̂͂�͂��肾�낤�B
-�@�쐬�ł���̂ɍ폜�ł��Ȃ��d�l�͊�قɊ����邪�B
+　代替データストリームが存在するのに、ファイルサイズが0バイトなのは妙な気
+もするが、これは"代替"という名前のせいだろう。本来の目的は、あくまでファ
+イルの付随情報を記録しているだけなのである。
+　dummy.txtを右クリックして [プロパティ]->[概要] タブを開いてみよう。各項
+目に適当な文字を書き込んでも、dummy.txtのファイルサイズは0バイトのままだ。
+この概要も、代替データストリームに格納されている。ファイルについての説明
+を書き込んだだけで、ファイルサイズが変わってしまうのはやはり問題だろう。
+　作成できるのに削除できない仕様は奇異に感じるが。
 
-�@�ʔ������ƂɁA��փX�g���[���́A�t�@�C���łȂ��t�H���_�ɑ΂��Ă��쐬��
-����B�܂��A�e�L�X�g�����łȂ��摜���낤��EXE�t�@�C�����낤�Ǝ��R�Ɋi�[��
-���邽�߁A�l�ڂ���������t�@�C���Ȃǂ̈ꎞ�u����ɂ����p���邱�Ƃ��\���B
+　面白いことに、代替ストリームは、ファイルでなくフォルダに対しても作成で
+きる。また、テキストだけでなく画像だろうとEXEファイルだろうと自由に格納で
+きるため、人目を避けたいファイルなどの一時置き場にも活用することも可能だ。
 
 
-��0x03.) �}���E�F�A�ł̉��p
+■0x03.) マルウェアでの応用
 
-�@�����Ȃ��ꏊ�Ƃ����ƁA���R�̂��ƂȂ��爫������y�̉B��ꏊ�ɂ��Ȃ��Ă�
-�܂����̂��BWindows2000�����������Ƒ������̑�փf�[�^�X�g���[���𗘗p��
-��E�C���X���o�ꂵ���B
-�@���E���̃X�g���[���E�C���XWin2k.Stream�́A���s�t�@�C���Ȃǂ��փf�[�^
-�X�g���[���ɃR�s�[���Ă����A�E�C���X�{�̂����C���X�g���[���ɃR�s�[�����
-�������̂������B�E�C���X�����삵����A��փX�g���[���Ɋi�[���ꂽ�{���̃t
-�@�C�������s����邽�߁A���[�U�͊����ɋC�Â��ɂ����BPE�t�@�C���{�̂Ɋ���
-����̂ƈقȂ�A���ɂ���y�ɍ���E�C���X�����A�쏜�͏��X���B
-�@�܂��E�C���X�{�̂���փf�[�^�X�g���[���ɐ�������Ƃ����P�[�X������B��
-�����Ƃ̂Ȃ�EXE��VBS�t�@�C���������Ă����炠���炳�܂ɉ��������A�t�H���_
-�ɕt�������փX�g���[���ł���΁A�ꌩ���ăt�@�C�����������Ƃ͂킩��Ȃ��B
+　見えない場所というと、当然のことながら悪さする輩の隠れ場所にもなってし
+まうものだ。Windows2000が発売されると早速この代替データストリームを利用す
+るウイルスが登場した。
+　世界初のストリームウイルスWin2k.Streamは、実行ファイルなどを代替データ
+ストリームにコピーしておき、ウイルス本体をメインストリームにコピーすると
+いうものだった。ウイルスが動作した後、代替ストリームに格納された本来のフ
+ァイルが実行されるため、ユーザは感染に気づきにくい。PEファイル本体に感染
+するのと異なり、実にお手軽に作れるウイルスだが、駆除は少々厄介だ。
+　またウイルス本体が代替データストリームに潜伏するというケースもある。見
+たことのないEXEやVBSファイルが増えていたらあからさまに怪しいが、フォルダ
+に付随する代替ストリームであれば、一見してファイルが増えたとはわからない。
 
-�@�Ƃ���ŃX�g���[���Ɋi�[���ꂽEXE�t�@�C����X�N���v�g�t�@�C�������s����
-�ɂ͂ǂ�������悢�̂��낤���H�@�����start�R�}���h�ŊȒP�Ɏ����ł���B
+　ところでストリームに格納されたEXEファイルやスクリプトファイルを実行する
+にはどうしたらよいのだろうか？　これはstartコマンドで簡単に実現できる。
 
 ----
 c:\test>mkdir test2
@@ -106,147 +106,147 @@ c:\test>echo MsgBox"hello!" > c:\test\test2:s.vbs
 c:\test>start f:\test\test2:s.vbs
 ----
 
-�@1�s�ڂŃf�B���N�g�������A2�s�ڂ�VBScript�̃t�@�C�����փX�g���[����
-���č쐬���Ă���B�O�s�ڂŃG���^�[�L�[�������ƁA��ʂ�"hello!"�Ə�������
-�b�Z�[�W�{�b�N�X���\�����ꂽ�͂����B
+　1行目でディレクトリを作り、2行目でVBScriptのファイルを代替ストリームと
+して作成している。三行目でエンターキーを押すと、画面に"hello!"と書いたメ
+ッセージボックスが表示されたはずだ。
 
-�@��փX�g���[���̃t�@�C�����A�}�V���̋N�����Ɏ����I�Ɏ��s�����邱�Ƃ���
-����B�����̃}���E�F�A�́A�ȉ��̂悤�ȃ��W�X�g���Ɏ����̃t�@�C������p�X
-����������ŁA�}�V�����N�����邽�тɎ������s�����悤�ɂ��Ă���B
+　代替ストリームのファイルを、マシンの起動時に自動的に実行させることもで
+きる。多くのマルウェアは、以下のようなレジストリに自分のファイル名やパス
+を書き込んで、マシンが起動するたびに自動実行されるようにしている。
 
 ----
 HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\run\
 ----
 
-�@���߂��ɑ�փX�g���[���Ƃ��Ċi�[����VBScript���w�肵�Ă݂悤�B���W�X�g
-���G�f�B�^���J���i [�X�^�[�g���j���[]->[�t�@�C����]���w�肵�Ď��s] �ŁA"
-regedit"�Ɠ��́j�A��L�̃L�[��T���B�E���̃E�B���h�E�y�C���̒��ŉE�N���b
-�N���A [�V�K]->[������l] ��I�ԁB�C�ӂ̖��O�����A�f�[�^�̕����ɐ�ق�
-VBS���i�[�����ꏊ"c:\test\test2:s.vbs"����͂���Ί������B�������񃍃O�I
-�t�����ネ�O�I������΁A"hello!"�̃��b�Z�[�W���\�������͂����B�e�X�g��
-����́A���W�X�g�������ɖ߂��̂����Y��Ȃ��B
+　ためしに代替ストリームとして格納したVBScriptを指定してみよう。レジスト
+リエディタを開き（ [スタートメニュー]->[ファイル名]を指定して実行] で、"
+regedit"と入力）、上記のキーを探す。右側のウィンドウペインの中で右クリッ
+クし、 [新規]->[文字列値] を選ぶ。任意の名前をつけ、データの部分に先ほど
+VBSを格納した場所"c:\test\test2:s.vbs"を入力すれば完了だ。いったんログオ
+フした後ログオンすれば、"hello!"のメッセージが表示されるはずだ。テストし
+た後は、レジストリを元に戻すのをお忘れなく。
 
 
-��0x04.) �Ď��c�[���̍쐬
+■0x04.) 監視ツールの作成
 
-�@�Ō�ɍ��܂ŏЉ���e�N�j�b�N��VBScript���g���Ă����ȒP�ȕs���i�H�j
-�Ď��c�[��������Ă݂悤�Ǝv���B
-�@�ȉ���VBS�t�@�C�����e�X�g�p�t�H���_���Ŏ��s����ƁA�t�H���_�ɐ����i���g
-���t�H���_�̑�փX�g���[���Ƃ��ăR�s�[�j���A�������s�����悤���W�X�g��
-�ɏ������ށB���񂩂�A�}�V�����N�����邽�тɁA�w�肵�����[���A�h���X�փ�
-�[���𑗐M����悤�ɂȂ�B
+　最後に今まで紹介したテクニックとVBScriptを使ってごく簡単な不可視（？）
+監視ツールを作ってみようと思う。
+　以下のVBSファイルをテスト用フォルダ内で実行すると、フォルダに潜伏（自身
+をフォルダの代替ストリームとしてコピー）し、自動実行されるようレジストリ
+に書き込む。次回から、マシンが起動するたびに、指定したメールアドレスへメ
+ールを送信するようになる。
 
 ----
 Set oFSO = WScript.CreateObject("Scripting.FileSystemObject")
 
-'���݂̃{�����[����NTFS�łȂ���ΏI��
+'現在のボリュームがNTFSでなければ終了
 Set oDrive = oFSO.GetDrive(oFSO.GetDriveName(WScript.ScriptFullName)) 
 If oDrive.FileSystem <> "NTFS" Then
- MsgBox "NTFS�{�����[���ł͂Ȃ����߃C���X�g�[���ł��܂���"
+ MsgBox "NTFSボリュームではないためインストールできません"
  WScript.Quit
 End If
 
-'�����̃t�@�C�������擾
+'自分のファイル名を取得
 Set oMyself = oFSO.GetFile(WScript.ScriptFullName)
 sFileName = oMyself.Name
 sFolder = Left(oMyself.Path, Len(oMyself) - Len(sFileName) - 1)
 
-'��փX�g���[������̋N���łȂ���΁A
-'�������i�[����Ă���t�H���_�ցA�������g���փX�g���[���Ƃ��ăR�s�[
+'代替ストリームからの起動でなければ、
+'自分が格納されているフォルダへ、自分自身を代替ストリームとしてコピー
 If InStr(sFileName, ":") = 0 Then
  If Len(sFolder) = 2 Then
-  MsgBox("���[�g�t�H���_����N������Ă��܂��B�t�H���_���ŋN�����Ă�������")
+  MsgBox("ルートフォルダから起動されています。フォルダ内で起動してください")
   WScript.Quit
  Else
   sPath = sFolder + ":" + sFileName
   oMyself.Copy(sPath)
   oMyself.Delete
-  MsgBox(sPath + "�Ɉړ����܂���")
+  MsgBox(sPath + "に移動しました")
  End If
 Else
  sPath = oMyself
 End If
 
-'�����N������悤���W�X�g���ɏ�������
+'自動起動するようレジストリに書き込む
 Set oShell = WScript.CreateObject("WScript.Shell")
 If Err.Number = 0 Then
  sRegPath = "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\run\test"
  oShell.RegWrite sRegPath, sPath, "REG_SZ"
 Else
- MsgBox("���W�X�g�����ǂݍ��߂܂���")
+ MsgBox("レジストリが読み込めません")
 End If
 
-'���[���̍쐬
+'メールの作成
 Set oMsg = WScript.CreateObject("CDO.Message")
-oMsg.From ="���M�����[���A�h���X"
-oMsg.To = "���M�惁�[���A�h���X"
-oMsg.Subject = "�N�����O"
-oMsg.TextBody = "�}�V�����N������܂���" & vbCrLf & Now
+oMsg.From ="送信元メールアドレス"
+oMsg.To = "送信先メールアドレス"
+oMsg.Subject = "起動ログ"
+oMsg.TextBody = "マシンが起動されました" & vbCrLf & Now
 
-'�ȉ��͊O��SMTP�𗘗p����ꍇ�̂ݐݒ�
-'�O��SMTP�𗘗p����ꍇ�́Asendusing��2�Ƃ���
+'以下は外部SMTPを利用する場合のみ設定
+'外部SMTPを利用する場合は、sendusingを2とする
 'oMsg.Configuration.Fields.Item ("http://schemas.microsoft.com/cdo/configuration/sendusing") = 2
-'SMTP�T�[�o�̃A�h���X
-'oMsg.Configuration.Fields.Item ("http://schemas.microsoft.com/cdo/configuration/smtpserver") = "�T�[�o�̃A�h���X"
-'SMTP�ɗ��p����|�[�g�ԍ�
-'oMsg.Configuration.Fields.Item ("http://schemas.microsoft.com/cdo/configuration/smtpserverport") = �|�[�g�ԍ�
+'SMTPサーバのアドレス
+'oMsg.Configuration.Fields.Item ("http://schemas.microsoft.com/cdo/configuration/smtpserver") = "サーバのアドレス"
+'SMTPに利用するポート番号
+'oMsg.Configuration.Fields.Item ("http://schemas.microsoft.com/cdo/configuration/smtpserverport") = ポート番号
 
-'�ȉ��́ASMTP�ɔF�؂��K�v�ȃT�[�o�̂ݐݒ�
-'SMTP�F�؂𗘗p
+'以下は、SMTPに認証が必要なサーバのみ設定
+'SMTP認証を利用
 'oMsg.Configuration.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpauthenticate") = 1
-'�A�J�E���g��
-'oMsg.Configuration.Fields.Item ("http://schemas.microsoft.com/cdo/configuration/sendusername") = "���[���A�J�E���g"
-'�p�X���[�h
-'oMsg.Configuration.Fields.Item ("http://schemas.microsoft.com/cdo/configuration/sendpassword") = "�p�X���[�h"
+'アカウント名
+'oMsg.Configuration.Fields.Item ("http://schemas.microsoft.com/cdo/configuration/sendusername") = "メールアカウント"
+'パスワード
+'oMsg.Configuration.Fields.Item ("http://schemas.microsoft.com/cdo/configuration/sendpassword") = "パスワード"
 
 oMsg.Send
 ----
 
-�@�t�H���_�̑�փX�g���[���Ɏ������g���R�s�[����̂ŁA�e�X�g�p�t�H���_��
-���Ŏ��s���邱�Ɓi�����łȂ��ƌ�ŋ쏜�����ɂȂ�j�B�܂����[�g�t�H���_
-�Ŏ��s�����ꍇ�̓G���[�ƂȂ�B���s����O�ɁA���M�����[���A�h���X�A���M��
-���[���A�h���X�͎����̃��[���A�h���X�Ȃǂɕς���̂����Y��Ȃ��B�܂�Wind
-ows XP Professional���g�p��IIS�T�[�r�X��SMTP���C���X�g�[�����Ă���ꍇ�A
-���ڃ��[���𑗐M���邱�Ƃ��ł��邪�A�C���X�g�[������Ă��Ȃ�����ASMTP
-���M���s���Ȃ����i�ŋ߂ł́A�X�p���h�~�΍�̂��߁A�v���o�C�_��Port25��
-�玩�Ѓ��[���T�[�o�o�R�ȊO�̑��M���֎~���Ă���P�[�X������j�ł́A�O����
-SMTP�T�[�o�𗘗p����K�v������B���̏ꍇ�́u�ȉ��͊O��SMTP�𗘗p����ꍇ
-�̂ݐݒ�v�Ə����ꂽ�����̃v���O�������R�����g�A�E�g���A�T�[�o�̃A�h���X
-�E�|�[�g�ԍ������������p������̂ɕύX���邱�ƁB���̃T�[�o��SMTP�F�؂��s
-���Ă���ꍇ�́u�ȉ��́ASMTP�ɔF�؂��K�v�ȃT�[�o�̂ݐݒ�v�̉��̃v���O��
-�����R�����g�A�E�g���A�A�J�E���g���ƃp�X���[�h�������̂��̂ɕύX���Ăق�
-���B�e�X�g�I����́A���W�X�g�������ɖ߂��A�e�X�g�p�̃t�H���_���ƍ폜����
-�̂�Y�ꂸ�ɁB
+　フォルダの代替ストリームに自分自身をコピーするので、テスト用フォルダの
+中で実行すること（そうでないと後で駆除が厄介になる）。またルートフォルダ
+で実行した場合はエラーとなる。実行する前に、送信元メールアドレス、送信先
+メールアドレスは自分のメールアドレスなどに変えるのをお忘れなく。またWind
+ows XP Professionalを使用しIISサービスのSMTPをインストールしている場合、
+直接メールを送信することができるが、インストールされていない環境や、SMTP
+送信が行えない環境（最近では、スパム防止対策のため、プロバイダがPort25か
+ら自社メールサーバ経由以外の送信を禁止しているケースがある）では、外部の
+SMTPサーバを利用する必要がある。この場合は「以下は外部SMTPを利用する場合
+のみ設定」と書かれた部分のプログラムをコメントアウトし、サーバのアドレス
+・ポート番号を自分が利用するものに変更すること。そのサーバがSMTP認証を行
+っている場合は「以下は、SMTPに認証が必要なサーバのみ設定」の下のプログラ
+ムもコメントアウトし、アカウント名とパスワードを自分のものに変更してほし
+い。テスト終了後は、レジストリを元に戻し、テスト用のフォルダごと削除する
+のを忘れずに。
 
-�@��L�͎����̃}�V���֒N��������Ƀ��O�C�����Ă��Ȃ����ǂ����Ď�����c�[
-���̗Ⴞ�B�ق�̏������p����΃C�x���g���O�����[�����M���Ă����Ǘ��c�[
-���A�^�[�Q�b�g�}�V���̃p�X���[�h�t�@�C����Y�t�t�@�C���Ƃ��ă��[�����M��
-��g���C�̖ؔn�A�t�@�C���̒����烁�[���A�h���X�炵���������T���o���Ď�
-�g��Y�t���A�������L���郏�[���ȂǂȂǁA�Ȃ�ł��ȒP�ɍ��邱�Ƃ����킩
-�肾�낤�B
+　上記は自分のマシンへ誰かが勝手にログインしていないかどうか監視するツー
+ルの例だ。ほんの少し応用すればイベントログをメール送信してくれる管理ツー
+ル、ターゲットマシンのパスワードファイルを添付ファイルとしてメール送信す
+るトロイの木馬、ファイルの中からメールアドレスらしき文字列を探し出して自
+身を添付し、感染を広げるワームなどなど、なんでも簡単に作れることがおわか
+りだろう。
 
 
-��0x05.) ������
+■0x05.) おわりに
 
-�@�t�@�C���̑����ȂǊi�[����̂ɕ֗��ȑ�փf�[�^�X�g���[���A�ʔ����g����
-���ł��邪�A���Ȏg����������Ɩ��Ȃ��̂ɂ��Ȃ肤�邱�Ƃ����킩�肢��
-���������Ǝv���B�Ȃɂ��쐬�͉\�Ȃ̂ɁA�{���E�폜���ł��Ȃ��̂����獢��
-���̂ł���B�E�C���X�Ȃǂɐ������ꂽ���ɂ́A�{�̂̃t�@�C����t�H���_�܂�
-�]���ɂ��Ȃ���΂Ȃ�Ȃ��B
-�@�m�F�E�폜������@���܂������Ȃ��̂��Ƃ����ƁA������񂻂�Ȃ��Ƃ͂Ȃ��B
-API���g���ƃX�g���[���̗񋓂��\�ł���A��փX�g���[���̌��o�ƍ폜���\
-�ɂ����p�c�[�����������o����Ă���B
+　ファイルの属性など格納するのに便利な代替データストリーム、面白い使い方
+もできるが、妙な使われ方をすると厄介なものにもなりうることもおわかりいた
+だけたかと思う。なにせ作成は可能なのに、閲覧・削除ができないのだから困り
+ものである。ウイルスなどに潜伏された日には、本体のファイルやフォルダまで
+犠牲にしなければならない。
+　確認・削除する方法がまったくないのかというと、もちろんそんなことはない。
+APIを使うとストリームの列挙が可能であり、代替ストリームの検出と削除を可能
+にする専用ツールもいくつか出回っている。
 
-�Elfnutils (Long File Name Utilities) 
+・lfnutils (Long File Name Utilities) 
 http://www.monyo.com/technical/products/lfnutils/
 
-�@�܂���փf�[�^�X�g���[����NTFS�Ǝ��̋@�\�ł��邽�߂�FD���NTFS�p�[�e�B
-�V�����ȂǂɃR�s�[���悤�Ƃ���ƁA�x�����b�Z�[�W���\�������̂ő�փX�g
-���[�������邱�Ƃ��킩��B���R�Ȃ���FD�ɂ̓��C���X�g���[���������R�s�[��
-���B
+　また代替データストリームはNTFS独自の機能であるためにFDや非NTFSパーティ
+ションなどにコピーしようとすると、警告メッセージが表示されるので代替スト
+リームがあることがわかる。当然ながらFDにはメインストリームだけがコピーさ
+れる。
 
-�@�ȏタ����Ƃ������Z�ɂ����Ȃ����A���p��������Ȃ����M������A�Ǝ��̔�
-�z�����n�b�N�̑�햡���B���ɗ��^�ʔ����g�������v�����ꂽ���́A���Ђ�
-�m�点�肢�����B
+　以上ちょっとした小技にすぎないが、活用するもしないも貴方次第、独自の発
+想こそハックの醍醐味だ。役に立つ／面白い使い方を思いつかれた方は、ぜひお
+知らせ願いたい。
 
 

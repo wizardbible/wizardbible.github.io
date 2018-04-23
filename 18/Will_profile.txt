@@ -1,13 +1,13 @@
-��Will
-��Job:Student
-��Web:http://will.wbjapan.com/
-��Mail:Will_net@hotmail.co.jp
-��Team�iGroup): Anti-WMAC
-��Comment:
-  �O��̎��ɁA����̓v���O���~���O�֌W�ɂ��ď��������ƌ����Ă��܂������A
-�p�\�R�����̏Ⴕ�ăR�[�f�B���O���鎞�Ԃ��Ȃ������̂Ńv���O���~���O�Ȃ�
-��ŁAOlly�ɂ��ď����Ă݂܂����B���񂱂���C#�ɂ��Ăł������Ă݂邩��
-�c�Ƃ����Ȃ�����������Ȃ��Ǝv���������̍��c�B
-���悭����2ch�̃J�e�S��:�H�H�H
-�@2ch�͍D������Ȃ��̂ł���܂茩�܂���B���܂�PC�j���[�X��v���O������
-�݂邮�炢�ł��B
+■Will
+●Job:Student
+●Web:http://will.wbjapan.com/
+●Mail:Will_net@hotmail.co.jp
+●Team（Group): Anti-WMAC
+●Comment:
+  前回の時に、次回はプログラミング関係について書きたいと言っていましたが、
+パソコンが故障してコーディングする時間がなかったのでプログラミングつなが
+りで、Ollyについて書いてみました。次回こそはC#についてでも書いてみるかな
+…といいながらも無理だなぁと思う今日この頃…。
+●よく見る2chのカテゴリ:？？？
+　2chは好きじゃないのであんまり見ません。たまにPCニュースやプログラム板を
+みるぐらいです。

@@ -1,22 +1,22 @@
-��eagle0wl
-��Job: Programmer / Reverse Engineer
-��Web: http://www.mysys.org/eagle0wl/ �i�x�~���E�U���ȍ~�ĊJ�\��j
-��Mail: masm0wl��hotmail.com
-��Team�iGroup): backsection
-��Comment:
-�@�F�l���v���Ԃ�ł��Beagle0wl�ł��B�������łȂ����́w�N���b�L���O�E�o�C
-�u���x�̒��̐l�Ƃ����F���ō\���܂���B�̒��s�ǂƃ��`�x�[�V�����̑r���Ȃ�
-�Ŗ񔼔N�O�ɃE�F�u�T�C�g����܂������A���̊Ԃɗl�X�ȏo���������茻�݂�
-����܂��B
-�@�x���c�Ƃ����������`�x�[�V�����������Ă���Ԃɂ��A���o�[�X�G���W�j�A
-�����O�ɑ΂��闬�ꂪ�ŋ߂ɂȂ��Ėڂ܂��邵���ς���Ă��Ă�����ɋ�����
-���܂��B����Ƌ��ɁA�����������������Ă����Ȃ��Ǝv���悤�ɂȂ�A����
-�|�[�g���������߂�����ł��i��΁j�B�E�F�u��ł̊������ڂ��ڂ��ĊJ������
-�Ǝv���܂��B
-���g�ѓd�b:
-�@W-ZERO3[es]�����C���Ɏg���Ă��܂��B�Ƃ͂����S�R�g�����Ȃ��Ă��炸�A�E�F
-�u�u���E�Y�Ƃۂ��M�R���炢�����g���Ă��܂���BUSB�ڑ��Ń��f���Ƃ��Ďg����
-�̂͌��\�X�e�L�ł��ˁB�����d�Ԃ̒��ŃX�^�C���X�y����2�񖳂����Ă���̂ŁA
-�O�͂Ń^�b�`�ł���@�\���~�����ł��i�΁j�B
+■eagle0wl
+●Job: Programmer / Reverse Engineer
+●Web: http://www.mysys.org/eagle0wl/ （休止中・６月以降再開予定）
+●Mail: masm0wl＠hotmail.com
+●Team（Group): backsection
+●Comment:
+　皆様お久しぶりです。eagle0wlです。ご存じでない方は『クラッキング・バイ
+ブル』の中の人という認識で構いません。体調不良とモチベーションの喪失など
+で約半年前にウェブサイトを閉じましたが、その間に様々な出来事があり現在に
+至ります。
+　休眠…というよりもモチベーションを失っている間にも、リバースエンジニア
+リングに対する流れが最近になって目まぐるしく変わってきており非常に驚いて
+います。それと共に、自分もうかうかしていられないと思うようになり、今回レ
+ポートをしたためた次第です（苦笑）。ウェブ上での活動もぼちぼち再開したい
+と思います。
+●携帯電話:
+　W-ZERO3[es]をメインに使っています。とはいえ全然使いこなせておらず、ウェ
+ブブラウズとぽけギコぐらいしか使っていません。USB接続でモデムとして使える
+のは結構ステキですね。満員電車の中でスタイラスペンを2回無くしているので、
+念力でタッチできる機能が欲しいです（笑）。
 
 

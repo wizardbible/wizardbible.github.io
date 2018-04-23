@@ -1,86 +1,86 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- ��3��: �n�j�[�|�b�g����낤 vol.0 �`�n�j�[�|�b�g���ĂȂ��ɁH�` ---
+--- 第3章: ハニーポットを作ろう vol.0 〜ハニーポットってなぁに？〜 ---
 
-���ҁF����䂤��
+著者：黒崎ゆうき
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@����ɂ���B���񂪏����e�ƂȂ�܂��A����䂤���Ɛ\���܂��B
-�@�ߔN�A�R���s���[�^�E�B���X�̊���������ƂĂ��I���Ȃ��̂ɂȂ�A�A���`�E
-�B���X�\�t�g�Ȃ��ł̓R���s���[�^�̎g�p�͕|�����̂ƂȂ��Ă��܂��B�ł����A
-���ۂɃ}���E�F�A�����W������A����������A��͂����Ă݂邱�Ƃ��R���s���[
-�^���w�ԏ�ő�؂Ȃ��Ƃ��Ǝv���܂��B
-�@�����ŁA����̓n�j�[�|�b�g�̊T�O���ނɉ����A�\�z���s�������Ǝv���܂��B
-
-
-��0x02.) �n�j�[�|�b�g�Ƃ�
-
-�@�n�j�[�|�b�g�Ƃ́A�a�󂷂�Ɓu���فv�̈Ӗ�������܂��B�u�U���҂ɂƂ���
-��������L�v�ȏ�񂪂���ƌ��������U����U���v���̂̂��ƂƉ��߂ł��܂��B
-�L���Ȏ���Ƃ��āA�V���w�҃N���t�H�[�h�E�X�g�[���̒����w�J�b�R�E�̓R���s
-���[�^�ɗ����Y�ށx�ɂ���uSDI�l�b�g�v�Ƃ������̂���������܂��B
-�@�U���҂ɂ��U���̌X����A�ǂ̂悤�ȃc�[����p�����̂��Ƃ�����������
-�W���邽�߂ɗp������A�U������邱�ƂɈӖ�������V�X�e���̎����w���܂��B
-�ł����A���ۂɐƎ㐫������V�X�e�����l�b�g���[�N���ɉғ���������ǂ��ł�
-�傤���H���̃R���s���[�^���o�R���āA���̃R���s���[�^�Ɉ��ӂ��y�ڂ��\��
-������܂��B���̂��߁A�ړI�ɉ����āA�l�X�Ȏ�ނ̃n�j�[�|�b�g���݌v�����
-���܂��B
+　こんにちわ。今回が初投稿となります、黒崎ゆうきと申します。
+　近年、コンピュータウィルスの感染手口もとても巧妙なものになり、アンチウ
+ィルスソフトなしではコンピュータの使用は怖いものとなっています。ですが、
+実際にマルウェアを収集したり、感染したり、解析をしてみることもコンピュー
+タを学ぶ上で大切なことだと思います。
+　そこで、今回はハニーポットの概念や種類に加え、構築を行いたいと思います。
 
 
-��0x03.) �n�j�[�|�b�g�̎��
+■0x02.) ハニーポットとは
 
-�����Θb�^�n�j�[�|�b�g�iHigh-Interaction Honeypots�j
-
-�@���ۂɐƎ㐫�����������u�{���́v�V�X�e�����ғ������A�U����U�����̂̂�
-�Ƃ����Θb�^�n�j�[�|�b�g�Ƃ����܂��B
-�@�u�{���́v�V�X�e�����g�����Ƃɂ��A�u�{���́v������ɓ���邱�Ƃ���
-���邽�߁A��R���𓾂邱�Ƃ��ł��܂��B�ł����A���ۂɐƎ㐫���c�����V�X
-�e�����ғ������邱�Ƃɂ��A�Ǘ�����ϓ���A���̃R���s���[�^�ɔ�Q���y
-�ڂ��\��������܂��B���̂��߁A�l���x���ō\�z����ɂ͂��܂���p���͂�
-����������܂���B
-
-����Θb�^�n�j�[�|�b�g�iLow-Interaction Honeypots�j
-
-�@���Θb�^�n�j�[�|�b�g�́u�{���́v�V�X�e�����ғ���������̂ł������A���
-�b�^�n�j�[�|�b�g�́A�u�{���̂悤�ȁv�Ǝ㐫���������V�X�e�����G�~�����[�g
-���A�Ď����s�����̂ł��B�����āu�{���́v�V�X�e���ł͂Ȃ����߁A���W�ł���
-���͌����܂����A�G�~�����[�g���Ă���͈͂ɋ@�\����������邽�߁A����
-�b�^�n�j�[�|�b�g�������S�ɉғ��������邱�Ƃ��ł��܂��B
-
-�����z�n�j�[�|�b�g�iVirtual Honeypots�j
-
-�@���z�}�V���iVMware,VirtualBOX,Xen�Ȃǁj�łō\�z���ꂽ�n�j�[�|�b�g�̂���
-���w���܂��B���z�}�V���́A��x�d���𗎂Ƃ��΁A��������Ă��Ȃ��V�X�e����
-�߂����Ƃ��e�ՂȂ��߁A�Ǘ��ʂł͑�ϗL���ȕ��@�ł���Ƃ����܂��B�ł����A
-�ŋ߂̃{�b�g��}���E�F�A�͌����ł�����A�������g�����z�}�V����ɐg��u��
-�����Ƃ��Ǝ@����ƁA������������悤�Ƃ�����̂Ȃǂ�����܂��B�����ɁA�U
-���҂�}���E�F�A�ɉ��z�}�V�����ƌ���Ȃ��悤�ɂ��邩�A�Ƃ�����ϓ��
-�Z�p���K�v�ɂȂ�܂��B
-
-�@��\�I�ȃn�j�[�|�b�g�̎�ނ͏�L3�ł��B���ꂼ��ɁA�����b�g�A�f�����b
-�g�����邽�ߎ��ۂɍs���������Ƃɍ��킹�Ďg�p����n�j�[�|�b�g�����肵�Ȃ�
-��΂Ȃ�܂���B
-
-�@���񎄂��\�z����n�j�[�|�b�g�͈��S�ʂ��l�����A�l�ł��Ǘ����ł�������
-�u��Θb�^�n�j�[�|�b�g�v��I�����܂����B
+　ハニーポットとは、和訳すると「蜜壷」の意味があります。「攻撃者にとって
+何かしら有益な情報があると見せかけ攻撃を誘う」もののことと解釈できます。
+有名な事例として、天文学者クリフォード・ストールの著書『カッコウはコンピ
+ュータに卵を産む』にある「SDIネット」というものが挙げられるます。
+　攻撃者による攻撃の傾向や、どのようなツールを用いたのかといった情報を収
+集するために用いられる、攻撃されることに意味があるシステムの事を指します。
+ですが、実際に脆弱性があるシステムをネットワーク内に稼動させたらどうでし
+ょうか？そのコンピュータを経由して、他のコンピュータに悪意を及ぼす可能性
+があります。そのため、目的に応じて、様々な種類のハニーポットが設計されて
+います。
 
 
-��0x03.) Nepenthes�̍\�z
+■0x03.) ハニーポットの種類
 
-�@OS��CentOS5.3���g���܂��BFirewall��Disable�Ƃ��܂����B���̏��Nepenthes
-���ғ������邱�Ƃ�����̖ڕW�Ƃ��܂��B
-�@Snort�𓯎��ɉғ������A�s���A�N�Z�X�̌��m���s�������ƍl���܂������A����
-��Nepenthes�݂̂ŉғ����s���Ă݂āA���̑��̊g���͎��񂩂�̉ۑ�ɂ�������
-�v�������߂ł��B
+●高対話型ハニーポット（High-Interaction Honeypots）
 
-�@CentOS���Nepenthes�𓮍삳�����ŕK�v�ȃ��W���[��������������܂��B
-�܂��A�ȉ��̃��W���[�����C���X�g�[������Ă��邱�Ƃ��m�F���܂��B
+　実際に脆弱性を持たせた「本物の」システムを稼動させ、攻撃を誘うもののこ
+とを高対話型ハニーポットといいます。
+　「本物の」システムを使うことにより、「本物の」情報を手に入れることがで
+きるため、沢山情報を得ることができます。ですが、実際に脆弱性を残したシス
+テムを稼動させることにより、管理が大変難しく、他のコンピュータに被害を及
+ぼす可能性があります。そのため、個人レベルで構築するにはあまり実用性はな
+いかもしれません。
+
+●低対話型ハニーポット（Low-Interaction Honeypots）
+
+　高対話型ハニーポットは「本物の」システムを稼動させるものでしたが、低対
+話型ハニーポットは、「本物のような」脆弱性を持ったシステムをエミュレート
+し、監視を行うものです。決して「本物の」システムではないため、収集できる
+情報は限られますが、エミュレートしている範囲に機能が制限されるため、高対
+話型ハニーポットよりも安全に稼動をさせることができます。
+
+●仮想ハニーポット（Virtual Honeypots）
+
+　仮想マシン（VMware,VirtualBOX,Xenなど）でで構築されたハニーポットのこと
+を指します。仮想マシンは、一度電源を落とせば、汚染されていないシステムへ
+戻すことが容易なため、管理面では大変有効な方法であるといえます。ですが、
+最近のボットやマルウェアは賢いですから、自分自身が仮想マシン上に身を置い
+たことをと察すると、自らを消去しようとするものなどがあります。いかに、攻
+撃者やマルウェアに仮想マシンだと悟られないようにするか、という大変難しい
+技術が必要になります。
+
+　代表的なハニーポットの種類は上記3つです。それぞれに、メリット、デメリッ
+トがあるため実際に行いたいことに合わせて使用するハニーポットを決定しなけ
+ればなりません。
+
+　今回私が構築するハニーポットは安全面を考慮し、個人でも管理ができそうな
+「低対話型ハニーポット」を選択しました。
+
+
+■0x03.) Nepenthesの構築
+
+　OSはCentOS5.3を使います。FirewallはDisableとしました。その上でNepenthes
+を稼動させることを今回の目標とします。
+　Snortを同時に稼動させ、不正アクセスの検知を行おうかと考えましたが、今回
+はNepenthesのみで稼動を行ってみて、その他の拡張は次回からの課題にしたいと
+思ったためです。
+
+　CentOS上でNepenthesを動作させる上で必要なモジュールがいくつかあります。
+まず、以下のモジュールがインストールされていることを確認します。
 
 ----- terminal
 # rpm -qa | grep curl
@@ -88,16 +88,16 @@ x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 # rpm -qa | grep pcap
 -----
 
-�@����Ȃ����W���[���͈ȉ��̃R�}���h�œ��肵�܂��B
+　足りないモジュールは以下のコマンドで入手します。
 
 ----- terminal
-# yum install [���W���[����]
+# yum install [モジュール名]
 -----
 
-�@����ɁAlibadns���K�v�ɂȂ�̂ŁAGNU adns����tar�{�[�����_�E�����[�h����
-make���܂��B
+　さらに、libadnsも必要になるので、GNU adnsからtarボールをダウンロードして
+makeします。
 
-GNU adns�Fhttp://www.chiark.greenend.org.uk/~ian/adns/
+GNU adns：http://www.chiark.greenend.org.uk/~ian/adns/
 
 ----- terminal
 # wget http://www.chiark.greenend.org.uk/~ian/adns/adns.tar.gz
@@ -108,15 +108,15 @@ GNU adns�Fhttp://www.chiark.greenend.org.uk/~ian/adns/
 # make install 
 -----
 
-�@����ŏ������������̂ŁANepenthes�̃C���X�g�[�������܂��BNepenthes�͈�
-���̃T�C�g������肵�A�C���X�g�[�����Ă��������B
+　これで準備が整ったので、Nepenthesのインストールをします。Nepenthesは以
+下のサイトから入手し、インストールしてください。
 
-Nepenthes�����Fhttp://nepenthes.carnivore.it/
+Nepenthes公式：http://nepenthes.carnivore.it/
 
-�@�܂��ASorceForge�����tar�{�[������肷�邱�Ƃ��ł��܂��i���͂�������g
-�p���܂����j�B
+　また、SorceForgeからもtarボールを入手することができます（私はこちらを使
+用しました）。
 
------ terminal (SorceForge�̏ꍇ)
+----- terminal (SorceForgeの場合)
 # wget http://nchc.dl.sourceforge.net/sourceforge/nepenthes/nepenthes.*.tar.gz
 # tar zxvf nepenthes*
 # cd nepenthes*
@@ -125,35 +125,35 @@ Nepenthes�����Fhttp://nepenthes.carnivore.it/
 # make install 
 -----
 
-�@����ŁA/opt�z����Nepenthes���C���X�g�[������܂��B
+　これで、/opt配下にNepenthesがインストールされます。
 
-��0x04.) Nepenthes���g�p����|�[�g�ɂ���
+■0x04.) Nepenthesが使用するポートについて
 
-�@Nepenthes�͐Ǝ㐫���������V�X�e�����G�~�����[�g���邽�߁A�O������ڑ���
-�󂯕t���Ȃ���΍U���͐������܂���B�܂�A�|�[�g���J�����Ȃ���΂Ȃ��
-���Ƃ������Ƃł��B
+　Nepenthesは脆弱性を持ったシステムをエミュレートするため、外部から接続を
+受け付けなければ攻撃は成功しません。つまり、ポートを開放しなければならな
+いということです。
 
-�@Linux�ł̓f�t�H���g�ŕ����̃|�[�g���g�p���Ă���ꍇ������܂��B�ȉ��̂�
-���ɂ��Ċm�F���邱�Ƃ��o���܂��B
+　Linuxではデフォルトで複数のポートを使用している場合があります。以下のよ
+うにして確認することが出来ます。
 
 ----- terminal
 # netstat -a
 -----
 
-�@���̍ۂɁANepenthes���������|�[�g�Əd�����Ȃ��悤�ɁA�|�[�g�ԍ���ς�
-�邩�A�T�[�r�X���~���邩���Ă��������B���́ASSH�ȊO�̃T�[�r�X��S�Ē�~
-����Nepenthes���ғ�������悤�ɂ��܂����B
+　この際に、Nepenthesが解放するポートと重複しないように、ポート番号を変え
+るか、サービスを停止するかしてください。私は、SSH以外のサービスを全て停止
+してNepenthesを稼動させるようにしました。
 
-�@�ȉ���Nepenthes�ғ��O�Ɖғ���̃|�[�g�̗l�q�ł��B
+　以下がNepenthes稼動前と稼動後のポートの様子です。
 
 ----- terminal
-# netstat -a          *Nepenthes�ғ��O
+# netstat -a          *Nepenthes稼動前
 Active Internet connections (servers and established)
 Proto Recv-Q Send-Q Local Address               Foreign Address             State
 tcp        0      0 *:ssh                       *:*                         LISTEN
 
 
-# netstat -a          *Nepenthes�ғ���
+# netstat -a          *Nepenthes稼動後
 Active Internet connections (servers and established)
 Proto Recv-Q Send-Q Local Address               Foreign Address             State
 tcp        0      0 *:blackjack                 *:*                         LISTEN
@@ -188,10 +188,10 @@ tcp        0      0 *:1023                      *:*                         LIST
 tcp        0      0 *:ssh                       *:*                         LISTEN
 -----
 
-�@�����[�g���O�C�����s�����߂ɋN�������Ă���SSH�������A���̑���Nepenthes
-���󂯂��|�[�g�ł��B
+　リモートログインを行うために起動させてあるSSHを除き、その他はNepenthes
+が空けたポートです。
 
-�@�����Z�O�����g����nmap�Ń|�[�g�X�L���������������ʂ��ȉ��̂Ƃ���ł��B
+　同じセグメントからnmapでポートスキャンをかけた結果が以下のとおりです。
 
 ----- OpenPort
 PORT      STATE    SERVICE
@@ -220,25 +220,25 @@ PORT      STATE    SERVICE
 10000/tcp open     snet-sensor-mgmt
 -----
 
-�@WAN������Nmap���g���ăX�L�����������悤�Ƃ���ƁA���̊��ł͏�肭�ł�
-�Ȃ������ł��i�X�L�������J�n����ƁA�O���[�o��IP���ς����Ă��܂��B�j��
-�̂��߁A�|�[�g������`�F�b�N����T�C�g�ɂď�L�I�[�v���|�[�g���X�L������
-�܂����B
+　WAN側からNmapを使ってスキャンをかけようとすると、私の環境では上手くでき
+なかったです（スキャンを開始すると、グローバルIPが変えられてしまう。）そ
+のため、ポート解放をチェックするサイトにて上記オープンポートをスキャンし
+ました。
 
-�@����ŁANepenthes���ғ����AWAN��������R�l�N�V�������󂯕t����悤�ɂ�
-�����̂ł��̂܂܉ғ������Ă����� "/opt/Nepenthes/var/binary"�փ}���E�F�A
-���i�[����܂��i�t�@�C�����̓}���E�F�A�̃n�b�V���l�j�B
+　これで、Nepenthesが稼動し、WAN側からもコネクションを受け付けるようにな
+ったのでこのまま稼動させておけば "/opt/Nepenthes/var/binary"へマルウェア
+が格納されます（ファイル名はマルウェアのハッシュ値）。
 
-��0x05.) �I����
+■0x05.) 終わりに
 
-�@����́A�n�j�[�|�b�g�Ƃ͉����H�Ƃ����������s���A���ۂɃn�j�[�|�b�g���\
-�z���ғ����s���܂����BISP���ŕs���ȃR�l�N�V�����̋K�������Ă��Ȃ���΁A��
-�L�f�B���N�g���Ƀ}���E�F�A���̎�ł��܂��B�������A��T�Ԓ��ғ����s������
-�̃V�X�e���ł́AISP���ŋK�����s���Ă���悤�ŁA�c�O�Ȃ���}���E�F�A����
-�悷�邱�Ƃ��ł��܂���ł����B
-�@���񂩂�͊��̕ύX���s���A���ۂɃ}���E�F�A���̎悵����ASnort���C���X
-�g�[�����āA�s���A�N�Z�X�̌��m���s�������Ǝv���܂��B
-�@�Ō�܂ł��t�����������������肪�Ƃ��������܂����B
+　今回は、ハニーポットとは何か？という説明を行い、実際にハニーポットを構
+築し稼動を行いました。ISP側で不正なコネクションの規制をしていなければ、上
+記ディレクトリにマルウェアを採取できます。しかし、一週間程稼動を行った私
+のシステムでは、ISP側で規制が行われているようで、残念ながらマルウェアを採
+取することができませんでした。
+　次回からは環境の変更を行い、実際にマルウェアを採取したり、Snortをインス
+トールして、不正アクセスの検知を行いたいと思います。
+　最後までお付き合いいただきありがとうございました。
 
 
 

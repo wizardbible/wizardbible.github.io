@@ -1,47 +1,47 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- ��14��: Windows Device Driver Programming Part 1 ---
+--- 第14章: Windows Device Driver Programming Part 1 ---
 
-���ҁFKenji Aiko
+著者：Kenji Aiko
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@���{��T�C�g�Ńf�o�C�X�h���C�o�쐬��������Ă���y�[�W������܂���B��
-��ȂɒT���Ă�����܂���B����ȂɃf�o�C�X�h���C�o���Ď��v�Ȃ��̂ł����H�@
-����Ȃ��̂ł����H�@�l�I�ɂ͂��Ȃ苻�������ł����B�Ƃ������ƂŁA����
-�̓f�o�C�X�h���C�o�쐬�ɂ��Ă���Ă��������Ǝv���܂��B�����łЂƂf��
-�Ă����܂����A���̓f�o�C�X�h���C�o�Ɋւ��Ă͂قڒm���[���ł��B�S�R�m���
-����B�S�R�킩��܂���B����͖{���ł��B������ƃe�L�X�g�̌�A���ڂɂ�
-�Ă��炨���v���ď����Ă����ی����Ⴀ��܂���B�Ȃ̂ŁA�u�킩��₷���v��
-�u���e�ɊԈႢ�Ȃ��v�Ƃ��������Ƃ��ۏ�ł��܂���B�܂��f�o�C�X�h���C�o��
-�J�[�l�����[�h�œ��삷�邽��Windows�ɒv���I�ȃ_���[�W��^����\��������
-�܂��B����A����WindowsXP + WinXPDDK�ŉ�����Ă��܂����A�u���[�X�N���[��
-�Ȃ�ē�����O�ł��B���풃�ю��ł��B�Ȃ̂ŁA�ꍇ�ɂ���ẮuWindows���N��
-���Ȃ��Ȃ�܂����v�Ƃ������Ƃ����肦�邩������܂���B�ł��A�����͋M����
-�X�L���ŃJ�o�[���Ă��������B�����Ď��ɂ͗���Ȃ��ł��������B�����Ă���
-�Ԃ�킩��܂���B���߂�Ȃ����B�����M������̂͌ȁi���̂�j�݂̂ł��B��
-���̃X�L�������ׂĂł��B���ꂾ���łȂ�Ƃ����������Ă��������B���݂܂���A
-������Ƒ傰���ł����B�ł��A�ǂ����ɂ���f�o�C�X�h���C�o����낤�Ƃ��v��
-�Ă镺�i����́j�͎����̃X�L�������M���ĂȂ��l�������C�����܂��B������
-�ŋC�����邾���ł����B�Ȃ񂾂����ɂȂ��O�_�O�_�ȁu�͂��߂Ɂv�ł��݂܂�
-��(^^;�B����������s�������̊��́uWindowsXP�v�ŁA�R���p�C���́uWinDDK 
-XP�Łv�ł��B�ł́A���������n�߂邱�Ƃɂ��܂��傤�B�悤�����J�[�l�����[�h
-�̐��E�ցB
+　日本語サイトでデバイスドライバ作成を解説しているページがありません。ど
+んなに探してもありません。そんなにデバイスドライバって需要ないのですか？　
+そんなものですか？　個人的にはかなり興味あるんですが。ということで、今回
+はデバイスドライバ作成についてやっていきたいと思います。ここでひとつ断っ
+ておきますが、私はデバイスドライバに関してはほぼ知識ゼロです。全然知りま
+せん。全然わかりません。これは本当です。ちょっとテキストの誤植を大目にみ
+てもらおう思って書いておく保険じゃありません。なので、「わかりやすく」や
+「内容に間違いなく」といったことが保障できません。またデバイスドライバは
+カーネルモードで動作するためWindowsに致命的なダメージを与える可能性があり
+ます。今回、私はWindowsXP + WinXPDDKで解説していますが、ブルースクリーン
+なんて当たり前です。日常茶飯事です。なので、場合によっては「Windowsが起動
+しなくなりました」ということがありえるかもしれません。でも、そこは貴方の
+スキルでカバーしてください。決して私には頼らないでください。頼られてもた
+ぶんわかりません。ごめんなさい。もう信じるものは己（おのれ）のみです。自
+分のスキルがすべてです。それだけでなんとか生き抜いてください。すみません、
+ちょっと大げさでした。でも、どっちにしろデバイスドライバを作ろうとか思っ
+てる兵（つわもの）は自分のスキルしか信じてない人が多い気がします。あくま
+で気がするだけですが。なんだかいつになくグダグダな「はじめに」ですみませ
+ん(^^;。今回実験を行った私の環境は「WindowsXP」で、コンパイラは「WinDDK 
+XP版」です。では、さっそく始めることにしましょう。ようこそカーネルモード
+の世界へ。
 
 
-��0x02.) �R���p�C��
+■0x02.) コンパイル
 
-�@���������f�o�C�X�h���C�o���쐬���Ă݂邱�Ƃɂ��܂����A��͂�f�o�C�X�h
-���C�o�Ƃ������������āA�R���p�C��������s���@�܂ł�₱�������Ƃ�������
-���B����āA�ŏ��̓\�[�X�R�[�h����������Windows�V�X�e���Ɋւ��Ă��낢��
-�ƃC�W�邱�Ƃ̕��������Ȃ�܂��B���̕ӂ͂ǂ������������������B�Ƃ����Ă�
-���΂���f�o�C�X�h���C�o�̃\�[�X�R�[�h�����Ă��炤�킯�Ȃ̂ł���(^^;�B
-�@hello.cpp�͂����Ƃ��V���v���ȃf�o�C�X�h���C�o�̃\�[�X�R�[�h�ł��B
+　さっそくデバイスドライバを作成してみることにしますが、やはりデバイスド
+ライバというだけあって、コンパイルから実行方法までややこしいことが多いで
+す。よって、最初はソースコードを書くよりもWindowsシステムに関していろいろ
+とイジることの方が多くなります。その辺はどうかご了承ください。といってる
+そばからデバイスドライバのソースコードを見てもらうわけなのですが(^^;。
+　hello.cppはもっともシンプルなデバイスドライバのソースコードです。
 
 -----  hello.cpp
 #ifdef __cplusplus
@@ -63,43 +63,43 @@ NTSTATUS DriverEntry(IN PDRIVER_OBJECT pDriverObject,
 }
 -----
 
-�@�܂����Ă킩��ʂ艽�����Ȃ��v���O�����̂悤�ł��B�f�o�C�X�h���C�o�ł́A
-DriverEntry����R�[�h���n�܂�܂��B�v�����WinMain��������main�֐��݂���
-�Ȃ��̂ł��B�ł́A������R���p�C�����Ď��s���Ă��������B�Ƃ����Ă��A�ǂ�
-����ăR���p�C�����邩�킩��܂���B��������WinDDK�������Ă܂���Ƃ����l
-�͈ȉ��̃A�h���X����DL���Ă��������B����WindowsXP���Ȃ̂ŁuXP DDK�v���g
-���Ă��܂��BCD-ROM�C���[�W�Ȃ̂�CD�ɏĂ����A���zCD�h���C�u�\�t�g�iDaemon
- Tools�Ȃǁj���g���ăC���X�g�[�����Ă��������B�����N�؂�Ă���}�C�N���\
-�t�g���璍�����Ă��������B
+　まぁ見てわかる通り何もしないプログラムのようです。デバイスドライバでは、
+DriverEntryからコードが始まります。要するにWinMainもしくはmain関数みたい
+なものです。では、これをコンパイルして実行してください。といっても、どう
+やってコンパイルするかわかりません。そもそもWinDDKをもってませんという人
+は以下のアドレスからDLしてください。私はWindowsXP環境なので「XP DDK」を使
+っています。CD-ROMイメージなのでCDに焼くか、仮想CDドライブソフト（Daemon
+ Toolsなど）を使ってインストールしてください。リンク切れてたらマイクロソ
+フトから注文してください。
 
-��DDK
+○DDK
 http://club.shelek.com/viewfiles.php?id=2
 
-��DAEMON Tools
+○DAEMON Tools
 http://www.daemon-tools.cc/dtcc/portal/download.php?mode=ViewCategory&catid=5
 
-��DAEMON Tools Homepage
+○DAEMON Tools Homepage
 http://www.daemon-tools.cc/dtcc/portal/index.php
 
-��Microsoft Windows Driver Development Kit
+○Microsoft Windows Driver Development Kit
 http://www.microsoft.com/whdc/devtools/ddk/default.mspx
 
-�@2�N���炢�O�܂ł̓}�C�N���\�t�g�̃z�[���y�[�W�Ŗ����Œ񋟂���Ă����̂�
-�����A���̂��ˑR��߂Ă��܂����̂ŁA���݂ł͐��K�̓�����@�̓}�C�N���\�t
-�g�ɒ��ڒ������邵���Ȃ��Ȃ�܂����B���Ȃ݂�DDK�{�͖̂����Ȃ̂ł����A����
-��25�h�����炢������炵���ł��B�ł��A�l�b�g���T���Ă݂�ΈӊO�ƌ���
-��܂��̂ŁA�킴�킴��������K�v���Ȃ���������܂���i�Ғ�1�j�B
+　2年くらい前まではマイクロソフトのホームページで無償で提供されていたので
+すが、何故か突然やめてしまったので、現在では正規の入手方法はマイクロソフ
+トに直接注文するしかなくなりました。ちなみにDDK本体は無料なのですが、送料
+が25ドルくらいかかるらしいです。でも、ネット上を探してみれば意外と見つか
+りますので、わざわざ注文する必要もないかもしれません（編注1）。
 
-�@���āA�{��ɖ߂�܂��BDDK���C���X�g�[��������ʏ�uC:\WinDDK�v�Ƃ����t
-�H���_���쐬����܂��B���̒��ɓ���Ɓu2600�v�Ƃ����t�H���_������A���̒�
-�Ɏ����I��WinDDK�̃t�@�C���Q������킯�ł��B���̒��̂ЂƂɁusrc�v�Ƃ����A
-�����ɂ��T���v���v���O��������ʂɓ����Ă����ȃt�H���_���ڂɕt���܂����A
-���z���̒ʂ�T���v���v���O�����͏��S�҂��݂Ă��܂������ł��Ȃ��V�����m��
-�Ȃ��Ă��܂��̂ŁA�ŏ��̍��͂قږ��Ӗ��ł��B����ł����͂Ƃ肠�����u��
-�Ƃ��āA�ЂƂt�H���_���オ���āu2600�v�Ɠ����ꏊ�Ɂuhello�v�Ƃ����t�H��
-�_������Ă��������B�����Ă��̒��Ɂuhello.cpp�v�����Ă��������B����ŁA
-�uC:\WinDDK\hello\hello.cpp�v�Ƃ����t�@�C�������݂��邱�ƂɂȂ�܂��B����
-�āA�����hello�t�H���_�ȉ��ɁA����2�̃t�@�C�����쐬���Ă��������B
+　さて、本題に戻ります。DDKをインストールしたら通常「C:\WinDDK」というフ
+ォルダが作成されます。その中に入ると「2600」というフォルダがあり、その中
+に実質的なWinDDKのファイル群があるわけです。この中のひとつに「src」という、
+いかにもサンプルプログラムが大量に入ってそうなフォルダが目に付きますが、
+ご想像の通りサンプルプログラムは初心者がみてもまず理解できないシロモノに
+なっていますので、最初の頃はほぼ無意味です。それでこれらはとりあえず置い
+といて、ひとつフォルダを上がって「2600」と同じ場所に「hello」というフォル
+ダを作ってください。そしてその中に「hello.cpp」を入れてください。これで、
+「C:\WinDDK\hello\hello.cpp」というファイルが存在することになります。そし
+て、さらにhelloフォルダ以下に、次の2つのファイルを作成してください。
 
 -----  MAKEFILE
 !INCLUDE $(NTMAKEENV)\makefile.def
@@ -112,24 +112,24 @@ TARGETPATH=obj
 SOURCES=hello.cpp
 -----
 
-�@���āA����ŏ��������ł��B�uC:\WinDDK\hello\hello.cpp�v�A�uC:\WinDDK\h
-ello\MAKEFILE�v�A�uC:\WinDDK\hello\SOURCES�v��3�̃t�@�C�����쐬������A
-���悢��R���p�C���i�r���h�j�ƂȂ�܂��BWindows������݂̃X�^�[�g���j���[
-����u�X�^�[�g���v���O������Development Kits��Windows DDK 2600��Build En
-vironments��Win XP Checked Build Environment�v�Ƃ��Ă��������B�������̓R
-�}���h�v�����v�g���N�����āuC:\WINDDK\2600\bin\setenv.bat C:\WINDDK\2600
- chk�v�Ǝ��s���Ă��������B����ƁA�ȉ��̂悤�ȓ��͉�ʂŃR�}���h�v�����v
-�g���~�܂�܂��B
+　さて、これで準備完了です。「C:\WinDDK\hello\hello.cpp」、「C:\WinDDK\h
+ello\MAKEFILE」、「C:\WinDDK\hello\SOURCES」の3つのファイルを作成したら、
+いよいよコンパイル（ビルド）となります。Windowsお馴染みのスタートメニュー
+から「スタート→プログラム→Development Kits→Windows DDK 2600→Build En
+vironments→Win XP Checked Build Environment」としてください。もしくはコ
+マンドプロンプトを起動して「C:\WINDDK\2600\bin\setenv.bat C:\WINDDK\2600
+ chk」と実行してください。すると、以下のような入力画面でコマンドプロンプ
+トが止まります。
 
------  �R�}���h�v�����v�g
+-----  コマンドプロンプト
 C:\Documents and Settings\kenji>C:\WINDDK\2600\bin\setenv.bat C:\WINDDK\2600 chk
 C:\WINDDK\2600>
 -----
 
-�@�����Łucd C:\WINDDK\hello�v�Ɠ��͂��ďꏊ���ړ����܂��B�����āAbuild��
-���͂��邱�ƂŃR���p�C������܂��B
+　ここで「cd C:\WINDDK\hello」と入力して場所を移動します。そして、buildと
+入力することでコンパイルされます。
 
------  �R�}���h�v�����v�g
+-----  コマンドプロンプト
 C:\WINDDK\2600>cd C:\WINDDK\hello
 C:\WINDDK\hello>build
 BUILD: Object root set to: ==> objchk
@@ -152,42 +152,42 @@ BUILD: Done
 C:\WINDDK\hello>
 -----
 
-�@�����R���p�C������������ƁASOURCES�t�@�C���AMAKEFILE�t�@�C���Ahello.c
-pp�t�@�C���̑���2�̃t�H���_��1�̃��O�t�@�C�����쐬����܂��B������ob
-jchk\i386�t�H���_�ȉ��ɂ���uC:\WINDDK\hello\objchk\i386\hello.sys�v�Ƃ�
-���g���q��.sys�̃t�@�C�����A�f�o�C�X�h���C�o�t�@�C���ł��B����ŃR���p�C
-���͖��������ƂȂ�܂��B���Ȃ݂ɂ��̗�ł̓`�F�b�N�r���h���s���܂������A
-�t���[�r���h�ł��\���܂���B64�r�b�g���̕��́A64�r�b�g�̃`�F�b�N�i�܂�
-�̓t���[�j�r���h���s���Ă��������B�ł́A����hello.sys�t�@�C�������s���邱
-�Ƃɂ��܂��B
+　無事コンパイルが完了すると、SOURCESファイル、MAKEFILEファイル、hello.c
+ppファイルの他に2つのフォルダと1つのログファイルが作成されます。そしてob
+jchk\i386フォルダ以下にある「C:\WINDDK\hello\objchk\i386\hello.sys」とい
+う拡張子が.sysのファイルが、デバイスドライバファイルです。これでコンパイ
+ルは無事完了となります。ちなみにこの例ではチェックビルドを行いましたが、
+フリービルドでも構いません。64ビット環境の方は、64ビットのチェック（また
+はフリー）ビルドを行ってください。では、このhello.sysファイルを実行するこ
+とにします。
 
-�y�Ғ�1�zWB10�́u�u���[�X�N���[���ƒ��ǂ��Ȃ낤��v�Ƃ����L���ɂ�����悤
-�ɁA�uDebugging Tools for Windows�v�Ƃ����c�[���̒���DDK�iDriver Develop
-ment Kit�j���܂܂�Ă����Ǝv���܂��B
+【編注1】WB10の「ブルースクリーンと仲良くなろうよ」という記事にもあるよう
+に、「Debugging Tools for Windows」というツールの中にDDK（Driver Develop
+ment Kit）が含まれていたと思います。
 http://www.microsoft.com/japan/whdc/devtools/debugging/default.mspx
 
 
-��0x03.) ���s
+■0x03.) 実行
 
-�@���ۃr���h���č쐬���ꂽhello.sys�t�@�C���ł����A���ꂢ�������ǂ������
-���s����̂ł��傤���H�@�Ƃ�������������.sys�t�@�C�����ĉ����낤�Ǝv����
-�����A����͎��ɂ�������܂���B�����h���C�o�͈�ʓI��.sys�t�@�C���݂���
-�ł��BWindowsXP�Ȃ�uC:\WINDOWS\system32\drivers�v�ȉ����݂��.sys�t�@�C
-�����������񂠂�̂��킩��܂��B
+　実際ビルドして作成されたhello.sysファイルですが、これいったいどうやって
+実行するのでしょうか？　というかそもそも.sysファイルって何だろうと思いま
+すが、それは私にも分かりません。ただドライバは一般的に.sysファイルみたい
+です。WindowsXPなら「C:\WINDOWS\system32\drivers」以下をみると.sysファイ
+ルがたくさんあるのがわかります。
 
-�@���āA�Ƃ肠�������s�������킯�ł����A�h���C�o�͒ʏ�Windows�N������Win
-dows�{�̂ɑg�ݍ��܂�܂��B�h���C�o�̒��ɂ�OS��boot���Ɏ��s�������̂�V
-�X�e�����������Ɏ��s�������̂ȂǁA���͂�OS�̈ꕔ�ƂȂ�悤�ȓ��������
-�̂�������O�Ƃ������A���������������K�v�ȃ\�t�g�E�F�A�����������h���C�o
-�𗘗p����킯�ł��B�Ȃ̂ŁA�ċN�������풃�ю��ɂȂ�܂��B������m�F����
-���߂ɂ�OS�̍ċN�������Ȃ���΂Ȃ�܂��񂵁A���s���������邽�߂ɂ���͂�
-OS�̍ċN�����K�v�ƂȂ�܂��B����ɒʏ�̃A�v���P�[�V�����f�o�b�K�͈Ӗ���
-�����܂���̂ŁAOllyDbg��VC++�ɂ��Ă���f�o�b�K�����Ӗ��ł��B�Ȃ̂Ńf�o
-�b�O���s���ۂ�SoftICE�Ȃǂ��g�����ƂɂȂ�悤�ł��B
+　さて、とりあえず実行したいわけですが、ドライバは通常Windows起動時にWin
+dows本体に組み込まれます。ドライバの中にはOSのboot時に実行されるものやシ
+ステム初期化時に実行されるものなど、もはやOSの一部となるような動作をする
+のが当たり前というか、そういう処理が必要なソフトウェアがそもそもドライバ
+を利用するわけです。なので、再起動が日常茶飯事になります。動作を確認する
+ためにはOSの再起動をしなければなりませんし、実行を解除するためにもやはり
+OSの再起動が必要となります。さらに通常のアプリケーションデバッガは意味を
+持ちませんので、OllyDbgやVC++についているデバッガも無意味です。なのでデバ
+ッグを行う際はSoftICEなどを使うことになるようです。
 
-�@�b������Ă����̂Ō��ɖ߂��܂��B�h���C�o�����s���邽�߂ɂ̓��W�X�g����
-�ύX����K�v������܂��B�����Ă��̌�ċN�����s�Ȃ�OS�ɑg�ݍ��݂܂��B�Ƃ�
-�����Ƃňȉ��̂悤�ȃt�@�C�����쐬���܂��B
+　話がずれてきたので元に戻します。ドライバを実行するためにはレジストリを
+変更する必要があります。そしてその後再起動を行ないOSに組み込みます。とい
+うことで以下のようなファイルを作成します。
 
 -----  hello.reg
 REGEDIT4
@@ -198,125 +198,125 @@ REGEDIT4
 "DisplayName"="hello"
 -----
 
-�@.reg�t�@�C���̓_�u���N���b�N����ƃ��W�X�g���Ƀf�[�^��ǉ����Ă���܂��B
-���Ȃ݂Ɍ�Ŏ蓮�ŏ����Ȃ���΂Ȃ�Ȃ��̂ŁA�uHKEY_LOCAL_MACHINE\System\
-CurrentControlSet\Services\hello�v�̈ʒu�͊o���Ă����Ă��������B
+　.regファイルはダブルクリックするとレジストリにデータを追加してくれます。
+ちなみに後で手動で消さなければならないので、「HKEY_LOCAL_MACHINE\System\
+CurrentControlSet\Services\hello」の位置は覚えておいてください。
 
-�@hello.reg�����W�X�g���ɒǉ����āA�����hello.sys�t�@�C�����uC:\WINDOWS\
-system32\drivers�v�ȉ��ɃR�s�[���܂��B����ŏ��������ł��BWindows���ċN��
-���Ă��������B
+　hello.regをレジストリに追加して、さらにhello.sysファイルを「C:\WINDOWS\
+system32\drivers」以下にコピーします。これで準備完了です。Windowsを再起動
+してください。
 
-�@Windows���N������Ƃ�����hello.sys�����s����Ă��܂��B�Ƃ����Ă�����
-�܂܂ł͊m�F�ł��Ȃ����߁A�f�o�C�X�h���C�o��\������c�[�����g�����Ƃɂ�
-�܂��B�������Ɠ������ł���uWinXP DDK�v���g���Ă���Ȃ�΁uDevice Tree
- V2.6�v�Ƃ����c�[�����uWinXP DDK�v�̒��ɓ����Ă��܂��̂ł�����N�����Ă�
-�������B
+　Windowsが起動するとちゃんとhello.sysが実行されています。といってもその
+ままでは確認できないため、デバイスドライバを表示するツールを使うことにし
+ます。もし私と同じ環境である「WinXP DDK」を使っているならば「Device Tree
+ V2.6」というツールが「WinXP DDK」の中に入っていますのでそれを起動してく
+ださい。
 
 http://ruffnex.oc.to/kenji/windriver/pic1.png
 
-�@����XP�ȊO��DDK���g���Ă���ꍇ�́A�uSysinternals�v�Ƃ����T�C�g����uW
-inObj�v�Ƃ����h���C�o�{���c�[����DL���Ă��������BWinObj���g����hello.sys
-�h���C�o���m�F�����L���v�`���[�摜���ȉ��ł��B
+　もしXP以外のDDKを使っている場合は、「Sysinternals」というサイトから「W
+inObj」というドライバ閲覧ツールをDLしてください。WinObjを使ってhello.sys
+ドライバを確認したキャプチャー画像が以下です。
 
 http://ruffnex.oc.to/kenji/windriver/pic2.png
 
-��Sysinternals
+○Sysinternals
 http://www.sysinternals.com/
 
-��WinObj
+○WinObj
 http://www.sysinternals.com/ntw2k/freeware/winobj.shtml
 
-�@����Ŗ����h���C�o���R���p�C�����s�ł��܂����B���āA���ێ��s���ꂽ�h��
-�C�o�ł����A��x���s���Ă��܂���OS�N�����͏I���ł��܂���B�����OS�ɑg��
-���܂�Ă����Ԃł��̂ŁA�I�������邽�߂ɂ͍Ăу��W�X�g����ύX���āAhe
-llo.sys�t�@�C�����폜���āA�ċN������K�v������܂��B�܂�f�o�C�X�h���C
-�o�́A�쐬��A���s�m�F�ƏI������2��̍ċN����K�v�Ƃ���킯�ł��B�ʏ�̃A
-�v���P�[�V�����v���O�����̂悤�ɁA.exe�t�@�C�����_�u���N���b�N���Ď��s���A
-[�~]�{�^���ŏI���Ƃ����悤�ɊȒP�ɂ͂����Ȃ��̂ł��B�Ȃ�Ƃ������h�N�T�C
-�ł����A���ꂪ�f�o�C�X�h���C�o�̊J���݂����ł��B
+　これで無事ドライバがコンパイル実行できました。さて、実際実行されたドラ
+イバですが、一度実行してしまうとOS起動中は終了できません。いわばOSに組み
+込まれている状態ですので、終了させるためには再びレジストリを変更して、he
+llo.sysファイルを削除して、再起動する必要があります。つまりデバイスドライ
+バは、作成後、実行確認と終了時の2回の再起動を必要とするわけです。通常のア
+プリケーションプログラムのように、.exeファイルをダブルクリックして実行し、
+[×]ボタンで終了というように簡単にはいかないのです。なんともメンドクサイ
+ですが、これがデバイスドライバの開発みたいです。
 
-�@�ł́A�t�@�C�������w�肵�Ď��s���regedit.exe���N�����āA���s���ɓo�^��
-�����W�X�g���uHKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\hello�v
-���폜���Ă��������B����ɁA�uC:\WINDOWS\system32\drivers�v�ȉ��ɃR�s�[��
-��hello.sys���폜���Ă��������B�����čċN�����Ă��������B
+　では、ファイル名を指定して実行よりregedit.exeを起動して、実行時に登録し
+たレジストリ「HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\hello」
+を削除してください。さらに、「C:\WINDOWS\system32\drivers」以下にコピーし
+たhello.sysも削除してください。そして再起動してください。
 
-�@�ċN����A�ĂсuDevice Tree V2.6�v���g���ăh���C�o���m�F���Ă��������B
-hello�͂����N�����Ă��܂���B����ŏI���ƂȂ�܂��B
+　再起動後、再び「Device Tree V2.6」を使ってドライバを確認してください。
+helloはもう起動していません。これで終了となります。
 
 
-��0x04.) �T�[�r�X����}�l�[�W���[
+■0x04.) サービス制御マネージャー
 
-�@�܂�A�h���C�o�J���̈�A�̗���͈ȉ��̂悤�ɂȂ�܂��B
+　つまり、ドライバ開発の一連の流れは以下のようになります。
 
-1�A�\�[�X�R�[�h������
-2�ASOURCES�t�@�C���AMAKEFILE�t�@�C�������ꂼ��쐬����
-3�A�\�[�X�R�[�h�̃r���h���s��
-4�A���W�X�g����ύX���A.sys�t�@�C����drivers�t�@�C���ɃR�s�[����
-5�A�ċN��
-6�A���s���m�F
-7�A���W�X�g����ύX���A.sys�t�@�C����drivers�t�@�C������폜����
-8�A�ċN��
-9�A�I�����m�F
+1、ソースコードを書く
+2、SOURCESファイル、MAKEFILEファイルをそれぞれ作成する
+3、ソースコードのビルドを行う
+4、レジストリを変更し、.sysファイルをdriversファイルにコピーする
+5、再起動
+6、実行を確認
+7、レジストリを変更し、.sysファイルをdriversファイルから削除する
+8、再起動
+9、終了を確認
 
-�@�����āA���s���ɃG���[�Ȃǂ���������������ēx�\�[�X��ҏW���ăr���h
-���A���s���m�F���Ȃ���΂Ȃ�Ȃ��̂ŁA�Ȍ�3����9���J��Ԃ����ƂɂȂ�܂��B
+　そして、実行時にエラーなどがあったらもちろん再度ソースを編集してビルド
+し、実行を確認しなければならないので、以後3から9を繰り返すことになります。
 
-�@���[��A���Ȃ胁���h�N�T�C�ł��B����2��̍ċN���͂������܂���B��x��
-�s���m�F���邾���ŁA2����ċN����v����̂͂������ɂ��C�ł܂���B�Ƃ���
-���ƂŁA��������Ƃ��ŊJ���悤�ƕM�ҁi�܂莄�j�͍l���܂����B�܂��f�o�C
-�X�h���C�o�ł��̂Łu��x���s���Ă��܂�����A�ċN���������I���ł��Ȃ��v
-�Ƃ����͕̂�����܂��B�ł����s���邭�炢�́A�{�^���ЂƂł�点�Ă�����
-���B
+　うーん、かなりメンドクサイです。特に2回の再起動はたえられません。一度実
+行を確認するだけで、2回も再起動を要するのはさすがにやる気でません。という
+ことで、これを何とか打開しようと筆者（つまり私）は考えました。まぁデバイ
+スドライバですので「一度実行してしまったら、再起動する限り終了できない」
+というのは分かります。でも実行するくらいは、ボタンひとつでやらせてくださ
+い。
 
-�@�����Ō����~���傪�u�T�[�r�X����}�l�[�W���[�v�ł��B����𗘗p����ƁA
-�Ȃ�ƃ{�^���ЂƂŃf�o�C�X�h���C�o���N������c�[��������炵���̂ł��B
-�Ƃ������ƂŎ��ۂɍ���Ă݂܂����B
+　ここで現れる救世主が「サービス制御マネージャー」です。これを利用すると、
+なんとボタンひとつでデバイスドライバが起動するツールが作れるらしいのです。
+ということで実際に作ってみました。
 
 http://ruffnex.oc.to/kenji/windriver/idriver.zip
 
-�@�\�[�X�R�[�h���Y�t���Ă܂��̂ŁA�������������炲�����������B�\�[�X�R�[
-�h�̉���͂��܂���̂ł��������������B�ł����x�̂��Ƃ��R�����g�͂�������
-���Ă܂��B
+　ソースコードも添付してますので、興味があったらご覧ください。ソースコー
+ドの解説はしませんのでご了承ください。でも毎度のごとくコメントはたくさん
+つけてます。
 
-�@�N������ƈȉ��̂悤�ɕ\������܂��B
+　起動すると以下のように表示されます。
 
 http://ruffnex.oc.to/kenji/windriver/install.png
 
-�@.sys�t�@�C����I�����āuInstall�v�{�^�����N���b�N�����Windows�Ƀh���C
-�o���C���X�g�[������܂��B�uDevice Tree V2.6�v�Ŋm�F���Ă��������B���Ȃ�
-�ɁA�C���X�g�[���͂����ɂł��܂����A�uUnInstall�v�{�^���������Ă����̏u��
-����A���C���X�g�[���͂���܂���B�����܂ōċN�����iWindows�I�����j�ɃA��
-�C���X�g�[�������s����܂��B���ƁA�A���C���X�g�[�����Ȃ���Ύ���OS�N����
-���h���C�o�����s����܂��B
+　.sysファイルを選択して「Install」ボタンをクリックするとWindowsにドライ
+バがインストールされます。「Device Tree V2.6」で確認してください。ちなみ
+に、インストールはすぐにできますが、「UnInstall」ボタンを押してもその瞬間
+からアンインストールはされません。あくまで再起動時（Windows終了時）にアン
+インストールが実行されます。あと、アンインストールしなければ次回OS起動時
+もドライバが実行されます。
 
 
-��0x05.) �f�o�b�O
+■0x05.) デバッグ
 
-�@SoftICE��p�ӂ��Ă��炦��Ζ��������Ȃ̂ł����A�������ɂ����������Ȃ���
-�Ńf�o�b�O���𐮂��邱�Ƃɂ��܂��B�Ƃ������A�f�o�C�X�h���C�o���āACUI�v
-���O�����̂悤�Ƀe�L�X�g��\������ꏊ���Ȃ���΁AWindows�iGUI�j�v���O��
-���̂悤�ɃE�B���h�E��`�悷��킯�ł��Ȃ��̂ŁA�ǂ��܂Ŏ��s����Ă����
-���A�ǂ��ɃG���[������̂����A�܂����������ĕ�����܂���B���������f�o�C
-�X�h���C�o�Ƃ������̂��ꎩ�̂�Windows�̓����ł�������Ɠ����Ă��郂�m�ł�
-��킯�ł��̂ŁA�f�o�b�O�Ƃ����ϓ_���猩����A�����~���悤������܂���B
-����āA�܂��͂������琮���Ă������Ƃɂ��܂��B
+　SoftICEを用意してもらえれば万事解決なのですが、さすがにそうもいかないの
+でデバッグ環境を整えることにします。というか、デバイスドライバって、CUIプ
+ログラムのようにテキストを表示する場所もなければ、Windows（GUI）プログラ
+ムのようにウィンドウを描画するわけでもないので、どこまで実行されているの
+か、どこにエラーがあるのかが、まったくもって分かりません。そもそもデバイ
+スドライバというものそれ自体がWindowsの内部でこっそりと動いているモノであ
+るわけですので、デバッグという観点から見たら、もう救いようがありません。
+よって、まずはそこから整えていくことにします。
 
-��Sysinternals
+○Sysinternals
 http://www.sysinternals.com/
 
-��DebugView
+○DebugView
 http://www.sysinternals.com/ntw2k/freeware/debugview.shtml
 
-�@�uSysinternals�v�Ƃ����T�C�g�ɁuDebugView�v�Ȃ�c�[��������܂��B�܂���
-�����DL���Ă��������B���݂̃o�[�W������4.3�ł��B����̓h���C�o�J���҂̒�
-�ł͂��Ȃ�L���ȃc�[���炵���A���\���낢��Ȑl�Ɏg���Ă���悤�ł��B��
-�āA���̃c�[���A���̖��̒ʂ�f�o�b�O�����o�͂��Ă���邾���Ȃ̂ł����A
-OutputDebugString����̃f�[�^�����łȂ��ADbgPrint����̃f�[�^���\�����Ă�
-���Ƃ��낪GOOD�ł��B�܂�J�[�l�����[�h����̃f�o�b�O�����\�����Ă�
-���킯�ł��B���Ȃ݂�DbgPrint�̓J�[�l�����[�h��OutputDebugString�݂�����
-���̂ŁAMSDN�ł͈ȉ��̂悤�ɒ�`����Ă��܂��B
+　「Sysinternals」というサイトに「DebugView」なるツールがあります。まずは
+これをDLしてください。現在のバージョンは4.3です。これはドライバ開発者の中
+ではかなり有名なツールらしく、結構いろいろな人に使われているようです。さ
+て、このツール、その名の通りデバッグ情報を出力してくれるだけなのですが、
+OutputDebugStringからのデータだけでなく、DbgPrintからのデータも表示してく
+れるところがGOODです。つまりカーネルモードからのデバッグ情報も表示してく
+れるわけです。ちなみにDbgPrintはカーネルモードのOutputDebugStringみたいな
+もので、MSDNでは以下のように定義されています。
 
-��DbgPrint - MSDN
+○DbgPrint - MSDN
 http://msdn.microsoft.com/library/default.asp?url=/library/en-us/ddtools/hh/ddtools/DebugFns_5e11bbcc-adc2-46c0-b371-0e54c50bb2dc.xml.asp
 
 -----
@@ -326,8 +326,8 @@ ULONG
     );
 -----
 
-�@�݂Ă킩��Ƃ���A�g������printf�Ɠ����ł��B�ł́A����𗘗p����hello.
-cpp�����ǂ��܂��B�ȉ��̃v���O�������݂Ă��������B
+　みてわかるとおり、使い方はprintfと同じです。では、これを利用してhello.
+cppを改良します。以下のプログラムをみてください。
 
 -----  Dhello.cpp
 #ifdef __cplusplus
@@ -361,68 +361,68 @@ TARGETPATH=obj
 SOURCES=Dhello.cpp
 -----
 
-�@�ȒP�ł��ˁBDbgPrint���ǉ����ꂽ�����ł��B�ł͂�����r���h���Ă��������B
-hello.sys�̎��͍ċN�����܂������A����́u�T�[�r�X����}�l�[�W���[�v�̍���
-�쐬�����c�[�����g���Ă��������B
+　簡単ですね。DbgPrintが追加されただけです。ではこれをビルドしてください。
+hello.sysの時は再起動しましたが、今回は「サービス制御マネージャー」の項で
+作成したツールを使ってください。
 
-�@�܂��́ADbgview.exe���N�����܂��B����͂��낢��Ɛݒ�ł���悤�ł����A
-���̏ꍇ��DL������ԁi�f�t�H���g�j�̂܂܂�OK�ł����̂ŁA�����ύX���Ȃ���
-�ԂŋN�����Ă��������B�N������ƈȉ��̂悤�ȃE�B���h�E���\������܂��B
+　まずは、Dbgview.exeを起動します。これはいろいろと設定できるようですが、
+私の場合はDLした状態（デフォルト）のままでOKでしたので、何も変更しない状
+態で起動してください。起動すると以下のようなウィンドウが表示されます。
 
 http://ruffnex.oc.to/kenji/windriver/dbview.png
 
-�@�����āA�N��������Ԃ̂܂܁A���x�́uDriver Install Program�v���g���āA
-Dhello.sys���C���X�g�[�����Ă��������B�����C���X�g�[��������������ADbgv
-iew.exe�̃E�B���h�E���J���Ă��������B�ȉ��̂悤�ɕ\������܂��B
+　そして、起動した状態のまま、今度は「Driver Install Program」を使って、
+Dhello.sysをインストールしてください。無事インストールが完了したら、Dbgv
+iew.exeのウィンドウを開いてください。以下のように表示されます。
 
 http://ruffnex.oc.to/kenji/windriver/dbview2.png
 
-�@����łƂ肠����DbgPrint���g���ăf�o�C�X�h���C�o����̏o�͂��󂯂���
-�悤�ɂȂ�܂����B�����Ƒ傫�ȃv���O�������쐬����̂Ȃ�SoftICE�̂悤�ȗL
-�p�ȃf�o�b�K��p���āA�{�i�I�ɏ�����ǂ��Ă����Ȃ���΂Ȃ�܂��񂪁A�l
-�ō��悤�ȏ����ȃv���O�����Ȃ�΁ADbgPrint��Dbgview.exe�ŏ\���ł��傤�B
-����́uDbgPrint�v�ƁuDbgview.exe�v�����āu�T�[�r�X����}�l�[�W���[�v��
-�p���č쐬�����uDriver Install Program�v���g���āA�f�o�C�X�h���C�o�쐬�u
-����i�߂Ă������Ƃɂ��܂��B
+　これでとりあえずDbgPrintを使ってデバイスドライバからの出力が受けられる
+ようになりました。もっと大きなプログラムを作成するのならSoftICEのような有
+用なデバッガを用いて、本格的に処理を追っていかなければなりませんが、個人
+で作るような小さなプログラムならば、DbgPrintとDbgview.exeで十分でしょう。
+今後は「DbgPrint」と「Dbgview.exe」そして「サービス制御マネージャー」を利
+用して作成した「Driver Install Program」を使って、デバイスドライバ作成講
+座を進めていくことにします。
 
-�@����̃T���v���v���O�����ł���uhello�v�ƁuDhello�v�́AZIP���k���Ĉȉ�
-�̃A�h���X�ɃA�b�v���܂����B�Q�l�ɂ��Ă��������B
+　今回のサンプルプログラムである「hello」と「Dhello」は、ZIP圧縮して以下
+のアドレスにアップしました。参考にしてください。
 
 http://ruffnex.oc.to/kenji/windriver/driver1.zip
 
 
-��0x06.) ��������
+■0x06.) さいごに
 
-�@���āA�������������ł��傤���B����́uWindows Device Driver Programmin
-g Part 1�v�Ƒ肵�Ă����肵�܂������A�uPart 2�v�����邩�ǂ����͒肩�ł͂�
-��܂���B�u�f�o�C�X�h���C�o�쐬�u����i�߂Ă������Ƃɂ��܂��v�ƌ����Ă�
-��ɂ��ւ�炸�i�΁j�B�Ƃ����̂��A����ȃ}�j�A�b�N�Ȃ��Ƃ������Ă�Ɓu�{
-���ɒN���ǂ�ł���Ȃ��̂ł́H�v�Ƃ����s�����悬�邩��ł��B�������Ƀ��`
-�x�[�V�������ۂĂ܂���(^^;�B�Ȃ̂ŁA���������ǎґw���ɓx�ɋ����l�^�͎���
-��HP�ł���������J���悤���Ȃ��ƍl���Ă��܂����A����Ȏ��Ԃ��Ȃ��ł����u
-�����������O�͂�������̐l�ɓǂ�ł��炦��悤�ȃ��m��������̂��H�v�Ƃ�
-����ƁA�����Ȃ��ł�(^^;�B�Ȃ̂ł��̂܂ܓ˂��i��ł������Ƃɂ��܂��i�΁j�B
-�����A���������f�o�h���֘A�̋L�����������̂ŁA�����MAC�t���[�����x���ł�
-�p�P�b�g�擾���@��A�J�[�l�����[�h�v���O������API�t�b�N���@�Ȃǂ��������
-��������ȂƎv���܂��B���āA�Ō�ɂȂ�܂������A�����܂œǂ�ł���Ė{��
-�ɂ��肪�Ƃ��������܂��B
+　さて、いかがだったでしょうか。今回は「Windows Device Driver Programmin
+g Part 1」と題してお送りしましたが、「Part 2」があるかどうかは定かではあ
+りません。「デバイスドライバ作成講座を進めていくことにします」と言ってい
+るにも関わらず（笑）。というのも、こんなマニアックなことを書いてると「本
+当に誰も読んでくれないのでは？」という不安がよぎるからです。さすがにモチ
+ベーションが保てません(^^;。なので、こういう読者層が極度に狭いネタは自分
+のHPでこっそり公開しようかなぁと考えていますが、そんな時間もないですし「
+そもそもお前はたくさんの人に読んでもらえるようなモノを書けるのか？」とい
+われると、書けないです(^^;。なのでこのまま突き進んでいくことにします（笑）。
+ただ、せっかくデバドラ関連の記事を書いたので、今後はMACフレームレベルでの
+パケット取得方法や、カーネルモードプログラムのAPIフック方法などを解説して
+いけたらなと思います。さて、最後になりましたが、ここまで読んでくれて本当
+にありがとうございます。
 
-�@�ł́A�܂�����܂�...
+　では、また会う日まで...
 
 
-��0x07.) �Q�l�T�C�g
+■0x07.) 参考サイト
 
-�EDriver Development Part 1: Introduction to Drivers
+・Driver Development Part 1: Introduction to Drivers
 http://www.codeproject.com/system/driverdev.asp
 
-�EDriver Development Part 2: Introduction to Implementing IOCTLs
+・Driver Development Part 2: Introduction to Implementing IOCTLs
 http://www.codeproject.com/system/driverdev2.asp
 
-�EDriver Development Part 3: Introduction to driver contexts
+・Driver Development Part 3: Introduction to driver contexts
 http://www.codeproject.com/win32/driverdev3.asp
 
-�EDriver Development Part 4: Introduction to device stacks
+・Driver Development Part 4: Introduction to device stacks
 http://www.codeproject.com/system/driverdev4asp.asp
 
-�EDriver Development Part 5: Introduction to the Transport Device Interface
+・Driver Development Part 5: Introduction to the Transport Device Interface
 http://www.codeproject.com/useritems/driverdev5asp.asp

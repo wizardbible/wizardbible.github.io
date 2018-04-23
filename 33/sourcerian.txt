@@ -1,78 +1,78 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- �恛��: UnhandledExceptionFilter()���g�����A���`�f�o�b�M���O��@ ---
+--- 第○章: UnhandledExceptionFilter()を使ったアンチデバッギング手法 ---
 
-���ҁFsourcerian
+著者：sourcerian
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@�O��u�A���`�f�o�b�M���O�̘b�͏I���ł��v�Ə����Ă����Ȃ��琫�������
-���܂��A���`�f�o�b�M���O�̘b�ł��B���܂��ŃC���|�[�g�֐��Ăяo���̉B����
-�s���Ă���̂œǂ�ł݂Ă��������B�O��͓���̃f�o�b�K���A�^�b�`����Ă�
-�Ȃ��Ɠ��삵�Ȃ��d�g�݂ł������A����̓f�o�b�K���A�^�b�`����Ă���Ɠ���
-���Ȃ��d�g�݂ƂȂ�܂��B
+　前回「アンチデバッギングの話は終わりです」と書いておきながら性懲りもな
+くまたアンチデバッギングの話です。おまけでインポート関数呼び出しの隠蔽も
+行っているので読んでみてください。前回は特定のデバッガがアタッチされてい
+ないと動作しない仕組みでしたが、今回はデバッガがアタッチされていると動作
+しない仕組みとなります。
 
 
-��0x02.) UnhandledExceptionFilter()API��SetUnhandledExceptionFilter()API
+■0x02.) UnhandledExceptionFilter()APIとSetUnhandledExceptionFilter()API
 
-�@����̃A���`�f�o�b�M���O��@�̍����ƂȂ�̂�UnhandledExceptionFilter()
-API��SetUnhandledExceptionFilter()API�ł��BUnhandledExceptionFilter()API
-�̓A�v���P�[�V�����G���[�_�C�A���O�{�b�N�X��\�����A�A�����C���h���s����
-�v���Z�X���I��������֐��ł��B��{�I�ɂ͍\������O�����̃t�B���^���̒���
-�g��API�ł����A�����I�ɌĂяo���܂ł��Ȃ��AC�����^�C����J�[�l����������
-�̗�O��ߑ�����UnhandledExceptionFilter()API���Ăяo���܂�(C�����^�C����
-�ꍇ�͈ꕔ��O���V�O�i���ɕϊ����܂�)�B�A�v���P�[�V�����G���[�_�C�A���O��
-�\�����������Ȃ����SetErrorMode()API���g�������ŏ\���ł����A�f�o�b�O���
-�̎��W��Ǝ��̃_�C�A���O�{�b�N�X��\�����������ꍇ��SetUnhandledExceptio
-nFilter()API���g���܂��B
+　今回のアンチデバッギング手法の根幹となるのがUnhandledExceptionFilter()
+APIとSetUnhandledExceptionFilter()APIです。UnhandledExceptionFilter()API
+はアプリケーションエラーダイアログボックスを表示し、アンワインドを行って
+プロセスを終了させる関数です。基本的には構造化例外処理のフィルタ式の中で
+使うAPIですが、明示的に呼び出すまでもなく、Cランタイムやカーネルが未処理
+の例外を捕捉してUnhandledExceptionFilter()APIを呼び出します(Cランタイムの
+場合は一部例外をシグナルに変換します)。アプリケーションエラーダイアログを
+表示させたくなければSetErrorMode()APIを使うだけで十分ですが、デバッグ情報
+の収集や独自のダイアログボックスを表示させたい場合はSetUnhandledExceptio
+nFilter()APIを使います。
 
 -----
-// �t�B���^�֐��̃|�C���^�^
+// フィルタ関数のポインタ型
 typedef LONG (WINAPI *PTOP_LEVEL_EXCEPTION_FILTER)(
     struct _EXCEPTION_POINTERS *ExceptionInfo
 );
 typedef PTOP_LEVEL_EXCEPTION_FILTER LPTOP_LEVEL_EXCEPTION_FILTER;
 
-// SetUnhandledExceptionFilter()�̐錾
+// SetUnhandledExceptionFilter()の宣言
 LPTOP_LEVEL_EXCEPTION_FILTER SetUnhandledExceptionFilter(
 	LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter
 );
 -----
 
-�@SetUnhandledExceptionFilter()API�Ńt�B���^�֐����Z�b�g�����UnhandledE
-xceptionFilter()�֐��̓Z�b�g���ꂽ�t�B���^�֐����Ăяo���A���̖߂�l�ɂ�
-���ē����ς��܂��B
+　SetUnhandledExceptionFilter()APIでフィルタ関数をセットするとUnhandledE
+xceptionFilter()関数はセットされたフィルタ関数を呼び出し、その戻り値によ
+って動作を変えます。
 
-�EEXCEPTION_EXECUTE_HANDLER
-�@�v���Z�X���I��������B
+・EXCEPTION_EXECUTE_HANDLER
+　プロセスを終了させる。
 
-�EEXCEPTION_CONTINUE_EXECUTION
-�@��O�����ꏊ�ɖ߂��ď����𑱍s������B
+・EXCEPTION_CONTINUE_EXECUTION
+　例外発生場所に戻って処理を続行させる。
 
-�EEXCEPTION_CONTINUE_SEARCH
-�@�{���̓���(�A�v���P�[�V�����G���[�_�C�A���O�̕\��)���s���B
+・EXCEPTION_CONTINUE_SEARCH
+　本来の動作(アプリケーションエラーダイアログの表示)を行う。
 
-�@���āA�������炪����̏d�v�ȂƂ���ł����AUnhandledExceptionFilter()AP
-I�́A�A�v���P�[�V�����f�o�b�K���A�^�b�`����Ă���ꍇ�ɃZ�b�g���ꂽ�t�B��
-�^�֐����Ăяo���Ȃ��Ƃ����d�l�Ƃ������o�O������܂��BWindows95�`Windows
-Vista�܂ň�т��Ă��邻�̓���̓o�O�Ƃ������d�l�Ƃ����v���܂��񂪁AKno
-wledge Base Q173652�ihttp://support.microsoft.com/kb/173652�j�ł́A�o�O��
-������Ă���̂Ńo�O�Ȃ�ł��傤�B�o�O���d�l���͂��Ă����A�f�o�b�O���Ƃ�
-���łȂ����ɓ��삪�Ⴄ���̂𗘗p����΃f�o�b�M���O�΍�ɂȂ�̂͊ԈႢ��
-��܂���B����͂��̓���̈Ⴂ�𗘗p���ăA���`�f�o�b�M���O���������܂��B
+　さて、ここからが今回の重要なところですが、UnhandledExceptionFilter()AP
+Iは、アプリケーションデバッガがアタッチされている場合にセットされたフィル
+タ関数を呼び出さないという仕様というかバグがあります。Windows95〜Windows
+Vistaまで一貫しているその動作はバグというより仕様としか思えませんが、Kno
+wledge Base Q173652（http://support.microsoft.com/kb/173652）では、バグと
+書かれているのでバグなんでしょう。バグか仕様かはさておき、デバッグ時とそ
+うでない時に動作が違うものを利用すればデバッギング対策になるのは間違いあ
+りません。今回はこの動作の違いを利用してアンチデバッギングを実装します。
 
 
-��0x03.) SetUnhandledExceptionFilter()API�̃T���v���R�[�h
+■0x03.) SetUnhandledExceptionFilter()APIのサンプルコード
 
-�@�A���`�f�o�b�M���O�̎����Ɏ��|����O��SetUnhandledExceptionFilter()A
-PI�̎g���������Ă݂܂��傤�B�ȉ��̓A�v���P�[�V�����G���[�_�C�A���O�̑��
-��Ƀ��b�Z�[�W�{�b�N�X�őf���C�������b�Z�[�W��\�����ďI������T���v����
-���B
+　アンチデバッギングの実装に取り掛かる前にSetUnhandledExceptionFilter()A
+PIの使い方を見てみましょう。以下はアプリケーションエラーダイアログの代わ
+りにメッセージボックスで素っ気無いメッセージを表示して終了するサンプルで
+す。
 
 -----
 LONG WINAPI MyUnhandledExceptionFilter(
@@ -81,54 +81,54 @@ LONG WINAPI MyUnhandledExceptionFilter(
 {
 	MessageBox(
 		NULL
-	,	"�s���ȏ������s�������ߋ����I������܂��B"
-	,	"�A�v���P�[�V�����G���["
+	,	"不正な処理を行ったため強制終了されます。"
+	,	"アプリケーションエラー"
 	,	MB_ICONEXCLAMATION
 	);
-	return EXCEPTION_EXECUTE_HANDLER;	// �v���Z�X���I��������
+	return EXCEPTION_EXECUTE_HANDLER;	// プロセスを終了させる
 }
 
 int main()
 {
-	// �t�B���^�֐����Z�b�g����
+	// フィルタ関数をセットする
 	SetUnhandledExceptionFilter(MyUnhandledExceptionFilter);
 
-	// �A�N�Z�X�o�C�I���[�V������O�������I
+	// アクセスバイオレーション例外が発生！
 	*(int*)0 = 0;
 
-	// �����I������邽�ߎ��s����Ȃ�
-	printf("�����I������邽�ߎ��s����Ȃ�\n");
+	// 強制終了されるため実行されない
+	printf("強制終了されるため実行されない\n");
 }
 -----
 
-�@�ꌩ�A�P���Ɍ�����R�[�h�ł����A���ʉ��ł��낢��Ɠ����Ă��܂��B������
-����͎��̂悤�ɂȂ�܂��B
+　一見、単純に見えるコードですが、水面下でいろいろと動いています。処理の
+流れは次のようになります。
 
-1�F�u*(int*)0 = 0;�v�ŃA�N�Z�X�o�C�I���[�V������O�������B
+1：「*(int*)0 = 0;」でアクセスバイオレーション例外が発生。
 
-2�FC�����^�C�����A�N�Z�X�o�C�I���[�V������O��ߑ�����SIGSEGV�V�O�i���ɕ�
-�����A�V�O�i���n���h�����Ăяo�����Ƃ��邪�A�V�O�i���n���h����SIG_DFL���Z
-�b�g����Ă��邽��UnhandledExceptionFilter()API���Ăяo���B
+2：Cランタイムがアクセスバイオレーション例外を捕捉してSIGSEGVシグナルに変
+換し、シグナルハンドラを呼び出そうとするが、シグナルハンドラにSIG_DFLがセ
+ットされているためUnhandledExceptionFilter()APIを呼び出す。
 
-3�FUnhandledExceptionFilter()API��SetUnhandledExceptionFilter()API�ɂ��
-�ăZ�b�g���ꂽMyUnhandledExceptionFilter()�֐����Ăяo���B
+3：UnhandledExceptionFilter()APIはSetUnhandledExceptionFilter()APIによっ
+てセットされたMyUnhandledExceptionFilter()関数を呼び出す。
 
-4�FMyUnhandledExceptionFilter()�֐��̓��b�Z�[�W�{�b�N�X��\�����āAEXCEP
-TION_EXECUTE_HANDLER��Ԃ��B
+4：MyUnhandledExceptionFilter()関数はメッセージボックスを表示して、EXCEP
+TION_EXECUTE_HANDLERを返す。
 
-5�FEXCEPTION_EXECUTE_HANDLER��߂��ꂽUnhandledExceptionFilter()API���v��
-�Z�X�������I������B
+5：EXCEPTION_EXECUTE_HANDLERを戻されたUnhandledExceptionFilter()APIがプロ
+セスを強制終了する。
 
-�@���ӂ��ׂ��_�̓X�e�b�v2���炢�ł��傤���B������O�ł����Asignal()�֐���
-��O�ɑΉ�����V�O�i���̃n���h�����Z�b�g���Ă���ꍇ�́A���̃V�O�i���n��
-�h�����Ă΂��UnhandledExceptionFilter()API�͌Ăяo����܂���Bsignal()��
-�����g���Ă���ꍇ�͎��O��UnhandledExceptionFilter()API���Ăяo������A�t
-�B���^�֐��ŕߑ���������O�ƃV�O�i���̑Ή��ɋC������Ȃǂ��Ă��������B
-�Ȃ��A��O�ƃV�O�i���̑Ή���C�����^�C���̃\�[�X��winxfltr.c�ɒ�`����Ă�
-�܂��B���̑Ή��\�͎Q�l���x�ɂ���winxfltr.c���m�F���Ă��������B
+　注意すべき点はステップ2ぐらいでしょうか。当たり前ですが、signal()関数で
+例外に対応するシグナルのハンドラをセットしてある場合は、そのシグナルハン
+ドラが呼ばれてUnhandledExceptionFilter()APIは呼び出されません。signal()関
+数を使っている場合は自前でUnhandledExceptionFilter()APIを呼び出したり、フ
+ィルタ関数で捕捉したい例外とシグナルの対応に気をつけるなどしてください。
+なお、例外とシグナルの対応はCランタイムのソースのwinxfltr.cに定義されてい
+ます。次の対応表は参考程度にしてwinxfltr.cを確認してください。
 
 -------------------------------------------
-��O                           | �V�O�i��
+例外                           | シグナル
 -------------------------------------------
 STATUS_ACCESS_VIOLATION	       | SIGSEGV
 STATUS_ILLEGAL_INSTRUCTION     | SIGILL
@@ -143,13 +143,13 @@ STATUS_FLOAT_UNDERFLOW         | SIGFPE
 -------------------------------------------
 
 
-��0x04.) �A���`�f�o�b�M���O�̎���
+■0x04.) アンチデバッギングの実装
 
-�@�O�u���������Ȃ��Ă��܂��܂������A���ۂɃA���`�f�o�b�M���O�̎����Ɏ��
-�|����܂��傤�B�b���ȒP�ɂ��邽�߂ɁA�f�o�b�K���A�^�b�`����Ă��Ȃ��ꍇ
-�Ƀ��b�Z�[�W�{�b�N�X��"Hello world"��\���������Ƃ��Đ������Ă����܂��B
-�@���̓f�o�b�K���A�^�b�`����Ă����EIP(���s���̃A�h���X)��NULL�ɂȂ��đ�
-�s�s�\�ȏ�ԂɊׂ�T���v���ł��B
+　前置きが長くなってしまいましたが、実際にアンチデバッギングの実装に取り
+掛かりましょう。話を簡単にするために、デバッガがアタッチされていない場合
+にメッセージボックスで"Hello world"を表示する例をとって説明していきます。
+　次はデバッガがアタッチされているとEIP(実行中のアドレス)がNULLになって続
+行不可能な状態に陥るサンプルです。
 
 -----
 LONG WINAPI MyUnhandledExceptionFilter(
@@ -178,18 +178,18 @@ int main()
 }
 -----
 
-�@main()�֐��ł�SetUnhandledExceptionFilter()API�Ńt�B���^�֐����Z�b�g��A
-s_pMessageBoxA�i���b�Z�[�W�{�b�N�X�̊֐��|�C���^�j���o�R����API�Ăяo����
-���悤�Ƃ��Ă��܂��B���R�As_pMessageBoxA�ɂ�NULL���Z�b�g����Ă���̂ł�
-�̌Ăяo���͎��s�A�h���X��0�Ԓn�iNULL�j�ɔ�΂��ăA�N�Z�X�o�C�I���[�V����
-��O�𔭐������錋�ʂɂȂ�܂��B�������炪�d�v�ȕ���_�ŁA�f�o�b�K���A�^
-�b�`����Ă��Ȃ���΃t�B���^�֐������̗�O���󂯎���Ď��s�A�h���X��Mess
-ageBoxA()API�̃A�h���X�ɔ�΂��܂����A�f�o�b�K���A�^�b�`����Ă���ꍇ��
-0�Ԓn�ɔ�񂾎��_�ő��s�s�\�ȏ�ԂɊׂ�܂��i�f�o�b�K��EIP��MessageBox
-A�̃A�h���X�ɕύX����Θb�͕ʂł����j�B
-�@�������A��L�̕��@�ł͂��Ƃ��Ƃ̃\�[�X�Ɏ��������K�v�������A�\�[�X
-�R�[�h�̉ǐ��������Ă��܂��܂��B������ւ�����Ƃ����Ă݂��̂����̃R�[
-�h�ł��B
+　main()関数ではSetUnhandledExceptionFilter()APIでフィルタ関数をセット後、
+s_pMessageBoxA（メッセージボックスの関数ポインタ）を経由してAPI呼び出しを
+しようとしています。当然、s_pMessageBoxAにはNULLがセットされているのでこ
+の呼び出しは実行アドレスを0番地（NULL）に飛ばしてアクセスバイオレーション
+例外を発生させる結果になります。ここからが重要な分岐点で、デバッガがアタ
+ッチされていなければフィルタ関数がその例外を受け取って実行アドレスをMess
+ageBoxA()APIのアドレスに飛ばしますが、デバッガがアタッチされている場合は
+0番地に飛んだ時点で続行不可能な状態に陥ります（デバッガがEIPをMessageBox
+Aのアドレスに変更すれば話は別ですが）。
+　しかし、上記の方法ではもともとのソースに手を加える必要がある上、ソース
+コードの可読性が落ちてしまいます。そこらへんを何とかしてみたのが次のコー
+ドです。
 
 -----
 #ifndef _DEBUG
@@ -248,7 +248,7 @@ int EntryPoint(void)
 	modUser  	  = LoadLibrary("user32.dll");
 	s_rgImport[2] = GetProcAddress(modUser,   "MessageBoxA");
 
-	// �t�B���^�֐��̃Z�b�g
+	// フィルタ関数のセット
 	SetUnhandledExceptionFilter(MyUnhandledExceptionFilter);
 
 	return mainCRTStartup();
@@ -262,34 +262,34 @@ int main()
 }
 -----
 
-�@���Ȃ�g���b�L�[�Ȃ��Ƃ����Ă��܂����A�������Ă��邩�킩��܂����H
-�@�܂��Amain()�֐����猩�Ă݂܂��傤�B���ʂ�MessageBox()API���Ăяo���Ă�
-�邾���ł����A����ł��f�o�b�K���A�^�b�`����Ă���Ɛ����������Ȃ��悤��
-�Ȃ��Ă��܂��B���R�A���̎d�g�݂�main()����ɂ���܂��Bmain()����������
-���������SetUnhandledExceptionFilter()API���Ăяo���Ă��镔����EntryP
-oint()�֐��Ɉڂ�܂����BEntryPoint()�֐��̓��X�g�̖`���ɂ���
+　かなりトリッキーなことをしていますが、何をしているかわかりますか？
+　まず、main()関数から見てみましょう。普通にMessageBox()APIを呼び出してい
+るだけですが、これでもデバッガがアタッチされていると正しく動かないように
+なっています。当然、その仕組みはmain()より上にあります。main()がすっきり
+した代わりにSetUnhandledExceptionFilter()APIを呼び出している部分はEntryP
+oint()関数に移りました。EntryPoint()関数はリストの冒頭にある
 
 -----
 #pragma comment(linker, "/ENTRY:EntryPoint")
 -----
 
-�Ƃ�������C�����^�C���X�^�[�g�A�b�v���[�`���ɑ����ăv���O�����G���g���|
-�C���g�ɂȂ�܂��B�{���Ȃ烊���J�ɂ���ăv���O�����G���g���|�C���g�ƂȂ�
-�v���O�����̃��[�h��ɌĂяo�����C�����^�C���X�^�[�g�A�b�v���[�`���́AE
-ntryPoint()�֐�����
+という文でCランタイムスタートアップルーチンに代わってプログラムエントリポ
+イントになります。本来ならリンカによってプログラムエントリポイントとなり
+プログラムのロード後に呼び出されるCランタイムスタートアップルーチンは、E
+ntryPoint()関数内の
 
 -----
 return mainCRTStartup();
 -----
 
-�Ƃ������Ŏ蓮�ŌĂяo����邱�ƂɂȂ�܂��BmainCRTStartup()��C�����^�C��
-�̏��������main()�֐����Ăяo��C�����^�C���X�^�[�g�A�b�v���[�`�����̂���
-�ł��BC�����^�C���X�^�[�g�A�b�v���[�`����main()�֐���WinMain()�֐��ɂ��
-�ă����N�����֐����قȂ�܂��̂ňȉ��̃��X�g���Q�l�Ɏ����̃v���O������
-�C�����Ă��������B
+という式で手動で呼び出されることになります。mainCRTStartup()はCランタイム
+の初期化後にmain()関数を呼び出すCランタイムスタートアップルーチンそのもの
+です。Cランタイムスタートアップルーチンはmain()関数やWinMain()関数によっ
+てリンクされる関数が異なりますので以下のリストを参考に自分のプログラムを
+修正してください。
 
 ---------------------------------------------------------------
-�A�v���P�[�V�����̊J�n�֐� | C�����^�C���X�^�[�g�A�b�v���[�`��
+アプリケーションの開始関数 | Cランタイムスタートアップルーチン
 ---------------------------------------------------------------
 main()                     | mainCRTStartup()
 wmain()	                   | wmainCRTStartup()
@@ -297,20 +297,20 @@ WinMain()                  | WinMainCRTStartup()
 wWinMain()                 | wWinMainCRTStartup()
 ---------------------------------------------------------------
 
-�@EntryPoint()�֐��̒�`�ɂ���āAC�����^�C���X�^�[�g�A�b�v���[�`�����Ă�
-�o�����O�Ƀt�B���^�֐��̃Z�b�g���s���Ă���A�Ƃ������ƂɂȂ�܂��BEntr
-yPoint()�֐��ł͑��ɂ�����̃R�A�Ƃ������鏈�������Ă��܂��BFARPROC�̔z��
-�ł���s_rgImport�̃C���f�b�N�X1��2��GetCommandLineA()API��MessageBoxA()A
-PI�̃A�h���X���i�[���Ă��܂��B���̃C���f�b�N�X�l�͏d�v�Ȃ̂Ŋo���Ă�����
-���������B
-�@���x�̓t�B���^�֐��ł���MyUnhandledExceptionFilter()�֐������Ă݂܂���
-���B���s�A�h���X���w�����W�X�^��Eip��1�`MAXIMPORTINDEX(2)�̊Ԃ̏ꍇ�́AE
-ip�̒l���C���f�b�N�X��s_rgImport����A�h���X�����o���āAEip�����̃A�h��
-�X�ɃZ�b�g����A�Ƃ������Ƃ����Ă��܂��B�܂�A�h���X1�Ԓn�܂���2�Ԓn��
-���ł��܂����ꍇ��GetCommandLineA()API�܂���MessageBoxA()API�̃A�h���X
-�ɔ�΂��A�Ƃ������Ƃ����Ă��܂��B
-�@�����āA�A�h���X1�Ԓn��2�Ԓn�ɔ�΂��d�g�݂�񋟂��Ă���̂��ȉ��̃R�[
-�h�ɂȂ�܂��B
+　EntryPoint()関数の定義によって、Cランタイムスタートアップルーチンが呼び
+出される前にフィルタ関数のセットを行っている、ということになります。Entr
+yPoint()関数では他にも今回のコアとも言える処理をしています。FARPROCの配列
+であるs_rgImportのインデックス1と2にGetCommandLineA()APIとMessageBoxA()A
+PIのアドレスを格納しています。このインデックス値は重要なので覚えておいて
+ください。
+　今度はフィルタ関数であるMyUnhandledExceptionFilter()関数を見てみましょ
+う。実行アドレスを指すレジスタのEipが1〜MAXIMPORTINDEX(2)の間の場合は、E
+ipの値をインデックスにs_rgImportからアドレスを取り出して、Eipをそのアドレ
+スにセットする、ということをしています。つまりアドレス1番地または2番地に
+飛んでしまった場合はGetCommandLineA()APIまたはMessageBoxA()APIのアドレス
+に飛ばす、ということをしています。
+　そして、アドレス1番地や2番地に飛ばす仕組みを提供しているのが以下のコー
+ドになります。
 
 -----
 __declspec(naked) LPCSTR WINAPI _imp__GetCommandLineA()
@@ -335,29 +335,29 @@ __declspec(naked) int WINAPI _imp__MessageBoxA(
 }	}
 -----
 
-�@__asm�u���b�N��0x02��3��0x00�̓W�����v������A�h���X�ŁA�t�B���^�֐�
-�̒��ł�s_rgImport�z��̃C���f�b�N�X�ɂȂ�l�ł��B���̒�`�����̂����Ȃ�
-�̂��𗝉�����ɂ̓C���|�[�g�֐����ǂ̂悤�Ƀ����N����邩�m��Ȃ��Ƃ���
-�Ȃ��ł��傤�B�ϐ�����֐������R���p�C�����烊���J�ɓn�����ۂ�__declsp
-ec�C���q��Ăяo���K��ɂ���Ė��O�ɃA���_�[�o�[(_)��A�b�g�}�[�N(@)����
-���܂��B
+　__asmブロックの0x02と3つの0x00はジャンプさせるアドレスで、フィルタ関数
+の中ではs_rgImport配列のインデックスになる値です。この定義が何故そうなる
+のかを理解するにはインポート関数がどのようにリンクされるか知らないといけ
+ないでしょう。変数名や関数名がコンパイラからリンカに渡される際に__declsp
+ec修飾子や呼び出し規約によって名前にアンダーバー(_)やアットマーク(@)がつ
+きます。
 
-�E__declspec(import)�C���q
-�@�Ăяo���K����D�悳��Đ擪��_imp__���t���܂��B
+・__declspec(import)修飾子
+　呼び出し規約より優先されて先頭に_imp__が付きます。
 
-�E__stdcall(WINAPI/CALLBACK)
-�@�擪�ɃA���_�[�X�R�A(_)���t���A�����ɃA�b�g�}�[�N (@) ���t���A���̌��
-�Ƀp�����[�^ ���X�g�̃o�C�g���������܂��B
+・__stdcall(WINAPI/CALLBACK)
+　先頭にアンダースコア(_)が付き、末尾にアットマーク (@) が付き、その後ろ
+にパラメータ リストのバイト数が続きます。
 
-�E__cdecl(����l�BC++�ł�extern "C")
-�@�擪�ɃA���_�[�X�R�A(_)���t���܂��B
+・__cdecl(既定値。C++ではextern "C")
+　先頭にアンダースコア(_)が付きます。
 
-�E__fastcall
-�@�擪�Ɩ����ɃA�b�g�}�[�N(@)���t���A���̌��Ƀp�����[�^���X�g�̃o�C�g��
-�������܂��B
+・__fastcall
+　先頭と末尾にアットマーク(@)が付き、その後ろにパラメータリストのバイト数
+が続きます。
 
-�@��L�𓥂܂���MessageBoxA()API���ǂ̂悤�Ȗ��O�Ń����J�ɓn����邩�l��
-�Ă݂܂��傤�B����WinUser.h�Ɋ܂܂��MessageBoxA()API�̐錾�ł��B
+　上記を踏まえてMessageBoxA()APIがどのような名前でリンカに渡されるか考え
+てみましょう。次はWinUser.hに含まれるMessageBoxA()APIの宣言です。
 
 -----
 WINUSERAPI
@@ -370,50 +370,50 @@ MessageBoxA(
     IN UINT uType);
 -----
 
-��WINUSERAPI�̓v���v���Z�b�T�ɂ��__declspec(import)�ɕϊ�����܂��B
-��WINAPI�̓v���v���Z�b�T�ɂ��__stdcall�ɕϊ�����܂��B
+※WINUSERAPIはプリプロセッサにより__declspec(import)に変換されます。
+※WINAPIはプリプロセッサにより__stdcallに変換されます。
 
-�@��L�̐錾��__declspec(import)��_imp__MessageBoxA�ƂȂ�A__stdcall�Ă�
-�o���K���16�o�C�g�̈����ɂ����__imp__MessageBoxA@16�ɂȂ�܂��B�������A
-����͊֐��̃v���g�^�C�v�錾�ł͂Ȃ��A�֐��|�C���^�̐錾�ł��邱�Ƃɒ���
-���Ă��������B�C���|�[�g�֐���IAT�i�C���|�[�g�A�h���X�e�[�u���j�Ɋ܂܂��
-�֐��A�h���X���Q�Ƃ��ČĂяo����邽�߁A�R���p�C����MessageBoxA()API�̌�
-�яo����__imp__MessageBoxA@16�֐��|�C���^���o�R�����֐��Ăяo���ɕϊ����A
-�u__imp__MessageBoxA@16�Ƃ����֐��|�C���^���ǂ����ɂ��锤������T���Ă���
-�����N���Ă��������v�ƃ����J�Ɏw������̂ł��B__imp__MessageBoxA@16��use
-r32.lib�C���|�[�g���C�u�����Ɋ܂܂�Ă��āA�����N����鎞��IAT�̃G���g��
-�̂ЂƂƂȂ�܂��B
-�@��قǂ�_imp__MessageBoxA()�֐��̒�`��__stdcall�Ăяo���K���16�o�C�g
-�̈����ɂ����MessageBoxA�̐錾�ƑS������__imp__MessageBoxA@16�Ƃ������O
-�Ń����J�ɓn����܂��i���͈����̐����������Ă���Ζ߂�l�̌^������̌^��
-���ł��悢�j�B�����ă����J�ɓn�����ƁAuser32.lib�C���|�[�g���C�u������
-�܂܂��__imp__MessageBoxA@16�����D�悵�ă����N����AMessageBoxA()API��
-�A�h���X���i�[�����֐��|�C���^�Ƃ��ė��p����邱�ƂɂȂ�܂��B
-�@�܂�A�����J�����܂��ăC���|�[�g�֐��̃A�h���X���`���Ă����ł��B
-���̌��ʁAmain()���ł�MessageBox()API�Ăяo���͖{���Ȃ�IAT�̃G���g�����o
-�R���čs����͂����A�܂������ʂ̊֐��|�C���^�i���̒l��0x00000002�j���o
-�R����悤�ɂȂ�AMessageBoxA()API�̌Ăяo���������͂��Ȃ̂ɃA�h���X2�Ԓn
-�ɔ��ł��܂��A�Ƃ������ƂɂȂ�܂��B
-�@�Ȃ��A�����J�����܂������Ƃɂ����MessageBoxA�p��IAT�G���g���͍����
-����B���̂��߃��[�h����0x00000002��MessageBoxA()API�̃A�h���X�ŏ㏑����
-���悤�Ȃ��Ƃ͂���܂��񂵁A���Y���Ƃ��ċt�A�Z���u�����ꂽ����MessageB
-oxA()API�̌Ăяo�����B�����邱�Ƃ��ł��܂��B
-�@�܂��A�����ō쐬�����\�[�X�݂̂Ȃ炸�ÓI���C�u�������g�p���Ă���C���|
-�[�g�֐��ɂ����̃g���b�N���g���܂��BGetCommandLineA()��C�����^�C���X�^�[
-�g�A�b�v���[�`�����g�p����API�̈�ł����A_imp__GetCommandLineA���`��
-�ă����J�����܂��Ă��܂��B
-�@����́A2��API�ɂ������̃g���b�N���g���Ă��Ȃ���Ɋ֐��|�C���^�̔z��
-�Ŗ{���̃A�h���X���擾���Ă��邽�߁A��������r�I�ȒP�ł��傤�B�p�t�H�[�}
-���X���]���ɂȂ�܂����A�֐��|�C���^�̔z��ł͂Ȃ��A�z�z���switch���Ŗ{
-���̃A�h���X�ɔ�΂��悤�ɂ�����ŁA�����Ƃ��������API�Ăяo���ɍ���̃g
-���b�N���g�����Ƃŉ������s���ɂ������邱�Ƃ��ł��܂��B�������AAPI�Ăяo��
-�̂��тɗ�O���������邱�̃R�[�h�̓p�t�H�[�}���X��傫���ቺ������_�ɒ�
-�ӂ��Ă��������BGetMessage()API�Ȃǃ��[�v�ɑg�ݍ��܂�ĕp�ɂɌĂяo�����
-�悤��API�ɂ��̃g���b�N���g���̂͂��E�߂��܂���B
-�@�܂��A��肷����IAT�G���g�����ЂƂ��Ȃ����s�\�t�@�C���ɂ��Ă��܂��ƁA
-Windows2000/2000Server�œ��삵�Ȃ��Ȃ��Ă��܂��i���[�h�Ɏ��s���Ă��܂��j
-�̂ŁA���ӂ��Ă��������B���Ȃ݂ɃC���|�[�g�֐��Ăяo�����B��������������
-�ꍇ�ɂ͓��������ňȉ��̂悤�Ȏ�@���g���܂��B
+　上記の宣言は__declspec(import)で_imp__MessageBoxAとなり、__stdcall呼び
+出し規約と16バイトの引数によって__imp__MessageBoxA@16になります。ただし、
+これは関数のプロトタイプ宣言ではなく、関数ポインタの宣言であることに注意
+してください。インポート関数はIAT（インポートアドレステーブル）に含まれる
+関数アドレスを参照して呼び出されるため、コンパイラはMessageBoxA()APIの呼
+び出しを__imp__MessageBoxA@16関数ポインタを経由した関数呼び出しに変換し、
+「__imp__MessageBoxA@16という関数ポインタがどこかにある筈だから探してきて
+リンクしてください」とリンカに指示するのです。__imp__MessageBoxA@16はuse
+r32.libインポートライブラリに含まれていて、リンクされる時にIATのエントリ
+のひとつとなります。
+　先ほどの_imp__MessageBoxA()関数の定義も__stdcall呼び出し規約と16バイト
+の引数によってMessageBoxAの宣言と全く同じ__imp__MessageBoxA@16という名前
+でリンカに渡されます（実は引数の数さえあっていれば戻り値の型や引数の型は
+何でもよい）。そしてリンカに渡されると、user32.libインポートライブラリに
+含まれる__imp__MessageBoxA@16よりも優先してリンクされ、MessageBoxA()APIの
+アドレスを格納した関数ポインタとして利用されることになります。
+　つまり、リンカをだましてインポート関数のアドレスを定義している訳です。
+その結果、main()内でのMessageBox()API呼び出しは本来ならIATのエントリを経
+由して行われるはずが、まったく別の関数ポインタ（その値は0x00000002）を経
+由するようになり、MessageBoxA()APIの呼び出しをしたはずなのにアドレス2番地
+に飛んでしまう、ということになります。
+　なお、リンカをだましたことによってMessageBoxA用のIATエントリは作られま
+せん。そのためロード時に0x00000002がMessageBoxA()APIのアドレスで上書きさ
+れるようなことはありませんし、副産物として逆アセンブルされた時にMessageB
+oxA()APIの呼び出しを隠蔽することができます。
+　また、自分で作成したソースのみならず静的ライブラリが使用しているインポ
+ート関数にもこのトリックが使えます。GetCommandLineA()はCランタイムスター
+トアップルーチンが使用するAPIの一つですが、_imp__GetCommandLineAを定義し
+てリンカをだましています。
+　今回は、2つのAPIにしかこのトリックを使っていない上に関数ポインタの配列
+で本来のアドレスを取得しているため、解除が比較的簡単でしょう。パフォーマ
+ンスが犠牲になりますが、関数ポインタの配列ではなく連想配列やswitch文で本
+来のアドレスに飛ばすようにした上で、もっとたくさんのAPI呼び出しに今回のト
+リックを使うことで解除を行いにくくすることができます。ただし、API呼び出し
+のたびに例外が発生するこのコードはパフォーマンスを大きく低下させる点に注
+意してください。GetMessage()APIなどループに組み込まれて頻繁に呼び出される
+ようなAPIにこのトリックを使うのはお薦めしません。
+　また、やりすぎてIATエントリがひとつもない実行可能ファイルにしてしまうと、
+Windows2000/2000Serverで動作しなくなってしまう（ロードに失敗してしまう）
+ので、注意してください。ちなみにインポート関数呼び出しを隠蔽したいだけの
+場合には同じ原理で以下のような手法が使えます。
 
 -----
 #ifndef _DEBUG
@@ -468,18 +468,18 @@ int main()
 }
 -----
 
-�@�������API�Ăяo���̂��тɗ�O����������킯�ł͂Ȃ��̂Ńp�t�H�[�}���X
-��ቺ�����邱�ƂȂ�API�Ăяo�����B���ł��܂��B���X����ȃ}�N���͎g���Ă�
-�܂����A�����͂���Ȃ��ł��傤�B
+　こちらはAPI呼び出しのたびに例外が発生するわけではないのでパフォーマンス
+を低下させることなくAPI呼び出しを隠蔽できます。少々特殊なマクロは使ってい
+ますが、説明はいらないでしょう。
 
 
-��0x05.) ��������
+■0x05.) さいごに
 
-�@�O��ƍ���ɋ��ʂ��Ă����邱�Ƃ́u�v���e�N�V�����̎d�g�݂��΂�Ă�����
-������v�Ƃ������Ƃł��B�v���O�����̉�͂�������h���ɂ́u�v���e�N�V��
-���̎d�g�݂��΂�ɂ����v���̂�u�v���e�N�V�����̎d�g�݂��΂�Ă���������
-��v�Ȃ��̂����̂��d�v�ł��B�v���e�N�V��������������ꍇ�́u�d�g�݂���
-��₷���������ȒP�Ȃ��́v�ɂȂ�Ȃ��悤�ɒ��ӂ��Ă��������B
+　前回と今回に共通していえることは「プロテクションの仕組みがばれても解除
+が困難」ということです。プログラムの解析や改ざんを防ぐには「プロテクショ
+ンの仕組みがばれにくい」ものや「プロテクションの仕組みがばれても解除が困
+難」なものを作るのが重要です。プロテクションを実装する場合は「仕組みがば
+れやすく解除が簡単なもの」にならないように注意してください。
 
 
 

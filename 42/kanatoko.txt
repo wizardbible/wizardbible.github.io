@@ -1,59 +1,59 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- �恛��: �}�j�A�b�NJava�v���O���~���O��8��: �` �f�o�b�M���OJava �` ---
+--- 第○章: マニアックJavaプログラミング第8回: 〜 デバッギングJava 〜 ---
 
-���ҁF����
+著者：金床
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@�߳���܁B�����Linux���ł�Java�f�o�b�O�ɂ��āA���ۂɂ��������}�j�A
-�b�N�ȃo�O���ނɉ���������Ȃ��B���̃o�O��Java��Sauce�R�[�h�ɐ���ł���A
-2�����납��7���܂ŕM�҂�Y�܂������Ă��������Ȃ��̂ł���B���̃o�O�͂���
-��ɂ��}�j�A�b�N�����ĕ��ʂ̐l�͑������邱�Ƃ��Ȃ����Ǝv�����A�f�o�b�O��
-�@���̂��̂͑��̃o�O�Ԃ����͂Ȃǂɂ����p���������̂ł���B
-
-
-��0x02.) SSL Main in the middle�Ŕ���
-
-�@�M�҂͈ȑO���AWizard Bible Vol.15�ŏЉ���悤��SSL��Man in the middle
-���s���v���L�V�T�[�o�[���������iDoorman@JUMPERZ.NET��Guardian@JUMPERZ.NET
-�Ȃǁj�J�����Ă���̂����A�ǂ���Linux����Java1.5��1.6�ł̂ݓ��삪������
-���̂ł���i1.4�n��ł͑��v�j�B��̓I�ɂ́A�e�X�g�ő�ʂ̒ʐM�𔭐�����
-�Ă���ƁAtoo many open files�Ƃ����G���[���o�n�߁A���������v���L�V�T�[
-�o�[�Ƃ��ē��삷�邱�Ƃ��ł��Ȃ��Ȃ��Ă��܂��A�Ƃ������̂��B
-
-�@too many open files�Ƃ����āu�����A�A�����c�v�Ǝv�����ǎ҂����邾�낤�B
-Linux�ł�1�̃v���Z�X���J�����Ƃ̂ł���t�@�C���f�B�X�N���v�^�iWindows��
-�̓n���h���ƌĂ΂��T�O�j�̍ő吔�����܂��Ă���A�f�t�H���g�ł�1024�Ȃ�
-�̒l���p������B���̒l�̓J�[�l���̃w�b�_�t�@�C���̏���������V�F���̃r
-���g�C���R�}���h�ł���ulimit�ȂǂŕύX���邱�Ƃ��ł���B
-
-�@���Ă��t�@�C���f�B�X�N���v�^�Ƃ��Ĉ����邽�߁A�l�b�g���[�N�T�[�o�[��
-���̃G���[�𔭐������Ă��܂��ꍇ�Ϳ��Ă��m�ۂł��Ȃ����߂Ɏ����㻰�޽����
-�~���Ă��܂����ƂɂȂ�A�ً}���Ԃƌ�����B�M�҂�����Ă����T�[�o�[�͂���
-�G���[�̂��߂ɂ��鎞�_�Ŏg�����ɂȂ�Ȃ��Ȃ��Ă��܂����߁A�u�����Ԉ����
-��������v�Ƃ����ڕW���B���ł��������Ă����B
+　ポウンニチワ。今回はLinux環境でのJavaデバッグについて、実際にあった超マニア
+ックなバグを題材に解説をおこなう。このバグはJavaのSauceコードに潜んでおり、
+2月ごろから7月まで筆者を悩ませ続けていた凶悪なものである。このバグはあま
+りにもマニアックすぎて普通の人は遭遇することもないかと思うが、デバッグ手
+法そのものは他のバグつぶしや解析などにも応用がきくものである。
 
 
-��0x03.) �t�@�C���f�B�X�N���v�^�𒲂ׂ�
+■0x02.) SSL Main in the middleで発生
 
-�@����Ȃ킯�Ńf�o�b�O���n�܂����B�܂��ŏ��Ɂu���܂��܁A�ꎞ�I�ɂ�������
-�̃t�@�C���f�B�X�N���v�^���g���Ă��邾���ł���v�Ƃ������Ȃ��]��������
-�����𗧂ĂĂ݂��B���̏ꍇ�A�ꎞ�I�Ɏg�p���Ă���t�@�C���f�B�X�N���v�^��
-������1024�𒴂��Ă��邾���Ƃ������ƂɂȂ�̂ŁA���̐��ɗ]�T���������Ă�
-��΂����B��̓I�ɂ�ulimit -n 100000�ȂǂƂ���΁A10�����̃t�@�C���f�B�X
-�N���v�^�������邱�ƂɂȂ�i���ɂ���Ă�ulimit�����łȂ�/etc/security/
-limits.conf�̐ݒ�ⶰ�ق̍�蒼�����K�v�ȃP�[�X������悤�Ȃ̂ŗv���Ӂj�B
-���������ʂ͎c�O�Ȃ���A�T�[�o�[�����ʂ܂ł̎��Ԃ����������邾���ł������B
+　筆者は以前より、Wizard Bible Vol.15で紹介したようなSSLのMan in the middle
+を行うプロキシサーバーをいくつか（Doorman@JUMPERZ.NETやGuardian@JUMPERZ.NET
+など）開発しているのだが、どうもLinux環境のJava1.5や1.6でのみ動作がおかし
+いのである（1.4系列では大丈夫）。具体的には、テストで大量の通信を発生させ
+ていると、too many open filesというエラーが出始め、それっきりプロキシサー
+バーとして動作することができなくなってしまう、というものだ。
 
-�@���̂��ߍ��x��lsof�R�}���h�ɂ���Ď��ۂɃv���Z�X���g�p���Ă���t�@�C��
-�f�B�X�N���v�^�̈ꗗ���o�͂��Ă݂邱�Ƃɂ����B����Ǝ��̂悤�Ȋ�ȍs��
-��ʂɁi1000�s���炢�j�o�͂��ꂽ�B
+　too many open filesときいて「ああ、アレか…」と思った読者もいるだろう。
+Linuxでは1つのプロセスが開くことのできるファイルディスクリプタ（Windowsで
+はハンドルと呼ばれる概念）の最大数が決まっており、デフォルトでは1024など
+の値が用いられる。この値はカーネルのヘッダファイルの書き換えやシェルのビ
+ルトインコマンドであるulimitなどで変更することができる。
+
+　ソケットもファイルディスクリプタとして扱われるため、ネットワークサーバーが
+このエラーを発生させてしまう場合はソケットが確保できないために事実上サービスが停
+止してしまうことになり、緊急事態と言える。筆者が作っていたサーバーはこの
+エラーのためにある時点で使い物にならなくなってしまうため、「長時間安定稼
+働させる」という目標が達成できず困っていた。
+
+
+■0x03.) ファイルディスクリプタを調べる
+
+　そんなわけでデバッグが始まった。まず最初に「たまたま、一時的にたくさん
+のファイルディスクリプタを使っているだけである」というかなり願望が入った
+仮説を立ててみた。この場合、一時的に使用しているファイルディスクリプタの
+総数が1024を超えているだけということになるので、この数に余裕を持たせてや
+ればいい。具体的にはulimit -n 100000などとすれば、10万ものファイルディス
+クリプタを扱えることになる（環境によってはulimitだけでなく/etc/security/
+limits.confの設定やカーネルの作り直しが必要なケースもあるようなので要注意）。
+しかし結果は残念ながら、サーバーが死ぬまでの時間が長くかかるだけであった。
+
+　そのため今度はlsofコマンドによって実際にプロセスが使用しているファイル
+ディスクリプタの一覧を出力してみることにした。すると次のような奇妙な行が
+大量に（1000行くらい）出力された。
 
 -----
 java    1919 root  884u  sock    0,5            10398 can't identify protocol
@@ -69,16 +69,16 @@ java    1919 root  894u  sock    0,5            10447 can't identify protocol
 java    1919 root  895u  sock    0,5            10448 can't identify protocol
 -----
 
-�@�Ȃ�Ƃ������������ŁA�u���[�N���Ă���̂́i�t�@�C���ł͂Ȃ��j���Ăł�
-��v�u���̿��Ă�ذ����Ă���v���x�̏�񂵂��ǂ݂Ƃ邱�Ƃ��ł��Ȃ��Bذ�
-���鿹�Ă̐��͈�肹���A�܂��N���サ�΂炭�͐���Ȃ̂����A����Ƃ�����ذ
-�����������ȂǁA�Ȃ��Ȃ�ذ��̋��������肵�Ă��Ȃ��B
+　なんとも激しく微妙で、「リークしているのは（ファイルではなく）ソケットであ
+る」「何個のソケットがリークしている」程度の情報しか読みとることができない。リーク
+するソケットの数は一定せず、また起動後しばらくは正常なのだが、あるときからリー
+クが発生するなど、なかなかリークの挙動が安定していない。
 
-�@�����łƂ肠���������̃R�[�h���ēx�������A���Čn�̃��\�[�X���[�N������
-���ǂ������X�܂Ō������Ă݂��B���������ʂ̓i�V�B�ŏI�I�ɂ��̃o�O��������
-����ɏ����ȃR�[�h�ɂ܂ŗ��Ƃ�����ł݂āA���̃��[�N�������̂����ł͂�
-���AJava���ł���Ƃ����m�M�������ƂɂȂ����B���̃o�O���Č��\�ȃ\�[�X
-�͈ȉ��̂悤�Ȃ��̂��B
+　そこでとりあえず自分のコードを再度見直し、ソケット系のリソースリークが無い
+かどうか隅々まで検討してみた。しかし結果はナシ。最終的にこのバグが発生す
+る非常に小さなコードにまで落とし込んでみて、このリークが自分のせいではな
+く、Java側であるという確信を持つことになった。このバグが再現可能なソース
+は以下のようなものだ。
 
 -----
 import java.net.*;
@@ -114,59 +114,59 @@ socket2.close();
 }
 -----
 
-�@SSLSocketFactory���g�����߁A�N�����ɂ�.keystore�t�@�C����p�ӂ���K�v��
-����B�N���͎��̂悤�ȃR�}���h�ōs���i�p�X���[�h�͉���changeit�Ƃ���j�B
+　SSLSocketFactoryを使うため、起動時には.keystoreファイルを用意する必要が
+ある。起動は次のようなコマンドで行う（パスワードは仮にchangeitとする）。
 
 -----
 java -Djavax.net.ssl.keyStore=.keystore -Djavax.net.ssl.keyStorePassword=changeit test1
 -----
 
-�@���̃o�O��ǂ������邽�߁A���̒i�K�܂łɔ��ɑ����̎��Ԃ��₵�Ă���
-�����B�����������̃R�[�h�̏C���ł͑Ή��ł��Ȃ������ł���B�������N������
-���o�O�̒��ł��A���Ȃ��������Ȃ��̂ɂȂ�\�������Ă����B
+　このバグを追いかけるため、この段階までに非常に多くの時間を費やしてしま
+った。しかも自分のコードの修正では対応できなさそうである。ここ数年遭遇し
+たバグの中でも、かなりやっかいなものになる予感がしていた。
 
 
-��0x04.) �V�X�e���R�[�����g���[�X����
+■0x04.) システムコールをトレースする
 
-�@�Č�����R�[�h���쐬���邱�Ƃ��ł����̂ŁA2008�N2������Sun(http://bugs
-.sun.com/)�ɕ񍐂��Ă݂��̂����A�܂�����艹�������Ȃ��B�ォ��킩������
-�Ƃ����A�ǂ���OpenJDK���̂��������ȂǂŁAJava�ɂ��Ẵo�O�񍐐悪http:
-//bugs.sun.com/���烁�[�����O���X�g����̂Ƃ���̐��Ɉڍs���Ă����悤�ł�
-��B�Ⴆ��SSL�֘A�̃��[�����O���X�g��http://mail.openjdk.java.net/mailman
-/listinfo/security-dev�ƂȂ�B
+　再現するコードを作成することができたので、2008年2月頃にSun(http://bugs
+.sun.com/)に報告してみたのだが、まるっきり音沙汰がない。後からわかったこ
+とだが、どうもOpenJDK化のごたごたなどで、Javaについてのバグ報告先がhttp:
+//bugs.sun.com/からメーリングリストを主体とする体制に移行していたようであ
+る。例えばSSL関連のメーリングリストはhttp://mail.openjdk.java.net/mailman
+/listinfo/security-devとなる。
 
-�@Sun����܂������������Ȃ����߂��̃o�O�ɂ��Ă͂��΂炭���u���Ă����̂�
-���A����Ƃ��ʂ̃l�^�iVMware�n�j�������������Ă���Ƃ��ɁAstrace�Ƃ�����
-�֗��ȃR�}���h��m���Ă��܂����B�����Linux��ŃV�X�e���R�[�������O�Ɏ��
-���Ƃ��ł���c�[���ŁACentOS�Ȃ��yum install strace�ŃC���X�R���邱�Ƃ�
-�ł���B�Ⴆ��ls�R�}���h�̓���𒲂ׂ�ɂ�
+　Sunからまったく反応がないためこのバグについてはしばらく放置していたのだ
+が、あるとき別のネタ（VMware系）をごそごそしているときに、straceという超
+便利なコマンドを知ってしまった。これはLinux上でシステムコールをログに取る
+ことができるツールで、CentOSならばyum install straceでインスコすることが
+できる。例えばlsコマンドの動作を調べるには
 
 -----
 strace ls
 -----
 
-�@�Ƃ��邾�����B�܂��Ԃ����Ⴏ�u���܂Œm��Ȃ������̂���شŽ�v���قŕK�{
-����ނł���strace�B�t�b�N�n�ɂ��Ă͓�������肵�Ă��Ă��Ȃ�ǂ��������B��
-�肠�������[�N���Ă���socket�֌W�̊֐��ł����Ă݂邩�A�Ƃ�������ł���
-test1�N���X�ɂ��Ă�strace���Ă݂邱�Ƃɂ����B
+　とするだけだ。まぁぶっちゃけ「今まで知らなかったのかよアリエナス」レベルで必須
+コマンドであるstrace。フック系にしては動作も安定していてかなり良い感じだ。と
+りあえずリークしているsocket関係の関数でも見てみるか、というつもりでこの
+test1クラスについてもstraceしてみることにした。
 
-�@Java�̃A�v���P�[�V�����̓f�t�H���g�Ń}���`�X���b�h�Ȃ̂Łi���Ƃ���gc��
-�s���X���b�h�Ȃǂ��Ɨ����Ă���j�Astrace�ł��ꂢ�Ƀ��O�����ɂ�-o�I�v�V
-������-ff�I�v�V������g�ݍ��킹��Ƃ��������ł���B
+　Javaのアプリケーションはデフォルトでマルチスレッドなので（たとえばgcを
+行うスレッドなどが独立している）、straceできれいにログを取るには-oオプシ
+ョンと-ffオプションを組み合わせるといい感じである。
 
 -----
 strace -o log -ff java -Djavax.net.ssl.keyStore=.keystore -Djavax.net.ssl.keyStorePassword=changeit test1
 -----
 
-�@���̂悤�ɂ���ƁA���ꂼ��̃X���b�h�ɂ��āuPID.log�v�Ƃ����������̃�
-�O�t�@�C�������������B
+　このようにすると、それぞれのスレッドについて「PID.log」といった感じのロ
+グファイルが生成される。
 
 
-��0x05.) ���₵���ӏ�ʯ��
+■0x05.) あやしい箇所ハッケソ
 
-�@�����������ꂽ�ڰ�۸�̧�ق�grep -li socket���Ă݂�ƁA2��̧�ق������q
-�b�g����B�Е���Java�A�v���P�[�V�����̃��C���̃X���b�h�ŁA�Е��͂��܂���
-�悭�킩��Ȃ����̂��B�����Č�҂̃t�@�C���ɔ��ɂ��₵���ӏ��𔭌������B
+　複数生成されたトレースログファイルをgrep -li socketしてみると、2つのファイルだけがヒ
+ットする。片方はJavaアプリケーションのメインのスレッドで、片方はいまいち
+よくわからないものだ。そして後者のファイルに非常にあやしい箇所を発見した。
 
 -----
 13:43:13.511753 socket(PF_INET, SOCK_STREAM, IPPROTO_IP) = 15
@@ -187,35 +187,35 @@ strace -o log -ff java -Djavax.net.ssl.keyStore=.keystore -Djavax.net.ssl.keySto
 13:43:13.512853 rt_sigreturn(0x2aaaab551544)
 -----
 
-�@���̂悤�ȃ��O�����񂦂�Ƒ����Ă���̂��B�uSegmentation fault�v���Ă�
-�������ˁH�ς���ˁH�Ƃ��������ł���B�����Č���I�Ȃ��ƂɁA����Segmenta
-tion fault�̐����Alsof�Œ��ׂ邱�Ƃ��ł���A�u���[�N���Ă��鿹�Ă̐��v��
-��v�����̂ł���B���������邼(`�D�L)�m��ק!!!
+　このようなログがえんえんと続いているのだ。「Segmentation fault」ってお
+かしくね？変じゃね？という感じである。そして決定的なことに、このSegmenta
+tion faultの数が、lsofで調べることができる、「リークしているソケットの数」と
+一致したのである。怪しすぎるぞ(`Д´)ノゴラァ!!!
 
-�@������Segmentation fault���N�����Ă���̂���۾��������Ȃ��Ƃ����̂��s�v
-�c�ł���B�V�O�i�����g���b�v���Ă���̂��낤���B���̃t�@�C����2�s�ڂɂ���
+　しかしSegmentation faultが起こっているのにプロセスが落ちないというのが不思
+議である。シグナルをトラップしているのだろうか。このファイルの2行目にある
 
 -----
 13:43:12.655353 rt_sigprocmask(SIG_UNBLOCK, [ILL BUS FPE SEGV USR2], NULL, 8) = 0
 -----
 
-�@�Ƃ����s���җ�Ɋ֌W���肻�������悭�킩��Ȃ��i�N�������Ă��������j�B
+　という行が猛烈に関係ありそうだがよくわからない（誰か教えてくだちい）。
 
 
-��0x06.) Null��ʯ��
+■0x06.) Nullポハッケソ
 
-�@���ē��삵�����Ă���A�v���P�[�V����������Segmentation fault����������
-����Ƃ����ُ펖�ԂȂ̂ŁA���߂�Java�A�v���f�o�b�O�̊�{�ɕԂ�A-Xrunhpr
-of�I�v�V�����Ŋ֐��̃g���[�X�����Ă݂邱�Ƃɂ����B�ŋߒm�������Ƃ����A-X
-runhprof�I�v�V�������g���ꍇ�ɂ͎��̂悤��depth�I�v�V�������w�肷��Ɣ��
-�ɕ֗��ł���B
+　さて動作し続けているアプリケーション内部でSegmentation faultが発生して
+いるという異常事態なので、改めてJavaアプリデバッグの基本に返り、-Xrunhpr
+ofオプションで関数のトレースを見てみることにした。最近知ったことだが、-X
+runhprofオプションを使う場合には次のようにdepthオプションを指定すると非常
+に便利である。
 
 -----
 java -Xrunhprof:thread=y,depth=50 test
 -----
 
-�@depth�̐��́u���K�w�܂Ńg���[�X���邩�v�����߂�B�Ⴆ��depth=3�ɂ���ƁA
-�_���v�����o�͎͂��̂悤�ɒZ�����̂ɂȂ�B
+　depthの数は「何階層までトレースするか」を決める。例えばdepth=3にすると、
+ダンプされる出力は次のように短いものになる。
 
 -----
 TRACE 300013: (thread=200001)
@@ -232,7 +232,7 @@ TRACE 300015: (thread=200001)
         java.nio.HeapCharBuffer.<init>(HeapCharBuffer.java:52)
 -----
 
-�@�����傫�Ȑ��i�Ⴆ��50�j�ɂ���Ǝ��̂悤�ɂȂ�B
+　これを大きな数（例えば50）にすると次のようになる。
 
 -----
 TRACE 300014: (thread=200001)
@@ -261,14 +261,14 @@ TRACE 300016: (thread=200001)
         java.lang.String.<init>(String.java:516)
 -----
 
-�@50�Ƃ����̂́u�ő��50�K�w�v�Ƃ����Ӗ��Ȃ̂ŁA���̂悤�ɕ��ʂ̃g���[�X
-�͂��ׂďo�͂���邱�ƂɂȂ�B�֐��̌Ăяo�������ɐ[���A�v���P�[�V����
-�̏ꍇ�Ȃǂɂ�100��200�Ȃǂ̐��l���w�肷��΂悢�Bdepth�̃f�t�H���g�l��4
-�ł��邪�A����͏���������C������B
+　50というのは「最大で50階層」という意味なので、このように普通のトレース
+はすべて出力されることになる。関数の呼び出しが非常に深いアプリケーション
+の場合などには100や200などの数値を指定すればよい。depthのデフォルト値は4
+であるが、これは小さすぎる気がする。
 
-�@���Ă��̂悤�ɂ��čēxtest1��Java�ڰ������A�����Segmentation fault��
-�N�����Ă���Ƃ̂��Ƃŗ�O�iException�j��ܰ�ނɌ������Ă����Ƃ���A����
-�ڰ����������B
+　さてこのようにして再度test1のJavaトレースを取り、さらにSegmentation faultが
+起こっているとのことで例外（Exception）をキーワードに検索していたところ、次の
+トレースを見つけた。
 
 -----
 TRACE 307528: (thread=200004)
@@ -291,34 +291,34 @@ TRACE 307528: (thread=200004)
         java.lang.ref.Finalizer$FinalizerThread.run(Finalizer.java:178)
 -----
 
-�@�Ȃ��Null�߂��A������SSLSocket�̓����Ŕ������Ă���ł͂Ȃ����B�܂��A�
-ڰ���į�߂������Finalizer�Ƃ�����ܰ�ނ�����A���ꂪGC�X���b�h�ɂ���Ĉ�
-���N������Ă��邱�Ƃ��킩��Bstrace�ɂ����Segmentation fault����������
-�Ă����X���b�h�́A���C���X���b�h�ł͂Ȃ�GC�X���b�h�������̂ł���B
+　なんとNullポが、しかもSSLSocketの内部で発生しているではないか。また、ト
+レースのトップを見るとFinalizerというキーワードがあり、これがGCスレッドによって引
+き起こされていることがわかる。straceによってSegmentation faultが発見され
+ていたスレッドは、メインスレッドではなくGCスレッドだったのである。
 
-�@̧���ި����������邽�߂̺��ނ̓r����NULL�߂��������Ă��邽�߁Aذ���
-��������B�����GC�گ�ނƂ����̂͏����̓r���ŗ�O���������Ă���������Ƃ�
-���d�l�Ȃ̂ŁA���ع���݂͓���𑱂��Ă��܂��B
+　ファイルディスクリプタを閉じるためのコードの途中でNULLポが発生しているため、リークが
+発生する。一方でGCスレッドというのは処理の途中で例外が発生しても無視するとい
+う仕様なので、アプリケーションは動作を続けてしまう。
 
-�@GC�����������邩�͂��̎��X�ňقȂ邽�߁A���[�N����������^�C�~���O��
-�ǂ����肵�Ă��Ȃ��������Ƃɂ��[�����������B
+　GCがいつ発生するかはその時々で異なるため、リークが発生するタイミングな
+どが安定していなかったことにも納得がいった。
 
 
-��0x07.) Java�̿�����ނ�ǂ�
+■0x07.) Javaのソースコードを読む
 
-�@���ĉ������ӏ��iOutputRecord.java��314�s�ڂ�����j���킩�����̂ŁA����
-��ނ�ǂ�ł݂邱�Ƃɂ���B�M�҂��ȑO�޳�۰�ނ���Java�̿���ɂ͗A�o������
-�֌W���炩SSL�܂��̸׽���܂܂�Ă��Ȃ������̂����A����OpenJDK�̻�Ă���
-�޳�۰�ނł��鿰��ɂ�SSL�܂��̸׽�����ׂĊ܂܂�Ă���i�f���炵���I�j�B
+　さて怪しい箇所（OutputRecord.javaの314行目あたり）がわかったので、ソースコ
+ードを読んでみることにする。筆者が以前ダウンロードしたJavaのソースには輸出制限の
+関係からかSSLまわりのクラスが含まれていなかったのだが、現在OpenJDKのサイトから
+ダウンロードできるソースにはSSLまわりのクラスもすべて含まれている（素晴らしい！）。
 
-�@�M�҂Ϳ�����ނ�ǂނƂ���printf�f�o�b�O���Ȃ���łȂ��Ɠǂ߂Ȃ��l�ł���
-�̂ŁA���łɏ����撣����OpenJDK���r���h������𐮂��Ă݂��BCentOS5��
-�������̃��C�u�������C���X�g�[�����A�܂�OpenJDK�̃h�L�������g�ɂ���悤
-�ɂ������̊��ϐ��Ȃǂ�ݒ肷�邱�ƂŁA�茳��Linux���JDK���r���h�ł�
-��悤�ɂȂ�B�M�҂͂��̂悤�ȃC���X�g�[����Ƃ����Ȃ̂����A����͉^��
-�������قǂŖ����Ƀr���h���𐮂��邱�Ƃ��ł����B
+　筆者はソースコードを読むときにprintfデバッグしながらでないと読めない人である
+ので、ついでに少し頑張ってOpenJDKをビルドする環境を整えてみた。CentOS5に
+いくつかのライブラリをインストールし、またOpenJDKのドキュメントにあるよう
+にいくつかの環境変数などを設定することで、手元のLinux上でJDKがビルドでき
+るようになる。筆者はこのようなインストール作業が苦手なのだが、今回は運良
+く半日ほどで無事にビルド環境を整えることができた。
 
-�@Null�߂��������Ă���ӏ��́A�ȉ��̺��ނ������B
+　Nullポが発生している箇所は、以下のコードだった。
 
 -----
     void writeBuffer(OutputStream s, byte [] buf, int off, int len)
@@ -327,8 +327,8 @@ TRACE 307528: (thread=200004)
         s.flush();
 -----
 
-�@s��NULL�̏�Ԃł��̊֐��iwriteBuffer�j���Ăяo����Ă���̂ł���B����
-�ŁA�M�҂͎��̂悤���߯����쐬�����B
+　sがNULLの状態でこの関数（writeBuffer）が呼び出されているのである。そこ
+で、筆者は次のようなパッチを作成した。
 
 -----
 *** src/share/classes/sun/security/ssl/OutputRecord_orig.java   2008-07-09 01:54:02.000000000 +0900
@@ -344,62 +344,62 @@ TRACE 307528: (thread=200004)
           s.flush();
 -----
 
-�@�us��NULL��������return����v�Ƃ����A�܂��ɕt���Ă��n�B���߰ʶ����^���A
-�߯������߯��ł���B�ǂ����s���Ă��鏈����GC�̒��ł̿��Ă̸۰�ޏ����Ȃ̂ŁA
-���������K���ł������񂶂�ˁH�Ƃ����̂ƁA�Ƃɂ���ذ����Ȃ��悤�ɂ�������
-���̂ł��̂悤���߯����쐬�����B
-�@������m�F���Ă݂��Ƃ���A����ذ������܂��Ă���B�Ђǂ��޸ނ������̂ŁA
-�����߯��ɂ����ذ������܂邱�Ƃ��m�F�����ۂͶޯ��߰�ނ���яo�����B
+　「sがNULLだったらreturnする」という、まさに付け焼き刃。スーパーハカーも真っ青、
+パッチ中のパッチである。どうせ行っている処理はGCの中でのソケットのクローズ処理なので、
+けっこう適当でもいいんじゃね？というのと、とにかくリークしないようにしたかっ
+たのでこのようなパッチを作成した。
+　動作を確認してみたところ、無事リークが収まっている。ひどいバグだったので、
+このパッチによってリークが収まることを確認した際はガッツポーズが飛び出した。
 
 
-��0x08.) ��������
+■0x08.) 原因究明
 
-�@���Ă��́u�߯���������ׂ��v�Ƃ����߯������[�����OؽĂɓ��e�����Ƃ���A
-��͂���҂�����H������B�Ȃ�NULL�ɂȂ�̂��������ׂ����A�Ƃ������Ƃł���B
-���_�����ĸީ�̉����o�܂���B�Ƃ������ƂŁASSL�̏����͂�₱�������Ȃ̂�
-���Ԃ�킩��Ȃ����낤�ȁA�Ǝv���¿��������Ɍ��Ă������Ƃɂ����B
+　さてこの「パッチかくあるべし」というパッチをメーリングリストに投稿したところ、
+やはりダメだしを食らった。なぜNULLになるのかチェックすべきだ、ということである。
+正論すぎてグゥの音も出ません。ということで、SSLの処理はややこしそうなので
+たぶんわからないだろうな、と思いつつソースをさらに見ていくことにした。
 
-�@�ڰ���ǂ��Ă݂�ƁAwriteBuffer��NULL�ɂȂ��Ă���OutputStream��s��SSLS
-ocketImpl��sockOutput�ł��邱�Ƃ��킩��B��肪�N����ӏ��̂ЂƂł���S
-SLSocketImpl�׽��closeInternal��print���𖄂ߍ��݁AsockOutput���o�͂�����
-�݂�ƁA��͂�NULL�ƂȂ��Ă���BSSLSocketImpl�׽�ɂ͔��ɏd�v�ȓ����iSS
-L�̏�Ԃ̊Ǘ��j���s���Ǝv����connectionState�Ƃ����ϐ������݂��邽�߁A
-���̕ϐ��������ɒǂ��Ă݂��B���ߍ���print���͎��̂悤�Ȃ��̂��B
+　トレースを追ってみると、writeBufferでNULLになっているOutputStreamのsはSSLS
+ocketImplのsockOutputであることがわかる。問題が起こる箇所のひとつであるS
+SLSocketImplクラスのcloseInternalにprint文を埋め込み、sockOutputを出力させて
+みると、やはりNULLとなっている。SSLSocketImplクラスには非常に重要な働き（SS
+Lの状態の管理）を行うと思われるconnectionStateという変数が存在するため、
+この変数も同時に追ってみた。埋め込んだprint文は次のようなものだ。
 
 -----
 System.out.println( this + " " + connectionState + " " + sockOutput + " " + isConnected() + " " + isClosed() );
 -----
 
-�@connectionState�Ͳݽ�ݽ���쐬���ꂽ�Ƃ��ɂ�cs_START�i�l��0�j�Ȃ̂����A
-ذ����N�������_�ł�cs_HANDSHAKE�i�l��1�j�ɂȂ��Ă��邱�Ƃ��킩�����B����
-��connectionState�����������Ă���ӏ���T���Ă݂�ƁAinitHandshaker�Ƃ���
-�֐��̒��Ɏ��̂悤�ȉӏ��𔭌������B
+　connectionStateはインスタンスが作成されたときにはcs_START（値は0）なのだが、
+リークを起こす時点ではcs_HANDSHAKE（値は1）になっていることがわかった。そこ
+でconnectionStateを書き換えている箇所を探してみると、initHandshakerという
+関数の中に次のような箇所を発見した。
 
 -----
         if (connectionState == cs_START) {
             connectionState = cs_HANDSHAKE;
 -----
 
-�@�����ł����initHandshaker�ɂ������悤��print�����d����ł݂�ƁAsockO
-utput��NULL�̏ꍇ�Ƃ����łȂ��ꍇ�����邱�Ƃ��킩�����B�����Œm�肽���̂�
-sockOutput��NULL�̏ꍇ��initHandshaker���ǂ�����Ăяo����Ă���̂��H��
-�������Ƃł���B�P����print���̖��ߍ��݂ł́A���ނ��ǂ�����Ăяo����Ă�
-��̂��͂킩��Ȃ��B�����ŁA��O�̽����ڰ����g�����Ƃɂ����B
+　そこでさらにinitHandshakerにも同じようなprint文を仕込んでみると、sockO
+utputがNULLの場合とそうでない場合があることがわかった。ここで知りたいのは
+sockOutputがNULLの場合にinitHandshakerがどこから呼び出されているのか？と
+いうことである。単純なprint文の埋め込みでは、コードがどこから呼び出されてい
+るのかはわからない。そこで、例外のスタックトレースを使うことにした。
 
 -----
     ( new Exception() ).printStackTrace();
         System.out.println( this + ">>> " + getConnectionState() + " " + sockOutput + " " + isConnected() + " " + isClosed() );
 -----
 
-�@���̂悤�Ⱥ��ނ𖄂ߍ��ނƁA��O���������A�����ɽ����ڰ����װ�o�͂ɓf��
-�o�����B���̂��ߺ��ނ�������ʂ邽�тɁu�ǂ̊֐�����Ăяo����Ă����
-���v�����ׂĂ��ǂ邱�Ƃ��ł��A�������֗��ł���Bprintf���ޯ�ް��Java����
-����ۂɂ͕K�{�̃e�N�j�b�N�ƌ����邾�낤�B
+　このようなコードを埋め込むと、例外が発生し、同時にスタックトレースがエラー出力に吐き
+出される。このためコードがここを通るたびに「どの関数から呼び出されているの
+か」をすべてたどることができ、激しく便利である。printfデバッガーがJavaをい
+じる際には必須のテクニックと言えるだろう。
 
-�@����stackTrace�f�o�b�O�ɂ��A�����Ɍ������𖾂��ꂽ�B�Ȃ��SSLSocketI
-mpl��SSLServerSocketImpl����ςȕ��ɌĂяo����Ă���A���̂Ƃ�sockOutput
-�́i�C���X�^���X�̎����́j�ŏ�����Ō�܂�NULL�̂܂܂Ȃ̂ł���B�Ăяo��
-��Ă���ӏ��͈ȉ��̂Ƃ��肾�B
+　このstackTraceデバッグにより、無事に原因が解明された。なんとSSLSocketI
+mplはSSLServerSocketImplから変な風に呼び出されており、このときsockOutput
+は（インスタンスの寿命の）最初から最後までNULLのままなのである。呼び出さ
+れている箇所は以下のとおりだ。
 
 -----
             SSLSocketImpl tmp = new SSLSocketImpl(sslContext, useServerMode,
@@ -409,35 +409,35 @@ mpl��SSLServerSocketImpl����ςȕ��ɌĂяo����Ă���A���̂Ƃ�sockOutput
             ServerHandshaker handshaker = tmp.getServerHandshaker();
 -----
 
-�@����tmp�ݽ�ݽ��ServerHandshaker�N���X�̃C���X�^���X�𓾂邽�߂����ɗ��p
-����Ă���A���ۂ�SSL�ʐM���s��Ȃ��B�ŏ�����Ō�܂�sockOutput��NULL�ł�
-��ɂ�������炸�AGC�̍ۂɌĂяo�����close�̒��ɂ�����sockOutput�𗘗p��
-�悤�Ƃ��Ă��܂��Ă����̂ł���B
+　このtmpインスタンスはServerHandshakerクラスのインスタンスを得るためだけに利用
+されており、実際のSSL通信を行わない。最初から最後までsockOutputはNULLであ
+るにもかかわらず、GCの際に呼び出されるcloseの中においてsockOutputを利用し
+ようとしてしまっていたのである。
 
-�@SSLServerSocket�𗘗p����Ƃ��ɂ͕K�����̺��ނ����s����邽�߁A�Ⴆ��T
-omcat�Ȃǂ�SSL���Ă��g���Ă���ꍇ�ɂ͕K��1�̿��Ă�ذ����Ă���͂����B
-lsof����ނ��g����can't identify protocol�ȏ�Ԃ̿��Ă������邱�Ƃ��ł�
-�邾�낤�B
-�@�������������ʂ̱��ع���݂ł�SSLServerSocket�̲ݽ�ݽ��1�ōςށi���Ƃ�
-��443���߰Ă��J���邾���j���߁Aذ�����̧���ި�������͂�����1�ł���A��
-���ケ��͖��ɂ͂Ȃ�Ȃ��B
+　SSLServerSocketを利用するときには必ずこのコードが実行されるため、例えばT
+omcatなどでSSLソケットを使っている場合には必ず1つのソケットがリークしているはずだ。
+lsofコマンドを使えばcan't identify protocolな状態のソケットを見つけることができ
+るだろう。
+　しかしごく普通のアプリケーションではSSLServerSocketのインスタンスは1つで済む（たとえ
+ば443番ポートを開けるだけ）ため、リークするファイルディスクリプタはたった1つであり、事
+実上これは問題にはならない。
 
-�@�ȏ�����[�����OؽĂɕ񍐂����Ƃ���A�����Ή������҂ł�������ڽ��ݽ��
-�邱�Ƃ��ł����B�{�e���M���_�ł͂܂������ްĂ͍s���Ă��Ȃ����A�x���Ƃ�
-��������ɂ͑Ή����s���邱�Ƃ��낤�B
+　以上をメーリングリストに報告したところ、無事対応が期待できそうなレスポンスを得
+ることができた。本稿執筆時点ではまだアップデートは行われていないが、遅くとも
+数ヶ月後には対応が行われることだろう。
 
 
-��0x09.) �܂Ƃ�
+■0x09.) まとめ
 
-�@���č���͌l�I�ɑ厖��������̧���ި������ذ��������ނ�Java�f�o�b�M
-���O�̗l�q�����Ă݂��B�܂Ƃ߂͈ȉ��̂悤�ɂȂ�B
+　さて今回は個人的に大事件だったファイルディスクリプタリーク事件を題材にJavaデバッギ
+ングの様子を見てみた。まとめは以下のようになる。
 
-�Estrace��-ff�I�v�V�����ɂ��e�X���b�h���g���[�X����ƕ֗���
-�Ejava��-Xrunhprof�ł�depth�ɑ傫�Ȑ����w�肷��̂��K�{�e�N
-�Ejava�̃g���[�X���������ςȗ�O���������Ă��Ȃ����T���Ƃ������Ƃ���J��
-�Ejava��printf�f�o�b�O���s���ۂɂ͗�O��new���Ă��̏��printStackTrace����ƕ֗������Ď��ւ���
+・straceで-ffオプションにより各スレッドをトレースすると便利杉
+・javaの-Xrunhprofではdepthに大きな数を指定するのが必須テク
+・javaのトレースを取ったら変な例外が発生していないか探すといいことあるカモ
+・javaのprintfデバッグを行う際には例外をnewしてその場でprintStackTraceすると便利すぎて失禁しる
 
-�@���ɂ��֗��ȃf�o�b�O�Z���������琥�񋳂��Ă��������I
+　他にも便利なデバッグ技があったら是非教えてくだきい！
 
 
 

@@ -1,15 +1,15 @@
-��MaD
-��Job:DATA HOUSE
-��Web:http://www.data-house.co.jp/
-��Mail:mad@data-house.co.jp
-��Team�iGroup�j:secret
-��Comment:
-�@���n�J�[�W���p�\�Ɗ�Ȃ�28���̕S�~���C�^�[�B��́A�󂫊ʏE���Ƌ����r
-�̃t�^�W�߁B�Q�����˂�ł́u���}�T���L�v�A�u���߁E�ہv�A�u�哯�Ȍ|�l
-�v�A�u�D�_�E���\�t�v�Ƃ��Ēʂ��Ă���B�E�\�΂�����̂ŗF�B�͂��Ȃ��B
-�@���݂͉�ЂŃq�b�L�[�����Ă��邪�A�����̓l�b�g�J�t�F�̓X���Ȃ�Ƃ�����
-�W�Ɍ������Ă܂�������B�Ƃ����I(`�D�L)�B
-���I�X�X���c�[��:T.Clip�ihttp://www.hi-ho.ne.jp/�j
-�@���j���[�o�[����A�e�L�X�g�����݂ɑ��邽�߂̃��[�e�B���e�B�ł��B
-�@���Ƃ��΁A�o�^��������L���Ⓑ����������ꔭ���͂�����A�I��̈�̕�������P�o�C�g����Q�o�C�g�Ɉꊇ�ϊ�������ƁA���܂�m���x�͍�������܂��񂪁A�ҏW�҂⃉�C�^�[�ɂƂ��āA�ƂĂ��֗��ȃc�[���ł��B���ЃC���X�R���Ă݂Ă������B
-�@�����̓}�J�`�ł����AWindows�p���������悤�ȋC�����܂��B�V�F�A�E�F�A�ł����A�������������̂��������������Ă݂Ă͂ǂ��ł��傩�H
+■MaD
+●Job:DATA HOUSE
+●Web:http://www.data-house.co.jp/
+●Mail:mad@data-house.co.jp
+●Team（Group）:secret
+●Comment:
+　元ハカージャパソと危ない28号の百円ライター。趣味は、空き缶拾いと牛乳瓶
+のフタ集め。２ちゃんねるでは「矢崎マサユキ」、「白鶴・丸」、「大同曲芸人
+」、「泥棒・詐欺師」として通っている。ウソばかりつくので友達はいない。
+　現在は会社でヒッキーをしているが、将来はネットカフェの店員なるという目
+標に向かってまっしぐら。とぁっ！(`Д´)。
+●オススメツール:T.Clip（http://www.hi-ho.ne.jp/）
+　メニューバーから、テキストを自在に操るためのユーティリティです。
+　たとえば、登録した特殊記号や長い文字列を一発入力したり、選択領域の文字列を１バイトから２バイトに一括変換したりと、あまり知名度は高くありませんが、編集者やライターにとって、とても便利なツールです。ぜひインスコしてみてくさい。
+　小生はマカ〜ですが、Windows用もあったような気がします。シェアウェアですが、こういったものこそお金をかけてみてはどうでしょか？

@@ -1,14 +1,14 @@
-������
-��Job:�v���O���}�[
-��Web:http://guardian.jumperz.net/�Ahttp://www.jumperz.net/
-��Mail:anvil@jumperz.net
-���G���ɑ΂���l����:
-�@�B�����w�ǂ��Ă���̂́w���o�V�X�e���\�z�x�B����͋߂��̏��X�̓X����
-�͗����ǂ݂ł��Ȃ��Ƃ������R�Œ���w�ǂ��邱�Ƃɂ����B���o�n�̎G���ُ͈�
-�ɐ�`���������񂴂肷�邪�A�w���o�V�X�e���\�z�x�ł͑��Ђ̃V�X�e���̎���
-��ڂɂ��邱�Ƃ��ł��邽�߁A�䖝���ēǂ�ł���B
-�@�Z�p�n�̎G���̑����͌����������A�͂����肢���Ăǂ���l�^�؂�̊����ۂ�
-�Ȃ��B����Java�n�̎G���͖��炩�Ƀl�^�؂�C���ŁA�ǂ̎G�������������悤��
-�L���œǂނƂ��낪���Ȃ��A�������Ƃ͖ő��ɂȂ��B
-�@�G���Ƃ��������b�N��������Ȃ����A�̂������wB-GEEKS�x�Ƃ����̂���D����
-�����B�����������Ăق����B
+■金床
+●Job:プログラマー
+●Web:http://guardian.jumperz.net/、http://www.jumperz.net/
+●Mail:anvil@jumperz.net
+●雑誌に対する考え方:
+　唯一定期購読しているのは『日経システム構築』。これは近くの書店の店頭で
+は立ち読みできないという理由で定期購読することにした。日経系の雑誌は異常
+に宣伝が多くうんざりするが、『日経システム構築』では他社のシステムの実例
+を目にすることができるため、我慢して読んでいる。
+　技術系の雑誌の多くは月刊誌だが、はっきりいってどれもネタ切れの感が否め
+ない。特にJava系の雑誌は明らかにネタ切れ気味で、どの雑誌も毎月同じような
+記事で読むところが少なく、買うことは滅多にない。
+　雑誌というかムックかもしれないが、昔あった『B-GEEKS』というのが大好きだ
+った。いつか復活してほしい。

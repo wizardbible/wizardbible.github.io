@@ -1,13 +1,13 @@
-���R�{�m��R
-��Job:�ҏW���C�^�[
-��Web:bogus.jp�ihttp://bogus.jp/�j
-��Mail:bogus@bogus.jp
-��Team�iGroup�j:N/A
-��Comment:
-�@�w�Z���Ђ�LAN��`���Ă���Ƃ悭�킩��Ȃ����낢��ȃp�P�b�g������Ă�
-�܂��B���̂�����̂悭�킩��Ȃ��p�P�b�g�̓������𖾂�����������Ƃ�
-���̂�z������̂��y�����ł��ˁB���ۂɂ��Ƒ�ςȂ��ƂɂȂ邱�Ƃ������
-�Œ��ӂ��������̂ł��B
-����Ɏg�p���Ă���u���E�U�FSafari
-�@�ŋ�Mac mini�𔃂��܂����BMacOSX�͋C�y��UNIX+���Ȃ̂łƂĂ��s����������
-���ˁB
+■山本洋介山
+●Job:編集ライター
+●Web:bogus.jp（http://bogus.jp/）
+●Mail:bogus@bogus.jp
+●Team（Group）:N/A
+●Comment:
+　学校や会社のLANを覗いているとよくわからないいろいろなパケットが流れてい
+ます。そのあたりのよくわからないパケットの動きを解明しつつ混乱させるとい
+うのを想像するのが楽しいですね。実際にやると大変なことになることもあるの
+で注意したいものです。
+●主に使用しているブラウザ：Safari
+　最近Mac miniを買いました。MacOSXは気楽なUNIX+αなのでとても都合がいいで
+すね。

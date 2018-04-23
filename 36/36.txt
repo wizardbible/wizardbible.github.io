@@ -8,97 +8,97 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-  ---- ��0�́F�ڎ� ---
+  ---- 第0章：目次 ---
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-����1��: �}�j�A�b�NJava�v���O���~���O��7��: �`Java�N���b�L���O�` ���� ��
+○第1章: マニアックJavaプログラミング第7回: 〜Javaクラッキング〜 金床 著
 
-����2��: Windows�V�X�e���v���O���~���O �ԊO�� �`Java�`     Kenji Aiko ��
+○第2章: Windowsシステムプログラミング 番外編 〜Java〜     Kenji Aiko 著
 
-����3��: Windows�V�X�e���v���O���~���O Part2 �`�f�o�b�O�`  Kenji Aiko ��
+○第3章: Windowsシステムプログラミング Part2 〜デバッグ〜  Kenji Aiko 著
 
-����4��: ���o�[�X�G���W�j�A�����O���H khallenge�ւ̃`�������W ����1
-                                                          Green boy 4 ��
+○第4章: リバースエンジニアリング実践 khallengeへのチャレンジ その1
+                                                          Green boy 4 著
 
-����5��: ���o�[�X�G���W�j�A�����O���H khallenge�ւ̃`�������W ����2
-                                                          Green boy 4 ��
+○第5章: リバースエンジニアリング実践 khallengeへのチャレンジ その2
+                                                          Green boy 4 著
 
-����6��: �͂��߂Ẵn�b�L���O �`�o�b�t�@�I�[�o�t���[�̗��p�`  Defolos ��
+○第6章: はじめてのハッキング 〜バッファオーバフローの利用〜  Defolos 著
 
-����7��: ��b�Í��w�u���E��11�� �`���n������A���S���Y���`   IPUSIRON ��
+○第7章: 基礎暗号学講座・第11回 〜原始元判定アルゴリズム〜   IPUSIRON 著
 
-����8��: ���m�点
+○第8章: お知らせ
 
-����9��: ���҃v���t�B�[��
+○第9章: 著者プロフィール
 
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- ��1��: �}�j�A�b�NJava�v���O���~���O��7��: �` Java�N���b�L���O �` ---
+--- 第1章: マニアックJavaプログラミング第7回: 〜 Javaクラッキング 〜 ---
 
-���ҁF����
+著者：金床
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@Java�A�v���P�[�V�����͈�ʓI�ɃN���b�N�Ɏア�Ƃ���Ă��邪�A�{���ɂ���
-�Ȃ̂��낤���B���̎������m���߂�ׂ��A���ۂɐ��i�Ƃ��Ĕ̔�����Ă���Java
-�A�v���P�[�V�������ЂƂI�сA�V���A���N���b�N�����݂邱�ƂƂ����B�{�L��
-�͋Z�p�I�ȑ��ʂɂ̂ݏœ_�𓖂Ă���̂ł��邽�߁A���i�̖��O�͖������Ȃ��B
-����Hoge�Ђ�FugaSoftware�Ƃ����\�t�g�E�F�A�Ƃ��Ă������B
-
-
-��0x02.) �T�v
-
-�@����^�[�Q�b�g�Ƃ���FugaSoftware�́AGUI�̃A�v���P�[�V�����ł���BJava��
-GUI�̃\�t�g�E�F�A�Ƃ�����Swing���g�p����̂���ʓI�����AFugaSoftware��SWT
-���g���Ă���B�����Eclipse�ł悭�m����悤�ɂȂ����AOS�l�C�e�B�u�̃��b
-�N&�t�B�[���������ł���e�N�m���W�[���B
-
-�@FugaSoftware�ɂ͎��p���������������Ă���A���̊��Ԃ��߂���ƃV���A��
-�i���o�[�̓��͂𑣂��_�C�A���O���o������悤�ɂȂ�B�����Ő������V���A��
-�i���o�[����͂ł��Ȃ���΁A�A�v���P�[�V�����̎g�p�𑱂��邱�Ƃ��ł��Ȃ�
-�Ȃ��Ă��܂��B
+　Javaアプリケーションは一般的にクラックに弱いとされているが、本当にそう
+なのだろうか。この事実を確かめるべく、実際に製品として販売されているJava
+アプリケーションをひとつ選び、シリアルクラックを試みることとした。本記事
+は技術的な側面にのみ焦点を当てるものであるため、製品の名前は明かさない。
+仮にHoge社のFugaSoftwareというソフトウェアとしておこう。
 
 
-��0x03.) �΍�Ȃ�
+■0x02.) 概要
 
-�@OS�̎��v��i�߂���ԂŋN������ƁA�u�������؂ꂽ�v�Ƃ����_�C�A���O���o
-�����邪�A������xOS�̎��v�����ɖ߂��i���p�������ɐݒ肷��j�ƁA�����Ȃ�
-�������̂悤�ɋN�����Ă����B�܂莞�v�������邾���Ŏg�������邱�Ƃ���
-���邽�߁A�����I�ɂ̓N���b�N�΍�͍s���Ă��Ȃ��Ƃ����邾�낤�B�͂�����
-�����ăN���b�N����Ӗ����܂������Ȃ��Ƃ������Ƃ����A����̓��o�[�X�G���W
-�j�A�����O���̂��̂��ړI�ł��邽�߁A���������˂�����Œ��ׂĂ݂邱�ƂƂ�
-��B
+　今回ターゲットとするFugaSoftwareは、GUIのアプリケーションである。Javaの
+GUIのソフトウェアといえばSwingを使用するのが一般的だが、FugaSoftwareはSWT
+を使っている。これはEclipseでよく知られるようになった、OSネイティブのルッ
+ク&フィールを実現できるテクノロジーだ。
+
+　FugaSoftwareには試用期限がもうけられており、その期間を過ぎるとシリアル
+ナンバーの入力を促すダイアログが出現するようになる。ここで正しいシリアル
+ナンバーを入力できなければ、アプリケーションの使用を続けることができなく
+なってしまう。
 
 
-��0x04.) �Ղ�J�n
+■0x03.) 対策なし
 
-�@�V���A���N���b�N�̍ۂɂ܂����ׂ�ׂ��_�́A�����A�v���P�[�V�����̃R�[�h
-�̒��́u�ǂ��v�ŃV���A���i���o�[�̌��؂��s���Ă���̂��Ƃ������Ƃł���B
-�����Java�A�v���P�[�V�����ł��邽�߁Ajava�R�}���h�̃I�v�V�����ł���Xrun
-hprof���g�����Ƃɂ���B���̃I�v�V�������w�肵�ăA�v���P�[�V���������s����
-�ƁA�I����ɃA�v���P�[�V�����̓�������ׂăg���[�X�������java.hprof.t
-xt�Ƃ����t�@�C���ɋL�^�����B���Ƃ���Test�Ƃ����N���X�̃A�v���P�[�V����
-�����s����ꍇ�A���̂悤�ɋN������΂悢�B
+　OSの時計を進めた状態で起動すると、「期限が切れた」というダイアログが出
+現するが、もう一度OSの時計を元に戻す（試用期限内に設定する）と、何もなか
+ったかのように起動してくれる。つまり時計をいじるだけで使い続けることがで
+きるため、現実的にはクラック対策は行われていないといえるだろう。はっきり
+いってクラックする意味がまったくないということだが、今回はリバースエンジ
+ニアリングそのものが目的であるため、もう少し突っ込んで調べてみることとす
+る。
+
+
+■0x04.) 祭り開始
+
+　シリアルクラックの際にまず調べるべき点は、長いアプリケーションのコード
+の中の「どこ」でシリアルナンバーの検証が行われているのかということである。
+今回はJavaアプリケーションであるため、javaコマンドのオプションであるXrun
+hprofを使うことにする。このオプションを指定してアプリケーションを実行する
+と、終了後にアプリケーションの動作をすべてトレースした情報がjava.hprof.t
+xtというファイルに記録される。たとえばTestというクラスのアプリケーション
+を実行する場合、次のように起動すればよい。
 
 -----
 > java -Xrunhprof Test
 -----
 
-�@����^�[�Q�b�g�Ƃ���FugaSoftware�̓��[�U��.exe�t�@�C�����N���b�N���邱
-�Ƃ�Windows�l�C�e�B�u�̃A�v���P�[�V�������N�����A���̃A�v���P�[�V��������
-���java�R�}���h�𗘗p���Ė{�̂��N������A�Ƃ����d�g�݂ɂȂ��Ă���B����
-����java�R�}���h�̈������w�肷����@��T���K�v������B
+　今回ターゲットとするFugaSoftwareはユーザが.exeファイルをクリックするこ
+とでWindowsネイティブのアプリケーションが起動し、そのアプリケーションがさ
+らにjavaコマンドを利用して本体を起動する、という仕組みになっている。その
+ためjavaコマンドの引数を指定する方法を探す必要がある。
 
-�@�K���ɂ��Ă���͂����Ɍ��������BFugaSoftware.ini�Ƃ����ݒ�t�@�C����
-���e�����̂悤�ɂȂ��Ă����̂��B
+　幸いにしてこれはすぐに見つかった。FugaSoftware.iniという設定ファイルの
+内容が次のようになっていたのだ。
 
 -----
 -vmargs
@@ -107,8 +107,8 @@ xt�Ƃ����t�@�C���ɋL�^�����B���Ƃ���Test�Ƃ����N���X�̃A�v���P�[�V����
 -XX:MinHeapFreeRatio=20
 -----
 
-�@���̃t�@�C�����ɃI�v�V�������w�肵�Ă����΁Ajava�R�}���h�ɂ��ꂪ�n����
-��Ƃ����d�g�݂ł���B�����ŁA���̃t�@�C�������̂悤�ɏ���������B
+　このファイル中にオプションを指定しておけば、javaコマンドにそれが渡され
+るという仕組みである。そこで、このファイルを次のように書き換える。
 
 -----
 -vmargs
@@ -118,17 +118,17 @@ xt�Ƃ����t�@�C���ɋL�^�����B���Ƃ���Test�Ƃ����N���X�̃A�v���P�[�V����
 -XX:MinHeapFreeRatio=20
 -----
 
-�@���̏�ԂŁA���v��i�߂Ă킴�Ɗ����؂�̓����ɐݒ肵�AFugaSoftware���N
-������B�u�������؂�Ă���v�Ƃ����_�C�A���O���o������̂ŁA���x���킴��
-�Ԉ���Ă���V���A���i���o�[����͂���B�����ăA�v���P�[�V�������I������B
-�����java.hprof.txt�����������B���̃t�@�C���͖c��ȏ�񂪋L�^����邽
-�߃T�C�Y�͑傫���Ȃ肪�������A����̓A�v���P�[�V��������K�͂ł��邱�Ƃ�
-����A�Ȃ��57MB�Ƃ����傫���ɂȂ��Ă��܂����B
+　この状態で、時計を進めてわざと期限切れの日時に設定し、FugaSoftwareを起
+動する。「期限が切れている」というダイアログが出現するので、何度かわざと
+間違っているシリアルナンバーを入力する。そしてアプリケーションを終了する。
+するとjava.hprof.txtが生成される。このファイルは膨大な情報が記録されるた
+めサイズは大きくなりがちだが、今回はアプリケーションが大規模であることも
+あり、なんと57MBという大きさになってしまった。
 
 
-��0x05.) �쐶�̃J�����������܂�
+■0x05.) 野生のカンを研ぎ澄ます
 
-�@java.hprof.txt�ɂ͎��̂悤�ȃg���[�X���O����ʂɕ���ł���B
+　java.hprof.txtには次のようなトレースログが大量に並んでいる。
 
 -----
 TRACE 2191:
@@ -138,14 +138,14 @@ TRACE 2191:
 	java.net.URL.getURLStreamHandler(<Unknown>:Unknown line)
 -----
 
-�@���̂悤�Ɂu�ǂ̃N���X�̂ǂ̃��\�b�h����΂ꂽ�̂��v�����ׂċL�^�����
-����̂ŁA���̒�����V���A���i���o�[�̓��e�����؂��Ă������Ȃ��̂�T����
-���B������c��ȗʂȂ̂ŁA��������1��1�ǂ�ł����킯�ɂ͂����Ȃ��B����
-���߁A��������炵���P��Ō����������Ă������@���̂邱�ƂɂȂ�i���Ɋ֐�
-����A��B�̂悤�ɓ�ǉ��Ă����΁A���̕��@�ɑ΂���΍�ƂȂ�j�B
+　このように「どのクラスのどのメソッドがよばれたのか」がすべて記録されて
+いるので、この中からシリアルナンバーの内容を検証していそうなものを探すの
+だ。何しろ膨大な量なので、さすがに1つ1つ読んでいくわけにはいかない。その
+ため、何かそれらしい単語で検索をかけていく方法を採ることになる（仮に関数
+名をAやBのように難読可しておけば、この方法に対する対策となる）。
 
-�@�������̒P��Ō����������ʁA�uvalid�v�Ƃ����P��ňȉ��̃g���[�X�𔭌�
-�����B
+　いくつかの単語で検索した結果、「valid」という単語で以下のトレースを発見
+した。
 
 -----
 TRACE 25030:
@@ -155,39 +155,39 @@ TRACE 25030:
 	com.hoge.fugasoftware.editors.derived.ui.FugaInputDialog.validateInput(FugaInputDialog.java:257)
 -----
 
-�@�uActivationDialog�v��uisValid�v�Ƃ����P�ꂩ��A�����ɂ����������Ƃ���
-����B�����ŁA���ɂ���ActivationDialog�Ƃ����N���X���t�R���p�C�����Ē��g
-���m���߂Ă݂邱�Ƃɂ���B
+　「ActivationDialog」や「isValid」という単語から、いかにも怪しいことがわ
+かる。そこで、次にこのActivationDialogというクラスを逆コンパイルして中身
+を確かめてみることにする。
 
-�@Java�A�v���P�[�V�����ł͑�ʂ̃N���X�t�@�C�����g���邪�A�����͕���
-jar�t�@�C���ɂ܂Ƃ߂Ċi�[����Ă���BFugaSoftware�ł���O�ł͂Ȃ��Aplugi
-n�f�B���N�g���ȉ��ɑ�ʂ�jar�t�@�C�������݂���B���̂����ǂ�jar�t�@�C����
-ActiveDialog�N���X���i�[����Ă���̂��𒲂ׂ�K�v������B�K���ɂ����̃N
-���X�̃p�b�P�[�W���ł���ucom.hoge.fugasoftware.ui.asn�v�Ɩw�Ǔ������O��
-�u\plugins\com.hoge.fugasoftware.ui_2.0.147081�v�Ƃ����f�B���N�g��������A
-���̒���ui.jar�Ɋi�[����Ă��邱�Ƃ��킩�����B���Ȃ݂�jar�t�@�C���̒��g��
-����ɂ�jar�R�}���h��-t�I�v�V�������g���Ď��̂悤�ɂ���΂悢�B
+　Javaアプリケーションでは大量のクラスファイルが使われるが、それらは普通
+jarファイルにまとめて格納されている。FugaSoftwareでも例外ではなく、plugi
+nディレクトリ以下に大量のjarファイルが存在する。このうちどのjarファイルに
+ActiveDialogクラスが格納されているのかを調べる必要がある。幸いにもこのク
+ラスのパッケージ名である「com.hoge.fugasoftware.ui.asn」と殆ど同じ名前の
+「\plugins\com.hoge.fugasoftware.ui_2.0.147081」というディレクトリがあり、
+その中のui.jarに格納されていることがわかった。ちなみにjarファイルの中身を
+見るにはjarコマンドの-tオプションを使って次のようにすればよい。
 
 -----
 >jar -t < ui.jar
 -----
 
-�@jar�t�@�C����zip�t�@�C���Ɠ����`���ł��邽�߁Aunzip�R�}���h��-l�I�v�V��
-�����g���Ē��g�����邱�Ƃ��ł���B
+　jarファイルはzipファイルと同じ形式であるため、unzipコマンドの-lオプショ
+ンを使って中身を見ることもできる。
 
-�@jar�t�@�C���̒��g��W�J����ɂ�jar�R�}���h��-x�I�v�V�������g���B������
-��unzip���g�����Ƃ��ł���B
+　jarファイルの中身を展開するにはjarコマンドの-xオプションを使う。もちろ
+んunzipも使うことができる。
 
 -----
 >jar -x < ui.jar
 -----
 
 
-��0x06.) �t�R���p�C��
+■0x06.) 逆コンパイル
 
-�@ui.jar����ActivationDialog�N���X�����邱�Ƃ͂킩�����̂ŁAjad�Ƃ����悭
-�m��ꂽ�t�R���p�C���c�[�����g���ă\�[�X�R�[�h�`���ւƕϊ�����B����Ɩ�
-��̊֐��͎��̂悤�ɂȂ��Ă��邱�Ƃ��킩�����B
+　ui.jar中にActivationDialogクラスがあることはわかったので、jadというよく
+知られた逆コンパイルツールを使ってソースコード形式へと変換する。すると問
+題の関数は次のようになっていることがわかった。
 
 -----
     public String isValid(String newText)
@@ -209,17 +209,17 @@ ActiveDialog�N���X���i�[����Ă���̂��𒲂ׂ�K�v������B�K���ɂ����̃N
     }
 -----
 
-�@���̊֐������true��Ԃ��悤�ɂ��Ă��悳���������A�ǂ����V���A���i��
-�o�[�̕]�����̂͂��̃N���X�ł͂Ȃ��A2�s�ڂɂ���uASNBridge.getDefault().
-validate�v�Ƃ����֐��ōs���Ă���悤���B�����ŁAASNBridge�N���X�̓��e��
-���Ă݂邱�Ƃɂ���B
+　この関数が常にtrueを返すようにしてもよさそうだが、どうやらシリアルナン
+バーの評価自体はこのクラスではなく、2行目にある「ASNBridge.getDefault().
+validate」という関数で行われているようだ。そこで、ASNBridgeクラスの内容を
+見てみることにする。
 
-�@��قǂƓ����悤�Ƀp�b�P�[�W�����肪�����jar�t�@�C����T���B���������
-�Ɍ�����A�ړI��jar�t�@�C���́uplugins\com.hoge.fugasoftware.project_2
-.0.147081\zornproject.jar�v�ł��邱�Ƃ��킩��B
+　先ほどと同じようにパッケージ名を手がかりにjarファイルを探す。今回もすぐ
+に見つかり、目的のjarファイルは「plugins\com.hoge.fugasoftware.project_2
+.0.147081\zornproject.jar」であることがわかる。
 
-�@jad���g����ASNBridge�N���X�̃\�[�X�R�[�h�𐶐�����B�����validate�֐�
-�̒��g�͎��̂悤�ɂȂ��Ă����B
+　jadを使ってASNBridgeクラスのソースコードを生成する。するとvalidate関数
+の中身は次のようになっていた。
 
 -----
     public boolean validate(FugaProduct fugaproduct, String s)
@@ -228,10 +228,10 @@ validate�v�Ƃ����֐��ōs���Ă���悤���B�����ŁAASNBridge�N���X�̓��e��
     }
 -----
 
-�@���ɐ����Ȋ֐����B���������true���A�Ԉ���Ă����false��Ԃ��悤�ł���B
-�֐�����ϐ������牽������Ă���̂������ׂĂ킩���Ă��܂��_�Ȃǂ�����A
-�܂������N���b�L���O�΍􂪂���Ă��Ȃ����Ƃ��킩��B���̊֐������true��
-�Ԃ��悤�A���̂悤�Ƀ\�[�X�R�[�h������������B
+　実に正直な関数だ。正しければtrueを、間違っていればfalseを返すようである。
+関数名や変数名から何をやっているのかがすべてわかってしまう点などからも、
+まったくクラッキング対策がされていないことがわかる。この関数が常にtrueを
+返すよう、次のようにソースコードを書き換える。
 
 -----
     public boolean validate(FugaProduct fugaproduct, String s)
@@ -241,8 +241,8 @@ validate�v�Ƃ����֐��ōs���Ă���悤���B�����ŁAASNBridge�N���X�̓��e��
     }
 -----
 
-�@�܂��A�����N���X�Ɂu�����؂ꂩ�ǂ����v�𔻒肵�Ă���֐����������̂ŁA
-���łɂ���������������Ă��܂��B
+　また、同じクラスに「期限切れかどうか」を判定している関数を見つけたので、
+ついでにそちらも書き換えてしまう。
 
 -----
     public boolean isExpired(FugaProduct fugaproduct)
@@ -252,79 +252,79 @@ validate�v�Ƃ����֐��ōs���Ă���悤���B�����ŁAASNBridge�N���X�̓��e��
     }
 -----
 
-�@������͏��false��Ԃ��悤�ɂ���B
+　こちらは常にfalseを返すようにする。
 
-�@�\�[�X�R�[�h��������������R�}���h���C������R���p�C������B�K�����̃N
-���X�͑��̃p�b�P�[�W�ւ̈ˑ����Ⴂ���߁A�ȒP�ɃR���p�C�����ʂ�B
+　ソースコードを書き換えたらコマンドラインからコンパイルする。幸いこのク
+ラスは他のパッケージへの依存が低いため、簡単にコンパイルが通る。
 
 -----
 >javac  com/hoge/fugasoftware/project/asn/ASNBridge.java 
 -----
 
-�@���ɍĂ�jar�t�@�C���Ɋi�[����
+　次に再びjarファイルに格納する
 
 -----
 >jar -cf zornproject.jar com/
 -----
 
-�@�����Ă���jar�t�@�C�����uplugins\com.hoge.fugasoftware.project_2.0.147
-081\zornproject.jar�v�ɏ㏑������B
+　そしてこのjarファイルを「plugins\com.hoge.fugasoftware.project_2.0.147
+081\zornproject.jar」に上書きする。
 
-�@���̏�ԂŋN������ƁA�����Ɋ����؂�̃_�C�A���O���o�����Ȃ��Ȃ�B�N��
-�b�N�����ł���B
-
-
-��0x07.) �܂Ƃ�
-
-�@Java�A�v���P�[�V�����̃��o�[�X�G���W�j�A�����O�͏��߂Ăł��������A����
-�܂ł킸��1���Ԏサ��������Ȃ������B�M�҂�Java��Eclipse�ɐe����ł����
-�����ɗ������悤���B����Java�A�v���P�[�V�����ŃN���b�N�΍���s�����Ǝv��
-�Ȃ�΁A�܂��͕ϐ�����֐������킩��ɂ������̂ɂ���̂��悳�����ł���B
+　この状態で起動すると、見事に期限切れのダイアログが出現しなくなる。クラ
+ック完了である。
 
 
+■0x07.) まとめ
 
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+　Javaアプリケーションのリバースエンジニアリングは初めてであったが、ここ
+までわずか1時間弱しかかからなかった。筆者がJavaやEclipseに親しんでいるの
+が役に立ったようだ。もしJavaアプリケーションでクラック対策を行おうと思う
+ならば、まずは変数名や関数名をわかりにくいものにするのがよさそうである。
 
---- ��2��: Windows�V�X�e���v���O���~���O �ԊO�� �`Java�` ---
 
-���ҁFKenji Aiko
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
+--- 第2章: Windowsシステムプログラミング 番外編 〜Java〜 ---
 
-��0x01.) �͂��߂�
+著者：Kenji Aiko
 
-�@Java�A�v���P�[�V�����́AVM��œ��삷��Ƃ������̐�����A�f�R���p�C���i
-���s�t�@�C������\�[�X�R�[�h�ɕ������邱�Ɓj��e�Ղɍs����B���̂��߁A�N
-���b�N�s�ׂɑ΂��āA����قǋ��łł͂Ȃ��ƌ����Ă���B
-�@����́A���̎������m���߂邽�߂ɁA���ۂɐ��i�Ƃ��Ĕ̔��A�z�z����Ă���
-Java�A�v���P�[�V�������ɃV���A���N���b�N���s�����B�������A���i�����o��
-�킯�ɂ͂����Ȃ����߁A���̃e�L�X�g�ł́A���������Ă����������Ƃɂ���B
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x02.) �T�v
+■0x01.) はじめに
 
-�@���̃\�t�g�E�F�A�ɂ͎g�p����������A������߂���ƁA�V���A���i���o�[��
-���͂��Ȃ���΃A�v���P�[�V�������g�p�ł��Ȃ��Ȃ�B����āA���̃A�v���P�[
-�V�������N���b�N����ɂ́A����2�̂����ꂩ�̕��@���K�v�ƂȂ�B
-
-�i1�j�V���A���i���o�[����肷��
-�i2�j���Ԑ�������������
-
-�@�ǂ���ł��悢���A���́A���₷���ȒP�ȕ��@��I�Ԃ��ƂɂȂ�B�������A
-�ǂ��炪�ȒP���́A���ۂɂ���Ă݂Ȃ���Ε�����Ȃ����߁A�Ƃ肠�����͗���
-�ɏœ_�𓖂ĂĐi�߂Ă����B
+　Javaアプリケーションは、VM上で動作するというその性質上、デコンパイル（
+実行ファイルからソースコードに復元すること）を容易に行える。そのため、ク
+ラック行為に対して、それほど強固ではないと言われている。
+　今回は、この事実を確かめるために、実際に製品として販売、配布されている
+Javaアプリケーションを例にシリアルクラックを行った。ただし、製品名を出す
+わけにはいかないため、このテキストでは、伏せさせていただくことにする。
 
 
-��0x03.) OllyDbg
+■0x02.) 概要
 
-�@�v���O������OllyDbg��ŋN�������A�K���ɃX�e�b�v��i�߂Ă����ƁA����ꏊ
-����AOllyDbg���̏����Ɋւ�炸�A�v���O�������i�ݎn�߂邱�Ƃ��m�F�ł���B
-�܂�A�ʂ̃v���Z�X����������A���ꂪ�N�����Ă���킯���B���̎�������A
-������CreateProcess�֐����Ăяo����Ă���Ƒz���ł���B
-�@�����ڍׂɏ�����ǂ��Ă����ƁACreateProcess���Ă΂�Ă���ꏊ��������B
+　このソフトウェアには使用期限があり、それを過ぎると、シリアルナンバーを
+入力しなければアプリケーションを使用できなくなる。よって、このアプリケー
+ションをクラックするには、次の2つのいずれかの方法が必要となる。
+
+（1）シリアルナンバーを特定する
+（2）時間制限を解除する
+
+　どちらでもよいが、大抵は、やりやすい簡単な方法を選ぶことになる。ただし、
+どちらが簡単かは、実際にやってみなければ分からないため、とりあえずは両方
+に焦点を当てて進めていく。
+
+
+■0x03.) OllyDbg
+
+　プログラムをOllyDbg上で起動させ、適当にステップを進めていくと、ある場所
+から、OllyDbg内の処理に関わらず、プログラムが進み始めることが確認できる。
+つまり、別のプロセスが生成され、それが起動しているわけだ。この事実から、
+内部でCreateProcess関数が呼び出されていると想像できる。
+　少し詳細に処理を追っていくと、CreateProcessが呼ばれている場所が見つかる。
 
 -----  OllyDbg
 00402B9B  |. 52             PUSH EDX
@@ -333,42 +333,42 @@ Java�A�v���P�[�V�������ɃV���A���N���b�N���s�����B�������A���i�����o��
 00402BA4  |. 85C0           TEST EAX,EAX
 -----
 
-�@�����ŁACreateProcess�ɓn����Ă���������m�F����ƁA�ǂ����JavaVM�ij
-avaw�j���N�����Ă���悤���B
-�@�܂�A���̃v���O�����͂����܂ł��N�����̂ݎ��s����邾���̂��̂ŁA�{
-���̃A�v���P�[�V�����ƂȂ郁�C���̃v���O�����́AJava�ŋL�q����Ă���ACr
-eateProcess�ŕʃv���Z�X�Ƃ��ē����킯���B
+　ここで、CreateProcessに渡されている引数を確認すると、どうやらJavaVM（j
+avaw）が起動しているようだ。
+　つまり、このプログラムはあくまでも起動時のみ実行されるだけのもので、本
+物のアプリケーションとなるメインのプログラムは、Javaで記述されており、Cr
+eateProcessで別プロセスとして動くわけだ。
 
 
-��0x04.) �V���A���i���o�[�̔F��
+■0x04.) シリアルナンバーの認証
 
-�@CreateProcess�ŋN�������V�����v���Z�X�ijavaw�j�́A�E�B���h�E���\������
-��ƁA�ŏ��ɁA�V���A���i���o�[��v�����Ă���B�����ŁA���݂̓������擾���A
-�����w��̊��Ԃ��߂��Ă�����A�A�v���P�[�V�������g�킹�Ȃ��悤�ɂȂ��Ă�
-��B
-�@������Windows�̎��Ԃ������i�߂āA�ēx�v���O�������N������ƁA�w��̎���
-���߂������ƂɂȂ�A�A�v���P�[�V�������g���Ȃ��Ȃ�B�t�Ɏ��Ԃ�߂��ƁA��
-���A�v���P�[�V�������g����悤�ɂȂ�B
-�@�܂�A���̃A�v���P�[�V�����̔F�؂́AWindows�̎��Ԃɏ]���Ă���B
-�@�Ƃ������Ƃ́A���Ԏ擾�n��API�Ƀu���C�N�|�C���g���d�|����΁A�����q���g
-�������邩������Ȃ��B���Ԏ擾�n��API��T���B
+　CreateProcessで起動した新しいプロセス（javaw）は、ウィンドウが表示され
+ると、最初に、シリアルナンバーを要求してくる。ここで、現在の日時を取得し、
+もし指定の期間を過ぎていたら、アプリケーションを使わせないようになってい
+る。
+　試しにWindowsの時間を少し進めて、再度プログラムを起動すると、指定の時間
+が過ぎたことになり、アプリケーションが使えなくなる。逆に時間を戻すと、ま
+たアプリケーションが使えるようになる。
+　つまり、このアプリケーションの認証は、Windowsの時間に従っている。
+　ということは、時間取得系のAPIにブレイクポイントを仕掛ければ、何かヒント
+が得られるかもしれない。時間取得系のAPIを探す。
 
-�EGetSystemTime
-�EGetLocalTime
-�EGetSystemTimeAsFileTime
+・GetSystemTime
+・GetLocalTime
+・GetSystemTimeAsFileTime
 
-�@�����̊֐��Ƀu���C�N�|�C���g���d�|����B
+　これらの関数にブレイクポイントを仕掛ける。
 
 
-��0x05.) JavaVM
+■0x05.) JavaVM
 
-�@���s�t�@�C���͂����̏���ł���A�����ŐV���ȃv���Z�X����������Ă���B
-�����āA���̃v���Z�X��JavaVM�ł���A���ꂪ�N��������ԂŁA�l�X�ȃE�B���h
-�E����������Ă����B�܂�A������̖{�̂�Java�ō���Ă���B
-�@�^�X�N�}�l�[�W���[�Ńv���Z�X���m�F����ƁAjavaw�̋N�����m�F�ł���B�u�{
-�̂͂��������I�v�Ƃ����킯�ŁA�N������javaw��OllyDbg�ŃA�^�b�`����B����
-�āA���Ԏ擾�n��API�Q�Ƀu���C�N�|�C���g���d�|����B����ƁA���������Ƀu��
-�C�N�|�C���g�Ɉ���������B
+　実行ファイルはただの飾りであり、内部で新たなプロセスが生成されている。
+そして、そのプロセスはJavaVMであり、それが起動した状態で、様々なウィンド
+ウが生成されていく。つまり、事実上の本体はJavaで作られている。
+　タスクマネージャーでプロセスを確認すると、javawの起動が確認できる。「本
+体はこっちか！」というわけで、起動中のjavawにOllyDbgでアタッチする。そし
+て、時間取得系のAPI群にブレイクポイントを仕掛ける。すると、いい感じにブレ
+イクポイントに引っかかる。
 
 -----  OllyDbg
 080ACC4A   50            PUSH EAX
@@ -376,28 +376,28 @@ eateProcess�ŕʃv���Z�X�Ƃ��ē����킯���B
 080ACC51   FF75 FC       PUSH DWORD PTR SS:[EBP-4]
 -----
 
-�@GetSystemTimeAsFileTime�֐������Ԏ擾�ɗ��p����Ă��邱�Ƃ�������B����
-���AJava�̃R�[�h������API���Ăяo���Ă���Ƃ͍l���ɂ����B�����炭�A����A
-PI�́AJavaVM�ɂ���ČĂяo����Ă���͂����B�Ăяo�����̃��W���[�������m
-�F����ƁAjvm�ƂȂ��Ă���B�����āA���̃��W���[����jvm.dll�Ƃ��đ��݂���B
+　GetSystemTimeAsFileTime関数が時間取得に利用されていることが分かる。ただ
+し、Javaのコードが直接APIを呼び出しているとは考えにくい。おそらく、このA
+PIは、JavaVMによって呼び出されているはずだ。呼び出し元のモジュール名を確
+認すると、jvmとなっている。そして、このモジュールはjvm.dllとして存在する。
 
 
-��0x06.) jvm.dll
+■0x06.) jvm.dll
 
-�@���ӏ��͓���ł����B���Ƃ̓o�C�i�����x���ŕύX���������OK���B
-�@jvm.dll��kernel32.dll���C���|�[�g���Ă���B�����āAkernle32.dll��GetSy
-stemTimeAsFileTime���G�N�X�|�[�g���Ă���B����āA�܂��́Ajvm.dll���o�C�i
-���G�f�B�^�ŊJ���AKERNEL32.dll�̉ӏ���LERNEL32.dll�ɕύX����B
-�@�����āAC:\WINDOWS\system32�ȉ�����kernel32.dll���R�s�[���Ă��āA�o�C�i
-���G�f�B�^�ŊJ���AGetSystemTimeAsFileTime�֐���s���̂悢�悤�ɏ���������B
+　問題箇所は特定できた。あとはバイナリレベルで変更を加えればOKだ。
+　jvm.dllはkernel32.dllをインポートしている。そして、kernle32.dllはGetSy
+stemTimeAsFileTimeをエクスポートしている。よって、まずは、jvm.dllをバイナ
+リエディタで開き、KERNEL32.dllの箇所をLERNEL32.dllに変更する。
+　続いて、C:\WINDOWS\system32以下からkernel32.dllをコピーしてきて、バイナ
+リエディタで開き、GetSystemTimeAsFileTime関数を都合のよいように書きかえる。
 
------  kernel32.dll�i�ύX�O:GetSystemTimeAsFileTime�֐��j
+-----  kernel32.dll（変更前:GetSystemTimeAsFileTime関数）
 00000BE0                 8B FF 55 8B EC A1 18 00 FE 7F 8B 
 00000BF0  15 14 00 FE 7F 3B 05 1C 00 FE 7F 75 ED 8B 4D 08 
 00000C00  89 11 89 41 04 5D C2 04 00 90 90 90 90 90
 -----
 
------  kernel32.dll�i�ύX�O:GetSystemTimeAsFileTime�֐��j
+-----  kernel32.dll（変更前:GetSystemTimeAsFileTime関数）
 008717E5 >/$ 8BFF           MOV EDI,EDI
 008717E7  |. 55             PUSH EBP
 008717E8  |. 8BEC           MOV EBP,ESP
@@ -412,18 +412,18 @@ stemTimeAsFileTime���G�N�X�|�[�g���Ă���B����āA�܂��́Ajvm.dll���o�C�i
 00871806  \. C2 0400        RETN 4
 -----
 
-�@GetSystemTimeAsFileTime�֐��́A�����̍\���́i8�o�C�g�j�ɁA100ns�i�i�m�Z
-�J���h�j�P�ʂ̎��Ԃ�����B��L�̃o�C�i�������ĕ�����Ƃ���AEAX���W�X�^
-�ɏ��4�o�C�g�AEDX���W�X�^�ɉ���4�o�C�g������B100ns��1�Ȃ̂ŁA1�b��1000
-0000�A60�b��600000000�i0x23C34600�j�ƂȂ�B
+　GetSystemTimeAsFileTime関数は、引数の構造体（8バイト）に、100ns（ナノセ
+カンド）単位の時間を入れる。上記のバイナリを見て分かるとおり、EAXレジスタ
+に上位4バイト、EDXレジスタに下位4バイトが入る。100nsが1なので、1秒は1000
+0000、60秒は600000000（0x23C34600）となる。
 
------  kernel32.dll�i�ύX��:GetSystemTimeAsFileTime�֐��j
+-----  kernel32.dll（変更後:GetSystemTimeAsFileTime関数）
 00000BE0                 8B FF 55 8B EC A1 18 00 FE 7F 8B 
 00000BF0  15 14 00 FE 7F 3B 05 1C 00 FE 7F 75 ED 8B 4D 08 
 00000C00  89 11 B8 E2 FA C7 01 89 41 04 5D C2 04 00 
 -----
 
------  kernel32.dll�i�ύX��:GetSystemTimeAsFileTime�֐��j
+-----  kernel32.dll（変更後:GetSystemTimeAsFileTime関数）
 008717E5 >/$ 8BFF           MOV EDI,EDI
 008717E7  |. 55             PUSH EBP
 008717E8  |. 8BEC           MOV EBP,ESP
@@ -439,102 +439,102 @@ stemTimeAsFileTime���G�N�X�|�[�g���Ă���B����āA�܂��́Ajvm.dll���o�C�i
 0087180B  \. C2 0400        RETN 4
 -----
 
-�@�ύX���@�͗l�X�����A����̓V���v���ɁA���4�o�C�g���Œ�l�Ƃ����B����
-�ŁA���Ԃ͐i�܂Ȃ��Ȃ�B����āA���܂ł������؂�ɂȂ�Ȃ��B
-�@�Ō�ɁA���̃t�@�C���̃t�@�C������lernel32.dll�Ƃ���B����Ŋ������B
-�@jvm.dll�͂��̕ύX���ꂽlernel32.dll��ǂݏo���A����lernel32.dll���G�N�X
-�|�[�g���Ă���GetSystemTimeAsFileTime�֐����Ăяo���B�������A����GetSyst
-emTimeAsFileTime�֐��́A���4�o�C�g���Œ�̂��ߎ��Ԃ��i�܂Ȃ��B�܂�A�i
-���Ɋ������؂�Ȃ��Ƃ������ƂɂȂ�B����ŃN���b�N�͐����ƂȂ�B
+　変更方法は様々だが、今回はシンプルに、上位4バイトを固定値とした。これ
+で、時間は進まなくなる。よって、いつまでも期限切れにならない。
+　最後に、このファイルのファイル名をlernel32.dllとする。これで完了だ。
+　jvm.dllはこの変更されたlernel32.dllを読み出し、このlernel32.dllがエクス
+ポートしているGetSystemTimeAsFileTime関数を呼び出す。しかし、このGetSyst
+emTimeAsFileTime関数は、上位4バイトが固定のため時間が進まない。つまり、永
+遠に期限が切れないということになる。これでクラックは成功となる。
 
 
-��0x07.) ��������
+■0x07.) さいごに
 
-�@����A���R�ɂ��A��������Ɠ����\�t�g�E�F�A����́i�N���b�N�j�����炵���A
-�������A���ꂼ�ꂪ�܂������قȂ���@�ł���𐬌������Ă������Ƃ���A�x��
-�Ȃ�����AWB vol36�ɖ{�e�L�X�g��ǉ������Ă�������B
-�@��͂ЂƂƂ��Ă��l�X�ȃA�v���[�`������A�ƂĂ��ʔ����Ǝv���B�@���
-��΂��ЂƂ��`�������W���Ă݂Ă͂ǂ����낤���B
+　今回、偶然にも、金床さんと同じソフトウェアを解析（クラック）したらしく、
+しかも、それぞれがまったく異なる方法でそれを成功させていたことから、遅れ
+ながらも、WB vol36に本テキストを追加させてもらった。
+　解析ひとつとっても様々なアプローチがあり、とても面白いと思う。機会があ
+ればぜひともチャレンジしてみてはどうだろうか。
 
 
-
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-
---- ��3��: Windows�V�X�e���v���O���~���O Part2�@�`�f�o�b�O�` ---
-
-���ҁFKenji Aiko
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
+--- 第3章: Windowsシステムプログラミング Part2　〜デバッグ〜 ---
 
-��0x01.) �͂��߂�
+著者：Kenji Aiko
 
-�@���̃e�L�X�g�́AWindows�V�X�e���Ɋւ���v���O���~���O�𒆐S�ɋL�q���Ă�
-��BWinDbg�̓����A�J�[�l�������h�̃f�o�b�O�ASYSENTER�̉�͂Ȃǂ𒆐S�ɉ�
-�����Ă���B
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x02.) WinDbg�̓���
+■0x01.) はじめに
 
-�@�J�[�l�������h�œ��삷��v���O�������f�o�b�O����ɂ́A�J�[�l�����[�h�f
-�o�b�K���K�v�ƂȂ�BWindows���ł̃J�[�l�����[�h�f�o�b�K�́ASoftICE��Wi
-nDbg���L�������ASoftICE�͔̔���~�ƂȂ������߁A���̃e�L�X�g�ł́AWinDbg��
-�g�����Ƃɂ���B
-�@�܂��A���s�p�Ɖ�͗p�ŁA�}�V����2��ƁA�������q���V���A���N���X�P�[�u
-����p�ӂ���B
+　このテキストは、Windowsシステムに関するプログラミングを中心に記述してい
+る。WinDbgの導入、カーネルランドのデバッグ、SYSENTERの解析などを中心に解
+説している。
 
-�V���A���N���X�P�[�u���i�����������́j
+
+■0x02.) WinDbgの導入
+
+　カーネルランドで動作するプログラムをデバッグするには、カーネルモードデ
+バッガが必要となる。Windows環境でのカーネルモードデバッガは、SoftICEとWi
+nDbgが有名だが、SoftICEは販売停止となったため、このテキストでは、WinDbgを
+使うことにする。
+　まず、実行用と解析用で、マシンを2台と、それらを繋ぐシリアルクロスケーブ
+ルを用意する。
+
+シリアルクロスケーブル（↓こういうの）
 http://www.sanwa.co.jp/product/syohin.asp?code=KR-LK3
 
-�i1�j �}�V����2��p�ӂ���i���s�p�Ɖ�͗p�j
-�i2�j �V���A���N���X�P�[�u����2��̃}�V�����q���iCOM1�g�p�j
-�i3�j ���s�p�}�V���ɓK����OS���C���X�g�[���i������WinXPSP2�g�p�j
-�i4�j ���s�p�}�V���ɃC���X�g�[������Ă���OS�́uC:\boot.ini�v���J��
+（1） マシンを2台用意する（実行用と解析用）
+（2） シリアルクロスケーブルで2台のマシンを繋ぐ（COM1使用）
+（3） 実行用マシンに適当なOSをインストール（自分はWinXPSP2使用）
+（4） 実行用マシンにインストールされているOSの「C:\boot.ini」を開く
 
------  �R�}���h�v�����v�g
+-----  コマンドプロンプト
 C:\> attrib -r -s -h boot.ini
 C:\> notepad boot.ini
 -----
 
------  boot.ini�i�ύX�O�j
+-----  boot.ini（変更前）
 1: [boot loader]
 2: timeout=30
 3: default=multi(0)disk(0)rdisk(0)partition(1)\WINDOWS
 4: [operation system]
-5: multi(0)disk(0)rdisk(0)partition(1)\WINDOWS="�i�ȗ��j" /fastdetect
+5: multi(0)disk(0)rdisk(0)partition(1)\WINDOWS="（省略）" /fastdetect
 -----
 
-�i5�j boot.ini�̍Ō��1�s�ǉ��i�ȉ���2�s�ɂȂ��Ă��邪�A���ۂ�1�s�Ƃ���j
+（5） boot.iniの最後に1行追加（以下は2行になっているが、実際は1行とする）
 
------  boot.ini�i�ύX��j
+-----  boot.ini（変更後）
 1: [boot loader]
 2: timeout=30
 3: default=multi(0)disk(0)rdisk(0)partition(1)\WINDOWS
 4: [operation system]
-5: multi(0)disk(0)rdisk(0)partition(1)\WINDOWS="�i�ȗ��j" /fastdetect
-6: multi(0)disk(0)rdisk(0)partition(1)\WINDOWS="�i�ȗ��j" /fastdetect
+5: multi(0)disk(0)rdisk(0)partition(1)\WINDOWS="（省略）" /fastdetect
+6: multi(0)disk(0)rdisk(0)partition(1)\WINDOWS="（省略）" /fastdetect
 6:  /debug /debugport=com1 /baudrate=115200
 -----
 
-�i6�j boot.ini�ۑ��i����Ŏ��s�p�}�V���̐ݒ�I���j
-�i7�j ��͗p�}�V����WinDbg���C���X�g�[���AWinDbg���N��
+（6） boot.ini保存（これで実行用マシンの設定終了）
+（7） 解析用マシンにWinDbgをインストール、WinDbgを起動
 
-�@�����ŁAWinDbg�ɃV���{���̃p�X��ݒ肵�Ă����B�܂��A�uc:\tmp�v�Ƃ����t
-�H���_���쐬�BWinDbg�̃��j���[����uFile�v���uSymbol File Path�v���J���B
-�����āA�uSymbol Path�v�̓��͗��Ɂusrv*c:\tmp*http://msdl.microsoft.com/
-download/symbols�v��ݒ肷��B
-�@�����̐ݒ�́AWinDbg�̋N���ɂ͒��ډe�����Ȃ����A����Ă����ƌ�X�֗��B
+　ここで、WinDbgにシンボルのパスを設定しておく。まず、「c:\tmp」というフ
+ォルダを作成。WinDbgのメニューから「File」→「Symbol File Path」を開く。
+そして、「Symbol Path」の入力欄に「srv*c:\tmp*http://msdl.microsoft.com/
+download/symbols」を設定する。
+　これらの設定は、WinDbgの起動には直接影響しないが、やっておくと後々便利。
 
-�i8�j ���j���[����uFile�v���uKernel Debug�v���uCOM�v��\��
-�i9�j Baud Rate��115200�APort��com1�AReconnect�Ƀ`�F�b�N�A�ŁuOK�v
+（8） メニューから「File」→「Kernel Debug」→「COM」を表示
+（9） Baud Rateを115200、Portをcom1、Reconnectにチェック、で「OK」
 
-�@�����WinDbg���҂���Ԃɓ���B���s�p�}�V�����ċN������ƁAOS�̑I�����
-���\�������Bboot.ini�̐ݒ�ɂ��udebugger enabled�v���[�h�ŋN���\��
-�Ȃ�B�udebugger enabled�v���[�h�ŋN������ƁA��͗p�}�V����WinDbg������
-����B
-�@�҂���Ԃ�����WinDbg���������A���̂悤�ȕ����񂪕\�������B
+　これでWinDbgが待ち状態に入る。実行用マシンを再起動すると、OSの選択画面
+が表示される。boot.iniの設定により「debugger enabled」モードで起動可能に
+なる。「debugger enabled」モードで起動すると、解析用マシンのWinDbgが反応
+する。
+　待ち状態だったWinDbgが反応し、次のような文字列が表示される。
 
 -----  WinDbg
 Microsoft (R) Windows Debugger  Version 6.6.0007.5
@@ -551,9 +551,9 @@ Built by: 2600.xpsp_sp2_rtm.040803-2158
 Kernel base = 0x804d9000 PsLoadedModuleList = 0x8055cb20
 -----
 
-�@�g�������n�߂Ƃ����A�R�}���h�̃w���v�́A�u?�v����͂���Ε�����BWinDb
-g�̃��j���[����uDebug�v���uBreak�v�Ŏ��s�pOS���~�߂āA�ȉ��̃R�}���h���
-�́B
+　使い方を始めとした、コマンドのヘルプは、「?」を入力すれば分かる。WinDb
+gのメニューから「Debug」→「Break」で実行用OSを止めて、以下のコマンドを入
+力。
 
 -----  WinDbg
 kd> ?
@@ -571,57 +571,57 @@ DV [<name>] - dump local variables
 E[type] <address> [<values>] - enter memory values
 G[H|N] [=<address> [<address>...]] - go
 K <count> - stacktrace
-�c
-�i�ȗ��j
-�c
+…
+（省略）
+…
 -----
 
-�@�����WinDbg�̓����͊����B
+　これでWinDbgの導入は完了。
 
 
-��0x03.) API����J�[�l���ւ̓�
+■0x03.) APIからカーネルへの道
 
-�@kernel32.dll��user32.dll���񋟂��Ă���ʏ��API�Q�Ƃ͈Ⴂ�A�J�[�l������
-���삷��API�Q���G�N�X�|�[�g���Ă���̂��A ntdll.dll�ł���B�����āAAPI��
-�яo���ɔ����āA���[�U�[�����h����J�[�l�����ɏ������ڂ�ߒ��́A�uApplic
-ation�v�� �ukernel32.dll�v���untdll.dll�v���uKERNEL�v�ƂȂ�B
-�@ntdll.dll���G�N�X�|�[�g���Ă���ZwCreateFile�֐��̌Ăяo���\���͈ȉ��B
+　kernel32.dllやuser32.dllが提供している通常のAPI群とは違い、カーネル側で
+動作するAPI群をエクスポートしているのが、 ntdll.dllである。そして、API呼
+び出しに伴って、ユーザーランドからカーネル側に処理が移る過程は、「Applic
+ation」→ 「kernel32.dll」→「ntdll.dll」→「KERNEL」となる。
+　ntdll.dllがエクスポートしているZwCreateFile関数の呼び出し構造は以下。
 
------  ntdll.dll�iZwCreateFile�Ăяo���j
+-----  ntdll.dll（ZwCreateFile呼び出し）
 7C94D682 >/$ B8 25000000    MOV EAX,25
 7C94D687  |. BA 0003FE7F    MOV EDX,7FFE0300
 7C94D68C  |. FF12           CALL DWORD PTR DS:[EDX]
 7C94D68E  \. C2 2C00        RETN 2C
 -----
 
-�@7FFE0300�ɂ���f�[�^�́u8B EB 94 7C�v�Ȃ̂ŁA7C94EB8B�֔�ԁB
+　7FFE0300にあるデータは「8B EB 94 7C」なので、7C94EB8Bへ飛ぶ。
 
------  ntdll.dll�i7C94D68C��CALL�̐�j
+-----  ntdll.dll（7C94D68CのCALLの先）
 7C94EB8B >/$ 8BD4           MOV EDX,ESP
 7C94EB8D  |. 0F34           SYSENTER
 -----
 
-�@eax���W�X�^���A�V�X�e���R�[���e�[�u���̊֐��Ăяo���ԍ��i���ʔԍ��j�B
-�������AWindows�̃o�[�W�����ɂ���ĕς��\���A���B�܂��A WindowsNT/20
-00�ł́uint 0x2e�v���g�����AWindowsXP/2003�ix86�n�j�ł́Asysenter���߂��g
-�p����B
-�@SYSENTER�����s���ꂽ���_�ŁA�������J�[�l���ֈڂ�BSYSENTER�ɂ��ẮA
-�uint 2E/sysenter/syscall�l�@�v���A�ȉ��̏���������B
+　eaxレジスタが、システムコールテーブルの関数呼び出し番号（識別番号）。
+ただし、Windowsのバージョンによって変わる可能性アリ。また、 WindowsNT/20
+00では「int 0x2e」を使うが、WindowsXP/2003（x86系）では、sysenter命令を使
+用する。
+　SYSENTERが実行された時点で、処理がカーネルへ移る。SYSENTERについては、
+「int 2E/sysenter/syscall考察」より、以下の処理が走る。
 
-int 2E/sysenter/syscall�l�@
+int 2E/sysenter/syscall考察
 http://www.marbacka.net/asm64/arkiv/int2e_sysenter_syscall.html
 
------�@sysenter���s���̏������e
-�i1�jCS���W�X�^��SYSENTER_CS_MSR(MSR-174H)�̒l�����[�h
-�i2�jEIP���W�X�^��SYSENTER_EIP_MSR(MSR-176H)�̒l�����[�h
-�i3�jSS���W�X�^��SYSENTER_CS_MSR�̒l��8�����Z�����l�����[�h
-�i4�jESP���W�X�^��SYSENTER_ESP_MSR(MSR-175H)�̒l�����[�h
-�i5�j�������x��0�ɐ؂�ւ��āA�J�[�l�����[�h���[�`���̎��s���J�n
+-----　sysenter実行時の処理内容
+（1）CSレジスタにSYSENTER_CS_MSR(MSR-174H)の値をロード
+（2）EIPレジスタにSYSENTER_EIP_MSR(MSR-176H)の値をロード
+（3）SSレジスタにSYSENTER_CS_MSRの値に8を加算した値をロード
+（4）ESPレジスタにSYSENTER_ESP_MSR(MSR-175H)の値をロード
+（5）特権レベル0に切り替えて、カーネルモードルーチンの実行を開始
 -----
 
-�@�v����ɁA�X�^�b�N�ɂ͐ς܂��A���ꂼ��̃��W�X�^��MSR�̒l�����āA�J�[
-�l�����[�h�֓����Ă��邾�����BMSR�̒l�́AWinDbg�Ŋm�F�ł���BWinDbg�̃��j
-���[����uDebug�v���uBreak�v�Ŏ��s�pOS���~�߂āA�ȉ��̃R�}���h����́B
+　要するに、スタックには積まず、それぞれのレジスタにMSRの値を入れて、カー
+ネルモードへ入っているだけだ。MSRの値は、WinDbgで確認できる。WinDbgのメニ
+ューから「Debug」→「Break」で実行用OSを止めて、以下のコマンドを入力。
 
 -----  WinDbg
 msr[174] = 00000000`00000008
@@ -631,8 +631,8 @@ kd> rdmsr 176
 msr[176] = 00000000`804e0f6f
 -----
 
-�@EIP���W�X�^�ɓ������l�iSYSENTER_EIP_MSR�j��804e0f6f�ł��邱�Ƃ�����
-��B����āA���̃A�h���X�̃R�[�h���o�͂���B
+　EIPレジスタに入れられる値（SYSENTER_EIP_MSR）は804e0f6fであることが分か
+る。よって、このアドレスのコードを出力する。
 
 -----  WinDbg
 kd> u 804e0f6f
@@ -647,16 +647,16 @@ nt!KiFastCallEntry:
 804e0f85 6a23            push    23h
 -----
 
-�@���ꂪSYSENTER���Ă΂ꂽ�Ƃ��̃J�[�l�����̏����ƂȂ�B
+　これがSYSENTERが呼ばれたときのカーネル側の処理となる。
 
 
-��0x04.) SYSENTER�t�b�N
+■0x04.) SYSENTERフック
 
-�@WinDbg�𗘗p���āASYSENTER���t�b�N����BSYSENTER�ɂ��EIP�̕ύX�́AMSR
-���Q�Ƃ��čs���邽�߁AMSR�̒l�����炩���ߕύX���Ă������ƂŁASYSENTER��
-�t�b�N���\�ƂȂ�B
-�@�܂��́A���g�̃R�[�h�����邽�߂̗̈���J�[�l����ԂɊm�ۂ���B���̃h
-���C�o���쐬����B
+　WinDbgを利用して、SYSENTERをフックする。SYSENTERによるEIPの変更は、MSR
+を参照して行われるため、MSRの値をあらかじめ変更しておくことで、SYSENTERの
+フックが可能となる。
+　まずは、自身のコードを入れるための領域をカーネル空間に確保する。次のド
+ライバを作成する。
 
 ----  rk_empty.c
 #include <ntddk.h>
@@ -683,15 +683,15 @@ NTSTATUS DriverEntry(IN PDRIVER_OBJECT pDriverObject,
 }
 -----
 
-�@DriverEntry�ɓK���Ȑ���NOP����ꂽ�B���̃h���C�o���C���X�g�[������ƁA
-DriverEntry�̃A�h���X��WinDbg�ɕ\�������B
+　DriverEntryに適当な数のNOPを入れた。このドライバをインストールすると、
+DriverEntryのアドレスがWinDbgに表示される。
 
 -----  WinDbg
 rk_empty: DriverEntry = fa10f4d4
 -----
 
-�@���̃A�h���X�ȍ~�̂ǂ����ɁANOP��6�o�C�g�A�����Ă���̈悪����͂��Ȃ�
-�ŁA�t�A�Z���u�����ĒT���B
+　このアドレス以降のどこかに、NOPが6バイト連続している領域があるはずなの
+で、逆アセンブルして探す。
 
 -----  WinDbg
 kd> u fa10f4d4
@@ -706,44 +706,44 @@ fa10f4dc 90              nop
 fa10f4dd 90              nop
 -----
 
-�@�A�h���Xfa10f4d9�ȍ~�ɂ́ANOP��6�o�C�g���邽�߁A�����ɔC�ӂ̃R�[�h���
-�����B
+　アドレスfa10f4d9以降には、NOPが6バイトあるため、ここに任意のコードを入
+れられる。
 
 -----  WinDbg
 kd> rdmsr 176
 msr[176] = 00000000`804e0f6f
 -----
 
-�@���݂�SYSENTER�̃W�����v���804e0f6f�ƂȂ��Ă���B���ꂪ�I���W�i���A�h
-���X�ł��邽�߁Afa10f4d9�ȍ~��6�o�C�g�ɁA�uJMP 804e0f6f�v�Ƃ������߂�ǉ�
-����BWinDbg�̃��j���[����uView�v���uMemory�v�Ń������̏�Ԃ��Q�Ƃł���B
-�����Ɂufa10f4d4�v�Ɠ��͂���΁Afa10f4d4�ȍ~�̃������̏�Ԃ��\�������B
+　現在のSYSENTERのジャンプ先は804e0f6fとなっている。これがオリジナルアド
+レスであるため、fa10f4d9以降の6バイトに、「JMP 804e0f6f」という命令を追加
+する。WinDbgのメニューから「View」→「Memory」でメモリの状態が参照できる。
+ここに「fa10f4d4」と入力すれば、fa10f4d4以降のメモリの状態が表示される。
 
------  WinDbg�iMemory�j
+-----  WinDbg（Memory）
 fa10f4d4  8b ff 55 8b ec 90 90 90 90 90 90 68 d4 f4 10 fa 68 b0
 fa10f4e6  f4 10 fa e8 18 00 00 00 8b 45 08 59 c7 40 34 a2 f4 10
 fa10f4f8  fa 59 33 c0 5d c2 08 00 cc cc cc cc cc cc ff 25 84 f5
 ..........
 -----
 
-�@6�o�C�g��NOP������擪�A�h���Xfa10f4d9����A804e0f6f�փW�����v���閽��
-�Ȃ̂ŁA�L�q����}�V�����
+　6バイトのNOPがある先頭アドレスfa10f4d9から、804e0f6fへジャンプする命令
+なので、記述するマシン語は
 
 -----
 100000000 - ((fa10f4d9 - 804e0f6f) + 5) = 863d1a91
 -----
 
-�ƂȂ�A���ʁuE9 91 1a 3d 86�v�ƂȂ�B�����āAfa10f4d9�ȍ~��5�o�C�g�ɂ���
-JMP���߂��L�q����B
+となり、結果「E9 91 1a 3d 86」となる。そして、fa10f4d9以降の5バイトにこの
+JMP命令を記述する。
 
------  WinDbg�iMemory�j
+-----  WinDbg（Memory）
 fa10f4d4  8b ff 55 8b ec e9 91 1a 3d 86 90 68 d4 f4 10 fa 68 b0
 fa10f4e6  f4 10 fa e8 18 00 00 00 8b 45 08 59 c7 40 34 a2 f4 10
 fa10f4f8  fa 59 33 c0 5d c2 08 00 cc cc cc cc cc cc ff 25 84 f5
 ..........
 -----
 
-�@�����āA�ēx�t�A�Z���u�����Ċm�F����B
+　そして、再度逆アセンブルして確認する。
 
 -----  WinDbg
 kd> u fa10f4d4
@@ -758,9 +758,9 @@ fa10f4e4 68b0f410fa      push    offset rk_empty!OnUnload+0xe (fa10f4b0)
 fa10f4e9 e818000000      call    rk_empty!DbgPrint (fa10f506)
 -----
 
-�@���܂��Afa10f4d9�ɁA�I���W�i���i804e0f6f�j�փW�����v���閽�߂��L�q����
-�Ă���B���Ƃ́AMSR�̒l��fa10f4d9�ɕύX���邱�ƂŁASYSENTER���Ark_empty��
-DriverEntry��ʂ邱�ƂɂȂ�B
+　うまく、fa10f4d9に、オリジナル（804e0f6f）へジャンプする命令が記述され
+ている。あとは、MSRの値をfa10f4d9に変更することで、SYSENTERが、rk_emptyの
+DriverEntryを通ることになる。
 
 -----  WinDbg
 kd> wrmsr 176 fa10f4d9
@@ -769,10 +769,10 @@ msr[176] = 00000000`fa10f4d9
 kd> g
 -----
 
-�@Windows�͐���ɓ��삷��B�������A�������̈�́A�����瑤���p�ӂ���rk_em
-pty��DriverEntry�𗘗p���Ă��邽�߁Ark_empty��OS����A�����[�h������A�W
-�����v�悪�Ȃ��Ȃ�AOS���t���[�Y���Ă��܂��B
-�@�����ɁArk_empty���A�����[�h����ƁA�ȉ��̃��b�Z�[�W���\�����ꂽ�B
+　Windowsは正常に動作する。ただし、メモリ領域は、こちら側が用意したrk_em
+ptyのDriverEntryを利用しているため、rk_emptyをOSからアンロードしたら、ジ
+ャンプ先がなくなり、OSがフリーズしてしまう。
+　試しに、rk_emptyをアンロードすると、以下のメッセージが表示された。
 
 -----  WinDbg
 rk_empty: OnUnload called.
@@ -789,8 +789,8 @@ Debugger entered on first try; Bugcheck callbacks have not been invoked.
 A fatal system error has occurred.
 -----
 
-�@����āArk_empty���A�����[�h����ꍇ�́A�K���AMSR�̃A�h���X�����ɖ߂���
-�����K�v������B
+　よって、rk_emptyをアンロードする場合は、必ず、MSRのアドレスを元に戻して
+おく必要がある。
 
 -----  WinDbg
 kd> wrmsr 176 804e0f6f
@@ -798,102 +798,102 @@ kd> rdmsr 176
 msr[176] = 00000000`804e0f6f
 -----
 
-�@����ŁA���ʂ�ƂȂ�B
+　これで、元通りとなる。
 
 
-��0x05.) ��������
+■0x05.) さいごに
 
-�@�����WinDbg��SYSENTER�̃W�����v���ύX�����������������A���p���l����
-�Ȃ�΁ASYSENTER�̌Ăяo�������ׂă��O�ɕۑ�����Ȃǂ��\�ł���B�܂��A
-SYSENTER�t�b�N���K�v�ȏ�ʂ��A����قǂ���Ƃ͎v���Ȃ����A�Ȃ��Ȃ��y����
-����e�������Ǝv���B
+　今回はWinDbgでSYSENTERのジャンプ先を変更しただけだったが、実用を考える
+ならば、SYSENTERの呼び出しをすべてログに保存するなども可能である。まぁ、
+SYSENTERフックが必要な場面が、それほどあるとは思えないが、なかなか楽しめ
+る内容だったと思う。
 
 
-
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-
---- ��4��: ���o�[�X�G���W�j�A�����O���H khallenge�ւ̃`�������W ����1 ---
-
-���ҁFGreen boy 4
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
+--- 第4章: リバースエンジニアリング実践 khallengeへのチャレンジ その1 ---
 
-��0x01.) �͂��߂�
+著者：Green boy 4
 
-�@�͂��߂܂��āBGreen boy4�Ɛ\���܂��B���߂ē��e�������܂��B���S�҂�No S
-kill�ł����ASkill up�̂��߂ɕ׋����ł��̂ŁA�ǂ�����낵�����肢���܂��B
-
-�@�����g�����낢��ƃo�^�o�^���Ă������߁A���͂��܂Ƃ߂�̂Ɏ��Ԃ�������A
-������Ə{���߂��Ă��܂����Akhallenge 2007�l�^�������Ă������l���̃u���O
-��q�������Ƃ���A������߂Ă��܂����������������悤�Ȃ̂ŁA���������b
-�ɂȂ��Ă���Wizard Bible��ʂ��ĊF�l�ɍv���ł���΂Ǝv���A���e�������܂�
-���B
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x02.) Khallenge�Ƃ́H
+■0x01.) はじめに
 
-�@���āA2007�N8���^���ɁuF-Secure Reverse Engineering Challenge 2007(�ʏ�
-khallenge 2007)�v���J�Â���܂����B����͈ꌾ�Ō����ƁA�������ԓ���crack
-me�̂悤�Ȃ��̂Ȃ̂��������N���A����Q�[���Ƃ����������Ȃ̂ł����A����
-�ł�����Ƙb��ɂȂ��Ă����̂ŁA�������킵�Ă݂܂����B
+　はじめまして。Green boy4と申します。初めて投稿いたします。初心者でNo S
+killですが、Skill upのために勉強中ですので、どうぞよろしくお願いします。
 
-�@�����ł���http://www.khallenge.com/�ɃA�N�Z�X����ƁALevel1�̃o�C�i��
-�ւ̃����N���\��ꂽ�y�[�W���\������܂��̂ŁALevel1���_�E�����[�h���ĉ�
-�͂��܂��B
+　私自身がいろいろとバタバタしていたため、文章をまとめるのに時間がかかり、
+ちょっと旬を過ぎていますが、khallenge 2007ネタを書いていた何人かのブログ
+を拝見したところ、あきらめてしまった方が多かったようなので、いつもお世話
+になっているWizard Bibleを通じて皆様に貢献できればと思い、投稿いたしまし
+た。
 
-�@��͂ɐ�������ƃ��[���A�h���X���\������܂��̂ŁA�擾�������[���A�h��
-�X�փ��[���𑗐M����ƁA�����̏ꍇ�͎��̃��x���ւ̃_�E�����[�h�����N�t��
-�̃��[�����ԐM����Ă��܂��B������܂���͂��A���[���𑗐M���܂��B���̌J
-��Ԃ��ŁA�`�������W��Level3�܂ő��݂��܂��B
 
-�@�������c�O�Ȃ���A��LURL�͌��݂ł͂��łɃA�N�Z�X�ł��Ȃ��Ȃ��Ă��܂����A
-��͂��ă��[���A�h���X�𓾂āA�����Ƀ��[���𑗐M���Ă��ԐM����Ȃ��Ǝv��
-�܂��B�ł����A�ȉ���URL�ɃA�N�Z�X����΁A�o�C�i���͓���\�ł��̂ŁA����
-�������̂�����͒��킵�Ă݂Ă͂������ł��傤���H
+■0x02.) Khallengeとは？
+
+　さて、2007年8月某日に「F-Secure Reverse Engineering Challenge 2007(通称
+khallenge 2007)」が開催されました。これは一言で言うと、制限時間内にcrack
+meのようなものなのをいくつかクリアするゲームといった感じなのですが、内輪
+でちょっと話題になっていたので、私も挑戦してみました。
+
+　やり方ですがhttp://www.khallenge.com/にアクセスすると、Level1のバイナリ
+へのリンクが貼られたページが表示されますので、Level1をダウンロードして解
+析します。
+
+　解析に成功するとメールアドレスが表示されますので、取得したメールアドレ
+スへメールを送信すると、正解の場合は次のレベルへのダウンロードリンク付き
+のメールが返信されてきます。それをまた解析し、メールを送信します。この繰
+り返しで、チャレンジはLevel3まで存在します。
+
+　ただし残念ながら、上記URLは現在ではすでにアクセスできなくなっていますし、
+解析してメールアドレスを得て、そこにメールを送信しても返信されないと思い
+ます。ですが、以下のURLにアクセスすれば、バイナリは入手可能ですので、もし
+ご興味のある方は挑戦してみてはいかがでしょうか？
 
 http://www.f-secure.com/security_center/asm.html
 
-�@Level3�͕��͂����ɒ����Ȃ�̂Ŏ���ȍ~�ɔ��\����Ƃ��āA����̓E�H�[
-���A�b�v����ɁALevel1��2�����{���Ă݂����Ǝv���܂��B
+　Level3は文章が非常に長くなるので次回以降に発表するとして、今回はウォー
+ムアップ代わりに、Level1と2を実施してみたいと思います。
 
 
-��0x03.) ��
+■0x03.) 環境
 
-�@����A���͈ȉ��̊��Ŏ��{���܂����B
+　今回、私は以下の環境で実施しました。
 
-�EOS�FWindows XP Pro SP2
-�EDebugger�FOllyDbg�ihttp://www.ollydbg.de/�j
-�EDebugger Plugin�FOllyDump
+・OS：Windows XP Pro SP2
+・Debugger：OllyDbg（http://www.ollydbg.de/）
+・Debugger Plugin：OllyDump
 
-��DokoDon���񂪃T�C�g��߂Ă��܂��Ă���悤�Ȃ̂ŁAgoogle�Ȃǂ��猟����
-�ă_�E�����[�h���Ă��������B
+※DokoDonさんがサイトを閉めてしまっているようなので、googleなどから検索し
+てダウンロードしてください。
 
-�@�܂��A�ł����IDA Pro������΃O���t�@�\��Disassemble�@�\�����͂Ȃ̂Ō�
-���ʂŗL���ł����A�K�{�ł͂���܂���B�O���t�@�\�𗘗p�������̂ł���΁A
-OllyGraph��OllyFlow�A���ꂩ��Immunity Debugger�ŕ\�����邱�Ƃ��\�Ȃ̂ŁA
-���킹�ė��p���Ă݂�̂��ЂƂ̎肾�Ǝv���܂��B
+　また、できればIDA Proがあればグラフ機能やDisassemble機能が強力なので効
+率面で有利ですが、必須ではありません。グラフ機能を利用したいのであれば、
+OllyGraphやOllyFlow、それからImmunity Debuggerで表示することも可能なので、
+合わせて利用してみるのもひとつの手だと思います。
 
 http://www.immunitysec.com/products-immdbg.shtml
 
-�@�������AOllyGraph��OllyFlow��wingraph32���K�v�ł��BIDA Pro�̃y�[�W�Ń\
-�[�X�R�[�h�̓_�E�����[�h�\�ł����A�R���p�C���ɂ�Borland CBuilder v5���K
-�v�ł��B�܂��A���̊��ł�OllyGraph��OllyFlow�𓮍삳�����Ƃ���A���܂���
-�삵���肵�Ȃ������肾�����̂ŁA�ǂ��܂Ŏg���邩�͖��m���ł��B
+　ただし、OllyGraphやOllyFlowはwingraph32が必要です。IDA Proのページでソ
+ースコードはダウンロード可能ですが、コンパイルにはBorland CBuilder v5が必
+要です。また、私の環境ではOllyGraphやOllyFlowを動作させたところ、うまく動
+作したりしなかったりだったので、どこまで使えるかは未知数です。
 
 
-��0x04.) �܂����s
+■0x04.) まず実行
 
-�@���āA���ɑO�u���������Ȃ��Ă��܂��܂������A�{��ɓ���܂��B
-�@�܂�Level1�̃o�C�i�����_�E�����[�h���Ă����ނ�Ɏ��s���܂��B
+　さて、非常に前置きが長くなってしまいましたが、本題に入ります。
+　まずLevel1のバイナリをダウンロードしておもむろに実行します。
 
-�@�{���̃��o�[�X�G���W�j�A�����O�ł���΁A�܂�PEiD�Ńp�b�J�[�̗L�����`�F
-�b�N������Astrings�R�}���h�œ����镶������m�F���āc�A�ƂȂ�Ƃ���ł�
-���A����͂��V�тȂ̂ŁA�����������c�b�R�~�͂Ȃ��̕����ł��肢���܂� ;-)
+　本当のリバースエンジニアリングであれば、まずPEiDでパッカーの有無をチェ
+ックしたり、stringsコマンドで得られる文字列を確認して…、となるところです
+が、今回はお遊びなので、そういったツッコミはなしの方向でお願いします ;-)
 
------�@FSC_Level1.exe���s���
+-----　FSC_Level1.exe実行画面
 Assembly 2007 Reverse-Engineering Challenge - Level 1
 Copyright (c) 2007 F-Secure Corporation
 
@@ -903,27 +903,27 @@ http://www.f-secure.com/security_center/asm.html
 Enter the key:
 -----
 
-�@Key�̓��͂𑣂���ʂ��o�Ĉꎞ��~���܂����B
-�@�Ƃ肠�����A�K���ȕ��������͂����Ƃ���A�ȉ��̃��b�Z�[�W���\�������
-�����B
+　Keyの入力を促す画面が出て一時停止しました。
+　とりあえず、適当な文字列を入力したところ、以下のメッセージが表示されま
+した。
 
 
------�@���͌�ɕ\�����ꂽ���b�Z�[�W
+-----　入力後に表示されたメッセージ
 Sorry, this key is not valid!
 Press enter to terminate...
 -----
 
-�@���R�ł����AKey�������Ă��Ȃ��̂ŁA���[���A�h���X���\������܂���ł����B
+　当然ですが、Keyがあっていないので、メールアドレスが表示されませんでした。
 
-�@�ł�OllyDbg�œǂݍ���ł݂܂��傤�B 
+　ではOllyDbgで読み込んでみましょう。 
 
 
-��0x05.) OllyDbg�œǂݍ���Ŏ��s
+■0x05.) OllyDbgで読み込んで実行
 
-�@�Ƃ肠�����AOllyDbg��FSC_Level1.exe���h���b�O���h���b�v���Ă���A������
-���߂Ă݂܂��B����ƁA����Key�̓��͏���������������܂����B
+　とりあえず、OllyDbgにFSC_Level1.exeをドラッグ＆ドロップしてから、ざっと
+眺めてみます。すると、すぐKeyの入力処理部分が見つかりました。
 
------�@OllyDbg��CPU�E�B���h�E�i69001056�t�߁j
+-----　OllyDbgのCPUウィンドウ（69001056付近）
 69001056  |.  68 20300069   PUSH FSC_Leve.69003020                   ; /format = "Assembly 2007 Reverse-Engineering Challenge - Level 1
 Copyright (c) 2007 F-Secure Corporation
 
@@ -937,105 +937,105 @@ Enter the key: "
 69001067  |.  FF15 7C200069 CALL DWORD PTR DS:[<&MSVCR71.scanf>]     ; \scanf
 -----
 
-�@�܂��AKey�Ɠ��͒l���r���Ă���̂͂ǂ����ȁH�ƒT�����Ƃ���A����܂���
-�̂�����ɂ���̂𔭌����܂����B
+　また、Keyと入力値を比較しているのはどこかな？と探したところ、これまたそ
+のすぐ後にあるのを発見しました。
 
------�@OllyDbg��CPU�E�B���h�E�i690010BF�t�߁j
+-----　OllyDbgのCPUウィンドウ（690010BF付近）
 690010BF  |.  68 10330069   PUSH FSC_Leve.69003310                   ; /s2 = ""
 690010C4  |.  68 A0310069   PUSH FSC_Leve.690031A0                   ; |s1 = ""
 690010C9  |.  FF15 88200069 CALL DWORD PTR DS:[<&MSVCR71._stricmp>]  ; \_stricmp
 690010CF  |.  83C4 3C       ADD ESP,3C
-690010D2  |.  85C0          TEST EAX,EAX                             ; ��v���Ă�����eax=0
-690010D4  |.  75 1D         JNZ SHORT FSC_Leve.690010F3              : 0�̏ꍇ�̓W�����v����
-690010D6  |.  68 10330069   PUSH FSC_Leve.69003310                   ; s2�̒l��PUSH
+690010D2  |.  85C0          TEST EAX,EAX                             ; 一致していたらeax=0
+690010D4  |.  75 1D         JNZ SHORT FSC_Leve.690010F3              : 0の場合はジャンプせず
+690010D6  |.  68 10330069   PUSH FSC_Leve.69003310                   ; s2の値をPUSH
 690010DB  |.  68 E8300069   PUSH FSC_Leve.690030E8                   ;  ASCII "
 Congratulations! Please send an e-mail to ThisIs%s@khallenge.com
 Press enter to terminate...
 "
 -----
 
-�@690010C9�ł�stricmp�Ŕ�r���A�����񂪈�v���Ă����ꍇ�i�߂�l�ł���eax
-�ɂ�0������̂Łj�́A690010D2��D4�̔���ł̓W�����v�����ɂ��̂܂܎��̖���
-�i690010D6�j�ɐi�ނƂ��������̂悤�ł��B�����ɂ́uCongratulations!�`�v��
-������������̂ŁA�������`�F�b�N�|�C���g�ƂȂ�悤�ł��B�Ƃ������ƂŁA��
-���Ƀu���[�N�|�C���g�𒣂��Ĉ����̏�Ԃ����Č��܂��傤�B�u���[�N�|�C���g
-��690010C9��I����AF2�Őݒ�B���s��F9�ł��B
-�@���s����ƁA�u���[�N�|�C���g�ɒB����O��Key�̓��͂𑣂���̃��b�Z�[�W��
-�\�������̂ŁA����͓K���Ɂuaaaaa�v�Ɠ��͂��Ă݂܂����B���͂��I���ƁA
-�u���[�N�|�C���g��ݒ肵��690010C9�Œ�~�����܂��B
+　690010C9ではstricmpで比較し、文字列が一致していた場合（戻り値であるeax
+には0が入るので）は、690010D2とD4の判定ではジャンプせずにそのまま次の命令
+（690010D6）に進むという処理のようです。そこには「Congratulations!〜」の
+文字が見えるので、ここがチェックポイントとなるようです。ということで、こ
+こにブレークポイントを張って引数の状態を見て見ましょう。ブレークポイント
+は690010C9を選択後、F2で設定。実行はF9です。
+　実行すると、ブレークポイントに達する前にKeyの入力を促す例のメッセージが
+表示されるので、今回は適当に「aaaaa」と入力してみました。入力が終わると、
+ブレークポイントを設定した690010C9で停止しします。
 
------�@�u���[�N�|�C���g���_��CPU�E�B���h�E
+-----　ブレークポイント時点のCPUウィンドウ
 690010BF  |.  68 10330069   PUSH FSC_Leve.69003310                   ; /s2 = "Asm07REC"
 690010C4  |.  68 A0310069   PUSH FSC_Leve.690031A0                   ; |s1 = "aaaaa"
 690010C9  |.  FF15 88200069 CALL DWORD PTR DS:[<&MSVCR71._stricmp>]  ; \_stricmp
 -----
 
-�@��͂�A���͂���������Ɣ�r���Ă���悤�ł��B�Ƃ������Ƃ́A�uAsm07REC�v
-�������̕�����Ȃ̂ł��傤���H�ēx���s���Ă��̕��������͂��Ċm�F���Ă�
-�悤�Ǝv���܂��B
+　やはり、入力した文字列と比較しているようです。ということは、「Asm07REC」
+が正解の文字列なのでしょうか？再度実行してこの文字列を入力して確認してみ
+ようと思います。
 
-�@Ctrl+F2�Ńf�o�b�O�����X�^�[�g���܂��B
+　Ctrl+F2でデバッグをリスタートします。
 
 
-��0x06.) ���������������͂��Ď��s
+■0x06.) 正しい文字列を入力して実行
 
-�@���X�^�[�g��ɍēxF9�Ŏ��s���A���͂��v�����ꂽ�獡�x�́uAsm07REC�v�Ɠ�
-�͂��܂��B�ēx�u���[�N�|�C���g�Œ�~����ƈȉ��̂悤�ɂȂ�܂��B
+　リスタート後に再度F9で実行し、入力が要求されたら今度は「Asm07REC」と入
+力します。再度ブレークポイントで停止すると以下のようになります。
 
------�@�u���[�N�|�C���g���_��CPU�E�B���h�E
+-----　ブレークポイント時点のCPUウィンドウ
 690010BF  |.  68 10330069   PUSH FSC_Leve.69003310                   ; /s2 = "Asm07REC"
 690010C4  |.  68 A0310069   PUSH FSC_Leve.690031A0                   ; |s1 = "Asm07REC"
 690010C9  |.  FF15 88200069 CALL DWORD PTR DS:[<&MSVCR71._stricmp>]  ; \_stricmp
 -----
 
-�@���x�͓��͂��������񂪈�v���Ă��邱�Ƃ��킩��܂��B�ł́AF9�ōŌ�܂�
-���s���Ă݂܂��傤�B
+　今度は入力した文字列が一致していることがわかります。では、F9で最後まで
+実行してみましょう。
 
------�@���͌�ɕ\�����ꂽ���b�Z�[�W
+-----　入力後に表示されたメッセージ
 Congratulations! Please send an e-mail to ThisIsAsm07REC@khallenge.com
 Press enter to terminate...
 -----
 
-�@�����������񂪓���ꂽ�悤�ł��B���̃��[���A�h���X�Ƀ��[���𑗐M������
-����ALevel2�ւ̃����N���\��ꂽ���[�������M����Ă��܂����B
+　正しい文字列が得られたようです。このメールアドレスにメールを送信したと
+ころ、Level2へのリンクが貼られたメールが送信されてきました。
 
 
-��0x07.) ����
+■0x07.) 所感
 
-�@Level1�́A�ȏ�̂悤�ɔ��ɊȒP�ł����B�킩��Ȃ��Ă��AF8�iStep over�j
-�Ȃǂ�1�s���X�e�b�v���s���Ă����ƃR�����g���ɐ������ł��Ă��܂��̂ŁA�f
-�o�b�K�̎g���������킩��ΒN�ł������Ă��܂��悤�Ȗ��ł����B
+　Level1は、以上のように非常に簡単でした。わからなくても、F8（Step over）
+などで1行ずつステップ実行していくとコメント欄に正解ができてしまうので、デ
+バッガの使い方さえわかれば誰でも解けてしまうような問題でした。
 
-�@�}�ɏ��₷�����́A�u�Ȃ񂾁A����Ȓ��x���v�Ǝv���Ă��܂��A���͂���
-���Level2�Ńn�}�邱�ƂɂȂ�̂ł��B
+　図に乗りやすい私は、「なんだ、こんな程度か」と思ってしまい、実はこの
+後のLevel2でハマることになるのです。
 
-�@����ł́A����1�͂��̕ӂŁB
+　それでは、その1はこの辺で。
 
 
-
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-
---- ��5��: ���o�[�X�G���W�j�A�����O���H khallenge�ւ̃`�������W ����2 ---
-
-���ҁFGreen boy 4
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
+--- 第5章: リバースエンジニアリング実践 khallengeへのチャレンジ その2 ---
 
-��0x01.) �͂��߂�
+著者：Green boy 4
 
-�@�܂��܂�Green boy 4�ł��BLevel1�̑O���ɑ����ALevel2�ɂ��ċL�q���܂��B
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x02.) �܂����s
+■0x01.) はじめに
 
-�@Level1���N���A�������߁ALevel2�����{���܂��BLevel2�����s����ƁA���L��
-�e�̃|�b�v�A�b�v���\������܂����A�ǂ��ɂ����͂���悤�ȗ��͂���܂���B
-OK�{�^����������݂̂ł��B
+　またまたGreen boy 4です。Level1の前項に続き、Level2について記述します。
 
------�@�|�b�v�A�b�v�̓��e
+
+■0x02.) まず実行
+
+　Level1をクリアしたため、Level2を実施します。Level2を実行すると、下記内
+容のポップアップが表示されますが、どこにも入力するような欄はありません。
+OKボタンが押せるのみです。
+
+-----　ポップアップの内容
 Assembly 2007 Reverse-Engineering Challenge - Level2
 Copyright (c) 2007 F-Secure Corporation
 
@@ -1044,18 +1044,18 @@ For more information visit
 http://www.f-secure.com/security_center/asm.html
 -----
 
-�@���āA�ǂ��������̂ł��傤���H
-�@��͂肱���́A�f�o�b�K�œǂݍ���ŉ�͂��Ă݂܂��傤�B
+　さて、どうしたものでしょうか？
+　やはりここは、デバッガで読み込んで解析してみましょう。
 
 
-��0x03.) OllyDbg�œǂݍ���
+■0x03.) OllyDbgで読み込み
 
-�@OllyDbg��FSC_Level2.exe���h���b�O���h���b�v���܂��B�|�b�v�A�b�v���\����
-���Ƃ������Ƃ́AMessageBox API�����s���Ă���Ǝv���邽�߁A�܂������
-�T�����Ƃ��܂����BAlt+E��Executable Module���J���AName���uFSC_Leve�v�ƕ\
-�����ꂽ�������N���b�N��ACtrl+N��Name�E�B���h�E���J���܂��傤�B
+　OllyDbgにFSC_Level2.exeをドラッグ＆ドロップします。ポップアップが表示さ
+れるということは、MessageBox APIを実行していると思われるため、まずそれを
+探そうとしました。Alt+EでExecutable Moduleを開き、Nameが「FSC_Leve」と表
+示された部分をクリック後、Ctrl+NでNameウィンドウを開きましょう。
 
------�@FSC_Leve��Name�E�B���h�E
+-----　FSC_LeveのNameウィンドウ
 Names in FSC_Leve
 Address    Section    Type    (  Name                                    Comment
 00407044   UPX2       Import  (  KERNEL32.ExitProcess
@@ -1065,25 +1065,25 @@ Address    Section    Type    (  Name                                    Comment
 0040704C   UPX2       Import  (  USER32.wsprintfA
 -----
 
-�@����5�����\������܂���ł����B�܂��ASection������ƁAUPX�Ƃ���������
-�������܂��B�Ƃ������Ƃ�UPX�Ńp�b�N����Ă��邽�߂ɁA�{����API���\������
-�Ă��Ȃ��Ƃ������Ƃ��\�z�ł��܂��B
+　この5つしか表示されませんでした。また、Sectionを見ると、UPXという文字列
+が見えます。ということはUPXでパックされているために、本来のAPIが表示され
+ていないということが予想できます。
 
-�@UPX�̓p�b�N�A�A���p�b�N���o�����ōs�Ȃ���̂ŁAUPX�ŃA���p�b�N����΂�
-���̂ł����A�����������o�[�X�G���W�j�A�����O�����Ă���̂ŁAOllyDbg�ŃA��
-�p�b�N�����Ă݂܂��傤�B
+　UPXはパック、アンパックが双方向で行なえるので、UPXでアンパックすればよ
+いのですが、せっかくリバースエンジニアリングをしているので、OllyDbgでアン
+パックをしてみましょう。
 
 
-��0x04.) OllyDbg�ŃA���p�b�N
+■0x04.) OllyDbgでアンパック
 
-�@UPX�͑f���ȃp�b�J�[�Ȃ̂ŁA�P���ɃI���W�i���R�[�h����������ɓW�J��A��
-�̃Z�N�V������JMP���܂��B����JMP�悪OEP(�I���W�i���G���g���[�|�C���g)�ɂ�
-��܂��B�܂��AUPX�̂����ЂƂ̓����Ƃ��āAJMP�̒��O�ɂ�POPAD���߂������
-�������ł��B�܂��A�����������܂��B
+　UPXは素直なパッカーなので、単純にオリジナルコードをメモリ上に展開後、そ
+のセクションにJMPします。そのJMP先がOEP(オリジナルエントリーポイント)にな
+ります。また、UPXのもうひとつの特徴として、JMPの直前にはPOPAD命令があるの
+が特徴です。まず、そこを見つけます。
 
-�@Alt+M��Memory map�E�B���h�E���J���܂��B
+　Alt+MでMemory mapウィンドウを開きます。
 
------�@Memory map�E�B���h�E�̓��e
+-----　Memory mapウィンドウの内容
 Memory map
 Address    Size       Owner      Section    Contains      Type   Access    Initial   Mapped as
 00400000   00001000   FSC_Leve              PE header     Imag   R         RWE
@@ -1092,36 +1092,36 @@ Address    Size       Owner      Section    Contains      Type   Access    Initi
 00407000   00001000   FSC_Leve   UPX2       data,imports  Imag   R         RWE
 -----
 
-�@���݁AOllyDbg��4062A0�Œ�~���Ă��邽�߁A406000�̃Z�N�V������UPX��SFX�R
-�[�h�ł��B�܂��A40700��UPX��data��imports�Z�N�V�����ł���A�c���401000��
-�Z�N�V������JMP����͂��Ȃ̂ŁA���̃Z�N�V�����ւ�JMP���߂�POPAD���߂�����
-���܂��B
+　現在、OllyDbgは4062A0で停止しているため、406000のセクションはUPXのSFXコ
+ードです。また、40700はUPXのdataやimportsセクションであり、残りの401000の
+セクションにJMPするはずなので、そのセクションへのJMP命令とPOPAD命令を見つ
+けます。
 
-�@OllyDbg�̃R�}���h�����́Av1.x�ł̓I�y�����h�܂ł�������w�肵�Ȃ��ƃR�}
-���h�������ł��Ȃ��Ƃ������񂪂���܂��B���̂��߁A�I�y�����h�̂���Ȃ�PO
-PAD���������Ă݂܂��BCtrl+F��Find Command�E�B���h�E���J���A�uPOPAD�v�Ɠ�
-�͂��Č������܂��B
+　OllyDbgのコマンド検索は、v1.xではオペランドまできっちり指定しないとコマ
+ンド検索ができないという制約があります。そのため、オペランドのいらないPO
+PADを検索してみます。Ctrl+FでFind Commandウィンドウを開き、「POPAD」と入
+力して検索します。
 
------�@��������1
+-----　検索結果1
 004061F1   . /65:73 73      JNB SHORT FSC_Leve.00406267              ;  Superfluous prefix
 004061F4   . |61            POPAD
 004061F5   . |67:65:42      INC EDX                                  ;  Superfluous prefix
 -----
 
-�@POPAD�̌��JMP���߂��Ȃ��̂ŁA���̏ꏊ�͈Ⴂ�܂��B����āACtrl+L�������A
-���̌������Ă݂܂��B
+　POPADの後にJMP命令がないので、この場所は違います。よって、Ctrl+Lを押し、
+次の候補を見てみます。
 
------�@��������2
+-----　検索結果2
 004063BB   > \61            POPAD
 004063BC   .- E9 99AFFFFF   JMP FSC_Leve.0040135A
 004063C1      00            DB 00
 -----
 
-�@�o�܂����BPOPAD��JMP���߂̃R���r�ł���A401000�̃Z�N�V�����ւ�JMP���߂�
-���B����JMP�悪OEP�ɂȂ�̂ŁA�܂������i4063BC�j�Ƀu���[�N�|�C���g�𒣂�
-�Ď��s��AF7��������Step into��1���߂���������i�߂܂��B
+　出ました。POPADとJMP命令のコンビであり、401000のセクションへのJMP命令で
+す。このJMP先がOEPになるので、まずここ（4063BC）にブレークポイントを張っ
+て実行後、F7を押してStep intoで1命令だけ処理を進めます。
 
------�@OEP���ӂ�CPU�E�B���h�E
+-----　OEP周辺のCPUウィンドウ
 0040135A    50              PUSH EAX
 0040135B    35 08714200     XOR EAX,427108
 00401360    1BC2            SBB EAX,EDX
@@ -1135,27 +1135,27 @@ PAD���������Ă݂܂��BCtrl+F��Find Command�E�B���h�E���J���A�uPOPAD�v�Ɠ�
 00401383    0000            ADD BYTE PTR DS:[EAX],AL
 -----
 
-�@�ł́A���̎��_�̃������C���[�W��Dump���AIAT Rebuild����Ƃ�����Ƃ�Oll
-yDump�Ŏ��{���Ă��܂��܂��傤�BPlugin���j���[����OllyDump->Dump Debugged
- Process��I�сA���̂܂�Dump���N���b�N���A�ۑ�����w�肷��΃A���p�b�N��
-���ł��B
+　では、この時点のメモリイメージをDumpし、IAT Rebuildするという作業をOll
+yDumpで実施してしまいましょう。PluginメニューからOllyDump->Dump Debugged
+ Processを選び、そのままDumpをクリックし、保存先を指定すればアンパック完
+成です。
 
-�@�׋��̈Ӗ��ł����ƁA�{����IAT Rebuild�������Ŏ��{����΂悢�̂ł����A��
-��͖ʓ|�Ȃ̂�OllyDump�̋@�\�ōs�Ȃ��Ă��܂��܂����B�����̂�����͂����g
-�Ŏ��{���Ă݂�̂͂������ł��傤���H
+　勉強の意味でいうと、本当はIAT Rebuildも自分で実施すればよいのですが、今
+回は面倒なのでOllyDumpの機能で行なってしまいました。興味のある方はご自身
+で実施してみるのはいかがでしょうか？
 
 
-��0x05.) �A���p�b�N�����t�@�C����OllyDbg�œǂݍ���
+■0x05.) アンパックしたファイルをOllyDbgで読み込み
 
-�@�ł́A�A���p�b�N�������t�@�C����OllyDbg�Ƀh���b�O���h���b�v���Č��Ă݂�
-���傤�BName�E�B���h�E��\�������Ă݂��Ƃ���A���x��GetCommandLine������
-�܂��B
+　では、アンパックをしたファイルをOllyDbgにドラッグ＆ドロップして見てみま
+しょう。Nameウィンドウを表示させてみたところ、今度はGetCommandLineが見え
+ます。
 
-�@����ȊO��API��GetCommandLine��wsprintf�����Ƃ����A�Ȃ�Ƃ��V���v���ȍ\
-���̂悤�ł��BLoadLibrary���Ȃ��̂ŁA����ȏ��API���Ăяo����邱�Ƃ͂�
-�������ł��B
+　それ以外のAPIはGetCommandLineとwsprintfだけという、なんともシンプルな構
+成のようです。LoadLibraryもないので、これ以上のAPIが呼び出されることはな
+さそうです。
 
------�@FSC_Leve��Name�E�B���h�E
+-----　FSC_LeveのNameウィンドウ
 Names in FSC_Leve
 Address    Section    Type    (  Name                                    Comment
 0040305C   UPX0       Import  (  kernel32.GetCommandLineA
@@ -1164,9 +1164,9 @@ Address    Section    Type    (  Name                                    Comment
 00403054   UPX0       Import  (  USER32.wsprintfA
 -----
 
-�@���āA�ēx�G���g���[�|�C���g���ӂ����Ă��������B
+　さて、再度エントリーポイント周辺を見てください。
 
------�@OEP���ӂ�CPU�E�B���h�E
+-----　OEP周辺のCPUウィンドウ
 00401352 > $  33DB          XOR EBX,EBX
 00401354   .  68 5A134000   PUSH FSC_Leve.0040135A
 00401359   .  C3            RETN                                     ;  RET used as a jump to 0040135A
@@ -1182,24 +1182,24 @@ Address    Section    Type    (  Name                                    Comment
 0040137D   .- FF25 5C304000 JMP DWORD PTR DS:[<&kernel32.GetCommandL>;  kernel32.GetCommandLineA
 -----
 
-�@401359��RETN�A401370��RETN�̃R�����g��������ƁA�ʔ������Ƃ������Ă���
-�܂��B
+　401359のRETN、401370のRETNのコメント欄を見ると、面白いことが書いてあり
+ます。
 
------�@401359�̃R�����g��
+-----　401359のコメント欄
 RET used as a jump to 0040135A
 -----
 
-�@����RET���߂�JMP���߂Ƃ��ē��삵�Ă��܂���A��OllyDbg�����f���Ă���̂�
-���BRET���߂̓����̓���I�ɂ́A�X�^�b�N����POP�APOP�����A�h���X�ւ�JMP��
-�̂ŁA���̎��_�ŃX�^�b�N�ɓ����Ă���l�����̔�ѐ�Ƃ����킯�ł��B�܂�A
-�ʏ�̗p�r�ł���ACall���߂ɑΉ�����RET�ł͂Ȃ��A�g���b�L�[�ȃW�����v����
-�Ƃ���RET���g���Ă��܂��B�Ƃ������Ƃ́A401354-401359�A40136B-401370�̖���
-�̃Z�b�g�́A���ꂼ��40135A�ւ�JMP�A401000�ւ�JMP�Ɣ��f�ł���킯�ł��B��
-�̏������e��c������ɂ�F8��������Step���s���Ă������ق����������₷����
-������܂���B�܂��A���̃u���b�N���I�������̔�ѐ�ł���401000�Ɋւ���
-���A�������Ƃ������܂��B
+　このRET命令はJMP命令として動作していますよ、とOllyDbgが判断しているので
+す。RET命令の内部の動作的には、スタックからPOP、POPしたアドレスへのJMPな
+ので、その時点でスタックに入っている値がその飛び先というわけです。つまり、
+通常の用途である、Call命令に対応するRETではなく、トリッキーなジャンプ命令
+としてRETを使っています。ということは、401354-401359、40136B-401370の命令
+のセットは、それぞれ40135AへのJMP、401000へのJMPと判断できるわけです。こ
+の処理内容を把握するにはF8を押してStep実行していったほうが理解しやすいか
+もしれません。また、このブロックが終わった後の飛び先である401000に関して
+も、同じことが言えます。
 
------�@401000����
+-----　401000周辺
 00401000   >  54            PUSH ESP
 00401001   .  890424        MOV DWORD PTR SS:[ESP],EAX
 00401004   .  B8 6D114000   MOV EAX,FSC_Leve.0040116D
@@ -1207,13 +1207,13 @@ RET used as a jump to 0040135A
 0040100C   .  C2 0000       RETN 0
 -----
 
-�@��قǂ�菭�����G�ɂ��Ă��܂����A�����̖��߂�40116D�֒P����JMP����
-�����̏����ł��B���̂��߁A�G���g���[�|�C���g���ӂ��ȉ��̂悤�ɕύX���Ă�
-�����ł��傤�B
+　先ほどより少し複雑にしていますが、これらの命令は40116Dへ単純にJMPする
+だけの処理です。そのため、エントリーポイント周辺を以下のように変更しても
+動くでしょう。
 
------�@OEP���ӂ�������������
+-----　OEP周辺を少しだけ改造
 00401352 > $  33DB          XOR EBX,EBX
-00401354      90            NOP                    ; PUSH��RETN��NOP�Œׂ�
+00401354      90            NOP                    ; PUSHとRETNをNOPで潰す
 00401355      90            NOP
 00401356      90            NOP
 00401357      90            NOP
@@ -1224,34 +1224,34 @@ RET used as a jump to 0040135A
 00401360   .  1BC2          SBB EAX,EDX
 00401362   .  870424        XCHG DWORD PTR SS:[ESP],EAX
 00401365   .  8F05 64204000 POP DWORD PTR DS:[402064]
-0040136B    ^ E9 FDFDFFFF   JMP FSC_Leve.0040116D  ; PUSH��RETN��JMP�ɕύX
+0040136B    ^ E9 FDFDFFFF   JMP FSC_Leve.0040116D  ; PUSHとRETNをJMPに変更
 -----
 
-�@�Ȃ����̂悤�Ȉꌩ����Ɩ��ʂȏ������s�Ȃ��Ă���̂ł��傤���H�@����
-�́A�����ł����A�f�o�b�K��f�B�X�A�Z���u���΍�ł͂Ȃ����ƍl���Ă��܂��B
-�����AOllyDbg�ł̓G���g���[�|�C���g���ӂ�RET���߂����߂��Ă���܂������A
-401000�̏�����JMP���߂̑���ł���Ɣ��肵�Ă���܂���ł����B
+　なぜこのような一見すると無駄な処理が行なわれているのでしょうか？　これ
+は、推測ですが、デバッガやディスアセンブラ対策ではないかと考えています。
+事実、OllyDbgではエントリーポイント周辺のRET命令を解釈してくれましたが、
+401000の処理はJMP命令の代わりであると判定してくれませんでした。
 
-�@�܂��AImmunity Debugger�̃O���t�@�\�Ɏ����ẮA�G���g���[�|�C���g���ӂ�
-RET���߂���JMP�Ƃ͔��肹���ɁA���������̏������O���t���ł��܂���ł����B
+　また、Immunity Debuggerのグラフ機能に至っては、エントリーポイント周辺の
+RET命令すらJMPとは判定せずに、そこから先の処理をグラフ化できませんでした。
 
-�@���̂悤�ɁA����̃��x����Level1�����ׂ�ƁA�����Ȃ�Ƃ����x�����オ
-���Ă���̂ł͂Ȃ����Ɛ������ł��܂��B
+　このように、今回のレベルはLevel1から比べると、多少なりともレベルが上が
+っているのではないかと推測ができます。
 
 
-��0x06.) Level2�����s���Ȃ�����
+■0x06.) Level2を実行しながら解析
 
-�@����CPU�E�B���h�E�̃f�B�X�A�Z���u�����ʂ�����ÓI��͂���̂������ł����A
-���̂悤�ȏ��S�҂��ƁA���������ɂ悭����܂���B�����ŁA�f�o�b�K��Ŏ�
-�s���ċ��������Ȃ���A�f�B�X�A�Z���u�����ʂ������Ċm�F���A��͂��Ă����A
-�Ƃ�����͎�@����肽���Ǝv���܂��B
+　さてCPUウィンドウのディスアセンブル結果だけを静的解析するのもいいですが、
+私のような初心者だと、効率が非常によくありません。そこで、デバッガ上で実
+行して挙動を見ながら、ディスアセンブル結果も併せて確認し、解析していく、
+という解析手法を取りたいと思います。
 
-�@���̎�@�́A���s�����ċ�����c������u���b�N�{�b�N�X���͂ƁA�f�B�X�A�Z
-���u�����ʂ��狓����c������z���C�g�{�b�N�X���͂𓯎��Ɏ��{���邱�Ƃ���A
-�O���[�{�b�N�X���͂ƌĂ΂�Ă��܂��B
+　この手法は、実行させて挙動を把握するブラックボックス分析と、ディスアセ
+ンブル結果から挙動を把握するホワイトボックス分析を同時に実施することから、
+グレーボックス分析と呼ばれています。
 
-�@���̏ꍇ�A�S����Step into�Ŏ��s����Ɠ������Ă��܂��̂ŁA�󋵂ɉ�����
-�ȉ��̂��Ƃ�g�ݍ��킹�Ďg���܂��B
+　この場合、全部をStep intoで実行すると日が暮れてしまうので、状況に応じて
+以下のことを組み合わせて使います。
 
  o F9 Run
  o F8 Step over
@@ -1263,75 +1263,75 @@ RET���߂���JMP�Ƃ͔��肹���ɁA���������̏������O���t���ł��܂���ł����B
  o Ctrl+F12 Trace over
  o Hardware breakpoint, breakpoint memory on read/write
 
-�ȂǂȂ�
+などなど
 
-�@�Ⴆ�΂ł����AF8�ł���������s���Ă�������A���[�v�ɓ����Ă��܂����Ƃ�
-���ꍇ�A���������̃��[�v�������Ă݂āA�����s�Ȃ��Ă��邩�c���ł�����A��
-�[�v�̒���̖��߂�BreakPoint�𒣂��āA�c���Ctrl+F12�Ȃ�F9�Ŏc��̃��[�v
-�������΂��Ă��܂��Ƃ������@�Ŏ��ԒZ�k�����܂��B
+　例えばですが、F8でざっくり実行していったら、ループに入ってしまったとい
+う場合、何周かそのループをさせてみて、何を行なっているか把握できたら、ル
+ープの直後の命令にBreakPointを張って、残りはCtrl+F12なりF9で残りのループ
+処理を飛ばしてしまうという方法で時間短縮をします。
 
-�@���s�̍ۂ́A�g���[�X������Ă����ƕ֗��ł��B�������܂��Đi�݂����Ă���
-�����ꍇ�ł��A�u-�v�ŋt�߂肵�ă��W�X�^�̒l�����邱�Ƃ��ł��܂��B
+　実行の際は、トレースを取っておくと便利です。勢いあまって進みすぎてしま
+った場合でも、「-」で逆戻りしてレジスタの値を見ることができます。
 
-�@�܂��A�g���[�X���s�Ȃ��ہAKernel32.dll�Ȃǂ�Windows API�܂ŉ�͂��邱��
-�͂Ȃ��Ǝv���̂ŁA�uOptions�v���j���[����uDebugging options�v��I�����A
-Trace�^�u�ɐ؂�ւ���A�uAlways trace over system DLLs�v�Ƀ`�F�b�N���Ă�
-���̂��悢�ł��傤�B
+　また、トレースを行なう際、Kernel32.dllなどのWindows APIまで解析すること
+はないと思うので、「Options」メニューから「Debugging options」を選択し、
+Traceタブに切り替え後、「Always trace over system DLLs」にチェックしてお
+くのがよいでしょう。
 
-�@����̏ꍇ�́A�ȉ��̕��@�ŉ�͂��܂����B
+　今回の場合は、以下の方法で解析しました。
 
- o F8�ł��������Step���s���A�ǂ�ȃf�[�^���X�^�b�N��Heap�ɓ���̂�������
- o Ctrl+F12��Trace over���ATrace log����MessageBox API��CALL���Ă��镔��
-   ��T���A�������炳���̂ڂ��ď�������iJNZ��JBE�Ȃǂ�JMP�ȊO�̃W�����v
-   ���߁j��T��
- o IDA�̃O���t�@�\���g���ď�������O��̏������u���b�N�P�ʂŌ��āA������
-   �c������
+ o F8でざっくりとStep実行し、どんなデータがスタックやHeapに入るのかを見る
+ o Ctrl+F12でTrace overし、Trace logからMessageBox APIをCALLしている部分
+   を探し、そこからさかのぼって条件分岐（JNZやJBEなどのJMP以外のジャンプ
+   命令）を探す
+ o IDAのグラフ機能を使って条件分岐前後の処理をブロック単位で見て、処理を
+   把握する
 
-�@��L�̕��@�ŁA�ȉ��̂悤�Ȃ��Ƃ��킩��܂����B
+　上記の方法で、以下のようなことがわかりました。
 
- o 40118B-4011B5�Ń��[�v���āA���s���̃R�}���h�̃t���p�X�̕������ǂݍ�
-   ��ŕ��������J�E���g���Ă���
- o Congratulations!�Ƃ������b�Z�[�W�������Ă��鏈����401245����̃u���b
-   �N�ɑ���
- o Congratulations!�̃u���b�N�ɂ��ǂ蒅���܂łɁA3�ӏ��̃`�F�b�N�|�C���g
-   ������
-   ���̃|�C���g�iJNZ�j�͈ȉ��̃A�h���X
+ o 40118B-4011B5でループして、実行時のコマンドのフルパスの文字列を読み込
+   んで文字数をカウントしている
+ o Congratulations!というメッセージを代入している処理が401245からのブロッ
+   クに存在
+ o Congratulations!のブロックにたどり着くまでに、3箇所のチェックポイント
+   が存在
+   そのポイント（JNZ）は以下のアドレス
      + 4011E1
      + 40121D
      + 40123F
- o ���t��̃��[���A�h���X��LuckyNumberIs_%x_FSC@khallenge.com�ł���A%x��
-   �������镔�����ǂ����̏����ŎZ�o���Ă���
+ o 送付先のメールアドレスはLuckyNumberIs_%x_FSC@khallenge.comであり、%xに
+   相当する部分をどこかの処理で算出している
 
 
-��0x07.) �`�F�b�N�|�C���g��NOP�łԂ�
+■0x07.) チェックポイントをNOPでつぶす
 
-�@�O���ł́ACongratulations!�Ƃ����A�����炭�N���A�����Ƃ��ɕ\������镶
-����ł��낤�u���b�N�ƁA�����ɂ��ǂ蒅���܂ł̃`�F�b�N�|�C���g��􂢏o��
-�܂����B�����ł�����Ɩ������ł͂���܂����A���̃`�F�b�N�|�C���g������
-�����A�����I�ɓ��B������ƃN���A�ł��Ȃ����H�@�ƍl���܂����B
+　前項では、Congratulations!という、おそらくクリアしたときに表示される文
+字列であろうブロックと、そこにたどり着くまでのチェックポイントを洗い出し
+ました。そこでちょっと無理やりではありますが、このチェックポイントを書き
+換え、強制的に到達させるとクリアできないか？　と考えました。
 
-�@�����t�W�����v�������̎v���ʂ�ɂ���ɂ́A��Ɉȉ����l�����܂��B
+　条件付ジャンプを自分の思い通りにするには、主に以下が考えられます。
 
-�E�W�����v����悤�ɁAJMP�ɏ���������
-�E�W�����v���Ȃ��悤�ɁANOP�ɏ���������
+・ジャンプするように、JMPに書き換える
+・ジャンプしないように、NOPに書き換える
 
-�@����̏ꍇ�A���������Ώۂ͑S��JNZ�ł���A�l��0�̂Ƃ��ɃW�����v�����ɃN
-���A�̃u���b�N�ɗ����悤�Ȃ̂ŁA�W�����v���Ȃ��悤��3��JNZ�����ׂ�NO
-P�ɏ��������܂��B
+　今回の場合、書き換え対象は全てJNZであり、値が0のときにジャンプせずにク
+リアのブロックに流れるようなので、ジャンプしないように3つのJNZをすべてNO
+Pに書き換えます。
 
-�ECtrl+G��4011E1�ֈړ�
-JNZ��ŉE�N���b�N���j���[����Binary -> Fill with NOPs���N���b�N
+・Ctrl+Gで4011E1へ移動
+JNZ上で右クリックメニューからBinary -> Fill with NOPsをクリック
 
-�ECtrl+G��40121D�ֈړ�
-JNZ��ŉE�N���b�N���j���[����Binary -> Fill with NOPs���N���b�N
+・Ctrl+Gで40121Dへ移動
+JNZ上で右クリックメニューからBinary -> Fill with NOPsをクリック
 
-�ECtrl+G��40123F�ֈړ�
-JNZ��ŉE�N���b�N���j���[����Binary -> Fill with NOPs���N���b�N
+・Ctrl+Gで40123Fへ移動
+JNZ上で右クリックメニューからBinary -> Fill with NOPsをクリック
 
-�@�ȏ�����{���F9�Ŏ��s���Ă݂܂��傤�B����ƁA�ȉ��̃|�b�v�A�b�v���\��
-�����͂��ł��B
+　以上を実施後にF9で実行してみましょう。すると、以下のポップアップが表示
+されるはずです。
 
------�@�\�����ꂽ�|�b�v�A�b�v�̓��e
+-----　表示されたポップアップの内容
 Assembly 2007 Reverse-Engineering Challenge - Level 2
 Copyright (c) 2007 F-Secure Corporation
 
@@ -1340,56 +1340,56 @@ Congratulations!
 Please send an e-mail to LuckyNumberIs_22657865_FSC@khallenge.com
 -----
 
-�@���[���A�h���X�Ƃ��Ă����藧���Ă���̂ŁA���������ł��B�u�Ȃ񂾁A�ȒP
-����Ȃ����v�Ǝv���A���̃A�h���X�Ƀ��[���𑗂�܂����B�������A���܂Ōo
-���Ă����[�����Ԃ��Ă��܂���B
+　メールアドレスとしても成り立っているので、正しそうです。「なんだ、簡単
+じゃないか」と思い、このアドレスにメールを送りました。しかし、いつまで経
+ってもメールが返ってきません。
 
-�@���́ALevel1�̂Ƃ���2�ʃ��[���𑗂��Ă����1�ʕԂ��Ă����Ƃ������Ƃ���
-�����̂ŁA���[���̒x�z������̂��ȁH�@��2�x�A3�x�Ƒ����Ă݂܂������A���
-��߂��Ă���C�z������܂���B
+　実は、Level1のときも2通メールを送ってやっと1通返ってきたということがあ
+ったので、メールの遅配があるのかな？　と2度、3度と送ってみましたが、やは
+り戻ってくる気配がありません。
 
-�@�ǂ����A�܂�܂�㩂Ɉ����������Ă��܂����悤�ł��B���̕��@�ł͐��K��
-���[���A�h���X�������Ȃ��悤�Ȃ̂ŁA����ɉ�͂����Ă����܂��B
+　どうやら、まんまと罠に引っかかってしまったようです。この方法では正規の
+メールアドレスが得られないようなので、さらに解析をしていきます。
 
 
-��0x08.) �`�F�b�N�|�C���g�t�߂̏����𒲍�
+■0x08.) チェックポイント付近の処理を調査
 
-�@�O���ŁA�������N���A�̏����܂Ŏ����Ă����܂������A��͂肻��ł͂���
-�������Ȃ��悤�ł��B����āA��͂𑱍s���Ȃ���΂Ȃ�Ȃ��̂ł����A�N���A
-�ɓ��B����܂ł̃`�F�b�N�|�C���g�͑O��܂ł̉�͂Ŕ������Ă���̂ŁA�ǂ�
-����΂��̏����𖞂�����̂������Ă����΂킩��͂��ł��B
+　前項で、無理やりクリアの処理まで持っていきましたが、やはりそれではうま
+くいかないようです。よって、解析を続行しなければならないのですが、クリア
+に到達するまでのチェックポイントは前回までの解析で判明しているので、どう
+すればその条件を満たせるのかを見ていけばわかるはずです。
 
-�@�܂��A4011E1�̃`�F�b�N���猩�Ă��������Ǝv���܂��B
+　まず、4011E1のチェックから見ていきたいと思います。
 
------�@�`�F�b�N�|�C���g1�̑O�̏���
-004011B5   .^\75 D4         JNZ SHORT FSC_Leve.0040118B  ; ���s�p�X���J�E���g���郋�[�v�̏I�[
+-----　チェックポイント1の前の処理
+004011B5   .^\75 D4         JNZ SHORT FSC_Leve.0040118B  ; 実行パスをカウントするループの終端
 004011B7   .  54            PUSH ESP
 004011B8   .  890424        MOV DWORD PTR SS:[ESP],EAX
 004011BB   .  89C0          MOV EAX,EAX
 004011BD   .  870424        XCHG DWORD PTR SS:[ESP],EAX
 004011C0   .  31C0          XOR EAX,EAX
-004011C2   .  8A42 FB       MOV AL,BYTE PTR DS:[EDX-5]   ; ���ӓ_1
+004011C2   .  8A42 FB       MOV AL,BYTE PTR DS:[EDX-5]   ; 注意点1
 004011C5   .  870424        XCHG DWORD PTR SS:[ESP],EAX
 004011C8   .  54            PUSH ESP
 004011C9   .  890424        MOV DWORD PTR SS:[ESP],EAX
 004011CC   .  89C0          MOV EAX,EAX
 004011CE   .  870424        XCHG DWORD PTR SS:[ESP],EAX
 004011D1   .  31C0          XOR EAX,EAX
-004011D3   .  B0 20         MOV AL,20                    ; ���ӓ_2
+004011D3   .  B0 20         MOV AL,20                    ; 注意点2
 004011D5   .  870424        XCHG DWORD PTR SS:[ESP],EAX
 004011D8   .  874424 04     XCHG DWORD PTR SS:[ESP+4],EAX
-004011DC   .  3B0424        CMP EAX,DWORD PTR SS:[ESP] ; �`�F�b�N�|�C���g1�̃`�F�b�N
+004011DC   .  3B0424        CMP EAX,DWORD PTR SS:[ESP] ; チェックポイント1のチェック
 004011DF   .  58            POP EAX
 004011E0   .  58            POP EAX
-004011E1      0F85 15010000 JNZ FSC_Leve.004012FC  ; �`�F�b�N�|�C���g1�̕���_
+004011E1      0F85 15010000 JNZ FSC_Leve.004012FC  ; チェックポイント1の分岐点
 -----
 
-�@40118B-4011B5�͎��s���̃R�}���h�̃t���p�X���J�E���g���Ă��鏈���Ǝv���
-��̂ŁA���̌�̏����͂���Ɋ֘A������̂ł��邱�Ƃ������ł��܂��B
+　40118B-4011B5は実行時のコマンドのフルパスをカウントしている処理と思われ
+るので、その後の処理はこれに関連するものであることが推測できます。
 
-�@4011B7�Ƀu���[�N�|�C���g��ݒ肵�A���W�X�^�̏�Ԃ����Ă݂܂��傤�B
+　4011B7にブレークポイントを設定し、レジスタの状態を見てみましょう。
 
------�@4011B7���_�ł̃��W�X�^�̓��e
+-----　4011B7時点でのレジスタの内容
 EAX 00141EE8 ASCII ""C:\FSC_Level2_unpacked.exe""
 ECX 0012FFB0
 EDX 00141F04
@@ -1401,136 +1401,136 @@ EDI 7C950738 ntdll.7C950738
 EIP 004011B7 FSC_Leve.004011B7
 -----
 
-�@���ڂ��ׂ���EAX��EDX�̒l�ł��傤�BDump�E�B���h�E���N���b�N���ACtrl+G��
-EAX�Ɉړ����Ă݂܂��傤�B
+　注目すべきはEAXとEDXの値でしょう。Dumpウィンドウをクリックし、Ctrl+Gで
+EAXに移動してみましょう。
 
------�@4011B7���_�ł�Dump�E�B���h�E�̓��e
+-----　4011B7時点でのDumpウィンドウの内容
 00141EE8  22 43 3A 5C 46 53 43 5F  "C:\FSC_
 00141EF0  4C 65 76 65 6C 32 5F 75  Level2_u
 00141EF8  6E 70 61 63 6B 65 64 2E  npacked.
 00141F00  65 78 65 22 00           exe".
 -----
 
-�@EAX�ɂ̓p�X�̍ŏ��AEDX�ɂ̓p�X�̍Ō�̃A�h���X���i�[����Ă���悤�ł��B
+　EAXにはパスの最初、EDXにはパスの最後のアドレスが格納されているようです。
 
-�@���̂܂�F8��Step���s���Ă������Ƃ���A4011C5�ɂ����āAEDX-5�A�܂�5��
-����O�̕�������v�Z���A�����4011DC��cmp��20�i�X�y�[�X�j�Ɣ�r���Ă��邱
-�Ƃ��킩��܂����B����ł́A5������O�́u.�v�ɂȂ�܂��i����5�����́u.exe
-"�v�Ȃ̂Łj�B�܂�A5������O�̓X�y�[�X�łȂ��Ƃ����Ȃ��Ƃ������Ƃł��B
+　そのままF8でStep実行していったところ、4011C5において、EDX-5、つまり5文
+字手前の文字列を計算し、それを4011DCのcmpで20（スペース）と比較しているこ
+とがわかりました。現状では、5文字手前は「.」になります（末尾5文字は「.exe
+"」なので）。つまり、5文字手前はスペースでないといけないということです。
 
-�@�������A�����Ŗ��Ȃ̂́u.�v�͊g���q�̋�؂蕶���Ȃ̂ŁA�P���ɃX�y�[�X
-�ɒu��������ƃ_�u���N���b�N�ł͎��s�ł��Ȃ��Ȃ��Ă��܂��܂��B���Ăǂ���
-�����̂ł��傤���H�@���̂������Ȃ炨�C�Â���������܂��񂪁A���͂��̃v��
-�O�����ɂ͈������K�v�������̂ł��B
+　しかし、ここで問題なのは「.」は拡張子の区切り文字なので、単純にスペース
+に置き換えるとダブルクリックでは実行できなくなってしまいます。さてどうし
+たものでしょうか？　勘のいい方ならお気づきかもしれませんが、実はこのプロ
+グラムには引数が必要だったのです。
 
-�@5�����O���X�y�[�X�ƂȂ�悤�ɒ�������ƁA������4�����Ƃ������ƂɂȂ�A
-�������uabcd�v�Ɖ��肵���ꍇ�A�ȉ��̌`�ɂȂ�܂��B
+　5文字前がスペースとなるように調整すると、引数は4文字ということになり、
+引数を「abcd」と仮定した場合、以下の形になります。
 
------�@�����̗\�z
+-----　引数の予想
 "C:\FSC_Level2_unpacked.exe" abcd
 ------
 
-�@OllyDbg�ł́ADebug���j���[����Arguments��I������ƁA��͑ΏۂɈ�����^
-�����܂��B������^������ACtrl+F2�Ń��X�^�[�g���܂��傤�B
+　OllyDbgでは、DebugメニューからArgumentsを選択すると、解析対象に引数を与
+えられます。引数を与えた後、Ctrl+F2でリスタートしましょう。
 
 
-��0x09.) �`�F�b�N�|�C���g2
+■0x09.) チェックポイント2
 
-�@���āA4011DC�Ƀu���[�N�|�C���g�𒣂��āA�����܂Ŏ��s���Ă݂܂��傤�B��
-�_���ǂ���AEAX��[ESP]�̒l����v���A4011E1��JNZ���W�����v�����ɒʉ߂ł���
-�����B
+　さて、4011DCにブレークポイントを張って、そこまで実行してみましょう。目
+論見どおり、EAXと[ESP]の値が一致し、4011E1のJNZをジャンプせずに通過できま
+した。
 
-�@�ł́A�`�F�b�N�|�C���g2�Ɉڂ�܂��B
+　では、チェックポイント2に移ります。
 
------�@�`�F�b�N�|�C���g2�̑O�̏���
-004011E1   . /0F85 15010000 JNZ FSC_Leve.004012FC         ; �`�F�b�N�|�C���g1
+-----　チェックポイント2の前の処理
+004011E1   . /0F85 15010000 JNZ FSC_Leve.004012FC         ; チェックポイント1
 004011E7   . |D3C0          ROL EAX,CL
-004011E9   . |8B42 FC       MOV EAX,DWORD PTR DS:[EDX-4]  ; ���ӓ_1
-004011EC   . |35 6D562855   XOR EAX,5528566D              ; ���ӓ_2
+004011E9   . |8B42 FC       MOV EAX,DWORD PTR DS:[EDX-4]  ; 注意点1
+004011EC   . |35 6D562855   XOR EAX,5528566D              ; 注意点2
 004011F1   . |30FC          XOR AH,BH
 004011F3   . |54            PUSH ESP
 004011F4   . |890424        MOV DWORD PTR SS:[ESP],EAX
 004011F7   . |89C0          MOV EAX,EAX
 004011F9   . |870424        XCHG DWORD PTR SS:[ESP],EAX
 004011FC   . |31C0          XOR EAX,EAX
-004011FE   . |8A42 FA       MOV AL,BYTE PTR DS:[EDX-6]     ; ���ӓ_3
+004011FE   . |8A42 FA       MOV AL,BYTE PTR DS:[EDX-6]     ; 注意点3
 00401201   . |870424        XCHG DWORD PTR SS:[ESP],EAX
 00401204   . |54            PUSH ESP
 00401205   . |890424        MOV DWORD PTR SS:[ESP],EAX
 00401208   . |89C0          MOV EAX,EAX
 0040120A   . |870424        XCHG DWORD PTR SS:[ESP],EAX
 0040120D   . |31C0          XOR EAX,EAX
-0040120F   . |B0 22         MOV AL,22                      ; ���ӓ_4
+0040120F   . |B0 22         MOV AL,22                      ; 注意点4
 00401211   . |870424        XCHG DWORD PTR SS:[ESP],EAX
 00401214   . |874424 04     XCHG DWORD PTR SS:[ESP+4],EAX
-00401218   . |3B0424        CMP EAX,DWORD PTR SS:[ESP]     ; �`�F�b�N�|�C���g2�̃`�F�b�N
+00401218   . |3B0424        CMP EAX,DWORD PTR SS:[ESP]     ; チェックポイント2のチェック
 0040121B   . |58            POP EAX
 0040121C   . |58            POP EAX
-0040121D   . |0F85 AE000000 JNZ FSC_Leve.004012D1          ; �`�F�b�N�|�C���g2�̕���_
+0040121D   . |0F85 AE000000 JNZ FSC_Leve.004012D1          ; チェックポイント2の分岐点
 -----
 
-�@���́A�`�F�b�N�|�C���g2�����̈�����^��������̂܂܂Œʉ߂ł��Ă��܂���
-���B�Ƃ����̂��A������4011E7-4011F1�̏����������΁A�`�F�b�N�|�C���g1�̏�
-���Ƃقړ��l�ł���A6�����O���u"(22)�v�ł��邩�ǂ������`�F�b�N���Ă��邾
-��������ł��B
+　実は、チェックポイント2も仮の引数を与えた現状のままで通過できてしまいま
+す。というのも、ここは4011E7-4011F1の処理を除けば、チェックポイント1の処
+理とほぼ同様であり、6文字前が「"(22)」であるかどうかをチェックしているだ
+けだからです。
 
-�@�����A4011E9-4011EC�����Ă��������BEDX-4�A�܂�4�����O����4�������i��
-�����uabcd�v�j��5528566D��XOR���Ă��܂��B���́A���ꂪ�`�F�b�N�|�C���g3��
-��r�����ɂȂ�̂ł��B
+　ただ、4011E9-4011ECを見てください。EDX-4、つまり4文字前から4文字分（＝
+引数「abcd」）を5528566DでXORしています。実は、これがチェックポイント3の
+比較文字になるのです。
 
 
-��0x10.) �`�F�b�N�|�C���g3
+■0x10.) チェックポイント3
 
------�@�`�F�b�N�|�C���g3�̑O�̏���
-0040121D   . /0F85 AE000000 JNZ FSC_Leve.004012D1          ; �`�F�b�N�|�C���g2
+-----　チェックポイント3の前の処理
+0040121D   . /0F85 AE000000 JNZ FSC_Leve.004012D1          ; チェックポイント2
 00401223   . |54            PUSH ESP
 00401224   . |890424        MOV DWORD PTR SS:[ESP],EAX
-00401227   . |8B42 F6       MOV EAX,DWORD PTR DS:[EDX-A]   ; ���ӓ_1
+00401227   . |8B42 F6       MOV EAX,DWORD PTR DS:[EDX-A]   ; 注意点1
 0040122A   . |870424        XCHG DWORD PTR SS:[ESP],EAX
 0040122D   . |54            PUSH ESP
 0040122E   . |890424        MOV DWORD PTR SS:[ESP],EAX
 00401231   . |89C0          MOV EAX,EAX
 00401233   . |870424        XCHG DWORD PTR SS:[ESP],EAX
 00401236   . |874424 04     XCHG DWORD PTR SS:[ESP+4],EAX
-0040123A   . |3B0424        CMP EAX,DWORD PTR SS:[ESP]     ; �`�F�b�N�|�C���g3�̃`�F�b�N
+0040123A   . |3B0424        CMP EAX,DWORD PTR SS:[ESP]     ; チェックポイント3のチェック
 0040123D   . |58            POP EAX
 0040123E   . |58            POP EAX
-0040123F   . |0F85 B7000000 JNZ FSC_Leve.004012FC          ; �`�F�b�N�|�C���g3�̕���
+0040123F   . |0F85 B7000000 JNZ FSC_Leve.004012FC          ; チェックポイント3の分岐
 -----
 
-�@401227��EDX-A�A�܂�10�����O�̕������4�������擾���Ă��܂��B10�����O
-�́u.exe�v�ɂȂ�܂��B�܂��A40123A�ł́A�O���̈�����5528566D��XOR��������
-�Ɓu.exe(6578652E)�v�Ɣ�r���Ă��܂��B�Ƃ������Ƃ͈ȉ��̏����𖞂����΂�
-���킯�ł��B
+　401227でEDX-A、つまり10文字前の文字列を4文字分取得しています。10文字前
+は「.exe」になります。また、40123Aでは、前項の引数を5528566DでXORしたもの
+と「.exe(6578652E)」と比較しています。ということは以下の条件を満たせばよ
+いわけです。
 
-���� XOR 5528566D = 6578652E(.exe)
+引数 XOR 5528566D = 6578652E(.exe)
 
-�@�����XOR�͈ȉ��̂悤�Ȗ@�������藧���܂��B
+　一方でXORは以下のような法則が成り立ちます。
 
     X XOR Y = Z
     X XOR Z = Y
     Z XOR Y = X
 
-�@�Ƃ������Ƃ́A�ȉ��̎������藧�Ƃ������Ƃł��B
+　ということは、以下の式も成り立つということです。
 
-6578652E XOR 5528566D = ����
+6578652E XOR 5528566D = 引数
 
-�@��_���ӂ��Ȃ���΂Ȃ�Ȃ��̂́A���̎��̓��g���G���f�B�A�����l�����Ă�
-�܂���B����āA���m�ɂ͈ȉ��̌��ʂ����߂邱�ƂɂȂ�܂��B
+　一点注意しなければならないのは、この式はリトルエンディアンを考慮してい
+ません。よって、正確には以下の結果を求めることになります。
 
-2E657865 XOR 6D562855 = ����
+2E657865 XOR 6D562855 = 引数
 
-�@����́AWindows�ɕt���̓d��Ōv�Z�ł��܂��̂ŁA����Ōv�Z���s�Ȃ��Ă���
-�����B43335030�Ƃ����l�ɂȂ�܂����B�����ASCII�R�[�h�ɒ����ƁuC3P0�v�ɂ�
-��܂��B���ꂪ�����̐��m�Ȓl�ɂȂ�܂��B
+　これは、Windowsに付属の電卓で計算できますので、それで計算を行なってくだ
+さい。43335030という値になりました。これをASCIIコードに直すと「C3P0」にな
+ります。これが引数の正確な値になります。
 
 
-��0x11.) ���������������Ď��s
+■0x11.) 正しい引数をつけて実行
 
-�@�ł́A�����������ɒ����Ď��s���Ă݂܂��傤�B�����f�o�b�K�Ń��[�h���Ȃ�
-�Ă����܂��܂���B���s����ƁA�ȉ��̃|�b�v�A�b�v���\�������͂��ł��B
+　では、正しい引数に直して実行してみましょう。もうデバッガでロードしなく
+てもかまいません。実行すると、以下のポップアップが表示されるはずです。
 
------�@�\�����ꂽ�|�b�v�A�b�v�̓��e
+-----　表示されたポップアップの内容
 Assembly 2007 Reverse-Engineering Challenge - Level 2
 Copyright (c) 2007 F-Secure Corporation
 
@@ -1539,140 +1539,140 @@ Congratulations!
 Please send an e-mail to LuckyNumberIs_30503343_FSC@khallenge.com
 -----
 
-�@���̃��[���A�h���X�ɑ������Ƃ���A���x��3�ւ̃����N���\��ꂽ���[������
-���Ă��܂����B
+　このメールアドレスに送ったところ、レベル3へのリンクが貼られたメールが戻
+ってきました。
 
 
-��0x07.) ����
+■0x07.) 所感
 
-�@Level2�́ALevel1�����ׂ�Ƌ}�Ƀ��x�����オ�����悤�Ɏv���܂��B�Ƃ͂�
-���Ă��A�R�[�h���̂����ɏ������̂ŁA���̂悤�ȏ��S�҂ɂ͂����Ă��̗�
-�K��ł����BLevel3�͂���ɓ���Ȃ�܂��B����́A���̂���������������
-�Ǝv���܂��B
+　Level2は、Level1から比べると急にレベルが上がったように思います。とはい
+っても、コード自体が非常に小さいので、私のような初心者にはうってつけの練
+習台でした。Level3はさらに難しくなります。次回は、そのあたりを説明したい
+と思います。
 
-�@�܂��܂��㋉�҂̕���������A���̂����͔��Ɍ����������A���ɑ����
-��������������܂��񂪁A�g����������Ă���������ƍK���ł��B�܂��A�A�h
-�o�C�X���������܂�����A���ЂƂ����肽���Ǝv���܂��B��낵�����肢���܂��B
+　まだまだ上級者の方が見たら、私のやり方は非常に効率が悪く、取るに足らな
+いやり方かもしれませんが、暖かく見守っていただけると幸いです。また、アド
+バイスがございましたら、ぜひとも賜りたいと思います。よろしくお願いします。
 
-�@����ł́A�܂��B
+　それでは、また。
 
 
-
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-
---- ��6��: �͂��߂Ẵn�b�L���O �`�o�b�t�@�I�[�o�t���[�̗��p�` ---
-
-���ҁFDefolos
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
+--- 第6章: はじめてのハッキング 〜バッファオーバフローの利用〜 ---
 
-��0x01.) �͂��߂�
+著者：Defolos
 
-�@�O��܂łŁA�n�b�L���O�̓y��ƂȂ�O��m�����m�F���I���܂����B����͂�
-��܂Ŋm�F���Ă����s�[�X���񂹏W�߁A���ۂɃo�b�t�@�I�[�o�t���[�̐Ǝ㐫��
-���p���ĐN�������݂܂��B����̋L����ʂ��āA�{���|�[�g�̎��ł���u�N��
-�v�Ƃ����ߒ�����ʂ�w�񂾂��ƂɂȂ�܂��B
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x02.) �o�b�t�@�I�[�o�t���[
+■0x01.) はじめに
 
-�@�N���ɂȂ���Ǝ㐫�ɂ͂������̎�ނ�����܂����A����͂Ƃ�킯�L��
-���v���I�ȐƎ㐫�ł���o�b�t�@�I�[�o�t���[�𗘗p���܂��B
+　前回までで、ハッキングの土台となる前提知識を確認し終えました。今回はこ
+れまで確認してきたピースを寄せ集め、実際にバッファオーバフローの脆弱性を
+利用して侵入を試みます。今回の記事を通して、本レポートの主題である「侵入
+」という過程を一通り学んだことになります。
 
-���o�b�t�@�I�[�o�t���[�Ƃ�
 
-�@�o�b�t�@�I�[�o�t���[�iBuffer Overflow�j�͌Â����瑶�݂̒m����A�v���O
-��������̎d�l�ƃn�[�h�E�F�A�������̎g�����̐Ǝ㐫�����܂����p�����n�b
-�L���O�e�N�j�b�N�ł��B�o�b�t�@�I�[�o�t���[�ɂ͎��2�̕��ނ�����܂��B��
-�Ƃ̓X�^�b�N�Z�O�����g��Ɋm�ۂ��ꂽ�o�b�t�@���U������X�^�b�N�o�b�t�@
-�I�[�o�t���[�ł��B�����ЂƂ̓q�[�v�Z�O�����g��Ɋm�ۂ��ꂽ�o�b�t�@���U
-������q�[�v�o�b�t�@�I�[�o�t���[�ł��B
-�@�o�b�t�@�I�[�o�t���[�̑��݂͔��ɌÂ�����m���Ă����Ǝ㐫�ł����A��
-�̐Ǝ㐫��root�����̒D��ɗ��p�ł��邱�Ƃ�1996�N�ɔ��s���ꂽweb�}�K�W��P
-hrack�ŏ��߂Č��ɂȂ�܂����B�������Ȃ���A���̂悤��web�}�K�W���Ƀe�N�j
-�b�N���Љ���̂̓n�b�J�[���e�N�j�b�N���g���ėV�ѐs��������̂��Ƃł�
-�傤����A���ۂɂ͂��ȑO����o�b�t�@�I�[�o�t���[�̃e�N�j�b�N�����p����
-�Ă������Ƃł��傤�B
+■0x02.) バッファオーバフロー
 
-���v���O�����̗��Ƃ���
+　侵入につながる脆弱性にはいくつかの種類がありますが、今回はとりわけ有名
+かつ致命的な脆弱性であるバッファオーバフローを利用します。
 
-�@�v���O�����ł̓o�b�t�@�i�ϐ���z��Ȃǁj���m�ۂ��A���̃o�b�t�@�ɕK�v��
-�f�[�^���ꎞ�I�ɗ��ߍ���ŏ������s�����Ƃ����R�̂悤�ɍs���Ă��܂��B��
-�����A���̉ߒ��Ńo�b�t�@�Ɋi�[����f�[�^�̃T�C�Y���`�F�b�N���Y���ƁAro
-ot������D�悳�ꂩ�˂Ȃ��댯�ȃv���O�������������Ă��܂��܂��B���ɁA�v��
-�O���~���O����Ƃ��đ傫�ȃV�F�A������C����ł́A����̎d�l��o�b�t�@�I�[
-�o�t���[�̐Ǝ㐫�����܂�₷���悤�ɂȂ��Ă��܂��B���̂��߁A���Ԃɏo���
-�Ă���قƂ�ǂ̃v���O�����ɂ̓o�b�t�@�I�[�o�t���[�̐Ǝ㐫���ЂƂ��炢
-�͑��݂��Ă��܂��B
+●バッファオーバフローとは
 
-���o�b�t�@�I�[�o�t���[�̌���
+　バッファオーバフロー（Buffer Overflow）は古くから存在の知られる、プログ
+ラム言語の仕様とハードウェアメモリの使われ方の脆弱性をうまく利用したハッ
+キングテクニックです。バッファオーバフローには主に2つの分類があります。ひ
+とつはスタックセグメント上に確保されたバッファを攻撃するスタックバッファ
+オーバフローです。もうひとつはヒープセグメント上に確保されたバッファを攻
+撃するヒープバッファオーバフローです。
+　バッファオーバフローの存在は非常に古くから知られていた脆弱性ですが、そ
+の脆弱性がroot権限の奪取に利用できることは1996年に発行されたwebマガジンP
+hrackで初めて公になりました。しかしながら、このようなwebマガジンにテクニ
+ックが紹介されるのはハッカーがテクニックを使って遊び尽くした後のことでし
+ょうから、実際にはより以前からバッファオーバフローのテクニックが悪用され
+ていたことでしょう。
 
-�@�o�b�t�@�Ƃ����̂̓f�[�^���ꎞ�I�ɕۑ�����̈�ł��邱�Ƃ͐���q�ׂ܂�
-���B����͗Ⴆ�΃t�@�C������ǂݍ��񂾃f�[�^���ꎞ�I�ɒu���Ă�������A�L
-�[�{�[�h����̓��͂𒙂߂Ă������߂̗̈�ł��B�o�b�t�@�̓������Ɋm�ۂ���
-�܂����A���X�g�\���ȊO�̃f�[�^�\�����o�b�t�@�ɗ��p�����ꍇ�A�o�b�t�@�̑�
-������20�o�C�g��256�o�C�g�̂悤�ɗL���ł��B
-�@�ʏ�A���[�U�̖��O�Ȃǂ���͂�����悤�ȏꍇ�ɂ�20�o�C�g�قǂ̃o�b�t�@
-��z��Ŋm�ۂ��܂��B���̐}�̂悤�Ƀ������Ƀo�b�t�@���m�ۂ���܂��B
+●プログラムの落とし穴
+
+　プログラムではバッファ（変数や配列など）を確保し、そのバッファに必要な
+データを一時的に溜め込んで処理を行うことが当然のように行われています。し
+かし、この過程でバッファに格納するデータのサイズをチェックし忘れると、ro
+ot権限を奪取されかねない危険なプログラムが完成してしまいます。特に、プロ
+グラミング言語として大きなシェアをもつC言語では、言語の仕様上バッファオー
+バフローの脆弱性が生まれやすいようになっています。そのため、世間に出回っ
+ているほとんどのプログラムにはバッファオーバフローの脆弱性がひとつぐらい
+は存在しています。
+
+○バッファオーバフローの原理
+
+　バッファというのはデータを一時的に保存する領域であることは先程述べまし
+た。これは例えばファイルから読み込んだデータを一時的に置いておいたり、キ
+ーボードからの入力を貯めておくための領域です。バッファはメモリに確保され
+ますが、リスト構造以外のデータ構造をバッファに利用した場合、バッファの大
+きさは20バイトや256バイトのように有限です。
+　通常、ユーザの名前などを入力させるような場合には20バイトほどのバッファ
+を配列で確保します。次の図のようにメモリにバッファが確保されます。
 
 0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21 22
 +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
 |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-��***********************���̓o�b�t�@*********************��
+←***********************入力バッファ*********************→
 
-�@��̐}�ł�0�o�C�g�ڂ���20�o�C�g�ڂ܂ł���̓o�b�t�@�Ƃ��Ċm�ۂ��܂������A
-����������21�o�C�g�̕�����A�Ⴆ�΁uabcdefghijklmnopqrstu�v�Ƃ����������
-�o�b�t�@�ɓ��͂����Ƃ���Ƃǂ��Ȃ�ł��傤�B�m�ۂ����o�b�t�@��20�o�C�g��
-���̂ŁA�ut�v�܂ł����o�b�t�@�ɓ���܂���B�c��1�o�C�g�uu�v�͂ǂ��ɍs����
-���܂��̂ł��傤���B
-�@���́A�������ɂ͎��̐}�̂悤�ɕ����񂪃R�s�[����A�c��1�o�C�g�͓��̓o�b
-�t�@�ɗאڂ��郁�����ɏ㏑������܂��B
+　上の図では0バイト目から20バイト目までを入力バッファとして確保しましたが、
+もしここで21バイトの文字列、例えば「abcdefghijklmnopqrstu」という文字列を
+バッファに入力したとするとどうなるでしょう。確保したバッファは20バイトで
+すので、「t」までしかバッファに入りません。残の1バイト「u」はどこに行って
+しまうのでしょうか。
+　実は、メモリには次の図のように文字列がコピーされ、残の1バイトは入力バッ
+ファに隣接するメモリに上書きされます。
 
 0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20 21 22
 +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
 |a |b |c |d |e |f |g |h |i |j |k |l |m |n |o |p |q |r |s |t |u |  |
 +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+
-��***********************���̓o�b�t�@*********************��
+←***********************入力バッファ*********************→
 
-�@�uu�v���i�[����Ă��郁�����̈�́A���Ɏg���Ă���̈悩�͕�����܂���B
-�ꍇ�ɂ���Ă͑��̕ϐ����m�ۂ��A�f�[�^�̕ێ��Ɏg���Ă����̈悩���m��܂�
-��B���}�̗�ł́A���̓o�b�t�@�ɗאڂ���悤�ɕϐ�A�̗̈悪��������Ɋm��
-����Ă��܂��B���̂����ŁA�ϐ�A�ɂ�30�Ƃ����l���i�[����Ă��܂��B�}��4��
-�̏��ڂ�����Ă���̂́A�ϐ�A��4�o�C�g�ł���Ƃ������߂ł��B
+　「u」が格納されているメモリ領域は、何に使われている領域かは分かりません。
+場合によっては他の変数が確保し、データの保持に使っていた領域かも知れませ
+ん。下図の例では、入力バッファに隣接するように変数Aの領域がメモリ上に確保
+されています。そのうえで、変数Aには30という値が格納されています。図で4つ
+の升目を取っているのは、変数Aを4バイトであるとしたためです。
 
 14 15 16 17 18 19 20 21 22 23 24 25 26 27
 +--+--+--+--+--+--+--+--+--+--+--+--+--+
 |  |  |  |  |  |  |     30    |  |  |  |
 +--+--+--+--+--+--+--+--+--+--+--+--+--+
-**���̓o�b�t�@**����**�ϐ�A*��
+**入力バッファ**→←**変数A*→
 
-�@�����ɁA����Ɠ����悤��21�����̃f�[�^����͂��܂��B����ƁA20�o�C�g��
-���̓o�b�t�@�Ɏ��܂肫��Ȃ�����1�������A�אڂ���ϐ�A�̂��߂̃������̈�
-��N�Ƃ��܂��B
+　ここに、先程と同じように21文字のデータを入力します。すると、20バイトの
+入力バッファに収まりきらなかった1文字が、隣接する変数Aのためのメモリ領域
+を侵犯します。
 
 14 15 16 17 18 19 20 21 22 23 24 25 26 27
 +--+--+--+--+--+--+--+--+--+--+--+--+--+
 |o |p |q |r |s |t |u          |  |  |  |
 +--+--+--+--+--+--+--+--+--+--+--+--+--+
-**���̓o�b�t�@**����**�ϐ�A*��
+**入力バッファ**→←**変数A*→
 
-�@���̂悤�ɁA�ϐ�A�̒��g�����������Ă��܂��܂��B�ϐ�A������������ꂽ��
-�ɁA�ϐ�A���g���ĂȂ�炩�̏��������悤�Ƃ���ƁA�\�����ʓ���������N����
-���ƂɂȂ�ł��傤�B���ꂪ�A�o�b�t�@�I�[�o�t���[�̐Ǝ㐫�ł��B
+　このように、変数Aの中身を書き換えてしまいます。変数Aが書き換えられた後
+に、変数Aを使ってなんらかの処理をしようとすると、予期せぬ動作を引き起こす
+ことになるでしょう。これが、バッファオーバフローの脆弱性です。
 
-��C����ƃo�b�t�@�I�[�o�t���[�̊֌W
+○C言語とバッファオーバフローの関係
 
-�@C����ŏ����ꂽ�v���O�����ɂ́A�o�b�t�@�I�[�o�t���[�̐Ǝ㐫���܂܂�邱
-�Ƃ������ł��B�Ƃ����̂��AC����̓o�b�t�@�̃T�C�Y�`�F�b�N�������ł͍s����
-���ꂸ�A�v���O���}���`�F�b�N���s��Ȃ���΂Ȃ�Ȃ��d�l������ł��B�Ⴆ�΁A
-Strcpy�֐��͎w�肳�ꂽ�o�b�t�@�̓��e���w�肵���o�b�t�@�ɃR�s�[���܂����A
-�R�s�[��̃o�b�t�@���\���ɑ傫�����ǂ����̓v���O���}���`�F�b�N���Ȃ����
-�Ȃ�܂���B���̃T���v���R�[�h�ł́A7�s�ڂ�if���ŃT�C�Y�̃`�F�b�N���s����
-���܂��B
+　C言語で書かれたプログラムには、バッファオーバフローの脆弱性が含まれるこ
+とが多いです。というのも、C言語はバッファのサイズチェックを自動では行って
+くれず、プログラマがチェックを行わなければならない仕様だからです。例えば、
+Strcpy関数は指定されたバッファの内容を指定したバッファにコピーしますが、
+コピー先のバッファが十分に大きいかどうかはプログラマがチェックしなければ
+なりません。下のサンプルコードでは、7行目のif文でサイズのチェックを行って
+います。
 
 -----
 int main(int argc, char *argv[]){
@@ -1680,7 +1680,7 @@ int main(int argc, char *argv[]){
     char str1[7] = "Hello!";
     char str2[5];
 
-    //����if���ŃT�C�Y�`�F�b�N���s��
+    //このif文でサイズチェックを行う
     if(sizeof(str1) <= sizeof(str2)){
         strcpy(str2, str1);
     }
@@ -1688,19 +1688,19 @@ int main(int argc, char *argv[]){
 }
 -----
 
-�@���̃`�F�b�N��ӂ��Ă��܂��ƁA�o�b�t�@�I�[�o�t���[�̐Ǝ㐫���v���O����
-���ɍ������Ă��܂��܂��BC����́A���ɕ����񑀍�֐��ɂ�strcpy�֐��ȊO�ɂ��A
-get�֐��Ȃǂ̃T�C�Y�`�F�b�N���s��Ȃ��֐����������݂��Ă��܂��B�䂦�ɁAC
-����ŏ����ꂽ�v���O�����ɂ́A�v���O���}�̑Ӗ��△�m�̂��߂Ƀo�b�t�@�I�[
-�o�t���[�̐Ǝ㐫���܂܂�Ă��邱�Ƃ������̂ł��B
+　このチェックを怠ってしまうと、バッファオーバフローの脆弱性がプログラム
+内に混入してしまいます。C言語の、特に文字列操作関数にはstrcpy関数以外にも、
+get関数などのサイズチェックを行わない関数が多数存在しています。ゆえに、C
+言語で書かれたプログラムには、プログラマの怠慢や無知のためにバッファオー
+バフローの脆弱性が含まれていることが多いのです。
 
-��C����ł̃T���v��
+●C言語でのサンプル
 
-�@����̓I�ɁA�o�b�t�@�I�[�o�t���[�̐Ǝ㐫�����ƂȂ�v���O�����̗��
-�����܂��B���̃T���v���R�[�h�̓Q�[���̃R�[�h�̈ꕔ�ł����A����ɂ͏d���
-�Ǝ㐫�����݂��Ă��܂��B�Q�[���ɂ����ăX�R�A�Ƃ����͍̂ł��d�v��������
-���ł��B�������A���̃R�[�h�ł̓X�R�A�����R�ɏ��������邱�Ƃ��ł��Ă��܂�
-�܂��B
+　より具体的に、バッファオーバフローの脆弱性が問題となるプログラムの例を
+示します。下のサンプルコードはゲームのコードの一部ですが、これには重大な
+脆弱性が存在しています。ゲームにおいてスコアというのは最も重要視される変
+数です。しかし、このコードではスコアを自由に書き換えることができてしまい
+ます。
 
 -----
 #include <stdio.h>
@@ -1724,9 +1724,9 @@ int main(int argc, char *argv[]){
 }
 -----
 
-�@������R���p�C�������s����ƁA���̂悤�Ƀ��[�U�����L�[�{�[�h������͂�
-���̂�҂��󂯂�悤�ɂȂ�܂��B����̓Q�[���Ńn�C�X�R�A���o�������̃�
-�[�U���o�^��z�肵�Ă��܂��B
+　これをコンパイルし実行すると、次のようにユーザ名をキーボードから入力さ
+れるのを待ち受けるようになります。これはゲームでハイスコアを出した時のユ
+ーザ名登録を想定しています。
 
 -----
 Defolos@glazheim:~$ ./a.exe
@@ -1735,11 +1735,11 @@ Defolos
 Score of Defolos is 0!!
 -----
 
-�@���[�U�������͂����ƁAscore�ϐ��Ɋi�[����Ă���X�R�A��\�����܂��B�{
-���̓Q�[�����[�`���ŃX�R�A�����Z����Ă����̂ł����A���̃T���v���ł̓Q�[
-�����[�`���͏ȗ����Ă���̂ŁA�X�R�A�͏����l��0�̂܂܂ł��B
-�@�ł͂����ɁA���[�U���i�[�p�̔z��T�C�Y�ȏ�̕��������͂����Ƃ���Ƃ�
-���Ȃ�ł��傤�B�Ⴆ��25�����̕�����𖼑O�Ƃ��ē��͂����Ƃ��܂��B
+　ユーザ名が入力されると、score変数に格納されているスコアを表示します。本
+来はゲームルーチンでスコアが加算されていくのですが、このサンプルではゲー
+ムルーチンは省略しているので、スコアは初期値の0のままです。
+　ではここに、ユーザ名格納用の配列サイズ以上の文字列を入力したとするとど
+うなるでしょう。例えば25文字の文字列を名前として入力したとします。
 
 -----
 Defolos@glazheim:~$ ./a.exe
@@ -1748,45 +1748,45 @@ aaaaaaaaaaaaaaaaaaaaaaaaa
 Score of aaaaaaaaaaaaaaaaaaaaaaaaa is 97!!
 -----
 
-�@�{��0�ł���͂��̃X�R�A���A�o�b�t�@�I�[�o�t���[�̂��߂ɏ�����������97
-�ɂȂ��Ă��܂��B���������͐}1�̂悤�ɁA���ʃA�h���X����12�o�C�g��name�z��A
-12�o�C�g�̖������ė̈�Aint�^(4�o�C�g)��score�ϐ��Ƃ����悤�Ɋ����Ă���
-���B�ua�v��ASCII�R�[�h�\��01100001�ŕ\����邽�߁A10�i���ɒ�����97�ƂȂ�
-�܂��B25�o�C�g�ڂ���score�ϐ����n�܂��Ă��邽�߁A24�����̂ǂ��ł���������
-����i�[������A4�o�C�g�ŃX�R�A���\������΁A�قڔC�ӂ̐��l�ɃX�R�A������
-�����邱�Ƃ��ł��܂��B
+　本来0であるはずのスコアが、バッファオーバフローのために書き換えられて97
+になっています。メモリ内は図1のように、高位アドレスから12バイトのname配列、
+12バイトの無割当て領域、int型(4バイト)のscore変数というように割当てられま
+す。「a」はASCIIコード表で01100001で表されるため、10進数に直すと97となり
+ます。25バイト目からscore変数が始まっているため、24文字のどうでもいい文字
+列を格納した後、4バイトでスコアを構成すれば、ほぼ任意の数値にスコアを書き
+換えることができます。
 
-�i�}1�jhttp://ruffnex.oc.to/defolos/text1/figure/ladder.png
+（図1）http://ruffnex.oc.to/defolos/text1/figure/ladder.png
 
-�@���̂悤�Ƀo�b�t�@�I�[�o�t���[�̐Ǝ㐫�́A�v���O�����̏d�v�ȃf�[�^��C
-�ӂɏ���������]�n��^���Ă��܂��܂��B���̗�ł͔C�ӂ̃v���O�����̎��s��
-�����ň��̃P�[�X�͎�����Ă��܂��񂪁A�o�b�t�@�I�[�o�t���[�����܂����p��
-��΁A�V�F���N���v���O�����͂��납�A�ǂ̂悤�ȃv���O�����ł����s���邱��
-���\�Ȃ̂ł��B
+　このようにバッファオーバフローの脆弱性は、プログラムの重要なデータを任
+意に書き換える余地を与えてしまいます。この例では任意のプログラムの実行と
+いう最悪のケースは示されていませんが、バッファオーバフローをうまく利用す
+れば、シェル起動プログラムはおろか、どのようなプログラムでも実行すること
+が可能なのです。
 
 
-��0x03.) �N��
+■0x03.) 侵入
 
-�@�V�X�e���ւ̐N���Ƃ́A�R���g���[�����𓾂邱�Ƃ��Əq�ׂ܂����B�����āA
-���̃R���g���[������root��������������ԂŃV�F�����N�����邱�Ƃœ����A
-����ɁASUID root�v���O�����̗����r���ŕς��ăV�F�����N���ł���΁A�R��
-�g���[�����𓾂��邱�Ƃ�������܂����B
-�@��́A�����ɂ��ăv���O�����̎��s�̗����ς��邩�ł��B�Ō�̃s�[�X�̓o
-�b�t�@�I�[�o�t���[�����܂����p���邱�ƂŎ������܂��B�����ł͂��̉��p���
-���čs�����Ƃɂ��܂��傤�B
+　システムへの侵入とは、コントロール権を得ることだと述べました。そして、
+そのコントロール権はroot権限を持った状態でシェルを起動することで得られ、
+さらに、SUID rootプログラムの流れを途中で変えてシェルを起動できれば、コン
+トロール権を得られることが分かりました。
+　後は、いかにしてプログラムの実行の流れを変えるかです。最後のピースはバ
+ッファオーバフローをうまく応用することで実現します。ここではその応用例を
+見て行くことにしましょう。
 
-���o�b�t�@�I�[�o�t���[�̉��p
+●バッファオーバフローの応用
 
-�@�o�b�t�@�I�[�o�t���[�́A�אڂ��鉺�ʔԒn�̃����������㏑���ł��邱�Ƃ�
-�O�q�̒ʂ�ł��B�����ŁA�֐��Ăяo���̎d�g�݂ɂ��Ďv���o���Ă��������B
-�֐��Ăяo���̍ۂɂ͖߂�l����������Ɋm�ۂ���A�֐��̏I�����ɂ��̖߂�l
-���Q�Ƃ��܂��B�܂�A�߂�l���o�b�t�@�I�[�o�t���[�ŏ㏑���ł���ΔC�ӂ�
-�������Ԓn�ɐ�����ڂ����Ƃ��ł��܂��B
+　バッファオーバフローは、隣接する下位番地のメモリ内を上書きできることは
+前述の通りです。ここで、関数呼び出しの仕組みについて思い出してください。
+関数呼び出しの際には戻り値がメモリ上に確保され、関数の終了時にその戻り値
+を参照します。つまり、戻り値をバッファオーバフローで上書きできれば任意の
+メモリ番地に制御を移すことができます。
 
-���T���v��
+●サンプル
 
-�@���̃v���O�����́A�o�b�t�@�I�[�o�t���[�ɂ���Ċ֐��̖߂�l�����������A
-main�֐��I������0x41414141�Ԓn�ɐ�����ڂ��܂��B
+　次のプログラムは、バッファオーバフローによって関数の戻り値を書き換え、
+main関数終了時に0x41414141番地に制御を移します。
 
 -----
 #include <stdio.h>
@@ -1800,71 +1800,71 @@ int main(int argc, char *argv[]){
 }
 -----
 
-�@���̃v���O�������R���p�C�����A���s����Ǝ��̂悤�ɃZ�O�����e�[�V�����t
-�H���g���������܂��B
+　このプログラムをコンパイルし、実行すると次のようにセグメンテーションフ
+ォルトが発生します。
 
 -----
 defolos@glazheim:~$ ./a.out
-�Z�O�����e�[�V�����ᔽ�ł�
+セグメンテーション違反です
 -----
 
-�@����́Amain�֐��̖߂��Ƃ��ă��������ɕۑ�����Ă����AEIP�̕ۑ��̈�
-(SEIP:Saved EIP)���o�b�t�@�I�[�o�t���[�ɂ���ď㏑�����ꂽ���߁Amain�֐�
-�I������SEIP�ɕۑ�����Ă���A�h���X�֐�����ڂ����Ƃ������ʂł��B�����
-SEIP��AAAA(=0x41414141)�ɏ����������̂ŁAmain����߂鎞�̓�������0x41414
-141�Ԓn�����s���悤�Ƃ��܂��B�������A0x41414141�Ԓn�ɂ͎��s�\�ȋ@�B��f
-�[�^���i�[����Ă͂��炸�A�@�B�ꖽ�߂ɂ͖����r�b�g�p�^�[�����\������Ă�
-�܂��B�̂�CPU��0x41414141�Ԓn�̃r�b�g�p�^�[�������s�ł����A����̍�̃G��
-�[�����Ƃ��ăZ�O�����e�[�V�����t�H���g�𔭐������܂��B�������A�������s��
-�\�ȃr�b�g�p�^�[�����\������Ă���Ԓn��SEIP�����������邱�Ƃ��ł���΁A
-���̖��߂����s���邱�ƂɂȂ�̂ł��B
+　これは、main関数の戻り先としてメモリ内に保存されていた、EIPの保存領域
+(SEIP:Saved EIP)がバッファオーバフローによって上書きされたため、main関数
+終了時にSEIPに保存されているアドレスへ制御を移そうとした結果です。今回は
+SEIPをAAAA(=0x41414141)に書き換えたので、mainから戻る時はメモリの0x41414
+141番地を実行しようとします。しかし、0x41414141番地には実行可能な機械語デ
+ータが格納されてはおらず、機械語命令には無いビットパターンが構成されてい
+ます。故にCPUは0x41414141番地のビットパターンを実行できず、苦肉の策のエラ
+ー処理としてセグメンテーションフォルトを発生させます。しかし、もし実行可
+能なビットパターンが構成されている番地にSEIPを書き換えることができれば、
+その命令を実行することになるのです。
 
-�@���̂悤�ɁASEIP�̈�����������邱�Ƃɂ���āA�֐��I�����ɔC�ӂ̏ꏊ��
-������ڂ����Ƃ��ł��܂��B��������p���A�v���O�����̃o�b�t�@���ɐ������
-���A�����Ɏ��s�\�ȋ@�B����f�[�^�Ƃ��Ċi�[����΁A�ǂ̂悤�ȃv���O����
-�ł����s���邱�Ƃ��ł��܂��B
+　このように、SEIP領域を書き換えることによって、関数終了時に任意の場所に
+制御を移すことができます。これを応用し、プログラムのバッファ内に制御を移
+し、そこに実行可能な機械語をデータとして格納すれば、どのようなプログラム
+でも実行することができます。
 
-�������D����؂̃C���[�W
+●権限奪取実証のイメージ
 
-�@SEIP�̈�̏��������ɂ���āA�v���O�����̗�������R�ɕς��邱�Ƃ��ł���
-�Ƃ킩��܂����B��������܂��g���A�V�X�e���̃R���g���[���������������i��
-�N���j���Ƃ����؂��Ă݂܂��傤�B
-�@���͂ŏq�ׂ��悤�ɁA�N���Ƃ̓R���g���[�����̒D��ł���A�R���g���[��
-���͊Ǘ��҂Ƃ��ăV�F�����N�����邱�Ƃœ����܂��B����ɁA���s���ɂ͒N��
-���s�������ɂ�����炸�Ǘ��Ҍ����Ŏ��s�����SUID root�v���O�����̑��݂���
-���A���̃v���O�����̓r���ŃV�F�����N���ł���΃R���g���[�����𓾂����
-�������܂����B�v���O�����̗���̕ς������w�񂾍��A�N���ɕK�v�Ȃ��ׂẴp
-�[�c����������ƌ����܂��B
+　SEIP領域の書き換えによって、プログラムの流れを自由に変えることができる
+とわかりました。これをうまく使い、システムのコントロール権をいただく（＝
+侵入）ことを実証してみましょう。
+　第一章で述べたように、侵入とはコントロール権の奪取であり、コントロール
+権は管理者としてシェルを起動することで得られます。さらに、実行時には誰が
+実行したかにかかわらず管理者権限で実行されるSUID rootプログラムの存在を示
+し、そのプログラムの途中でシェルを起動できればコントロール権を得られると
+説明しました。プログラムの流れの変え方を学んだ今、侵入に必要なすべてのパ
+ーツがそろったと言えます。
 
-�@�C���[�W�Ƃ��ẮASUID root�v���O�����̃o�b�t�@�ɃV�F���R�[�h�����A��
-�̐擪�A�h���X���A�֐��̖߂�n���ۑ����ꂽ�A�h���X�Ƀo�b�t�@�I�[�o�t���[
-��p���ď㏑�����܂��B
+　イメージとしては、SUID rootプログラムのバッファにシェルコードを入れ、そ
+の先頭アドレスを、関数の戻り地が保存されたアドレスにバッファオーバフロー
+を用いて上書きします。
 
          buffer                 sfp    seip
 --------+----------------------+-----+--------------------+-------
         | shellcode            |     | address of buffer  |
 --------+----------------------+-----+--------------------+-------
-        ��                              |
+        ↑                              |
          +------------------------------+
 
-�@����ŁA�֐��̏I������ret�Ɋi�[���ꂽ�A�h���X�A�܂�buffer�̐擪�ł���
-shellcode�̐擪�ɐ��䂪�ڂ�܂��B���̌��ʁAroot�����ŃV�F�����N����������
-�D�����Ƃ��ł��܂��B
-�@���̃C���[�W�ɂ́A�ЂƂ��_���L��܂��B���B�̓������̓��e�����A���^
-�C���Ƀ��j�^�����O���邷�ׂ������Ă��܂���̂ŁAbuffer�̐擪�Ԓn�����Ԃ�
-�̂����m�ɂ͂킩��Ȃ��̂ł��B��܂��ȏꏊ�͗\���ł��Ă��A1�o�C�g���Y����
-��buffer�̐擪�Ԓn��\������̂͂��Ă����ۂ��ł͌��E������܂��Bshellcod
-e�����s����ɂ́A�P�o�C�g�̑O���������܂���Bshellcode�̐擪�҂������
-�A�h���X��SEIP�̈�ɏ������܂Ȃ���΂Ȃ�܂��񂪁A����͕s�\�ɋ߂�����
-�ł��B���̖��́A���؃C���[�W�̋���ɂ������āA����e�N�j�b�N���g����
-�������܂��B
+　これで、関数の終了時にretに格納されたアドレス、つまりbufferの先頭であり
+shellcodeの先頭に制御が移ります。その結果、root権限でシェルが起動し権限を
+奪うことができます。
+　このイメージには、ひとつ問題点が有ります。私達はメモリの内容をリアルタ
+イムにモニタリングするすべを持っていませんので、bufferの先頭番地が何番な
+のか正確にはわからないのです。大まかな場所は予測できても、1バイトもズレず
+にbufferの先頭番地を予測するのはあてずっぽうでは限界があります。shellcod
+eを実行するには、１バイトの前後も許されません。shellcodeの先頭ぴったりの
+アドレスをSEIP領域に書き込まなければなりませんが、これは不可能に近いこと
+です。この問題は、実証イメージの具現化にあたって、あるテクニックを使って
+解決します。
 
-���R���g���[�����D��̎���
+●コントロール権奪取の実証
 
-�@���؂̃C���[�W������������̂����̃R�[�h�ł��B���̃R�[�h�̓R�}���h��
-�C���������̕������buffer�ɃR�s�[���邾���̃v���O�����ł��Bbuffer�̗e��
-��500�o�C�g�ƌŒ肳��Ă���̂ŁA500�o�C�g�ȏ�̕�������������Ƃ��ēn��
-�΃o�b�t�@�I�[�o�t���[���������܂��B
+　実証のイメージを具現化したものが次のコードです。このコードはコマンドラ
+イン引き数の文字列をbufferにコピーするだけのプログラムです。bufferの容量
+が500バイトと固定されているので、500バイト以上の文字列を引き数として渡せ
+ばバッファオーバフローが発生します。
 
 -----
 #include <stdio.h>
@@ -1878,9 +1878,9 @@ int main(int argc, char *argv[]){
 }
 -----
 
-�@�R���p�C�����ɖ��O���ubo-test.exe�v�ɂ��܂��B���̌�ASUID root�v���O��
-���ɂ��邽�߂ɏ��L����root�ɕύX���ASUID�r�b�g���N�ĂĂ����܂��B���̃v��
-�O�����̓��͒l�Ƃ��āA���̃v���O�����Ő��������������n���܂��B
+　コンパイル時に名前を「bo-test.exe」にします。その後、SUID rootプログラ
+ムにするために所有権をrootに変更し、SUIDビットを起てておきます。このプロ
+グラムの入力値として、次のプログラムで生成した文字列を渡します。
 
 -----
 #include <stdlib.h>
@@ -1939,10 +1939,10 @@ int main (int argc, char *argv[]){
 }
 -----
 
-�@���̕����񐶐��v���O���������s����ƁA�v���O�������ō\������buffer�z��
-���������Ƃ���bo-test.exe�����s���܂��B���̃\�[�X��exploit.exe�Ƃ��ăR��
-�p�C�����A���s����ƌ��ʂ͎��̂悤�ɁAroot�����ŃV�F�����N�����錋�ʂƂ�
-��܂��B
+　この文字列生成プログラムを実行すると、プログラム内で構成したbuffer配列
+を引き数としてbo-test.exeを実行します。このソースをexploit.exeとしてコン
+パイルし、実行すると結果は次のように、root権限でシェルを起動する結果とな
+ります。
 
 -----
 defolos@glazheim:~$ exploit.exe
@@ -1951,53 +1951,53 @@ ret= 0xbffff520
 sh-2.05b#
 -----
 
-�@�����Œ��ڂ��ׂ��́Abo-test.exe�ɓn���ꂽ������ł��B�����񐶐��v���O��
-����600�o�C�g�̕�����𐶐����Ă��邽�߁A�o�b�t�@�I�[�o�t���[���������܂��B
-���̌���SEIP�̈悪ret�ɏ�����������킯�ł��B
+　ここで注目すべきは、bo-test.exeに渡された文字列です。文字列生成プログラ
+ムで600バイトの文字列を生成しているため、バッファオーバフローが発生します。
+その結果SEIP領域がretに書き換えられるわけです。
 
 0                   200              246          600
 +--------------------+----------------+------------+
 |  NOP               | shellcode      |  ret       |
 +--------------------+----------------+------------+
 
-��NOP
+○NOP
 
-�@NOP��No Operation�̗��ŁA�������Ȃ����߂ł��B�����s�킸�Ɏ��̃A�h���X��
-���閽�߂����s���邾���̖��߂ŁA�ꌩ����Ɨ��p���l���Ȃ��悤�ɂ������܂��B
-�@�B��ł�0x90�ɖ|�󂳂�܂��B
-�@����́A����NOP���d�v�ȃe�N�j�b�N�Ƃ��ė��p����Ă��܂��BNOP�͉�������
-�Ɏ��̖��߂����s���܂��̂ŁANOP�̘A���̌�Ɏ��s�\�ȃv���O������u���Ă�
-���΁A�ǂ�NOP���珈�����n�߂Ă��ŏI�I�Ƀv���O�����̐擪�ɂ��ǂ蒅���̂ł��B
+　NOPはNo Operationの略で、何もしない命令です。何も行わずに次のアドレスに
+ある命令を実行するだけの命令で、一見すると利用価値がないようにも見えます。
+機械語では0x90に翻訳されます。
+　今回は、このNOPが重要なテクニックとして利用されています。NOPは何もせず
+に次の命令を実行しますので、NOPの連発の後に実行可能なプログラムを置いてお
+けば、どのNOPから処理を始めても最終的にプログラムの先頭にたどり着くのです。
 
 NOP                                 program
 +----------------------------------+----------------------+
 | nop nop nop ...                  | executable program   |
 +----------------------------------+----------------------+
-���s��������������������������������
+実行→→→→→→→→→→→→→→→→
 
-�@���̃e�N�j�b�N��NOP�X���b�h�ƌĂ΂�A�v���O�����̐擪�A�h���X�����S�ɂ�
-�\���ł��Ȃ��ꍇ�ɑ��p�����e�N�j�b�N�ł��Bret��NOP�X���b�h�̂����̂ǂ�
-�����w�肷��΃v���O�����̐擪�ɂ��ǂ蒅���̂ŁA���s�������v���O��������
-�s�ł���\�������܂�܂��B
+　このテクニックはNOPスレッドと呼ばれ、プログラムの先頭アドレスを完全には
+予測できない場合に多用されるテクニックです。retにNOPスレッドのうちのどれ
+かを指定すればプログラムの先頭にたどり着くので、実行したいプログラムを実
+行できる可能性が高まります。
 
-���V�F���R�[�h
+○シェルコード
 
-�@�V�F���R�[�h��egg�Ƃ��Ă΂�A�V�F�����N�����鏬���ȃv���O�����ł��B���
-�͂ŏЉ���V�F�����N������v���O�������@�B��ɕϊ��������̂ŁA���̐���
-�ɂ̓A�Z���u�����ꂪ�g���܂��B�ڍׂ͏Ȃ��܂����A�V�F�����N������v���O
-�������@�B��ɖ|�󂵂����̂��Ɗo���Ă����Ă��������B���̃R�[�h�����s����
-�̂�����̌��؂̖ړI�ł��B
+　シェルコードはeggとも呼ばれ、シェルを起動する小さなプログラムです。第一
+章で紹介したシェルを起動するプログラムを機械語に変換したもので、その制作
+にはアセンブリ言語が使われます。詳細は省きますが、シェルを起動するプログ
+ラムを機械語に翻訳したものだと覚えておいてください。このコードを実行する
+のが今回の検証の目的です。
 
-��RET
+○RET
 
-�@RET�͊֐��̖߂�l�Ƃ��ď㏑������A�W�����v��̃A�h���X�ł��B����͕���
-�񐶐��v���O�����ō\������NOP�̂����̂ǂꂩ���w�������悤�ɂ��܂��B
-�@�������A���Ă����ۂ��ɃA�h���X���w�肵�Ă�������\���͒Ⴍ�A���p�I
-�ł͂���܂���B�����ŁA�����񐶐��v���O���������s���ꂽ���̃X�^�b�N�|�C
-���^��\���̑��|����Ƃ��܂��B���̃X�^�b�N�|�C���^�ɃI�t�Z�b�g�����Z����
-���Ƃ�ret�Ƃ��Ďw�肷�ׂ��A�h���X�����܂��B����̗�ł́A�K����1,000�o
-�C�g���I�t�Z�b�g�Ƃ��ė��p���܂����B�I�t�Z�b�g�̒l�͎��s���낵�đ{���o��
-���ƂɂȂ�܂��B
+　RETは関数の戻り値として上書きする、ジャンプ先のアドレスです。今回は文字
+列生成プログラムで構成したNOPのうちのどれかを指し示すようにします。
+　もちろん、あてずっぽうにアドレスを指定しても当たる可能性は低く、実用的
+ではありません。そこで、文字列生成プログラムが実行された時のスタックポイ
+ンタを予測の足掛かりとします。このスタックポインタにオフセットを減算する
+ことでretとして指定すべきアドレスを作ります。今回の例では、適当に1,000バ
+イトをオフセットとして利用しました。オフセットの値は試行錯誤して捜し出す
+ことになります。
 
 low memory 0x08000000
 +---------------+ .text
@@ -2017,7 +2017,7 @@ low memory 0x08000000
 +---------------+
 
 +---------------+bo-test.exe main()
-|               |�@�@stackpointer-1064
+|               |　　stackpointer-1064
 +   buffer      |
 |               |
 +---------------+
@@ -2032,9 +2032,9 @@ low memory 0x08000000
 |  *argv(name)  |
 +---------------+
 
-544�o�C�g�̂�����
+544バイトのすきま
 
-+---------------+ ��stackpointer exploit.exe main()
++---------------+ ←stackpointer exploit.exe main()
 |    i          |
 +---------------+
 |    offset     |
@@ -2059,9 +2059,9 @@ low memory 0x08000000
 +---------------+
 heigh memory (0xbfffffff)
 
-�@���m�ɂ�1,064�o�C�g�̃I�t�Z�b�g�����ƁAbo-test.exe��Ɋm�ۂ��ꂽbufer
-�̐擪�ɐ��䂪�ڂ�܂��B�I�t�Z�b�g��1,064�ɕύX���Ď��s����Ǝ��̂悤�ɂ�
-��܂��B
+　正確には1,064バイトのオフセットを取ると、bo-test.exe上に確保されたbufer
+の先頭に制御が移ります。オフセットを1,064に変更して実行すると次のようにな
+ります。
 
 -----
 defolos@glazheim:~$ exploit.exe
@@ -2070,10 +2070,10 @@ ret= 0xbffff4e0
 sh-2.05b#
 -----
 
-�@��������NOP�X���b�h�̒����i200�o�C�g�j�������I�t�Z�b�g�̈ʒu�����炵��
-�����v�ł��B0xbffff4e0��200�����Z�����0xbfff5a8�ł����A0xbfff5a8�͂���
-���ǃV�F���R�[�h�̐擪�Ɉʒu����A�h���X�ł��̂ŁA�V�F���R�[�h�����܂��N
-�����܂��B
+　ここからNOPスレッドの長さ（200バイト）分だけオフセットの位置を減らして
+も大丈夫です。0xbffff4e0に200を加算すると0xbfff5a8ですが、0xbfff5a8はちょ
+うどシェルコードの先頭に位置するアドレスですので、シェルコードがうまく起
+動します。
 
 -----
 defolos@glazheim:~$ exploit.exe
@@ -2082,386 +2082,386 @@ ret= 0xbffff5a8
 sh-2.05b#
 -----
 
-�@�������A������������1�o�C�g�ł��I�t�Z�b�g�̒l�����炵�Ă��܂��ƁA�V�F��
-�R�[�h�̓r��������s���J�n����邱�ƂɂȂ�A�������Ȗ��߂Ƃ��ĉ��߂����
-���܂��܂��B
+　しかし、もしここから1バイトでもオフセットの値を減らしてしまうと、シェル
+コードの途中から実行が開始されることになり、おかしな命令として解釈されて
+しまいます。
 
 -----
 defolos@glazheim:~$ exploit.exe
 sp = 0xbffff908
 ret= 0xbffff5a9
-�s���Ȗ��߂ł�
+不正な命令です
 -----
 
-�@�܂Ƃ߂�ƁAret�̃A�h���X�Ƃ���0xbffff4e0����0xbffff5a8�̊Ԃ̃A�h���X��
-�w�肷��΁ANOP�X���b�h�ɐ��䂪�ڂ�V�F���R�[�h�����s���邱�Ƃ��ł��܂��B
-�@����ret�̃A�h���X���A�ЂƂ����ł�SEIP�̈���㏑���ł��Ȃ���������Ȃ�
-���߁A��������300�o�C�g���p�ӂ��܂��B���̂����̂ЂƂ�SEIP�̈����������
-��΂悢�̂ł��B
+　まとめると、retのアドレスとして0xbffff4e0から0xbffff5a8の間のアドレスを
+指定すれば、NOPスレッドに制御が移りシェルコードを実行することができます。
+　このretのアドレスも、ひとつだけではSEIP領域を上書きできないかもしれない
+ため、立続けに300バイト程用意します。このうちのひとつがSEIP領域を書き換え
+ればよいのです。
 
-�@���̎��؂Ŋm�F�ł����悤�ɁA�o�b�t�@�I�[�o�t���[�ɂ����SEIP�̈������
-�����A�A�^�b�J�[���p�ӂ����V�F�����N������v���O�����֐�����ڂ��ΐN����
-�\�ł��B�����̃h�L�������g�ŞB���Ɍ��y�����u�N���v�Ƃ����ߒ��́A����
-�悤�Ƀv���O���~���O����̎d�l��̐Ǝ㐫�𗘗p���邱�Ƃł���ƌ����܂��B
+　この実証で確認できたように、バッファオーバフローによってSEIP領域を書き
+換え、アタッカーが用意したシェルを起動するプログラムへ制御を移せば侵入が
+可能です。多くのドキュメントで曖昧に言及される「侵入」という過程は、この
+ようにプログラミング言語の仕様上の脆弱性を利用することであると言えます。
 
 
-��0x04.) ������
+■0x04.) おわりに
 
-�@����̓o�b�t�@�I�[�o�t���[�̐Ǝ㐫�̗��p�Ƃ����؂������A�N���ƌĂ΂�
-��ߒ��̋�̓I�Ȏ�������Ă��܂����B
-�@����́A���񂷂łɗp�ӂ��Ă�����̂Ƃ��Ď�舵�����V�F���R�[�h�ɂ���
-���y���܂��B�V�F���R�[�h������̗͂ŊJ���ł��鉞�p�͂́A�l�X�ȃV�X�e����
-�U���ł��邱�Ƃɒ������܂��B
-�@����ł́A�܂�������܂��傤�B
+　今回はバッファオーバフローの脆弱性の利用という切り口から、侵入と呼ばれ
+る過程の具体的な実例を見てきました。
+　次回は、今回すでに用意してあるものとして取り扱ったシェルコードについて
+言及します。シェルコードを自らの力で開発できる応用力は、様々なシステムを
+攻略できることに直結します。
+　それでは、またお会いしましょう。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第7章: 基礎暗号学講座・第11回 〜原始元判定アルゴリズム〜 ---
+
+著者：IPUSIRON
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　今回も前回に引き続き、暗号の実装においてよく使われるアルゴリズムを紹介
+する。今回紹介するアルゴリズムは原始元判定アルゴリズムである。素数判定ア
+ルゴリズムから比べれば地味だが、暗号の実装においては重要なアルゴリズムである。
+
+　すでに原始元の概念は解説済みだが、復習として定義から入りたいと思う。
+
+
+■0x02.) 原始元
+
+　法p（素数）の世界で考えたとき、その世界には{0,1,…,p-1}（これをZ_pと表
+記する）のp個の数が存在する。このとき、0を除いた{1,…,p-1}（これはちょう
+どZ_p^*と一致している）の中で、p-1乗したとき初めて1になるような元のことを
+原始元という。
+
+　例えば、p=5とすると、Z_5^*={1,2,3,4}の世界には4つの数がある。それぞれの
+数において、何乗したら1に一致するか確かめてみる（1になったらストップさせ
+ている）。
+
+・1^1=1
+・2^1=2、2^2=4、2^3=8≡3 mod 5、2^4=6≡1 mod 5
+・3^1=3、3^2=9≡4 mod 5、3^3=12≡2 mod 5、3^4=6≡1 mod 5
+・4^1=4、4^2=16≡1 mod 5
+
+　1は1乗で1に一致してしまうので、原始元ではない。2と3は4乗（=p-1=5-1）で
+初めて1になったので、原始元である。4は2乗で1に一致してしまうので、原始元
+ではない。よって、Z_5^*の原始元は2と3ということになる。
+
+
+*原始元と元の位数の関係
+
+　元の位数とはa^x≡1 (mod p)となる最小の正整数xのことであり、aの位数とい
+う。これはx=ord_p(a)と表される。
+
+　上記の例の結果をord表記で表すと、次のようになる。
+
+・ord_5(1)=1
+・ord_5(2)=4
+・ord_5(3)=4
+・ord_5(4)=2
+
+　この表記で原始元を定義するとord_p(a)=p-1のときであるから、p=5のときは
+ord_5(a)=4を満たすようなaが原始元である。つまり、a=2,3が原始元とわかる。
+
+　a∈{1,2,3,4}のときのord_5(a)の値に注目して欲しい。aが1から4まで変化する
+と、ord_5(a)の値は1,4,4,2となる。この4つの値はすべて4（=p-1=5-1）の約数に
+なっている。この事実に気付くには数値をもう少し大きくして考えなければなら
+ないが、ここでは天下り式に次の数学的事実があることを示す。
+
+[定理]
+pは素数とする。
+このとき、aの位数d（=ord_p(a)）は、p-1の約数である。
+即ち、d|p-1が成り立つ。
+
+
+■0x03.) 原始元の個数
+
+　pが具体的に決まると集合Z_p^*も具体的に決まってくる。すると、その集合に
+含まれている原始元も決まってくる。ここで気になるのが、このpと原始元の個数
+には関係があるのではないかということである。実際には関係があるのである。
+Z_5^*の例では、元1〜4についていちいち累乗して調べてから、個数を求めていた。
+しかし、pの値と原始元の個数に関係があるので、実はそのようなやり方をしなく
+ても簡単に求める方法があるのである。ただし、あくまで原始元の個数であって、
+どの元が原始元かということについてではないことに注意してもらいたい。
+　それではpの値と原始元の個数の関係の定理を次に示す。
+
+[定理]
+Z_p^*の原始元の個数はφ(p-1)個である。
+
+　φ( )はオイラー関数である。オイラー関数φ(n)とは、nと互いに素である正の
+整数の個数を意味する。
+
+　この結果はものすごい興味深く感じるかもしれない。Z_n^*で考えると興味深さ
+が増すと思う。まず、Z_n^*の要素の個数はφ(n)である（定義から明らか）。さ
+らに、φ(n)の中で原始元の数はφ(φ(n))個になる。φが2重になっていることに
+対してエレガント性を感じてしまう。
+
+　以上のことから、原始元は全体の数から見ても、比較的たくさんあることがわ
+かる。例えば、p=7で考えれば、原始元の個数は次のように計算できて2個になる。
+つまり、Z_7^*の中に原始元は2個存在することになる。
+
+φ(7-1)=φ(6)=φ(2・3)=φ(2)φ(3)=(2-1)(3-1)=1・2=2
+
+　φ(n)はnによって異なる値になるが、平均すると6n/π^2（≒0.6）という事実が
+ある。よって、φ(φ(n))は平均すると約0.36ということになる。つまり、全体の
+36%が原始元と考えることができる。
+
+
+■0x04.) 原始元の累乗で構成される集合
+
+　暗号理論に密接な関係にある、原始元に関する数学的事実がある。それは、原
+始元gを選び、それを0乗〜p-2乗して作られた数の集合{g^0=1,g^1 (mod p),g^2 
+(mod p),…,g_(p-2) (mod p)}は、Z_p^*={1,2,…,p-1}と一致するということであ
+る。
+
+　この事実の恩恵がどう嬉しいのかについては、今後の記事において暗号プロト
+コルが登場したときに説明したいと思う。
+
+　ここでは、この数学的事実に慣れてもらうために、先ほどの例と同様にp=5で考
+えてみる。p=5のときのZ_5、Z_5^*、Z_5^*の原始元はすでに上記の例で解説済み
+である。その結果を次にまとめておく。
+
+・p=5
+・Z_5={0,1,2,3,4}
+・Z_5^*={1,2,3,4}
+・原始元g=2,3（∈Z_5^*）
+
+[1]g=2のとき
+
+・g^0=2^0=1
+・g^1=2^1=2
+・g^2=2^2=4
+・g^3=2^3=8≡3 (mod 5)
+
+　よって、{g^0 mod 5,g^1 mod 5,g^2 mod 5,g^3 mod 5}={1,2,4,3}={1,2,3,4}と
+なり、Z_5^*と一致している。
+
+[2]g=3のとき
+
+・g^0=3^0=1
+・g^1=3^1=3
+・g^2=3^2=9≡4 (mod 5)
+・g^3=3^3=12≡2 (mod 5)
+
+　よって、{g^0 mod 5,g^1 mod 5,g^2 mod 5,g^3 mod 5}={1,3,4,2}={1,2,3,4}と
+なり、Z_5^*と一致している。
+
+　したがって、いずれにしても、gの値がいずれにしても定理が必ず成立すること
+が確かめられた。
+
+
+■0x05.) 原始元の生成アルゴリズム
+
+　暗号の世界では原始元が活躍する。そのためコンピュータで効率的に原始元を
+生成する必要が生じる。例えば、ElGamal暗号などにおいては、大きな素数pに対
+して、Z_p^*の原始元gを生成する必要がある。
+
+　原始元を生成する素朴なアプローチは全数探索である。まず、g∈Z_p^*をラン
+ダムに選択肢、次にそれが原始元かどうかを判定すればよい。原始元の定義から、
+g≠1,g^2≠1,…,g^{p-2}≠1 (mod p)が成り立てば、gは原始元である（∵原始元
+の定義より、g^{p-1}が法pの世界で初めて1になるgが、原始元であるから）。し
+かし、この方法ではp^κの計算量がかかってしまう（κ：ビット数）。指数時間
+の計算量ではチューリングマシンにとって効率的ではない。
+
+　そのため、多項式時間で原始元を判定するような効率のよい方法を考えなけれ
+ばならない。判定アルゴリズムが効率的ならば、ランダムに選択するのも効率的
+なので、生成という全体で見ても効率的になる（図1参照）。
+
+（図1）http://security2600.sakura.ne.jp/main2/image3/gensi1.jpg
+
+
+■0x06.) 原始元の判定アルゴリズム
+
+　原始元の判定アルゴリズムに使えそうな次の事実がある。
+
+[補題]
+p-1がp-1=(q_0)^(e_0)×(q_1)^(e_1)×…×(q_t)^(e_t)のように素因数分解され
+たとする。このとき、次が成り立つ。
+
+「gがmod pの原始元である」⇔「0≦∀i≦t; g^{(p-1)/(q_i)}≠1 (mod p)」　←(*)
+
+　証明は省略して、例で考えておこう。p=11とすると、p-1=10の素因数分解は2^1
+×5^1である。
+
+[1]2が原始元かどうかを調べる
+
+・2^{(11-1)/5}=2^2=4≠1 (mod 11)
+・2^{(11-1)/2}=10≠1 (mod 11)
+
+　どちらの結果も1に一致しないので、2は原始元である。
+
+[2]3が原始元かどうかを調べる
+
+・3^{(11-1)/5}=3^2=9≠1 (mod 11)
+・3^{(11-1)/2}=3^5=9・9・3=81・3=4・3=12≡1 (mod 11)
+
+　1に一致するものがあったので、3は原始元ではない。
+
+　この定理を使うと、(*)をt+1回チェックするだけで、原始元かどうかを判定で
+きることになる。
+
+　ところが、この定理は原始元の判定アルゴリズムに利用できそうだが、実際に
+は使うことはできない。なぜならば、ElGamal暗号のときはp=1,024ビットなので、
+pを素因数分解することは無理である。この定理を使うためには、p-1の素因数分
+解を知らなければならないため、直接使うことは不可能である。そこで、実装に
+おいては図2のように行う。
+
+（図2）http://security2600.sakura.ne.jp/main2/image3/gensi2.jpg
+
+1：qをランダムに選び、素数判定アルゴリズム（次回のWBで解説する予定）で判
+定する。普通にMiller-Rabinアルゴリズムを使えばよい。
+
+2：次にp=2q+1を計算し、このpが素数かどうかを素数判定アルゴリズムで判定す
+る。
+
+3：もしp,qどちらも素数ならば、p-1の素因数は2とqとすでに知っているので、上
+記の原始元かどうかを判定するアルゴリズムを利用できる。図2の原始元生成アル
+ゴリズムはgの選択と原始元判定アルゴリズムの組合わせを意味としている。
+
+　ちなみに、たった2つの素因数なので、g^2≡1 (mod p)とg^q≡1 (mod p)のたっ
+た2回のチェックのみで原始元の判定ができる。もし両方の合同式が満たされない
+場合は、gはmod pの原始元となるわけである。
+
+
+■0x07.) 終わりに
+
+　暗号実装する際には、一般にライブラリを利用するはずなので、このようなこ
+とを意識しないかもしれない。しかし、暗号理論とその背景となる数学の学習に
+はうってつけなので、WBではあえて取り上げた。
+　次回は、暗号理論に関するアルゴリズムの中で花形のひとつとも言える素数判
+定アルゴリズムについて解説する予定である。
 
 
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- ��7��: ��b�Í��w�u���E��11�� �`���n������A���S���Y���` ---
-
-���ҁFIPUSIRON
+ --- 第8章: お知らせ ---
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-
-��0x01.) �͂��߂�
-
-�@������O��Ɉ��������A�Í��̎����ɂ����Ă悭�g����A���S���Y�����Љ�
-����B����Љ��A���S���Y���͌��n������A���S���Y���ł���B�f������A
-���S���Y�������ׂ�Βn�������A�Í��̎����ɂ����Ă͏d�v�ȃA���S���Y���ł���B
-
-�@���łɌ��n���̊T�O�͉���ς݂����A���K�Ƃ��Ē�`������肽���Ǝv���B
-
-
-��0x02.) ���n��
-
-�@�@p�i�f���j�̐��E�ōl�����Ƃ��A���̐��E�ɂ�{0,1,�c,p-1}�i�����Z_p�ƕ\
-�L����j��p�̐������݂���B���̂Ƃ��A0��������{1,�c,p-1}�i����͂��傤
-��Z_p^*�ƈ�v���Ă���j�̒��ŁAp-1�悵���Ƃ����߂�1�ɂȂ�悤�Ȍ��̂��Ƃ�
-���n���Ƃ����B
-
-�@�Ⴆ�΁Ap=5�Ƃ���ƁAZ_5^*={1,2,3,4}�̐��E�ɂ�4�̐�������B���ꂼ���
-���ɂ����āA���悵����1�Ɉ�v���邩�m���߂Ă݂�i1�ɂȂ�����X�g�b�v����
-�Ă���j�B
-
-�E1^1=1
-�E2^1=2�A2^2=4�A2^3=8��3 mod 5�A2^4=6��1 mod 5
-�E3^1=3�A3^2=9��4 mod 5�A3^3=12��2 mod 5�A3^4=6��1 mod 5
-�E4^1=4�A4^2=16��1 mod 5
-
-�@1��1���1�Ɉ�v���Ă��܂��̂ŁA���n���ł͂Ȃ��B2��3��4��i=p-1=5-1�j��
-���߂�1�ɂȂ����̂ŁA���n���ł���B4��2���1�Ɉ�v���Ă��܂��̂ŁA���n��
-�ł͂Ȃ��B����āAZ_5^*�̌��n����2��3�Ƃ������ƂɂȂ�B
-
-
-*���n���ƌ��̈ʐ��̊֌W
-
-�@���̈ʐ��Ƃ�a^x��1 (mod p)�ƂȂ�ŏ��̐�����x�̂��Ƃł���Aa�̈ʐ��Ƃ�
-���B�����x=ord_p(a)�ƕ\�����B
-
-�@��L�̗�̌��ʂ�ord�\�L�ŕ\���ƁA���̂悤�ɂȂ�B
-
-�Eord_5(1)=1
-�Eord_5(2)=4
-�Eord_5(3)=4
-�Eord_5(4)=2
-
-�@���̕\�L�Ō��n�����`�����ord_p(a)=p-1�̂Ƃ��ł��邩��Ap=5�̂Ƃ���
-ord_5(a)=4�𖞂����悤��a�����n���ł���B�܂�Aa=2,3�����n���Ƃ킩��B
-
-�@a��{1,2,3,4}�̂Ƃ���ord_5(a)�̒l�ɒ��ڂ��ė~�����Ba��1����4�܂ŕω�����
-�ƁAord_5(a)�̒l��1,4,4,2�ƂȂ�B����4�̒l�͂��ׂ�4�i=p-1=5-1�j�̖񐔂�
-�Ȃ��Ă���B���̎����ɋC�t���ɂ͐��l�����������傫�����čl���Ȃ���΂Ȃ�
-�Ȃ����A�����ł͓V���莮�Ɏ��̐��w�I���������邱�Ƃ������B
-
-[�藝]
-p�͑f���Ƃ���B
-���̂Ƃ��Aa�̈ʐ�d�i=ord_p(a)�j�́Ap-1�̖񐔂ł���B
-�����Ad|p-1�����藧�B
-
-
-��0x03.) ���n���̌�
-
-�@p����̓I�Ɍ��܂�ƏW��Z_p^*����̓I�Ɍ��܂��Ă���B����ƁA���̏W����
-�܂܂�Ă��錴�n�������܂��Ă���B�����ŋC�ɂȂ�̂��A����p�ƌ��n���̌�
-�ɂ͊֌W������̂ł͂Ȃ����Ƃ������Ƃł���B���ۂɂ͊֌W������̂ł���B
-Z_5^*�̗�ł́A��1�`4�ɂ��Ă��������ݏ悵�Ē��ׂĂ���A�������߂Ă����B
-�������Ap�̒l�ƌ��n���̌��Ɋ֌W������̂ŁA���͂��̂悤�Ȃ��������Ȃ�
-�Ă��ȒP�ɋ��߂���@������̂ł���B�������A�����܂Ō��n���̌��ł����āA
-�ǂ̌������n�����Ƃ������Ƃɂ��Ăł͂Ȃ����Ƃɒ��ӂ��Ă��炢�����B
-�@����ł�p�̒l�ƌ��n���̌��̊֌W�̒藝�����Ɏ����B
-
-[�藝]
-Z_p^*�̌��n���̌��̓�(p-1)�ł���B
-
-�@��( )�̓I�C���[�֐��ł���B�I�C���[�֐���(n)�Ƃ́An�ƌ݂��ɑf�ł��鐳��
-�����̌����Ӗ�����B
-
-�@���̌��ʂ͂��̂����������[�������邩������Ȃ��BZ_n^*�ōl����Ƌ����[��
-�������Ǝv���B�܂��AZ_n^*�̗v�f�̌��̓�(n)�ł���i��`���疾�炩�j�B��
-��ɁA��(n)�̒��Ō��n���̐��̓�(��(n))�ɂȂ�B�ӂ�2�d�ɂȂ��Ă��邱�Ƃ�
-�΂��ăG���K���g���������Ă��܂��B
-
-�@�ȏ�̂��Ƃ���A���n���͑S�̂̐����猩�Ă��A��r�I�������񂠂邱�Ƃ���
-����B�Ⴆ�΁Ap=7�ōl����΁A���n���̌��͎��̂悤�Ɍv�Z�ł���2�ɂȂ�B
-�܂�AZ_7^*�̒��Ɍ��n����2���݂��邱�ƂɂȂ�B
-
-��(7-1)=��(6)=��(2�E3)=��(2)��(3)=(2-1)(3-1)=1�E2=2
-
-�@��(n)��n�ɂ���ĈقȂ�l�ɂȂ邪�A���ς����6n/��^2�i��0.6�j�Ƃ���������
-����B����āA��(��(n))�͕��ς���Ɩ�0.36�Ƃ������ƂɂȂ�B�܂�A�S�̂�
-36%�����n���ƍl���邱�Ƃ��ł���B
-
-
-��0x04.) ���n���̗ݏ�ō\�������W��
-
-�@�Í����_�ɖ��ڂȊ֌W�ɂ���A���n���Ɋւ��鐔�w�I����������B����́A��
-�n��g��I�сA�����0��`p-2�悵�č��ꂽ���̏W��{g^0=1,g^1 (mod p),g^2 
-(mod p),�c,g_(p-2) (mod p)}�́AZ_p^*={1,2,�c,p-1}�ƈ�v����Ƃ������Ƃł�
-��B
-
-�@���̎����̉��b���ǂ��������̂��ɂ��ẮA����̋L���ɂ����ĈÍ��v���g
-�R�����o�ꂵ���Ƃ��ɐ����������Ǝv���B
-
-�@�����ł́A���̐��w�I�����Ɋ���Ă��炤���߂ɁA��قǂ̗�Ɠ��l��p=5�ōl
-���Ă݂�Bp=5�̂Ƃ���Z_5�AZ_5^*�AZ_5^*�̌��n���͂��łɏ�L�̗�ŉ���ς�
-�ł���B���̌��ʂ����ɂ܂Ƃ߂Ă����B
-
-�Ep=5
-�EZ_5={0,1,2,3,4}
-�EZ_5^*={1,2,3,4}
-�E���n��g=2,3�i��Z_5^*�j
-
-[1]g=2�̂Ƃ�
-
-�Eg^0=2^0=1
-�Eg^1=2^1=2
-�Eg^2=2^2=4
-�Eg^3=2^3=8��3 (mod 5)
-
-�@����āA{g^0 mod 5,g^1 mod 5,g^2 mod 5,g^3 mod 5}={1,2,4,3}={1,2,3,4}��
-�Ȃ�AZ_5^*�ƈ�v���Ă���B
-
-[2]g=3�̂Ƃ�
-
-�Eg^0=3^0=1
-�Eg^1=3^1=3
-�Eg^2=3^2=9��4 (mod 5)
-�Eg^3=3^3=12��2 (mod 5)
-
-�@����āA{g^0 mod 5,g^1 mod 5,g^2 mod 5,g^3 mod 5}={1,3,4,2}={1,2,3,4}��
-�Ȃ�AZ_5^*�ƈ�v���Ă���B
-
-�@���������āA������ɂ��Ă��Ag�̒l��������ɂ��Ă��藝���K���������邱��
-���m���߂�ꂽ�B
-
-
-��0x05.) ���n���̐����A���S���Y��
-
-�@�Í��̐��E�ł͌��n�������􂷂�B���̂��߃R���s���[�^�Ō����I�Ɍ��n����
-��������K�v��������B�Ⴆ�΁AElGamal�Í��Ȃǂɂ����ẮA�傫�ȑf��p�ɑ�
-���āAZ_p^*�̌��n��g�𐶐�����K�v������B
-
-�@���n���𐶐�����f�p�ȃA�v���[�`�͑S���T���ł���B�܂��Ag��Z_p^*������
-�_���ɑI�����A���ɂ��ꂪ���n�����ǂ����𔻒肷��΂悢�B���n���̒�`����A
-g��1,g^2��1,�c,g^{p-2}��1 (mod p)�����藧�Ă΁Ag�͌��n���ł���i�挴�n��
-�̒�`���Ag^{p-1}���@p�̐��E�ŏ��߂�1�ɂȂ�g���A���n���ł��邩��j�B��
-�����A���̕��@�ł�p^�Ȃ̌v�Z�ʂ��������Ă��܂��i�ȁF�r�b�g���j�B�w������
-�̌v�Z�ʂł̓`���[�����O�}�V���ɂƂ��Č����I�ł͂Ȃ��B
-
-�@���̂��߁A���������ԂŌ��n���𔻒肷��悤�Ȍ����̂悢���@���l���Ȃ���
-�΂Ȃ�Ȃ��B����A���S���Y���������I�Ȃ�΁A�����_���ɑI������̂������I
-�Ȃ̂ŁA�����Ƃ����S�̂Ō��Ă������I�ɂȂ�i�}1�Q�Ɓj�B
-
-�i�}1�jhttp://security2600.sakura.ne.jp/main2/image3/gensi1.jpg
-
-
-��0x06.) ���n���̔���A���S���Y��
-
-�@���n���̔���A���S���Y���Ɏg�������Ȏ��̎���������B
-
-[���]
-p-1��p-1=(q_0)^(e_0)�~(q_1)^(e_1)�~�c�~(q_t)^(e_t)�̂悤�ɑf������������
-���Ƃ���B���̂Ƃ��A�������藧�B
-
-�ug��mod p�̌��n���ł���v�́u0����i��t; g^{(p-1)/(q_i)}��1 (mod p)�v�@��(*)
-
-�@�ؖ��͏ȗ����āA��ōl���Ă������Bp=11�Ƃ���ƁAp-1=10�̑f����������2^1
-�~5^1�ł���B
-
-[1]2�����n�����ǂ����𒲂ׂ�
-
-�E2^{(11-1)/5}=2^2=4��1 (mod 11)
-�E2^{(11-1)/2}=10��1 (mod 11)
-
-�@�ǂ���̌��ʂ�1�Ɉ�v���Ȃ��̂ŁA2�͌��n���ł���B
-
-[2]3�����n�����ǂ����𒲂ׂ�
-
-�E3^{(11-1)/5}=3^2=9��1 (mod 11)
-�E3^{(11-1)/2}=3^5=9�E9�E3=81�E3=4�E3=12��1 (mod 11)
-
-�@1�Ɉ�v������̂��������̂ŁA3�͌��n���ł͂Ȃ��B
-
-�@���̒藝���g���ƁA(*)��t+1��`�F�b�N���邾���ŁA���n�����ǂ����𔻒��
-���邱�ƂɂȂ�B
-
-�@�Ƃ��낪�A���̒藝�͌��n���̔���A���S���Y���ɗ��p�ł����������A���ۂ�
-�͎g�����Ƃ͂ł��Ȃ��B�Ȃ��Ȃ�΁AElGamal�Í��̂Ƃ���p=1,024�r�b�g�Ȃ̂ŁA
-p��f�����������邱�Ƃ͖����ł���B���̒藝���g�����߂ɂ́Ap-1�̑f������
-����m��Ȃ���΂Ȃ�Ȃ����߁A���ڎg�����Ƃ͕s�\�ł���B�����ŁA������
-�����Ă͐}2�̂悤�ɍs���B
-
-�i�}2�jhttp://security2600.sakura.ne.jp/main2/image3/gensi2.jpg
-
-1�Fq�������_���ɑI�сA�f������A���S���Y���i�����WB�ŉ������\��j�Ŕ�
-�肷��B���ʂ�Miller-Rabin�A���S���Y�����g���΂悢�B
-
-2�F����p=2q+1���v�Z���A����p���f�����ǂ�����f������A���S���Y���Ŕ��肷
-��B
-
-3�F����p,q�ǂ�����f���Ȃ�΁Ap-1�̑f������2��q�Ƃ��łɒm���Ă���̂ŁA��
-�L�̌��n�����ǂ����𔻒肷��A���S���Y���𗘗p�ł���B�}2�̌��n�������A��
-�S���Y����g�̑I���ƌ��n������A���S���Y���̑g���킹���Ӗ��Ƃ��Ă���B
-
-�@���Ȃ݂ɁA������2�̑f�����Ȃ̂ŁAg^2��1 (mod p)��g^q��1 (mod p)�̂���
-��2��̃`�F�b�N�݂̂Ō��n���̔��肪�ł���B���������̍���������������Ȃ�
-�ꍇ�́Ag��mod p�̌��n���ƂȂ�킯�ł���B
-
-
-��0x07.) �I����
-
-�@�Í���������ۂɂ́A��ʂɃ��C�u�����𗘗p����͂��Ȃ̂ŁA���̂悤�Ȃ�
-�Ƃ��ӎ����Ȃ���������Ȃ��B�������A�Í����_�Ƃ��̔w�i�ƂȂ鐔�w�̊w�K��
-�͂����Ă��Ȃ̂ŁAWB�ł͂����Ď��グ���B
-�@����́A�Í����_�Ɋւ���A���S���Y���̒��ŉԌ`�̂ЂƂƂ�������f����
-��A���S���Y���ɂ��ĉ������\��ł���B
-
-
-
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-
- --- ��8��: ���m�点 ---
-
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-
-��Wizard Bible�ihttp://wizardbible.org/�j�ł͐����A���M���C�^�[���W����
-���܂��B
-�@�������e�̃e�[�}�͍L�`�ł́uunder ground�v�ł��B�Ⴆ�΃n�b�L���O����s
-�b�L���O�Ȃǂƕ��L�����e���l���Ă��܂��B�܂�����ȐE�Ƃ�������������
-���N�`���[�Ȃǂ��܂܂�܂��B
-�@��񂫂�ł��\���܂���B�܂��K������A�ڂ���`��������܂���̂ŁA�ł�
-��͈͂ō\���܂���B�C�y�ɐ��������Ă��������B
-
-��Kenji Aiko����Q&A������Ă���܂����B���߂ĎQ������l�ł��킩��₷��
-������Ă��܂��̂ŁA�Q�l�ɂ��Ă��������B
+○Wizard Bible（http://wizardbible.org/）では随時、執筆ライターを募集して
+います。
+　扱う内容のテーマは広義での「under ground」です。例えばハッキングからピ
+ッキングなどと幅広い内容を考えています。また特殊な職業や趣味を持った方の
+レクチャーなども含まれます。
+　一回きりでも構いません。また必ず毎回連載する義務もありませんので、でき
+る範囲で構いません。気軽に声をかけてください。
+
+○Kenji AikoさんがQ&Aを作ってくれました。初めて参加する人でもわかりやすく
+書かれていますので、参考にしてください。
 
 http://wizardbible.org/wbQandA.html
 
-��Wizard Bible�ɎQ����]�̕��͋C�y�Ƀ��[���iipusiron@gmail.com�j���������B
+○Wizard Bibleに参加希望の方は気軽にメール（ipusiron@gmail.com）ください。
 
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-  ---- ��9��: ���҃v���t�B�[�� ---
+  ---- 第9章: 著者プロフィール ---
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-������
-��Job: �v���O���}�[
-��Web: http://guardian.jumperz.net/, http://www.jumperz.net/
-��Mail: anvil@jumperz.net
-��Comment:
-�@�Ȃ񂾂��җ�ɖZ�����̂ł����A������Ƃ���Ă݂���1���Ԃłł����̂Ō��e
-�����܂����B���e�̂ق���70���|�����Ă�̂͂ǂ��Ȃ�(;�L�D`)
-�@�܂��A�Ƃɂ����A�����Java���Ƃ������Ƃł��B
-���X�p���ɂ���:
-�@�茳�ł�POPFile���撣���Ă܂��B�d���񂾂��ǁACore2Duo�ɂ��Ă���͉��K��
-���R(�L�[`)�m
-�@����Ń��[���T�[�o�[�̕����X�p�}�[����̑�ʂ̐ڑ��ł�����ƕ��ׂ��C��
-�Ȃ郌�x���B�΍􂵂Ȃ���Ȃ��Ȃ��c�B
+■金床
+●Job: プログラマー
+●Web: http://guardian.jumperz.net/, http://www.jumperz.net/
+●Mail: anvil@jumperz.net
+●Comment:
+　なんだか猛烈に忙しいのですが、ちょっとやってみたら1時間でできたので原稿
+書けました。原稿のほうが70分掛かってるのはどうなの(;´Д`)
+　まぁ、とにかく、時代はJavaだということです。
+●スパムについて:
+　手元ではPOPFileが頑張ってます。重いんだけど、Core2Duoにしてからは快適で
+すヽ(´ー`)ノ
+　一方でメールサーバーの方がスパマーからの大量の接続でちょっと負荷が気に
+なるレベル。対策しなきゃならんなぁ…。
 
 
-��Kenji Aiko
-��Job: Web Application Programmer
-��Web: http://ruffnex.oc.to/kenji/
-��Mail: kenji@ruffnex.oc.to
-��Team�iGroup): N/A
-��Comment:
-�@�����ƁA�ŋ߂͒n���ɃE�F�u�A�v���Ƃ�Flash�Ƃ�����Ă܂�(^^;�B�Ȃ̂ŁAA
-ctionScript3�Ȃ���̂�����Ă��肵�܂��B����܂ł����ƃA�Z���u���Ƃ��AC��
-��Ƃ��A�J�[�l���Ƃ��A�Í��Ƃ�����Ă��̂Ɣ�ׂ�ƁA���S�ɕʕ���ł����A
-�������͂������łȂ��Ȃ��ʔ������ȁA�Ǝv���Ȃ������Ă���܂��B
-���X�p���󋵂Ƒ΍�:
-�@�����ƁA�X�p���ɂ��Ăł����A���̃��[���A�h���X�ikenji@ruffnex.oc.to�j
-���Ăɂ͖�����������30�ʂ��炢���[��������̂ł����A���̂�����������30��
-���炢�̓X�p�����[���ł��B�Ȃ̂ŁA�Ԃ����Ⴏ�A�S���Ȃ�ł����B
-�@�����A�قƂ�ǃX�p��������A���܂�΍�̕K�v�����Ȃ��ł��B30�ʒ��x�Ȃ�
-�]�T�ł����B�t�ɃX�p�����Ȃ��Ȃ�����A�u�����̃��[����0���ł��v�Ƃ����኱
-���т����������Ȃ��Ƃ�����Ȃ��ł����B
-�@�X�p���Ƃ����Ă��A���̒��x�Ȃ烂�E�}���^�C�I�@�ނ���E�F���J���ł��B
+■Kenji Aiko
+●Job: Web Application Programmer
+●Web: http://ruffnex.oc.to/kenji/
+●Mail: kenji@ruffnex.oc.to
+●Team（Group): N/A
+●Comment:
+　えっと、最近は地味にウェブアプリとかFlashとか作ってます(^^;。なので、A
+ctionScript3なるものもやってたりします。これまでずっとアセンブラとか、C言
+語とか、カーネルとか、暗号とかやってたのと比べると、完全に別分野ですが、
+こっちはこっちでなかなか面白いかな、と思いながらやっております。
+●スパム状況と対策:
+　えっと、スパムについてですが、私のメールアドレス（kenji@ruffnex.oc.to）
+宛てには毎日だいたい30通くらいメールがくるのですが、そのうちだいたい30通
+くらいはスパムメールです。なので、ぶっちゃけ、全部なんですが。
+　ただ、ほとんどスパムだから、あまり対策の必要性もないです。30通程度なら
+余裕ですし。逆にスパムがなくなったら、「今日のメールは0件です」という若干
+さびしい日が来ないとも限らないですし。
+　スパムといっても、この程度ならモウマンタイ！　むしろウェルカムです。
 
 
-��Green boy 4
-��Job: Closed
-��Web: N/A
-��Mail: greenboy4@gmail.com
-��Team�iGroup): N/A
-��Comment:
-�@�܂��܂��삯�o����No Skill�Ȏ҂ł����A���낢��Ɗw��ł��������Ǝv����
-���B
+■Green boy 4
+●Job: Closed
+●Web: N/A
+●Mail: greenboy4@gmail.com
+●Team（Group): N/A
+●Comment:
+　まだまだ駆け出しのNo Skillな者ですが、いろいろと学んでいきたいと思いま
+す。
 
 
-��Defolos
-��Job: Student
-��Web: http://ruffnex.oc.to/defolos/
-��Mail: defolos@ruffnex.oc.to
-��Team�iGroup): none
-��Comment:
-�@����͎��ۂ�root�������Ƃ���؂��s�����킯�ł����A���̓r��Linux����ꂽ
-HDD���Ԃ�����n�v�j���O�Ɍ������܂����B�m�[�gPC���p���Ăǂ��ɂ�����
-���I�����̂ł����A���ꂩ��ǂ����悤���l�����B
-�@�b�͕ς���āA�ŋ�USB�������ɓ��ꂽUbuntu���f�X�N�g�b�v�Ƃ��Ďg���Ă܂��B
-�p�b�P�[�W�Ǘ����������y�ŁA�Ȃ��Ȃ��C�C�ł���B�����̂�����͐���g����
-�݂Ă��������B
-���X�p���󋵂Ƒ΍�
-�@�͂��A�X�p�����[���͑����ł��B1��15�����炢�̓��[�������܂���98%���炢
-�̓X�p���ł��ˁB����Ƃ��ẮA1.�C�O�̃����N���b�N���\���[���A2.�����̃A
-�_���g�W�����N���b�N���\���[���A3.�C�O��pdf�̃Z�L�����e�B�z�[����˂����U
-�����[���A�Ƃ��������e�ł��B�΍�͓��ɍs���Ă��܂���B
-�@�����A�X�p���������Ȃ�΃l�b�g���[�N�̃C���t�����������⏬�����Ă�OK��
-�񂶂�Ȃ����Ƌ^���Ă܂��B
+■Defolos
+●Job: Student
+●Web: http://ruffnex.oc.to/defolos/
+●Mail: defolos@ruffnex.oc.to
+●Team（Group): none
+●Comment:
+　今回は実際にroot権限をとる実証を行ったわけですが、その途中Linuxを入れた
+HDDがぶち壊れるハプニングに見舞われました。ノートPCを代用してどうにか実証
+を終えたのですが、これからどうしようか考え中。
+　話は変わって、最近USBメモリに入れたUbuntuをデスクトップとして使ってます。
+パッケージ管理がすごく楽で、なかなかイイですよ。興味のある方は是非使って
+みてください。
+●スパム状況と対策
+　はい、スパムメールは多いです。1日15件ぐらいはメールが来ますが98%ぐらい
+はスパムですね。内訳としては、1.海外のワンクリック詐欺メール、2.国内のア
+ダルト係ワンクリック詐欺メール、3.海外のpdfのセキュリティホールを突いた攻
+撃メール、といった内容です。対策は特に行っていません。
+　正直、スパムが無くなればネットワークのインフラをもっと矮小化してもOKな
+んじゃないかと疑ってます。
 
 
-��IPUSIRON
-��Job: Student
-��Web: http://akademeia.info/
-��Mail: ipusiron@gmail.com
-��Team�iGroup): N/A
-��Comment:
-�@�C�m�_���̒��ԐR���Ɍ����Č��݊撣���Ă���Ƃ���ł��B�Í��Z�p�̒��ł�
-commitment scheme�Ƃ������̂�����Ă܂����A���ꂪ���̖��ɗ����̂Ȃ̂���
-���Ȃ��������ɂ����B���̂��߁A�v���[���p�̃X���C�h�����Ƃ��Ɍ��\�����
-�v���Ă��܂��Bcommitment scheme�͒��ڃA�v���P�[�V�����Ŏg���Ƃ������A��
-�i�Ƃ��ė��p���邱�Ƃ���ʓI�ł���A���ꂪ�����̍���̗v���̂ЂƂƂ�
-������ƍl���Ă��܂��B���������i�Ƃ���鑤�����S�łȂ���΁A����𗘗p��
-�Ă��鑤�����S�łȂ��Ȃ邱�Ƃ�����̂ŁA��肪���͂���܂��B
-�@�Ƃ������ƂŁAcommitment scheme�ɂ��ċC�ɂȂ���́A����URL�Œ��ׂĂ�
-�Ă��������B
+■IPUSIRON
+●Job: Student
+●Web: http://akademeia.info/
+●Mail: ipusiron@gmail.com
+●Team（Group): N/A
+●Comment:
+　修士論文の中間審査に向けて現在頑張っているところです。暗号技術の中でも
+commitment schemeというものをやってますが、これが何の役に立つものなのかな
+かなか説明しにくい。そのため、プレゼン用のスライドを作るときに結構困難を
+要しています。commitment schemeは直接アプリケーションで使うというより、部
+品として利用することが一般的であり、これが説明の困難さの要因のひとつとも
+いえると考えています。しかし部品とされる側が安全でなければ、それを利用し
+ている側も安全でなくなることがあるので、やりがいはあります。
+　ということで、commitment schemeについて気になる方は、次のURLで調べてみ
+てください。
 http://akademeia.info/index.php?commitment%20scheme
-���X�p���󋵂Ƒ΍�:
-�@�ȑO��ruffnex.oc.to�̃��[���A�h���X���g���Ă������́APOPFile�Ńx�C�W�A
-���t�B���^�����O���s���Ă��܂����B�������A�t�B���^�����O�̊w�K���������
-����ςȂ̂ƁA�w�K�����Ă��ŏI�I�ɃX�p���p�t�H���_��`���đ厖�ȃ��[����
-���ꍞ��ł��Ȃ����m�F����K�v������A���݂�gmail���g���Ă��܂��Bgmail��
-�g���n�߂Ă���X�p���΍�͉������Ă��܂��񂪁A���K�ɂȂ�܂����BWeb����
-����΂ǂ��ł��m�F�ł���͕̂֗��ł����A�A�J�E���g���D���Ă��܂��댯��
-���l����Ƃ�����ƕ|���ł��ˁB
+●スパム状況と対策:
+　以前はruffnex.oc.toのメールアドレスを使っていた頃は、POPFileでベイジア
+ンフィルタリングを行っていました。しかし、フィルタリングの学習をさせるの
+が大変なのと、学習させても最終的にスパム用フォルダを覗いて大事なメールが
+紛れ込んでいないか確認する必要があり、現在はgmailを使っています。gmailを
+使い始めてからスパム対策は何もしていませんが、快適になりました。Web環境が
+あればどこでも確認できるのは便利ですが、アカウントが奪われてしまう危険性
+を考えるとちょっと怖いですね。

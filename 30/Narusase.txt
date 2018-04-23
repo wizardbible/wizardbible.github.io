@@ -1,60 +1,60 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- �恛��: �n�j�[�|�b�g����낤�i�A�ڑ�10��j ---
+--- 第○章: ハニーポットを作ろう（連載第10回） ---
 
-���ҁFNarusase
+著者：Narusase
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@�n�߂ɑO��̌f�ڂ���A�����Ԃ�ƊԂ��󂢂Ă��܂������Ƃ����l�т��܂��B
-�����ł����A���낢��ƖZ����������ɂ܂Ŏ肪���Ȃ������Ƃ������Ƃ���
-���ł��B
-�@����ł͋C����蒼���đO��܂ł̕��K�ł��B�O��܂łł�honeyd�����arpd
-�̃C���X�g�[���Ɛݒ�Ɋւ���������s���܂����B�����Snort�̃C���X�g�[����
-��ѐݒ�Ɉڂ��Ă��������Ǝv���܂��B
-
-
-��0x02.) �C���X�g�[���̑O��
-
-�@�܂��ЂƂ��ӂ�����܂��BVine Linux��apt��extras�̃p�b�P�[�W�Ƃ��Ď擾
-�ł���Snort��1.7�Ƃ��Ȃ�Â��̂Ŏg���Ă͂����܂���B���ׂĂ݂��2000�N��
-����Ĉȍ~�A�����e�i���X���Ȃ���Ă��Ȃ��悤�ł��B�����ŕ��ʂɍŐV��ta
-r.gz���_�E�����[�h���Ă��ăR���p�C�����܂��BSnort�ł͂��̃��O���f�[�^�x�[
-�X�ɕۊǂ��邱�Ƃ��ł��܂��B���̂��ߍ����PostgreSQL���ꏏ�ɃC���X�g�[��
-���܂��B
+　始めに前回の掲載から、ずいぶんと間が空いてしまったことをお詫びします。
+私事ですが、いろいろと忙しくこちらにまで手が回らなかったということが原
+因です。
+　それでは気を取り直して前回までの復習です。前回までではhoneydおよびarpd
+のインストールと設定に関する説明を行いました。今回はSnortのインストールお
+よび設定に移っていきたいと思います。
 
 
-��0x03.) PostgreSQL�̃C���X�g�[���Ɛݒ�
+■0x02.) インストールの前に
 
-�@��ɏq�ׂ��ʂ�Snort�ł͂��̃��O���f�[�^�x�[�X�i�ȍ~DB�Ɨ�����j�ɕۊǂ�
-�邱�Ƃ��ł��܂��B�������A�����ɑΉ����Ă���DB��PostgreSQL��MySQL��2���
-������ǂ����I�����邩�͔Y�ނƂ���ł��B���Ԉ�ʓI�ɂ�RAMP�iLinux+Apac
-he+MySQL+PHP or Perl or Python�j�ȂǂƂ������t������悤��MySQL�̕������y
-���Ă���悤�ł��B�Ƃ��낪MySQL�̓X�E�F�[�f����MySQL�ЂƂ����c����Ƃ��J
-�����s���Ă���Ƃ�����肪����܂��B�܂�MySQL�Ђ̕��j�ɂ���Ă�MySQL��
-�I�[�v���\�[�X�łȂ��Ȃ�\��������̂ł��B���������Ď���DBMS�Ƃ��Ă�Po
-stgreSQL�̕��������I�ȃ��X�N���������ƍl���Ă��܂��B�܂�SQL�W���ւ̑Ή��x
-��MySQL�Ɣ�ׂėD��Ă���A���̂���DB�Ƃ��Ă�PostgreSQL���̗p���邱�Ƃɂ�
-�܂����B
+　まずひとつ注意があります。Vine Linuxのaptでextrasのパッケージとして取得
+できるSnortは1.7とかなり古いので使ってはいけません。調べてみると2000年に
+作られて以降、メンテナンスがなされていないようです。そこで普通に最新のta
+r.gzをダウンロードしてきてコンパイルします。Snortではそのログをデータベー
+スに保管することができます。そのため今回はPostgreSQLも一緒にインストール
+します。
 
-�@������āBMySQL�h�ւ̌�����i�R�j�͂��ꂮ�炢�ɂ��āA����PostgreSQL�̃C
-���X�g�[�����n�߂܂��傤�BPostgreSQL�̃C���X�g�[���͎��̂悤��apt�R�}���h
-�ŊȒP�ɂ��邱�Ƃ��ł��܂��B
+
+■0x03.) PostgreSQLのインストールと設定
+
+　先に述べた通りSnortではそのログをデータベース（以降DBと略する）に保管す
+ることができます。しかし、公式に対応しているDBはPostgreSQLとMySQLの2種類
+がありどちらを選択するかは悩むところです。世間一般的にはRAMP（Linux+Apac
+he+MySQL+PHP or Perl or Python）などという言葉があるようにMySQLの方が普及
+しているようです。ところがMySQLはスウェーデンのMySQL社という営利企業が開
+発を行っているという問題があります。つまりMySQL社の方針によってはMySQLは
+オープンソースでなくなる可能性があるのです。したがって私はDBMSとしてはPo
+stgreSQLの方が将来的なリスクが小さいと考えています。またSQL標準への対応度
+もMySQLと比べて優れており、そのためDBとしてはPostgreSQLを採用することにし
+ました。
+
+　・・・さて。MySQL派への言い訳（嘘）はこれぐらいにして、早速PostgreSQLのイ
+ンストールを始めましょう。PostgreSQLのインストールは次のようなaptコマンド
+で簡単にすることができます。
 
 -----
 # apt-get install postgresql postgresql-server postgresql-devel
 -----
 
-�@���ɐݒ�t�@�C���͎��̂悤�ɐݒ肵�܂��B�ݒ�ł�tcpip_socket�̒l��true
-�ɂȂ��Ă��邱�ƂƁAsyslog�̒l��1�܂���2�ɂȂ��Ă��邱�Ƃ��m�F���Ă�����
-���B���Ɏ����悤�ȁA�R�}���h�����s���ݒ�t�@�C�����쐬����Α��v�Ȃ͂�
-�ł��B�P�ɕW���̐ݒ�t�@�C����tcpip_socket��syslog�̍��̒l�����������邾
-���ł�OK�ł��B
+　次に設定ファイルは次のように設定します。設定ではtcpip_socketの値がtrue
+になっていることと、syslogの値が1または2になっていることを確認してくださ
+い。次に示すような、コマンドを実行し設定ファイルを作成すれば大丈夫なはず
+です。単に標準の設定ファイルのtcpip_socketとsyslogの項の値を書き換えるだ
+けでもOKです。
 
 -----
 # cat << END_OF_SCRIPT_FILE > /var/lib/pgsql/data/postgresql.conf
@@ -72,10 +72,10 @@ lc_time = 'C'                   # locale for time formatting
 END_OF_SCRIPT_FILE
 -----
 
-�@PostgreSQL�����s����O�ɂ́A�܂��������̏������K�v�ł��B�����Y����
-��ō���̂ŖY�ꂸ�Ɏ��s���Ă��������BPostgreSQL�ł̓Z�L�����e�B�̂���po
-stgres�Ƃ������[�U�[��su���Ă����Ƃ���K�v������܂��B����postgres���[
-�U�[�͎����I�ɍ쐬����Ă��܂��̂ŁA���̂悤�ɓ��͂��ď��������s���܂��B
+　PostgreSQLを実行する前には、まず初期化の処理が必要です。これを忘れると
+後で困るので忘れずに実行してください。PostgreSQLではセキュリティのためpo
+stgresというユーザーにsuしてから作業する必要があります。このpostgresユー
+ザーは自動的に作成されていますので、次のように入力して初期化を行います。
 
 -----
 # su - postgres
@@ -83,16 +83,16 @@ $ initdb -E EUC_JP --no-locale
 $ exit
 -----
 
-�@���̂悤��sudo���g���Ă���肠��܂���B
+　次のようにsudoを使っても問題ありません。
 
 -----
 # sudo -u postgres initdb -E EUC_JP --no-locale
 -----
 
-�@���̏������ɂ͑������Ԃ�������܂��B���������I�������A���܂��N������
-���m�F���Ă݂܂��B�N�����m�F�ł�����e�X�g�p��DB���쐬���A���O�C���ł���
-���Ƃ��m�F���āA��~�����܂��B�Ȃ��ADB���烍�O�A�E�g����ɂ�\q�Ɠ��͂���
-�Δ������܂��B
+　この初期化には多少時間がかかります。初期化が終わったら、うまく起動する
+か確認してみます。起動が確認できたらテスト用のDBを作成し、ログインできる
+ことを確認して、停止させます。なお、DBからログアウトするには\qと入力すれ
+ば抜けられます。
 
 -----
 # su - postgres
@@ -103,23 +103,23 @@ $ pg_ctl -D /var/lib/pgsql/data stop
 $ exit
 -----
 
-�@�����DB�������Ă��邱�Ƃ��m�F�ł����̂ŁALinux�̍ċN����������ŗ�����
-����悤�ɐݒ肵�Ă����܂��B
+　これでDBが動いていることが確認できたので、Linuxの再起動後も自動で立ち上
+がるように設定しておきます。
 
 -----
 # chkconfig --level 35 postgresql on
 # /etc/init.d/postgresql
 ------
 
-�@�����PostgreSQL�̃C���X�g�[���Ɛݒ�͏I���ł��B
+　これでPostgreSQLのインストールと設定は終了です。
 
 
-��0x04.) snort�̃C���X�g�[���Ɛݒ�
+■0x04.) snortのインストールと設定
 
-�@�������炪����̃��C���f�B�b�V���ł��B���Ȃ荜�̐܂���Ƃł��̂ŋC��
-�������Ă����܂��傤�B
+　ここからが今回のメインディッシュです。かなり骨の折れる作業ですので気合
+いを入れていきましょう。
 
-�@�܂��K�v�ȃp�b�P�[�W�⃋�[�������̂悤�ɂ��ďW�߂Ă��܂��B
+　まず必要なパッケージやルールを次のようにして集めてきます。
 
 -----
 # cd /usr/local/src
@@ -129,10 +129,10 @@ $ exit
 # wget http://www.bleedingsnort.com/bleeding.rules.tar.gz
 -----
 
-�@����Snort�̖{�̂�W�J���āA�C���X�g�[���܂ōs���܂��B�����ł�configure
-�ł������̃I�v�V���������Ă��܂����A�G���[����������ꍇ�͌���2��
-�I�v�V��������菜���Ă݂Ă��������B�܂�pcre�̃G���[�̏ꍇ�͎����Q�l�ɂ�
-�Ă��������B
+　次はSnortの本体を展開して、インストールまで行います。ここではconfigure
+でいくつかのオプションをつけていますが、エラーが発生する場合は後ろの2つの
+オプションを取り除いてみてください。またpcreのエラーの場合は次を参考にし
+てください。
 
 -----
 # tar xvzf snort-2.6.1.1.tar.gz
@@ -142,14 +142,14 @@ $ exit
 # make install
 -----
 
-�@configure��pcre�̃G���[���ł�ꍇ�́A���̂悤�ɂ��ĕK�v�ȃp�b�P�[�W���C
-���X�g�[�����܂��B
+　configureでpcreのエラーがでる場合は、次のようにして必要なパッケージをイ
+ンストールします。
 
 -----
 # apt-get install pcre pcre-devel
 -----
 
-�@����Snort��p�̃��[�U�[�ƕK�v�ȃf�B���N�g���̍쐬���s���܂��B
+　次にSnort専用のユーザーと必要なディレクトリの作成を行います。
 
 -----
 # adduser snort -s /bin/false
@@ -161,9 +161,9 @@ $ exit
 # chown -R snort.snort /etc/snort
 -----
 
-�@Snort�̃��[�������ׂēW�J���I�[�i�[��ύX���܂��B�����ł�3�̃��[���Z
-�b�g��W�J���Ă��܂����s�v�ł����snortrules-pr-2.4.tar.gz�ȊO�̓W�J�͕K
-�v����܂���B
+　Snortのルールをすべて展開しオーナーを変更します。ここでは3つのルールセ
+ットを展開していますが不要であればsnortrules-pr-2.4.tar.gz以外の展開は必
+要ありません。
 
 -----
 # cd /etc/snort
@@ -173,114 +173,114 @@ $ exit
 # chown -R snort.snort /etc/snort/
 -----
 
-�@Snort�̋N�����ɎQ�l�ɂ����t�@�C��������̈ʒu�ɔz�u���A�K�v�Ȑݒ����
-�����݂܂��B�����Őݒ肷��ALERTMODE�̒l��ς��Ȃ��Ƃ��܂����O��PostgreSQ
-L�ɋL�^����Ȃ����Ƃ�����̂Œ��ӂ��K�v�ł��B
+　Snortの起動時に参考にされるファイルを所定の位置に配置し、必要な設定を書
+き込みます。ここで設定するALERTMODEの値を変えないとうまくログがPostgreSQ
+Lに記録されないことがあるので注意が必要です。
 
 -----
 # cp /usr/local/src/snort-2.6.1.1/rpm/snort.sysconfig /etc/sysconfig/snort
 # vi /etc/sysconfig/snort
 -----
 
-�@/etc/sysconfig/snort�t�@�C���̎��̕������C�����܂��B
+　/etc/sysconfig/snortファイルの次の部分を修正します。
 
-�i�ҏW�O�jALERTMODE=fast
-�i�ҏW��jALERTMODE=
+（編集前）ALERTMODE=fast
+（編集後）ALERTMODE=
 
-�i�ҏW�O�jCONF=/etc/snort/snort.conf
-�i�ҏW��jCONF=/etc/snort/rules/snort.conf
+（編集前）CONF=/etc/snort/snort.conf
+（編集後）CONF=/etc/snort/rules/snort.conf
 
-�@����ł���Ɣ����قǒʉ߂��܂����B
-�@���x��Snort�̃��O�Ɏg��PostgreSQL�̃A�J�E���g���쐬���܂��B�ŏ��̃R�}��
-�h�Ń��[�U�[�̌����̐ݒ�Ɋւ��Ď��₳��܂��̂ŁA����ɂ�y�En�̏��œ���
-�Ă��������B
+　これでやっと半分ほど通過しました。
+　今度はSnortのログに使うPostgreSQLのアカウントを作成します。最初のコマン
+ドでユーザーの権限の設定に関して質問されますので、質問にはy・nの順で答え
+てください。
 
 -----
 # sudo -u postgres createuser snort
-�iy�En�̏��œ�����j
+（y・nの順で答える）
 # sudo -u snort createdb snort
 # sudo -u snort psql snort < /usr/local/src/snort-2.6.1.1/schemas/create_postgresql
 -----
 
-�@createdb�Ŗ�肪�o��ꍇ��su�R�}���h��postgres���[�U�[�ɕύX���Ă���A
-doropuser snort�Ƃ���DB�̃A�J�E���g���폜���Ă��������x�����Ă݂Ă�����
-���B
+　createdbで問題が出る場合はsuコマンドでpostgresユーザーに変更してから、
+doropuser snortとしてDBのアカウントを削除してからもう一度試してみてくださ
+い。
 
-�@�����Đݒ�t�@�C���̕ҏW���s���܂��B�����ł͂܂����[���Z�b�g�ɕt�������ݒ�t�@�C����ҏW���܂��B
+　そして設定ファイルの編集を行います。ここではまずルールセットに付属した設定ファイルを編集します。
 
 -----
 # vi /etc/snort/rules/snort.conf
 -----
 
-�@1�ڂ͎����̃l�b�g���[�N������HOME_NET�̕�����ύX���܂��B�uvar HOME_
-NET any�v����uvar HOME_NET [11.22.33.44/32,192.168.1.0/24]�v�ɕύX���܂��B
-11.22.33.44/32�̓C���^�[�l�b�g����NIC��IP�A�h���X�ŁA192.168.1.0/24��LAN
-����NIC��IP�A�h���X���w���Ă��܂��B
+　1つ目は自分のネットワークを示すHOME_NETの部分を変更します。「var HOME_
+NET any」から「var HOME_NET [11.22.33.44/32,192.168.1.0/24]」に変更します。
+11.22.33.44/32はインターネット側のNICのIPアドレスで、192.168.1.0/24はLAN
+側のNICのIPアドレスを指しています。
 
-�i�ҏW�O�jvar HOME_NET any
-�i�ҏW��jvar HOME_NET [11.22.33.44/32,192.168.1.0/24]
+（編集前）var HOME_NET any
+（編集後）var HOME_NET [11.22.33.44/32,192.168.1.0/24]
 
-�@2�ڂ�DNS�T�[�o��IP�A�h���X������DNS_SERVERS�ŁADNS�̃A�h���X���w�肵
-�܂��B1�����g���Ă��Ȃ��ꍇ��[]�������悤�ɏ�����OK�ł��B
+　2つ目はDNSサーバのIPアドレスを示すDNS_SERVERSで、DNSのアドレスを指定し
+ます。1つしか使っていない場合は[]を除くように書けばOKです。
 
-�i�ҏW�O�jvar DNS_SERVERS $HOME_NET
-�i�ҏW��jvar DNS_SERVERS [11.22.33.1/32,11.22.33.2/32]
+（編集前）var DNS_SERVERS $HOME_NET
+（編集後）var DNS_SERVERS [11.22.33.1/32,11.22.33.2/32]
 
-�@�G���[����������̂ŁApreprocessor�̕������R�����g�A�E�g���܂��B
+　エラーが発生するので、preprocessorの部分をコメントアウトします。
 
-�i�ҏW�O�jpreprocessor xlink2state: ports { 25 691 }
-�i�ҏW��j#preprocessor xlink2state: ports { 25 691 }
+（編集前）preprocessor xlink2state: ports { 25 691 }
+（編集後）#preprocessor xlink2state: ports { 25 691 }
 
-�@PostgreSQL�Ƀ��O���o�͂��邽�߂̐ݒ蕔����ҏW���܂��B
+　PostgreSQLにログを出力するための設定部分を編集します。
 
-�i�ҏW�O�j#output database: alert, postgresql, user=snort dbname=snort
-�i�ҏW��joutput database: alert, postgresql, user=snort dbname=snort host=localhost
+（編集前）#output database: alert, postgresql, user=snort dbname=snort
+（編集後）output database: alert, postgresql, user=snort dbname=snort host=localhost
 
-�@�Ō�͐ݒ�t�@�C���̌���ɕ���ł���include��ҏW���܂��B�����ł͕K�v��
-���ȃ��[����ǉ����܂��B�Ⴆ�΃{�b�g��Bot C&C Server�����m����bleeding-b
-otcc.rules��ǉ��������ꍇ�͎��̂悤�ȋL�q��ǉ������OK�ł��B
+　最後は設定ファイルの後方に並んでいるincludeを編集します。ここでは必要そ
+うなルールを追加します。例えばボットのBot C&C Serverを検知するbleeding-b
+otcc.rulesを追加したい場合は次のような記述を追加すればOKです。
 
 -----
 include $RULE_PATH/bleeding-botcc.rules
 -----
 
-�@����Őݒ�t�@�C���͏I���ł��B
-�@���[���̈ʒu��W���̈ʒu�ƕς�����Asnort.conf�̈ʒu��ς����ꍇ��RULE
-_PATH��ύX����K�v������܂��B�����snort.conf�̈ʒu���猩�Ă̑��΃p�X��
-�w�肷�邩�A��΃p�X�Ŏw�肷��Ζ��Ȃ��͂��ł��B
+　これで設定ファイルは終了です。
+　ルールの位置を標準の位置と変えたり、snort.confの位置を変えた場合はRULE
+_PATHを変更する必要があります。これはsnort.confの位置から見ての相対パスで
+指定するか、絶対パスで指定すれば問題ないはずです。
 
-�@���Đݒ�t�@�C���̏����������I���܂����̂ŁAsnort���N�����邩�m�F����
-�݂܂��傤�B�N���m�F�ɂ͎��̂悤�ȃR�}���h���g���܂��B
+　さて設定ファイルの書き換えが終わりましたので、snortが起動するか確認して
+みましょう。起動確認には次のようなコマンドを使います。
 
 -----
 # /usr/bin/snort -o -l /var/log/snort -u snort -g snort -d -i eth0 -c /etc/snort/rules/snort.conf
 -----
 
-�@���̃G���[���Ȃ��uInitialization Complet�v�Ƃ�����ʂ��o�Ă���ΐ�����
-���B���܂������Ȃ������ꍇ�́A�G���[���ł܂��̂ł�����m�F���Ă݂Ă�����
-���B
+　何のエラーもなく「Initialization Complet」という画面が出てくれば成功で
+す。うまくいかなかった場合は、エラーがでますのでそれを確認してみてくださ
+い。
 
-�@�������Ȃ���A����Őݒ�͏I���ł͂���܂���B���̓T�[�r�X�Ƃ��ċN��
-�����邽�߂̐ݒ�����Ȃ���΂Ȃ�܂���B���̐ݒ�́A�܂����`�ƂȂ�t�@�C
-�����R�s�[���ĕҏW���܂��B�ҏW��̓S�~�|������̂�Y��Ȃ��ł��������B
+　しかしながら、これで設定は終わりではありません。次はサービスとして起動
+させるための設定をしなければなりません。この設定は、まず雛形となるファイ
+ルをコピーして編集します。編集後はゴミ掃除するのを忘れないでください。
 
 -----
 # cp /usr/local/src/snort-2.6.1.1/rpm/snortd /etc/init.d/
 # chmod 755 /etc/init.d/snortd
 # vi /etc/init.d/snortd
-�i�ҏW���e�͈ȉ����Q�Ɓj
+（編集内容は以下を参照）
 # rm /etc/init.d/snortd~
 -----
 
-�@�ݒ���e�͎��̒ʂ�ł��B
-�@�udaemon /usr/sbin/snort�v���udaemon /usr/bin/snort�v�ɕύX���܂��B����
-�ҏW����3�ӏ�����܂��B
+　設定内容は次の通りです。
+　「daemon /usr/sbin/snort」を「daemon /usr/bin/snort」に変更します。この
+編集個所は3箇所あります。
 
-�i�ҏW�O�jdaemon /usr/sbin/snort�@����i���j
-�i�ҏW��jdaemon /usr/bin/snort�@����i���j
+（編集前）daemon /usr/sbin/snort　・・・（略）
+（編集後）daemon /usr/bin/snort　・・・（略）
 
-�@���ɍċN�����Ɏ����ŗ����オ��悤�ɐݒ肵�A���߂�Snort���N�������ăC��
-�X�g�[������ѐݒ��Ƃ͏I���ł��B
+　次に再起同時に自動で立ち上がるように設定し、改めてSnortを起動させてイン
+ストールおよび設定作業は終了です。
 
 -----
 # chkconfig --add snortd
@@ -289,10 +289,10 @@ _PATH��ύX����K�v������܂��B�����snort.conf�̈ʒu���猩�Ă̑��΃p�X��
 -----
 
 
-��0x05.) ������
+■0x05.) おわりに
 
-�@�����PostgreSQL��Snort�̃C���X�g�[���Ɛݒ�ɂ��Đ������܂����B
-�@�����Snort�̃��O�𒲂ׂ邽�߂̃c�[���̃C���X�g�[���Ɖ�����������Ǝv��
-�܂��B
+　今回はPostgreSQLとSnortのインストールと設定について説明しました。
+　次回はSnortのログを調べるためのツールのインストールと解説をしたいと思い
+ます。
 
 

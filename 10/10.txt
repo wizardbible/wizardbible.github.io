@@ -8,101 +8,101 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-  ---- ��O�́F�ڎ� ---
+  ---- 第０章：目次 ---
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-����P�́F�t�B���K�[�v�����g�U��                          J-Klein ��
+○第１章：フィンガープリント偽装                          J-Klein 著
 
-����Q�́F�풓�v���O�����B���e�N�j�b�N�@�`Windows�с`  Kenji Aiko ��
+○第２章：常駐プログラム隠蔽テクニック　〜Windows篇〜  Kenji Aiko 著
 
-����R�́F�u���[�X�N���[���ƒ��ǂ��Ȃ낤��               IPUSIRON ��
+○第３章：ブルースクリーンと仲良くなろうよ               IPUSIRON 著
 
-����S�́F���A�~�����n�[�h�E�G�A                              MaD ��
+○第４章：今、欲しいハードウエア                              MaD 著
 
-����T�́F���m�点
+○第５章：お知らせ
 
-����U�́F���҃v���t�B�[��
+○第６章：著者プロフィール
 
 
-
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-
---- ��P��: �t�B���K�[�v�����g�U�� ---
-
-���ҁFJ-Klein
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
+--- 第１章: フィンガープリント偽装 ---
 
-��0x01.) �͂��߂�
+著者：J-Klein
 
-�@�����Ȃ肾���w�U���x�ƕ����Ăǂ�Ȉ�ۂ������邾�낤���H  �u�������U��
-�����v�Ȃǂƌ�����ƁA�����ɂ������C���[�W������̂ł͂Ȃ����낤���B��
-���΁A�w�U���x�Ɋ֘A�����s�ׁE�Z�p�Ƃ����΁A�����������܂��B
-
-�E�t�@�C���̋U��
-�EIP�A�h���X�̋U��
-�E���[���A�h���X�̋U��
-�EURL�̋U��
-
-�@���ɂ����낢�날���āAGoogle�Łw�U���x�Ō�������Ɓw���{���������U����
-���x�Ȃ�Ă��̂�������B�ǂ��������āA�w�U���x�͍����Z�p�Ƃ����v���Ȃ��B
-�������A�����h��̑����痘�p�ł��Ȃ����낤���B�܂�A�N���b�J�[����U
-������Ȃ��i�������͓K�؂ȍU��������Ȃ��j�悤�ɃV�X�e�����U������Ηǂ�
-�̂��B
-
-�@�ł́A�V�X�e������邽�߂ɉ����ǂ��U������Ηǂ��̂��H ���낢��ȋU����
-�l�����邪�A�����ł̓T�[�o�Ƃ��ē��삷��\�t�g�E�F�A�i�ȉ����Ƃ�肪��
-������A�\�t�g�E�F�A���T�[�o�Ƃ��ē��삷��\�t�g�E�F�A�Ƃ���j���U������
-���Ƃ������l���Ă݂����Ǝv���B���̖h��ׂ̈̋U���̃A�C�f�B�A�͍Ō�ɐG��
-����x�ɂ��Ă����B
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x02.) �Ȃ��A�\�t�g�E�F�A���U������̂�
+■0x01.) はじめに
 
-�@�Ȃ��A�\�t�g�E�F�A���U������̂��B����̓N���b�J�[���U���̍ۂɉ�������
-�����l����Ε�����͂����B���ɍU�����̂����������Ă���ꍇ�A�\�t�g�E�F�A
-�̋U���͂��Ȃ�̈З͂𔭊�����B�Ⴆ�΁A��̑O�ɗ��s�����i�H�jIIS��Unico
-de�o�O�������ōU������ꍇ�A���̂悤�Ȏ������v���O�������g�p�����Ǝv��
-���B
+　いきなりだが『偽装』と聞いてどんな印象をうけるだろうか？  「◯◯を偽装
+した」などと言われると、いかにも悪いイメージがあるのではないだろうか。例
+えば、『偽装』に関連した行為・技術といえば、次が挙げられます。
 
-(1) �����_���ȁi�܂��͔C�ӂ͈̔͂́jIP�A�h���X�ɑ΂���80�ԃ|�[�g���J����
-���邩�𒲂ׂ�B
-(2) �J���Ă���ꍇ�AWeb�T�[�o�ł���\�����ɂ߂č����B������HEAD���\�b�h
-�Ȃǂ�Server�w�b�_�Ȃǂ����Ăǂ̃\�t�g�E�F�A�̂ǂ̃o�[�W�����������Ă���
-���𒲂ׂ�B
-(3) IIS�̐Ǝ�ȃo�[�W�����Ȃ�΍U������B
+・ファイルの偽装
+・IPアドレスの偽装
+・メールアドレスの偽装
+・URLの偽装
 
-�@���̃v���Z�X�̂����i2�j��K�؂ɍs�Ȃ��Ȃ��悤�ɂ���Ηǂ��B���̗�Ō�
-���΁AIIS/4.0���Ǝv���Ȃ���Ηǂ��̂��B�������A�i2�j���Ȃ��Đ��E����80
-�|�[�g�ɑ�������I�ɍU�����d�|������ƋU������ʂ�̈Ӗ��͖����B�����A
-���̊Ǘ����ɂ��鏃����Apache�̃��O�ɂ���IIS�̍U���̋L�^�����������c���Ă�
-��B�������A�����ł͂��̂悤�ȍU���ł͂Ȃ��A��L���X�g�́i2�j���s�Ȃ��悤
-�ȍU���ɑ΂���h��݂̂��l����B
+　他にもいろいろあって、Googleで『偽装』で検索すると『日本◯ム牛肉偽装事
+件』なんてものも見つかる。どう見たって、『偽装』は黒い技術としか思えない。
+しかし、これを防御の側から利用できないだろうか。つまり、クラッカーから攻
+撃されない（もしくは適切な攻撃をされない）ようにシステムを偽装すれば良い
+のだ。
 
-�@�ŁA���ǂ͉��ɋU������Ηǂ��̂��H  ���_���猾���Ή��ł��ǂ��͂����B�U
-�����@�Ƃ����̂̓\�t�g�E�F�A���ɂ����āA�\�t�g�E�F�AA�ɑ΂��ėL���ȍU����
-�\�t�g�E�F�AB�ɑ΂��Ă͌����Ȃ����������B�ɒ[�Șb�A���݂��Ȃ����O�ł��ǂ�
-�i�ނ���A���݂����������ǂ������m��Ȃ��j�B
-
-�@���炩���ߏ����Ă������A���̋U���ɂ��h��͗\���I�Ȗh���i�ł��邱��
-��Y��Ȃ��ŗ~�����B�ǂ�ȂƂ��ł��K�؂ȃ\�t�g�E�F�A�̓K�؂ȃo�[�W������
-�g���̂���Ԃł���A�����������ł��̂悤�ȗ\���I�Ȗh�������̂ł���B
+　では、システムを守るために何をどう偽装すれば良いのか？ いろいろな偽装が
+考えられるが、ここではサーバとして動作するソフトウェア（以下ことわりが無
+い限り、ソフトウェア＝サーバとして動作するソフトウェアとする）を偽装する
+ことだけを考えてみたいと思う。他の防御の為の偽装のアイディアは最後に触れ
+る程度にしておく。
 
 
-��0x03.) Apache-2.0.x�n�̋U��
+■0x02.) なぜ、ソフトウェアを偽装するのか
 
-�@�ł́A���ۂ�Apache�̋U�������Ă݂�B
-�@�U���̃|�C���g�́w�G���[�y�[�W�ł̃V�X�e�����̕\���x�ƁwServer�w�b�_�x
-�̓���B�܂��́A�ȒP�Ŗʔ����Ȃ��w�G���[�y�[�W�̃V�X�e���\���x���U����
-�Ă݂�B
+　なぜ、ソフトウェアを偽装するのか。これはクラッカーが攻撃の際に何をする
+かを考えれば分かるはずだ。特に攻撃自体を自動化している場合、ソフトウェア
+の偽装はかなりの威力を発揮する。例えば、一昔前に流行した（？）IISのUnico
+deバグを自動で攻撃する場合、次のような自動化プログラムが使用されると思わ
+れる。
 
-�@�܂��A���Ȃ����Ǘ�����Apache�T�[�o�ɑ΂��đ��݂��Ȃ�URL��v�����ė~�����B
-�茳�̊��ł͎��̂悤�ȕ������\�������B
+(1) ランダムな（または任意の範囲の）IPアドレスに対して80番ポートが開いて
+いるかを調べる。
+(2) 開いている場合、Webサーバである可能性が極めて高い。そこでHEADメソッド
+などでServerヘッダなどを見てどのソフトウェアのどのバージョンが動いている
+かを調べる。
+(3) IISの脆弱なバージョンならば攻撃する。
+
+　このプロセスのうち（2）を適切に行なわれないようにすれば良い。この例で言
+えば、IIS/4.0だと思われなければ良いのだ。しかし、（2）を省いて世界中の80
+ポートに総当たり的に攻撃を仕掛けられると偽装うんぬんの意味は無い。事実、
+私の管理下にある純粋なApacheのログにも対IISの攻撃の記録が少しだが残ってい
+る。しかし、ここではそのような攻撃ではなく、上記リストの（2）を行なうよう
+な攻撃に対する防御のみを考える。
+
+　で、結局は何に偽装すれば良いのか？  結論から言えば何でも良いはずだ。攻
+撃方法というのはソフトウェア毎にあって、ソフトウェアAに対して有効な攻撃も
+ソフトウェアBに対しては効かない事が多い。極端な話、存在しない名前でも良い
+（むしろ、存在し無い方が良いかも知れない）。
+
+　あらかじめ書いておくが、この偽装による防御は予備的な防御手段であること
+を忘れないで欲しい。どんなときでも適切なソフトウェアの適切なバージョンを
+使うのが一番であり、それをした上でこのような予備的な防御をするのである。
+
+
+■0x03.) Apache-2.0.x系の偽装
+
+　では、実際にApacheの偽装をしてみる。
+　偽装のポイントは『エラーページでのシステム情報の表示』と『Serverヘッダ』
+の二つだ。まずは、簡単で面白くない『エラーページのシステム表示』を偽装し
+てみる。
+
+　まず、あなたが管理するApacheサーバに対して存在しないURLを要求して欲しい。
+手元の環境では次のような文字が表示される。
 
 -----
 Object not found!
@@ -114,38 +114,38 @@ Mon May 10 20:18 2004
 Apache/2.0.40
 -----
 
-�@����Ε�����ʂ�AOS�̎�ނ���ڍׂȃo�[�W�����܂ŕ\������Ă���B����
-�ł����w�V�X�e�����x�Ƃ͂����̂��Ƃ��w���Ă���B�Ȃ��f�t�H���g�ł���
-�悤�ȏ���\�����邩�͂܂�����������Ȃ��B��ʂ̃��[�U�́w�t�@�C������
-�݂��Ȃ����Ɓx��m�肽���̂ł���A��������OS��\�t�g�E�F�A�̃o�[�W������
-�����������͂��Ȃ̂Ɂc�B�Ƃɂ����A��������P���悤�B���ȏ��ʂ�̂�����
-httpd.conf����ServerTokens�̒l��ς�����@���B
+　見れば分かる通り、OSの種類から詳細なバージョンまで表示されている。ここ
+でいう『システム情報』とはこれらのことを指している。なぜデフォルトでこの
+ような情報を表示するかはまったく分からない。一般のユーザは『ファイルが存
+在しないこと』を知りたいのであり、けっしてOSやソフトウェアのバージョンに
+興味が無いはずなのに…。とにかく、これを改善しよう。教科書通りのやり方は
+httpd.conf内のServerTokensの値を変える方法だ。
 
-�@ServerTokens�͌��J����V�X�e�����̗ʂ𒲐�����f�B���N�e�B�u�ł���A
-��q����Server�w�b�_������ServerTokens�ɏ]���B
+　ServerTokensは公開するシステム情報の量を調整するディレクティブであり、
+後述するServerヘッダもこのServerTokensに従う。
 
 -----
 ServerTokens {ProductOnly | Minimal | OS | Full}
 -----
 
-�@���ʓ��Ɋ܂܂��l������΂��ꑊ���̓��e�ɂȂ�B�o�͓��e�͑z���ł���
-�͂��B�������A����ł͋U���ɂȂ�Ȃ��̂ŁA�ʂ̂����őΉ����邱�Ƃɂ���B
-ServerTokens�̒l�͓K���ɐݒ肵�āi�g�p���Ȃ��̂ŉ��ł��ǂ��j�A
-<DocumentRoot>/error/include/�ɂ���bottom.html�����ė~�����B����̓G���[
-�y�[�W�̖����ɓǂݍ��܂��t�@�C�����B�ڂ��������͏Ȃ����A�����Ƃ���
-"SERVER_SOFTWARE"���܂ލs���폜���āA�ʂ̕����������ĕۑ����Ăق����B����
-�āA������x���݂��Ȃ�URL�ɃA�N�Z�X����Ε\�����ς�͂����B
+　括弧内に含まれる値を入れればそれ相応の内容になる。出力内容は想像できる
+はず。しかし、これでは偽装にならないので、別のやり方で対応することにする。
+ServerTokensの値は適当に設定して（使用しないので何でも良い）、
+<DocumentRoot>/error/include/にあるbottom.htmlを見て欲しい。これはエラー
+ページの末尾に読み込まれるファイルだ。詳しい説明は省くが、実験として
+"SERVER_SOFTWARE"を含む行を削除して、別の文字を書いて保存してほしい。そし
+て、もう一度存在しないURLにアクセスすれば表示が変るはずだ。
 
-�@���ɁAServer�w�b�_���U�����Ă݂�B���͂����Œ��킷����@��Apache1.3�n��
-�͏o���Ȃ������B�ڍׂ͏Ȃ����A�����炭���W���[���̎��s�����Ɉˑ����Ă��āA
-�ł�����̂Ƃł��Ȃ����̂�����̂��낤�B�����ł�Apache2.0.40�Ŏ����Ă���B
-�܂��A�������񂿂��ɂȂ��Ă��܂����Ahttpd.conf��ServerTokens�f�B���N�e�B
-�u�̒l��Full�ɂ��Ăق����B�������Ȃ���nmap��apache2.0.40��F�����Ă����
-���B
+　次に、Serverヘッダを偽造してみる。実はここで挑戦する方法はApache1.3系で
+は出来なかった。詳細は省くが、おそらくモジュールの実行順序に依存していて、
+できるものとできないものがあるのだろう。ここではApache2.0.40で試している。
+まず、多少いんちきになってしまうが、httpd.confのServerTokensディレクティ
+ブの値をFullにしてほしい。そうしないとnmapがapache2.0.40を認識してくれな
+い。
 
-�@���̋L����ʂ��āAnmap�̃o�[�W������3.50�Ƃ���B
+　この記事を通して、nmapのバージョンは3.50とする。
 
-�@�����ŁAnmap��Web�T�[�o�̃o�[�W�����X�L�����i-sV�I�v�V�����j���s�Ȃ��B
+　ここで、nmapでWebサーバのバージョンスキャン（-sVオプション）を行なう。
 
 -----
 [work] jklein% nmap -sV localhost -p 80
@@ -154,18 +154,18 @@ PORT   STATE SERVICE VERSION
 ...
 -----
 
-�@���̂悤�ȏo�͂ɂȂ�͂����B�܂�O������o�[�W�������EOS�����F����
-���邱�ƂɂȂ�B�Ƃ��낪�Anmap�̑�Web�T�[�o�̃o�[�W�����X�L������Server�w
-�b�_�݂̂𗘗p���Ă���悤�Ȃ̂ŁA������ς���΂�����ƋU���ł���Bhttpd
-.conf�ɂ��̂悤�ȍs�����Ă݂ė~�����B
+　このような出力になるはずだ。つまり外部からバージョン情報・OS等が認識で
+きることになる。ところが、nmapの対WebサーバのバージョンスキャンはServerヘ
+ッダのみを利用しているようなので、そこを変えればがらっと偽装できる。httpd
+.confにつぎのような行を入れてみて欲しい。
 
 -----
 Header Set Server 'Microsoft-IIS/4.0'
 -----
 
-�@�܂������̋t�s�����U���Ȃ̂����A���ꂪ������₷�����ʂɂȂ�̂Ŏ�����
-�~�����B��L�̂悤�ɐݒ��ς��āAApache���ċN�����āA�ŏ��Ɠ��l��nmap��
-���s���Ă݂�Ɓc
+　まったくの逆行した偽装なのだが、これが分かりやすい結果になるので試して
+欲しい。上記のように設定を変えて、Apacheを再起動して、最初と同様にnmapを
+実行してみると…
 
 -----
 [work] jklein% nmap -sV localhost -p 80
@@ -174,39 +174,39 @@ PORT   STATE SERVICE VERSION
 ...
 -----
 
-�@�ǂ����낤���A�{����IIS/4.0�Ƃ̈Ⴂ�͂܂������Ȃ��Bnmap��OS�X�L����
-�i-O�I�v�V�����j�Ɠ����Ɏg����Linux���IIS�����삵�Ă���悤�ɕ\�������
-�͂����B���Ȃ݂ɂ��̏�Ԃł��΂炭���u���Ă����ƁA���i����������"XXXXX
-XXXXXXXX..."�Ƃ������O����������悤�ɂȂ�B�������ɍŋ߂͏����Ȃ����Ǝv
-���邪�c�B
+　どうだろうか、本物のIIS/4.0との違いはまったくない。nmapのOSスキャン
+（-Oオプション）と同時に使うとLinux上でIISが動作しているように表示される
+はずだ。ちなみにこの状態でしばらく放置しておくと、普段よりも多くの"XXXXX
+XXXXXXXX..."というログを見かけるようになる。さすがに最近は少くなったと思
+われるが…。
 
-�@�������A���ۂɓ��삵�Ă���\�t�g�E�F�A��Apache�Ȃ̂ŁA��{�I��IIS�ɑ�
-����U���͌����Ȃ��B
+　もちろん、実際に動作しているソフトウェアはApacheなので、基本的にIISに対
+する攻撃は効かない。
 
 
-��0x04.) ProFTPD�̋U��
+■0x04.) ProFTPDの偽装
 
-�@ProFTPD�Ƃ͖��O�̒ʂ�FTP�T�[�o�ŁA�g���Ă�T�[�o�������B����̋U����
-���킵���̂����A����Apache�̂悤�ɐݒ�t�@�C���]�X�ł͂��܂������Ȃ��B��
-�����̂�ProFTPD�Ƃ����������v���O�����̃\�[�X�R�[�h���̂ɒ��ڏ������܂��
-����̂Ńv���O�����������ς���K�v���L��B����āAC����̒m���������l�͒�
-�킵�Ȃ������ǂ����낤�B�����s�̎��ȐӔC�Ŏ����ė~�����B
+　ProFTPDとは名前の通りFTPサーバで、使われてるサーバも多い。これの偽装に
+挑戦したのだが、実はApacheのように設定ファイル云々ではうまくいかない。と
+いうのもProFTPDという文字がプログラムのソースコード自体に直接書きこまれて
+いるのでプログラムを書き変える必要が有る。よって、C言語の知識が無い人は挑
+戦しない方が良いだろう。今流行の自己責任で試して欲しい。
 
-�@�ύX���ׂ��ꏊ��src/main.c�̒���cmd_loop�֐����B���̒��ɂ���ProFTPD�Ƃ�
-���������Ђ��[���珑���ς���Ηǂ��i�茳�̃o�[�W�����ł͓�ӏ�����j�B
-�Ⴆ�΁A���̂悤�ȍs������̂ŁA�����ύX����Ηǂ�
+　変更すべき場所はsrc/main.cの中のcmd_loop関数だ。この中にあるProFTPDとい
+う文字列を片っ端から書き変えれば良い（手元のバージョンでは二箇所ある）。
+例えば、次のような行があるので、それを変更すれば良い
 
------  �ύX�O
+-----  変更前
 pr_response_send(R_220, "ProFTPD " PROFTPD_VERSION_TEXT
                 "Server ready.");
 -----
 
------  �ύX��
+-----  変更後
 pr_response_send(R_220, "host FTP server (lukemftpd 1.1) ready.");
 -----
 
-�@�����MacOSX�Ƀf�t�H���g�ł��Ă���FTP�T�[�o���܂˂����̂��B���̂悤��
-�ύX���������nmap -sV�����s����Ǝ��̂悤�ɂȂ�B
+　これはMacOSXにデフォルトでついているFTPサーバをまねたものだ。このような
+変更をした後でnmap -sVを実行すると次のようになる。
 
 -----
 [network] jklein% nmap localhost -sV -p 21
@@ -215,84 +215,84 @@ PORT   STATE SERVICE VERSION
 ...
 -----
 
-�@���̌��ʂ����āA�v�킸�u���Ă������v�ƃj�����Ă��܂����B�����J��OS
-�܂ŋ����Ă����Bnmap�̋��͂��Ɩ��͂��𓯎��Ɍ����C�����B
+　この結果を見て、思わず「してやったり」とニヤついてしまった。ご丁寧にOS
+まで教えてくれる。nmapの強力さと無力さを同時に見た気分だ。
 
 
-��0x05.) Telnet�̋U��
+■0x05.) Telnetの偽装
 
-�@���_���猾���ƁATelnet�ɑ΂���nmap�̃o�[�W�����X�L�������x�����Ƃ͏o��
-�Ȃ������B�ꉞ�ARedHat Linux���telnet�ł̃��O�C�����b�Z�[�W��ς�����@
-���Љ�邾���ɂ������Ǝv���B
+　結論から言うと、Telnetに対するnmapのバージョンスキャンを騙すことは出来
+なかった。一応、RedHat Linux上のtelnetでのログインメッセージを変える方法
+を紹介するだけにしたいと思う。
 
-�@���O�C�����b�Z�[�W��/etc/issue.net����ǂݍ��܂��̂ŁA���̓��e���G�f
-�B�^�ŕҏW����Ηǂ��B���̊��Ńf�t�H���g�̏�Ԃ�
+　ログインメッセージは/etc/issue.netから読み込まれるので、その内容をエデ
+ィタで編集すれば良い。私の環境でデフォルトの状態で
 
 -----
 Red Hat Linux release 9 (Shrike)
 Kernel \r on an \m
 -----
 
-�ƂȂ��Ă����B"\r"��"\m"�̂悤�ȃo�b�N�X���b�V���i���́��}�[�N�j+�P������
-�G�X�P�[�v�����ŁA���ۂ̕\���̍ۂɂ͕ʂ̕����ɒu�������B���p�ł���G�X
-�P�[�v������
+となっていた。"\r"や"\m"のようなバックスラッシュ（又は¥マーク）+１文字は
+エスケープ文字で、実際の表示の際には別の文字に置き換わる。利用できるエス
+ケープ文字は
 
-=====�@�\
-\d : ���݂̓��t
-\l : �[����
-\m : �}�V���E�A�[�L�e�N�`��
-\n : �z�X�g��
-\o : �h���C����
-\r : OS�̃����[�X�ԍ�
-\t : ���݂̎���
-\s : OS��
-\u : ���݃��O�C�����Ă��郆�[�U�̐�
-\v : OS�̃o�[�W����
+=====　表
+\d : 現在の日付
+\l : 端末名
+\m : マシン・アーキテクチャ
+\n : ホスト名
+\o : ドメイン名
+\r : OSのリリース番号
+\t : 現在の時刻
+\s : OS名
+\u : 現在ログインしているユーザの数
+\v : OSのバージョン
 =====
 
-�ƂȂ��Ă���B�������A�w�U���x�Ƃ����ϓ_����͂����̏����g��Ȃ�����
-�������낤�i�܂��A�����܂ŋU���ɂ������K�v���Ȃ����j�B���̃��b�Z�[�W��
-�D���ɕς���Ηǂ��B�ŏ��ɏ������ʂ�A���̃��b�Z�[�W��ς��Ă�nmap���x��
-�Ȃ��B���A�f�t�H���g�̏�Ԃŏ�񂽂ꗬ���Ƃ����̂��ǂ��Ȃ��̂ŁA�K���ɕ�
-���Ă������B
+となっている。ただし、『偽装』という観点からはこれらの情報を使わない方が
+いいだろう（まぁ、そこまで偽装にこだわる必要もないが）。このメッセージを
+好きに変えれば良い。最初に書いた通り、このメッセージを変えてもnmapは騙せ
+ない。が、デフォルトの状態で情報たれ流しというのも良くないので、適当に変
+えておこう。
 
-�@Red Hat�n��OS�ł͋N������/etc/issue��/etc/issue.net�ɃR�s�[����Ă��܂��B
-����ł͋N�����邽�тɏ���������Ă��܂��̂ŁA�R�s�[��h�~���邽�߂�
-/etc/rc.d/rc.local�̃R�s�[�����s���镔�����R�����g�A�E�g���Ȃ��Ă͂����Ȃ��B
-
-
-��0x06.) �܂Ƃ�
-
-�@�����Apache��ProFTPD�i��Telnet�j��nmap�ɂ��o�[�W�����X�L�����΍����
-�Ă݂����A����ProFTPD�̂悤�Ƀ\�[�X�����ς���K�v�Ƃ�����̂͂炢�B�Ƃ�
-���̂��P���Q��Ȃ�Ηǂ��̂����A�o�[�W�����A�b�v�ōăC���X�g�[�����邽
-�тɃ\�[�X�������ς���̂͊Ǘ��҂ɂƂ��Ă��Ȃ蕉�S�ɂȂ肤��B�������A�\
-�[�X�������ς���ȏ�A�o�O�����Ȃ��Ƃ�����Ȃ��B���ꂩ��T�[�o�n�̃\�t
-�g�E�F�A�����l�͐���Ƃ��ȒP�Ƀ��x����ύX�o����悤�ɂ��ė~�����Ǝv���B
-
-�@���ɊȒP�ɏo����U���i�Ƃ͕��ʌ���Ȃ����c�j�Ƃ��Ă̓|�[�g�ԍ��̕ύX��
-����B������z���ȏ�Ɍ��ʂ�����Ǝv���B���Ɍ��J�T�[�o�łȂ��̂Ȃ�΁A�C
-�y�ɕύX�o����͂����B�����āA���̃\�t�g�E�F�A�̓|�[�g�̕ύX���ȒP�ɏo
-����B
-
-�@���[�J�����ł̋Z�Ƃ��Ă�root�̖��̕ύX�A�d�v�ȃt�@�C���̖��̕ύX�Ȃǂ�
-�l������B�T�d�ȃN���b�J�[�͂��̎�̕ύX�����j�邩������Ȃ����A������
-���u���ɔj���邱�Ƃ��������낤�B
-
-�@���ǁA���̂悤�ȋU���͎����̌�����邾���ł͂Ȃ��B�Ƃ����̂��A�����̊�
-���҂����̂悤�Ȃ��Ƃ��s�Ȃ����Ƃ�nmap���̃\�t�g�E�F�A/�o�[�W�����X�L����
-�̐M�����������邱�Ƃ��o���邩�炾�B�����Ȃ�ƁA�N���b�J�[�ɂ̓c�[���ɗ�
-��Ȃ������I�Ȓm�����K�v�ɂȂ�A�X�N���v�g�E�L�f�B�̂悤�Ȕy�̗͂�������
-���邱�Ƃ��\�ɂȂ�B
-
-�@�ƁA���҂�����̂́A�Ō�ɂ͂������������ɂȂ��Ă��܂��񂾂낤�ȁi��΁j�B
+　Red Hat系のOSでは起動時に/etc/issueが/etc/issue.netにコピーされてしまう。
+これでは起動するたびに初期化されてしまうので、コピーを防止するために
+/etc/rc.d/rc.localのコピーを実行する部分をコメントアウトしなくてはいけない。
 
 
-��0x07.) �Q�l�T�C�g
+■0x06.) まとめ
+
+　今回はApacheとProFTPD（とTelnet）のnmapによるバージョンスキャン対策をし
+てみたが、正直ProFTPDのようにソース書き変えを必要とするものはつらい。とい
+うのも１回や２回ならば良いのだが、バージョンアップで再インストールするた
+びにソースを書き変えるのは管理者にとってかなり負担になりうる。しかも、ソ
+ースを書き変える以上、バグを作らないとも限らない。これからサーバ系のソフ
+トウェアを作る人は是非とも簡単にラベルを変更出来るようにして欲しいと思う。
+
+　他に簡単に出来る偽装（とは普通言わないが…）としてはポート番号の変更が
+ある。これも想像以上に効果があると思う。特に公開サーバでないのならば、気
+楽に変更出来るはずだ。そして、大抵のソフトウェアはポートの変更が簡単に出
+来る。
+
+　ローカル内での技としてはrootの名称変更、重要なファイルの名称変更なども
+考えられる。慎重なクラッカーはその手の変更を見破るかもしれないが、少くと
+も瞬時に破られることも無いだろう。
+
+　結局、このような偽装は自分の見を守るだけではない。というのも、多くの管
+理者がこのようなことを行なうことでnmap等のソフトウェア/バージョンスキャン
+の信頼性を下げることが出来るからだ。そうなると、クラッカーにはツールに頼
+らない総合的な知識が必要になり、スクリプト・キディのような輩の力を押し下
+げることが可能になる。
+
+　と、期待するものの、最後にはいたちごっこになってしまうんだろうな（苦笑）。
+
+
+■0x07.) 参考サイト
 
 (1) Remote OS detection via TCP/IP Stack FingerPrinting
     http://www.insecure.org/nmap/nmap-fingerprinting-article-jp.html
-(2) core - Apache HTTP�T�[�o
+(2) core - Apache HTTPサーバ
     http://httpd.apache.org/docs-2.1/ja/mod/core.html
 (3) Apache module mod_headers
     http://httpd.apache.org/docs/mod/mod_headers.html
@@ -302,40 +302,40 @@ Kernel \r on an \m
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- ��Q�́F�풓�v���O�����B���e�N�j�b�N�@�`Windows�с` ---
+--- 第２章：常駐プログラム隠蔽テクニック　〜Windows篇〜 ---
 
-���ҁFKenji Aiko
+著者：Kenji Aiko
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@�^�X�N�}�l�[�W���[�ɔC�ӂ̃v���O������񋓂���Ȃ��悤�ɂ�����@�͂Ȃ�
-���낤���H�@Windows�ɂ̓v���Z�X�Ƃ����T�O������A�v���P�[�V�����͂��ꂼ��
-�v���Z�X�P�ʂœ��삵�Ă��܂��B�v���Z�X�́uCtr+Alt+Del�v�ŋN�������^�X�N
-�}�l�[�W���[�Ŋm�F�ł��A���������ƌ����_�ŋN�����Ă���v���Z�X�̂��ׂ�
-���Ď����邱�Ƃ��ł��܂��B
+　タスクマネージャーに任意のプログラムを列挙されないようにする方法はない
+だろうか？　Windowsにはプロセスという概念がありアプリケーションはそれぞれ
+プロセス単位で動作しています。プロセスは「Ctr+Alt+Del」で起動されるタスク
+マネージャーで確認でき、これを見ると現時点で起動しているプロセスのすべて
+を監視することができます。
 
-�@���āAWindows��Ŏ��s����Ă���A�v���P�[�V�����͂��ׂĂn�r�̊Ǘ����ɒu
-����Ă���킯�ł���A����Ă��ׂẴv���Z�X���n�r�͊Ǘ����Ă��邱�Ƃɂ�
-��܂��B�܂�́u�풓���������v���O�������^�X�N�}�l�[�W���[�����������
-���Ƃ͓���̂ł́H�v�Ǝv���邩������܂���B�Ƃ������ƂŁA����͏풓
-�v���O�����B���e�N�j�b�N�Ƒ肵�Ă����肵�����Ǝv���܂��B
+　さて、Windows上で実行されているアプリケーションはすべてＯＳの管理下に置
+かれているわけであり、よってすべてのプロセスをＯＳは管理していることにな
+ります。つまりは「常駐させたいプログラムをタスクマネージャーから消し去る
+ことは難しいのでは？」と思われるかもしれません。ということで、今回は常駐
+プログラム隠蔽テクニックと題してお送りしたいと思います。
 
-�@�����g�p�����n�r��WindowsXP�A�R���p�C����VC++.NET�ł��B�O��ƂȂ�m���́A
-Win32API�A�c�k�k�̎d�g�݁A����Ƀv���Z�X��X���b�h�Ƃ�����Windows�̊�{�I
-�T�O�𗝉����Ă��邱�Ƃł��B
+　私が使用したＯＳはWindowsXP、コンパイラはVC++.NETです。前提となる知識は、
+Win32API、ＤＬＬの仕組み、それにプロセスやスレッドといったWindowsの基本的
+概念を理解していることです。
 
 
-��0x02.) �v���Z�X�Ƃc�k�k
+■0x02.) プロセスとＤＬＬ
 
-�@�ł͍ŏ��ɁA�^�X�N�}�l�[�W���[�Ɏ��s�����v���O�������v���Z�X�Ƃ��ė�
-�����Ƃ�����ώ@���Ă݂܂��Btest.cpp���R���p�C�����A�^�X�N�}�l�[�W���[
-���N��������A�ȉ��̃v���O���������s���Ă݂Ă��������B
+　では最初に、タスクマネージャーに実行したプログラムがプロセスとして列挙
+されるところを観察してみます。test.cppをコンパイルし、タスクマネージャー
+を起動した後、以下のプログラムを実行してみてください。
 
------�@test.cpp
+-----　test.cpp
 #define WIN32_LEAN_AND_MEAN
 
 #include <windows.h>
@@ -351,17 +351,17 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 }
 -----
 
-�@���̃v���O���������s���ꂽ����Ƀ^�X�N�}�l�[�W���[��test.exe�Ƃ����v��
-�Z�X���o�����܂��B���̃v���O�����͂����̂Ƃ���n�j�{�^���������ƏI������
-�̂ŁA�����Ȃ��܂܂ł���ƁA�����ƃ^�X�N�}�l�[�W���[�Ƀv���Z�X�Ƃ��đ���
-���邱�ƂɂȂ�܂��B�������n�j�{�^���������ƃv���O�����͏I�����܂��̂ŁA
-�v���Z�X���^�X�N�}�l�[�W���[��������܂��B
+　このプログラムが実行された直後にタスクマネージャーにtest.exeというプロ
+セスが出現します。このプログラムはご覧のとおりＯＫボタンを押すと終了する
+ので、押さないままでいると、ずっとタスクマネージャーにプロセスとして存在
+することになります。もちろんＯＫボタンを押すとプログラムは終了しますので、
+プロセスもタスクマネージャーから消えます。
 
-�@���āA�A�v���P�[�V�����̓v���Z�X�P�ʂŊǗ�����Ă��ăv���O���������s��
-���΃v���Z�X�Ƃ��ă^�X�N�}�l�[�W���[�ɗ񋓂����Ƃ������ƂɂȂ�܂��B
-�u�ł͂c�k�k�̈����͂ǂ��Ȃ�̂��H�v���̃v���O�������݂Ă��������B
+　さて、アプリケーションはプロセス単位で管理されていてプログラムが実行さ
+れればプロセスとしてタスクマネージャーに列挙されるということになります。
+「ではＤＬＬの扱いはどうなるのか？」次のプログラムをみてください。
 
------�@dlltest.cpp
+-----　dlltest.cpp
 #define WIN32_LEAN_AND_MEAN
 
 #include <windows.h>
@@ -400,11 +400,11 @@ DWORD WINAPI MainThread(LPVOID pData)
 }
 -----
 
-�@�܂��͂��̂悤�Ȃc�k�k���쐬���܂��B���̂c�k�k�͌Ăяo���ꂽ��V�����X
-���b�h�𐶐����A���̃X���b�h��MessageBox��\�����āA�I������Ƃ����V���v
-���Ȃ��̂ł��B�ł͎��ɂ��̂c�k�k�𖾎��I�ɌĂяo��test2.cpp���쐬���܂��B
+　まずはこのようなＤＬＬを作成します。このＤＬＬは呼び出されたら新しいス
+レッドを生成し、そのスレッドはMessageBoxを表示して、終了するというシンプ
+ルなものです。では次にこのＤＬＬを明示的に呼び出すtest2.cppを作成します。
 
------�@test2.cpp
+-----　test2.cpp
 #define WIN32_LEAN_AND_MEAN
 
 #include <windows.h>
@@ -424,101 +424,101 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 }
 -----
 
-�@�ł́A���̃v���O�������R���p�C������exe�t�@�C���̐������m�F������A
-dlltest.cpp���R���p�C�����č쐬���ꂽdlltest.dll���Aexe�t�@�C���Ɠ����t�H
-���_�Ɉړ������Ď��s�����Ă��������B�������^�X�N�}�l�[�W���[���N������
-�Ă��������B
+　では、このプログラムをコンパイルしてexeファイルの生成を確認したら、
+dlltest.cppをコンパイルして作成されたdlltest.dllを、exeファイルと同じフォ
+ルダに移動させて実行させてください。もちろんタスクマネージャーも起動させ
+てください。
 
-�@�ŏ���"I am EXE file."���\�����ꂽ�Ƃ��ɂ͂c�k�k�͂܂��ǂݍ��܂�Ă���
-����B�^�X�N�}�l�[�W���[�ɂ�test2.exe���񋓂���Ă��܂��B�n�j���N���b�N��
-��Ǝ��͂c�k�k���ǂݍ��܂��"I am DLL file."���\������܂��B�����łn�j��
-�������ɁA�^�X�N�}�l�[�W���[�����Ă݂Ă��A�v���Z�X�̗񋓂ɕω��͂���܂�
-��B�܂�V���Ƀv���Z�X���������ꂽ�킯�ł͂Ȃ��Ƃ������Ƃł��B
+　最初の"I am EXE file."が表示されたときにはＤＬＬはまだ読み込まれていま
+せん。タスクマネージャーにはtest2.exeが列挙されています。ＯＫをクリックす
+ると次はＤＬＬが読み込まれて"I am DLL file."が表示されます。ここでＯＫを
+押さずに、タスクマネージャーを見てみても、プロセスの列挙に変化はありませ
+ん。つまり新たにプロセスが生成されたわけではないということです。
 
-�@����͂c�k�k�̎d�g�݂𗝉����Ă���Ȃ�Γ�����O�̂��Ƃł��ˁB�c�k�k��
-LoadLibrary���Ăяo���ꂽ���_�ŁA�Ăяo�����̃X���b�h�̃v���Z�X�Ƀ}�b�s��
-�O�����킯�ł�����B�܂�c�k�k�̓v���Z�X�Ƀ}�b�s���O���ꂽ���ォ�炻
-�̃v���Z�X�̈ꕔ�ƂȂ�킯�ł���A�����ŐV����CreateThread���Ăяo���ꂽ
-�Ƃ��Ă��Atest2.exe�̃v���Z�X���ŐV���ɃX���b�h���������ꂽ����������ł��B
-����āAtest2.exe���I������΂��̃v���Z�X�Ƀ}�b�s���O����Ă���c�k�k
-�idlltest.dll�j���܂��I������͓̂�����O�ł���A�c�k�k���v���Z�X�Ƃ��ĐV
-���Ƀ^�X�N�}�l�[�W���[�ɗ񋓂���Ȃ��̂�������O�̂��Ƃł��B
+　これはＤＬＬの仕組みを理解しているならば当たり前のことですね。ＤＬＬは
+LoadLibraryを呼び出された時点で、呼び出し元のスレッドのプロセスにマッピン
+グされるわけですから。つまりＤＬＬはプロセスにマッピングされた直後からそ
+のプロセスの一部となるわけであり、そこで新たにCreateThreadが呼び出された
+としても、test2.exeのプロセス内で新たにスレッドが生成されただけだからです。
+よって、test2.exeが終了すればそのプロセスにマッピングされているＤＬＬ
+（dlltest.dll）もまた終了するのは当たり前であり、ＤＬＬがプロセスとして新
+たにタスクマネージャーに列挙されないのも当たり前のことです。
 
 
-��0x03.) �ʂ̃v���Z�X�ւ̂c�k�k�}�b�s���O
+■0x03.) 別のプロセスへのＤＬＬマッピング
 
-�@�|�C���g�͒N��LoadLibrary���Ă񂾂̂��H�@�Ƃ����Ƃ���ɂ���܂��B�c�k�k
-��LoadLibrary���Ăяo�����X���b�h�̃v���Z�X�Ƀ}�b�s���O�����킯�ł��Bd
-lltest.dll�̏ꍇ�ALoadLibrary���Ăяo�����̂�test2.exe�������̂�dlltest.
-dll��test2.exe�Ƀ}�b�s���O����܂����B�Ȃ̂ł��̃v���Z�X�itest2.exe�j���I
-�������Ȃ�΂c�k�k�idlltest.dll�j���܂��I������킯�ł��B
+　ポイントは誰がLoadLibraryを呼んだのか？　というところにあります。ＤＬＬ
+はLoadLibraryを呼び出したスレッドのプロセスにマッピングされるわけです。d
+lltest.dllの場合、LoadLibraryを呼び出したのはtest2.exeだったのでdlltest.
+dllはtest2.exeにマッピングされました。なのでそのプロセス（test2.exe）が終
+了したならばＤＬＬ（dlltest.dll）もまた終了するわけです。
 
-�@�ł͗Ⴆ��LoadLibrary��IEXPLORE.EXE�i�h�d�̃v���Z�X�ł��j���Ăяo������
-�ǂ��ł��傤���BIEXPLORE.EXE��������dlltest.dll�Ƃ���LoadLibrary���Ăяo
-�����Ȃ�΁A�������dlltest.dll��IEXPLORE.EXE�Ƀ}�b�s���O����邱�ƂɂȂ�
-�܂��B�܂�test2.exe���I�������Ƃ��Ă��c�k�k�͏I�����܂���i������O�ł�
-�ˁj�BIEXPLORE.EXE�Ƀ}�b�s���O���ꂽ�킯�ł��̂ŁAIEXPLORE.EXE���I������
-�܂ł͏I�����Ȃ��킯�ł��B�������u��������IEXPLORE.EXE�ɁALoadLibrary����
-�яo�����邱�Ƃ͂ł��Ȃ�����Ȃ����B�c�k�k���Ăяo�����ǂ�����exe�t�@�C��
-�iIEXPLORE.EXE�j�̍쐬�҂����߂邱�Ƃł����āA���l�����߂��邱�Ƃ����
-���̂ł́H�v�Ǝv���邩������܂��񂪁A���ꂪ�\�Ȃ̂ł��BWindows�ɂ͕�
-����API���������񂠂�̂ł�(^^;�B
+　では例えばLoadLibraryをIEXPLORE.EXE（ＩＥのプロセスです）が呼び出したら
+どうでしょうか。IEXPLORE.EXEが引数をdlltest.dllとしてLoadLibraryを呼び出
+したならば、もちろんdlltest.dllはIEXPLORE.EXEにマッピングされることになり
+ます。つまりtest2.exeが終了したとしてもＤＬＬは終了しません（当たり前です
+ね）。IEXPLORE.EXEにマッピングされたわけですので、IEXPLORE.EXEが終了する
+までは終了しないわけです。しかし「そもそもIEXPLORE.EXEに、LoadLibraryを呼
+び出させることはできないじゃないか。ＤＬＬを呼び出すかどうかはexeファイル
+（IEXPLORE.EXE）の作成者が決めることであって、他人が決められることじゃな
+いのでは？」と思われるかもしれませんが、それが可能なのです。Windowsには便
+利なAPIがたくさんあるのです(^^;。
 
-�ECreateRemoteThread
-�@http://www.microsoft.com/japan/developer/library/jpwinpf/_win32_createremotethread.htm
+・CreateRemoteThread
+　http://www.microsoft.com/japan/developer/library/jpwinpf/_win32_createremotethread.htm
 
-�@�ʂ̃v���Z�X�̃A�h���X��Ԃŉғ�����X���b�h���쐬���܂��B
+　別のプロセスのアドレス空間で稼働するスレッドを作成します。
 
-�@�����̂Ƃ���ʂ̃v���Z�X�̃A�h���X��ԂɃX���b�h���쐬���܂��B������g
-����IEXPLORE.EXE�̃A�h���X��ԂɃX���b�h���쐬�ł���킯�ł��B�Ⴆ�΂���
-�ȕ��ɁB
+　説明のとおり別のプロセスのアドレス空間にスレッドを作成します。これを使
+えばIEXPLORE.EXEのアドレス空間にスレッドを作成できるわけです。例えばこん
+な風に。
 
 -----
 HANDLE hThread = CreateRemoteThread(RemoteProcess, NULL, 0,
                                     LoadLibrary, "c:\\dlltest.dll", 0, NULL);
 -----
 
-�@�u�߂�����ȒP��[��v�Ǝv���Ă���Ă݂�ƁA�ł��܂���i�΁@�����炭��
-��́uIEXPLORE.EXE�̃A�h���X��Ԃ�"c:\\dlltest.dll"�Ƃ��������񂪂Ȃ��v��
-�������Ƃł��傤�B�܂��A�Ȃ��Ȃ�΍��΂悢�킯�ł��B
+　「めっちゃ簡単やーん」と思ってやってみると、できません（笑　おそらく問
+題は「IEXPLORE.EXEのアドレス空間に"c:\\dlltest.dll"という文字列がない」と
+いうことでしょう。まぁ、ないならば作ればよいわけです。
 
-�EVirtualAllocEx
-�@http://www.microsoft.com/japan/developer/library/jpwinpf/_win32_virtualallocex.htm
-�@�w�肳�ꂽ�v���Z�X�̉��z�A�h���X��ԓ��̃������̈�̗\��ƃR�~�b�g�̈�
-���܂��͗������s���܂��B���̊֐��� MEM_RESET �t���O���Z�b�g����Ă��Ȃ���
-��A�m�ۂ���郁�����������I�� 0 �ŏ���������܂��B
+・VirtualAllocEx
+　http://www.microsoft.com/japan/developer/library/jpwinpf/_win32_virtualallocex.htm
+　指定されたプロセスの仮想アドレス空間内のメモリ領域の予約とコミットの一
+方または両方を行います。この関数は MEM_RESET フラグがセットされていない限
+り、確保されるメモリが自動的に 0 で初期化されます。
 
-�EWriteProcessMemory
-�@http://www.microsoft.com/japan/developer/library/jpwinpf/_win32_writeprocessmemory.htm
-�@�w�肳�ꂽ�v���Z�X�̃������̈�Ƀf�[�^���������݂܂��B�������݂����̈�
-�S�̂��A�N�Z�X�\�łȂ���΂Ȃ�܂���B�����Ȃ��ƁA�֐��͎��s���܂��B
+・WriteProcessMemory
+　http://www.microsoft.com/japan/developer/library/jpwinpf/_win32_writeprocessmemory.htm
+　指定されたプロセスのメモリ領域にデータを書き込みます。書き込みたい領域
+全体がアクセス可能でなければなりません。さもないと、関数は失敗します。
 
-�@VirtualAllocEx��IEXPLORE.EXE�̃A�h���X��ԂɐV���Ƀ�������Ԃ��쐬����
-���B������WriteProcessMemory�ł��̃�������Ԃ�"c:\\dlltest.dll"����������
-�΂悢�킯�ł��B�����Ă��̕�����̃A�h���X��CreateRemoteThread�̑�܈���
-�ɓn���Ă��΁AIEXPLORE.EXE�̃A�h���X��ԓ��ɕ����񂪍쐬����邱�Ƃɂ�
-��܂��B�������A�܂��ł��܂���i�����B�ǂ�����l������LoadLibrary������
-�܂ܓn���̂͂܂����炵���ł��B�d�����Ȃ��̂�Kernel32.dll���猟�����Ă���
-���̃A�h���X��n���Ă����܂��傤�B
+　VirtualAllocExでIEXPLORE.EXEのアドレス空間に新たにメモリ空間を作成しま
+す。そしてWriteProcessMemoryでそのメモリ空間に"c:\\dlltest.dll"を書き込め
+ばよいわけです。そしてその文字列のアドレスをCreateRemoteThreadの第五引数
+に渡してやれば、IEXPLORE.EXEのアドレス空間内に文字列が作成されることにな
+ります。しかし、まだできません（ぉぃ。どうやら第四引数のLoadLibraryをその
+まま渡すのはまずいらしいです。仕方がないのでKernel32.dllから検索してきて
+そのアドレスを渡してあげましょう。
 
-�EGetModuleHandle�i���{��łr�c�j���Ȃ��݂����ł��j
-�@http://nienie.com/~masapico/api_GetModuleHandle.html
-�@���݌Ăяo�����v���Z�X�Ƀ��[�h����Ă���exe��dll�̃�������̈ʒu������
-�A�h���X��Ԃ��B�]���āAGetModuleHandle�̕Ԃ��n���h����LoadLibrary�֐���
-�Ԃ��ꂽ�n���h���Ɠ��l�̈����ŁA����API�֐��ɓn�����Ƃ��ł���B
+・GetModuleHandle（日本語版ＳＤＫがないみたいです）
+　http://nienie.com/~masapico/api_GetModuleHandle.html
+　現在呼び出し元プロセスにロードされているexeやdllのメモリ上の位置を示す
+アドレスを返す。従って、GetModuleHandleの返すハンドルはLoadLibrary関数で
+返されたハンドルと同様の扱いで、他のAPI関数に渡すことができる。
 
-�EGetProcAddress
-�@http://www.microsoft.com/japan/msdn/library/default.asp?url=/japan/msdn/library/ja/jpdllpro/html/_win32_getprocaddress.asp
-�@�_�C�i�~�b�N�����N���C�u�����iDLL�j�����A�w�肳�ꂽ�G�N�X�|�[�g�ς݊�
-���̃A�h���X���擾���܂��B
+・GetProcAddress
+　http://www.microsoft.com/japan/msdn/library/default.asp?url=/japan/msdn/library/ja/jpdllpro/html/_win32_getprocaddress.asp
+　ダイナミックリンクライブラリ（DLL）が持つ、指定されたエクスポート済み関
+数のアドレスを取得します。
 
-�@GetModuleHandle��Kernel32.dll�̃A�h���X�����炢�A�����GetProcAddress��
-�n����LoadLibrary�̃A�h���X���擾���܂��B�������A����LoadLibrary�Ȃ�Ċ�
-���͑��݂����AUNICODE�Ȃ�LoadLibraryW�AASCII�R�[�h�Ȃ�LoadLibraryA�ɕϊ�
-����Ă��邾���ł��邱�Ƃ��AWinBase.h���݂邱�Ƃł킩��܂��B����Ăǂ���
-���̃A�h���X���擾���邱�Ƃɂ��܂��B
+　GetModuleHandleでKernel32.dllのアドレスをもらい、それをGetProcAddressに
+渡してLoadLibraryのアドレスを取得します。しかし、実はLoadLibraryなんて関
+数は存在せず、UNICODEならLoadLibraryW、ASCIIコードならLoadLibraryAに変換
+されているだけであることが、WinBase.hをみることでわかります。よってどちら
+かのアドレスを取得することにします。
 
------�@C:\Program Files\Microsoft Visual Studio .NET\Vc7\PlatformSDK\Include\WinBase.h
+-----　C:\Program Files\Microsoft Visual Studio .NET\Vc7\PlatformSDK\Include\WinBase.h
 #ifdef UNICODE
 #define LoadLibrary  LoadLibraryW
 #else
@@ -526,20 +526,20 @@ HANDLE hThread = CreateRemoteThread(RemoteProcess, NULL, 0,
 #endif // !UNICODE
 -----
 
-�@���āA�����̒m���𓥂܂�����ł��ׂ����Ƃ��܂Ƃ߂܂��B�ړI�͕ʂ̃v
-���Z�X�i�����ł�IEXPLORE.EXE�j�ɂc�k�k�𒍓������邱�Ƃł��B���̂��߂ɕK
-�v�Ȃ��Ƃ̓^�[�Q�b�g�̃v���Z�X�i�����ł�IEXPLORE.EXE�j��LoadLibrary���Ă�
-�o�����邱�Ƃł���A����ɂ���Ă����瑤���p�ӂ����c�k�k���^�[�Q�b�g�̃v
-���Z�X�Ƀ}�b�s���O�����邱�Ƃł��B����ɂ��풓������v���O���������炩
-���߂c�k�k�Ƃ��č���Ă����΁A������^�[�Q�b�g�v���Z�X�Ƀ}�b�s���O������
-���Ƃɂ��^�X�N�}�l�[�W���[�̃v���Z�X��Ԃɗ񋓂���邱�ƂȂ��C�ӂ̃v��
-�O�����i�c�k�k�j�𒍓������A���s�����悤�Ƃ������Ƃł��B
+　さて、これらの知識を踏まえた上でやるべきことをまとめます。目的は別のプ
+ロセス（ここではIEXPLORE.EXE）にＤＬＬを注入させることです。そのために必
+要なことはターゲットのプロセス（ここではIEXPLORE.EXE）にLoadLibraryを呼び
+出させることであり、それによってこちら側が用意したＤＬＬをターゲットのプ
+ロセスにマッピングさせることです。それにより常駐させるプログラムをあらか
+じめＤＬＬとして作っておけば、それをターゲットプロセスにマッピングさせる
+ことによりタスクマネージャーのプロセス空間に列挙されることなく任意のプロ
+グラム（ＤＬＬ）を注入させ、実行させようということです。
 
 
-��0x04.) �v���O���~���O
+■0x04.) プログラミング
 
-�@�ȏ�̂��Ƃ��v���O�����ɂ����̂�in_dll.cpp�ł��B�܂��̓v���O�����̐���
-�����܂��B
+　以上のことをプログラムにしたのがin_dll.cppです。まずはプログラムの説明
+をします。
 
 http://kenjinet.s26.xrea.com/windows/process/in_dll.cpp
 
@@ -557,11 +557,11 @@ http://kenjinet.s26.xrea.com/windows/process/in_dll.cpp
 #define DLL_FILE_NAME    "ClipBoard.dll"
 -----
 
-�@�u�Ȃ��UNICODE��˂�I�v�Ƃ����˂����݈ȊO�͂Ƃ��ɖ��Ȃ��Ǝv���܂�(^^;
-�@tlhelp32.h�̓v���Z�X�̌������s�����߂Ɏg���֐��̒�`�Ȃ̂ł����A�ڂ���
-�͂̂��قǐ������܂��BTARGET_EXE_NAME�͂c�k�k�𒍓�����v���Z�X�̖��O�A
-DLL_FILE_NAME�͒�������c�k�k�̃t�@�C�����ł��B�c�k�k��exe�t�@�C���Ɠ���
-�t�H���_�ɂ���Ȃ���΂Ȃ�܂���B
+　「なんでUNICODEやねん！」という突っ込み以外はとくに問題ないと思います(^^;
+　tlhelp32.hはプロセスの検索を行うために使う関数の定義なのですが、詳しく
+はのちほど説明します。TARGET_EXE_NAMEはＤＬＬを注入するプロセスの名前、
+DLL_FILE_NAMEは注入するＤＬＬのファイル名です。ＤＬＬはexeファイルと同じ
+フォルダにいれなければなりません。
 
 -----
     HANDLE hSnap;
@@ -585,15 +585,15 @@ DLL_FILE_NAME�͒�������c�k�k�̃t�@�C�����ł��B�c�k�k��exe�t�@�C���Ɠ���
     CloseHandle(hSnap);
 -----
 
-�@���������v���Z�X�̌������s���܂��BCreateToolhelp32Snapshot�̓v���Z�X��
-�񋓂������Ȃ��^�X�N�}�l�[�W���[�I�ȃv���O���������ۂɗ��p�����v���O
-�����ŁA�����Ă��̏ꍇProcess32First��Process32Next�ƃZ�b�g�ɂ��Ďg���A
-PROCESSENTRY32�\���̂�pe�Ƀv���Z�X�̏�񂪓���܂��B�v���Z�X�񋓂Ɋւ���
-�T���v���I�ȃR�[�h�������܂����̂ŁA�悯��ΎQ�l�ɂ��Ă��������B
+　さっそくプロセスの検索を行います。CreateToolhelp32Snapshotはプロセスの
+列挙をおこなうタスクマネージャー的なプログラムを作る際に利用されるプログ
+ラムで、たいていの場合Process32FirstやProcess32Nextとセットにして使い、
+PROCESSENTRY32構造体のpeにプロセスの情報が入ります。プロセス列挙に関する
+サンプル的なコードを書きましたので、よければ参考にしてください。
 
 http://kenjinet.s26.xrea.com/windows/process/process.cpp
 
-�@�ł�in_dll.cpp�̐����𑱂��܂��B
+　ではin_dll.cppの説明を続けます。
 
 -----
     HANDLE hProcess;
@@ -605,10 +605,10 @@ http://kenjinet.s26.xrea.com/windows/process/process.cpp
          FALSE, dwProcessId);
 -----
 
-�@����̓v���Z�X���J���֐��ł��i�݂�΂킩��܂����j�B�v���Z�X�h�c��n��
-�΂��̃v���Z�X���J���Ă����̂ŁA������Process32Next�Ȃǂ��g���Č�������
-����TARGET_EXE_NAME�̃v���Z�X�h�c�i�܂�c�k�k�𒍓�����^�[�Q�b�g�̃v��
-�Z�X�h�c�j��n���Ă��܂��B�߂�l�͂��̃v���Z�X�̃n���h���ł��B
+　これはプロセスを開く関数です（みればわかりますが）。プロセスＩＤを渡せ
+ばそのプロセスを開いてくれるので、さっきProcess32Nextなどを使って検索して
+きたTARGET_EXE_NAMEのプロセスＩＤ（つまりＤＬＬを注入するターゲットのプロ
+セスＩＤ）を渡しています。戻り値はそのプロセスのハンドルです。
 
 -----
     TCHAR szLibFile[256];
@@ -616,10 +616,10 @@ http://kenjinet.s26.xrea.com/windows/process/process.cpp
     _tcscpy(_tcsrchr(szLibFile, _TEXT('\\')) + 1, _TEXT(DLL_FILE_NAME));
 -----
 
-�@�c�k�k�̃p�X���쐬���Ă��܂��B�܂�GetModuleFileName�Ŏ������g�i�܂�
-exe�t�@�C���j�̐�΃p�X���擾���āA���̕�����̌�납��T���čŏ���'\'��
-�������ꂽ�Ƃ��납��Ȍ�c�k�k�t�@�C���̖��O�ɒu�������Ă��܂��B�܂莩
-���Ɠ����t�H���_�ɂ���c�k�k�̐�΃p�X���쐬�����킯�ł��B
+　ＤＬＬのパスを作成しています。まずGetModuleFileNameで自分自身（つまり
+exeファイル）の絶対パスを取得して、その文字列の後ろから探して最初に'\'が
+発見されたところから以後ＤＬＬファイルの名前に置き換えています。つまり自
+分と同じフォルダにあるＤＬＬの絶対パスを作成したわけです。
 
 -----
     PWSTR RemoteProcessMemory;
@@ -637,11 +637,11 @@ exe�t�@�C���j�̐�΃p�X���擾���āA���̕�����̌�납��T���čŏ���'\'��
     }
 -----
 
-�@�܂�VirtualAllocEx�Ń^�[�Q�b�g�v���Z�X�Ƀ�������Ԃ��쐬���Ă��܂��B��
-��͂c�k�k�̐�΃p�X�����郁������Ԃł��B������WriteProcessMemory�łc
-�k�k�̐�΃p�X����������ł��܂��B�����VirtualAllocEx�̖߂�l���c�k�k��
-�΃p�X�̈ʒu�i�|�C���^�j�Ƃ������ƂɂȂ�̂ŁA�����CreateRemoteThread��
-�����Ƃ��ēn���܂��B
+　まずVirtualAllocExでターゲットプロセスにメモリ空間を作成しています。こ
+れはＤＬＬの絶対パスを入れるメモリ空間です。そしてWriteProcessMemoryでＤ
+ＬＬの絶対パスを書き込んでいます。するとVirtualAllocExの戻り値がＤＬＬ絶
+対パスの位置（ポインタ）ということになるので、これをCreateRemoteThreadの
+引数として渡します。
 
 -----
     PTHREAD_START_ROUTINE pfnThreadRtn;
@@ -653,11 +653,11 @@ exe�t�@�C���j�̐�΃p�X���擾���āA���̕�����̌�납��T���čŏ���'\'��
     }
 -----
 
-�@GetProcAddress��Kernel32.dll����LoadLibraryW�iUNICODE�p�j��T���Ă��Ă�
-�̃A�h���X��Ԃ��Ă��܂��B�����UNICODE�p�̃\�[�X�R�[�h�ł��̂�LoadLibraryW
-�ł����AASCII�Ȃ�LoadLibraryA�𗘗p���Ă��������BWindows2000/XP��LoadLibraryA
-���g���Ă������I��UNICODE�ɕϊ�����Č���LoadLibraryW���Ă�ł���悤�Ȃ�
-�ŁAUNICODE��ASCII���œ��ɋC�ɂ���K�v�͂Ȃ��ł��傤�B
+　GetProcAddressはKernel32.dllからLoadLibraryW（UNICODE用）を探してきてそ
+のアドレスを返しています。これはUNICODE用のソースコードですのでLoadLibraryW
+ですが、ASCIIならLoadLibraryAを利用してください。Windows2000/XPはLoadLibraryA
+を使っても内部的にUNICODEに変換されて結局LoadLibraryWを呼んでいるようなの
+で、UNICODEかASCIIかで特に気にする必要はないでしょう。
 
 -----
     HANDLE hThread;
@@ -669,158 +669,158 @@ exe�t�@�C���j�̐�΃p�X���擾���āA���̕�����̌�납��T���čŏ���'\'��
     }
 -----
 
-�@����CreateRemoteThread���Ă΂�܂����B��������OpenProcess�̖߂�l��
-����v���Z�X�̃n���h���ł��B��l������LoadLibraryW�̃A�h���X�B��܈�����
-�c�k�k��΃p�X�̃A�h���X�B�����CreateRemoteThread���Ăяo���΃^�[�Q�b�g
-�̃v���Z�X��LoadLibraryW�X���b�h����������A�����C�ӂ̂c�k�k���^�[�Q�b�g
-�v���Z�X�Ƀ}�b�s���O����邱�ƂɂȂ�܂��B
+　ついにCreateRemoteThreadが呼ばれました。第一引数はOpenProcessの戻り値で
+あるプロセスのハンドルです。第四引数はLoadLibraryWのアドレス。第五引数は
+ＤＬＬ絶対パスのアドレス。これでCreateRemoteThreadを呼び出せばターゲット
+のプロセスでLoadLibraryWスレッドが生成され、見事任意のＤＬＬがターゲット
+プロセスにマッピングされることになります。
 
-�@�����āA���̃v���O�����iin_dll.exe�j�͏I�����܂��B���̃v���O�����ɂc�k
-�k���}�b�s���O����Ă���Ȃ�΁A�I���Ɠ����ɂc�k�k���̂��I�����܂��B����
-���ʂ̃v���Z�X�Ƀ}�b�s���O�������Ȃ�Ύ������g���I�����Ă��c�k�k�̏�����
-���������܂��BIEXPLORE.EXE�Ȃ�΂h�d���I������܂Ő��������܂����A
-explorer.exe�Ƃ�����Windows�̓���ɕs���ȃv���Z�X�ȂǂɃ}�b�s���O������
-�Ȃ��Windows�̏I���܂Ő��������邱�ƂɂȂ�܂��B
+　そして、このプログラム（in_dll.exe）は終了します。このプログラムにＤＬ
+Ｌがマッピングされているならば、終了と同時にＤＬＬ自体も終了します。しか
+し別のプロセスにマッピングさせたならば自分自身が終了してもＤＬＬの処理は
+生き続けます。IEXPLORE.EXEならばＩＥが終了するまで生き続けますし、
+explorer.exeといったWindowsの動作に不可欠なプロセスなどにマッピングさせた
+ならばWindowsの終了まで生き続けることになります。
 
-�@�^�X�N�}�l�[�W���[�̓v���Z�X��񋓂��܂��B�����IEXPLORE.EXE��explorer
-.exe�Ƃ������v���O�����́A�������񋓁A�\�������ł��傤�B�������A�}�b
-�s���O���ꂽ�c�k�k�̓v���Z�X�Ƃ��ė񋓂���܂���B����͓�����O�̂��Ƃ�
-���ˁB
+　タスクマネージャーはプロセスを列挙します。よってIEXPLORE.EXEやexplorer
+.exeといったプログラムは、もちろん列挙、表示されるでしょう。しかし、マッ
+ピングされたＤＬＬはプロセスとして列挙されません。これは当たり前のことで
+すね。
 
-�@���Ȃ݂ɁA���̕��@���Ɗ��S�ɉB���ł���̂��H�@�ƕ������΁u�������v��
-�����邵������܂���B���ۂɔC�ӂ̃v���Z�X�����p���Ă���c�k�k��񋓂���
-��v���O�����Ȃ񂩂����܂����A�^�X�N�}�l�W���[�ȏ�ɍ��@�\�ȃv���Z�X��
-���c�[���ȂǂȂ炷���Ƀo���Ă��܂���������܂���B�����܂ł��^�X�N�}�l�[
-�W���[���猩���Ȃ����邾���ł��B����āA����͏풓���������v���O�������B
-���ЂƂ̕��@���ƍl���Ă��������B
+　ちなみに、この方法だと完全に隠蔽できるのか？　と聞かれれば「いいえ」と
+答えるしかありません。実際に任意のプロセスが利用しているＤＬＬを列挙させ
+るプログラムなんかも作れますし、タスクマネジャー以上に高機能なプロセス管
+理ツールなどならすぐにバレてしまうかもしれません。あくまでもタスクマネー
+ジャーから見えなくするだけです。よって、これは常駐させたいプログラムを隠
+すひとつの方法だと考えてください。
 
-�@�ł́A�Ō�ɏ풓���������v���O�����i�c�k�k�j���쐬���Ă݂܂��B
+　では、最後に常駐させたいプログラム（ＤＬＬ）を作成してみます。
 
 http://kenjinet.s26.xrea.com/windows/process/ClipBoard.cpp
 
-�@����̓N���b�v�{�[�h�̃��O���Ƃ�c�k�k�ł��B�L�[�{�[�h�̃��O���Ƃ�̃c
-�[�����L�[���K�[�ƌ����܂����A����̓N���b�v�{�[�h�̃��O���Ƃ�̂ŃN���b
-�v���K�[�ł��ˁi�����B������R���p�C������in_dll.exe�Ɠ����t�H���_�ɂ���
-��in_dll.exe�����s����ƁA���̂c�k�k���^�[�Q�b�g�̃v���Z�X�Ƀ}�b�s���O��
-���̂ŁA�Ȍ�N���b�v�{�[�h�̃��O��"c:\log.txt"�t�@�C���ɕۑ�����邱��
-�ɂȂ�܂��B���Ȃ݂ɕ������p�ł��̂ŃN���b�v�{�[�h���̉摜��t�@�C����
-�ǂ̓��M���O���܂���B���̂c�k�k�Ɋւ��Ẳ���͂��܂���B����͍���̖{
-���ł͂Ȃ��̂�(^^;�B
+　これはクリップボードのログをとるＤＬＬです。キーボードのログをとるのツ
+ールをキーロガーと言いますが、これはクリップボードのログをとるのでクリッ
+プロガーですね（ぉぃ。これをコンパイルしてin_dll.exeと同じフォルダにいれ
+てin_dll.exeを実行すると、このＤＬＬがターゲットのプロセスにマッピングさ
+れるので、以後クリップボードのログが"c:\log.txt"ファイルに保存されること
+になります。ちなみに文字列専用ですのでクリップボード内の画像やファイルな
+どはロギングしません。このＤＬＬに関しての解説はしません。これは今回の本
+質ではないので(^^;。
 
 
-��0x05.) ��������
+■0x05.) さいごに
 
-�@���āA�������������ł��傤���B�c�k�k�֘A�̃e�N�j�b�N�͈ȊO�ɖ��ɗ���
-����Ȃ����ȂƎv�������Ă݂܂����B���͂��ŋ߁A���p�I�ȃL�[���K�[�����
-�܂��āA����̃l�^�͂��̎��Ɏg�����\�[�X�R�[�h�𗬗p���Ă܂��i�΁B���e��
-�O���肳��ɓ���Ȃ��Ă܂����ǁA����̓l�^���؂�Ă����Ƃ������Ƃł��B
-���������l�^�؂�ł��B����͂��Ԃ�Linux�̋L���ɂȂ�Ǝv���܂�(^^;�B���āA
-�Ō�ɂȂ�܂����������܂ŕt�������ēǂ�ł������������{���ɗL������
-���܂����B
+　さて、いかがだったでしょうか。ＤＬＬ関連のテクニックは以外に役に立つん
+じゃないかなと思い書いてみました。実はつい最近、実用的なキーロガーを作り
+まして、今回のネタはその時に使ったソースコードを流用してます（笑。内容は
+前回よりさらに難しくなってますけど、それはネタが切れてきたということです。
+正直もうネタ切れです。次回はたぶんLinuxの記事になると思います(^^;。さて、
+最後になりましたがここまで付き合って読んでくださった方本当に有り難うござ
+いました。
 
-�@�ł́A�܂�����܂�...
-
-
-��0x06.) �Q�l����
-
-�E�wAdvanced Windows�xJeffrey Richter��
+　では、また会う日まで...
 
 
+■0x06.) 参考文献
 
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+・『Advanced Windows』Jeffrey Richter著
 
---- ��R�́F�u���[�X�N���[���ƒ��ǂ��Ȃ낤�� ---
 
-���ҁFIPUSIRON
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
+--- 第３章：ブルースクリーンと仲良くなろうよ ---
 
-��0x01.) �u���[�X�N���[�����ĉ��H
+著者：IPUSIRON
 
-�@�ꌾ��Windows�Ƃ����Ă��A95/98/Me/NT/2000/XP/2003�Ƃ������l�X�ȃo�[�W��
-�������݂��܂��B������܂Ƃ߂�Windows�t�@�~���[�A95/98/Me��Windows9x�V��
-�[�Y�ANT/2000/XP/2003��WindowsNT�V���[�Y�ƌĂԂ��Ƃɂ��܂��B
-�@�����ł͉������̖����Ǝv���đ�����s�����̂ɁA��ʂ�����ɐ��Ȃ�A
-�����I���𑣂���錻�ۂ�m���Ă���ł��傤���BWindows9x�V���[�Y���g������
-�Ƃ�������Ȃ�΁A��x�͑̌��������Ƃ����邱�Ƃł��傤�i���肵����100���
-������l�॥��j�B�����ŁA�u�����ł͉������̖����Ǝv��������v�Ƃ����̂�
-�̂ł��B�����ł͖�薳���Ǝv���Ă��APC���ɂƂ��Ă͖�肪�������킯�ł��B
-�Ȃ��A���̂悤�ȐH���Ⴂ���N����̂��Ƃ����ƁA���[�U�[�͉��C�Ȃ��\�t�g�E
-�F�A�𑀍삵�Ă������A���̃\�t�g�E�F�A�Ƀo�O�������āA�{���A�N�Z�X����
-�͂Ȃ�Ȃ�Windows�̐S�����i�����Ɍ����΁A�J�[�l�������j�������������肵��
-���܂��A�ُ��Ԃ������N�����Ă��܂�����ł��B
-�@�ُ��ԂɂȂ��Ă��܂��ƁAWindows�����̂��Ƃ����[�U�[�ɒm�点�邽�߂ɁA
-��ʂ�����܂��B���������ڍׂɌ����ƁAWindows�t�@�~���[�̓J�[�l�����N��
-�b�V���i�p�j�b�N�j���Ă��܂��ƁA�f�B�X�v���C��VGA���[�h�ɐ؂�ւ���āA��
-����ʂɂȂ�d�l�ɂȂ��Ă���킯�ł��B���̉�ʂ����Ȃ錻�ۂ���ʓI�ɂ�
-�u���[�X�N���[���A�����ɂ�BSOD�iBlue Screen Of Death�j�ƌĂт܂��B
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x02.) Windows9x�V���[�Y�Ńu���[�X�N���[���ɂȂ�����ǂ����邩
+■0x01.) ブルースクリーンって何？
 
-�@���߂Ă��������i�΁j�BWindows9x�V���[�Y�Ńu���[�X�N���[���ɂȂ��Ă��܂�
-���ꍇ�A���߂�[Ctrl]+[Alt]+[Del]��A�łōċN�����邵������܂���B�������A
-�u���[�X�N���[���ɂȂ���������˂��~�߂邱�Ƃ�����ł��B
-�@���[�U�[�ɂƂ��Ăł��邱�Ƃ́A�g�p���Ȃ��Ȃ����A�v���P�[�V�����͂��܂�
-�ɃA���C���X�g�[���A�C���X�g�[��������}�ɂ��������Ȃ����炻�̃A�v���P�[
-�V�����͎g�p���Ȃ��Ƃ��������Ƃ��炢�ł��傤�B��Ԃ悢�̂́A�ăC���X�g�[
-�����āA�Œ���̃A�v���P�[�V���������C���X�g�[�����Ȃ����Ƃł��傤�B
+　一言でWindowsといっても、95/98/Me/NT/2000/XP/2003といった様々なバージョ
+ンが存在します。これをまとめてWindowsファミリー、95/98/MeをWindows9xシリ
+ーズ、NT/2000/XP/2003をWindowsNTシリーズと呼ぶことにします。
+　自分では何も問題の無いと思って操作を行ったのに、画面が勝手に青くなり、
+強制終了を促される現象を知っているでしょうか。Windows9xシリーズを使ったこ
+とがある方ならば、一度は体験したことがあることでしょう（下手したら100回は
+超える人も・・・）。ここで、「自分では何も問題の無いと思った操作」というのが
+肝です。自分では問題無いと思っても、PC側にとっては問題があったわけです。
+なぜ、このような食い違いが起こるのかというと、ユーザーは何気なくソフトウ
+ェアを操作している一方、そのソフトウェアにバグがあって、本来アクセスして
+はならないWindowsの心臓部（厳密に言えば、カーネル部分）を書き換えたりして
+しまい、異常状態を引き起こしてしまうからです。
+　異常状態になってしまうと、Windowsがこのことをユーザーに知らせるために、
+画面を青くします。もう少し詳細に言うと、Windowsファミリーはカーネルがクラ
+ッシュ（パニック）してしまうと、ディスプレイがVGAモードに切り替わって、青
+い画面になる仕様になっているわけです。この画面が青くなる現象を一般的には
+ブルースクリーン、正式にはBSOD（Blue Screen Of Death）と呼びます。
 
 
-��0x03.) WindowsNT�V���[�Y�Ńu���[�X�N���[���ɂȂ�����ǂ����邩
+■0x02.) Windows9xシリーズでブルースクリーンになったらどうするか
 
-�@WindowsNT�V���[�Y�̏ꍇ�A��ʂɎc���ꂽ���b�Z�[�W����ǂ��邱�ƂŃu���[
-�X�N���[���̌�����˂��~�߂邱�Ƃ��ł��܂��B�܂��AOS�̃N���b�V���_���v��
-�̎�ł���̂ŁA�������ɏڍׂ�m�邱�Ƃ��ł��܂��B
+　諦めてください（笑）。Windows9xシリーズでブルースクリーンになってしまっ
+た場合、諦めて[Ctrl]+[Alt]+[Del]を連打で再起動するしかありません。しかも、
+ブルースクリーンになった原因を突き止めることも困難です。
+　ユーザーにとってできることは、使用しなくなったアプリケーションはこまめ
+にアンインストール、インストールしたら急におかしくなったらそのアプリケー
+ションは使用しないといったことぐらいでしょう。一番よいのは、再インストー
+ルして、最低限のアプリケーションしかインストールしないことでしょう。
 
-�@�u���H�@WindowsNT�V���[�Y�ł̓u���[�X�N���[�����������Ƃ��Ȃ����āH�@�v
-�@�u���[�X�N���[���́A�J�[�l����ԓ��ŉ��炩�̌����ŏ�Q�����������Ƃ���
-�\���������̂Ȃ̂ŁA������������u���[�X�N���[�����������Ƃ������l����
-�邱�Ƃł��傤�B����ɁA�}�[�t�B�[�̖@���ł͂���܂��񂪁A�������Ȃ��Ƃ�
-�Ɍ����ĕ\������A�����Ō������v���Ƃ��Ɍ����ĕ\������Ȃ����̂ł��B
-�@�����ŁA�Ӑ}�I�Ƀu���[�X�N���[���𔭐���������@�������Ă����܂��B����
-���@���K�p�ł�����������ɗ񋓂��܂��B
-�EWindows2000/XP�̂�
-�EPS/2�̃L�[�{�[�h�̂݁iUSB�͕s�j
-�E���W�X�g���G�f�B�^�̑��삪������\��
 
-�@�ł́A���@�������܂��B
+■0x03.) WindowsNTシリーズでブルースクリーンになったらどうするか
 
-1�F���W�X�g���G�f�B�^���N�����܂��B�uHKEY_LOCAL_MACHINE\SYSTEM\CurrentCo
-ntrolSet\Services\i8042prt\Parameters�v�L�[�ɁA�V�K��DWORD�l�ŁuCrashOnC
-trlScroll�v�A���̒l���u1�v�Ƃ��Ēǉ����܂��B���Ȃ݂ɁA�ui8042prt�v��PS/2
-�̃L�[�{�[�h�ƃ}�E�X�𐧌䂷��Intel8042�|�[�g�h���C�o�̂��Ƃł��B
+　WindowsNTシリーズの場合、画面に残されたメッセージを解読することでブルー
+スクリーンの原因を突き止めることができます。また、OSのクラッシュダンプを
+採取できるので、これを基に詳細を知ることもできます。
 
-2�F���W�X�g���G�f�B�^���I�����āA�}�V�����ċN�����܂��B
+　「え？　WindowsNTシリーズではブルースクリーンを見たことがないって？　」
+　ブルースクリーンは、カーネル空間内で何らかの原因で障害が発生したときに
+表示されるものなので、もしかしたらブルースクリーンを見たことが無い人もい
+ることでしょう。それに、マーフィーの法則ではありませんが、見たくないとき
+に限って表示され、実験で見たい思うときに限って表示されないものです。
+　そこで、意図的にブルースクリーンを発生させる方法を教えておきます。この
+方法が適用できる条件を次に列挙します。
+・Windows2000/XPのみ
+・PS/2のキーボードのみ（USBは不可）
+・レジストリエディタの操作が分かる能力
 
-3�F�ċN����A���܂������΁A[�ECtrl]�L�[�������Ȃ���[ScrollLock]�L�[��2��
-�����΁A�u���[�X�N���[�����Ӑ}�I�ɋN�������Ƃ��ł��܂��B
+　では、方法を示します。
 
-�@������Ƒ҂��Ă��������B�u���[�X�N���[���𔭐������Ƃ͏I���܂������A
-�f�t�H���g�ł͎����I�ɍċN������悤�ɐݒ肳��Ă���̂ŁA��ʂɕ\������
-�����b�Z�[�W��ǂݎ�邱�Ƃ��ł��܂���B�����ŁA�����I�ɍċN�����Ȃ��悤
-�ɐݒ肵�Ă����܂��傤�B
+1：レジストリエディタを起動します。「HKEY_LOCAL_MACHINE\SYSTEM\CurrentCo
+ntrolSet\Services\i8042prt\Parameters」キーに、新規でDWORD値で「CrashOnC
+trlScroll」、その値を「1」として追加します。ちなみに、「i8042prt」はPS/2
+のキーボードとマウスを制御するIntel8042ポートドライバのことです。
 
-1�F�u�R���g���[���p�l���v���́u�V�X�e���v���_�u���N���b�N���܂��B
+2：レジストリエディタを終了して、マシンを再起動します。
 
-2�F�u�V�X�e���̃v���p�e�B�v���\�������̂ŁA�u�ڍׁv�^�u���u�N��/�񕜁v
-�{�^���������܂��B
+3：再起動後、うまくいけば、[右Ctrl]キーを押しながら[ScrollLock]キーを2回
+押せば、ブルースクリーンを意図的に起こすことができます。
 
-3�F�u�N��/�񕜁v�E�B���h�E���\�����ꂽ��A�u�V�X�e���G���[�v�����́u����
-�I�ɍċN������v�̃`�F�b�N�{�b�N�X�̃`�F�b�N���͂����܂��B�����āA�u�V�X
-�e�����O�ɃC�x���g���������ށv�i��ł��̃C�x���g��\��������@�����y����j
-�Ɓu�Ǘ��x���𑗐M����v�̃`�F�b�N�{�b�N�X�Ƀ`�F�b�N�����Ă����܂��B
+　ちょっと待ってください。ブルースクリーンを発生する作業は終わりましたが、
+デフォルトでは自動的に再起動するように設定されているので、画面に表示され
+たメッセージを読み取ることができません。そこで、自動的に再起動しないよう
+に設定しておきましょう。
 
-4�F�ݒ��A[OK]�{�^���������܂��B�ċN���𑣂���܂��̂ŁA�ċN�����Ă�����
-���傤�B
+1：「コントロールパネル」内の「システム」をダブルクリックします。
 
-�@����ŏ������ł��܂����B[�ECtrl]�L�[�������Ȃ���[ScrollLock]�L�[��2��
-���āA�u���[�X�N���[�����Ӑ}�I�ɋN�����Ă݂܂��傤�i�u���[�X�N���[�����
-�}�V���̃��Z�b�g�{�^�������Ȃ��̂ŁA�����炶�ߐS�̏��������Ă������Ɓj�B
-���̂Ƃ��\������郁�b�Z�[�W�͎��̂悤�ɂȂ��Ă���͂��ł��B
+2：「システムのプロパティ」が表示されるので、「詳細」タブ＞「起動/回復」
+ボタンを押します。
+
+3：「起動/回復」ウィンドウが表示されたら、「システムエラー」部分の「自動
+的に再起動する」のチェックボックスのチェックをはずします。そして、「シス
+テムログにイベントを書き込む」（後でこのイベントを表示する方法を言及する）
+と「管理警告を送信する」のチェックボックスにチェックを入れておきます。
+
+4：設定後、[OK]ボタンを押します。再起動を促されますので、再起動しておきま
+しょう。
+
+　これで準備ができました。[右Ctrl]キーを押しながら[ScrollLock]キーを2回押
+して、ブルースクリーンを意図的に起こしてみましょう（ブルースクリーン後は
+マシンのリセットボタンしかないので、あからじめ心の準備をしておくこと）。
+このとき表示されるメッセージは次のようになっているはずです。
 
 -----
 *** STOP: 0x000000E2 (0x00000000,0x00000000,0x00000000,0x00000000)
@@ -831,47 +831,47 @@ Beginning dump of physical memory
 Physical memory dump complete. Contact your system administrator or thechnical support group.
 -----
 
-�@1�s�ڂɒ��ڂ��Ă��������B
+　1行目に着目してください。
 
 -----
 0x000000E2 (0x00000000,0x00000000,0x00000000,0x00000000)
 -----
 
-�@���̉p������i0x�ƂȂ��Ă���̂�16�i���\���j���u���[�X�N���[����������
-��������˂��~�߂�q���g�ƂȂ�킯�ł��B���̉p�����������Ӗ����Ă��邩�́A
-MS��Web�T�C�g�Ŕz�z����Ă���DDK�iDriver Development Kit�j�Ƃ����f�o�C�X
-�h���C�o�J���L�b�g���C���X�g�[�����āA�uDDK Documentation�v�Ƃ����w���v�t
-�@�C�����Q�Ƃ��邱�Ƃŕ�����܂�(*1)�B
+　この英数字列（0xとなっているので16進数表示）がブルースクリーンが発生し
+た原因を突き止めるヒントとなるわけです。この英数字が何を意味しているかは、
+MSのWebサイトで配布されているDDK（Driver Development Kit）というデバイス
+ドライバ開発キットをインストールして、「DDK Documentation」というヘルプフ
+ァイルを参照することで分かります(*1)。
 
-DDK�̃g�b�v�y�[�W�Fhttp://www.microsoft.com/japan/whdc/ddk/winddk.mspx
-FAQ�Fhttp://www.microsoft.com/japan/whdc/ddk/ddkfaq.mspx
+DDKのトップページ：http://www.microsoft.com/japan/whdc/ddk/winddk.mspx
+FAQ：http://www.microsoft.com/japan/whdc/ddk/ddkfaq.mspx
 
-�@����URI����ADDK���_�E�����[�h���āA�C���X�g�[�����܂��B�ƌ��������Ƃ�
-��ł����A���݂͎c�O�Ȃ���_�E�����[�h�ł��Ȃ��悤�ł��BWindows2000�p��D
-DK��Server 2003 DDK��CD-ROM�Ɋ܂܂�܂��B����CD-ROM���̂̓^�_�ł����A����
-��25$������܂��B
+　このURIから、DDKをダウンロードして、インストールします。と言いたいとこ
+ろですが、現在は残念ながらダウンロードできないようです。Windows2000用のD
+DKはServer 2003 DDKのCD-ROMに含まれます。このCD-ROM自体はタダですが、送料
+で25$かかります。
 
-�@���݂́A�uDebugging Tools for Windows�v�Ƃ����c�[���̒��ɁuDDK Documen
-tation�v���܂܂�Ă���̂ŁA���������URI����_�E�����[�h���܂��B����̓x
-�[�^�łł���Version 6.3.11�i2004�N3��1���j�𗘗p���邱�Ƃɂ��܂��B
+　現在は、「Debugging Tools for Windows」というツールの中に「DDK Documen
+tation」が含まれているので、これを次のURIからダウンロードします。今回はベ
+ータ版であるVersion 6.3.11（2004年3月1日）を利用することにします。
 
 http://www.microsoft.com/japan/whdc/ddk/debugging/default.mspx
 
-�@�uDebugging Tools for Windows �x�[�^�ł̃_�E�����[�h�v�Ƃ��������N���N
-���b�N���܂��BWindowsNT�̕��͂܂��uInstall Windows Installer 1.1 (Window
-s NT 4.0 - x86) 1.4MB�v�����炩���߃C���X�g�[�����Ă����K�v������܂��BW
-indows2000/XP�Ȃǂ̏ꍇ�A����͏Ȃ��āuInstall 32-bit Beta Version 6.3.1
-1 (March 1, 2004) 10MB�v���C���X�g�[�����邾����OK�ł��B
+　「Debugging Tools for Windows ベータ版のダウンロード」というリンクをク
+リックします。WindowsNTの方はまず「Install Windows Installer 1.1 (Window
+s NT 4.0 - x86) 1.4MB」をあらかじめインストールしておく必要があります。W
+indows2000/XPなどの場合、これは省いて「Install 32-bit Beta Version 6.3.1
+1 (March 1, 2004) 10MB」をインストールするだけでOKです。
 
-�@����ł́A�uDebugging Tools for Windows�v�̃C���X�g�[�����I������Ƃ���
-���B
+　それでは、「Debugging Tools for Windows」のインストールが終わったとしま
+す。
 
-�@�u�X�^�[�g�v���j���[���u�v���O�����v���uDebugging Tools for Windows�v��
-�uDebugging Help�v���N�����܂��B
-�@�uDebugging Tools for Windows�v���uBug Checks (Blue Screens)�v���uBug 
-Check Code Reference�v�Ńo�O�`�F�b�N�R�[�h���m�F�ł��܂��B�Ӑ}�I�Ɉ����N
-�������u���[�X�N���[���̃o�O�`�F�b�N�R�[�h�́A1�s�ڂ̐擪�����́u0x00000
-0E2�v�ł��B���̍��ڂ͎��̂悤�ɂȂ��Ă��܂��B
+　「スタート」メニュー＞「プログラム」＞「Debugging Tools for Windows」＞
+「Debugging Help」を起動します。
+　「Debugging Tools for Windows」＞「Bug Checks (Blue Screens)」＞「Bug 
+Check Code Reference」でバグチェックコードを確認できます。意図的に引き起
+こしたブルースクリーンのバグチェックコードは、1行目の先頭部分の「0x00000
+0E2」です。この項目は次のようになっています。
 
 -----
 Bug Check 0xE2: MANUALLY_INITIATED_CRASH
@@ -886,50 +886,50 @@ Comments
 For details on manually-initiated crash dumps, see Forcing a System Crash.
 -----
 
-�@�܂�A����́uMANUALLY_INITIATED_CRASH�v�Ƃ����Ӗ��ł��邱�Ƃ�������
-�܂��B
+　つまり、これは「MANUALLY_INITIATED_CRASH」という意味であることが判明し
+ます。
 
 
-�@�Ȃ��A�Ӑ}�I�Ƀu���[�X�N���[���𔭐�����d�g�݂����݂���̂��Ƃ����ƁA
-OS���X�g�[�����Ă��܂����Ƃ��ɁA�������_���v���̎悵�ĉ�͂ł���悤�ɂ�
-�邽�߂ł��B
+　なぜ、意図的にブルースクリーンを発生する仕組みが存在するのかというと、
+OSがストールしてしまったときに、メモリダンプを採取して解析できるようにす
+るためです。
 
-(*1) �O��MSDN�ɉ������Ă��Ȃ���Γ���ł��܂���ł������A���݂̓t���[�Ŏg
-���܂��B
+(*1) 前はMSDNに加入していなければ入手できませんでしたが、現在はフリーで使
+えます。
 
 
-��0x04.) �������_���v�ƋY���
+■0x04.) メモリダンプと戯れる
 
-�@�o�O�`�F�b�N�R�[�h�Ńu���[�X�N���[���̌����ł���T�v��������܂����A��
-�ׂ͂܂�������܂���B�����ŁuDebugging Tools for Windows�v�ɕt�����Ă���
-�uWindows Debugger�v�iWinDdg�j��p���āA�ۑ������C�x���g�i�����ł̓N���b
-�V�������C�x���g�Ȃ̂ŃN���b�V���_���v�ƌĂԂ��Ƃɂ���j���_���v���܂��B
+　バグチェックコードでブルースクリーンの原因である概要が分かりますが、詳
+細はまだ分かりません。そこで「Debugging Tools for Windows」に付属している
+「Windows Debugger」（WinDdg）を用いて、保存したイベント（ここではクラッ
+シュしたイベントなのでクラッシュダンプと呼ぶことにする）をダンプします。
 
-�@�N���b�V���_���v�̓f�t�H���g�Łu%SystemRoot%\Minidump�v�ɕۑ�����Ă���
-�͂��ł��B�ۑ��ꏊ��ύX����ɂ́A�O�q�����u�N��/�񕜁v�E�B���h�E�ŕύX��
-���܂��B�������A�f�t�H���g�̂܂܂ł́u�f�o�b�O���̏������݁v�̕������u
-�ŏ��������_���v�i64KB�j�v�ɂȂ��Ă��܂��B����ł̓_���v�ʂ����Ȃ��A���
-�ʂ����Ȃ��̂ŁA�u�J�[�l���������_���v�v�ɕύX���Ă����܂��傤�B�u���S��
-�����_���v�v�ɂ���ΑS�Ẵ������̃_���v���s���܂����A�����܂ł���K�v��
-�߂����ɂȂ��ł��傤�B�ڍׂ͎���URI�Ŋm�F�ł��܂��B
+　クラッシュダンプはデフォルトで「%SystemRoot%\Minidump」に保存されている
+はずです。保存場所を変更するには、前述した「起動/回復」ウィンドウで変更で
+きます。しかし、デフォルトのままでは「デバッグ情報の書き込み」の部分が「
+最小メモリダンプ（64KB）」になっています。これではダンプ量が少なく、情報
+量を少ないので、「カーネルメモリダンプ」に変更しておきましょう。「完全メ
+モリダンプ」にすれば全てのメモリのダンプを行いますが、そこまでする必要は
+めったにないでしょう。詳細は次のURIで確認できます。
 
 http://support.microsoft.com/default.aspx?scid=kb;ja;254649
 
-�@�������AHDD�̗e�ʂ͍Œ���u�����������{1MB�v���K�v�ɂȂ�܂��B�Ȃ��Ȃ�
-�΁A�N���b�V���_���v�͈�U�y�[�W���O�t�@�C���i�uC:\pagefile.sys�v�Ɉʒu��
-��j�ɍ̎悳�ꂳ��A���̌��OS�N�����Ɏw�肵���ۑ���ɃR�s�[�����d�g��
-�ɂȂ��Ă��邩��ł��B
-�@2GB�ȏ�̃�������ς�ł���}�V���̏ꍇ���ӂ��ׂ��_������܂��B����Ɋ�
-���Ă͎���URI���Q�l�ɂ��Ă��������B
+　ただし、HDDの容量は最低限「物理メモリ＋1MB」が必要になります。なぜなら
+ば、クラッシュダンプは一旦ページングファイル（「C:\pagefile.sys」に位置す
+る）に採取されされ、その後にOS起動時に指定した保存先にコピーされる仕組み
+になっているからです。
+　2GB以上のメモリを積んでいるマシンの場合注意すべき点があります。これに関
+しては次のURIを参考にしてください。
 
 http://support.microsoft.com/default.aspx?scid=kb;ja;274598
 http://support.microsoft.com/default.aspx?scid=kb;JA;241046
 
-�@����ł̓f�o�b�K�ŃN���b�V����������ǂݍ���Ō��܂��傤�B
-�@�܂��AWinDdg���N�����܂��B�����āA���j���[�́uFile�v���uOpen Crash Dum
-p�v�ŁA�uMEMORY.DMP�v�t�@�C�����w�肵�܂��B�����ł͈Ӑ}�I�Ɉ����N�������u
-���[�X�N���[���̃N���b�V�����������g���܂��B����ƁA���̂悤�ɕ\�������
-�͂��ł��B
+　それではデバッガでクラッシュメモリを読み込んで見ましょう。
+　まず、WinDdgを起動します。そして、メニューの「File」＞「Open Crash Dum
+p」で、「MEMORY.DMP」ファイルを指定します。ここでは意図的に引き起こしたブ
+ルースクリーンのクラッシュメモリを使います。すると、次のように表示される
+はずです。
 
 -----
 Microsoft (R) Windows Debugger  Version 6.3.0011.2
@@ -992,18 +992,18 @@ BugCheck E2, {0, 0, 0, 0}
 ***** Kernel symbols are WRONG. Please fix symbols to do analysis.
 
 *** ERROR: Module load completed but symbols could not be loaded for i8042prt.sys
-Probably caused by : i8042prt.sys ( i8042prt+1dc3 )�@�������ɒ��ځB
+Probably caused by : i8042prt.sys ( i8042prt+1dc3 )　←ここに着目。
 
 Followup: MachineOwner
 -----
 
-�@������3�s�ڂ́ui8042prt.sys�v�ɒ��ڂ��Ă��������B�ui8042prt.sys�v�̓L�[
-�{�[�h�h���C�o�ł��B�܂�A�o�O�`�F�b�N�R�[�h�ɂ�鐄���A�Ӑ}�I�ɋN����
-��[�ECtrl]�{�^���������Ȃ���[ScrollLock]�L�[��2�񉟂������Ƃƍ��v���܂��B
+　下から3行目の「i8042prt.sys」に着目してください。「i8042prt.sys」はキー
+ボードドライバです。つまり、バグチェックコードによる推測、意図的に起こし
+た[右Ctrl]ボタンを押しながら[ScrollLock]キーを2回押したことと合致します。
 
-�@�R�}���h���͗��Ɏ��̂悤�ɓ��͂��Ă݂܂��i�����ɂ�kd���[�h�̂Ƃ��A����
-���Ɂu!analyze -v�v�j�B����ł��ڍׂȏ����`�F�b�N�ł��܂��B�ڍׂȎg��
-���̓w���v�i�p��j���Q�Ƃ��Ă��������B
+　コマンド入力欄に次のように入力してみます（厳密にはkdモードのとき、入力
+欄に「!analyze -v」）。これでより詳細な情報をチェックできます。詳細な使い
+方はヘルプ（英語）を参照してください。
 
 -----
 kd> !analyze -v
@@ -1065,93 +1065,93 @@ Followup: MachineOwner
 -----
 
 
-��0x05.) ������
+■0x05.) おわりに
 
-�@�����̍u���͂������ł����ł��傤���B
-�@Windows�������������Ƃ͎����ł����A�������Ƃ���Windows�����ł͋Ɩ���
-�ł��Ȃ������唼���Ǝv���܂��BWindows�����[�U�[�ɑ΂��ĕ��݊�肵�Ă��Ȃ�
-�Ȃ�΁A���[�U�[�ł����X��Windows�ɑ΂��ĕ��݊�邵���Ȃ��悤�ȋC������
-���B���̍u����ǂ�ŁAWindows�Ə����ł��S���߂Â��邱�Ƃ��ł����l���ЂƂ�
-�ł���������{�]�ł��B
-
-
-
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-
---- ��S�́F���A�~�����n�[�h�E�G�A ---
-
-���ҁFMaD
-
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-
-
-��0x01.) �ҏW����̂ЂƂ���
-
-�@�v���t�B�[���ɍ��A�~�����n�[�h�E�F�A�𔃂��ė~�����Ɠd�b�Ō������͂���
-�����A�܂ǂ��񂪊��Ⴂ�����̂����C�����e�Ɏ����Ă����̂ŁA���̂܂܂�����
-�L�ڂ��邱�Ƃɂ��܂����i�΁j�B
-
-
-��0x02.) ���A��Ԗ������������n�[�h�E�G�A
-
-�@���A��Ԗ������������n�[�h�E�G�A�ɂ��Ă����H
-�@���A��Ԗ������������̂́u�t���b�V���������[512MB�v�B���ꂵ���Ȃ��B
-�@���́A����A�\�N�}�b�t�̂o�b�ق��A�����̂悤�ɏ��^�J�b�^�[�������ăE
-���E�����Ă��́B�ڂ��̏��^�J�b�^�[���āA�w�ւɎd�|���������āA�o��������
-���ɐn�悾�����j���L�`���ďo������̂�B
-�@�b�����ꂽ���ǁA�����Łu�t���b�V���������[512MB�v���A�s�A�m���݂����̂�
-�����ău���������Ă�����A���Ă�U�肵�Ȃ���A�V���L�[�����Đ؂��āA��
-�R�ɂ��Ă������́B�����ĉ����������B�f�u�̊��L�����^�Ƃ��Ɉ�����C�W
-����킯�������B�L���C�Ȃ��o����Ɉ�����������܂���Ȃ�A���̂܂܂�
-���Ƃ��Ă����Ă�����񂾂��ǁB�܂ǂ���͂����l�Ȃ񂾁B
-�@�b�����ꂽ���ǁi���j�B��ŁA���x�̂悤�Ƀo����킯���Ȃ��A�Ƃ������A�o
-���Ă��u�������Ȑ������Ă邩���ɗ��܂������낪�A������ǂ����Ă���
-��˂�I�܂��A���܂��牺���[�̓A�z�₩�狖�����邯�ǁA�^�R�Ă��򂤂��炢
-�̘l�т��炢�����Ȃ����񂼁v���Ă�������B
-�@�b�����ꂽ���ǁi�����j�B�Ȃɘb���Ă������H�@�������Ă������i�΁j�B
-�@�����A�t���b�V���������[512MB�̘b�B����������������Ȃ��玝���A���āA�}
-���Ă݂��̂�B�A�N�Z�X�����v�������A�}�E���g�����Ȃ��B
-�@���������A������Ƃ��������ł��̂�B
-�@��ŁA�������Ă݂��́B
-
-�@http://ruffnex.oc.to/dam/unko.jpg
-
-�@�ʐ^���ɂ�������킩��ɂ������ǁA������Ȃ��_�~�[�ł����B
-�@�\�N�}�b�t���x���ꂽ��񂯁I
-�@�ŁA���������̓u�`�؂�I�@����Ń\�N�}�b�t�͐M�p�ł��Ȃ����Ƃ��킩��
-���I
-�@���Ԃ��ɁA����͔�����u�t���b�V���������[1GB�v�̌Y����B
-
-�@����̘b�ŁA�\�N�}�b�t�Ƃ͐M�p�ł��Ȃ��Ƃ����Ƃ������Ƃ��킩���Ă�����
-����΁A���������͍K���ł���i��Ȃ�28�������߁p�B
+　今月の講座はいかがでしたでしょうか。
+　Windows嫌いが多いことは事実ですが、現実問題としてWindows無しでは業務が
+できない方が大半だと思います。Windowsがユーザーに対して歩み寄りしてこない
+ならば、ユーザーである我々がWindowsに対して歩み寄るしかないような気もしま
+す。この講座を読んで、Windowsと少しでも心を近づけることができた人がひとり
+でも増えたら本望です。
 
 
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
- --- ��T�́F���m�点 ---
+--- 第４章：今、欲しいハードウエア ---
+
+著者：MaD
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-��Wizard Bible�ihttp://2600ch.com/�j�ł͐����A���M���C�^�[���W���Ă���
-���B
-�@�������e�̃e�[�}�͍L�`�ł́uunder ground�v�ł��B�Ⴆ�΁A�n�b�L���O����
-�T�����K�X�̍����@�Ȃǂƕ��L�����e���l���Ă��܂��B�܂��A�e��A����ȐE��
-�������������̃��N�`���[�Ȃǂ��܂܂�܂��B
-�@��񂫂�ł��\���܂���B�܂��A�K���A����A�ڂ���`��������܂���̂ł�
-����͈͂ō\���܂���B�C�y�ɐ��������Ă��������B��������񏑂������Ƃ�
-����l���C�y�ɐ��������Ă��������i�S���C�ɂ��Ă��Ȃ����i�Ȃ̂Łj�B
 
-��Kenji Aiko����Q&A������Ă���܂����B���߂ĎQ������l�ł��킩��₷��
-������Ă��܂��̂ŁA�Q�l�ɂ��Ă��������B
+■0x01.) 編集からのひとこと
+
+　プロフィールに今、欲しいハードウェアを買いて欲しいと電話で言ったはずで
+すが、まどさんが勘違いしたのかメイン原稿に持ってきたので、このままここに
+記載することにしました（笑）。
+
+
+■0x02.) 今、一番万引きしたいハードウエア
+
+　今、一番万引きしたいハードウエアにしていい？
+　今、一番万引きしたいのは「フラッシュメモリー512MB」。これしかない。
+　実は、先日、ソクマッフのＰＣ館を、いつものように小型カッターを持ってウ
+ロウロしてたの。ぼくの小型カッターって、指輪に仕掛けがあって、出したいと
+きに刃先だけがニョキ〜って出る特注のやつ。
+　話が反れたけど、そこで「フラッシュメモリー512MB」が、ピアノ線みたいので
+縛られてブラ下がってたから、見てる振りしながら、シャキーンって切って、自
+由にしてあげたの。だって可愛そうじゃん。デブの汗臭いヲタとかに一日中イジ
+られるわけだしさ。キレイなお姉さんに一日中いじられまくるなら、そのままそ
+っとしておいてあげるんだけど。まどさんはいい人なんだ。
+　話が反れたけど（汗）。んで、毎度のようにバレるわけもなく、というか、バ
+レても「おかしな線をつけてるから手に絡まったんやろが、これをどうしてくれ
+んねや！まぁ、おまいら下っ端はアホやから許したるけど、タコ焼き喰うくらい
+の詫びくらい入れやなあかんぞ」っていうもん。
+　話が反れたけど（油汗）。なに話してたっけ？　興奮してしもた（笑）。
+　あぁ、フラッシュメモリー512MBの話。それをルンルンしながら持ち帰って、挿
+してみたのよ。アクセスランプもつかず、マウントもしない。
+　おいちゃん、ちょっとだけ油汗でたのよ。
+　んで、分解してみたの。
+
+　http://ruffnex.oc.to/dam/unko.jpg
+
+　写真見にくいからわかりにくいけど、基板しかないダミーでした。
+　ソクマッフに騙されたやんけ！
+　で、おっちゃんはブチ切れ！　これでソクマッフは信用できないことがわかっ
+た！
+　お返しに、次回は箱入り「フラッシュメモリー1GB」の刑じゃ。
+
+　今回の話で、ソクマッフとは信用できないとこだということがわかっていただ
+ければ、おいちゃんは幸いである（危ない28号風締め｝。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+ --- 第５章：お知らせ ---
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○Wizard Bible（http://2600ch.com/）では随時、執筆ライターを募集していま
+す。
+　扱う内容のテーマは広義での「under ground」です。例えば、ハッキングから
+サリンガスの合成法などと幅広い内容を考えています。また、各種、特殊な職業
+や趣味を持った方のレクチャーなども含まれます。
+　一回きりでも構いません。また、必ず、毎回連載する義務もありませんのでで
+きる範囲で構いません。気軽に声をかけてください。もちろん一回書いたことが
+ある人も気軽に声をかけてください（全く気にしていない性格なので）。
+
+○Kenji AikoさんがQ&Aを作ってくれました。初めて参加する人でもわかりやすく
+書かれていますので、参考にしてください。
 
 http://akademeia.info/wizardbible/wbQandA.html
 
-���x���ҁA�Q����]�җp�̃X���b�h�𗧂Ă܂����B
+○支援者、参加希望者用のスレッドを立てました。
 
 http://ruffnex.oc.to/ipusiron/cgi/forum/patio.cgi?mode=view&no=17
 
@@ -1160,72 +1160,72 @@ http://ruffnex.oc.to/ipusiron/cgi/forum/patio.cgi?mode=view&no=17
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-  ---- ��U�́F���҃v���t�B�[�� ---
+  ---- 第６章：著者プロフィール ---
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-�@����͊e���҂ɍ��~�����n�[�h�E�F�A���Љ�Ă��炢�܂����B
+　今回は各著者に今欲しいハードウェアを紹介してもらいました。
 
-��J-Klein
-��Job:��ۂ�
-��Web:- Mac Freaks -�ihttp://members.jcom.home.ne.jp/j-klein/�j
-��Mail: j-klein@jcom.home.ne.jp
-��Team�iGroup�j:N/A
-���~����PC�֘A�̃n�[�h�E�F�A
-�E�m�[�g�p�\�R��
-�@�����^�т����Ƃ����~���ł͂Ȃ��A�����Ń\�t�@�ɍ����ăl�b�g�������ȁA�ƁB
-�@�����ɍ����Ă�̂���ɂɊ����Ă����������̍��Ȃ̂ł��B
-�EGPS
-�@NetStumbler+GPS�ŗV�т����B�V�ѕ��͉��LURL��������ǂ����B
-�@http://www.itmedia.co.jp/news/0301/07/nj00_btgps.html
-�EWeb�J����
-�@�����̔L�����u�Ď��������I
+■J-Klein
+●Job:酒呑み
+●Web:- Mac Freaks -（http://members.jcom.home.ne.jp/j-klein/）
+●Mail: j-klein@jcom.home.ne.jp
+●Team（Group）:N/A
+●欲しいPC関連のハードウェア
+・ノートパソコン
+　持ち運びたいという欲求ではなく、部屋でソファに座ってネットしたいな、と。
+　いすに座ってるのが苦痛に感じてきた今日この頃なのです。
+・GPS
+　NetStumbler+GPSで遊びたい。遊び方は下記URLあたりをどうぞ。
+　http://www.itmedia.co.jp/news/0301/07/nj00_btgps.html
+・Webカメラ
+　うちの猫を遠隔監視したい！
 
-��Kenji Aiko
-��Job: Student
-��Web: http://ruffnex.oc.to/kenji/
-��Mail: kenjinet@s26.xrea.com
-��Team�iGroup): N/A
-��Comment:
-�@�ǂ����BKenji�ł��B����WizardBible��vol.10�ł��ˁB���߂łƂ���������
-���B�l�I�ɂ�vol.1000���炢�܂ő����Ăق����Ǝv���Ă��܂����A�P���Ɍv�Z
-���Ă�vol.1000�܂ł��ƂW�O�N���炢������悤�Ȃ̂ŁA�������Ɏ��͂��̐���
-���Ȃ����낤�Ƃ������ƂŁA�Ƃ肠�������ꂩ���W�N���vol.100��ǂ߂��炢
-���ȂƎv���Ă��܂�(^^;�B
-���~����PC�֘A�̃n�[�h�E�F�A
-�@�}�E�X�I�@���́A���Ɋۂ���������ĂȂ��A�ԊO���I�Ȃ��̂ňړ������m��
-�����~�����ł��B�������{�^���R�i���邭�������܂ށj�B�����
-�x�傫���āA�������y���B�N���b�N�̕��������B�ȂǂȂǂ����˔��������ɂ̃}
-�E�X���~�����ł��i�΁j�B�o�b���g���l�ɂƂ��āA�L�[�{�[�h�ƃ}�E�X�̑��쐫
-���Ă���ς�C�ɂȂ�܂���ˁB
+■Kenji Aiko
+●Job: Student
+●Web: http://ruffnex.oc.to/kenji/
+●Mail: kenjinet@s26.xrea.com
+●Team（Group): N/A
+●Comment:
+　どうも。Kenjiです。ついにWizardBibleもvol.10ですね。おめでとうございま
+す。個人的にはvol.1000くらいまで続いてほしいと思っていますが、単純に計算
+してもvol.1000まであと８０年くらいかかるようなので、さすがに私はこの世に
+いないだろうということで、とりあえずこれから約８年後のvol.100を読めたらい
+いなと思っています(^^;。
+●欲しいPC関連のハードウェア
+　マウス！　あの、中に丸いやつが入ってない、赤外線的なもので移動を感知す
+るやつが欲しいです。もちろんボタン３つ（くるくる回るやつも含む）。ある程
+度大きくて、しかも軽い。クリックの幅が狭い。などなどを兼ね備えた究極のマ
+ウスが欲しいです（笑）。ＰＣを使う人にとって、キーボードとマウスの操作性
+ってやっぱり気になりますよね。
 
-��MaD
-��Job:DATA HOUSE
-��Web:http://www.data-house.co.jp/
-��Mail:mad@data-house.co.jp
-��Team�iGroup�j:secret
-��Comment:
-�@���n�J�[�W���p�\�Ɗ�Ȃ�28���̕S�~���C�^�[�B��́A�󂫊ʏE���Ƌ����r
-�̃t�^�W�߁B�Q�����˂�ł́u���}�T���L�v�A�u���߁E�ہv�A�u�哯�Ȍ|�l
-�v�A�u�D�_�E���\�t�v�Ƃ��Ēʂ��Ă���B�E�\�΂�����̂ŗF�B�͂��Ȃ��B
-�@���݂͉�ЂŃq�b�L�[�����Ă��邪�A�����̓l�b�g�J�t�F�̓X���Ȃ�Ƃ�����
-�W�Ɍ������Ă܂�������B�Ƃ����I(`�D�L)�B
-���~����PC�֘A�̃n�[�h�E�F�A
-�@�{���Q�ƁB
+■MaD
+●Job:DATA HOUSE
+●Web:http://www.data-house.co.jp/
+●Mail:mad@data-house.co.jp
+●Team（Group）:secret
+●Comment:
+　元ハカージャパソと危ない28号の百円ライター。趣味は、空き缶拾いと牛乳瓶
+のフタ集め。２ちゃんねるでは「矢崎マサユキ」、「白鶴・丸」、「大同曲芸人
+」、「泥棒・詐欺師」として通っている。ウソばかりつくので友達はいない。
+　現在は会社でヒッキーをしているが、将来はネットカフェの店員なるという目
+標に向かってまっしぐら。とぁっ！(`Д´)。
+●欲しいPC関連のハードウェア
+　本文参照。
 
-��IPUSIRON
-��Job:�T�C�g�X�V
-��Web:- Security Akademeia -�ihttp://akademeia.info/�j
-��Mail:ipusiron@ruffnex.oc.to
-��Team�iGroup�j:TeamSA
-��Comment:
-�@�ŋ߂ł́A���l�Q�ƌ��e�̗����Ɏl�ꔪ�ꂵ�Ă��܂��B�����vol.10��Wizard 
-Bible�ł����A��������M�ҁE�ǎ҂̂������ł��B���ꂩ���Wizard Bible�����
-�������肢���܂��B
-�@Winny�̕s���ߕ߂ɂ��āA���e��Wizard Bible�ɓ��e���Ă����l��W���Ă�
-���B
-���~����PC�֘A�̃n�[�h�E�F�A
-�E���l�Q�p�̍��X�y�b�N�̃}�V���B
-�@�N���j�N��1�܂Ō��1�����B�l�������ς����邾�낤�Ǝv����푈�ł��₦
-����O���t�B�b�N�{�[�h�A�������ACPU�������X�y�b�N�}�V�����~�����ł��ˁB
+■IPUSIRON
+●Job:サイト更新
+●Web:- Security Akademeia -（http://akademeia.info/）
+●Mail:ipusiron@ruffnex.oc.to
+●Team（Group）:TeamSA
+●Comment:
+　最近では、リネ２と原稿の両立に四苦八苦しています。今回でvol.10のWizard 
+Bibleですが、これも執筆者・読者のおかげです。これからもWizard Bibleをよろ
+しくお願いします。
+　Winnyの不当逮捕について、原稿をWizard Bibleに投稿してくれる人募集してま
+す。
+●欲しいPC関連のハードウェア
+・リネ２用の高スペックのマシン。
+　クロニクル1まで後約1ヶ月。人がいっぱいいるだろうと思われる戦争でも絶え
+うるグラフィックボード、メモリ、CPUを持つ高スペックマシンが欲しいですね。

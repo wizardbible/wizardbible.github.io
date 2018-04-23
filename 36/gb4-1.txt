@@ -1,87 +1,87 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- �恛��: ���o�[�X�G���W�j�A�����O���H khallenge�ւ̃`�������W ����1 ---
+--- 第○章: リバースエンジニアリング実践 khallengeへのチャレンジ その1 ---
 
-���ҁFGreen boy 4
+著者：Green boy 4
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@�͂��߂܂��āBGreen boy4�Ɛ\���܂��B���߂ē��e�������܂��B���S�҂�No S
-kill�ł����ASkill up�̂��߂ɕ׋����ł��̂ŁA�ǂ�����낵�����肢���܂��B
+　はじめまして。Green boy4と申します。初めて投稿いたします。初心者でNo S
+killですが、Skill upのために勉強中ですので、どうぞよろしくお願いします。
 
-�@�����g�����낢��ƃo�^�o�^���Ă������߁A���͂��܂Ƃ߂�̂Ɏ��Ԃ�������A
-������Ə{���߂��Ă��܂����Akhallenge 2007�l�^�������Ă������l���̃u���O
-��q�������Ƃ���A������߂Ă��܂����������������悤�Ȃ̂ŁA���������b
-�ɂȂ��Ă���Wizard Bible��ʂ��ĊF�l�ɍv���ł���΂Ǝv���A���e�������܂�
-���B
+　私自身がいろいろとバタバタしていたため、文章をまとめるのに時間がかかり、
+ちょっと旬を過ぎていますが、khallenge 2007ネタを書いていた何人かのブログ
+を拝見したところ、あきらめてしまった方が多かったようなので、いつもお世話
+になっているWizard Bibleを通じて皆様に貢献できればと思い、投稿いたしまし
+た。
 
 
-��0x02.) Khallenge�Ƃ́H
+■0x02.) Khallengeとは？
 
-�@���āA2007�N8���^���ɁuF-Secure Reverse Engineering Challenge 2007(�ʏ�
-khallenge 2007)�v���J�Â���܂����B����͈ꌾ�Ō����ƁA�������ԓ���crack
-me�̂悤�Ȃ��̂Ȃ̂��������N���A����Q�[���Ƃ����������Ȃ̂ł����A����
-�ł�����Ƙb��ɂȂ��Ă����̂ŁA�������킵�Ă݂܂����B
+　さて、2007年8月某日に「F-Secure Reverse Engineering Challenge 2007(通称
+khallenge 2007)」が開催されました。これは一言で言うと、制限時間内にcrack
+meのようなものなのをいくつかクリアするゲームといった感じなのですが、内輪
+でちょっと話題になっていたので、私も挑戦してみました。
 
-�@�����ł���http://www.khallenge.com/�ɃA�N�Z�X����ƁALevel1�̃o�C�i��
-�ւ̃����N���\��ꂽ�y�[�W���\������܂��̂ŁALevel1���_�E�����[�h���ĉ�
-�͂��܂��B
+　やり方ですがhttp://www.khallenge.com/にアクセスすると、Level1のバイナリ
+へのリンクが貼られたページが表示されますので、Level1をダウンロードして解
+析します。
 
-�@��͂ɐ�������ƃ��[���A�h���X���\������܂��̂ŁA�擾�������[���A�h��
-�X�փ��[���𑗐M����ƁA�����̏ꍇ�͎��̃��x���ւ̃_�E�����[�h�����N�t��
-�̃��[�����ԐM����Ă��܂��B������܂���͂��A���[���𑗐M���܂��B���̌J
-��Ԃ��ŁA�`�������W��Level3�܂ő��݂��܂��B
+　解析に成功するとメールアドレスが表示されますので、取得したメールアドレ
+スへメールを送信すると、正解の場合は次のレベルへのダウンロードリンク付き
+のメールが返信されてきます。それをまた解析し、メールを送信します。この繰
+り返しで、チャレンジはLevel3まで存在します。
 
-�@�������c�O�Ȃ���A��LURL�͌��݂ł͂��łɃA�N�Z�X�ł��Ȃ��Ȃ��Ă��܂����A
-��͂��ă��[���A�h���X�𓾂āA�����Ƀ��[���𑗐M���Ă��ԐM����Ȃ��Ǝv��
-�܂��B�ł����A�ȉ���URL�ɃA�N�Z�X����΁A�o�C�i���͓���\�ł��̂ŁA����
-�������̂�����͒��킵�Ă݂Ă͂������ł��傤���H
+　ただし残念ながら、上記URLは現在ではすでにアクセスできなくなっていますし、
+解析してメールアドレスを得て、そこにメールを送信しても返信されないと思い
+ます。ですが、以下のURLにアクセスすれば、バイナリは入手可能ですので、もし
+ご興味のある方は挑戦してみてはいかがでしょうか？
 
 http://www.f-secure.com/security_center/asm.html
 
-�@Level3�͕��͂����ɒ����Ȃ�̂Ŏ���ȍ~�ɔ��\����Ƃ��āA����̓E�H�[
-���A�b�v����ɁALevel1��2�����{���Ă݂����Ǝv���܂��B
+　Level3は文章が非常に長くなるので次回以降に発表するとして、今回はウォー
+ムアップ代わりに、Level1と2を実施してみたいと思います。
 
 
-��0x03.) ��
+■0x03.) 環境
 
-�@����A���͈ȉ��̊��Ŏ��{���܂����B
+　今回、私は以下の環境で実施しました。
 
-�EOS�FWindows XP Pro SP2
-�EDebugger�FOllyDbg�ihttp://www.ollydbg.de/�j
-�EDebugger Plugin�FOllyDump
+・OS：Windows XP Pro SP2
+・Debugger：OllyDbg（http://www.ollydbg.de/）
+・Debugger Plugin：OllyDump
 
-��DokoDon���񂪃T�C�g��߂Ă��܂��Ă���悤�Ȃ̂ŁAgoogle�Ȃǂ��猟����
-�ă_�E�����[�h���Ă��������B
+※DokoDonさんがサイトを閉めてしまっているようなので、googleなどから検索し
+てダウンロードしてください。
 
-�@�܂��A�ł����IDA Pro������΃O���t�@�\��Disassemble�@�\�����͂Ȃ̂Ō�
-���ʂŗL���ł����A�K�{�ł͂���܂���B�O���t�@�\�𗘗p�������̂ł���΁A
-OllyGraph��OllyFlow�A���ꂩ��Immunity Debugger�ŕ\�����邱�Ƃ��\�Ȃ̂ŁA
-���킹�ė��p���Ă݂�̂��ЂƂ̎肾�Ǝv���܂��B
+　また、できればIDA Proがあればグラフ機能やDisassemble機能が強力なので効
+率面で有利ですが、必須ではありません。グラフ機能を利用したいのであれば、
+OllyGraphやOllyFlow、それからImmunity Debuggerで表示することも可能なので、
+合わせて利用してみるのもひとつの手だと思います。
 
 http://www.immunitysec.com/products-immdbg.shtml
 
-�@�������AOllyGraph��OllyFlow��wingraph32���K�v�ł��BIDA Pro�̃y�[�W�Ń\
-�[�X�R�[�h�̓_�E�����[�h�\�ł����A�R���p�C���ɂ�Borland CBuilder v5���K
-�v�ł��B�܂��A���̊��ł�OllyGraph��OllyFlow�𓮍삳�����Ƃ���A���܂���
-�삵���肵�Ȃ������肾�����̂ŁA�ǂ��܂Ŏg���邩�͖��m���ł��B
+　ただし、OllyGraphやOllyFlowはwingraph32が必要です。IDA Proのページでソ
+ースコードはダウンロード可能ですが、コンパイルにはBorland CBuilder v5が必
+要です。また、私の環境ではOllyGraphやOllyFlowを動作させたところ、うまく動
+作したりしなかったりだったので、どこまで使えるかは未知数です。
 
 
-��0x04.) �܂����s
+■0x04.) まず実行
 
-�@���āA���ɑO�u���������Ȃ��Ă��܂��܂������A�{��ɓ���܂��B
-�@�܂�Level1�̃o�C�i�����_�E�����[�h���Ă����ނ�Ɏ��s���܂��B
+　さて、非常に前置きが長くなってしまいましたが、本題に入ります。
+　まずLevel1のバイナリをダウンロードしておもむろに実行します。
 
-�@�{���̃��o�[�X�G���W�j�A�����O�ł���΁A�܂�PEiD�Ńp�b�J�[�̗L�����`�F
-�b�N������Astrings�R�}���h�œ����镶������m�F���āc�A�ƂȂ�Ƃ���ł�
-���A����͂��V�тȂ̂ŁA�����������c�b�R�~�͂Ȃ��̕����ł��肢���܂� ;-)
+　本当のリバースエンジニアリングであれば、まずPEiDでパッカーの有無をチェ
+ックしたり、stringsコマンドで得られる文字列を確認して…、となるところです
+が、今回はお遊びなので、そういったツッコミはなしの方向でお願いします ;-)
 
------�@FSC_Level1.exe���s���
+-----　FSC_Level1.exe実行画面
 Assembly 2007 Reverse-Engineering Challenge - Level 1
 Copyright (c) 2007 F-Secure Corporation
 
@@ -91,27 +91,27 @@ http://www.f-secure.com/security_center/asm.html
 Enter the key:
 -----
 
-�@Key�̓��͂𑣂���ʂ��o�Ĉꎞ��~���܂����B
-�@�Ƃ肠�����A�K���ȕ��������͂����Ƃ���A�ȉ��̃��b�Z�[�W���\�������
-�����B
+　Keyの入力を促す画面が出て一時停止しました。
+　とりあえず、適当な文字列を入力したところ、以下のメッセージが表示されま
+した。
 
 
------�@���͌�ɕ\�����ꂽ���b�Z�[�W
+-----　入力後に表示されたメッセージ
 Sorry, this key is not valid!
 Press enter to terminate...
 -----
 
-�@���R�ł����AKey�������Ă��Ȃ��̂ŁA���[���A�h���X���\������܂���ł����B
+　当然ですが、Keyがあっていないので、メールアドレスが表示されませんでした。
 
-�@�ł�OllyDbg�œǂݍ���ł݂܂��傤�B 
+　ではOllyDbgで読み込んでみましょう。 
 
 
-��0x05.) OllyDbg�œǂݍ���Ŏ��s
+■0x05.) OllyDbgで読み込んで実行
 
-�@�Ƃ肠�����AOllyDbg��FSC_Level1.exe���h���b�O���h���b�v���Ă���A������
-���߂Ă݂܂��B����ƁA����Key�̓��͏���������������܂����B
+　とりあえず、OllyDbgにFSC_Level1.exeをドラッグ＆ドロップしてから、ざっと
+眺めてみます。すると、すぐKeyの入力処理部分が見つかりました。
 
------�@OllyDbg��CPU�E�B���h�E�i69001056�t�߁j
+-----　OllyDbgのCPUウィンドウ（69001056付近）
 69001056  |.  68 20300069   PUSH FSC_Leve.69003020                   ; /format = "Assembly 2007 Reverse-Engineering Challenge - Level 1
 Copyright (c) 2007 F-Secure Corporation
 
@@ -125,79 +125,79 @@ Enter the key: "
 69001067  |.  FF15 7C200069 CALL DWORD PTR DS:[<&MSVCR71.scanf>]     ; \scanf
 -----
 
-�@�܂��AKey�Ɠ��͒l���r���Ă���̂͂ǂ����ȁH�ƒT�����Ƃ���A����܂���
-�̂�����ɂ���̂𔭌����܂����B
+　また、Keyと入力値を比較しているのはどこかな？と探したところ、これまたそ
+のすぐ後にあるのを発見しました。
 
------�@OllyDbg��CPU�E�B���h�E�i690010BF�t�߁j
+-----　OllyDbgのCPUウィンドウ（690010BF付近）
 690010BF  |.  68 10330069   PUSH FSC_Leve.69003310                   ; /s2 = ""
 690010C4  |.  68 A0310069   PUSH FSC_Leve.690031A0                   ; |s1 = ""
 690010C9  |.  FF15 88200069 CALL DWORD PTR DS:[<&MSVCR71._stricmp>]  ; \_stricmp
 690010CF  |.  83C4 3C       ADD ESP,3C
-690010D2  |.  85C0          TEST EAX,EAX                             ; ��v���Ă�����eax=0
-690010D4  |.  75 1D         JNZ SHORT FSC_Leve.690010F3              : 0�̏ꍇ�̓W�����v����
-690010D6  |.  68 10330069   PUSH FSC_Leve.69003310                   ; s2�̒l��PUSH
+690010D2  |.  85C0          TEST EAX,EAX                             ; 一致していたらeax=0
+690010D4  |.  75 1D         JNZ SHORT FSC_Leve.690010F3              : 0の場合はジャンプせず
+690010D6  |.  68 10330069   PUSH FSC_Leve.69003310                   ; s2の値をPUSH
 690010DB  |.  68 E8300069   PUSH FSC_Leve.690030E8                   ;  ASCII "
 Congratulations! Please send an e-mail to ThisIs%s@khallenge.com
 Press enter to terminate...
 "
 -----
 
-�@690010C9�ł�stricmp�Ŕ�r���A�����񂪈�v���Ă����ꍇ�i�߂�l�ł���eax
-�ɂ�0������̂Łj�́A690010D2��D4�̔���ł̓W�����v�����ɂ��̂܂܎��̖���
-�i690010D6�j�ɐi�ނƂ��������̂悤�ł��B�����ɂ́uCongratulations!�`�v��
-������������̂ŁA�������`�F�b�N�|�C���g�ƂȂ�悤�ł��B�Ƃ������ƂŁA��
-���Ƀu���[�N�|�C���g�𒣂��Ĉ����̏�Ԃ����Č��܂��傤�B�u���[�N�|�C���g
-��690010C9��I����AF2�Őݒ�B���s��F9�ł��B
-�@���s����ƁA�u���[�N�|�C���g�ɒB����O��Key�̓��͂𑣂���̃��b�Z�[�W��
-�\�������̂ŁA����͓K���Ɂuaaaaa�v�Ɠ��͂��Ă݂܂����B���͂��I���ƁA
-�u���[�N�|�C���g��ݒ肵��690010C9�Œ�~�����܂��B
+　690010C9ではstricmpで比較し、文字列が一致していた場合（戻り値であるeax
+には0が入るので）は、690010D2とD4の判定ではジャンプせずにそのまま次の命令
+（690010D6）に進むという処理のようです。そこには「Congratulations!〜」の
+文字が見えるので、ここがチェックポイントとなるようです。ということで、こ
+こにブレークポイントを張って引数の状態を見て見ましょう。ブレークポイント
+は690010C9を選択後、F2で設定。実行はF9です。
+　実行すると、ブレークポイントに達する前にKeyの入力を促す例のメッセージが
+表示されるので、今回は適当に「aaaaa」と入力してみました。入力が終わると、
+ブレークポイントを設定した690010C9で停止しします。
 
------�@�u���[�N�|�C���g���_��CPU�E�B���h�E
+-----　ブレークポイント時点のCPUウィンドウ
 690010BF  |.  68 10330069   PUSH FSC_Leve.69003310                   ; /s2 = "Asm07REC"
 690010C4  |.  68 A0310069   PUSH FSC_Leve.690031A0                   ; |s1 = "aaaaa"
 690010C9  |.  FF15 88200069 CALL DWORD PTR DS:[<&MSVCR71._stricmp>]  ; \_stricmp
 -----
 
-�@��͂�A���͂���������Ɣ�r���Ă���悤�ł��B�Ƃ������Ƃ́A�uAsm07REC�v
-�������̕�����Ȃ̂ł��傤���H�ēx���s���Ă��̕��������͂��Ċm�F���Ă�
-�悤�Ǝv���܂��B
+　やはり、入力した文字列と比較しているようです。ということは、「Asm07REC」
+が正解の文字列なのでしょうか？再度実行してこの文字列を入力して確認してみ
+ようと思います。
 
-�@Ctrl+F2�Ńf�o�b�O�����X�^�[�g���܂��B
+　Ctrl+F2でデバッグをリスタートします。
 
 
-��0x06.) ���������������͂��Ď��s
+■0x06.) 正しい文字列を入力して実行
 
-�@���X�^�[�g��ɍēxF9�Ŏ��s���A���͂��v�����ꂽ�獡�x�́uAsm07REC�v�Ɠ�
-�͂��܂��B�ēx�u���[�N�|�C���g�Œ�~����ƈȉ��̂悤�ɂȂ�܂��B
+　リスタート後に再度F9で実行し、入力が要求されたら今度は「Asm07REC」と入
+力します。再度ブレークポイントで停止すると以下のようになります。
 
------�@�u���[�N�|�C���g���_��CPU�E�B���h�E
+-----　ブレークポイント時点のCPUウィンドウ
 690010BF  |.  68 10330069   PUSH FSC_Leve.69003310                   ; /s2 = "Asm07REC"
 690010C4  |.  68 A0310069   PUSH FSC_Leve.690031A0                   ; |s1 = "Asm07REC"
 690010C9  |.  FF15 88200069 CALL DWORD PTR DS:[<&MSVCR71._stricmp>]  ; \_stricmp
 -----
 
-�@���x�͓��͂��������񂪈�v���Ă��邱�Ƃ��킩��܂��B�ł́AF9�ōŌ�܂�
-���s���Ă݂܂��傤�B
+　今度は入力した文字列が一致していることがわかります。では、F9で最後まで
+実行してみましょう。
 
------�@���͌�ɕ\�����ꂽ���b�Z�[�W
+-----　入力後に表示されたメッセージ
 Congratulations! Please send an e-mail to ThisIsAsm07REC@khallenge.com
 Press enter to terminate...
 -----
 
-�@�����������񂪓���ꂽ�悤�ł��B���̃��[���A�h���X�Ƀ��[���𑗐M������
-����ALevel2�ւ̃����N���\��ꂽ���[�������M����Ă��܂����B
+　正しい文字列が得られたようです。このメールアドレスにメールを送信したと
+ころ、Level2へのリンクが貼られたメールが送信されてきました。
 
 
-��0x07.) ����
+■0x07.) 所感
 
-�@Level1�́A�ȏ�̂悤�ɔ��ɊȒP�ł����B�킩��Ȃ��Ă��AF8�iStep over�j
-�Ȃǂ�1�s���X�e�b�v���s���Ă����ƃR�����g���ɐ������ł��Ă��܂��̂ŁA�f
-�o�b�K�̎g���������킩��ΒN�ł������Ă��܂��悤�Ȗ��ł����B
+　Level1は、以上のように非常に簡単でした。わからなくても、F8（Step over）
+などで1行ずつステップ実行していくとコメント欄に正解ができてしまうので、デ
+バッガの使い方さえわかれば誰でも解けてしまうような問題でした。
 
-�@�}�ɏ��₷�����́A�u�Ȃ񂾁A����Ȓ��x���v�Ǝv���Ă��܂��A���͂���
-���Level2�Ńn�}�邱�ƂɂȂ�̂ł��B
+　図に乗りやすい私は、「なんだ、こんな程度か」と思ってしまい、実はこの
+後のLevel2でハマることになるのです。
 
-�@����ł́A����1�͂��̕ӂŁB
+　それでは、その1はこの辺で。
 
 
 

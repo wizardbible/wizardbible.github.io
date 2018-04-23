@@ -1,30 +1,30 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- �恛��: �}�j�A�b�NJava�v���O���~���O��9��: �` SSL�łȂ񂿂���ăo�[�`�����z�X�g ---
+--- 第○章: マニアックJavaプログラミング第9回: 〜 SSLでなんちゃってバーチャルホスト ---
 
-���ҁF����
+著者：金床
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@�߳�����߳���܁B�M�҂��͂܂���̧���ި��������ذ�����Java�̃o�O�i�ڂ���
-��WB42�Q�Ɓj�ɂ���openjdk�R�~���j�e�B�ɕ񍐂����Ƃ���A����ƑΉ����Ă�
-�炤���ƂɂȂ����B2009�N�ɏo��ł��낤jdk1.6.0_12�ŏC�������炵���B�[
-���x����B
+　ポウンニチワポウンニチワ。筆者がはまったファイルディスクリプタがリークするJavaのバグ（詳しく
+はWB42参照）についてopenjdkコミュニティに報告したところ、やっと対応しても
+らうことになった。2009年に出るであろうjdk1.6.0_12で修正されるらしい。つー
+か遅いよ。
 
-�@�ŁA���̃o�O�ɂ��Ă�security-dev�Ƃ������[�����O���X�g�Řb�������Ă�
-���̂����A���Sun��Brad�Ƃ����l����������������Ă��ꂽ�B
+　で、このバグについてはsecurity-devというメーリングリストで話し合ってい
+たのだが、先日SunのBradという人がある回避策を教えてくれた。
 
 http://www.nabble.com/-security-dev-00402-:-Re:-NullPointerException-at%09sun.security.ssl.OutputRecord.writeBuffer-td20492154.html
 
-�@JSSE�ł͕��ʂ̃v���[����Socket�i����TCP�̐ڑ����������Ă�����́j�ɂ���
-����悤�ɂ���SSLSocket���쐬���邱�Ƃ��ł���̂ŁA������g���΍������
-�Ȃ��Ă���SSLServerSocket�N���X���g�킸�ɍςށA�Ƃ����̂ł���B�\�[�X�R�[
-�h�͈ȉ��̂悤�Ȃ��̂��B
+　JSSEでは普通のプレーンなSocket（既にTCPの接続が完了しているもの）にかぶ
+せるようにしてSSLSocketを作成することができるので、これを使えば今回問題に
+なっているSSLServerSocketクラスを使わずに済む、というのである。ソースコー
+ドは以下のようなものだ。
 
 -----
 ServerSocket ss = new ServerSocket(port);
@@ -32,27 +32,27 @@ Socket s = ss.accept();
 sslssf.createSocket(s, s.getInetAddress().getHostName(),s.getPort(), false);
 -----
 
-�@�M�҂�createSocket�̑��݂͒m���Ă������A�Ă����肱��̓N���C�A���g����
-�g�����̂��Ǝv���Ă����B���ۂɎ������Ă݂�Ǝ��s�����̂ŁA�u����̓N���C
-�A���g���Ŏg�����񂾂�(`�D�L)�m�S���@�v��Dis���Ă݂�ƁA�Ȃ��setUseClie
-ntMode��false��ݒ肷��΃T�[�o�[���ł��g����Ƃ̂��Ƃł���B�}�W�����B
+　筆者はcreateSocketの存在は知っていたが、てっきりこれはクライアント側で
+使うものだと思っていた。実際に実験してみると失敗したので、「これはクライ
+アント側で使うもんだろ(`Д´)ノゴラァ」とDisってみると、なんとsetUseClie
+ntModeでfalseを設定すればサーバー側でも使えるとのことである。マジすか。
 
-�@�܂肱���������Ƃł���B
+　つまりこういうことである。
 
-�@���ʂ�Java��TCP�T�[�o�[�A�v���������ꍇ�AServerSocket�������accept����B
-accept�����Socket�N���X�̃C���X�^���X�����������B���̃C���X�^���X�ɑ�
-����SSLSocketFactory��createSocket��K�p���A���̖߂�l�ƂȂ�SSLSocket�N��
-�X�̃C���X�^���X��setUseClientMode( false )����̂ł���B����ƂȂ�ƃr�b
-�N���ASSL�T�[�o�[�A�v���ɂȂ��Ă��܂��̂��B
+　普通にJavaでTCPサーバーアプリを書く場合、ServerSocketを作ってacceptする。
+acceptするとSocketクラスのインスタンスが生成される。このインスタンスに対
+してSSLSocketFactoryのcreateSocketを適用し、その戻り値となるSSLSocketクラ
+スのインスタンスにsetUseClientMode( false )するのである。するとなんとビッ
+クリ、SSLサーバーアプリになってしまうのだ。
 
-�@���̃e�N���g���ΕM�҂����ł������o�O�����������̂ł���B�Ȃ񂾂���
-�ȕ��@����Ȃ�����Ƒ��������Ă�B�[�������[��BFOX2�I
+　このテクを使えば筆者を死滅させたバグから解放されるのである。なんだこん
+な方法あるならもっと早く教えてよ。つーかおせーよ。FOX2！
 
 
-��0x02.) �ʂ̑΍�
+■0x02.) 別の対策
 
-�@�c���͕M�҂͕ʂ̑΍���̂��Ă����Bjavassist�œ��I�Ƀp�b�`�𓖂ĂĂ��܂�
-�Ƃ������̂��B�ȉ��ɃR�[�h�̈ꕔ�𔲐�����B
+　…実は筆者は別の対策を採っていた。javassistで動的にパッチを当ててしまう
+というものだ。以下にコードの一部を抜粋する。
 
 -----
 ClassPool pool = ClassPool.getDefault();
@@ -72,83 +72,83 @@ for( int i = 0; i < methodArray.length; ++i )
 Class c = cc.toClass();
 -----
 
-�@WB42�ŏ������Ƃ���OutputRecord�N���X�ɂ�������snull�`�F�b�N�������
-����������Ȃ̂ŁAjavassist�ł���Έꌂ�ŉ������Ă����̂ł���B�܂���
-�R�Ȃ���openjdk���g���Ă���ꍇ�͎������g�Ń\�[�X�R�[�h���C�����邱�Ƃ���
-����B
+　WB42で書いたとおりOutputRecordクラスにたった一行nullチェックを入れれば
+解決する問題なので、javassistであれば一撃で解決してくれるのである。また当
+然ながらopenjdkを使っている場合は自分自身でソースコードを修正することもで
+きる。
 
 
-��0x03.) �{��
+■0x03.) 本題
 
-�@���Ă������炪����̖{��ł���B
+　さてここからが今回の本題である。
 
-�@Java��SSL�T�[�o�[�A�v���������ꍇ�A100�l��100�l��SSLServerSocketFactor
-y�𗘗p���邾�낤�B����������Brad���񂪋����Ă��ꂽ�悤�ɁA���ʂ�ServerS
-ocket��accept���Ă���ASSLSocketFactory�𗘗p����Ƃ������@������̂��B��
-�ɕ��ʂ���Ȃ����@�ł��Ȃ�L�������A���̕��@�ł̂݉\�ƂȂ��@�����݂�
-��B����́ATCP�̐ڑ�����������"��"�ɁA�ǂ̂悤��SSL�ڑ����s���̂����T�[
-�o�[���Ō���ł���Ƃ����_�ł���B
+　JavaでSSLサーバーアプリを書く場合、100人中100人がSSLServerSocketFactor
+yを利用するだろう。しかし今回Bradたんが教えてくれたように、普通のServerS
+ocketでacceptしてから、SSLSocketFactoryを利用するという方法があるのだ。実
+に普通じゃない方法でかなりキモいが、この方法でのみ可能となる手法が存在す
+る。それは、TCPの接続が完了した"後"に、どのようなSSL接続を行うのかをサー
+バー側で決定できるという点である。
 
-�@TCP�̐ڑ�����������ƁA�T�[�o�[���̓N���C�A���g����IP�A�h���X�ƃ|�[�g��
-�m�邱�Ƃ��ł���B�����̏������ɃT�[�o�[�����ǂ̏ؖ������g�p����̂�
-��I�Ԃ��Ƃ��ł��邽�߁ASSL�łȂ񂿂���ăo�[�`�����z�X�g�������ł���̂��B
-
-
-��0x04.) SSL�Ńo�[�`�����z�X�g���
-
-�@���̖��ɂ��ẮuSSL �o�[�`�����z�X�g�v�ŃO�O��J�X�B�����⎸��A�O
-�O���Ă��������t���B�Ƃɂ���SSL�Ńo�[�`�����z�X�g�ł��Ȃ����Ƃ͒��N�V�ăA
-�h�~���ɂƂ��ĔY�݂̎�ł���A�����ɍ��{�I�ȑ΍􂪎���Ă��Ȃ������
-����i�M�҂�2002�N���炢�ɐ����Y�񂾁j�BSNI�Ƃ������Ȃ�ǂ������̎d�g�݂�
-�o���Ă���̂����AIE�̑Ή��������̂Ŗ{�i�I�ȉ^�p���\�ƂȂ�܂ł͂܂���
-���肻�����B����SSL��K�v�Ƃ���E�F�u�T�C�g�̐�����IP�A�h���X���~�����Ƃ�
-���󋵂ɂȂ肪���ł���AIPv4�A�h���X�̌͊��ɂ���ɒǂ��ł��������鎖�Ԃ�
-�Ȃ��Ă���B
+　TCPの接続が完了すると、サーバー側はクライアント側のIPアドレスとポートを
+知ることができる。これらの情報を元にサーバー側がどの証明書を使用するのか
+を選ぶことができるため、SSLでなんちゃってバーチャルホストが実現できるのだ。
 
 
-��0x05.) �Ȃ񂿂���ăo�[�`�����z�X�g�̎���
+■0x04.) SSLでバーチャルホスト問題
 
-�@�����������Ȃ񂿂����SSL�o�[�`�����z�X�g�́A�u�����̃E�F�u�T�C�g�ł�
-�܂��ŏ���HTTP�i�v���[���̂ق��j�ŃA�N�Z�X���s���A���ςȂǂ̒i�K��HTTPS��
-�ڍs����v�Ƃ����_�ɒ��ڂ������̂��B�܂��A�u�N���C�A���g��IP�A�h���X1��
-�����1�l�̃��[�U�������v�Ƃ��������ɂ͎g�����ɂȂ�Ȃ��O��ł̂ݓ��삷��B
-���郆�[�U�̃A�N�Z�X�����N�G�X�g���ƂɈقȂ�IP�A�h���X�ɂȂ�ꍇ��A����
-IP�A�h���X���瓯�����ɕ����̃��[�U���A�N�Z�X����ꍇ�Ȃǁi����AOL�v���L�V
-��ԂƂ��Ēm�����ł���j�͓��삵�Ȃ��B
-
-�@�����Ŏg���z�X�g��218.45.25.5�ł���A�M�҂̃E�F�u�T�C�g�ł���JUMPERZ.N
-ET���u����Ă���T�[�o�[�ł���B���̃T�[�o�[��ł͎����Ɏg����o�[�`����
-�z�X�g�Ƃ��Ĉȉ���3���ғ����ł���B
-
-�@http://www.jumperz.net/index.php
-�@http://guardian.jumperz.net/index.html
-�@http://www.httptunnel.org/
-
-�@�܂��v���[����HTTP�ł����̂�����1�̃T�C�g�ɃA�N�Z�X����B����URL��
-�͗����蓮�ŕύX���A�v���g�R����https://�ɕύX���ăA�N�Z�X���Ă݂�B����
-�ƁA���̃E�F�u�T�C�g�ɓK�����ؖ������g����SSL�̏������s����̂ł���i��
-������3���ׂĂ��C���`�L�Ȃ̂ŃA���[�g�̃_�C�A���O�͏o�邪�A�����ł�CN��
-�z�X�g���ƈ�v����_�ɒ��ڂ��Ă������������j�B
-
-�@���̃f���͂��܂�������ғ����Ă��Ȃ��C������̂ŁA������������ǎ҂��A
-�N�Z�X�����Ƃ��͊��ɓ��삵�Ă��Ȃ���������Ȃ��Bmixi�݂����Ƀx�[�^�łƂ�
-�����Ƃɂ��Ă����B
+　この問題については「SSL バーチャルホスト」でググれカス。あいや失礼、グ
+グってください閣下。とにかくSSLでバーチャルホストできないことは長年新米ア
+ドミンにとって悩みの種であり、未だに根本的な対策が取られていない大問題で
+ある（筆者も2002年くらいに数日悩んだ）。SNIというかなり良い感じの仕組みが
+出来ているのだが、IEの対応が悪いので本格的な運用が可能となるまではまだか
+かりそうだ。結局SSLを必要とするウェブサイトの数だけIPアドレスが欲しいとい
+う状況になりがちであり、IPv4アドレスの枯渇にさらに追い打ちをかける事態と
+なっている。
 
 
-��0x06.) �d�g�݉��
+■0x05.) なんちゃってバーチャルホストの実現
 
-�@�T�[�o�[���͍ŏ��̃v���[���ȕ��̃A�N�Z�X�̍ۂɁA�N���C�A���g�i�����ł�
-�����IP�A�h���X�j���ǂ̃E�F�u�T�C�g�����ɗ����̂���m�邱�Ƃ��ł���̂ŁA
-���̏���ێ����Ă����B���΂炭���ăN���C�A���g��SSL�|�[�g�փA�N�Z�X����
-�������́A�T�[�o�[���̓N���C�A���g��IP�A�h���X����A���̃��[�U�������Ƃ�
-�ŋ߂ł͂ǂ̃E�F�u�T�C�g�����ɗ������𒲂ׁA����ɍ������ؖ�����I������A
-�Ƃ������̂��B���ɃV���v���Ȏd�g�݂ł���B
+　今回実験するなんちゃってSSLバーチャルホストは、「多くのウェブサイトでは
+まず最初にHTTP（プレーンのほう）でアクセスを行い、決済などの段階でHTTPSに
+移行する」という点に注目したものだ。また、「クライアントのIPアドレス1つが
+特定の1人のユーザを示す」という現実には使い物にならない前提でのみ動作する。
+あるユーザのアクセスがリクエストごとに異なるIPアドレスになる場合や、同じ
+IPアドレスから同時期に複数のユーザがアクセスする場合など（俗にAOLプロキシ
+状態として知られるやつである）は動作しない。
+
+　実験で使うホストは218.45.25.5であり、筆者のウェブサイトであるJUMPERZ.N
+ETが置かれているサーバーである。このサーバー上では実験に使えるバーチャル
+ホストとして以下の3つが稼働中である。
+
+　http://www.jumperz.net/index.php
+　http://guardian.jumperz.net/index.html
+　http://www.httptunnel.org/
+
+　まずプレーンなHTTPでこれらのうちの1つのサイトにアクセスする。次にURL入
+力欄を手動で変更し、プロトコルをhttps://に変更してアクセスしてみる。する
+と、そのウェブサイトに適した証明書を使ってSSLの処理が行われるのである（証
+明書は3つすべてがインチキなのでアラートのダイアログは出るが、ここではCNが
+ホスト名と一致する点に注目していただきたい）。
+
+　このデモはいまいち安定稼働していない気がするので、もしかしたら読者がア
+クセスしたときは既に動作していないかもしれない。mixiみたいにベータ版とい
+うことにしておく。
 
 
-��0x07.) �\�[�X�R�[�h
+■0x06.) 仕組み解説
 
-�@����M�҂͎葁�����삳���邽�߂�Guardian@JUMPERZ.NET�̃v���O�C���Ƃ���
-�쐬���Ă݂��B�\�[�X�R�[�h�͈ȉ��̂悤�Ȃ��̂��B
+　サーバー側は最初のプレーンな方のアクセスの際に、クライアント（ここでは
+特定のIPアドレス）がどのウェブサイトを見に来たのかを知ることができるので、
+この情報を保持しておく。しばらくしてクライアントがSSLポートへアクセスして
+きた時は、サーバー側はクライアントのIPアドレスから、このユーザがもっとも
+最近ではどのウェブサイトを見に来たかを調べ、それに合った証明書を選択する、
+というものだ。非常にシンプルな仕組みである。
+
+
+■0x07.) ソースコード
+
+　今回筆者は手早く動作させるためにGuardian@JUMPERZ.NETのプラグインとして
+作成してみた。ソースコードは以下のようなものだ。
 
 -----
 package net.jumperz.app.MGuardian.plugin.sslotf;
@@ -282,23 +282,23 @@ return null;
 }
 -----
 
-�@Java��SSL�T�[�o�[�����������Ƃ�����l�Ȃ�Γ����悤�Ȃ��̂��ȒP�ɏ�����
-���낤�B
+　JavaでSSLサーバーを書いたことがある人ならば同じようなものが簡単に書ける
+だろう。
 
 
-��0x08.) �܂Ƃ�
+■0x08.) まとめ
 
-�@����͕��ʂɃT�[�o�[����accept����Socket�N���X�̃C���X�^���X�𗘗p����
-SSL�T�[�o�[�������ł���Ƃ����L���e�N�����ɁASSL�Ō���I�ȃo�[�`�����z�X
-�g�����������B�����ɂ͏��ƃ��x���̃E�F�u�T�C�g�ł͎g�����ɂȂ�Ȃ����A��
-�����x���̃E�F�u�T�C�g�Ȃ�Ύg�����Ƃ��ł��邩������Ȃ��B����̌Œ�IP�A
-�h���X���O���[�o������������A���Ƃ�SSL�Ńo�[�`�����z�X�g�������I�Ƃ���
-�悤�Ȑl�ɂ͎g����Z�p��������Ȃ��B
+　今回は普通にサーバー側でacceptしたSocketクラスのインスタンスを利用して
+SSLサーバーが実現できるというキモテクを元に、SSLで限定的なバーチャルホス
+トを実現した。現実には商業レベルのウェブサイトでは使い物にならないが、趣
+味レベルのウェブサイトならば使うことができるかもしれない。自宅の固定IPア
+ドレスがグローバル一個だけだが、何とかSSLでバーチャルホストしたい！という
+ような人には使える技術かもしれない。
 
-�@Apache�ł������������̂́A�ǂ����Ă��ݒ�t�@�C���x�[�X�ƂȂ��Ă��܂�
-���߁i�N���C�A���gIP�A�h���X�Əؖ����̊֌W�����I�ɕω����邽�߁j�����
-�낤�B���OpenSSL��API�𒼂Œ@����C����ŃT�[�o�[���������I�Ƃ����悤�Ȑl
-�Ȃ�΁i�ҏW����:����Ȃ���܂���j�������\�ł���B
+　Apacheでこれを実現するのは、どうしても設定ファイルベースとなってしまう
+ため（クライアントIPアドレスと証明書の関係が動的に変化するため）難しいだ
+ろう。一方OpenSSLのAPIを直で叩いてC言語でサーバーを書くぜ！というような人
+ならば（編集部注:そんなやついません）もちろん可能である。
 
 
 

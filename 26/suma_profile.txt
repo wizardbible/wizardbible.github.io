@@ -1,16 +1,16 @@
-��suma
-��Job: Student
-��Web: http://beautiful.homelinux.net/~sky-software/
-��Mail: shu_2001jp(at)yahoo.co.jp
-��Team�iGroup): secret
-��Comment:
-�@�v���O���~���O�������A���Ƀo�C�i���G�f�B�^����肽���A�l�b�g���[�N�v��
-�O���~���O������Ă݂����ƍŋߒQ���Ă��܂��B
-��OS�ɂ���:
-�@Windows 98��2000�`2003�N���Ɏg���A����ȍ~��Windows XP�A�ŋ߂ɂȂ���Wi
-ndows 2000 Pro�𕹗p���Ă��܂��B2004�N�����Linux�����܂Ɏg���A���ǂ�
-Windows�ɑ傫���΂��Ă��܂��B���i�g�p������A�v���O���~���O�Ɏg���̂�Win
-dows�A�T�[�o�[�Ƃ��Ďg���̂�Linux�ɂȂ��Ă��܂��B�N���C�A���gPC��v���O��
-�~���O���Ƃ���Linux���g���Ă݂����Ƃ͎v���Ă��܂����A�����񂹂�PC�̃X�y
-�b�N�Ȃǂ��Ⴍ�c�B
+■suma
+●Job: Student
+●Web: http://beautiful.homelinux.net/~sky-software/
+●Mail: shu_2001jp(at)yahoo.co.jp
+●Team（Group): secret
+●Comment:
+　プログラミングしたい、特にバイナリエディタが作りたい、ネットワークプロ
+グラミングをやってみたいと最近嘆いています。
+●OSについて:
+　Windows 98を2000〜2003年頃に使い、それ以降はWindows XP、最近になってWi
+ndows 2000 Proを併用しています。2004年からはLinuxもたまに使いつつ、結局は
+Windowsに大きく偏っています。普段使用したり、プログラミングに使うのがWin
+dows、サーバーとして使うのがLinuxになっています。クライアントPCやプログラ
+ミング環境としてLinuxも使ってみたいとは思っていますが、いかんせんPCのスペ
+ックなどが低く…。
 

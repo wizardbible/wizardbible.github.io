@@ -1,34 +1,34 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- �恛��: �n�j�[�|�b�g����낤�i�A�ڑ�13��j ---
+--- 第○章: ハニーポットを作ろう（連載第13回） ---
 
-���ҁFNarusase
+著者：Narusase
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@�O���Linux�̃R�}���h�Ȃǂ𗘗p����HIDS���ǂ��̍쐬�ɂ��Ęb���܂����B
-�@����́Anepenthes�Ƃ����n�j�[�|�b�g�̃C���X�g�[���ɂ��Ęb�������Ǝv��
-�܂��B
-
-
-��0x02.) nepenthes�Ƃ�
-
-�@nepenthes�Ƃ�Windows��20��ނقǂ̊��m�̐Ǝ㐫���G�~�����[�g���邱�Ƃ�
-�}���E�F�A�̌��̂�ߊl���郍�[�C���^���N�V�����^�n�j�[�|�b�g�ł��BNepent
-hes�̖��O�̗R���́A�H���A���́u���ڂ�����v���痈�Ă��܂��B
+　前回はLinuxのコマンドなどを利用したHIDSもどきの作成について話しました。
+　今回は、nepenthesというハニーポットのインストールについて話したいと思い
+ます。
 
 
-��0x03.) nepenthes�̃C���X�g�[��
+■0x02.) nepenthesとは
 
-�@�ł͑����A�C���X�g�[�����@�̉���ɓ���܂��B
+　nepenthesとはWindowsの20種類ほどの既知の脆弱性をエミュレートすることで
+マルウェアの検体を捕獲するローインタラクション型ハニーポットです。Nepent
+hesの名前の由来は、食虫植物の「うつぼかずら」から来ています。
 
-�@�܂��́A�K�v�ȃp�b�P�[�W��wget���g���Ď擾���Aapt�œ����\�ȃp�b�P�[�W
-���C���X�g�[�����Ă��܂��܂��B
+
+■0x03.) nepenthesのインストール
+
+　では早速、インストール方法の解説に入ります。
+
+　まずは、必要なパッケージをwgetを使って取得し、aptで導入可能なパッケージ
+をインストールしてしまいます。
 
 -----
 # cd /usr/local/src/
@@ -40,9 +40,9 @@ hes�̖��O�̗R���́A�H���A���́u���ڂ�����v���痈�Ă��܂��B
 # apt-get install libpcap subversion automake autoconf libtool
 -----
 
-�@���ɁAadns�̃C���X�g�[�����s���܂��B
-�@���̃\�t�g�E�F�A��Asynchronous DNS�̗��Ŕ񓯊���DNS�̉������s�����Ƃ���
-���郉�C�u�����ł��B
+　次に、adnsのインストールを行います。
+　このソフトウェアはAsynchronous DNSの略で非同期でDNSの解決を行うことがで
+きるライブラリです。
 
 -----
 # tar zxvf adns.tar.gz
@@ -52,12 +52,12 @@ hes�̖��O�̗R���́A�H���A���́u���ڂ�����v���痈�Ă��܂��B
 # make install
 -----
 
-�@���ɖ��Ȃ��C���X�g�[���ł����͂��ł��B
+　特に問題なくインストールできたはずです。
 
-�@���́Acurl�̃C���X�g�[�����s���܂��B
-�@����́A���ɂ���Ă�apt�œ�������curl�ł͓����Ȃ��ꍇ�����邽�߂̑[�u
-�ł��Bnepenthes�̃R���t�B�O��R���p�C���Ɏ��s�����ꍇ�̂݃C���X�g�[�����s
-�����Ƃɒ��ӂ��Ă��������B
+　次は、curlのインストールを行います。
+　これは、環境によってはaptで導入したcurlでは動かない場合があるための措置
+です。nepenthesのコンフィグやコンパイルに失敗した場合のみインストールを行
+うことに注意してください。
 
 -----
 # cd ..
@@ -68,19 +68,19 @@ hes�̖��O�̗R���́A�H���A���́u���ڂ�����v���痈�Ă��܂��B
 # make install
 -----
 
-�@�ł́Anepenthes�����s���邽�߂̃��[�U��ǉ��ǉ����܂��B
-�@���̎��_�Œǉ����Ă����Ȃ��ƁA�G���[�Ȃǂ���������ꍇ������܂��̂ŖY
-�ꂸ�Ɏ��s���Ă��������B
+　では、nepenthesを実行するためのユーザを追加追加します。
+　この時点で追加しておかないと、エラーなどが発生する場合がありますので忘
+れずに実行してください。
 
 -----
 # useradd -d /dev/null -s /sbin/nologin nepenthes
 -----
 
-�@���āA�{����nepenthes�̃C���X�g�[���ł��B����Anepenthes��svn��p���č�
-�V�̂��̂��擾�������Ǝv���܂��B�Ȃ��Asvn�R�}���h�̎��s���ɏo�Ă��鎿���
-�͕K��p�Ɠ��͂��Ă��������Bsvn�R�}���h�����܂������Ȃ������ꍇ�͍ēx���s
-����Α��v�ł��BLD_LIBRARY_PATH�ɐ�قǓ�������adns�̃p�X���w�肷��̂�
-�Y�ꂸ�Ɏ��s���Ă��������B
+　さて、本命のnepenthesのインストールです。今回、nepenthesはsvnを用いて最
+新のものを取得したいと思います。なお、svnコマンドの実行中に出てくる質問に
+は必ずpと入力してください。svnコマンドがうまくいかなかった場合は再度実行
+すれば大丈夫です。LD_LIBRARY_PATHに先ほど導入したadnsのパスを指定するのを
+忘れずに実行してください。
 
 -----
 # export LD_LIBRARY_PATH=/usr/local/lib/
@@ -98,11 +98,11 @@ hes�̖��O�̗R���́A�H���A���́u���ڂ�����v���痈�Ă��܂��B
 # make install
 -----
 
-�@�����nepenthes�̃C���X�g�[���͏I���ł����A�܂�nepenthes�Ɋ֘A���郍�O
-�t�@�C�����쐬����Ă��炸�A���L���̐ݒ������Ă��܂���B�����ŁA������
-�ݒ���s���Ă����܂��B
+　これでnepenthesのインストールは終了ですが、まだnepenthesに関連するログ
+ファイルが作成されておらず、所有権の設定もされていません。そこで、ここで
+設定を行っておきます。
 
-�@�܂��A�f�B���N�g���E�t�@�C���̍쐬�ł��B
+　まず、ディレクトリ・ファイルの作成です。
 
 -----
 # touch /usr/local/var/log/nepenthes.log
@@ -110,7 +110,7 @@ hes�̖��O�̗R���́A�H���A���́u���ڂ�����v���痈�Ă��܂��B
 # touch /usr/local/var/log/logged_submissions
 -----
 
-�@�쐬�����f�B���N�g����t�@�C���̑����̕ύX�ł��B
+　作成したディレクトリやファイルの属性の変更です。
 
 -----
 # chown -R nepenthes:nepenthes /usr/local/lib/nepenthes/
@@ -124,39 +124,39 @@ hes�̖��O�̗R���́A�H���A���́u���ڂ�����v���痈�Ă��܂��B
 # chown -R nepenthes:nepenthes /usr/local/lib/nepenthes
 -----
 
-�@�����nepenthes�̃C���X�g�[���Ɋ֘A�����Ƃ͏I�����܂����B
+　これでnepenthesのインストールに関連する作業は終了しました。
 
 
-��0x04.) nepenthes�̐ݒ�
+■0x04.) nepenthesの設定
 
-�@nepenthes�̐ݒ肪�K�v�ł��B������͂������ʂɓ������ꍇ�ɂ́A���ɐݒ��
-����K�v�͂���܂���B
+　nepenthesの設定が必要です。こちらはただ普通に動かす場合には、特に設定を
+する必要はありません。
 
 
-��0x05.) nepenthes�̎��s
+■0x05.) nepenthesの実行
 
-�@nepenthes�̎��s�ɂ͉��L�̃R�}���h��p���܂��B
+　nepenthesの実行には下記のコマンドを用います。
 
------�@������m�F����ꍇ
+-----　動作を確認する場合
 # nepenthes -u nepenthes -g nepenthes
 -----
 
------�@�풓������ꍇ
+-----　常駐させる場合
 # nepenthes -u nepenthes -g nepenthes -D
 -----
 
-�@�f�[�����Ƃ��ď풓������ꍇ�́u-D�v�̃I�v�V������t���܂��B�}���E�F�A
-�̊����������ȃl�b�g���[�N�ɐڑ����ꂽ�T�[�o�Ŏ��s����΁A1���ԂقǂŌ���
-���ߊl�ł���͂��ł��B���̂́u/usr/local/var/binaries/�v�ȉ��Ɍ��̎��g��
-MD5���ꂽ���O�ŕۑ�����܂��B�߂܂������͎̂ς�Ȃ�Ă��Ȃ莩�R�ɂ��Ă���
-�����B
+　デーモンとして常駐させる場合は「-D」のオプションを付けます。マルウェア
+の活動が活発なネットワークに接続されたサーバで実行すれば、1時間ほどで検体
+が捕獲できるはずです。検体は「/usr/local/var/binaries/」以下に検体自身の
+MD5された名前で保存されます。捕まえた検体は煮るなり焼くなり自由にしてくだ
+さい。
 
 
-��0x06.) ������
+■0x06.) おわりに
 
-�@�����nepenthes�̃C���X�g�[���ɂ��Đ������s���܂����B
-�@�����Clam Antivirus���C���X�g�[�����āAnepenthes�ŕ߂܂������̂��ǂ��
-�f���̂��̂����ׂĂ݂����Ǝv���܂��B
+　今回はnepenthesのインストールについて説明を行いました。
+　次回はClam Antivirusをインストールして、nepenthesで捕まえた検体がどんな
+素性のものか調べてみたいと思います。
 
 
 

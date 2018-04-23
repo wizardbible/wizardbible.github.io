@@ -1,20 +1,20 @@
-��suma
-��Job: Student
-��Web: http://d.hatena.ne.jp/obfuscation/ , http://www.obfuscatism.net/
-��Mail: suman.orega.warukatta@gmail.com
-���R�����g:
-�@���v���Ԃ�ł��B�ŋ߂̎��̓��Z�͂���鍼�\�Ə����������\�݂����Ȋ���
-�ŁA�u���O�Ɂu���v�Ə����Ă��̂܂ܕ��u���Ă邱�Ƃ������悤�ł��B���Ȃ�
-�ɍŋ߃p�b�J�[�J���͂�炸�A��N�͓�ǉ��̂��Ƃ΂������Ă��܂����B���N
-�̓l�b�g���[�N�v���O���~���O����炴��𓾂Ȃ��󋵂ɒǂ����ނ��Ƃɐ�����
-���̂ŁA���΂炭�̓l�b�g���[�N�ȉ����Ƃ��o�C�i���G�f�B�^�̊J���ɗ͂����
-��\��ł��B
-�@�ŋ߂͎���̃T�[�o��OpenSolaris�Ɉڂ�����A�J���}�V����MacBook�Ɉڂ���
-���Windows�v���O���~���O���Ȃ��Ȃ��Ă��Ă܂��B����ł�Windows 7�̔���
-���҂��������ł��ˁB�܂��AJava�Ń\�t�g�E�F�A�J������@�����̂ł����A
-Eclipse��NetBeans�ł̊J�����s����Vim�����g���Ă܂���BVisual Studio�̈̑�
-�����g�ɂ��݂܂��B
-�����l����1������]������̂������Ă�����Ƃ����牽�������Ă������H
-�@���ɂȂ������ł��B
+■suma
+●Job: Student
+●Web: http://d.hatena.ne.jp/obfuscation/ , http://www.obfuscatism.net/
+●Mail: suman.orega.warukatta@gmail.com
+●コメント:
+　お久しぶりです。最近の私の特技はやるやる詐欺と書く書く詐欺みたいな感じ
+で、ブログに「やる」と書いてそのまま放置してることが多いようです。ちなみ
+に最近パッカー開発はやらず、昨年は難読化のことばかりやっていました。今年
+はネットワークプログラミングをやらざるを得ない状況に追い込むことに成功し
+たので、しばらくはネットワークな何かとかバイナリエディタの開発に力を入れ
+る予定です。
+　最近は自宅のサーバがOpenSolarisに移ったり、開発マシンがMacBookに移った
+りとWindowsプログラミングやらなくなってきてます。それでもWindows 7の発売
+が待ち遠しいですね。また、Javaでソフトウェア開発する機会があるのですが、
+EclipseやNetBeansでの開発が不満でVimしか使ってません。Visual Studioの偉大
+さが身にしみます。
+●無人島に1つだけ希望するものを持っていけるとしたら何を持っていくか？
+　特になさそうです。
 
 

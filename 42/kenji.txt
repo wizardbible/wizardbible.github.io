@@ -1,29 +1,29 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- �恛��: �t�A�Z���u���R�[�h��ǂ�ł݂悤 ---
+--- 第○章: 逆アセンブルコードを読んでみよう ---
 
-���ҁFKenji Aiko
+著者：Kenji Aiko
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@��{�I�ȉ�͋Z�p���o������A���̃X�e�b�v�֐i�ނ��߂ɂ͂ǂ�������ǂ���
-�낤�H�@���́A��͂̊�{�͂�͂�u�A�Z���u���R�[�h��ǂނ��Ɓv���ƍl����
-���܂��B���݂͗l�X�ȃc�[��������A��������g���Č����I�ȃ\�t�g�E�F�A��
-�͂��s���܂����A�c�[���͂����܂Ńc�[���ł���A�����L�����p���邽�߂ɂ́A
-��͂��b�ƂȂ�Z�p���K�v���Ǝv���܂��B����āA����́u�A�Z���u���R�[�h
-��ǂނ��Ɓv�𒆐S�Ƃ������o�[�X�G���W�j�A�����O�ɂ��ĉ�����܂��B
-�@�g�p����c�[����OllyDbg�I�����[�ł��B����OllyDbg���t�A�Z���u���R�[�h��
-�o�͂��邱�Ƃ����ɂ����g���Ă܂���i�����B
+　基本的な解析技術を覚えた後、次のステップへ進むためにはどうしたら良いだ
+ろう？　私は、解析の基本はやはり「アセンブルコードを読むこと」だと考えて
+います。現在は様々なツールがあり、それらを駆使して効率的なソフトウェア解
+析を行えますが、ツールはあくまでツールであり、それを有効活用するためには、
+やはり基礎となる技術が必要だと思います。よって、今回は「アセンブルコード
+を読むこと」を中心としたリバースエンジニアリングについて解説します。
+　使用するツールはOllyDbgオンリーです。そのOllyDbgも逆アセンブルコードを
+出力することだけにしか使ってません（ぉぃ。
 
 
-��0x02.) crackme���蓮�Ńf�R���p�C��
+■0x02.) crackmeを手動でデコンパイル
 
-�@�ȉ��́A�ȒP��crackme���t�A�Z���u�������R�[�h�ł��B
+　以下は、簡単なcrackmeを逆アセンブルしたコードです。
 
 -----  sample01.exe
 00401000 >/$  837C24 04 02  CMP DWORD PTR SS:[ESP+4],2
@@ -52,31 +52,31 @@ x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 00401054  \.  C3            RETN
 -----
 
-�@�ł́A�����C����̃\�[�X�R�[�h�ɁA�蓮�Ńf�R���p�C�����܂��傤�B
-�@�܂��́A��ԍŏ��u00401000�v�̖��߂ł����A�u2�v�Ɖ����̒l��CMP�Ŕ�r��
-�Ă��܂��B�����āAJGE�Ȃ̂ŁA2�ȏゾ������W�����v�ł��B�܂�A���̂悤
-�ɐ����ł��܂��B
+　では、これをC言語のソースコードに、手動でデコンパイルしましょう。
+　まずは、一番最初「00401000」の命令ですが、「2」と何かの値をCMPで比較し
+ています。そして、JGEなので、2以上だったらジャンプです。つまり、次のよう
+に推測できます。
 
 -----  sample01.cpp
 if(x < 2)
     return 1;
 -----
 
-�@�K���ȕϐ�x���A2��菬�����Ȃ�uMOV EAX, 1�v�ƁuRETN�v�Ȃ̂ŁA�ureturn
- 1�v�ƕϊ��ł��܂��B�܂��Ax��ESP+4�������Ă��邽�߁A�����ƕ�����܂��B
-�@���āA����2�ȏ�Ȃ�΁AJGE�̓W�����v���܂��B�ł́A�W�����v��u0040100D�v
-�����Ă����܂��B
+　適当な変数xが、2より小さいなら「MOV EAX, 1」と「RETN」なので、「return
+ 1」と変換できます。また、xはESP+4から取られているため、引数と分かります。
+　さて、もし2以上ならば、JGEはジャンプします。では、ジャンプ先「0040100D」
+を見ていきます。
 
 -----  sample01.exe
 0040100D  |>  8B4424 08     MOV EAX,DWORD PTR SS:[ESP+8]
 00401011  |.  8B48 04       MOV ECX,DWORD PTR DS:[EAX+4]
 -----
 
-�@�A�h���X�u00401011�v�ŁAEAX+4���Q�Ƃ��Ă��邽�߁AEAX�̓A�h���X�ł��B��
-���Ă��̎Q�Ɛ��ECX�ɓ���Ă��܂��B���ɁAPUSH�Łuwizardbible�v�Ƃ�������
-��̃A�h���X���X�^�b�N�֐ς�ł���A����ECX���X�^�b�N�֐ς�ł��܂��B����
-�āAlstrcmpA�Ȃ̂ŁAECX�͕�����̃A�h���X���ƍl�����܂��B����Ĉȉ��̃R
-�[�h�ɂȂ�܂��B
+　アドレス「00401011」で、EAX+4を参照しているため、EAXはアドレスです。そ
+してその参照先をECXに入れています。次に、PUSHで「wizardbible」という文字
+列のアドレスをスタックへ積んでおり、次にECXをスタックへ積んでいます。そし
+て、lstrcmpAなので、ECXは文字列のアドレスだと考えられます。よって以下のコ
+ードになります。
 
 -----  sample01.cpp
 if(x < 2)
@@ -84,35 +84,35 @@ if(x < 2)
 lstrcmp(y(ECX), "wizardbible");
 -----
 
-�@�܂��Alstrcmp�̖߂�l���g���ĕ��򂵂Ă��܂��B����ɂ�TEST���߂��g���Ă�
-�܂��BTEST���߂́A��{��AND���߂Ɠ����ł����AAND�̌��ʂ�ۑ������A�t���O
-�����ω����邽�߁A��������ɂ悭�g���܂��B
+　また、lstrcmpの戻り値を使って分岐しています。分岐にはTEST命令を使ってい
+ます。TEST命令は、基本はAND命令と同じですが、ANDの結果を保存せず、フラグ
+だけ変化するため、条件分岐によく使われます。
 
 -----  sample01.exe
-00401020  |.  85C0          TEST EAX,EAX�i��lstrcmpA�̖߂�l��r�j
+00401020  |.  85C0          TEST EAX,EAX（←lstrcmpAの戻り値比較）
 00401022  |.  6A 00         PUSH 0 ; /Style = MB_OK|MB_APPLMODAL
 00401024  |.  68 2C514000   PUSH OFFSET |Title = "Message"
-00401029  |.  75 15         JNZ SHORT sample01.00401040�i��r�ɂ��W�����v�j
+00401029  |.  75 15         JNZ SHORT sample01.00401040（比較によるジャンプ）
 -----
 
-�@�uTEST EAX, EAX�v�Ƃ��Ă��܂����A���̂悤�ȁu�����l��AND�v�͕K�������l
-�ɂȂ�܂���ˁi�uAND 5, 5�v�́u5�v�ł��j�B�������A����EAX���u0�v�Ȃ�΁A
-����AND�iTEST�j�̌��ʂ́u0�v�ƂȂ�܂��B����āA���̂悤�ɋL�q���邱�Ƃ�
-�u0�v���u����ȊO�̒l�v���A�Ƃ����悤�ɁA�����𕪂����܂��B
-�@���̂��Ƃ���A�R�[�h�͈ȉ��ɂȂ�܂��B
+　「TEST EAX, EAX」としていますが、このような「同じ値のAND」は必ず同じ値
+になりますよね（「AND 5, 5」は「5」です）。しかし、もしEAXが「0」ならば、
+このAND（TEST）の結果は「0」となります。よって、このように記述することで
+「0」か「それ以外の値」か、というように、条件を分けられます。
+　このことから、コードは以下になります。
 
 -----  sample01.cpp
 if(x < 2)
     return 1;
 if(lstrcmp(y, "wizardbible") == 0)
-    // �����̏���
+    // 何かの処理
 else
-    // �����̏���
+    // 何かの処理
 -----
 
-�@����ɁAPUSH�ɂ��uMB_OK|MB_APPLMODAL�v�Ɓu"Message"�v���X�^�b�N�֓���
-���Ă��邽�߁AMessageBox�֐����Ă΂�邱�Ƃ������ł��A�ǂ���̕������
-�\�����邩�ɂ��A���򂵂Ă��܂��B
+　さらに、PUSHにより「MB_OK|MB_APPLMODAL」と「"Message"」がスタックへ入れ
+られているため、MessageBox関数が呼ばれることが推測でき、どちらの文字列を
+表示するかにより、分岐しています。
 
 -----  sample01.exe
 0040102B  |.  68 18514000   PUSH OFFSET Text = "you are wonderful!"
@@ -128,11 +128,11 @@ else
 00401054  \.  C3            RETN
 -----
 
-�@lstrcmp�֐��̖߂�l��0����Ȃ���΁AJNZ���߂ɂ��A�A�h���X�u00401040�v
-�ɏ������ڂ�܂��B����ƁA�u"password is not correct!"�v��PUSH����AMess
-ageBoxA�֐����Ă΂�܂��B�t�ɁAlstrcmp�֐��̖߂�l��0�Ȃ�΁A�u"you are 
-wonderful!"�v��PUSH����AMessageBoxA�֐����Ă΂�܂��B
-�@�����̌��ʂ����킹��ƁA�ȉ���C����R�[�h���L�q�ł��܂��B
+　lstrcmp関数の戻り値が0じゃなければ、JNZ命令により、アドレス「00401040」
+に処理が移ります。すると、「"password is not correct!"」がPUSHされ、Mess
+ageBoxA関数が呼ばれます。逆に、lstrcmp関数の戻り値が0ならば、「"you are 
+wonderful!"」がPUSHされ、MessageBoxA関数が呼ばれます。
+　これらの結果を合わせると、以下のC言語コードが記述できます。
 
 -----  sample01.cpp
 if(x < 2)
@@ -146,9 +146,9 @@ if(lstrcmp(y, "wizardbible") == 0){
 }
 -----
 
-�@����ɁAx��ESP+4����擾����Ay��ESP+8����擾����Ă��邽�߁A���ꂼ��
-���������ɓ���ꂽ���̂ł��ˁB�܂�A�֐��͈ȉ��̂悤�ȃR�[�h���ƍl����
-��܂��B
+　さらに、xはESP+4から取得され、yはESP+8から取得されているため、それぞれ
+引数を元に得られたものですね。つまり、関数は以下のようなコードだと考えら
+れます。
 
 -----  sample01.cpp
 int function(int x, void **z)
@@ -166,19 +166,19 @@ int function(int x, void **z)
 }
 -----
 
-�@�����̊����I�ɁAmain�֐����ۂ��ł��ˁi����main�֐��ł����c�j�B
-�@���̂悤�ɁA���ԂɃA�Z���u���R�[�h��ǂ�ł����ƁAC����̃R�[�h�ɕϊ���
-�邱�Ƃ��ł��܂��B
+　引数の感じ的に、main関数っぽいですね（事実main関数ですが…）。
+　このように、順番にアセンブルコードを読んでいくと、C言語のコードに変換す
+ることができます。
 
 
-��0x03.) �A���S���Y�����蓮�Ńf�R���p�C��
+■0x03.) アルゴリズムを手動でデコンパイル
 
-�@�ȒP��crackme���蓮�Ńf�R���p�C�����܂������A���́A���̂悤��API�֐���
-�K���K���Ăяo����Ă���悤�ȂƂ�����f�R���p�C������@��́A���܂肠��
-�܂���B�Ȃ��Ȃ�A�f�R���p�C�����Ȃ��Ƃ���̂̓��삪�����邩��ł��B
-�@�蓮�ł̃f�R���p�C�����K�v�ȂƂ���́A�A���S���Y���I�ȏ������s���Ă���
-�����������ł��B
-�@�Ⴆ�΁A�ȉ��̃R�[�h�����Ă��������B
+　簡単なcrackmeを手動でデコンパイルしましたが、実は、このようにAPI関数が
+ガンガン呼び出されているようなところをデコンパイルする機会は、あまりあり
+ません。なぜなら、デコンパイルしなくとも大体の動作が分かるからです。
+　手動でのデコンパイルが必要なところは、アルゴリズム的な処理を行っている
+部分が多いです。
+　例えば、以下のコードを見てください。
 
 -----  sample02.exe
 00401000 >/$  8B4C24 08     MOV ECX,DWORD PTR SS:[ESP+8]
@@ -245,8 +245,8 @@ int function(int x, void **z)
 0040109C  \.  C3            RETN
 -----
 
-�@���āA����͊ȒP�ȁu����v�Z���s���A���S���Y���v�ł��B������蓮�Ńf�R
-���p�C�����AC����ɕϊ����܂��傤�B
+　さて、これは簡単な「ある計算を行うアルゴリズム」です。これを手動でデコ
+ンパイルし、C言語に変換しましょう。
 
 -----  sample02.exe
 00401000 >/$  8B4C24 08     MOV ECX,DWORD PTR SS:[ESP+8]
@@ -255,11 +255,11 @@ int function(int x, void **z)
 00401009  |.  0F84 8B000000 JE sample02.0040109A
 -----
 
-�@�ŏ���2�s�ŁA2�Ԗڂ̈�����ECX�֓���āAEAX��0xFFFFFFFF�ɂ��Ă��܂��B��
-��ɁAECX�i2�Ԗڂ̈����j��0�Ȃ�u0040109A�v�փW�����v���܂��B�܂�A2��
-�ڂ̈�����0���Ɓu�G���[�v�Ƃ����킯�ł��B����ɁA�A�h���X�u0040109A�v��
-�uNOT EAX�v�Ȃ̂ŁAEAX�̒l�����]���A0xFFFFFFFF����0x00000000�֕ύX�����
-���B
+　最初の2行で、2番目の引数をECXへ入れて、EAXを0xFFFFFFFFにしています。さ
+らに、ECX（2番目の引数）が0なら「0040109A」へジャンプします。つまり、2番
+目の引数が0だと「エラー」というわけです。さらに、アドレス「0040109A」は
+「NOT EAX」なので、EAXの値が反転し、0xFFFFFFFFから0x00000000へ変更されま
+す。
 
 -----  sample02.exe
 0040100F  |.  8B5424 04     MOV EDX,DWORD PTR SS:[ESP+4]
@@ -269,16 +269,16 @@ int function(int x, void **z)
 00401019  |.  42            |INC EDX
 -----
 
-�@1�Ԗڂ̈�����EDX�֓���܂��B�A�h���X�u00401014�v�ŁAEDX�̓A�h���X���Q��
-���Ă��邽�߁AEDX�̓|�C���^�ł��B
-�@�A�h���X�u00401013�v�ōs���Ă�uPUSH ESI�v�́A���̊֐���ESI���W�X�^���g
-�����߁A����ESI�ɓ����Ă���l���X�^�b�N�ֈꎞ�I�ɕۑ��i�o�b�N�A�b�v�j����
-���������ł��B�֐��̍Ō�ł܂��X�^�b�N����ESI�𕜌����܂��B
-�@�A�h���X�u00401014�v��MOVZX���߂́A�T�C�Y���Ⴄ���W�X�^�֒l��]�����܂��B
-EDX���w���l��1�o�C�g�������AESI�֓�����܂��B�����āAESI��EAX��XOR����
-�܂��BEAX��0xFFFFFFFF�ł��ˁB�����EDX���C���N�������g�ł��BEDX�̓|�C���^
-�Ȃ̂ŁA���̒l���w�����ƂɂȂ�܂��B
-�@�ł́A�����܂ł��AC����̃\�[�X�R�[�h�ɂ��܂��B
+　1番目の引数をEDXへ入れます。アドレス「00401014」で、EDXはアドレスを参照
+しているため、EDXはポインタです。
+　アドレス「00401013」で行ってる「PUSH ESI」は、この関数でESIレジスタを使
+うため、現在ESIに入っている値をスタックへ一時的に保存（バックアップ）して
+おく処理です。関数の最後でまたスタックからESIを復元します。
+　アドレス「00401014」のMOVZX命令は、サイズが違うレジスタへ値を転送します。
+EDXが指す値が1バイト分だけ、ESIへ入れられます。そして、ESIはEAXとXORされ
+ます。EAXは0xFFFFFFFFですね。さらにEDXをインクリメントです。EDXはポインタ
+なので、次の値を指すことになります。
+　では、ここまでを、C言語のソースコードにします。
 
 -----  sample02-1.cpp
 int function(char *x, int y)
@@ -292,11 +292,11 @@ int function(char *x, int y)
     x++;
 -----
 
-�@�֐����A�߂�l������̌^�͓K���ł��B�Ƃ肠�����A���̏������d�v�ł��B��
-���A���̏��������[�v�Ȃǂ͂܂��v�Z���Ă��Ȃ����߁A���̂܂܏����������Ă�
-�邾���ł��B����ύX�����\��������܂��B�����A���󕪂����Ă���i�K��
-�͂����܂ŏ����܂��B
-�@�ł́A���֐i�݂܂��B
+　関数名、戻り値や引数の型は適当です。とりあえず、中の処理が重要です。ま
+た、中の処理もループなどはまだ計算していないため、そのまま処理を書いてい
+るだけです。今後変更される可能性があります。ただ、現状分かっている段階で
+はここまで書けます。
+　では、次へ進みます。
 
 -----  sample02.exe
 0040101A  |.  A8 01         |TEST AL,1
@@ -307,9 +307,9 @@ int function(char *x, int y)
 00401024  |.  35 2083B8ED   |XOR EAX,EDB88320
 -----
 
-�@�ŏ���TEST���߂ɂ��AEAX�̍ŏ���1�r�b�g��ON��OFF���ɂ���ď�����������
-�܂��B��������A�ȉ��̃R�[�h���Č��ł��܂��B�����́Axor��V�t�g���Z�Ȃ̂ŁA
-�R�[�h�����₷����������܂���B
+　最初のTEST命令により、EAXの最初の1ビットがONかOFFかによって処理が分かれ
+ます。ここから、以下のコードが再現できます。ここは、xorやシフト演算なので、
+コード化しやすいかもしれません。
 
 -----  sample02-2.cpp
     if(a & 1){
@@ -320,7 +320,7 @@ int function(char *x, int y)
     }
 -----
 
-�@�ł́A����ǂݐi�߂܂��B
+　では、次を読み進めます。
 
 -----  sample02.exe
 00401029  |>  A8 01         |TEST AL,1
@@ -331,7 +331,7 @@ int function(char *x, int y)
 00401033  |.  35 2083B8ED   |XOR EAX,EDB88320
 -----
 
-�@�O��ƃR�[�h�������ł��B
+　前回とコードが同じです。
 
 -----  sample02-3.cpp
     if(a & 1){
@@ -342,7 +342,7 @@ int function(char *x, int y)
     }
 -----
 
-�@����Ɏ��֐i�݂܂��B
+　さらに次へ進みます。
 
 -----  sample02.exe
 00401038  |>  A8 01         |TEST AL,1
@@ -353,11 +353,11 @@ int function(char *x, int y)
 00401042  |.  35 2083B8ED   |XOR EAX,EDB88320
 -----
 
-�@�܂��܂��A�R�[�h�������ł��B
-�@�悭���Ă����ƁA�A�h���X�u0040108D�v�܂ŁA�����R�[�h�������܂��B������
-��A���̂܂܁u0040108D�v�܂ŁA��L��C����R�[�h�������Ă��悢�̂ł����A��
-������C����ɒ����̂ŁA�����ǂ݂₷�����܂��B�A�h���X�u0040108D�v�܂�8��A
-�����R�[�h���J��Ԃ���邽�߁Afor�����g���āA�������ȗ������܂��B
+　またまた、コードが同じです。
+　よく見ていくと、アドレス「0040108D」まで、同じコードが続きます。もちろ
+ん、このまま「0040108D」まで、上記のC言語コードを書いてもよいのですが、せ
+っかくC言語に直すので、少し読みやすくします。アドレス「0040108D」まで8回、
+同じコードが繰り返されるため、for文を使って、処理を簡略化します。
 
 -----  sample02-4.cpp
     for(int i=0; i < 8; i++)
@@ -371,7 +371,7 @@ int function(char *x, int y)
     }
 -----
 
-�@�����āA�Ō�̃��[�`���ł��B
+　そして、最後のルーチンです。
 
 -----  sample02.exe
 00401092  |>  49            |DEC ECX
@@ -381,10 +381,10 @@ int function(char *x, int y)
 0040109C  \.  C3            RETN
 -----
 
-�@ECX�����Z���Ă��܂����A���̒l�͂��̊֐��֓n������2�����ł��B�����āA
-ECX��0�łȂ��Ȃ�΁A�܂��A�h���X�u00401014�v�֖߂�A����܂łƓ���������
-�J��Ԃ���܂�
-�@�ł́A�\�[�X�S�̂����������܂��傤�B
+　ECXを減算していますが、この値はこの関数へ渡される第2引数です。そして、
+ECXが0でないならば、またアドレス「00401014」へ戻り、これまでと同じ処理が
+繰り返されます
+　では、ソース全体を完成させましょう。
 
 -----  sample02.cpp
 unsigned long function(char *x, int y)
@@ -419,37 +419,37 @@ unsigned long function(char *x, int y)
 }
 -----
 
-�@�A�Z���u���R�[�h�����ɐ������Ă��邽�߁A���ۂ̃R�[�h�Ƃ͈قȂ��Ă��邩
-������܂��񂪁A�o�͌��ʂ͓����ł��B�����f�R���p�C�����o���Ă��܂��B����
-�݂ɂ��̃R�[�h�́A�f�[�^��CRC�����߂�֐��ł��B�����m�荇���ɋ����Ă����
-���R�[�h�Łu����ȒP���ȏ�����CRC�����߂���̂��v�Ə�����������܂����B
+　アセンブルコードを元に生成しているため、実際のコードとは異なっているか
+もしれませんが、出力結果は同じです。無事デコンパイルが出来ています。ちな
+みにこのコードは、データのCRCを求める関数です。私も知り合いに教えてもらっ
+たコードで「こんな単純な処理でCRCが求められるのか」と少し驚かされました。
 
 
-��0x04.) ��������
+■0x04.) さいごに
 
-�@����Acrackme��CRC�A���S���Y���̃R�[�h���蓮�Ńf�R���p�C�����܂������A
-�������������ł��傤���H�@crackme�͊֐��Ăяo���̗���ɂ���̂̃R�[�h��
-�����邽�߁A���₷��������������܂��񂪁A�A���S���Y���n�́A����������
-������Ă���̂��ŏ��͌��������Ȃ����߁A�{���Ɏ����̗������������̂��s
-���ɂȂ�܂��B�������A�ŏ��͊Ԉ���Ă����Ƃ��Ă��A�ǂݐi�߂Ă����ΑS�̑�
-������ɒ͂߂Ă����̂ŁA�Ƃ肠�����u�ǂނ��Ɓv���d�v���Ǝv���܂��B
-�@�܂��A�A�Z���u���R�[�h��ǂނ��Ƃ͉�͂̊�b�Ȃ̂ŁA�������m�ɓǂ߂邱
-�Ƃ́A���ꂾ���ŋZ�p�ɂȂ�܂��B����ɁA�ǂދZ�p�͉����o�����d�v�ł���
-�ŁA�L�΂����߂ɂ́A�����̒n���Ȑςݏd�˂��K�v��������܂���B
-�@����ȂƂ���ō���͏I���Ƃ����Ă��������܂��B
+　今回、crackmeとCRCアルゴリズムのコードを手動でデコンパイルしましたが、
+いかがだったでしょうか？　crackmeは関数呼び出しの流れにより大体のコードが
+分かるため、やりやすかったかもしれませんが、アルゴリズム系は、いったい何
+をやっているのか最初は検討がつかないため、本当に自分の理解が正しいのか不
+安になります。しかし、最初は間違っていたとしても、読み進めていけば全体像
+が次第に掴めていくので、とりあえず「読むこと」が重要だと思います。
+　また、アセンブルコードを読むことは解析の基礎なので、速く正確に読めるこ
+とは、それだけで技術になります。それに、読む技術は何より経験が重要ですの
+で、伸ばすためには、毎日の地道な積み重ねが必要かもしれません。
+　そんなところで今回は終わりとさせていただきます。
 
 
-��0x05.) �������̂�������
+■0x05.) さいごのさいごに
 
-�@�ȉ��̃R�[�h�́A����Ȃ�ɗL���Ȃ���A���S���Y���ł��B2�̊֐��Ŏ�����
-��Ă��܂��i00401000��00401100�j�B�����ǂ�������r�����Ƀf�R���p�C���ɒ�
-�킵�Ă݂Ă��������B�����A�����̃A���S���Y���Ȃ̂ŁA���肳���ł�����A��
-���炭�C���^�[�l�b�g��œ��l�̃\�[�X�R�[�h�������邩�Ǝv���܂��B�Ȃ̂ŁA
-�S���f�R���p�C������K�v�͂Ȃ��ł��傤�B
-�@���X�A���S���Y����m���Ă�l�i�����ҁH�j�Ȃ�A��u�ŕ����邩�Ǝv���܂�
-���A�m��Ȃ��l�Łu���Ⴀ�R�[�h��ǂ�ŉ�͂��悤�I�v�ƂȂ�ƁA2�`3���Ԃ�
-�炢�͂����邩�Ǝv���܂��i���Ԃ�j�B�l�I�ɂ́A��������ĕ�����Ώ\����
-�������̂ł́H�@�Ǝv���Ă܂��B
+　以下のコードは、それなりに有名なあるアルゴリズムです。2つの関数で実装さ
+れています（00401000と00401100）。もし良かったら腕試しにデコンパイルに挑
+戦してみてください。ただ、既存のアルゴリズムなので、特定さえできたら、お
+そらくインターネット上で同様のソースコードが見つかるかと思います。なので、
+全部デコンパイルする必要はないでしょう。
+　元々アルゴリズムを知ってる人（研究者？）なら、一瞬で分かるかと思います
+が、知らない人で「じゃあコードを読んで解析しよう！」となると、2〜3時間く
+らいはかかるかと思います（たぶん）。個人的には、一日かけて分かれば十分に
+すごいのでは？　と思ってます。
 
 -----  sample03.exe
 00401000 >/$  53            PUSH EBX
@@ -582,8 +582,8 @@ unsigned long function(char *x, int y)
 0040116C  \>  C3            RETN
 -----
 
-�@�����@�����΁A�񓚕҂���邩������܂���(^^;�B
-�@�ł͂ł́[�B
+　もし機会があれば、回答編もやるかもしれません(^^;。
+　ではではー。
 
 
 

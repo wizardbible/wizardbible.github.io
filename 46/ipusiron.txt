@@ -1,267 +1,267 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- �恛��: ��b�Í��w�u���E��21�� �`Rabin�Í��̊g���` ---
+--- 第○章: 基礎暗号学講座・第21回 〜Rabin暗号の拡張〜 ---
 
-���ҁFIPUSIRON
+著者：IPUSIRON
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@WB42�ł͌��J���Í��̈��ł���Rabin�Í��́A�傫�����̍������̑f��������
-�������I�ɂł��Ȃ��Ƃ�������̉��ŁAOW-CPA���S�ł��邱�Ƃ��i���ϓI�Ɂj��
-�������B�������Ȃ���Rabin�Í��͈�ӂɕ����ł��Ȃ��Ƃ��������������Ă����B
-�܂��͂��̉ۑ���������邱�Ƃ�ڎw�������B���ɁAOW-CPA���S�����������S
-�������A������]��p�������J���Í��ɂ��ďЉ�����B
+　WB42では公開鍵暗号の一種であるRabin暗号は、大きい桁の合成数の素因数分解
+が効率的にできないという仮定の下で、OW-CPA安全であることを（直観的に）証
+明した。しかしながらRabin暗号は一意に復号できないという特徴を持っていた。
+まずはこの課題を解決することを目指したい。次に、OW-CPA安全よりも高い安全
+性を持つ、平方剰余を用いた公開鍵暗号について紹介したい。
 
-�@����͒��ׂȂ��珑�������������X����̂ŁA�����ɂȂ��Ă��Ȃ��ӏ���Ԉ�
-��������܂�����f���̕��ɂ��m�点���������i�f�������オ���Ă��܂���
-����̂Łc�j�B
-
-
-��0x02.) ���w�I�T�O�̕��K
-
-�@�܂����w�I�T�O�̕��K���s���B
-
-[��`]
-a��b^2 (mod N)�̌`�ɂ���Ƃ��Aa��N��@�Ƃ���b�̕�����]�Ab��N��@�Ƃ���a
-�̕������ł���B�����āAa��S���W�߂��W����QR_N�ƋL�q����B
-
-[�藝]
-�E�ua,b�F������]�v�ˁuab�F������]�v
-�E�ua�F������]�v���ub�F�������]�v�ˁuab�F�������]�v
-
-[�藝]�ua�F�@N(=pq)�̕�����]�v�́ua�F�@p�̕�����]�v���ua�F�@q�̕�����
-�]�v
-
-����������΁A�u(a/n)=1�v�́u(a/p)=(a/q)=1�v
-
-[�藝]h=(p-1)/2�Ƃ���B
-�E�ua�F�@p�̕�����]�v�ˁua^h��1 (mod p)�v
-�E�ua�F�@p�̕������]�v�ˁua^h��-1 (mod p)�v
-
-[�藝]
-�E|Z_p^*|=p-1
-���̂��������A����(p-1)/2�͖@p�̕�����]�ł���B
-�E|Z_N^*|=��(N)=(p-1)(q-1)
-���̂���1/4�͖@N�̕�����]�ł���B
-
-[�藝]
-�E(1/N)=1
-�E(2/N)=(-1)^{(n^2-1)/8}
-�EGCD(m,n)=1�Ȃ�΁A(m/n)=(n/m)�E(-1)^{(m-1)(n-1)/4}
-�EGCD(a,n)=GCD(g,n)=1�Ȃ�΁A(ab/n)=(a/n)(b/n)
-�E(a/n)=((a mod n)/n)
-�Ea��b (mod N)��(a/N)=(b/N)
-
-[�藝]
-�ux^{(p-1)/2}��1 (mod p)�v�́u(x/p)=1�v
+　今回は調べながら書いた部分も多々あるので、説明になっていない箇所や間違
+いがありましたら掲示板の方にお知らせください（掲示板が干上がっていまって
+いるので…）。
 
 
-��0x03.) Rabin�Í��̕��K
+■0x02.) 数学的概念の復習
 
-�@Rabin�Í��ɂ��Ă͂��łɏЉ�ς݂����A���߂ďЉ��B
+　まず数学的概念の復習を行う。
 
-������Rabin�Í��̎d�l
+[定義]
+a≡b^2 (mod N)の形にあるとき、aはNを法とするbの平方剰余、bはNを法とするa
+の平方根である。そして、aを全部集めた集合をQR_Nと記述する。
 
-�@Rabin�Í��͎���3�̃A���S���Y���̑g�ł������B
+[定理]
+・「a,b：平方剰余」⇒「ab：平方剰余」
+・「a：平方剰余」かつ「b：平方非剰余」⇒「ab：平方非剰余」
+
+[定理]「a：法N(=pq)の平方剰余」⇔「a：法pの平方剰余」かつ「a：法qの平方剰
+余」
+
+言い換えれば、「(a/n)=1」⇔「(a/p)=(a/q)=1」
+
+[定理]h=(p-1)/2とする。
+・「a：法pの平方剰余」⇒「a^h≡1 (mod p)」
+・「a：法pの平方非剰余」⇒「a^h≡-1 (mod p)」
+
+[定理]
+・|Z_p^*|=p-1
+そのうち半分、即ち(p-1)/2個は法pの平方剰余である。
+・|Z_N^*|=φ(N)=(p-1)(q-1)
+そのうち1/4個は法Nの平方剰余である。
+
+[定理]
+・(1/N)=1
+・(2/N)=(-1)^{(n^2-1)/8}
+・GCD(m,n)=1ならば、(m/n)=(n/m)・(-1)^{(m-1)(n-1)/4}
+・GCD(a,n)=GCD(g,n)=1ならば、(ab/n)=(a/n)(b/n)
+・(a/n)=((a mod n)/n)
+・a≡b (mod N)⇒(a/N)=(b/N)
+
+[定理]
+「x^{(p-1)/2}≡1 (mod p)」⇔「(x/p)=1」
+
+
+■0x03.) Rabin暗号の復習
+
+　Rabin暗号についてはすでに紹介済みだが、改めて紹介する。
+
+●改良Rabin暗号の仕様
+
+　Rabin暗号は次の3つのアルゴリズムの組であった。
 
 Rabin=(KeyGen,Enc,Dec)
 
-��KeyGen
+○KeyGen
 
-1�F1^k����͂Ƃ���B
+1：1^kを入力とする。
 
-2�Fk�r�b�g�̑f��p,q�𐶐�����B
+2：kビットの素数p,qを生成する。
 
-3�Fpk=N=pq,sk=(p,q)�Ƃ��Apk,sk���o�͂���B
+3：pk=N=pq,sk=(p,q)とし、pk,skを出力する。
 
-��Enc
+○Enc
 
-1�F����m�A���J��pk����͂Ƃ���B
+1：平文m、公開鍵pkを入力とする。
 
-2�Fc=m^2 mod N���v�Z���āAc���o�͂���B
+2：c=m^2 mod Nを計算して、cを出力する。
 
-��Dec
+○Dec
 
-1�F�Í���c�A�閧��sk����͂Ƃ���B
+1：暗号文c、秘密鍵skを入力とする。
 
-2�F�������������A���S���Y����c,p����͂��A�@p�ɂ�����c�̕����������߂�B
-������}m_p�Ƃ���B
-�@���l�ɁAc,q����͂Ƃ��āA�@q�ɂ�����c�̕����������߂�B������}m_q�Ƃ�
-��B
+2：平方根を解くアルゴリズムにc,pを入力し、法pにおけるcの平方根を求める。
+それを±m_pとする。
+　同様に、c,qを入力として、法qにおけるcの平方根を求める。それを±m_qとす
+る。
 
-3�FCRT�̃A���S���Y���Ɂ}m_p,�}m_q,(p,q)����͂��āA�@N�ɂ�����c�̕������i
-4�̒l�j���o�͂���BDec��4�̒l�im1,m2,m3,m4�j���o�͂���B
+3：CRTのアルゴリズムに±m_p,±m_q,(p,q)を入力して、法Nにおけるcの平方根（
+4つの値）を出力する。Decは4つの値（m1,m2,m3,m4）を出力する。
 
 
-������Rabin�Í��̎d�l�̉��
+●改良Rabin暗号の仕様の解説
 
-�@�ȏオRabin�Í��̊e�A���S���Y���̓�����P�����������̂ł���B���S���ɂ�
-���Ă͂��łɊm�F�ς݁iEnc�Ŗ@N�̐��E��2�悵�āADec�ŕ������̌v�Z�����āA
-4�̌��̂���1�������ƈ�v�j�Ȃ̂ŁA�����̃A���S���Y���ɂ��ĊȒP��
-���K���Ă����B
+　以上がRabin暗号の各アルゴリズムの動きを単純化したものである。完全性につ
+いてはすでに確認済み（Encで法Nの世界で2乗して、Decで平方根の計算をして、
+4つの候補のうち1つが平文と一致）なので、内部のアルゴリズムについて簡単に
+復習しておく。
 
-�@�������������A���S���Y���̑��݂ɂ��čl�@����A�f��p��@�Ƃ��镽������
-�����A���S���Y���Ȃ�΂�������Ă���Ă���iRabin�̃A���S���Y��[R89]�A
-Berlekamp�̃A���S���Y��[BER67]�ABernstein�̃A���S���Y��[B01]�AChirstoph��
-�̃A���S���Y��[CP03]�Ȃǁj�B�����ł́AShanks�̃A���S���Y�����Љ��[S73]�B
+　平方根を解くアルゴリズムの存在について考察する、素数pを法とする平方根を
+解くアルゴリズムならばいくつか提案されている（Rabinのアルゴリズム[R89]、
+Berlekampのアルゴリズム[BER67]、Bernsteinのアルゴリズム[B01]、Chirstophら
+のアルゴリズム[CP03]など）。ここでは、Shanksのアルゴリズムを紹介する[S73]。
 
-�@�܂��A�f��p��3�^��1�^���ɂ���āA�������������A���S���Y�����g���������
-�悢�B
+　まず、素数pが3型か1型かによって、平方根を解くアルゴリズムを使い分けると
+よい。
 
-[1]p��3�^�̑f���ł���Ƃ�
+[1]pが3型の素数であるとき
 
-�@c�̕������im_p�Ƃ���j�������ꍇ�́A�P��c^{(p+1)/4} (mod p)���v�Z�����
-�悢�B�Ȃ��Ȃ�΁A(p+1)/4��Z�̂Ƃ��A
+　cの平方根（m_pとする）を解く場合は、単にc^{(p+1)/4} (mod p)を計算すれば
+よい。なぜならば、(p+1)/4∈Zのとき、
 
 (m_p)^2
-��c^{(p+1)/2}
-��c^{(p-1)/2}�Ec
-��c (mod p)�@�i��(c/p)=1�Ȃ�΁Ac^{(p-1)/2}��1 (mod p)�j
+≡c^{(p+1)/2}
+≡c^{(p-1)/2}・c
+≡c (mod p)　（∵(c/p)=1ならば、c^{(p-1)/2}≡1 (mod p)）
 
-����āAm_p��c�̕������ł���B
+よって、m_pはcの平方根である。
 
-�i�}�jhttp://security2600.sakura.ne.jp/main2/image4/find_square_roots.jpg
+（図）http://security2600.sakura.ne.jp/main2/image4/find_square_roots.jpg
 
-[2]p��1�^�̑f���ł���Ƃ�
+[2]pが1型の素数であるとき
 
-�@��ʂ̊�f��p��@�Ƃ��镽���������߂邱�Ƃ��ł���Shanks-Tonelli�̃A���S
-���Y����p����΂悢�B�A���S���Y���̏ڍׂ͎��̏͂ŏЉ��B
+　一般の奇素数pを法とする平方根を求めることができるShanks-Tonelliのアルゴ
+リズムを用いればよい。アルゴリズムの詳細は次の章で紹介する。
 
-�@����A�f���������������I�Ɍv�Z�ł��Ȃ��i�����I�Ɍv�Z����A���S���Y����
-���݂��Ȃ��j�Ȃ�΁A������N��@�Ƃ��镽�����������I�ɉ����A���S���Y���͑�
-�݂��Ȃ��B
+　一方、素因数分解を効率的に計算できない（効率的に計算するアルゴリズムが
+存在しない）ならば、合成数Nを法とする平方根を効率的に解くアルゴリズムは存
+在しない。
 
-�i�}�jhttp://security2600.sakura.ne.jp/main2/image4/heihoukonn.jpg
+（図）http://security2600.sakura.ne.jp/main2/image4/heihoukonn.jpg
 
-�@����CRT�A���S���Y���̑��݂ɂ��čl�@����B���̃A���S���Y���̏ڍׂ͍���
-��WB�ŏЉ��\�肾���A���̂悤�ȃA���S���Y���͑��݂��A����������I�Ɍv
-�Z�\�ł���B�����ł͓����A���S���Y���͖������āA�@p�ł�c�̕������Ɩ@q��
-��c�̕���������͂Ƃ���ƁA�@N(=pq)�ł�c�̕��������o�͂����Ƃ����m����
-���炦��΂悢�i2��p,q��^����N�Ƀ��t�g����b��WB42�Ō��y�ς݁j�B
-�@�������������A���S���Y����2��g���Ė@p,q�ł�c�̕������ip�̐��E�ɂ�2��
-�l�Aq�̐��E�ɂ�2�̒l�B���v4�̒l�j�����܂�A���̌�CRT�A���S���Y���ɂ�
-��@N�ł�c�̕����������܂�B���ϓI�Ɍ����ƁAN�̐��E�Ƀ��t�g�����킯�ł�
-��iN�̐��E��4�̒l�j�B
+　次にCRTアルゴリズムの存在について考察する。このアルゴリズムの詳細は今後
+のWBで紹介する予定だが、このようなアルゴリズムは存在し、それも効率的に計
+算可能である。ここでは内部アルゴリズムは無視して、法pでのcの平方根と法qで
+のcの平方根を入力とすると、法N(=pq)でのcの平方根が出力されるとだけ知って
+もらえればよい（2つのp,qを与えてNにリフトする話はWB42で言及済み）。
+　平方根を解くアルゴリズムを2回使って法p,qでのcの平方根（pの世界には2つの
+値、qの世界には2つの値。合計4つの値）が求まり、その後CRTアルゴリズムによ
+り法Nでのcの平方根が求まる。直観的に言うと、Nの世界にリフトされるわけであ
+る（Nの世界に4つの値）。
 
-�@����Rabin�Í��̓����̓��������܂�ӎ��������Ȃ��̂ŁAEnc�̌v�Z��Rabin��
-���ƌĂԂ��Ƃɂ���B�����A�Í�����y=Rabin_N(x)�Ə�����ix�������AN���@�A
-y���Í����ɑΉ��j�B����A������Rabin�֐��̋t�֐�x=Rabin^(-1)_N(y)�ɑΉ���
-��B
-�@��ɏq�ׂ������ɂ��AN�̑f�����ł���p,q��m��Ȃ��Ƃ���Rabin�֐��̋t��
-�����������Ƃ��ł����Ap,q��m���Ă���Ƃ���Rabin�֐��̋t�֐����������Ƃ�
-�ł���BRabin�֐��͓��͂�4�̃p�^�[���ɂ��A�o�͂�1�ɂȂ�̂ŁA�֐���
-����i�u���ł͂Ȃ��j�B�܂�N�̑f������m��Ȃ��Ƌt�v�Z���ł��Ȃ��̂ŁA���
-�����ł���B����āARabin�֐��͈�������֐��ł���i�Í����_�ɂ����Ă͈��
-�����u���̕��������₷���j�B
+　今後Rabin暗号の内部の動きをあまり意識したくないので、Encの計算をRabin関
+数と呼ぶことにする。即ち、暗号化はy=Rabin_N(x)と書ける（xが平文、Nが法、
+yが暗号文に対応）。一方、復号はRabin関数の逆関数x=Rabin^(-1)_N(y)に対応す
+る。
+　先に述べた事実により、Nの素因数であるp,qを知らないときはRabin関数の逆関
+数を解くことができず、p,qを知っているときはRabin関数の逆関数を解くことが
+できる。Rabin関数は入力が4つのパターンにつき、出力が1つになるので、関数で
+ある（置換ではない）。またNの素因数を知らないと逆計算ができないので、一方
+向性である。よって、Rabin関数は一方向性関数である（暗号理論においては一方
+向性置換の方が扱いやすい）。
 
-�@�ȏ���ARabin�Í��̉ۑ�͈�ӂɕ����ł��Ȃ����ƂƁAIND���S�������Ȃ�
-�Ƃ������Ƃł���B
+　以上より、Rabin暗号の課題は一意に復号できないことと、IND安全を持たない
+ということである。
 
 
-��0x04.) 1�^�̑f����@�̕������̋��ߕ�
+■0x04.) 1型の素数を法の平方根の求め方
 
-�@Shanks-Tonelli�̃A���S���Y����Alberto Tonelli�ɂ���Ē�Ă���ADaniel 
-Shanks�ɂ����ǂ��ꂽ���̂ł���B
+　Shanks-TonelliのアルゴリズムはAlberto Tonelliによって提案され、Daniel 
+Shanksにより改良されたものである。
 
-�@p�i��f���j�At�i��j�As�i�����j��p-1=(2^s)�Et�𖞂������ł���B�Ⴆ�΁A
-p=3�ł���΁Ap-1=2=2^1�E1�ƂȂ�As=t=1�ł���B�܂��Ap=11�ł���΁Ap-1=10=
-2�E5=2^1�E5�ƂȂ�As=1,t=5�ƂȂ�B
-�@�܂�As��p-1���o�C�i���\�������Ƃ���1���ڂ��猩��1���o��܂ł�0�̌�
-�Ɠ����ł���B�܂��At��p-1��s�r�b�g���E�V�t�g�������ʂ̐��ł���Bp=11�̗�
-�Ō����΁Ap-1=10d=1010b�ł���A1���ڂ�0�ŁA2���ڂ�1���o��B�܂�A1���o
-��܂ł�s=1��0�����ꂽ�Bs=1�r�b�g������1010b���E�V�t�g����ƁA101b�ɂ�
-��B�����10�i����5�Ȃ̂�t=5�ƂȂ�B
+　p（奇素数）、t（奇数）、s（整数）はp-1=(2^s)・tを満たす数である。例えば、
+p=3であれば、p-1=2=2^1・1となり、s=t=1である。また、p=11であれば、p-1=10=
+2・5=2^1・5となり、s=1,t=5となる。
+　つまり、sはp-1をバイナリ表現したときに1桁目から見て1が出るまでの0の個数
+と同じである。また、tはp-1をsビット分右シフトした結果の数である。p=11の例
+で言えば、p-1=10d=1010bであり、1桁目は0で、2桁目で1が出る。つまり、1が出
+るまでにs=1個の0が現れた。s=1ビット分だけ1010bを右シフトすると、101bにな
+る。これは10進数で5なのでt=5となる。
 
-�@p�͊�f���Ȃ̂ŁAp-1�͋����ɂȂ�B����āA���s��1�����藧�B
-�@�������As=1�Ap-1=2^1�Et�̂Ƃ��͓���P�[�X�ł���Bt�͊�Ȃ̂ŁAt=2l+1
-(l��Z)�Ə�����B����t��p=2t+1�ɑ������ƁAp=2(2l+1)+1=4l+2+1=4l+3��3 (m
-od 4)�ƂȂ�B�܂�Ap��3�^�̑f���ƂȂ�A[1]�̕��@�ŕ����������߂邱�Ƃ�
-�ł���B
+　pは奇素数なので、p-1は偶数になる。よって、常にs≧1が成り立つ。
+　ただし、s=1、p-1=2^1・tのときは特殊ケースである。tは奇数なので、t=2l+1
+(l∈Z)と書ける。このtをp=2t+1に代入すると、p=2(2l+1)+1=4l+2+1=4l+3≡3 (m
+od 4)となる。つまり、pは3型の素数となり、[1]の方法で平方根を求めることが
+できる。
 
-��Shanks-Tonelli�̃A���S���Y��
+●Shanks-Tonelliのアルゴリズム
 
-�@Shanks-Tonelli�̃A���S���Y���͎��̂悤�Ȏd�g�݂Ŏ��������B
+　Shanks-Tonelliのアルゴリズムは次のような仕組みで実装される。
 
-���́Fa��QR_p�Ap�F��f��
-�o�́Fx s.t. x^2��a (mod p)
+入力：a∈QR_p、p：奇素数
+出力：x s.t. x^2≡a (mod p)
 
-1 : p-1=2^s�Et�𖞂���s,t���v�Z����B
-2 : u��QNR_p�𐶐�����B
-3 : z��u^t (mod p)
-4 : x��a^{(t+1)/2} (mod p)
-5 : b��a^t (mod p)
+1 : p-1=2^s・tを満たすs,tを計算する。
+2 : u∈QNR_pを生成する。
+3 : z←u^t (mod p)
+4 : x←a^{(t+1)/2} (mod p)
+5 : b←a^t (mod p)
 6 : k=s
-7 : while(b��1 (mod p)) {
-8 :	b^(2^m)��1 (mod p)�𖞂����ŏ���m���v�Z����B
-9 :	t��z^{2^(k-m-1)} (mod p)
-10:	z��t^2 (mod p)
-11:	b��bz (mod p)
-12:	x��xt (mod p)
-13:	k��m
+7 : while(b≠1 (mod p)) {
+8 :	b^(2^m)≡1 (mod p)を満たす最小のmを計算する。
+9 :	t←z^{2^(k-m-1)} (mod p)
+10:	z←t^2 (mod p)
+11:	b←bz (mod p)
+12:	x←xt (mod p)
+13:	k←m
 14: }
 15: output x.
 
-�@��������a��QR_p�łȂ��ꍇ���l������Ȃ�΁A�ua^{(p-1)/2}��-1 (mod p)�v
-�i�I�C���[�K���j���ǂ����̃`�F�b�N���ŏ��ɍs���A���藧�Ă΂���a��QNR_p��
-�܂܂��̂�abort����΂悢�B
+　もし入力aがQR_pでない場合も考慮するならば、「a^{(p-1)/2}≡-1 (mod p)」
+（オイラー規準）かどうかのチェックを最初に行い、成り立てばそのaはQNR_pに
+含まれるのでabortすればよい。
 
-�@�X�e�b�v2�`6�A�X�e�b�v7�A�X�e�b�v8�A�X�e�b�v9�`13�����ꂼ��X�e�[�W1,2,
-3,4�ƌĂԂ��Ƃɂ���B
+　ステップ2〜6、ステップ7、ステップ8、ステップ9〜13をそれぞれステージ1,2,
+3,4と呼ぶことにする。
 
-���X�e�[�W1
+○ステージ1
 
-�@�X�e�b�v2��Z_p^*���烉���_���ɗv�f��I�����A�I�C���[�K����K�p���ă`�F
-�b�N����΂悢�B
-�@�X�e�b�v3�`6�͊e�p�����[�^�̏����ݒ�ł���Bx��a�̕������̍ŏ��̌���
-����B
+　ステップ2はZ_p^*からランダムに要素を選択し、オイラー規準を適用してチェ
+ックすればよい。
+　ステップ3〜6は各パラメータの初期設定である。xはaの平方根の最初の候補で
+ある。
 
-�@�X�e�[�W1����������ƁA2^t=2^s�𖞂����B
-�@�܂��Ax^2��ab (mod p)�@��(*)�Ƃ����֌W���������B�Ȃ��Ȃ�΁A(����)=(a^
-{(t+1)/2})^2=a^(t+1)�A(�E��)=a�Ea^q=a^(q+1)�ł��邩��B����(*)�͂��ׂĂ�
-�X�e�[�W�ňێ�����Ă��邱�Ƃɒ��ӂ��ė~�����B
+　ステージ1が完了すると、2^t=2^sを満たす。
+　また、x^2≡ab (mod p)　←(*)という関係も満たす。なぜならば、(左辺)=(a^
+{(t+1)/2})^2=a^(t+1)、(右辺)=a・a^q=a^(q+1)であるから。この(*)はすべての
+ステージで維持されていることに注意して欲しい。
 
-���X�e�[�W2
+○ステージ2
 
-�@���[�v���I����x��b�̈ʐ��������Ă����A�Ȃ����ʐ��͖���2�ׂ̂���̌`
-�ɂȂ��Ă���B
-�@���[�v�񐔂͂�������s��ł��邱�Ƃ��m���Ă���B��������s��̃��[�v��
-�I���ƁAord_p(b)=1�ɂȂ�Ab��1 (mod p)�𖞂����B�܂�Ax^2��ab��a (mo
-d p)�𖞂����B�܂�A�o�͒l�͕������ɂȂ�B
+　ループが終える度にbの位数が減っていき、なおかつ位数は毎回2のべき乗の形
+になっている。
+　ループ回数はせいぜいs回であることが知られている。せいぜいs回のループが
+終わると、ord_p(b)=1になり、b≡1 (mod p)を満たす。つまり、x^2≡ab≡a (mo
+d p)を満たす。つまり、出力値は平方根になる。
 
-���X�e�[�W3
+○ステージ3
 
-�@�ʐ��̒�`���A�X�e�b�v8��ord_p(b)=2^m�𖞂���m��T���Ă��邱�Ƃ��Ӗ�
-����B
+　位数の定義より、ステップ8はord_p(b)=2^mを満たすmを探していることを意味
+する。
 
-���X�e�[�W4
+○ステージ4
 
-�@�X�e�[�W4��x^2��ab (mod p)����ord_p(z)=2^m���ێ����Ȃ���Az�����炩�̂�
-����ɂȂ�悤�ɕϊ������Ă����B
-�@�X�e�b�v11��b��bz�ɒu�������̂ŁA�V����b�̈ʐ��͂�������2^(m-1)�ɂȂ�B
+　ステージ4はx^2≡ab (mod p)かつord_p(z)=2^mを維持しながら、zが何らかのべ
+き乗になるように変換させていく。
+　ステップ11でbはbzに置き換わるので、新しいbの位数はせいぜい2^(m-1)になる。
 
-�@�X�e�[�W4�̊�����Ax^2��ab (mod p)�𖞂����Ă��邱�Ƃ��m�F����B(����)
-=(�Â�x)^2=(xt)^2=(x�Ez^2^(k-m-1))^2=x^2�Ez^2^(k-m)�A(�E��)=a�E(�Â�b)=a
-�Ebz=abt^2=abz^2^(k-m)�ł���B�����ŃX�e�b�v2,3�̎��_��x^2��ab (mod p)��
-�̂ŁA(����)=(�E��)�ɂȂ�A�X�e�[�W4�̊������x^2��ab (mod p)�����藧�B
+　ステージ4の完了後、x^2≡ab (mod p)を満たしていることを確認する。(左辺)
+=(古いx)^2=(xt)^2=(x・z^2^(k-m-1))^2=x^2・z^2^(k-m)、(右辺)=a・(古いb)=a
+・bz=abt^2=abz^2^(k-m)である。ここでステップ2,3の時点でx^2≡ab (mod p)な
+ので、(左辺)=(右辺)になり、ステージ4の完了後もx^2≡ab (mod p)が成り立つ。
 
-�@����N��Blum���̂Ƃ��́Ap,q���ǂ����3�^�Ȃ̂ŁA��L��[1]�̃A���S���Y��
-���g���΂悢�̂ŁA�������悢�B
+　特にNがBlum数のときは、p,qがどちらも3型なので、上記の[1]のアルゴリズム
+を使えばよいので、効率がよい。
 
 
-��0x05.) ����Rabin�Í�
+■0x05.) 制限Rabin暗号
 
-�@Rabin�Í��͈�ӂɕ������邽�߂ɁAWB45�ŏЉ��Blum�������ɗ��BBlum��
-�Ƃ́Ap,q��4�Ŋ�����3�]��f���i3�^�̑f���Ƃ����j�̂Ƃ���N=pq�̂��Ƃł���B
-�@�uN��Blum���v�Ȃ�΁ux��QR_N�Ƃ��Ay^2��x (mod N)�𖞂���4��y��y1,y2,
-y3,y4�Ƃ���ƁA���ꂼ�ꂪ����4�̏W��Q^(1,1)_N, Q^(0,1)_N, Q^(1,0)_N, Q
-^(0,0)_N�Ɋ܂܂��B�܂�Ay1��Q^(1,1)_N, y2��Q^(0,1)_N, y3��Q^(1,0)_N,
- y4��Q^(0,0)_N�ƂȂ�B�����y1��-y4 (mod N), y2��-y3 (mod N)�ł���v�Ƃ�
-���藝�����݂���B
+　Rabin暗号は一意に復号するために、WB45で紹介したBlum数が役に立つ。Blum数
+とは、p,qが4で割って3余る素数（3型の素数という）のときのN=pqのことである。
+　「NがBlum数」ならば「x∈QR_Nとし、y^2≡x (mod N)を満たす4つのyをy1,y2,
+y3,y4とすると、それぞれが次の4つの集合Q^(1,1)_N, Q^(0,1)_N, Q^(1,0)_N, Q
+^(0,0)_Nに含まれる。つまり、y1∈Q^(1,1)_N, y2∈Q^(0,1)_N, y3∈Q^(1,0)_N,
+ y4∈Q^(0,0)_Nとなる。さらにy1≡-y4 (mod N), y2≡-y3 (mod N)である」とい
+う定理が存在する。
 
 -------------------------
 |           |           |
@@ -273,711 +273,711 @@ y3,y4�Ƃ���ƁA���ꂼ�ꂪ����4�̏W��Q^(1,1)_N, Q^(0,1)_N, Q^(1,0)_N, Q
 |           |           |
 -------------------------
 
-�@�e�W���̈Ӗ��́A���̒ʂ�ł���B
+　各集合の意味は、次の通りである。
 
-�EQ^(1,1)_N�F(y1/p)=(y1/q)=1�𖞂���y1�̏W���A����QR_p,QR_q�𖞂����W��
-�EQ^(0,1)_N�F(y2/p)=-1,(y2/q)=1�𖞂���y2�̏W���A����QNR_p,QR_q�𖞂����W��
-�EQ^(1,0)_N�F(y3/p)=1,(y2/q)=-1�𖞂���y3�̏W���A����QR_p,QNR_q�𖞂����W��
-�EQ^(0,0)_N�F(y4/p)=(y4/q)=-1�𖞂���y4�̏W���A����QNR_p,QNR_q�𖞂����W��
+・Q^(1,1)_N：(y1/p)=(y1/q)=1を満たすy1の集合、即ちQR_p,QR_qを満たす集合
+・Q^(0,1)_N：(y2/p)=-1,(y2/q)=1を満たすy2の集合、即ちQNR_p,QR_qを満たす集合
+・Q^(1,0)_N：(y3/p)=1,(y2/q)=-1を満たすy3の集合、即ちQR_p,QNR_qを満たす集合
+・Q^(0,0)_N：(y4/p)=(y4/q)=-1を満たすy4の集合、即ちQNR_p,QNR_qを満たす集合
 
-�@�Ⴆ�΁Ap=11,q=13�Ƃ���ƁAN=pq=143�ɂȂ�B
+　例えば、p=11,q=13とすると、N=pq=143になる。
 
 (7/143)
 =(7/11)(7/13)
 =(-1)(-1)
 =1
 
-�@����āA7��QNR_143�A�������������Ɍ�����7��Q^(0,0)_143�ł���B����āA
-x^2=7 (mod 143)�𖞂�������x�͑��݂��Ȃ��B�@��
+　よって、7∈QNR_143、もう少し厳密に言えば7∈Q^(0,0)_143である。よって、
+x^2=7 (mod 143)を満たす整数xは存在しない。　◇
 
-�@���̂Ƃ��A(y1/N)=(y4/N)=1, (y2/N)=(y3/N)=-1�ł��邱�ƁAy1+y4��0 (mod N)
-, y2+y3��0 (mod N)�ł��邱�Ƃɒ��ӂ��ė~�����i���̎����𐧌�Rabin�Í��̐�
-�v�ŗ��p����j�B
+　このとき、(y1/N)=(y4/N)=1, (y2/N)=(y3/N)=-1であること、y1+y4≡0 (mod N)
+, y2+y3≡0 (mod N)であることに注意して欲しい（この事実を制限Rabin暗号の設
+計で利用する）。
 
-�@�܂��A�@N�̕�����]�Ɣ񕽕���]�Ɗe�W���̊֌W�͎��̒ʂ�ł���B
+　また、法Nの平方剰余と非平方剰余と各集合の関係は次の通りである。
 
-�EQR_N=Q^(1,1)_N
-�EQNR_N=Q^(0,1)_N �� Q^(1,0)_N �� Q^(0,0)_N
-�EZ_N^*=QR_N �� QNR_N
+・QR_N=Q^(1,1)_N
+・QNR_N=Q^(0,1)_N ∪ Q^(1,0)_N ∪ Q^(0,0)_N
+・Z_N^*=QR_N ∪ QNR_N
 
-�@�ȏ�̊֌W�͕��G�Ɍ����邪�A���̐}���Q�l�ɂ���Β��ϓI�ɗ����ł���͂�
-�ł���B
+　以上の関係は複雑に見えるが、次の図を参考にすれば直観的に理解できるはず
+である。
 
-�i�}�jhttp://security2600.sakura.ne.jp/main2/image4/QR_N.jpg
+（図）http://security2600.sakura.ne.jp/main2/image4/QR_N.jpg
 
-�@�ȏ���AN��Blum���Ƃ���ƁARabin�֐��̋t�v�Z���ʂ�4�̒l�����ꂢ�Ɋe
-�W���ɕ������B(y/N)�̒l��0��y��N/2�ɑ����邩�ۂ��Ƃ���2�̏󋵂����킩
-��΁A4�̏W���̂ǂ��y�������邩�ǂ�������ӂɌ��܂�̂ł���B
-�@�Ⴆ�΁A(y/N)=1����0��y��N/2�ł���΁Ay��Q^(1,1)_N�Ɋ܂܂�邱�Ƃ��킩��B
+　以上より、NをBlum数とすると、Rabin関数の逆計算結果の4つの値がきれいに各
+集合に分かれる。(y/N)の値と0＜y＜N/2に属するか否かという2つの状況さえわか
+れば、4つの集合のどれにyが属するかどうかが一意に決まるのである。
+　例えば、(y/N)=1かつ0＜y＜N/2であれば、yはQ^(1,1)_Nに含まれることがわかる。
 
-�@Rabin�Í��̌������A���S���Y���ŃX�e�b�v2��p,q�Ƃ���3�^�̑f���𐶐�����
-���ƂŁAN��Blum���ɂȂ�B����ɁA������Ԃ�Q^(1,1)_N�Ƃ���B�����A�Í���
-�A���S���Y���̓��͂̕���m�́A(m/N)=1����0��m��N/2�𖞂����Ƃ������Ƃł���B
-���̂悤��Rabin�Í������ǂ������̂𐧌�Rabin�Í��ƌĂԂ��Ƃɂ���i�{�ɂ�
-���Ă͐����t��Rabin�Í��Ƃ��Ăԁj�B����Rabin�Í��̕����A���S���Y����Rabi
-n�Í��̕����A���S���Y���Ɠ������Ƃ����s���A����ɉ�����(m/N)=1����0��m��
-N/2�𖞂������̂�I�ׂ΁A���ꂪ�����ɂȂ�B�܂�A�����ɂ��4�̕�����
-��𐳂�������1�ɍi�荞�ނ��Ƃ��ł���̂ł���B
+　Rabin暗号の鍵生成アルゴリズムでステップ2でp,qとして3型の素数を生成する
+ことで、NがBlum数になる。さらに、平文空間をQ^(1,1)_Nとする。即ち、暗号化
+アルゴリズムの入力の平文mは、(m/N)=1かつ0＜m＜N/2を満たすということである。
+このようにRabin暗号を改良したものを制限Rabin暗号と呼ぶことにする（本によ
+っては制限付きRabin暗号とも呼ぶ）。制限Rabin暗号の復号アルゴリズムはRabi
+n暗号の復号アルゴリズムと同じことを実行し、それに加えて(m/N)=1かつ0＜m＜
+N/2を満たすものを選べば、それが平文になる。つまり、制限により4つの平文候
+補を正しい平文1つに絞り込むことができるのである。
 
-������Rabin�Í��̎d�l
+●制限Rabin暗号の仕様
 
-�@����Rabin�Í��̊e�A���S���Y�������ɂ܂Ƃ߂Ă����B
+　制限Rabin暗号の各アルゴリズムを次にまとめておく。
 
-����Rabin�Í�=(KeyGen,Enc,Dec)
+制限Rabin暗号=(KeyGen,Enc,Dec)
 
-��KeyGen
+○KeyGen
 
-1�F1^k����͂Ƃ���B
+1：1^kを入力とする。
 
-2�Fk�r�b�g��3�^�̑f��p,q�𐶐�����B
+2：kビットの3型の素数p,qを生成する。
 
-3�Fpk=N=pq,sk=(p,q)�Ƃ��Apk,sk���o�͂���B
+3：pk=N=pq,sk=(p,q)とし、pk,skを出力する。
 
-��Enc
+○Enc
 
-1�F����m�i(m/N)=1����0��m��N/2�𖞂���m�j�A���J��pk����͂Ƃ���B
+1：平文m（(m/N)=1かつ0＜m＜N/2を満たすm）、公開鍵pkを入力とする。
 
-2�Fc=Rabin_N(m)=m^2 mod N���v�Z���āAc���o�͂���B
+2：c=Rabin_N(m)=m^2 mod Nを計算して、cを出力する。
 
-��Dec
+○Dec
 
-1�F�Í���c�A�閧��sk����͂Ƃ���B
+1：暗号文c、秘密鍵skを入力とする。
 
-2�FRabin^(-1)_N(c)���v�Z���āip,q��m���Ă���̂ŉ\�j�A���̌��ʂ�m1�`m4
-�Ƃ���B
+2：Rabin^(-1)_N(c)を計算して（p,qを知っているので可能）、その結果をm1〜m4
+とする。
 
-3�Fm1�`m4�̂����ŁA(m/N)=1����0��m��N/2�𖞂������̂�I�����āA�o�͂���B
+3：m1〜m4のうちで、(m/N)=1かつ0＜m＜N/2を満たすものを選択して、出力する。
 
-������Rabin�Í��̎d�l�̉��
+●改良Rabin暗号の仕様の解説
 
-�@�}a��c��mod p�̕������A�}b��c��mod q�̕������Ƃ����ꍇ�ADec�̃X�e�b�v2
-�Ő��������4�̕����������̂悤�ɂ������Ƃ���B
+　±aはcのmod pの平方根、±bはcのmod qの平方根とした場合、Decのステップ2
+で生成される4つの平文候補を次のようにおいたとする。
 
-�Em1=[a,b]
-�Em2=[-a,b]
-�Em3=[a,-b]
-�Em4=[-a,-b]
+・m1=[a,b]
+・m2=[-a,b]
+・m3=[a,-b]
+・m4=[-a,-b]
 
-�@�������A[*,*]�̋L���̈Ӗ��͎��̒ʂ�ł���B
+　ただし、[*,*]の記号の意味は次の通りである。
 
-�um=[a,b]�v�́ua��m (mod p) �� b��m (mod q)�v
+「m=[a,b]」⇔「a≡m (mod p) ∧ b≡m (mod q)」
 
-�@���̂Ƃ��A�X�e�b�v3�̍i���݂̑�1������(m/N)=1���Am1��m4�������c��B��
-���Ȃ�΁A���̂悤�Ɍv�Z����邩��ł���B
+　このとき、ステップ3の絞込みの第1条件の(m/N)=1より、m1かm4だけが残る。な
+ぜならば、次のように計算されるからである。
 
-�E(m1/N)=(m1/p)(m1/q)=1�E1=1
-�E(m2/N)=(m2/p)(m2/q)=(-1)�E1=-1
-�E(m3/N)=(m3/p)(m3/q)=1�E(-1)=-1
-�E(m4/N)=(m4/p)(m4/q)=(-1)�E(-1)=1
+・(m1/N)=(m1/p)(m1/q)=1・1=1
+・(m2/N)=(m2/p)(m2/q)=(-1)・1=-1
+・(m3/N)=(m3/p)(m3/q)=1・(-1)=-1
+・(m4/N)=(m4/p)(m4/q)=(-1)・(-1)=1
 
-�@���ɁA�i���݂̑�2������0��m��N/2���A�ǂ��炩�������c��B�Ȃ��Ȃ��m4
-��-m1 mod N�Ƃ����֌W���A�Е�������0��m��N/2�Ɋ܂܂�邩��ł���B
+　次に、絞込みの第2条件の0＜m＜N/2より、どちらかだけが残る。なぜならばm4
+≡-m1 mod Nという関係より、片方だけが0＜m＜N/2に含まれるからである。
 
-�i�}�jhttp://security2600.sakura.ne.jp/main2/image4/rabin1.jpg
+（図）http://security2600.sakura.ne.jp/main2/image4/rabin1.jpg
 
 
-�@����ň�ӂɕ����ł��邱�Ƃ��킩�����B�������Ȃ���A������Ԃɐ������
-�����Ƃ������Ƃ́A���p����ɂȂ肩�˂Ȃ��B
+　これで一意に復号できることがわかった。しかしながら、平文空間に制限を設
+けたということは、実用上問題になりかねない。
 
 
-��0x06.) ����Rabin�Í�
+■0x06.) 改良Rabin暗号
 
-�@���̖�����������ɂ́A������Ԃɐ�����݂���̂ł͂Ȃ��A�Í����̒���
-�q���g�������Ă������@���l������B�܂�ARabin_N(m)�̌v�Z���ʂ����ł�
-���A(m/N)�̒l��0��m��N/2�ɑ����邩�ۂ��Ƃ��������܂߂�̂ł���B�O�ҁE
-��҂Ƃ�2���Ȃ̂ŁA1�r�b�g�̏��2����΁A�������ʂ��i�荞�߂�B���̂�
-���ȉ��ǂ��������Í�����������Rabin�Í��ƌĂԂ��Ƃɂ���B
+　この問題を解決するには、平文空間に制限を設けるのではなく、暗号文の中に
+ヒントを混ぜておく方法が考えられる。つまり、Rabin_N(m)の計算結果だけでな
+く、(m/N)の値と0＜m＜N/2に属するか否かという情報を含めるのである。前者・
+後者とも2択なので、1ビットの情報が2つあれば、復号結果を絞り込める。このよ
+うな改良を加えた暗号方式を改良Rabin暗号と呼ぶことにする。
 
-������Rabin�Í��̎d�l
+●改良Rabin暗号の仕様
 
-����Rabin�Í�=(KeyGen,Enc,Dec)
+改良Rabin暗号=(KeyGen,Enc,Dec)
 
-��KeyGen
+○KeyGen
 
-1�F1^k����͂Ƃ���B
+1：1^kを入力とする。
 
-2�Fk�r�b�g��3�^�̑f��p,q�𐶐�����B
+2：kビットの3型の素数p,qを生成する。
 
-3�Fpk=N=pq,sk=(p,q)�Ƃ��Apk,sk���o�͂���B
+3：pk=N=pq,sk=(p,q)とし、pk,skを出力する。
 
-��Enc
+○Enc
 
-1�F����m�A���J��pk����͂Ƃ���B
+1：平文m、公開鍵pkを入力とする。
 
-2�Fc1=Rabin_N(m)=m^2 mod N���v�Z����B
+2：c1=Rabin_N(m)=m^2 mod Nを計算する。
 
-3�F(m/N)=1�Ȃ��c2=1�A(m/N)=-1�Ȃ��c2=0�Ƃ���B
+3：(m/N)=1ならばc2=1、(m/N)=-1ならばc2=0とする。
 
-4�F0��m��N/2�Ȃ��c3=1�AN/2��m��N�Ȃ��c3=0�Ƃ���B
+4：0＜m＜N/2ならばc3=1、N/2≦m＜Nならばc3=0とする。
 
-5�Fc=(c1,c2,c3)���o�͂���B
+5：c=(c1,c2,c3)を出力する。
 
-��Dec
+○Dec
 
-1�F�Í���c�A�閧��sk����͂Ƃ���B
+1：暗号文c、秘密鍵skを入力とする。
 
-2�FRabin^(-1)_N(c)���v�Z���āip,q��m���Ă���̂ŉ\�j�A���̌��ʂ�m1�`m4
-�Ƃ���B
+2：Rabin^(-1)_N(c)を計算して（p,qを知っているので可能）、その結果をm1〜m4
+とする。
 
-3�Fc2,c3�̌��ʂ��g���āAm1�`m4����1��m���i�荞��ŏo�͂���B
+3：c2,c3の結果を使って、m1〜m4から1つmを絞り込んで出力する。
 
 
-��0x07.) Williams�Í�
+■0x07.) Williams暗号
 
-�@p��8�Ŋ�����3�]��f���Aq��8�Ŋ�����7�]��f���̂Ƃ��AN=pq��Williams����
-�ĂԁB�Ⴆ�΁AN=21��Williams���ł���B�Ȃ��Ȃ��p=3��3 (mod 8)�Aq=7��7 (
-mod 8)������ł���B
-�@Williams����Blum���̒�`�𖞂����̂ŁABlum���̐��������B����ɉ����āA
-���̒藝�����藧�B
+　pが8で割って3余る素数、qが8で割って7余る素数のとき、N=pqをWilliams数と
+呼ぶ。例えば、N=21はWilliams数である。なぜならばp=3≡3 (mod 8)、q=7≡7 (
+mod 8)だからである。
+　Williams数はBlum数の定義を満たすので、Blum数の性質を持つ。それに加えて、
+次の定理が成り立つ。
 
-[�藝]N�FWilliams���Ƃ���B���̂Ƃ���x��Z_N^*�Gx, -x, 2x, -2x�̂ǂꂩ��Q
-R_N�Ɋ܂܂��B
+[定理]N：Williams数とする。このとき∀x∈Z_N^*；x, -x, 2x, -2xのどれかがQ
+R_Nに含まれる。
 
-�@N��Blum���̏ꍇ��y1,y2,y3,y4���A���̒藝��x,2x,-2x,-x�ɑΉ����Ă���A�m
-����y1+y4��x-x��0 (mod N), y2+y3��2x-2x��0 (mod N)�����藧���Ă��邱�Ƃ�
-�킩��B����ɁAN��Williams���̏ꍇ�́A2�Ԗڂ̐���1�Ԗڂ̐��ɂ�2�{�ɂȂ�
-�Ƃ����֌W�������݂���B�܂�AN��Williams���̏ꍇ�ARabin�֐��̋t�v�Z��
-�����̂悤�ɂ��ꂢ�ɕ\���ł��������B
-�@����Willimas���𗘗p����RSA�Í������ǂ����Í���Williams�Í��ƌĂԁiWil
-liams��͂��̌�ɕʂ̕�������Ă��Ă���j[W80]�B�Í����E�����̂Ƃ��ɁA��
-�R�r�L���̌��ʂɂ���ďꍇ�������s���Ă���_��RSA�Í��ƈقȂ�B
+　NがBlum数の場合のy1,y2,y3,y4が、この定理のx,2x,-2x,-xに対応しており、確
+かにy1+y4≡x-x≡0 (mod N), y2+y3≡2x-2x≡0 (mod N)が成り立っていることが
+わかる。さらに、NがWilliams数の場合は、2番目の数は1番目の数にも2倍になる
+という関係さえ存在する。つまり、NがWilliams数の場合、Rabin関数の逆計算が
+公式のようにきれいに表現できそうだ。
+　このWillimas数を利用してRSA暗号を改良した暗号をWilliams暗号と呼ぶ（Wil
+liamsらはその後に別の方式も提案している）[W80]。暗号化・復号のときに、ヤ
+コビ記号の結果によって場合分けを行っている点がRSA暗号と異なる。
 
-��Williams�Í��̎d�l
+●Williams暗号の仕様
 
-Williams�Í�=(KeyGen,Enc,Dec)
+Williams暗号=(KeyGen,Enc,Dec)
 
-��KeyGen
+○KeyGen
 
-1�F1^k����͂Ƃ���B
+1：1^kを入力とする。
 
-2�F8�Ŋ�����3�]��f���ł���p�A8�Ŋ�����7�]��f���ł���q�𐶐�����B�������A
-p,q��k�r�b�g�Ƃ���B
+2：8で割って3余る素数であるp、8で割って7余る素数であるqを生成する。ただし、
+p,qはkビットとする。
 
-3�FN=pq�A��=LCM((p-1),(q-1))�Ƃ���B
+3：N=pq、λ=LCM((p-1),(q-1))とする。
 
-4�F(��,e)=1��e���ɂ𖞂���e�i��Z�j��I������B
+4：(λ,e)=1∧e＜λを満たすe（∈Z）を選択する。
 
-5�F��={(p-1)(q-1)/4+1}/2�Ƃ���B
+5：δ={(p-1)(q-1)/4+1}/2とする。
 
-6�Fed�߃� (mod ��)�𖞂���d�����߂�B
+6：ed≡δ (mod λ)を満たすdを求める。
 
-7�Gpk=(N,e),sk=(p,q,d)�Ƃ��Apk,sk���o�͂���B
+7；pk=(N,e),sk=(p,q,d)とし、pk,skを出力する。
 
-��Enc
+○Enc
 
-1�F�������M���ȉ��𖞂������ׂĂ̐��̐����S�̂Ƃ���B
+1：平文空間Mを以下を満たすすべての正の整数全体とする。
 
-�E((2m+1)/N)=1�̂Ƃ��A4(2m+1)��N
-�E((2m+1)/N)=-1�̂Ƃ��A2(2m+1)��N
+・((2m+1)/N)=1のとき、4(2m+1)＜N
+・((2m+1)/N)=-1のとき、2(2m+1)＜N
 
-�@�����āA����m��M�A���J��pk����͂Ƃ���B
+　そして、平文m∈M、公開鍵pkを入力とする。
 
-2�Fc'=E1(m)���v�Z����BE1�͈ȉ��̊֐��ł���B
+2：c'=E1(m)を計算する。E1は以下の関数である。
 
-�E((2m+1)/N)=1�̂Ƃ��AE1(m)=4(2m+1)
-�E((2m+1)/N)=-1�̂Ƃ��AE1(m)=2(2m+1)
+・((2m+1)/N)=1のとき、E1(m)=4(2m+1)
+・((2m+1)/N)=-1のとき、E1(m)=2(2m+1)
 
-3�Fc=E2(c')���v�Z����BE2�͈ȉ��̊֐��ł���B
+3：c=E2(c')を計算する。E2は以下の関数である。
 
-�Ec=E2(c')=(c')^(2e) (mod N)
+・c=E2(c')=(c')^(2e) (mod N)
 
-4�Fc���o�͂���B
+4：cを出力する。
 
-��Dec
+○Dec
 
-1�F�Í���c�A�閧��sk����͂Ƃ���B
+1：暗号文c、秘密鍵skを入力とする。
 
-2�Fl=D2(c)���v�Z����BD2�͈ȉ��̊֐��ł���B
+2：l=D2(c)を計算する。D2は以下の関数である。
 
-�El=D2(c)=c^d (mod N)
+・l=D2(c)=c^d (mod N)
 
-3�Fm'=D1(l)���v�Z����BD1�͈ȉ��̊֐��ł���B
+3：m'=D1(l)を計算する。D1は以下の関数である。
 
-�El��0 (mod 4)�̂Ƃ��Am'=D1(l)=(l/4-1)/2
-�El��1 (mod 4)�̂Ƃ��Am'=D1(l)=((N-l)/4-1)/2
-�El��2 (mod 4)�̂Ƃ��Am'=D1(l)=(l/2-1)/2
-�El��3 (mod 4)�̂Ƃ��Am'=D1(l)=((N-l)/2-1)/2
+・l≡0 (mod 4)のとき、m'=D1(l)=(l/4-1)/2
+・l≡1 (mod 4)のとき、m'=D1(l)=((N-l)/4-1)/2
+・l≡2 (mod 4)のとき、m'=D1(l)=(l/2-1)/2
+・l≡3 (mod 4)のとき、m'=D1(l)=((N-l)/2-1)/2
 
-��Williams�Í��̎d�l�̉��
+●Williams暗号の仕様の解説
 
-�@Enc�̃X�e�b�v1�ł�Williams�Í������p�ł��镽�����M���`���Ă���B����
-M�̑傫����N�̒l�A�܂�p,q�̒l�Ɉˑ����Ă���B
-�@Enc�̃X�e�b�v2�ł�((2m+1)/N)���v�Z����K�v������B���̌v�Z�ʂ�5log_10(
-2m+1)�ȉ��ł��邱�Ƃ��m���Ă���B
+　Encのステップ1ではWilliams暗号が利用できる平文空間Mを定義している。この
+Mの大きさはNの値、つまりp,qの値に依存している。
+　Encのステップ2では((2m+1)/N)を計算する必要がある。この計算量は5log_10(
+2m+1)以下であることが知られている。
 
-��Williams�Í��̊��S��
+●Williams暗号の完全性
 
-�@�ȏ�̂��Ƃ𓥂܂��Ċ��S�����m�F����B�܂�ADec(Enc(m))=m�A����D1(D2
-(E2(E1(m)))=m�����藧���Ƃ������B
-�@c'=E1(m)�͋����i�悱�ꂪ���藧�悤�ȃ��b�Z�[�W��Ԃ���m��I����������j�A
-����0��c'��N�ł���B
-�@����AN=pq=3�E7=21��5 (mod 8)���A(2/N)=(-1)^{(N^2-1)/8}=(-1)^{(25-1)
+　以上のことを踏まえて完全性を確認する。つまり、Dec(Enc(m))=m、即ちD1(D2
+(E2(E1(m)))=mが成り立つことを示す。
+　c'=E1(m)は偶数（∵これが成り立つようなメッセージ空間からmを選択したから）、
+かつ0＜c'＜Nである。
+　一方、N=pq=3・7=21≡5 (mod 8)より、(2/N)=(-1)^{(N^2-1)/8}=(-1)^{(25-1)
 /8}=(-1)^3=-1
-�@����āAc'�͋����Ȃ̂�c=2r�Ƃ����ƁA(c'/N)=(2/N)(r/N)
-�@�����ŁA(2/N)=-1�ł���B�܂��A((2m+1)/N)=1�̂Ƃ���r=2(2m+1)�A((2m+1)/N
-))=-1�̂Ƃ���r=2m+1�Ȃ̂ŁA(r/N)=(2/N)=-1�ł���B����āA(c'/N)=(-1)(-1)
+　よって、c'は偶数なのでc=2rとおくと、(c'/N)=(2/N)(r/N)
+　ここで、(2/N)=-1である。また、((2m+1)/N)=1のときにr=2(2m+1)、((2m+1)/N
+))=-1のときにr=2m+1なので、(r/N)=(2/N)=-1である。よって、(c'/N)=(-1)(-1)
 =1
-�@���ɁAl���v�Z����B
+　次に、lを計算する。
 
 l
 =D2(E2(c'))
 =c'^(2ed) (mod N)
-��c'^(2��) (mod N)�@�i��(ed�߃� (mod ��(N)))
-��c'^{(p-1)(q-1)/4}�Ec' (mod N)�@�i���={(p-1)(q-1)/4+1}/2�j
-�߁}c' (mod N)�@�i��(c'/N)=1���Ac'^{(p-1)(q-1)/4}�߁}1 (mod N)�j
+≡c'^(2δ) (mod N)　（∵(ed≡δ (mod φ(N)))
+≡c'^{(p-1)(q-1)/4}・c' (mod N)　（∵δ={(p-1)(q-1)/4+1}/2）
+≡±c' (mod N)　（∵(c'/N)=1より、c'^{(p-1)(q-1)/4}≡±1 (mod N)）
 
-�@����ɁAl�͋��ɂ��Ac',N���g���Ĉ�ӂɕ\�����Ƃ��ł���B
+　さらに、lは偶奇により、c',Nを使って一意に表すことができる。
 
-�El�F�����̂Ƃ��Al=c'�@��(*)
-�El�F��̂Ƃ��Al=N-c'�@��(**)
+・l：偶数のとき、l=c'　←(*)
+・l：奇数のとき、l=N-c'　←(**)
 
-�@��L�ł��邱�Ƃ��l�����Ȃ���Al��@4�ŏꍇ��������B
+　上記であることを考慮しながら、lを法4で場合分けする。
 
-[1]l��0 (mod 4)�̂Ƃ�
+[1]l≡0 (mod 4)のとき
 
 m'
 =(l/4-1)/2
-=(c'/4-1)/2�@�i��(*)�j
-=(2m+1-1)/2�@�i��c'=E1(m)=4(2m+1)�j
+=(c'/4-1)/2　（∵(*)）
+=(2m+1-1)/2　（∵c'=E1(m)=4(2m+1)）
 =m
 
-[2]l��1 (mod 4)�̂Ƃ�
+[2]l≡1 (mod 4)のとき
 
 m'
 =((N-l)/4-1)/2
-=(c'/4-1)/2�@�i��(**)�j
-=(2m+1-1)/2�@�i��c'=E1(m)=4(2m+1)�j
+=(c'/4-1)/2　（∵(**)）
+=(2m+1-1)/2　（∵c'=E1(m)=4(2m+1)）
 =m
 
-[3]l��2 (mod 4)�̂Ƃ�
+[3]l≡2 (mod 4)のとき
 
 m'
 =(l/2-1)/2
-=(c'/2-1)/2�@�i��(*)�j
-=(2m+1-1)/2�@�i��c'=E1(m)=2(2m+1)�j
+=(c'/2-1)/2　（∵(*)）
+=(2m+1-1)/2　（∵c'=E1(m)=2(2m+1)）
 =m
 
-[4]l��3 (mod 4)�̂Ƃ�
+[4]l≡3 (mod 4)のとき
 
 m'
 =((N-l)/2-1)/2
-=(c'/2-1)/2�@�i��(**)�j
-=(2m+1-1)/2�@�i��c'=E1(m)=2(2m+1)�j
+=(c'/2-1)/2　（∵(**)）
+=(2m+1-1)/2　（∵c'=E1(m)=2(2m+1)）
 =m
 
-�@�ȏ�Ŋ��S�����������Ƃ��ł����B
+　以上で完全性を示すことができた。
 
-�@���S���ɂ��Ă͂܂��_����ǂ݂���Ă��Ȃ��̂ŁA����̉񂵂����Ǝv���B
-
-
-��0x08.) �V���O���r�b�gRabin�Í�
-
-�@����Rabin�Í��ɂ��A��������ӂɓ���ł��邱�Ƃ��킩�����B���̉ۑ��O
-W-CPA���S�����������S���𖞂������Ƃł���B�����ł�IND-CPA���S�𖞂���
-���Ƃ�ڎw���B
-
-�@�܂�Blum���ƕ�����]�̊֌W���m�F���Ă����B
-�@Z_N^*���猳��1�I������2�悵�Ăł����W����QR_N�ł���AZ_N^*�̕����Q��
-�Ȃ��Ă���B����QR_N�̌��������2�悷��ƁA�܂�QR_N�Ɋ܂܂��BN��Blum��
-�Ƃ��A���̂悤��QR_N����QR_N�ւ̂ւ̎ʑ�f���l����B���̎ʑ�f��1��1�Ȃ̂ŁA
-�u���ɂȂ�B
-�@����āARabin�֐��̒�`���Z_N^*�ɂ���Γ��͂Əo�͂�4��1�ɂȂ�i������
-��������֐��j�A��`���QR_N�ɂ���Γ��͂Əo�͂�1��1�ɂȂ�i����������
-���u���j�B
-
-�i�}�jhttp://security2600.sakura.ne.jp/main2/image4/QR_N_map.jpg
-
-�@�܂��ABlum���̑f��������������Ɖ��肷��B���̂Ƃ��Ar��QR_N�iN��Blum���j
-���烉���_���ɑI�����āAx=Rabin_N(r)=r^2 (mod N)���v�Z����B�����āAN��x
-����͂Ƃ��āALSB(r)���o�͂���i�m���I���������ԁj�A���S���Y���͑��݂���
-�����Ƃ��m���Ă���i[ACGS88],[AGS03]�j�B������LSB(�E)�͍ŉ��ʃr�b�g�A��
-��mod 2�Ōv�Z���邱�Ƃ��Ӗ�����BZ_N^*�����l�����_���Ɍ�a��I�����āA��
-�̌����悵�Ăł���a^2�͏W��QR_N��ň�l���z���Ă���i���ꂪ�T���v�����O
-����Ώۂ̏W����QR_N�Ɏg���₷�����R�ł���j�B
-�@N��Blum���ł���΁AN��r^2 (mod n)����Ar�̍ŉ��ʃr�b�g�A����r (mod 2)��
-�v�Z����͍̂���Ƃ������Ƃł���B
-
-�@���̐��w�I�����𓥂܂���ƁA�g��Rabin�Í������ǂ���IND-CPA���S�ȁA1�r�b
-�g�̈Í����\���ł���B������V���O���r�b�gRabin�Í��ƌĂԂ��Ƃɂ���iKatz
-��Lindell�́wIntroduction to modern cryptography�x�ł͂��̃X�L�[����Rabin
-�Í��Ƃ��ďЉ�A�f�p��Rabin�Í��̕������ȏ��IRabin�Í��ƌĂ�ł���j�B
-
-���V���O���r�b�gRabin�Í��̎d�l
-
-�V���O���r�b�gRabin�Í�=(KeyGen,Enc,Dec)
-
-��KeyGen
-
-1�F1^k����͂Ƃ���B
-
-2�Fk�r�b�g��3�^�̑f��p,q�𐶐�����B
-
-3�Fpk=N=pq,sk=(p,q)�Ƃ��Apk,sk���o�͂���B
-
-��Enc
-
-1�F����b��{0,1}�A���J��pk����͂Ƃ���B
-
-2�FQR_N���烉���_����r��I������B
-
-3�Fs=Rabin_N(r)=r^2 (mod N)���v�Z����B
-
-4�Fc1=b XOR LSB(r)���v�Z����B
-
-5�Fc=(c1,s)���o�͂���B
-
-��Dec
-
-1�F�Í���c�A�閧��sk����͂Ƃ���B
-
-2�FRabin^(-1)_N(s)���v�Z���āip,q��m���Ă���̂ŉ\�j�A���̌��ʂ�r'�Ƃ�
-��B
-
-3�Fc1 XOR LSB(r')���o�͂���B
+　安全性についてはまだ論文を読みきれていないので、今後の回したいと思う。
 
 
-���V���O���r�b�gRabin�Í��̊��S��
+■0x08.) シングルビットRabin暗号
 
-�@�܂��͊��S������m�F����B�d�l�ʂ�ɈÍ����A���S���Y��Enc�Ōv�Z���ē���
-�ꂽ�Í������A�d�l�ʂ�ɕ����A���S���Y��Dec�ŕ����������ʁAEnc�ɓ��͂���
-�����Ɠ������Ƃ��m�F����΂悢�B
+　改良Rabin暗号により、平文を一意に特定できることがわかった。次の課題はO
+W-CPA安全よりも高い安全性を満たすことである。ここではIND-CPA安全を満たす
+ことを目指す。
+
+　まずBlum数と平方剰余の関係を確認しておく。
+　Z_N^*から元を1つ選択して2乗してできた集合はQR_Nであり、Z_N^*の部分群に
+なっている。このQR_Nの元をさらに2乗すると、またQR_Nに含まれる。NをBlum数
+とし、このようにQR_NからQR_Nへのへの写像fを考える。この写像fは1対1なので、
+置換になる。
+　よって、Rabin関数の定義域をZ_N^*にすれば入力と出力が4対1になり（だから
+一方向性関数）、定義域をQR_Nにすれば入力と出力は1対1になる（だから一方向
+性置換）。
+
+（図）http://security2600.sakura.ne.jp/main2/image4/QR_N_map.jpg
+
+　また、Blum数の素因数分解が困難と仮定する。このとき、rをQR_N（NはBlum数）
+からランダムに選択して、x=Rabin_N(r)=r^2 (mod N)を計算する。そして、Nとx
+を入力として、LSB(r)を出力する（確率的多項式時間）アルゴリズムは存在しな
+いことが知られている（[ACGS88],[AGS03]）。ここでLSB(・)は最下位ビット、即
+ちmod 2で計算することを意味する。Z_N^*から一様ランダムに元aを選択して、そ
+の元を二乗してできるa^2は集合QR_N上で一様分布している（これがサンプリング
+する対象の集合をQR_Nに使いやすい理由である）。
+　NがBlum数であれば、Nとr^2 (mod n)から、rの最下位ビット、即ちr (mod 2)を
+計算するのは困難ということである。
+
+　この数学的事実を踏まえると、拡張Rabin暗号を改良してIND-CPA安全な、1ビッ
+トの暗号を構成できる。これをシングルビットRabin暗号と呼ぶことにする（Katz
+とLindellの『Introduction to modern cryptography』ではこのスキームをRabin
+暗号として紹介し、素朴なRabin暗号の方を教科書的Rabin暗号と呼んでいる）。
+
+●シングルビットRabin暗号の仕様
+
+シングルビットRabin暗号=(KeyGen,Enc,Dec)
+
+○KeyGen
+
+1：1^kを入力とする。
+
+2：kビットの3型の素数p,qを生成する。
+
+3：pk=N=pq,sk=(p,q)とし、pk,skを出力する。
+
+○Enc
+
+1：平文b∈{0,1}、公開鍵pkを入力とする。
+
+2：QR_Nからランダムにrを選択する。
+
+3：s=Rabin_N(r)=r^2 (mod N)を計算する。
+
+4：c1=b XOR LSB(r)を計算する。
+
+5：c=(c1,s)を出力する。
+
+○Dec
+
+1：暗号文c、秘密鍵skを入力とする。
+
+2：Rabin^(-1)_N(s)を計算して（p,qを知っているので可能）、その結果をr'とす
+る。
+
+3：c1 XOR LSB(r')を出力する。
+
+
+●シングルビットRabin暗号の完全性
+
+　まずは完全性から確認する。仕様通りに暗号化アルゴリズムEncで計算して得ら
+れた暗号文を、仕様通りに復号アルゴリズムDecで復号した結果、Encに入力した
+平文と同じことを確認すればよい。
 
 Dec(Enc(b,pk),sk)
 =Dec(Enc(b,N),(p,q))
 =Dec(c,(p,q))
 =c1 XOR LSB(r')
 =b XOR LSB(r) XOR LSB(r')
-=b XOR LSB(r) XOR LSB(r)�@�i��N��Blum�����Ar'=r)
+=b XOR LSB(r) XOR LSB(r)　（∵NがBlum数より、r'=r)
 =b XOR 1
 =b
 
-�@����Ŋ��S������������Ă��邱�Ƃ��킩�����B
+　これで完全性が満たされていることがわかった。
 
 
-���V���O���r�b�gRabin�Í���CCA���S��
+●シングルビットRabin暗号のCCA安全性
 
-�@���ɓG���Í���c�𓐒������Ƃ��ɁAb�̏�񂪘R��Ă��Ȃ����Ƃ𒼊ϓI�Ɋm
-�F����B�GA��c=(c1,s)=(c,r^2 (mod N))��pk=N���^���ꂽ�Ƃ��Ă��ALSB(r)�͂�
-����Ȃ��BLSB(r)��������Ȃ���΁Ac1����b�����߂邱�Ƃ͂ł��Ȃ��B����āA
-�V���O���r�b�gRabin�Í���Blum���̑f��������������Ƃ�������̉��ŁAIND��
-�S�ł���B������Əؖ���������΁A�A���@���g���΂悢�B�܂�A�V���O���r
-�b�gRabin�Í���IND���S��j��A���S���Y����p���āABlum���̑f������������
-��A���S���Y�����\������΂悢�B
+　次に敵が暗号文cを盗聴したときに、bの情報が漏れていないことを直観的に確
+認する。敵Aにc=(c1,s)=(c,r^2 (mod N))とpk=Nが与えれたとしても、LSB(r)はわ
+からない。LSB(r)が分からなければ、c1からbを求めることはできない。よって、
+シングルビットRabin暗号はBlum数の素因数分解が困難という仮定の下で、IND安
+全である。きちんと証明したければ、帰着法を使えばよい。つまり、シングルビ
+ットRabin暗号のIND安全を破るアルゴリズムを用いて、Blum数の素因数分解をす
+るアルゴリズムを構成すればよい。
 
-�@n�r�b�g�̕������Í�����������΁A���̃V���O���r�b�gRabin�Í���n��J���
-���΂悢���A�����������B����A�Í����A���S���Y����QR_N����r�𐶐�����K�v
-������A�����r�Ɋ֘A����s���Í����Ɋ܂܂�Ă��܂��Ă���B���̂��߁An�r�b
-�g�̕����̈Í��ł���΁Ac1��n�r�b�g�As��n�r�b�g�ŁA���킹��2n�̈Í����̒�
-���ɂȂ��Ă��܂��B
-�@���̉ۑ�̓V���O���r�b�gRabin�Í��̈Í����̒�����Z�����邱�Ƃł���B
+　nビットの平文を暗号化したければ、このシングルビットRabin暗号をn回繰り返
+せばよいが、効率が悪い。毎回、暗号化アルゴリズムでQR_Nからrを生成する必要
+があり、さらにrに関連するsが暗号文に含まれてしまっている。そのため、nビッ
+トの平文の暗号であれば、c1がnビット、sがnビットで、合わせて2nの暗号文の長
+さになってしまう。
+　次の課題はシングルビットRabin暗号の暗号文の長さを短くすることである。
 
 
-��0x09.) BBS�[������������
+■0x09.) BBS擬似乱数生成器
 
-�@�V���O���r�b�gRabin�Í��̈Í����̒�����Z�����邽�߂ɗ��p�ł���̂�BBS
-�iBlum-Blum-Shub�j�[������������ł���i[BBS86]�j�B����͕�����]�̐�����
-���p�����[������������ł���B
+　シングルビットRabin暗号の暗号文の長さを短くするために利用できるのがBBS
+（Blum-Blum-Shub）擬似乱数生成器である（[BBS86]）。これは平方剰余の性質を
+利用した擬似乱数生成器である。
 
-��BBS�[������������̎d�l
+●BBS擬似乱数生成器の仕様
 
-�@BBS�[������������̓��o�͂ƁA���̃A���S���Y���͎��̂悤�ɂȂ�B
+　BBS擬似乱数生成器の入出力と、そのアルゴリズムは次のようになる。
 
-1�Fp��q��3 (mod 4) �� |p|=|q|=k/2����͂Ƃ���B
+1：p≡q≡3 (mod 4) ∧ |p|=|q|=k/2を入力とする。
 
-2�FN=pq���v�Z����B
+2：N=pqを計算する。
 
-3�FQR_N���烉���_����s0��I������B
+3：QR_Nからランダムにs0を選択する。
 
-4�Fs0��Rabin�֐��ɓ��͂���x1���v�Z���A������܂�Rabin�֐��ɓ��͂���B����
-����l��{x1,�c,x_l}���v�Z����B�����̌v�Z���܂Ƃ߂�Ǝ��̂悤�ɂȂ�B
+4：s0をRabin関数に入力してx1を計算し、それをまたRabin関数に入力する。こう
+してl個の{x1,…,x_l}を計算する。これらの計算をまとめると次のようになる。
 
-x1��Rabin_N(s0)
-x2��Rabin_N(x1)
-�c
-x_l��Rabin_N(x_(l-1))
+x1←Rabin_N(s0)
+x2←Rabin_N(x1)
+…
+x_l←Rabin_N(x_(l-1))
 
-5�Fx=LSB(x1)||LSB(x2)||�c||LSB(x_l)���v�Z���āAx�il�r�b�g�j���o�͂���B
+5：x=LSB(x1)||LSB(x2)||…||LSB(x_l)を計算して、x（lビット）を出力する。
 
-�@x0��BBS�[������������̎�ƂȂ�Af(x0)=x�𖞂���f��(k,l)-PRNG�ł���BBS
-�[�����������킻�̂��̂ł���B
+　x0がBBS擬似乱数生成器の種となり、f(x0)=xを満たすfが(k,l)-PRNGであるBBS
+擬似乱数生成器そのものである。
 
-�@�X�e�b�v1��p,q��3�^�̑f���Ȃ̂ŁAN��Blum���ł���B����āA�X�e�b�v4�Ŏg
-���Ă���Rabin�֐���QR_N��̒u���ɂȂ��Ă���B
-�@�X�e�b�v2����������ɂ́AZ_N���烉���_����1�I�����āAN�Ƒf���ǂ�����
-�肵�A�f�Ȃ��2�悷��΂悢�Bx^2 mod n����x�̍ŉ��ʃr�b�g�A����LSB(x)���v
-�Z����̂ɂ͑Sx���v�Z���邮�炢����Ȃ̂ŁALSB(x1),LSB(x2),�c,LSB(x_l)��
-���ꂼ��x1,x2,�c,x_l�̏������S�ɉB���Ă���iLSB�̒l���n�[�h�R�A�r�b�g��
-�Ȃ��Ă���j�B�܂�A�X�e�b�v5�Ōv�Z�����x�����x1,x2,�c,xl�̏��1�r
-�b�g���R��Ă��Ȃ��B
+　ステップ1でp,qは3型の素数なので、NはBlum数である。よって、ステップ4で使
+っているRabin関数はQR_N上の置換になっている。
+　ステップ2を実装するには、Z_Nからランダムに1つ選択して、Nと素かどうか判
+定し、素ならば2乗すればよい。x^2 mod nからxの最下位ビット、即ちLSB(x)を計
+算するのには全xを計算するぐらい困難なので、LSB(x1),LSB(x2),…,LSB(x_l)は
+それぞれx1,x2,…,x_lの情報を完全に隠している（LSBの値がハードコアビットに
+なっている）。つまり、ステップ5で計算されるxからはx1,x2,…,xlの情報が1ビ
+ットも漏れていない。
 
-��Fp=91,q=59�̂Ƃ��ip��q��3 (mod 4)�𖞂����j�AN=pq=5369
+例：p=91,q=59のとき（p≡q≡3 (mod 4)を満たす）、N=pq=5369
 
-s0=2009^2��754 (mod 5369)
-x1=x0^2=754^2��1978 (mod 5369)�@��LSB(x1)=0
-x2=x1^2=1978^2��961 (mod 5369)�@��LSB(x2)=1
-x3=x2^2=961^2��1390 (mod 5369)�@��LSB(x3)=0
-�c
+s0=2009^2≡754 (mod 5369)
+x1=x0^2=754^2≡1978 (mod 5369)　→LSB(x1)=0
+x2=x1^2=1978^2≡961 (mod 5369)　→LSB(x2)=1
+x3=x2^2=961^2≡1390 (mod 5369)　→LSB(x3)=0
+…
 
-�@����āAx0����Ƃ���BBS�[������������ɂ���Đ��������ŏ���3�r�b�g��
-"010"�ɂȂ�B�@��
+　よって、x0を種としてBBS擬似乱数生成器によって生成される最初の3ビットは
+"010"になる。　◇
 
 
-��QR����QR����
+●QR問題とQR仮定
 
-�@x��Z_N^*����(x/N)=1�𖞂���x��N(=pq)���^����ꂽ�Ƃ��ɁAx��QR_N�ɑ�����
-���ǂ����ix��N�̕�����]���ǂ����j��1/2�����L�ӂ̊m���Ŕ��肷�邱�Ƃ͍�
-��ł���ƐM�����Ă���i�R���œ������1/2�̊m���Ŕ���\�j�B���̖���
-QR�iQuadratic Residuosity�j���Ƃ����B����QR��肪����ł���Ƃ��������
-QR����Ƃ����B
+　x∈Z_N^*かつ(x/N)=1を満たすxとN(=pq)が与えられたときに、xがQR_Nに属する
+かどうか（xがNの平方剰余かどうか）を1/2よりも有意の確率で判定することは困
+難であると信じられている（山勘で答えれば1/2の確率で判定可能）。この問題を
+QR（Quadratic Residuosity）問題という。このQR問題が困難であるという仮定を
+QR仮定という。
 
-�i�}�jhttp://security2600.sakura.ne.jp/main2/image4/QR_N_hantei.jpg
+（図）http://security2600.sakura.ne.jp/main2/image4/QR_N_hantei.jpg
 
-�@QR����Ƒf��������������Ƃ���������ׂ�ƁAQR����̕�����������ł�
-��B�Ȃ��Ȃ�΁A�f�����������e�Ղł���΁AN��f�����������Ap,q��m�邱��
-���ł��AQR�����e�Ղɉ����邩��ł���B����AQR��肪����������Ƃ����āA
-�f���������̖�肪������Ƃ͌���Ȃ��B�f�������������Ȃ���QR����������
-�܂����@�����邩������Ȃ�����ł���B
+　QR仮定と素因数分解が困難という仮定を比べると、QR仮定の方が強い仮定であ
+る。なぜならば、素因数分解が容易であれば、Nを素因数分解し、p,qを知ること
+ができ、QR問題も容易に解けるからである。一方、QR問題が解けたからといって、
+素因数分解の問題が解けるとは限らない。素因数分解をしないでQR問題を解くう
+まい方法があるかもしれないからである。
 
-�@�Ƃ���ŁAa��QR_N�̂Ƃ��́A(a/N)��(-a/N)�̗����Ƃ���1�ɂȂ��Ă��܂��B��
-����قǂ̏W��Q�Ő�������ƁAa,-a�͎��𖞂������Ƃ��Ӗ�����B
+　ところで、a∈QR_Nのときは、(a/N)と(-a/N)の両方ともが1になってしまう。こ
+れを先ほどの集合Qで説明すると、a,-aは次を満たすことを意味する。
 
-�Ea��Q^(1,1)_N
-�E-a��Q^(0,0)_N
+・a∈Q^(1,1)_N
+・-a∈Q^(0,0)_N
 
-�@Q^(1,1)_N�͖@N�̕�����]�AQ^(0,0)_N�͖@N�̋[�������ipseudo-square�j��]
-�ƌĂ΂��B
+　Q^(1,1)_Nは法Nの平方剰余、Q^(0,0)_Nは法Nの擬似平方（pseudo-square）剰余
+と呼ばれる。
 
-�@���̎�����藝�̌`�ɂ܂Ƃ߂Ă����B
+　この事実を定理の形にまとめておく。
 
-[�藝]a��QR_N��(a/N)=(-a/N)=1
+[定理]a∈QR_N⇒(a/N)=(-a/N)=1
 
-[�ؖ�]����ua�F�@N=pq�ɂ����ĕ�����]�v���A�ua�F�@p,q�ɂ����ĕ�����]�v
-�ł���B
+[証明]仮定「a：法N=pqにおいて平方剰余」より、「a：法p,qにおいて平方剰余」
+である。
 
-�@�܂��ua�F�@p,q�ɂ����ĕ�����]�v�ˁu-a�F�@p,q�ɂ����ĕ������]�v�ɂȂ�B
+　また「a：法p,qにおいて平方剰余」⇒「-a：法p,qにおいて平方非剰余」になる。
 
-�@����āA(a/p)=-(-a/p) �� (a/q)=-(-a/q)�����藧�B
+　よって、(a/p)=-(-a/p) ∧ (a/q)=-(-a/q)が成り立つ。
 
-�@���������āA(a/N)=(a/p)(a/q)=(-1)^2�E(-a/p)(-a/q)=(-a/N)�@��
+　したがって、(a/N)=(a/p)(a/q)=(-1)^2・(-a/p)(-a/q)=(-a/N)　□
 
 
-��BBS�[������������̈��S��
+●BBS擬似乱数生成器の安全性
 
-�@����BBS�[������������̈��S���ɂ��čl�@����[S05]�B
-�@BBS�[������������̈��S����QR����Ɋ�Â��Ă���B����āABBS�[��������
-�����j��A���S���Y���iA�Ƃ���j�𗘗p���āAQR���������A���S���Y���iQR
--TEST�Ƃ���j���\���ł���΂悢�B
+　次にBBS擬似乱数生成器の安全性について考察する[S05]。
+　BBS擬似乱数生成器の安全性はQR仮定に基づいている。よって、BBS擬似乱数生
+成器を破るアルゴリズム（Aとする）を利用して、QR問題を解くアルゴリズム（QR
+-TESTとする）が構成できればよい。
 
-�@(k,l)-�[������������̈��S���́A�[������������Ő��������l�r�b�g�̋[��
-�����ƁAl�r�b�g�̐^�̗�������ʂł��Ȃ��Ƃ������Ƃł���B�܂�A�[������
-��Z_2^l��̊m�����z�ƁAZ_2^l�̈�l�m�����z���L�ӂ̊m���Ŏ��ʂł��Ȃ�����
-�ł���B
-�@����(k,l)-BBS�[�������������j��A���S���Y��A�����݂���Ƃ��Ă���̂ŁA
-l�r�b�g�́iBBS�[������������̏o�͂ł���j�[�������Ɛ^�̗��������ʂ���A
-���S���Y�������݂���Ƃ������ƂɂȂ�B����A�i���ʂ���m�����łƂ���j����
-�݂���ƁA(��,l)-�O�r�b�g�������\���ł���B
-�@����(��,l)-�O�r�b�g�����i���̃A���S���Y����PBP�Ƃ���j�Ƃ́Af��(l,l)
--PRNG�Ƃ���Ƃ��Af�ɂ���Đ��������r�b�g��z1,�c,z_l����͂Ƃ��Ď��Af
-�̎�̋��A����f��BBS�[������������̂Ƃ���LSB(s0)�����Ȃ��Ƃ�1/2+��(��
-��0)�̊m���ŗ\���ł���A���S���Y���̂��Ƃł���B
-�@A�����݂���΁A(��,l)-�O�r�b�g����킪���݂��邱�Ƃ��m���Ă���B���
-�āAB�̍\���ɁA(��,l)-�O�r�b�g�����𗘗p���邱�Ƃ��ł���B���̂Ƃ��AB��
-�\�����@�͎��̒ʂ�ɂȂ�B
+　(k,l)-擬似乱数生成器の安全性は、擬似乱数生成器で生成されるlビットの擬似
+乱数と、lビットの真の乱数が区別できないということである。つまり、擬似乱数
+のZ_2^l上の確率分布と、Z_2^lの一様確率分布が有意の確率で識別できないこと
+である。
+　今は(k,l)-BBS擬似乱数生成器を破るアルゴリズムAが存在するとしているので、
+lビットの（BBS擬似乱数生成器の出力である）擬似乱数と真の乱数を識別するア
+ルゴリズムが存在するということになる。このA（識別する確率をηとする）が存
+在すると、(η,l)-前ビット推定器を構成できる。
+　この(η,l)-前ビット推定器（このアルゴリズムをPBPとする）とは、fを(l,l)
+-PRNGとするとき、fによって生成されるビット列z1,…,z_lを入力として取り、f
+の種の偶奇、即ちfがBBS擬似乱数生成器のときはLSB(s0)を少なくとも1/2+η(η
+＞0)の確率で予測できるアルゴリズムのことである。
+　Aが存在すれば、(η,l)-前ビット推定器が存在することが知られている。よっ
+て、Bの構成に、(η,l)-前ビット推定器を利用することができる。このとき、Bの
+構成方法は次の通りになる。
 
-1�FQR-TEST�̓��͂Ƃ��āAx��Z_N^*��(x/N)=1�𖞂���x��N�����͂����B
+1：QR-TESTの入力として、x∈Z_N^*∧(x/N)=1を満たすxとNが入力される。
 
-2�Fs1=x^2 (mod N)�Az1=LSB(s1)���v�Z����B
+2：s1=x^2 (mod N)、z1=LSB(s1)を計算する。
 
-3�FBBS�[������������̎d�l�ʂ��s1����Ƃ��āAz2,�c,z_l���v�Z����B
+3：BBS擬似乱数生成器の仕様通りにs1を種として、z2,…,z_lを計算する。
 
-4�FQR-TEST�͓�����PBP��z1,�c,z_l����͂��ċN�����A�o�͌��ʂƂ���z1�̎��
-�����l�̍ŉ��ʃr�b�g�A����LSB(x)���󂯎��B
+4：QR-TESTは内部でPBPにz1,…,z_lを入力して起動し、出力結果としてz1の種の
+推測値の最下位ビット、即ちLSB(x)を受け取る。
 
-5�FLSB(x)=z�Ȃ��1���o�͂��A�����łȂ����0���o�͂���B�������AB�̏o�͂�
-1�̂Ƃ��͓��͒lx��Q_N^(1,1)�Ɋ܂܂�A�o�͂�0�̂Ƃ��͓��͒lx��Q_N^(0,0)��
-�܂܂��ƒ�`����B
+5：LSB(x)=zならば1を出力し、そうでなければ0を出力する。ただし、Bの出力が
+1のときは入力値xがQ_N^(1,1)に含まれ、出力が0のときは入力値xがQ_N^(0,0)に
+含まれると定義する。
 
-�@�ȏ��B�̍\���͏I���ł���B����B��1/2+�ł̊m����QR�����������Ƃ�
-�ׂ�B
+　以上でBの構成は終わりである。このBが1/2+ηの確率でQR問題を解くことを調
+べる。
 
-�@N�FBlum������(1/N)=1���A(-1/N)=1�ł���i��N��Blum���Ȃ�΁Ay1+y4=N��
-��y4��Q_N^(0,0)���Ay4=N-1�ɑΉ�����̂ŁA(y4/N)=(N-1/N)=(-1/N)=1�j�B��
-���āA-1��Q_N^(0,0)�ł���B
-�@s0��s1�̕������is0��Q_N^(1,1)�j�Ƃ���B(x/N)=1�Ȃ̂ŁAx��Q_N^(1,1)�Ȃ�
-s0=x�Ax��Q_N^(0,0)�Ȃ�s0=-x�ƂȂ�B
-�@z1,�c,z_l��s0����Ƃ���BBS�[������������ɂ���Đ������ꂽl�r�b�g�̋[��
-�����ł���B����l�r�b�g�̋[����������͂Ƃ���PBP��z�i��{0,1}�j���o�͂���B
-z1=LSB(s1)=LSB(s0^2 mod N)�Ȃ̂�z1�ɂ�x�̏�񂪊܂܂�Ă���APBP��z1����
-�ޓ��͂���A�o��z�Ƃ���x�̏��ł���LSB(s0)���o�͂���̂ł���B
-�@����ɁAN�͊�Ȃ̂ŁAx��-x(=N-x)�͋��قȂ�B�܂�ALSB(x)��LSB
-(-x)�ł���B�܂�As0��x��-x����LSB(s0)��LSB(x)��LSB(-x)���Ƃ������Ƃɑ�
-������B
-�@����āAx��Q_N^(1,1)�̂Ƃ��is0=x�̂Ƃ��j�ɁAPBP��������z=s0�Əo�͂����
-���ɁAQR-TEST�͊��S��1���o�͂���B����āA���Ȃ��Ƃ�1/2�{�ł̊m����x��Q_
-N^(1,1)�Ɋ܂܂�邱�Ƃ����ʂł���B
-�@����Ax��Q_N^(0,0)�̂Ƃ��is0=-x�̂Ƃ��j�ɁAPBP��������z=s0���o�͂����
-���AQR-TEST�͊��S��0���o�͂���B����āA���Ȃ��Ƃ�1/2�{�ł̊m����x��Q_N^
-(0,0)�Ɋ܂܂�邱�Ƃ����ʂł���B
+　N：Blum数かつ(1/N)=1より、(-1/N)=1である（∵NがBlum数ならば、y1+y4=Nか
+つy4∈Q_N^(0,0)より、y4=N-1に対応するので、(y4/N)=(N-1/N)=(-1/N)=1）。よ
+って、-1∈Q_N^(0,0)である。
+　s0をs1の平方根（s0∈Q_N^(1,1)）とする。(x/N)=1なので、x∈Q_N^(1,1)なら
+s0=x、x∈Q_N^(0,0)ならs0=-xとなる。
+　z1,…,z_lはs0を種としてBBS擬似乱数生成器によって生成されたlビットの擬似
+乱数である。このlビットの擬似乱数を入力としてPBPはz（∈{0,1}）を出力する。
+z1=LSB(s1)=LSB(s0^2 mod N)なのでz1にはxの情報が含まれており、PBPはz1を含
+む入力から、出力zとしてxの情報であるLSB(s0)を出力するのである。
+　さらに、Nは奇数なので、xと-x(=N-x)は偶奇が異なる。つまり、LSB(x)≠LSB
+(-x)である。つまり、s0がxか-xかはLSB(s0)がLSB(x)かLSB(-x)かということに対
+応する。
+　よって、x∈Q_N^(1,1)のとき（s0=xのとき）に、PBPが正しくz=s0と出力すると
+きに、QR-TESTは完全に1を出力する。よって、少なくとも1/2＋ηの確率でxがQ_
+N^(1,1)に含まれることを識別できる。
+　一方、x∈Q_N^(0,0)のとき（s0=-xのとき）に、PBPが正しくz=s0を出力すると
+き、QR-TESTは完全に0を出力する。よって、少なくとも1/2＋ηの確率でxがQ_N^
+(0,0)に含まれることを識別できる。
 
-�@�ȏ��[1][2]���A���͒l��x,-x�̂ǂ���ł����Ă��AQR-TEST��1/2+�ł̊m��
-��Q_N^(1,1)�Ɋ܂܂�邩�ۂ������ʂł���B�@��
+　以上の[1][2]より、入力値がx,-xのどちらであっても、QR-TESTは1/2+ηの確率
+でQ_N^(1,1)に含まれるか否かを識別できる。　□
 
 
 
-��0x0A.) BG�Í�
+■0x0A.) BG暗号
 
-�@�V���O���r�b�gRabin�Í���BBS�[�������������g�ݍ��킹�邱�ƂŁA�V���O
-���r�b�gRabin�Í���n��J��Ԃ����������̂悢�Í��������\���ł���B����
-�ł�Blum��Goldwasser�ɂ���Ē�Ă��ꂽBG�Í����Љ��B
+　シングルビットRabin暗号とBBS擬似乱数生成器を組み合わせることで、シング
+ルビットRabin暗号をn回繰り返すよりも効率のよい暗号方式を構成できる。ここ
+ではBlumとGoldwasserによって提案されたBG暗号を紹介する。
 
-��BG�Í��̎d�l
+●BG暗号の仕様
 
-BG�Í�=(KeyGen,Enc,Dec)
+BG暗号=(KeyGen,Enc,Dec)
 
-��KeyGen
+○KeyGen
 
-1�F1^k����͂Ƃ���B
+1：1^kを入力とする。
 
-2�Fk�r�b�g��8�Ŋ�����3�]��f��p,q�𐶐�����B
+2：kビットの8で割って3余る素数p,qを生成する。
 
-3�Fpk=N=pq,sk=(p,q)�Ƃ��Apk,sk���o�͂���B
+3：pk=N=pq,sk=(p,q)とし、pk,skを出力する。
 
-��Enc
+○Enc
 
-1�F����m��{0,1}^n�A���J��pk����͂Ƃ���B
+1：平文m∈{0,1}^n、公開鍵pkを入力とする。
 
-2�FQR_N���烉���_���ɗv�f��I�����Ax0�Ƃ���B
+2：QR_Nからランダムに要素を選択し、x0とする。
 
-3�Fi=1,�c,n�ɑ΂��āAx_i=x_(i-1)^2 mod N���v�Z����B
+3：i=1,…,nに対して、x_i=x_(i-1)^2 mod Nを計算する。
 
-4�Fmask=LSB(x0)||LSB(x1)||�c||LSB(x_(n-1))�Ƃ��Ac1=mask XOR m���v�Z����B
+4：mask=LSB(x0)||LSB(x1)||…||LSB(x_(n-1))とし、c1=mask XOR mを計算する。
 
-5�Fc=(c1,x_n)���o�͂���B
+5：c=(c1,x_n)を出力する。
 
-��Dec
+○Dec
 
-1�F�Í���c�A�閧��sk����͂Ƃ���B
+1：暗号文c、秘密鍵skを入力とする。
 
-2�FRabin^(-1)_N(x_n)���v�Z���āip,q��m���Ă���̂ŉ\�j�A���̌���x_(n-1)
-�𓾂�B������J��Ԃ��΁Ax_0,x_2,�c,x_n�����ׂċ��߂邱�Ƃ��ł���B
+2：Rabin^(-1)_N(x_n)を計算して（p,qを知っているので可能）、その結果x_(n-1)
+を得る。これを繰り返せば、x_0,x_2,…,x_nをすべて求めることができる。
 
-3�Fmask=LSB(x0)||LSB(x1)||�c||LSB(x_(n-1))���v�Z���āAc1 XOR mask���v�Z��
-�ďo�͂���B
+3：mask=LSB(x0)||LSB(x1)||…||LSB(x_(n-1))を計算して、c1 XOR maskを計算し
+て出力する。
 
-��BG�Í��̎d�l�̉��
+●BG暗号の仕様の解説
 
-�@KeyGen�̃X�e�b�v2�ł�N��Blum���ɂȂ�悤��p,q�𐶐����Ă��邪�AN��Will
-iams���ɂȂ�悤��p,q�𐶐����Ă��悢�B�����AN��Williams���ł���΁A����
-����x_l����x_0�������I�ɋ��߂���@�����邱�Ƃ��m���Ă���i�炵���j�B
+　KeyGenのステップ2ではNがBlum数になるようにp,qを生成しているが、NがWill
+iams数になるようにp,qを生成してもよい。もし、NがWilliams数であれば、復号
+時にx_lからx_0を効率的に求める方法があることが知られている（らしい）。
 
-�@Enc�̃X�e�b�v2��x0�������_���ɐ������Ă��邪�A�����Z_N���烉���_���ɗv
-�fz��I�����Ax0=z^2 mod N�Ƃ���΂悢�B���̗���x0�����܂����p����BG�Í���
-�m���Í��̐����𖞂����悤�ɂ��Ă���B�������̂悤�ȗ������܂������Í���
-�A���S���Y���ɑ��݂��Ȃ���΁A�m��Í��ɂȂ��Ă��܂��B
-�@Enc�̃X�e�b�v5��c1�������o�͂���ƁA�����Ȏ�M�ҁi�閧��sk=(p,q)��m��
-�Ă���j�ł����Ă������ł��Ȃ��Ȃ��Ă��܂��B���̂��߁A�����v�Z���邱�Ƃ�
-�q���g�ɂȂ���̂ł���x_l���Y�t�����B
-�@����A�s���Ȏ�M�҂ł���G�ip,q��m��Ȃ��j��x_l����x_(l-1)��hard-core
-�r�b�g�ł���LSB(x_(l-1))���킩��Ȃ��B�������A�G��x_(l-1)�̂���LSB(x_(l-
-1))���������ׂĂ̕�������m���Ă���\���͂���B����ɁAx_(l-1)�����S
-�ɒm���Ă����Ƃ��Ă��ALSB(x_(l-2))�͓��l�ɂ킩��Ȃ��B�����ł́A�I��x_(l
--1)�����S�ɒm��Ȃ��͂�������i���Ȃ��Ƃ�hard-core�r�b�g�̕����͒m��Ȃ��j
-�ALSB(x_(l-2))�͂킩��͂����Ȃ��B�ȉ����l�ȋc�_�ɂ��A�G��LSB(LSB(x0),
-�c,LSB(x_(l-1))���킩��Ȃ��̂ŁAmask���܂������킩��Ȃ��B����āAc1����
-1�r�b�g����񂪘R��Ă��Ȃ����Ƃ��킩��B���̃A�C�f�A�̓o�[�i���Í�������
-�Ɠ����r�b�g���̗�����XOR���Z�ɂ��B�����ƂƔ��Ɏ��Ă���B
+　Encのステップ2でx0をランダムに生成しているが、これはZ_Nからランダムに要
+素zを選択し、x0=z^2 mod Nとすればよい。この乱数x0をうまく利用してBG暗号が
+確率暗号の性質を満たすようにしている。もしこのような乱数がまったく暗号化
+アルゴリズムに存在しなければ、確定暗号になってしまう。
+　Encのステップ5でc1だけを出力すると、正当な受信者（秘密鍵sk=(p,q)を知っ
+ている）であっても復号できなくなってしまう。そのため、鍵を計算することの
+ヒントになるものであるx_lも添付される。
+　一方、不正な受信者である敵（p,qを知らない）はx_lからx_(l-1)のhard-core
+ビットであるLSB(x_(l-1))がわからない。ただし、敵はx_(l-1)のうちLSB(x_(l-
+1))を除くすべての部分情報を知っている可能性はある。さらに、x_(l-1)を完全
+に知っていたとしても、LSB(x_(l-2))は同様にわからない。ここでは、的はx_(l
+-1)を完全に知らないはずだから（少なくともhard-coreビットの部分は知らない）
+、LSB(x_(l-2))はわかるはずがない。以下同様な議論により、敵はLSB(LSB(x0),
+…,LSB(x_(l-1))がわからないので、maskがまったくわからない。よって、c1から
+1ビットも情報が漏れていないことがわかる。このアイデアはバーナム暗号が平文
+と同じビット長の乱数でXOR演算により隠すことと非常に似ている。
 
-�@Dec�̃X�e�b�v2��x_l(=(x_0)^(2^l))����x_(l-1)(=(x_0)^(2^(l-1)))�Ax_(l-1)
-����x_(l-2)�A�c�Ƃǂ�ǂ�N��@�Ƃ��镽���������߂Ă���B���̂Ƃ���ӂɌ�
-�܂��Ă����̂́AN��Blum���ł���A�Ȃ�����Rabin�֐������QR_N����QR_N�ւ�
-�ʑ��ɂȂ��Ă��邩��ł���B
+　Decのステップ2でx_l(=(x_0)^(2^l))からx_(l-1)(=(x_0)^(2^(l-1)))、x_(l-1)
+からx_(l-2)、…とどんどんNを法とする平方根を求めている。このとき一意に決
+まっていくのは、NがBlum数であり、なおかつRabin関数が常にQR_NからQR_Nへの
+写像になっているからである。
 
 
-��BG�Í��̈��S��
+●BG暗号の安全性
 
-�@BG�Í���QR����̉���IND-CPA���S�ł��邪�AIND-CCA���S�ł͂Ȃ��B�Ȃ��Ȃ�
-�΁A�G�����J��pk(=N)�ƃ^�[�Q�b�g�Í���c^*=(c1^*,x_l^*)�𓾂��Ƃ���B����
-�Ƃ��A�����I���N���𗘗p���āAc_1^*�̕��������ł�����G�̏����ł���B
-�@�G��QR_N���烉���_����c1'��I�����A(c1',x_l^*)�𕜍��I���N���ɑ��M����B
-����ƁA�����I���N����m'=mask XOR c1'�𖞂���m'��ԐM����B�G��c1' XOR m'
- XOR c1^*���v�Z���ďo�͂���΂悢�B����Ƃ��̏o�͒l�͕K��c1^*�̕����ɂȂ�
-�Ă���B�Ȃ��Ȃ�΁A���̂悤�Ɍv�Z�ł��邩��ł���B
+　BG暗号はQR仮定の下でIND-CPA安全であるが、IND-CCA安全ではない。なぜなら
+ば、敵が公開鍵pk(=N)とターゲット暗号文c^*=(c1^*,x_l^*)を得たとする。この
+とき、復号オラクルを利用して、c_1^*の平文を特定できたら敵の勝ちである。
+　敵はQR_Nからランダムにc1'を選択し、(c1',x_l^*)を復号オラクルに送信する。
+すると、復号オラクルはm'=mask XOR c1'を満たすm'を返信する。敵はc1' XOR m'
+ XOR c1^*を計算して出力すればよい。するとこの出力値は必ずc1^*の平文になっ
+ている。なぜならば、次のように計算できるからである。
 
 c1' XOR m' XOR c1^*
-=c1' XOR (mask XOR c1') XOR (mask XOR m1^*)�@�ic1^*�̕�����m1^*�Ƃ����j
+=c1' XOR (mask XOR c1') XOR (mask XOR m1^*)　（c1^*の平文をm1^*とした）
 =(c1' XOR c1') XOR (mask XOR mask) XOR m1^*
 =1 XOR 1 XOR m1^*
 =m1
 
 
-��0x0B.) �܂Ƃ�
+■0x0B.) まとめ
 
-�@�{����QR����̉���IND-CPA���SGM�Í����Љ��\�肾�������AWB�̒��ߐ؂�
-�܂łɂ܂Ƃ߂邱�Ƃ��ł��Ȃ������̂ŁA����ɉ񂷗\��ł���B
+　本当はQR仮定の下でIND-CPA安全GM暗号も紹介する予定だったが、WBの締め切り
+までにまとめることができなかったので、今後に回す予定である。
 
-�@����܂ł�WB�ŏЉ���Í��������܂Ƃ߂�Ǝ��̂悤�ȕ\�ɂȂ�B�����őf
-��������������ł���Ƃ��������HF����Ɨ����邱�Ƃɂ���B
+　これまでのWBで紹介した暗号方式をまとめると次のような表になる。ここで素
+因数分解が困難であるという仮定をHF仮定と略することにする。
 
 ------------------------------------------------------------------------------
-| �Í���                  | ����           | ���S��  | ����                  |
+| 暗号名                  | 仮定           | 安全性  | 特徴                  |
 |============================================================================|
-| ElGamal�Í�             | CDH����        | OW-CPA  |                       |
+| ElGamal暗号             | CDH仮定        | OW-CPA  |                       |
 |-------------------------+----------------+---------+-----------------------|
-| �g��ElGamal�Í�         | DDH����        | IND-CPA |                       |
+| 拡張ElGamal暗号         | DDH仮定        | IND-CPA |                       |
 |-------------------------+----------------+---------+-----------------------|
-| ���ȏ��IRSA�Í�         | RSA����        | OW-CPA  | CRT���g���΍������\ |
+| 教科書的RSA暗号         | RSA仮定        | OW-CPA  | CRTを使えば高速化可能 |
 |-------------------------+----------------+---------+-----------------------|
-| Rabin�Í�               | HF����         | OW-CPA  | ��ӂɕ����ł��Ȃ�    |
+| Rabin暗号               | HF仮定         | OW-CPA  | 一意に復号できない    |
 |-------------------------+----------------+---------+-----------------------|
-| ����Rabin�Í�           | Blum����HF���� | OW-CPA  | ������Ԃɐ���������  |
+| 制限Rabin暗号           | Blum数のHF仮定 | OW-CPA  | 平文空間に制限がある  |
 |-------------------------+----------------+---------+-----------------------|
-| ����Rabin�Í�           | Blum����HF���� | OW-CPA  | �������̘R�ꂪ����  |
+| 改良Rabin暗号           | Blum数のHF仮定 | OW-CPA  | 部分情報の漏れが多い  |
 |-------------------------+----------------+---------+-----------------------|
-| Williams�Í�        | Williams����HF���� | OW-CPA  | ������Ԃɐ���������  |
+| Williams暗号        | Williams数のHF仮定 | OW-CPA  | 平文空間に制限がある  |
 |-------------------------+----------------+---------+-----------------------
-| �V���O���r�b�gRabin�Í� | Blum����HF���� | IND-CPA | 1�r�b�g���Í���     |
+| シングルビットRabin暗号 | Blum数のHF仮定 | IND-CPA | 1ビットずつ暗号化     |
 |-------------------------+----------------+---------+-----------------------|
-| BG�Í�                  | QR����         | IND-CPA | Williams�����ƍ���    |
+| BG暗号                  | QR仮定         | IND-CPA | Williams数だと高速    |
 |-------------------------+----------------+---------+-----------------------|
 
-�@����̋���ɂ��Ă����K���Ă����B
-�@CDH�����DDH������ア����ł���i�ア����̕����悢�j�B
-�@����AHF�����QR�����RSA������ア����ł���BBlum����HF����AWilli
-ams����HF����͒ʏ��HF����Ɠ����̑Ó���������Ƃ���Ă���i�f���ɐ���
-�����Ă��A�f���������͓����x�ɓ���Ƃ���Ă���j�B
+　仮定の強弱についても復習しておく。
+　CDH仮定はDDH仮定より弱い仮定である（弱い仮定の方がよい）。
+　一方、HF仮定はQR仮定やRSA仮定より弱い仮定である。Blum数のHF仮定、Willi
+ams数のHF仮定は通常のHF仮定と同等の妥当性があるとされている（素数に制約が
+あっても、素因数分解は同程度に難しいとされている）。
 
-�@�܂����S����IND-CPA���S��OW-CPA���S�����������S���ł���i�������S����
-�����悢�j�B
+　また安全性はIND-CPA安全はOW-CPA安全よりも強い安全性である（強い安全性の
+方がよい）。
 
-�@����̃l�^�͂܂��l���Ă��Ȃ����A��������������]��������Ă����̂ŁA��
-��ɕ�����]�Ɋ֌W����Í��Z�p���Љ��\��ł���B�Ⴆ�΁AGM�Í��AQR��
-��Ɋ�Â��R�C���g�X�v���g�R����ID�x�[�X�Í��ASolvey-Strassen�A���S���Y��
-�Ȃǂ��l���Ă���B
+　次回のネタはまだ考えていないが、せっかく平方剰余を解説してきたので、さ
+らに平方剰余に関係する暗号技術を紹介する予定である。例えば、GM暗号、QR仮
+定に基づくコイントスプロトコルやIDベース暗号、Solvey-Strassenアルゴリズム
+などを考えている。
 
 
-��0x0C.) �Q�l����
+■0x0C.) 参考文献
 
-�E[W80] H. C. Williams. A modification of the RSA public-key encryption 
+・[W80] H. C. Williams. A modification of the RSA public-key encryption 
 procedure. IEEE Transactions on Information Theory, IT-26(6):726?729, No
 vember 1980.
-�E[ACGS88] Werner Alexi, Benny Chor, Oded Goldreich, Claus-Peter Schnorr:
+・[ACGS88] Werner Alexi, Benny Chor, Oded Goldreich, Claus-Peter Schnorr:
  RSA and Rabin Functions: Certain Parts are as Hard as the Whole. SIAM J.
  Comput. 17(2): 194-209 (1988)
-�E[AGS03] A. Akavia, S. Goldwasser, and S. Safra. Proving hard-core pred
+・[AGS03] A. Akavia, S. Goldwasser, and S. Safra. Proving hard-core pred
 icates using list decoding. In in Proc. of the 44th Annual IEEE Symposium
  on Foundations of Computer Science, 2003.
-�E[B01] Daniel J. Bernstein, Faster square roots in annoying finite fields.
-�E[BBS86] Blum, Leonore, Blum, Manuel, and Shub, M., A Simple Unpredicta
+・[B01] Daniel J. Bernstein, Faster square roots in annoying finite fields.
+・[BBS86] Blum, Leonore, Blum, Manuel, and Shub, M., A Simple Unpredicta
 ble Pseudo-random Number Generator, SIAM Journal of Computing, vol. 15, 
 no. 2, May 1986, pp 364-383.
-�E[BER67] Berlekamp, E. R., Factoring Polynomials over Finite Field, Bel
+・[BER67] Berlekamp, E. R., Factoring Polynomials over Finite Field, Bel
 l System Technical Journal, Vol. 46, 1967, pp. 1853-1859.
-�E[CP03] J. Christoph, S. Puchta, On Shank's Algorithm for Modular Squar
+・[CP03] J. Christoph, S. Puchta, On Shank's Algorithm for Modular Squar
 e Roots. Applied Mathe- matics E-Notes, 5 (2005), 84-88. 3.
-�E[R89]T. Rabin and M. Ben-Or, Verifiable Secret Sharing and Multi-party
- Protocols with Honest Majority�E In 21st ACM Symposium on the Theory of
+・[R89]T. Rabin and M. Ben-Or, Verifiable Secret Sharing and Multi-party
+ Protocols with Honest Majority・ In 21st ACM Symposium on the Theory of
  Computing, pages 73-85, 1989
-�E[S73]D. Shanks, Five number-theoretic algorithms, in: Proceedings of t
+・[S73]D. Shanks, Five number-theoretic algorithms, in: Proceedings of t
 he Second Manitoba Conference on Numerical Mathematics, Congressus Numer
 antium, No. VII,1973, 51-70.
 

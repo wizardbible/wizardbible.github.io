@@ -1,15 +1,15 @@
-��Defolos
-��Job: Student
-��Web: http://ruffnex.oc.to/defolos/
-��Mail: defolos@ruffnex.oc.to
-��Team�iGroup�j: none
-��Comment:
-�@����ɂ��́ADefolos�ł��B
-�@�O��̃��|�[�g�Ŏ����HTML�ɂ��ďڂ��������ƌ����Ă����Ȃ���A�S�R��
-�W�Ȃ��j���[�����l�b�g���[�N�ɂ��ď����Ă��܂��܂����B���̕���͎����S
-���̏��w�҂ŁA�����̒��ׂ����Ƃ��܂Ƃ߂������ł��̂ŊԈႦ��������������
-�܂���B�s���S�ȃ��|�[�g�ƂȂ��Ă��܂��Đ\���󂠂�܂���B
-�����̉Ă̖ڕW:
-�@���̉Ă͌����ŋ��Ȑ��w�����������}�V�ɂ������ƍl���Ă���܂��B���^�R
-�[�X�ł����̂ō��Z2�N���琔�w�̎��Ƃ������܂����B�ł��̂Ő�2�����肩���
-���K�𒆐S�ɔ��ςƐ��`�㐔�A���U���w����肽���Ǝv���Ă܂��B
+■Defolos
+●Job: Student
+●Web: http://ruffnex.oc.to/defolos/
+●Mail: defolos@ruffnex.oc.to
+●Team（Group）: none
+●Comment:
+　こんにちは、Defolosです。
+　前回のレポートで次回はHTMLについて詳しく書くと言っておきながら、全然関
+係ないニューラルネットワークについて書いてしまいました。この分野は私も全
+くの初学者で、自分の調べたことをまとめただけですので間違えが多いかもしれ
+ません。不完全なレポートとなってしまって申し訳ありません。
+●この夏の目標:
+　この夏は嫌いで苦手な数学をもう少しマシにしたいと考えております。文型コ
+ースでしたので高校2年から数学の授業が消えました。ですので数2あたりからの
+復習を中心に微積と線形代数、離散数学をやりたいと思ってます。

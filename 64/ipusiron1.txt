@@ -1,110 +1,110 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- �恛��: �f�B�X�N�f�B�e�C�i�[���̔j���ƍ\�� ---
+--- 第○章: ディスクディテイナー錠の破錠と構造 ---
 
-���ҁFIPUSIRON
+著者：IPUSIRON
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@�f�B�X�N�f�B�e�C�i�[���́A��]����~�`�̃f�B�X�N�^���u���[���������O�ł��B
-�@�{�L���ł́A�y�[�W���̊֌W��w�n�b�J�[�̊w�Z ���J���̋��ȏ��x�i�ȍ~�A���J���{�Ɨ����j�Ɍf�ڂł��Ȃ������u�f�B�X�N�f�B�e�C�i�[���̔j���v�Ɓu�����̃f�B�X�N�^���u���[�Ƃ��̍\���v�ɂ��ďЉ�܂��B
+　ディスクディテイナー錠は、回転する円形のディスクタンブラーを備える錠前です。
+　本記事では、ページ数の関係上『ハッカーの学校 鍵開けの教科書』（以降、鍵開け本と略す）に掲載できなかった「ディスクディテイナー錠の破錠」と「実物のディスクタンブラーとその構造」について紹介します。
 
-�@�茳�ɖ{���Ȃ�����A�f�B�X�N�f�B�e�C�i�[�����C���[�W�ł��Ȃ����́A����Web�y�[�W�́u�f�B�X�N�f�B�e�C�i�[���̎d�g�݁v���Q�Ƃ��Ă��������B
+　手元に本がない方や、ディスクディテイナー錠をイメージできない方は、次のWebページの「ディスクディテイナー錠の仕組み」を参照してください。
 
 http://s-akademeia.sakura.ne.jp/main/books/lock/reading.html
 
 
-��0x02.) �f�B�X�N�f�B�e�C�i�[���̔j��
+■0x02.) ディスクディテイナー錠の破錠
 
-�@�u�f�B�X�N�f�B�e�C�i�[���̌����v�́A�����`�ł���A�\���I�ɔ�r�I�傫���Ȃ��Ă��܂��B�������献������A�f�B�X�N�̒������ђʂ���`�Ō����}������܂��B�܂�A�u�f�B�X�N�̒����̐؂茇���v���A���l�ɑ傫���Ȃ��Ă��܂��B����āA���̂��߁A���܂œ����}�����₷���A�j���ɂ͎ア�Ƃ����܂��B
+　「ディスクディテイナー錠の鍵穴」は、長方形であり、構造的に比較的大きくなっています。ここから鍵が入り、ディスクの中央を貫通する形で鍵が挿入されます。つまり、「ディスクの中央の切り欠き」も、同様に大きくなっています。よって、そのため、奥まで道具を挿入しやすく、破錠には弱いといえます。
 
-�@�f�B�X�N�f�B�e�C�i�[����j�����铮�悪Youtube�Ō��J����Ă��܂��B
+　ディスクディテイナー錠を破錠する動画がYoutubeで公開されています。
 
 http://videolike.org/view/yt=.r-gi$gzAPz
 
-�@���̓���ł̓^�K�l�������ɑ}�����āA�Ă��̌����𗘗p���āA�����������߂Ă���W�����O���Ă��܂��B
+　この動画ではタガネを鍵穴に挿入して、てこの原理を利用して、内筒をおさめている蓋を取り外しています。
 
 
-��0x03.) BUFFALO����BSLO1N�̔j��
+■0x03.) BUFFALO製のBSLO1Nの破錠
 
-�@�����ł�BUFFALO����BSLO1N�Ƃ����f�B�X�N�f�B�e�C�i�[����j��������@���Љ�܂��BBUFFALO���Ȃ̂ŁA�m�[�gPC�̓���h�~�p�̏��O�Ƃ����܂��B
+　ここではBUFFALO製のBSLO1Nというディスクディテイナー錠を破錠する方法を紹介します。BUFFALO製なので、ノートPCの盗難防止用の錠前といえます。
 
-1�F�f�B�X�N�f�B�e�C�i�[���{�̂��t���ɂ��āA�V���b�N���𖜗͂ŌŒ肵�܂��B���͂͌Œ肳��Ă���ƍ�Ƃ��₷���ł����A�����ł͂Ȃ��Ă���肠��܂���B
+1：ディスクディテイナー錠本体を逆さにして、シャックルを万力で固定します。万力は固定されていると作業しやすいですが、そうではなくても問題ありません。
 
-2�F��v�ȃj�b�p�[�ŊW�����X�ɍ��A�����}�C�i�X�h���C�o�[�ŊW����菜���܂��i�}1�Q�Ɓj�B
+2：丈夫なニッパーで蓋を徐々に削りつつ、太いマイナスドライバーで蓋を取り除きます（図1参照）。
 
-�i�}1�Fhttp://wizardbible.org/64/images/DiskDetainer41.jpg�j�j�b�p�[�ɂ��j��
+（図1：http://wizardbible.org/64/images/DiskDetainer41.jpg）ニッパーによる破壊
 
-3�F�W�����O���ƁA���̉���C�����O�������܂��i�}2�Q�Ɓj�B
+3：蓋を取り外すと、その下にCリングが見えます（図2参照）。
 
-�i�}2�Fhttp://wizardbible.org/64/images/DiskDetainer42.jpg�j�W�̉���C�����O
+（図2：http://wizardbible.org/64/images/DiskDetainer42.jpg）蓋の下のCリング
 
-�@���W�I�y���`��p���āAC�����O����菜���ƁA���W����菜���܂��B���W�̉��ɂ́i�f�B�X�N�ƃX�y�[�T�[������j�����ƃT�C�h�o�[�����݂��܂��B���O���t���ɂ���΁A���g�����ׂĎ�菜�����Ƃ��ł��܂��i�}3�Q�Ɓj�B�ȏ�Ŕj�����������܂����B
+　ラジオペンチを用いて、Cリングを取り除くと、中蓋を取り除けます。中蓋の奥には（ディスクとスペーサーを内包する）内筒とサイドバーが存在します。錠前を逆さにすれば、中身をすべて取り除くことができます（図3参照）。以上で破錠が完了しました。
 
-�i�}3�Fhttp://wizardbible.org/64/images/DiskDetainer43.jpg�jBSLO1N�̒��g
-
-
-��0x04.) BSLO1N�̓����\��
-
-���f�B�X�N�ƃX�y�[�T�[
-
-�@8���̃f�B�X�N��7���̃X�y�[�T�[�́A�����ɓ����Ă��܂��B���W�́A��������f�B�X�N�ƃX�y�[�T�[�̒E����h���܂��B�����ɋ߂�������u�f�B�X�N���X�y�[�T�[���f�B�X�N���c���f�B�X�N�������̉��v�ƂȂ��Ă��܂��i�}1�Q�Ɓj�B���̐}�ł́A�E�����献��}�����邱�ƂɂȂ�܂��i�E���獶�ɓ����Ă����j�B
-
-�i�}1�Fhttp://wizardbible.org/64/images/DiskDetainer44.jpg�j�f�B�X�N�ƃX�y�[�T�[�̈ʒu�֌W
-
-�@���ׂẴX�y�[�T�[�́A���ʂ̌`��ɂȂ�܂��B�܂��A�f�B�X�N�́A�������̌`��������܂��B���̌`��ɂ���āA�Ή����錮�R�̍������قȂ�܂��i�}2�Q�Ɓj�B
-
-�i�}2�Fhttp://wizardbible.org/64/images/DiskDetainer45.jpg�j�f�B�X�N�̌`��
-
-������
-
-�@�����͎��̂悤�ɁA�傫���J�b�g����Ă��镔���Ə������J�b�g����Ă��镔��������܂��i�}3�Q�Ɓj�B
-
-�i�}3�Fhttp://wizardbible.org/64/images/DiskDetainer46.jpg�j�����̊O��
-
-�@�傫���J�b�g����Ă��镔���ɂ����āA�f�B�X�N�̓ʕ����X���C�h���܂��B�X�y�[�T�[�́A���̕����ŌŒ肳��܂��B
-�@�������J�b�g����Ă��镔���ɂ́A�T�C�h�o�[������܂��B�f�B�X�N�ƃX�y�[�T�[�̂ǂ�����A�T�C�h�o�[������؂茇���������܂��B�����̏������J�b�g����Ă��镔���ɂ����āA�f�B�X�N�ƃX�y�[�T�[�̐؂茇�����������ƂŁA�T�C�h�o�[������܂��B
-
-�@�����ɍ�����}������ƁA���̏�ԂɂȂ�܂��i�}4�Q�Ɓj�B�����ł̓f�B�X�N�ƃX�y�[�T�[�����O���Ă���A���R�̈ʒu���킩��悤�ɂ��Ă��܂��B
-
-�i�}4�Fhttp://wizardbible.org/64/images/DiskDetainer47.jpg�j�����ɍ�����}�������Ƃ���
-
-���V���b�N���ƘA�����镔��
-
-�@���O�͓������i�[���邽�ߓ���ɂ���ʂ���Ă��܂��B���̒��ɊO�����͂ߍ��܂�Ă���A�Œ肳��Ă��܂��B�O���̉��ɂ́A�V���b�N�����Œ肷��@�\���g�ݍ��܂�Ă��܂��i�}5�Q�Ɓj�B��������]���邱�ƂŁA�V���b�N���̌Œ肪�O��܂��B���̌��ʁA�V���b�N���������������Ƃ��ł��܂��B
-
-�i�}5�Fhttp://wizardbible.org/64/images/DiskDetainer48.jpg�j�V���b�N�����Œ肷��@�\
-
-���O��
-
-�@�Ƃ���ŁA�O���̏㕔�ɂ͈꒼���̉��݂�����܂��B�{�����ɂ͂����ɃT�C�h�o�[�����݂��܂��B�T�C�h�o�[�S�̂��i�[�����킯�ł͂Ȃ��A�ꕔ�������i�[����Ă��܂��B�܂�A�T�C�h�o�[�̈ꕔ�͊O���Ɠ����̊Ԃ̃V�A���C����ɑ��݂��邱�ƂɂȂ�܂��B���̂Ƃ��͓��������S�ɉ�]���邱�Ƃ��ł����A�����ł��܂���B
-
-���V�A���C�������������
-
-�@���łɎ��グ���摜�ł����A������x�m�F���Ă��������i�}6�Q�Ɓj�B�f�B�X�N�̓ʕ��͔����v��葤�ɑ����Ă��܂��B���̂Ƃ��͎{����Ԃł��B
-
-�i�}6�Fhttp://wizardbible.org/64/images/DiskDetainer44.jpg�j�����v���葤�ɑ������Ƃ���
-
-�@�܂��A�f�B�X�N�̓ʕ������v��葤�ɑ������Ƃ���ł��i�}7�Q�Ɓj�B���̏�Ԃ́A�s�b�L���O�̏�����Ԃɑ������܂��B�������O���̒��ł���ȏ��]���邽�߂ɂ́A�T�C�h�o�[���f�B�X�N�̐؂茇���Ɋ��S�ɓ��荞�ޕK�v������܂��B
-
-�i�}7�Fhttp://wizardbible.org/64/images/DiskDetainer49.jpg�j���v���葤�ɑ������Ƃ���
-
-�@���̂Ƃ��A�f�B�X�N�̐؂茇���͑����Ă��Ȃ����߁A�T�C�h�o�[����������኱��яo���܂��i�}8�Q�Ɓj�B���̂��߁A�T�C�h�o�[���V�A���C����ɑ��݂��A�����̉�]���ז����܂��B�܂�A�܂������ł��܂���B
-
-�i�}8�Fhttp://wizardbible.org/64/images/DiskDetainer50.jpg�j�f�B�X�N�ƃT�C�h�o�[�̏�ԁi�{����ԁj
-
-�@�s�b�L���O���s������A������}�������肵�āA�f�B�X�N�̐؂茇���𑵂����Ƃ��܂��B����ƁA�T�C�h�o�[�������̒��Ɋ��S�ɓ��荞�݂܂��i�}9�Q�Ɓj�B���̌��ʁA�����͊O���̒�����]�ł��A�ŏI�I�ɃV���b�N������яo�܂��B
-
-�i�}9�Fhttp://wizardbible.org/64/images/DiskDetainer51.jpg�j�f�B�X�N�ƃT�C�h�o�[�̏�ԁi������ԁj
+（図3：http://wizardbible.org/64/images/DiskDetainer43.jpg）BSLO1Nの中身
 
 
-��0x05.) ������
+■0x04.) BSLO1Nの内部構造
 
-�@����̋L���ł́A�����̃f�B�X�N�f�B�e�C�i�[����j�����A�����\�����m�F���܂����B���ڍׂȎd�g�݂�s�b�L���O���@�ɂ��ẮA�u���J���{�v�̑�10�͂��Q�Ƃ��Ă��������B
+●ディスクとスペーサー
+
+　8枚のディスクと7枚のスペーサーは、内筒に内包されています。中蓋は、内筒からディスクとスペーサーの脱落を防ぎます。鍵穴に近い方から「ディスク→スペーサー→ディスク→…→ディスク→内筒の奥」となっています（図1参照）。この図では、右側から鍵を挿入することになります（右から左に入っていく）。
+
+（図1：http://wizardbible.org/64/images/DiskDetainer44.jpg）ディスクとスペーサーの位置関係
+
+　すべてのスペーサーは、共通の形状になります。また、ディスクは、いくつかの形状を持ちます。この形状によって、対応する鍵山の高さが異なります（図2参照）。
+
+（図2：http://wizardbible.org/64/images/DiskDetainer45.jpg）ディスクの形状
+
+●内筒
+
+　内筒は次のように、大きくカットされている部分と小さくカットされている部分があります（図3参照）。
+
+（図3：http://wizardbible.org/64/images/DiskDetainer46.jpg）内筒の外観
+
+　大きくカットされている部分において、ディスクの凸部がスライドします。スペーサーは、この部分で固定されます。
+　小さくカットされている部分には、サイドバーが入ります。ディスクとスペーサーのどちらも、サイドバーが入る切り欠きを持ちます。内筒の小さくカットされている部分において、ディスクとスペーサーの切り欠きが揃うことで、サイドバーが入ります。
+
+　内筒に合鍵を挿入すると、次の状態になります（図4参照）。ここではディスクとスペーサーを取り外しており、鍵山の位置がわかるようにしています。
+
+（図4：http://wizardbible.org/64/images/DiskDetainer47.jpg）内筒に合鍵を挿入したところ
+
+●シャックルと連動する部分
+
+　錠前は内筒を格納するため筒状にくりぬかれています。その中に外筒がはめ込まれており、固定されています。外筒の奥には、シャックルを固定する機構が組み込まれています（図5参照）。内筒が回転することで、シャックルの固定が外れます。その結果、シャックルを引き抜くことができます。
+
+（図5：http://wizardbible.org/64/images/DiskDetainer48.jpg）シャックルを固定する機構
+
+●外筒
+
+　ところで、外筒の上部には一直線の凹みがあります。施錠時にはここにサイドバーが存在します。サイドバー全体が格納されるわけではなく、一部だけが格納されています。つまり、サイドバーの一部は外筒と内筒の間のシアライン上に存在することになります。このときは内筒を完全に回転することができず、解錠できません。
+
+●シアラインが揃った場面
+
+　すでに取り上げた画像ですが、もう一度確認してください（図6参照）。ディスクの凸部は反時計回り側に揃っています。このときは施錠状態です。
+
+（図6：http://wizardbible.org/64/images/DiskDetainer44.jpg）反時計周り側に揃えたところ
+
+　また、ディスクの凸部を時計回り側に揃えたところです（図7参照）。この状態は、ピッキングの初期状態に相当します。内筒が外筒の中でこれ以上回転するためには、サイドバーがディスクの切り欠きに完全に入り込む必要があります。
+
+（図7：http://wizardbible.org/64/images/DiskDetainer49.jpg）時計周り側に揃えたところ
+
+　このとき、ディスクの切り欠きは揃っていないため、サイドバーが内筒から若干飛び出します（図8参照）。そのため、サイドバーがシアライン上に存在し、内筒の回転を邪魔します。つまり、まだ解錠できません。
+
+（図8：http://wizardbible.org/64/images/DiskDetainer50.jpg）ディスクとサイドバーの状態（施錠状態）
+
+　ピッキングを行ったり、合鍵を挿入したりして、ディスクの切り欠きを揃ったとします。すると、サイドバーが内筒の中に完全に入り込みます（図9参照）。その結果、内筒は外筒の中を回転でき、最終的にシャックルが飛び出ます。
+
+（図9：http://wizardbible.org/64/images/DiskDetainer51.jpg）ディスクとサイドバーの状態（解錠状態）
+
+
+■0x05.) おわりに
+
+　今回の記事では、実物のディスクディテイナー錠を破錠し、内部構造を確認しました。より詳細な仕組みやピッキング方法については、「鍵開け本」の第10章を参照してください。
 
 

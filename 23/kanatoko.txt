@@ -1,57 +1,57 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- ��2��: SQL�C���W�F�N�V�����ɑ΂���C���`�L�h�� ---
+--- 第2章: SQLインジェクションに対するインチキ防御 ---
 
-���ҁF����
+著者：金床
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@�ȑO������hosts�t�@�C���̖��O�ύX�Ǝ����悤�ȃl�^�ł���B�܂����Ă��C��
-�`�L�I���z�ɂ��䗬���׍H�h��e�N�j�b�N��҂ݏo���Ă��܂����̂ŁA���肸
-�Ɍ��J�������Ǝv���B�薼�̒ʂ�A����̃e�N�j�b�N��SQL�C���W�F�N�V�����U��
-�ɑ΂���h��Ƃ��Ďg�p�ł�����̂��BSQL�C���W�F�N�V�����U���̓f�r���[�ȗ��A
-���ɓ��{�����ł͂ς��Ƃ��Ȃ��������������̂́A���N�ɂȂ��Ĕ��������J�J�N
-�R���i�ꕔ�������j�̉�₁E�y�ьl��񗬏o�����ň��X�^�[�_���ɂ̂��オ
-�����A�E�F�u�A�v���P�[�V�����ɑ΂���U����@�̈��ł���B�����̃P�[�X��
-�̓f�[�^�x�[�X�̒��g���E�F�u�A�v���P�[�V�����o�R�œ��܂ꂽ���₂��ꂽ��
-���鑼�A�J���N�R���i�ꕔ�������j�̂悤��Microsoft��SQL Server���g���Ă���
-�ꍇ�ɂ́Axp_cmdshell�Ƃ����Ƃ��Ă��i�N���b�J�[�ɂƂ��āj�֗��ȋ@�\�ɂ��
-��OS�̃R�}���h�����s����A���̌��ʃE�F�u�T�C�g�̉�₂��s��ꂽ������Ă�
-�܂��B�j��͂̑傫���ł͑����񂹕t���Ȃ��A���ɔ��������U���̂ЂƂ��B
-���Ȃ݂ɂ��̋L���ŏo�Ă���u�N���b�J�[�v�Ƃ����p��͈����ȃR���s���[�^��
-�ߎ҂��w�����̂ł���A�u�ǁ[�����~���ł��v�ȂǂƖ����^�R�Ă����D���Ȑl
-�����̂��Ƃł͂Ȃ��̂Œ��ӂ��ꂽ���B
-
-
-��0x02.) �R���Z�v�g
-
-�@�����̃\�t�g�E�F�A��v���g�R���ł͎��X�ɋ@�\�g�����s���A���@�\�łƂ�
-���֗��ȕ����ւƊJ�����i�߂��Ă����B���������́u�֗��v�������҂ŁA���[
-�U�ɂƂ��ĕ֗��ł���悤�݌v���ꂽ�@�\���A�N���b�J�[�ɂƂ��Ă��������֗�
-�ɂȂ��Ă��邱�Ƃ����X����B�Ђǂ��ꍇ�ɂ͐��K�̃��[�U���w�ǎg�p���Ȃ���
-�ɁA�N���b�J�[�ɂ��N���̍ۂɂ͒�Ԃ̋@�\�Ƃ��Ďg�p�����悤�Ȃ��̂���
-�݂���B�Ⴆ��HTTP��TRACE���\�b�h�B����Ȃ��́A���ʂ̃��[�U�͂܂��g��Ȃ��B
-�ɂ��ւ�炸Apache�Ȃǂ�Web�T�[�o�[�͒��J�Ɏ������Ă��܂��Ă��邽�߂ɁA��
-���s��Ajax�Ŏg�p�����XMLHttpRequest�i���������ȁj�Ƒg�ݍ��킹��Cross Si
-te Tracing�Ƃ����V���ȍU����@���҂ݏo����Ă��܂����B�܂��A��q��xp_cmd
-shell�Ȃǂ����������ʂ͎g���Ȃ��̂Ɂi�g��Ȃ���ˁH�j�N���b�J�[�ɂƂ���
-�͐N���̂��߂̌���I�ȕ���ƂȂ��Ă��܂��Ă���B
-�@���̂悤�ȋ@�\�́A�������g���Ă���\�t�g�E�F�A����͍폜�������B�����s
-�ւł��Z�L���A�ȕ����C�C�I���ꂪ��{�I�ȃR���Z�v�g�ł���B
+　以前書いたhostsファイルの名前変更と似たようなネタである。またしてもイン
+チキ的発想による我流小細工防御テクニックを編み出してしまったので、懲りず
+に公開したいと思う。題名の通り、今回のテクニックはSQLインジェクション攻撃
+に対する防御として使用できるものだ。SQLインジェクション攻撃はデビュー以来、
+特に日本国内ではぱっとしない扱いだったものの、今年になって発生したカカク
+コ○（一部伏せ字）の改竄・及び個人情報流出事件で一躍スターダムにのし上が
+った、ウェブアプリケーションに対する攻撃手法の一種である。多くのケースで
+はデータベースの中身をウェブアプリケーション経由で盗まれたり改竄されたり
+する他、カ○クコム（一部伏せ字）のようにMicrosoftのSQL Serverを使っている
+場合には、xp_cmdshellというとっても（クラッカーにとって）便利な機能によっ
+てOSのコマンドが実行され、その結果ウェブサイトの改竄が行われたりもしてし
+まう。破壊力の大きさでは他を寄せ付けない、非常に避けたい攻撃のひとつだ。
+ちなみにこの記事で出てくる「クラッカー」という用語は悪質なコンピュータ犯
+罪者を指すものであり、「どーも○×△です」などと名乗るタコ焼きが好きな人
+たちのことではないので注意されたい。
 
 
-��0x03.) ����폜����@�\��UNION��
+■0x02.) コンセプト
 
-�@���č���폜����@�\�́ASQL���Ŏg�����Ƃ̂ł���uUNION�v�L�[���[�h�ł�
-��B�����ɂ���X�[�p�[�ł͂Ȃ����A�܂��Ă�f�B�X�NUNION�ł��Ȃ��B�ŋߍs��
-�ĂȂ��Ȃ��f�B�X�NUNION�B
-�@����UNION�͕�����select���̌��ʂ𓝍����邽�߂Ɏg����B�ł��ȒP�ȗ��
-���̂悤�Ȃ��̂��B
+　多くのソフトウェアやプロトコルでは次々に機能拡張が行われ、多機能でとて
+も便利な方向へと開発が進められていく。しかしこの「便利」がくせ者で、ユー
+ザにとって便利であるよう設計された機能が、クラッカーにとっても激しく便利
+になっていることが多々ある。ひどい場合には正規のユーザが殆ど使用しないの
+に、クラッカーによる侵入の際には定番の機能として使用されるようなものも存
+在する。例えばHTTPのTRACEメソッド。こんなもの、普通のユーザはまず使わない。
+にも関わらずApacheなどのWebサーバーは丁寧に実装してしまっているために、今
+流行のAjaxで使用されるXMLHttpRequest（だったかな）と組み合わせてCross Si
+te Tracingという新たな攻撃手法が編み出されてしまった。また、先述のxp_cmd
+shellなども同じく普通は使われないのに（使わないよね？）クラッカーにとって
+は侵入のための決定的な武器となってしまっている。
+　このような機能は、自分が使っているソフトウェアからは削除したい。多少不
+便でもセキュアな方がイイ！これが基本的なコンセプトである。
+
+
+■0x03.) 今回削除する機能はUNIONだ
+
+　さて今回削除する機能は、SQL文で使うことのできる「UNION」キーワードであ
+る。元町にあるスーパーではないし、ましてやディスクUNIONでもない。最近行っ
+てないなぁディスクUNION。
+　さてUNIONは複数のselect文の結果を統合するために使われる。最も簡単な例は
+次のようなものだ。
 
 -----
 mysql> select 1 union select 2 union select 3;
@@ -65,30 +65,30 @@ mysql> select 1 union select 2 union select 3;
 3 rows in set (0.00 sec)
 -----
 
-�@�R��̓f�[�^�x�[�X�ɂ��Ă͏��S�҂ɖт����������炢�̃X�L������������
-���Ȃ��̂ł��̂�����������Ȃ����A�͂����肢���Ďg��Ȃ��ł��BUNION�BSEL
-ECT���͓������Ȃ��ł��B�f�[�^�x�[�X�n�J�[�ɂȂ��UNION���������肷��̂�
-�낤���B�Ƃɂ����R��͎g��Ȃ��B�����Ă���UNION�Ƃ����@�\�ASQL�C���W�F�N
-�V�����U�������肠����̂ɂ��邽�߂́A�N���b�J�[�ɂƂ��Č������Ȃ��@�\��
-�Ȃ��Ă��܂��Ă���̂��BSQL�C���W�F�N�V�����U���̍ۂ�UNION���ǂ̂悤�Ɏg
-���邩�ɂ��Ă̓l�b�g��ɖL�x�ɂ��镶�����Q�Ƃ��Ă��炤�Ƃ��āA�Ƃɂ�
-������UNION�Ƃ��������ȋ@�\�������̃V�X�e������폜�������B����폜�����
-�ۂƂȂ�V�X�e���i�f�[�^�x�[�X�j�́A���ɃI�[�v���\�[�X�ŃV�F�A������MySQ
-L��PostgreSQL���B���Ȃ݂�MySQL�͌Â��o�[�W�����ł͂�������UNION�̋@�\���T
-�|�[�g����Ă��炸�A���̂�����SQL�C���W�F�N�V�����U���ɑ΂���ϐ��������Z
-�L���A���ƕ]������Ă����肷��B�������ŋ߂̃o�[�W�����ł͂�������T�|�[
-�g����Ă���A���̃f�[�^�x�[�X�Ɠ��l��SQL�C���W�F�N�V�����U���̍ۂɃN���b
-�J�[�Ɏg�p����Ă��܂��^����H�����B
+　漏れはデータベースについては初心者に毛が生えたくらいのスキルしか持って
+いないのでそのせいかもしれないが、はっきりいって使わないです。UNION。SEL
+ECT文は統合しないです。データベースハカーになるとUNION乱発したりするのだ
+ろうか。とにかく漏れは使わない。そしてこのUNIONという機能、SQLインジェク
+ション攻撃を実りあるものにするための、クラッカーにとって欠かせない機能と
+なってしまっているのだ。SQLインジェクション攻撃の際にUNIONがどのように使
+われるかについてはネット上に豊富にある文献を参照してもらうとして、とにか
+くこのUNIONという物騒な機能を自分のシステムから削除したい。今回削除する対
+象となるシステム（データベース）は、共にオープンソースでシェアも高いMySQ
+LとPostgreSQLだ。ちなみにMySQLは古いバージョンではそもそもUNIONの機能がサ
+ポートされておらず、そのせいでSQLインジェクション攻撃に対する耐性が高くセ
+キュアだと評価されていたりする。しかし最近のバージョンではしっかりサポー
+トされており、他のデータベースと同様にSQLインジェクション攻撃の際にクラッ
+カーに使用されてしまう運命を辿りつつある。
 
 
-��0x04.) PostrgeSQL����UNION������
+■0x04.) PostrgeSQLからUNIONを除去
 
-�@�܂�PostgreSQL�̏ꍇ�ł���B���Ȃ݂Ɏ茳�Ŏ������̂͑����Â��o�[�W����
-�Ȃ̂ŁA�ŋ߂̐V������ł����l�ɏ����ł��邩�ǂ����͕�����Ȃ��B
-�@PostgreSQL�̃\�[�X��W�J����ƁAsrc/backend/parser�Ƃ����f�B���N�g����
-keywords.c�Ƃ����t�@�C��������B���̃t�@�C���ɂ́A���̂悤�Ƀf�[�^�x�[�X
-�G���W����SQL�������߂��Ă������Ɏg����A�e��̃L�[���[�h����`����Ă�
-��B
+　まずPostgreSQLの場合である。ちなみに手元で試したのは多少古いバージョン
+なので、最近の新しいやつでも同様に除去できるかどうかは分からない。
+　PostgreSQLのソースを展開すると、src/backend/parserというディレクトリに
+keywords.cというファイルがある。このファイルには、次のようにデータベース
+エンジンがSQL文を解釈していく時に使われる、各種のキーワードが定義されてい
+る。
 
 -----
 static ScanKeyword ScanKeywords[] = {
@@ -98,30 +98,30 @@ static ScanKeyword ScanKeywords[] = {
         {"access", ACCESS},
         {"action", ACTION},
         {"add", ADD},
-...�i��)
+...（略)
 -----
 
-�@���̒���{"union", UNION},�Ƃ����s������̂ŁA���̍s��ύX����Ηǂ��B��
-���� {"onion", UNION},�ƕύX����΁AUNION�̑����ONION�Ƃ����L�[���[�h
-���g�p�ł���A���ɃC�J����PostgreSQL�̏o���オ�肾�B�L�[���[�h��������
-���m��Ȃ����̂ɕύX������@�ł��ǂ����A���邢�͂��̍s����������폜����
-���ǂ���������Ȃ��B���Ȃ݂ɒ��ӓ_�Ƃ��āA�L�[���[�h��ύX����ۂɂ͔z��
-���A���t�@�x�b�g���Ƀ\�[�g���ꂽ��Ԃ�ۂ悤�ɂ��邱�ƁB�܂��A�R��͑�
-�ۂ̍s���폜������@�͎����Ă��Ȃ��̂ŁA�폜���Ă��������@�\���邩�ǂ���
-�͕�����Ȃ��B
-�@UNION�̍s��ύX�i�������͍폜�j������ēxmake���Asrc/backend���ɐ�����
-���o�C�i��postgres�����ݎg�p���Ă�����̂ƒu�������āA�f�[�^�x�[�X����
-�N������B�����UNION�̏�������������B
+　この中に{"union", UNION},という行があるので、この行を変更すれば良い。例
+えば {"onion", UNION},と変更すれば、UNIONの代わりにONIONというキーワード
+が使用できる、非常にイカしたPostgreSQLの出来上がりだ。キーワードを自分し
+か知らないものに変更する方法でも良いし、あるいはこの行をさっくり削除して
+も良いかもしれない。ちなみに注意点として、キーワードを変更する際には配列
+がアルファベット順にソートされた状態を保つようにすること。また、漏れは対
+象の行を削除する方法は試していないので、削除しても正しく機能するかどうか
+は分からない。
+　UNIONの行を変更（もしくは削除）したら再度makeし、src/backend内に生成さ
+れるバイナリpostgresを現在使用しているものと置き換えて、データベースを再
+起動する。これでUNIONの除去が完了する。
 
 
-��0x05.) MySQL����UNION������
+■0x05.) MySQLからUNIONを除去
 
-�@����MySQL�̏ꍇ���B�茳�ł̓o�[�W����4.1.15���g�����B�o�[�W����5�n���
-�ǂœ������@���g���邩�ǂ����͕�����Ȃ��B�܂��A��q�̒ʂ�Â��o�[�W����
-�ł͂�������UNION���T�|�[�g����Ă��Ȃ��̂ŁA��������K�v�͂Ȃ��B
-�@MySQL�̃\�[�X��W�J����ƁAsql�Ƃ����f�B���N�g����lex.h�Ƃ����t�@�C����
-����BPostgreSQL��keyword.c�Ɠ��l�ɁA���̃t�@�C���Ɋe�L�[���[�h����`����
-�Ă��镔��������B
+　次にMySQLの場合だ。手元ではバージョン4.1.15を使った。バージョン5系列な
+どで同じ方法が使えるかどうかは分からない。また、先述の通り古いバージョン
+ではそもそもUNIONがサポートされていないので、除去する必要はない。
+　MySQLのソースを展開すると、sqlというディレクトリにlex.hというファイルが
+ある。PostgreSQLのkeyword.cと同様に、このファイルに各キーワードが定義され
+ている部分がある。
 
 -----
 static SYMBOL symbols[] = {
@@ -131,26 +131,26 @@ static SYMBOL symbols[] = {
   { "<>",               SYM(NE)},
   { "!=",               SYM(NE)},
   { "=",                SYM(EQ)},
-...�i���j
+...（略）
 -----
 
-�@�����ł́u{ "UNION",            SYM(UNION_SYM)},�v�Ƃ����s���ړI�̕���
-�ɂȂ�BUNION��ONION�Ȃǂɕς�����A�ēxmake����B������sql�f�B���N�g����
-�ɐ��������mysqld�����ݎg�p���Ă�����̂ƒu�������A�f�[�^�x�[�X���ċN��
-����Ώo���オ�肾�B
+　ここでは「{ "UNION",            SYM(UNION_SYM)},」という行が目的の部分
+になる。UNIONをONIONなどに変えたら、再度makeする。そしてsqlディレクトリ内
+に生成されるmysqldを現在使用しているものと置き換え、データベースを再起動
+すれば出来上がりだ。
 
 
-��0x06.) �܂Ƃ�
+■0x06.) まとめ
 
-�@���̂悤�ɁAPostgreSQL��MySQL����A���Ɏ�y��UNION�@�\�̍폜���s����
-�Ƃ��ł����B�R��̓N���b�J�[�ł͖������A�E�F�u�A�v���̃Z�L�����e�B������
-����ۂɂ͓��R�A�U���҂̎��_�ō�Ƃ���B���̎��̃N���b�J�[�I���_����l��
-��ƁA��͂�UNION���폜����Ă���Ƒ啪�Ⴄ�B���׍H�ɂ͈Ⴂ�Ȃ����A�����
-��Ɍ��ʂ̂�����@�ł͂Ȃ����Ǝv���B
-�@�I�[�v���\�[�X�\�t�g�E�F�A�̃\�[�X�R�[�h�������ł�����Ƃ������Ƃ͕~��
-�����������邩������Ȃ����A�u�@�\�̍폜�v�Ƃ����ϓ_�����������Ă݂�ƁA
-��r�I�ȒP�ł��邱�ƂɋC�t���B���̂悤�Ɏ��R�Ɏ�������ėV�ׂ邱�Ƃ́A��
-���Ŏg���邱�ƂƓ������A�I�[�v���\�[�X�\�t�g�E�F�A���g����ł̑傫�ȃ���
-�b�g�ł���B���󂳂ꂽ���B
+　このように、PostgreSQLとMySQLから、非常に手軽にUNION機能の削除を行うこ
+とができた。漏れはクラッカーでは無いが、ウェブアプリのセキュリティを検査
+する際には当然、攻撃者の視点で作業する。この時のクラッカー的視点から考え
+ると、やはりUNIONが削除されていると大分違う。小細工には違いないが、それな
+りに効果のある方法ではないかと思う。
+　オープンソースソフトウェアのソースコードを自分でいじるということは敷居
+が高く感じるかもしれないが、「機能の削除」という観点から手を加えてみると、
+比較的簡単であることに気付く。このように自由に手を加えて遊べることは、無
+料で使えることと同じく、オープンソースソフトウェアを使う上での大きなメリ
+ットである。享受されたし。
 
 

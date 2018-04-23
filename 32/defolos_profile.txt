@@ -1,17 +1,17 @@
-��Defolos
-��Job: Student
-��Web: http://ruffnex.oc.to/defolos/
-��Mail: defolos@ruffnex.oc.to
-��Team�iGroup): none
-��Comment:
-�@����ɂ��́ADefolos�ł��B
-�@����͔ԊO�҂Ƃ������ƂŁA�v���O���~���O�̗��K�ƌ��������Ƃ��炵���薼
-�ɂ��Ă��܂����A���ۂ͎��Ԃ��Ȃ��ĈȑO�������\�[�X�𗬗p���������ł��B��
-�������ȃ��|�[�g�ɂȂ��Ă��܂��Đ\����Ȃ��v���܂��B����͂�������Ƃ���
-���|�[�g���o�������ł��B
-��5�N��̃C���^�[�l�b�g�͂ǂ��Ȃ��Ă���̂��H
-�@��]�Ƃ��Ă͌������E�Ƃ̃����N�������ł��Ă��邱�Ƃł��傤���B�C���^�[
-�l�b�g�����E�̔]�ƂȂ�O�i�K�Ƃ��āA�������E�̏�񂪃C���^�[�l�b�g�Ƃ���
-���z���E�ɔ��f�����悤�ɂȂ��Ă���Ƃ悢�ł��ˁB
+■Defolos
+●Job: Student
+●Web: http://ruffnex.oc.to/defolos/
+●Mail: defolos@ruffnex.oc.to
+●Team（Group): none
+●Comment:
+　こんにちは、Defolosです。
+　今回は番外編ということで、プログラミングの練習と言うもっともらしい題名
+にしていますが、実際は時間がなくて以前書いたソースを流用しただけです。い
+い加減なレポートになってしまって申し訳なく思います。次回はしっかりとした
+レポートを提出するつもりです。
+●5年後のインターネットはどうなっているのか？
+　願望としては現実世界とのリンクが実現できていることでしょうか。インター
+ネットが世界の脳となる前段階として、現実世界の情報がインターネットという
+仮想世界に反映されるようになっているとよいですね。
 
 

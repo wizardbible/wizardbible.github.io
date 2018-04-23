@@ -1,104 +1,104 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- ��7��: ���O��DLL���v���Z�X�փ}�b�s���O��������@ �`LoadLibrary�֐��̍쐬�` ---
+--- 第7章: 自前でDLLをプロセスへマッピングさせる方法 〜LoadLibrary関数の作成〜 ---
 
-���ҁFKenji Aiko
+著者：Kenji Aiko
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@���͈ȑO�uWizardBible vol.15�v�ɂāu���o�[�X�G���W�j�A���O�v�Ƃ����L��
-�������܂����B�����āA���̋L���̍Ō�́u��΂�Krack����Ȃ��\�t�g�E�F�A��
-�������l����v�ɂāA�}�V������Í��������v���O����������ɓ���Ă����A
-����̃p�X���[�h����͂��Ȃ���ΔC�ӂ̃R�[�h�����������ꂸ�A���ʓI�ɔC��
-�̃R�[�h�����s����Ȃ��悤�ɂ���Ƃ����e�N�j�b�N�������܂����B�������A��
-�̃e�N�j�b�N�͑O��̋L���ŏ������ʂ�A���p���Ɍ����܂��B
+　私は以前「WizardBible vol.15」にて「リバースエンジニアリグ」という記事
+を書きました。そして、この記事の最後の「絶対にKrackされないソフトウェアの
+作り方を考える」にて、マシン語を暗号化したプログラムを内部に入れておき、
+特定のパスワードを入力しなければ任意のコードが復号化されず、結果的に任意
+のコードが実行されないようにするというテクニックを書きました。しかし、こ
+のテクニックは前回の記事で書いた通り、実用性に欠けます。
 
-�@�����Đ������キ�炢�Ɏ��̂Ƃ���ւ��郁�[�������܂����B���̓��e�́uDL
-L���v���Z�X�փ}�b�s���O���鏈�������O�ō쐬���A�Í�������DLL�C���[�W��
-�I�ɕ��������āA�v���Z�X�փ}�b�s���O������悤�ɂ���΁A�Í������Ă�����
-���v���O������DLL�Ƃ��č쐬���Ă������Ƃ��ł��A���p�����傫�������̂ł͂�
-�����H�v�Ƃ������̂ł����B
+　そして数ヵ月後くらいに私のところへあるメールが来ました。その内容は「DL
+Lをプロセスへマッピングする処理を自前で作成し、暗号化したDLLイメージを動
+的に復号化して、プロセスへマッピングさせるようにすれば、暗号化しておきた
+いプログラムをDLLとして作成しておくことができ、実用性が大きく増すのではな
+いか？」というものでした。
 
-�@�܂�u�v���Z�X���ɂ��炩���߈Í���������Ԃ�DLL�C���[�W�������Ă����A
-����DLL�C���[�W�𕜍��������O�Ńv���Z�X�փ}�b�s���O�ł���΁A���p�I�ȃA��
-�`�N���b�L���O�΍���s�����Ƃ��ł���̂ł͂Ȃ����H�v�Ƃ������Ƃł��B
+　つまり「プロセス内にあらかじめ暗号化した状態のDLLイメージを持っておき、
+そのDLLイメージを復号化し自前でプロセスへマッピングできれば、実用的なアン
+チクラッキング対策を行うことができるのではないか？」ということです。
 
-�@�Ⴆ�΃p�b�J�[�ipacker�j�Ƃ����\�t�g�͔C�ӂ�EXE�t�@�C�������k���A���̈�
-�k�����f�[�^�̐擪�ɓW�J�R�[�h��ǉ����܂��B���̂悤�ȃp�b�J�[�ŏ�������
-���t�@�C�����A�������PE�t�H�[�}�b�g�ɏ]���Ă��邽�ߎ��s���邱�Ƃ��ł���
-�����A���k�����ׂ����X��EXE�t�@�C�����܂�PE�t�H�[�}�b�g�ɏ]���Ă��܂��B
-����āA�p�b�J�[���t�������W�J�R�[�h�͈��k����Ă���EXE�t�@�C����W�J���A
-����EXE�t�@�C�������炽�߂ă������Ƀ��[�h���Ă���킯�ł���A����͂܂�A
-�W�J�R�[�h�����[�_�[�iloader�j�̖����ɒS���Ă��邱�Ƃ��Ӗ����܂��B
+　例えばパッカー（packer）というソフトは任意のEXEファイルを圧縮し、その圧
+縮したデータの先頭に展開コードを追加します。このようなパッカーで処理され
+たファイルも、もちろんPEフォーマットに従っているため実行することができま
+すし、圧縮されるべき元々のEXEファイルもまたPEフォーマットに従っています。
+よって、パッカーが付加した展開コードは圧縮されているEXEファイルを展開し、
+そのEXEファイルをあらためてメモリにロードしているわけであり、これはつまり、
+展開コードがローダー（loader）の役割に担っていることを意味します。
 
-�@���āA���[�_�[�����Ȃ��WindowsAPI��CreateProcess�̓�����f�o�b�K�Œ�
-���Ă����΍Č����邱�Ƃ��ł��܂��B����Ɠ����悤�ɁADLL�̃}�b�s���O������
-LoadLibrary��ǂ��Ă������Ƃŕ�����܂��B����͂���DLL�̃}�b�s���O�����O
-�ōs���v���O�������쐬���Ă������Ƃɂ��܂��B���Ȃ݂ɁA���[�_�[�����O�ŗp
-�ӂ���Ȃ�΁AUPX�Ƃ����L���ȃI�[�v���\�[�X�̃p�b�J�[������܂��̂ŁA����
-�ӂ��UPX�̃\�[�X�R�[�h��ǂނ��Ƃŗ������邱�Ƃ��ł���Ǝv���܂��B
+　さて、ローダーを作るならばWindowsAPIのCreateProcessの動作をデバッガで追
+っていけば再現することができます。これと同じように、DLLのマッピング処理は
+LoadLibraryを追っていくことで分かります。今回はこのDLLのマッピングを自前
+で行うプログラムを作成していくことにします。ちなみに、ローダーを自前で用
+意するならば、UPXという有名なオープンソースのパッカーがありますので、その
+辺りはUPXのソースコードを読むことで理解することができると思います。
 
-�@���񎄂��g�p������́uWindowsXP + VC++.NET�v�ł����AWindows2000�ȍ~��
-��΁A���Ȃ��ł��傤�B
+　今回私が使用する環境は「WindowsXP + VC++.NET」ですが、Windows2000以降な
+らば、問題ないでしょう。
 
 
-��0x02.) LoadLibrary(Ex)�֐��̒�`
+■0x02.) LoadLibrary(Ex)関数の定義
 
-�@LoadLibrary�֐���MSDN�ɂĈȉ��̂悤�ɒ�`����Ă��܂��B
+　LoadLibrary関数はMSDNにて以下のように定義されています。
 
------  LoadLibrary�֐�
+-----  LoadLibrary関数
 HINSTANCE LoadLibrary(
-    LPCTSTR lpLibFileName    // DLL�t�@�C����
+    LPCTSTR lpLibFileName    // DLLファイル名
 );
 -----
 
-�@lpLibFileName��DLL�t�@�C�������w�肵�ADLL�̃}�b�s���O������������߂�l
-�Ƃ���DLL�n���h�����A���s������NULL��Ԃ��܂��B����LoadLibrary�֐����g��
-�����̂��ALoadLibraryEx�֐��ł��B
+　lpLibFileNameにDLLファイル名を指定し、DLLのマッピングが成功したら戻り値
+としてDLLハンドルを、失敗したらNULLを返します。このLoadLibrary関数を拡張
+したのが、LoadLibraryEx関数です。
 
------  LoadLobraryEx�֐�
+-----  LoadLobraryEx関数
 HMODULE LoadLibraryEx(
-    LPCTSTR lpLibFileName,    // DLL�t�@�C����
-    HANDLE hFile,             // NULL�Œ�
-    DWORD dwFlags             // �t���O
+    LPCTSTR lpLibFileName,    // DLLファイル名
+    HANDLE hFile,             // NULL固定
+    DWORD dwFlags             // フラグ
 );
 -----
 
-�@hFile��NULL�ŌŒ�ł��BdwFlags�̓t���O�ňȉ��̂ǂꂩ���w�肵�܂��B
+　hFileはNULLで固定です。dwFlagsはフラグで以下のどれかを指定します。
 
-�EDONT_RESOLVE_DLL_REFERENCES
-�ELOAD_LIBRARY_AS_DATAFILE
-�ELOAD_WITH_ALTERED_SEARCH_PATH
+・DONT_RESOLVE_DLL_REFERENCES
+・LOAD_LIBRARY_AS_DATAFILE
+・LOAD_WITH_ALTERED_SEARCH_PATH
 
-�@�����̏ڍׂ͐�����MSDN���Q�Ƃ��Ă��������B
+　これらの詳細は説明はMSDNを参照してください。
 
 
-��0x03.) LoadLibrary(Ex)�֐��̓���
+■0x03.) LoadLibrary(Ex)関数の動作
 
-�@�ł́A��������LoadLibrary�֐��͓����łǂ̂悤�ȏ������s���Ă���̂ł���
-�����H�@�܂��͂�����l���Ă݂܂��B���Ȃ݂ɁA���̃e�L�X�g�ł�LoadLibrary��
-LoadLibraryEx�𓯂����̂ƍl���Ă��܂����A�����LoadLibrary�́A�����I�Ɉ�
-���̂悤�ɌĂяo���Ă���Ɛ������Ă��邩��ł��B
+　では、いったいLoadLibrary関数は内部でどのような処理を行っているのでしょ
+うか？　まずはそれを考えてみます。ちなみに、このテキストではLoadLibraryと
+LoadLibraryExを同じものと考えていますが、それはLoadLibraryは、内部的に以
+下のように呼び出していると推測しているからです。
 
 -----
-LoadLibrary("test.dll")      ��      LoadLibraryEx("test.dll", NULL, 0)
-                         �����I�ɂ�
+LoadLibrary("test.dll")      →      LoadLibraryEx("test.dll", NULL, 0)
+                         内部的には
 -----
 
-�@���̂��Ƃ���A�Ȍ�LoadLibrary��LoadLibraryEx�͓���̂��̂Ƃ��Ęb��i��
-�Ă����܂��B
+　このことから、以後LoadLibraryとLoadLibraryExは同一のものとして話を進め
+ていきます。
 
-�@�v���Z�X����LoadLibrary���Ăяo���ꂽ���A�܂���ԍŏ��ɁALoadLibrary��
-�Y������DLL�����łɃ}�b�s���O����Ă��Ȃ����ǂ����𒲂ׂ܂��B�����}�b�s��
-�O����Ă�����A�V�����}�b�s���O����K�v�͂Ȃ����߂���DLL�̃n���h����ԋp
-���ďI���ł��B�����}�b�s���O����Ă��Ȃ������Ȃ�΁A�܂���DLL�C���[�W���v
-���Z�X�̃������փ}�b�s���O���܂��B���̎���OpenFileMapping�֐���CreateFil
-eMapping�֐����g�p���܂��B
+　プロセス内でLoadLibraryが呼び出された時、まず一番最初に、LoadLibraryは
+該当するDLLがすでにマッピングされていないかどうかを調べます。もしマッピン
+グされていたら、新しくマッピングする必要はないためそのDLLのハンドルを返却
+して終了です。もしマッピングされていなかったならば、まずはDLLイメージをプ
+ロセスのメモリへマッピングします。この時にOpenFileMapping関数やCreateFil
+eMapping関数を使用します。
 
 -----
 +---------+-----+          +-----+
@@ -109,15 +109,15 @@ eMapping�֐����g�p���܂��B
 |         |     |   <--    |     |
 +---------+-----+          +-----+
 
-�@ �v���Z�X�ւ̃}�b�s���O����
+　 プロセスへのマッピング処理
 -----
 
-�@���̃}�b�s���O����LOAD_LIBRARY_AS_DATAFILE�t���O���w�肳��Ă���Ȃ�΁A
-DLL�̃}�b�s���O�݂̂��s�������ŏI�����܂��B����ȊO�̏ꍇ�́A���ɃC���|�[
-�g�A�h���X�e�[�u���̉������s���܂��BDLL���̂�������񑼂̗l�X��DLL��֐���
-���p���Ă��邽�߂����̃A�h���X�������s���܂��B�C���|�[�g�A�h���X�e�[�u��
-�ɗ��p���Ă���DLL��֐��������݂���̂ŁA����𒲂ׂāA�K�؂ȃA�h���X���
-�肵�Ă����܂��B����ɕK�v�Ȃ�΍Ĕz�u�e�[�u�����������܂��B
+　このマッピング時にLOAD_LIBRARY_AS_DATAFILEフラグが指定されているならば、
+DLLのマッピングのみを行いここで終了します。それ以外の場合は、次にインポー
+トアドレステーブルの解決を行います。DLL自体ももちろん他の様々なDLLや関数を
+利用しているためそれらのアドレス解決を行います。インポートアドレステーブル
+に利用しているDLLや関数名が存在するので、それを調べて、適切なアドレスを設
+定していきます。さらに必要ならば再配置テーブルも処理します。
 
 -----
 +---------+-----+          +--------------+
@@ -128,20 +128,20 @@ DLL�̃}�b�s���O�݂̂��s�������ŏI�����܂��B����ȊO�̏ꍇ�́A���ɃC���|�[
 |         |     |     +--> |  user32.dll  |
 +---------+-----+          +--------------+
 
-�@DLL�����p���Ă���DLL�̃C���|�[�g�֐��A�h���X������
+　DLLが利用しているDLLのインポート関数アドレスを解決
 -----
 
-�@����ŁA�Ƃ肠����DLL���̃v���O�����͎��s�ł����ԂɂȂ����̂ŁA���x��
-DllMain�֐����Ăяo���܂��BDllMain�֐��́uDLL�̃A�^�b�`���v�uDLL�̃f�^�b
-�`���v�u�X���b�h�N�����v�u�X���b�h�I�����v�ɌĂяo���Ȃ���΂Ȃ�܂���B
-�Ƃ肠�����́A��ԍŏ��́uDLL�̃A�^�b�`���v�Ƃ��āADllMain���Ăяo���܂��B
-�܂�DONT_RESOLVE_DLL_REFERENCES�t���O�������Ă���΁ADllMain�֐��̎��s��
-�s���܂���B
+　これで、とりあえずDLL内のプログラムは実行できる状態になったので、今度は
+DllMain関数を呼び出します。DllMain関数は「DLLのアタッチ時」「DLLのデタッ
+チ時」「スレッド起動時」「スレッド終了時」に呼び出さなければなりません。
+とりあえずは、一番最初の「DLLのアタッチ時」として、DllMainを呼び出します。
+またDONT_RESOLVE_DLL_REFERENCESフラグが立っていれば、DllMain関数の実行は
+行いません。
 
-�@����DLL�C���[�W�̃v���e�N�g���s���܂��B����DLL�C���[�W�̓�������ɓW�J
-����Ă��܂��B�����ăZ�N�V�����ɂ���Ă͓ǂݍ��݂݂̂ł悢����������΁A
-�ǂݏ������K�v�ȕ���������܂��B���̂��߁A�Z�N�V�����ɂ���ă������v���e
-�N�g�s���܂��B
+　次にDLLイメージのプロテクトを行います。現在DLLイメージはメモリ上に展開
+されています。そしてセクションによっては読み込みのみでよい部分もあれば、
+読み書きが必要な部分もあります。そのため、セクションによってメモリプロテ
+クト行います。
 
 -----
 +---------+-----+
@@ -152,37 +152,37 @@ DllMain�֐����Ăяo���܂��BDllMain�֐��́uDLL�̃A�^�b�`���v�uDLL�̃f�^�b
 |         |     | <-- read only
 +---------+-----+
 
-�@�������v���e�N�g�̎��s
+　メモリプロテクトの実行
 -----
 
-�@�����܂łŁA�ꉞDLL�̃}�b�s���O�����͏I���ł��B���ɁA���݃}�b�s���O��
-�Ă���DLL���Ǘ����Ȃ���΂Ȃ�Ȃ����߁ADLL�̃f�[�^�x�[�X���쐬���܂��B�f
-�[�^�x�[�X�ɐݒ肷��p�����[�^�f�[�^�ɂ́A�uDLL�̃C���[�W�x�[�X�A�h���X�v
-�uDLL�t�@�C�����v�u�t���O�v�u���b�N�J�E���^�v�����āu���̃p�����[�^�f�[�^
-�̃A�h���X�v��ݒ肵�܂��B
+　ここまでで、一応DLLのマッピング部分は終わりです。次に、現在マッピングし
+ているDLLを管理しなければならないため、DLLのデータベースを作成します。デ
+ータベースに設定するパラメータデータには、「DLLのイメージベースアドレス」
+「DLLファイル名」「フラグ」「ロックカウンタ」そして「次のパラメータデータ
+のアドレス」を設定します。
 
-�@LoadLibrary���Ăяo����A�v���Z�X�փ}�b�s���O����DLL�������邽�т�DLL��
-�p�����[�^�f�[�^��ǉ����Ă����A�������Q�Ƃ��āADLL�̊Ǘ����s���܂��B�܂�
-FreeLibrary���Ăяo���ꂽ��DLL�̃}�b�s���O���������Ȃ���΂Ȃ�Ȃ��̂ŁA
-�f�[�^�x�[�X����f�[�^���폜���ADLL�̂��߂Ɋ��蓖�ĂĂ������������J������
-���B
+　LoadLibraryが呼び出され、プロセスへマッピングするDLLが増えるたびにDLLの
+パラメータデータを追加していき、ここを参照して、DLLの管理を行います。また
+FreeLibraryが呼び出されたらDLLのマッピングを解除しなければならないので、
+データベースからデータを削除し、DLLのために割り当てていたメモリを開放しま
+す。
 
-�@�ȏオLoadLibrary�̈�ʂ�̓���ł��B�ĊO�債�����Ƃ͂���ĂȂ������肵
-�܂��i�΁j�B
+　以上がLoadLibraryの一通りの動作です。案外大したことはやってなかったりし
+ます（笑）。
 
 
-��0x04.) �v���O���~���O
+■0x04.) プログラミング
 
-�@�ȉ����A���؃v���O�����ł��B
+　以下が、検証プログラムです。
 
-http://ruffnex.oc.to/kenji/text/load_dll/test_exe.cpp�i�\�[�X�R�[�h�j
-http://ruffnex.oc.to/kenji/text/load_dll/load_dll.zip�i�S�p�b�P�[�W�j
+http://ruffnex.oc.to/kenji/text/load_dll/test_exe.cpp（ソースコード）
+http://ruffnex.oc.to/kenji/text/load_dll/load_dll.zip（全パッケージ）
 
-�@�܂��̓T���v���ƂȂ�DLL���쐬���܂��B����DLL�������ƃv���Z�X�Ƀ}�b�s
-���O����A�����̊֐������s���邱�Ƃ��ł����Ȃ�΁ALoadLibrary�͐������Ă�
-�邱�ƂɂȂ�܂��B
+　まずはサンプルとなるDLLを作成します。このDLLがちゃんとプロセスにマッピ
+ングされ、内部の関数を実行することができたならば、LoadLibraryは成功してい
+ることになります。
 
------  test_dll.cpp�ihttp://ruffnex.oc.to/kenji/text/load_dll/test_dll.cpp�j
+-----  test_dll.cpp（http://ruffnex.oc.to/kenji/text/load_dll/test_dll.cpp）
 #define WIN32_LEAN_AND_MEAN
 
 #include <windows.h>
@@ -222,8 +222,8 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 }
 -----
 
-�@����DLL���쐬������ԂŁAtest_exe.cpp���R���p�C�����A���s���܂��Btest_
-exe.cpp��WinMain�֐��͈ȉ��̂悤�ɂȂ��Ă��܂��B
+　このDLLを作成した状態で、test_exe.cppをコンパイルし、実行します。test_
+exe.cppのWinMain関数は以下のようになっています。
 
 -----
 int APIENTRY WinMain(HINSTANCE hInstance,
@@ -250,66 +250,66 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 }
 -----
 
-�@�܂��ŏ���InitializeDLLLoad�A�Ō��KillDLLLoad���m�F���Ă��������B����
-��2�̊֐��͕K���K�v�ł��B
+　まず最初にInitializeDLLLoad、最後にKillDLLLoadを確認してください。これ
+ら2つの関数は必ず必要です。
 
-�@�܂���LoadDLL��test_dll���}�b�s���O���܂��B�����āAGetDLLProcAddress��
-�g����DLL���̊֐��A�h���X���擾���܂��B���̃A�h���X���g���Ċ֐����Ăяo���A
-�����Z������Z�̌v�Z���s���܂��B�����GetDLLHandle�֐����g���ă}�b�s���O
-���Ă���DLL�̃n���h�����擾�ł��AGetDLLFileName�֐����g���ă}�b�s���O����
-����DLL�t�@�C�����̎擾���ł��܂��B���̂悤�ɂ��āADLL���}�b�s���O���A�g
-�p���邱�Ƃ��\�ł��B
+　まずはLoadDLLでtest_dllをマッピングします。そして、GetDLLProcAddressを
+使ってDLL内の関数アドレスを取得します。そのアドレスを使って関数を呼び出し、
+足し算や引き算の計算を行います。さらにGetDLLHandle関数を使ってマッピング
+しているDLLのハンドルが取得でき、GetDLLFileName関数を使ってマッピングして
+いるDLLファイル名の取得ができます。このようにして、DLLをマッピングし、使
+用することが可能です。
 
-�@����̏ڂ������e�̓\�[�X�R�[�h��ǂ�ł��������B����A�����őS�������
-�Ă��悢�̂ł����A800�s���x�����邽�߁AWizardBible�����̂܂�800�s�����Ȃ�A
-����ɂ����ƃ\�[�X�R�[�h�̉���Ƃ������̂��܂�D�܂�Ȃ��悤�Ȃ̂Łc(^^;�B
+　動作の詳しい内容はソースコードを読んでください。いや、ここで全部解説し
+てもよいのですが、800行程度もあるため、WizardBibleがそのまま800行長くなり、
+さらにずっとソースコードの解説というものあまり好まれないようなので…(^^;。
 
-�@�v���O���������s����ƁALoadDLL�ɂ��ADLL�}�b�s���O���̏������s����
-���B�܂�A���b�Z�[�W�{�b�N�X�ŁuProcess Attach!�v���\������܂��B���ɁA
-GetDLLProcAddress�Ŋ֐��A�h���X�AGetDLLFileName�Ńt�@�C�������擾���āA��
-������b�Z�[�W�{�b�N�X�ŕ\�����Ă��邽�߁A�uFileName = test_dll.dll�v�ua
- = 8, b = 3�v�ƕ\������܂��B������FreeDLL�ɂāA�}�b�s���O����������邽
-�߁uProcess Detach!�v�ƕ\������ďI���ł��B
-
-
-��0x05.) ���_�Ɖ\��
-
-�@��L�̃v���O�����ł����A�ʏ��LoadLibrary�Ƃ͈ȉ��̓_�ɈႢ������܂��B
-
-�ELoadDLLEx��LOAD_WITH_ALTERED_SEARCH_PATH�t���O���T�|�[�g���Ă��܂���B
-�EDLL_THREAD_ATTACH��DLL_THREAD_DETACH���T�|�[�g���Ă��܂���B
-�E�o�O���������񂠂肻���ł��B
-
-�@����āA��������������̂�����̉ۑ�ɂȂ��Ă��܂��B�Ƃ������A�N����
-�ǂ��Ă�������(^^;�B
-
-�@�������A���݂̏�Ԃł�DLL���}�b�s���O�����ŏ\���ł��邱�Ƃ͊m���ł��B
-�����āA���̃e�N�j�b�N���g���΁A�Ⴆ�ΈÍ���������Ԃ�DLL�������������Ɏ�
-���Ă����A����̃p�X���[�h�ɂ���ĕ��������s���ă}�b�s���O���s���Ƃ�����
-�Ƃ��\�ɂȂ�A�\���ɃN���b�L���O�΍�ɂȂ�Ǝv���܂��B
-
-�@�������N���b�L���O�΍�Ƃ��Ă����Ƃ��L���Ȏ�i�̓p�b�J�[���g�����Ƃ�
-�����A���̂悤�ɁA�P���ɂǂ��������΍􂪍s���邩���l����Ƃ����̂͊y��
-�����̂��Ǝv���܂��B
+　プログラムを実行すると、LoadDLLにより、DLLマッピング時の処理が行われま
+す。つまり、メッセージボックスで「Process Attach!」が表示されます。次に、
+GetDLLProcAddressで関数アドレス、GetDLLFileNameでファイル名を取得して、そ
+れをメッセージボックスで表示しているため、「FileName = test_dll.dll」「a
+ = 8, b = 3」と表示されます。そしてFreeDLLにて、マッピングが解除されるた
+め「Process Detach!」と表示されて終了です。
 
 
-��0x05.) ��������
+■0x05.) 問題点と可能性
 
-�@���āA�������������ł��傤���B�ŋ߂��܂���ɗ����Ȃ����Ƃ΂����茤����
-�Ă�C�������ł����A������Ă̒肠�܂���ɗ����Ȃ��e�N�j�b�N����������
-����܂���(^^;�B�����̍D���Ȃ��Ƃ��肽�����Ƃ͂������񂠂�̂ł����A��
-���������̂Ɍ����āA���l�ɂƂ��Ă͂ǂ��ł��悢�Z�p�������肷���ł��B��
-�ꂪ��ʓI�Ɍ�����X�����v�Ƃ������̂Ȃ̂��A�͂��܂��A�����������ϐl��
-�����Ȃ̂�������܂��񂪁A�ǂ���ɂ���A���͎��������������������̂�����
-��Ȃ��l�Ȃ̂ŁA�c�O�ł����A���̂܂ܓ˂��i��ł��܂������ł��i�΁j�B����
-�炱�����̋L����ǂ�ł�������ǎ҂̕��ɂ͖{���Ɋ��ӂ��Ă���܂��B���āA
-�Ō�ɂȂ�܂������A�����܂œǂ�ł���Ė{���ɂ��肪�Ƃ��������܂��B
+　上記のプログラムですが、通常のLoadLibraryとは以下の点に違いがあります。
 
-�@�ł́A�܂�����܂�...
+・LoadDLLExはLOAD_WITH_ALTERED_SEARCH_PATHフラグをサポートしていません。
+・DLL_THREAD_ATTACHとDLL_THREAD_DETACHをサポートしていません。
+・バグがたくさんありそうです。
+
+　よって、これらを解決するのが今後の課題になってきます。というか、誰か改
+良してください(^^;。
+
+　ただし、現在の状態でもDLLをマッピングする上で十分であることは確かです。
+そして、このテクニックを使えば、例えば暗号化した状態のDLLをメモリ内部に持
+っておき、特定のパスワードによって復号化を行ってマッピングを行うというこ
+とが可能になり、十分にクラッキング対策になると思います。
+
+　もちろんクラッキング対策としてもっとも有効な手段はパッカーを使うことで
+すが、このように、単純にどうやったら対策が行えるかを考えるというのは楽し
+いものだと思います。
 
 
-��0x07.) �Q�l�T�C�g
+■0x05.) さいごに
 
-�Ebo2k.com�ihttp://www.bo2k.com/�j
+　さて、いかがだったでしょうか。最近あまり役に立たないことばっかり研究し
+てる気がするんですが、今回も案の定あまり役に立たないテクニックだったかも
+しれません(^^;。自分の好きなことややりたいことはたくさんあるのですが、そ
+ういうものに限って、他人にとってはどうでもよい技術だったりするんです。こ
+れが一般的に言われるスランプというものなのか、はたまた、ただ自分が変人な
+だけなのか分かりませんが、どちらにしろ、私は自分が興味を持ったものしかや
+れない人なので、残念ですが、このまま突き進んでしまいそうです（笑）。だか
+らこそ私の記事を読んでくださる読者の方には本当に感謝しております。さて、
+最後になりましたが、ここまで読んでくれて本当にありがとうございます。
+
+　では、また会う日まで...
+
+
+■0x07.) 参考サイト
+
+・bo2k.com（http://www.bo2k.com/）
 
 

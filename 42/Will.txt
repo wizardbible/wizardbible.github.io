@@ -1,190 +1,190 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- �恛��: Perfect Dark Kracking ---
+--- 第○章: Perfect Dark Kracking ---
 
-���ҁFWill
+著者：Will
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@Perfect Dark�Ƃ�
+　Perfect Darkとは
 
------�@http://ja.wikipedia.org/wiki/Perfect_Dark������p
-�@Perfect dark��Windows�œ��삷�铽���t�@�C�����L�\�t�g�ł���B��Ɩ���
-�铽���̍�҂ɂ���ĊJ�����ł���A�ŏI�I�ɂ�Winny��Share�̌�p�ƂȂ肤��
-���̂�ڎw���Ă���BPD�Ɨ�����邱�Ƃ������B ���݁A���J�e�X�g���ł���B
+-----　http://ja.wikipedia.org/wiki/Perfect_Darkから引用
+　Perfect darkはWindowsで動作する匿名ファイル共有ソフトである。会長と名乗
+る匿名の作者によって開発中であり、最終的にはWinnyやShareの後継となりうる
+ものを目指している。PDと略されることも多い。 現在、公開テスト中である。
 -----
 
-�@���̃\�t�g�E�F�A�ɂ̓t�@�C�����L�@�\�����łȂ��t���[��{�[�h�Ƃ�������
-�����ɗD�ꂽ�ȈՌf���@�\������󂾂��A���Ƃ��t���[��{�[�h���g���ړI��
-Perfect Dark�𓱓�����ɂ��Ă��AUnity(�L���b�V��)�t�H���_�Ƃ��čŒ�ł�H
-DD�̋󂫗e�ʂ�40GB�͕K�v�ł���B
-�@�Ƃ����킯�ŁA���s�t�@�C���̉��ςɂ���Ă���40GB�������������悤�Ƃ���
-�̂�����̉�̖͂ړI�ł���B
-�@�Ȃ��A�p�b�`�̈�@�ړI�ł̎g�p�͂��������������B
+　このソフトウェアにはファイル共有機能だけでなくフローやボードといった匿
+名性に優れた簡易掲示板機能がある訳だが、たとえフローやボードを使う目的で
+Perfect Darkを導入するにしても、Unity(キャッシュ)フォルダとして最低でもH
+DDの空き容量が40GBは必要である。
+　というわけで、実行ファイルの改変によってこの40GB制限を解除しようという
+のが今回の解析の目的である。
+　なお、パッチの違法目的での使用はご遠慮ください。
 
 
-��0x02.) ����
+■0x02.) 準備
 
-�@����̉�͂Ŏg�p����\�t�g�E�F�A�͈ȉ��̒ʂ�ł��B
+　今回の解析で使用するソフトウェアは以下の通りです。
 
-�EOllyDbg
-�EIDA Pro 4.9 Freeware
-�E�����݂݃n���P�[��
-�EPerfect Dark 1.02�i�^�[�Q�b�g�j
+・OllyDbg
+・IDA Pro 4.9 Freeware
+・うさみみハリケーン
+・Perfect Dark 1.02（ターゲット）
 
 
-��0x03.) 40GB������������悤
+■0x03.) 40GB制限を回避しよう
 
-�@����ł̓e���|�ǂ���͂��Ă����܂��傤�B
+　それではテンポ良く解析していきましょう。
 
-1�FUnity�T�C�Y��ێ����Ă���ϐ��̃A�h���X��T�����B
+1：Unityサイズを保持している変数のアドレスを探そう。
 
-�@�܂���OllyDbg��perfect dark.exe���J���A���s�����܂��B
-�@���ɂ����݂݃n���P�[�������s���A���s����perfect dark.exe�ɃA�^�b�`����
-���BVista�̏ꍇ�͂ǂ���̃\�t�g�E�F�A���Ǘ��Ҍ����Ŏ��s���Ȃ��Ɛ���ȓ���
-�����Ȃ��̂Œ��ӂ��Ă��������B
-�@�����ă��j���[�o�[�́u�����v���u�������͈͂��w�肵�Č����v�������܂��B
-�ʏ팟���Ƃ������ڂ�����̂Łu���l�v�̉E�ɂ���e�L�X�g�{�b�N�X�ɍ����݂�
-Unity�̃T�C�Y����͂��A�u�ʏ팟�����s�v�Ƃ����{�^���������ƉE��̃��X�g�{
-�b�N�X�Ɍ������ʂ��\������܂��B
-�@���̂܂܂ł͌�₪��������̂�Perfect Dark�𑀍삵��Unity�̃T�C�Y��ύX
-���A�Ăт��̒l���e�L�X�g�{�b�N�X�ɓ��͂��Č����A�Ƃ����̂��J��Ԃ��Č��
-����ɂȂ�܂ŌJ��Ԃ��܂��B
-�@������c�����̂������݂�Unity�̑傫����ێ����Ă���A�h���X�ł��B����
-���Ă��������B
-�@����ł͂����݂݃n���P�[�����I�����āA����OllyDbg�̕��ō�Ƃ𑱂��܂��B
+　まずはOllyDbgでperfect dark.exeを開き、実行させます。
+　次にうさみみハリケーンを実行し、実行中のperfect dark.exeにアタッチしま
+す。Vistaの場合はどちらのソフトウェアも管理者権限で実行しないと正常な動作
+をしないので注意してください。
+　そしてメニューバーの「検索」→「メモリ範囲を指定して検索」を押します。
+通常検索という項目があるので「数値」の右にあるテキストボックスに今現在の
+Unityのサイズを入力し、「通常検索実行」というボタンを押すと右上のリストボ
+ックスに検索結果が表示されます。
+　このままでは候補が多すぎるのでPerfect Darkを操作してUnityのサイズを変更
+し、再びその値をテキストボックスに入力して検索、というのを繰り返して候補
+が一つになるまで繰り返します。
+　一つだけ残ったのが今現在のUnityの大きさを保持しているアドレスです。メモ
+してください。
+　それではうさみみハリケーンを終了して、次にOllyDbgの方で作業を続けます。
 
-2�FUnity�T�C�Y��ێ����Ă���ϐ��ɃA�N�Z�X���Ă���ӏ���T�����B
+2：Unityサイズを保持している変数にアクセスしている箇所を探そう。
 
-�@OllyDbg�̍�����Dump��ʓ��ŉE�N���b�N���u�ړ��v���u�A�h���X�ړ��v������
-�Đ�قǃ��������A�h���X����͂��܂��B����ƍ����݂�Unity�T�C�Y�̒l��16�i
-���ŕ\������Ă���̂��m�F�ł���Ǝv���܂��B
-�@���ɁA�����ɃA�N�Z�X���Ă���ӏ���T�����߂Ƀu���[�N�|�C���g���Z�b�g��
-�܂��B�l�̏�ŉE�N���b�N���u�u���[�N�|�C���g�v���uHW�u���[�N�|�C���g����
-���݁v���ubyte�v�������ƃn�[�h�E�F�A�u���[�N�|�C���g���Z�b�g����܂��B
-�@������Perfect Dark�̕��ōĂ�Unity�T�C�Y��ύX���AOk�������ƈȉ��̏ꏊ��
-�u���[�N���܂��B
+　OllyDbgの左下のDump画面内で右クリック→「移動」→「アドレス移動」を押し
+て先ほどメモしたアドレスを入力します。すると今現在のUnityサイズの値が16進
+数で表示されているのが確認できると思います。
+　次に、ここにアクセスしている箇所を探すためにブレークポイントをセットし
+ます。値の上で右クリック→「ブレークポイント」→「HWブレークポイント書き
+込み」→「byte」を押すとハードウェアブレークポイントがセットされます。
+　そしてPerfect Darkの方で再びUnityサイズを変更し、Okを押すと以下の場所で
+ブレークします。
 
 -----
 0040DF5B   .  E8 90E4FFFF   CALL perfect_.0040C3F0
 -----
 
-�@�������A�n�[�h�E�F�A�u���[�N�|�C���g�͈�s���߂���Ƃ��������������
-�ŁA���ۂɂ͈ȉ��̖��߂���قǂ̃A�h���X�ɃA�N�Z�X���Ă��܂��B
+　しかし、ハードウェアブレークポイントは一つ行き過ぎるという特徴があるの
+で、実際には以下の命令が先ほどのアドレスにアクセスしています。
 
 -----
 0040DF55   .  8981 78020000 MOV DWORD PTR DS:[ECX+278],EAX
 -----
 
-�@�Ƃ肠�����n�[�h�E�F�A�u���[�N�|�C���g����������0x0040DF55�Ƀu���[�N�|
-�C���g���Z�b�g���Ă�����x�������Ɠ��l��Unity�T�C�Y��ύX�����0x0040DF55
-�Ńu���[�N���܂��B���̂Ƃ���EAX�̒l���ύX����l�ŁADS:[ECX+278]���ύX�O��
-�l�ł���̂��m�F�ł���Ǝv���܂��B�܂�A����EAX���`�F�b�N���Ă���ӏ���
-�T�����Ƃ�40GB����������ł���킯�ł��B
-�@�ƌ����킯�ŁA���̏�����̃R�[�h�����Ă݂܂��傤�BMessageBox���Ăяo��
-�Ă���ӏ�������̂������Ɍ�����Ǝv���܂��B���ꂪ�ݒ肵���l��40GB����
-�̏ꍇ�ɃG���[�Ƃ��ĕ\���������̂��ƌ������Ƃ͗e�Ղɑz�������ł��傤�B
-�Ƃ������Ƃ͂��̏������O�̔�r�Ń`�F�b�N���Ă���Ƃ����̂�������܂��B
-���ꂪ�ȉ��̖��߂ł��B
+　とりあえずハードウェアブレークポイントを解除して0x0040DF55にブレークポ
+イントをセットしてもう一度さっきと同様にUnityサイズを変更すると0x0040DF55
+でブレークします。このときのEAXの値が変更する値で、DS:[ECX+278]が変更前の
+値であるのが確認できると思います。つまり、このEAXをチェックしている箇所を
+探すことで40GB制限を回避できるわけです。
+　と言うわけで、その少し上のコードを見てみましょう。MessageBoxを呼び出し
+ている箇所があるのかすぐに見つかると思います。これが設定した値が40GB未満
+の場合にエラーとして表示されるものだと言うことは容易に想像がつくでしょう。
+ということはこの処理より前の比較でチェックしているというのも分かります。
+それが以下の命令です。
 
 -----
 0040DEE6   .  3BC6          CMP EAX,ESI
 -----
 
-�@�Ƃ����킯�ŁA���̉��̍��ڂ��ȉ��̂悤�ɕύX���܂��B
+　というわけで、その下の項目を以下のように変更します。
 
 -------
 0040DEE8   . /EB 5E         JMP SHORT perfect_.0040DF48
 -------
 
-�@�u���[�N�|�C���g���O���Ă���ĊJ�����āAUnity�T�C�Y��40GB�ȉ��ɂ��Ă��G
-���[���o���ɒl���X�V����Ă���̂��m�F�ł���ł��傤�B
-�@�Ō�ɕύX�����s�t�@�C���ɏ������݁A��͏I���ł��B�����l�ł����B�Ƃ�
-��������ł����ˁB
+　ブレークポイントを外してから再開させて、Unityサイズを40GB以下にしてもエ
+ラーが出ずに値が更新されているのが確認できるでしょう。
+　最後に変更を実行ファイルに書き込み、解析終了です。お疲れ様でした。とい
+いたいんですがね。
 
 
-��0x04.) ���σ`�F�b�N��������悤
+■0x04.) 改変チェックを回避しよう
 
-�@�Ƃ����킯�ŁA�ύX�������s�t�@�C�������s���Ă������ɏI�����܂��B�܂�
-���σ`�F�b�N�����݂���Ƃ������ł��B
-�@����ł̓T�N���Ɖ�������Ⴂ�܂��傤�B
-�@�܂���IDA Pro��perfect dark.exe���J���܂��B���͂��I������܂Ŏb���҂���
-���傤�B���s���Ă��E�C���h�E���\������Ȃ��̂ŁA�����炠���肩��U�߂Ă�
-���܂��BImport�E�C���h�E�̒���CreateWindowEX�̍��ڂ��_�u���N���b�N������
-��
+　というわけで、変更した実行ファイルを実行してもすぐに終了します。つまり
+改変チェックが存在するという事です。
+　それではサクっと回避しちゃいましょう。
+　まずはIDA Proでperfect dark.exeを開きます。分析が終了するまで暫く待ちま
+しょう。実行してもウインドウが表示されないので、そこらあたりから攻めてい
+きます。Importウインドウの中のCreateWindowEXの項目をダブルクリックをする
+と
 
 -----
-idata:004CE3D8�@�c
+idata:004CE3D8　…
 -----
 
-�@�Ƃ����Ƃ���Ɉړ����܂��BCreateWindowEX�̂Ƃ���ŉE�N���b�N���ujump to
- xref to operand�v�������Ƒ����̍��ڂ��\������܂����A����̈�ԏ���_�u
-���N���b�N���܂��B����̃R�[�h������Ƃ��������C���̃E�C���h�E���쐬����
-����ӏ��ł���̂��m�F�ł���Ǝv���܂��B
-�@����ł͎��Ƀ��j���[�o�[�uView�v���ugraph�v���uFlow chart�v�������܂��B
-����ƍ��̉ӏ����܂߂��t���[�`���[�g���\������܂��B�������炪�ʓ|�Ȃ̂�
-�����A���ϑO�Ɖ��ό�̎��s�t�@�C�������̃t���[�`���[�g�����Ȃ���f�o�b�O
-���Ă����܂��B
-�@�����āA�ǂ��ňႢ�������邩���`�F�b�N���܂��B���ʂ͈ȉ��̉ӏ��ŁA����
-��̏ꍇ�́A�W�����v���Ă��܂��܂��B
+　というところに移動します。CreateWindowEXのところで右クリック→「jump to
+ xref to operand」を押すと多くの項目が表示されますが、これの一番上をダブ
+ルクリックします。周りのコードを見るとここがメインのウインドウを作成して
+いる箇所であるのが確認できると思います。
+　それでは次にメニューバー「View」→「graph」→「Flow chart」を押します。
+すると今の箇所を含めたフローチャートが表示されます。ここからが面倒なので
+すが、改変前と改変後の実行ファイルをこのフローチャートを見ながらデバッグ
+していきます。
+　そして、どこで違いが生じるかをチェックします。結果は以下の箇所で、改変
+後の場合は、ジャンプしてしまいます。
 
 -----
 text:0040A1B0                 jnz     loc_40A3FB
 -----
 
-�Ƃ����킯�ŁA�����ɂ�����΂Ȃ��悤�ɕύX���Ď��s����ƁA�Ȃ����\�t
-�g�������܂��B
-�@���傤���Ȃ��̂ł��̑O��
+というわけで、試しにこれを飛ばないように変更して実行すると、なぜかソフ
+トが落ちます。
+　しょうがないのでその前の
 
 -----
 .text:0040A1A6                 call    sub_40AA20
 -----
 
-�@���̒����`�F�b�N���邱�Ƃɂ��܂��B�����ł��t���[�`���[�g��\�������Ă�
-��A���ϑO�Ɖ��ό�̎��s�t�@�C���̈Ⴂ���`�F�b�N���Ă����܂��B���ʂ͈ȉ�
-�̉ӏ��ŁA���ό�̏ꍇ�́A�W�����v���܂���B
+　この中もチェックすることにします。ここでもフローチャートを表示させてか
+ら、改変前と改変後の実行ファイルの違いをチェックしていきます。結果は以下
+の箇所で、改変後の場合は、ジャンプしません。
 
 -----
 text:0040AB6A                 jz      short loc_40ABCA
 -----
 
-�@�Ƃ����킯�ŁA���̑O��
+　というわけで、その前の
 
 -----
 .text:0040AB63                 call    sub_4628B0
 -----
 
-���̒�������ɒ��ׂ܂��BCreateFileW��ReadFile�֐��Ȃǂ��g���ĉ��σ`�F�b�N
-�����Ă���̂�������Ǝv���܂��B
-�@�Ƃ����킯�ňȉ��̂悤�ɕύX���邱�Ƃŉ��σ`�F�b�N��������܂��B
+この中をさらに調べます。CreateFileWやReadFile関数などを使って改変チェック
+をしているのが分かると思います。
+　というわけで以下のように変更することで改変チェックを回避します。
 
 -----
 .text:0040AB68                 cmp    eax, eax
 -----
 
-�@����Ɖ��ό�̎��s�t�@�C���ł����s�ł���悤�ɂȂ�܂����B
-�@�����l�ł����B�Ƃ���������ł����ˁB
+　すると改変後の実行ファイルでも実行できるようになりました。
+　お疲れ様でした。といいたいんですがね。
 
 
-��0x05.)�@�N������Unity�T�C�Y��ݒ肳����
+■0x05.)　起動時にUnityサイズを設定させる
 
-�@���s���Ă�������番�����ł����A�N������Unity�T�C�Y��40GB�ŕύX�����
-40GB�ȉ��ɂȂ�܂��B����͂�����Ɓc���Ċ����ł��B
-�@�Ƃ����킯�œK���ȂƂ����Unity�T�C�Y��ݒ肷��R�[�h���쐬���܂��B���
-�������A���σ`�F�b�N��ɓ���Ă݂܂����B�܂��͈ȉ��̂悤�ɕύX���āA��
-�Ă�ꏊ�܂ŃW�����v�����܂��B
+　実行してもらったら分かるんですが、起動時のUnityサイズは40GBで変更すると
+40GB以下になります。これはちょっと…って感じです。
+　というわけで適当なところにUnityサイズを設定するコードを作成します。取り
+敢えず、改変チェック後に入れてみました。まずは以下のように変更して、空い
+てる場所までジャンプさせます。
 
 -----
 0040AD6A   . /E9 BC120C00   JMP perfect_.004CC02B
 -----
 
-�@�����āA�ύX�ɂ���ĂԂꂽ���߂�Unity�T�C�Y��ݒ肷��R�[�h����������
-�܂��B��芸�����A�ݒ肷��T�C�Y��7GB�ɂ��Ă݂܂����B
+　そして、変更によってつぶれた命令とUnityサイズを設定するコードを書き加え
+ます。取り敢えず、設定するサイズは7GBにしてみました。
 
 -----
 004CC02B    64:890D 0000000>MOV DWORD PTR FS:[0],ECX
@@ -194,23 +194,23 @@ text:0040AB6A                 jz      short loc_40ABCA
 004CC043  ^ E9 29EDF3FF     JMP perfect_.0040AD71
 -----
 
-�@���s������Ɗm���ɃT�C�Y��7GB�ɂȂ��Ă���̂��m�F�ł���ł��傤�B��͂�
-����O������ύX����\�t�g�����ΏI���ł��B����̃p�b�`���ύX�\�t�g��
-���̃T�C�g�Ō��J���Ă��܂��B
+　実行させると確かにサイズが7GBになっているのが確認できるでしょう。後はこ
+れを外部から変更するソフトを作れば終わりです。今回のパッチ＆変更ソフトは
+私のサイトで公開しています。
 
 http://security.symphonic-net.com/?page_id=6
 
-�@�����l�ł����B
+　お疲れ様でした。
 
 
-��0x06.) ��������
+■0x06.) さいごに
 
-�@����̉�͂ł�40GB�����Ɖ��σ`�F�b�N�̉�����s���܂������A���ɂ��F�X��
-�������Ƃ���͂���Ǝv���̂ŁA����������͑��ɂ���͂��Ă݂�̂�������
-������܂���B�撣���Ă��������B
-�@��芸�������σ`�F�b�N�͉�����Ă���̂ŉ�͂��₷�����Ǝv���܂��B����
-�����ł͂�����ƕ�����ɂ����Ǝv���̂ŁA����摜���܂߂����̂������̃T�C
-�g���Ō��J���悤�Ǝv���܂��B�ł͂ł́B
+　今回の解析では40GB制限と改変チェックの回避を行いましたが、他にも色々と
+いじれるところはあると思うので、興味ある方は他にも解析してみるのもいいか
+もしれません。頑張ってください。
+　取り敢えず改変チェックは回避しているので解析しやすいかと思います。文章
+だけではちょっと分かりにくいと思うので、後日画像を含めたものをうちのサイ
+ト↓で公開しようと思います。ではでは。
 
 Security Ark
 http://security.symphonic-net.com/

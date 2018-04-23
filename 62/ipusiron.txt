@@ -1,116 +1,116 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- �恛��: TSA���b�N�̃o�C�p�X���� ---
+--- 第○章: TSAロックのバイパス解錠 ---
 
-���ҁFIPUSIRON
+著者：IPUSIRON
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@TSA���b�N������������@�͂��������݂��܂��B�Ⴆ�΁A�o�C�p�X�����A�s�b�L���O�c�[�����g���������A�}�X�^�[�L�[�ɂ������Ȃǂł��B�{�e�ł́A�����Ƃ��ȒP�ȃo�C�p�X�����ɂ��ďЉ�܂��B
-
-
-��0x02.) TSA���b�N�̊T�v
-
-�@TSA���b�N�Ƃ̓A�����J�^�A�ۈ��� TSA�iTransportation Security Administration�j�ɂ���ĔF�E�e�F���ꂽ���O�ł��B�ߔN��TSA���b�N�͕������킹���̃^�C�v�̂��̂����y���Ă��܂��i�}1�Q�Ɓj�B
-
-�i�}2�Fhttp://wizardbible.org/62/img/TSA_lock.jpg�jTSA���b�N�t���_�C������
-
-�@�A�����J���������e���̌�A���j����댯���̌����̂��߂ɃA�����J�����̂��ׂĂ̋�`�ɂ����āA�A�����J�ւ̏o�����ƃA�����J�����̃t���C�g�ɍۂ��āA���d�ȃZ�L�����e�B�`�F�b�N���s���Ă��܂��B���ɋ�`�ɗa����ו��Ɋւ��ẮA�����傪���Ȃ��ꏊ�ł�TSA�E���ɂ���ăo�b�O��X�[�c�P�[�X�̒����������Ă��܂��B�����X�[�c�P�[�X���̏��O���{�����ꂽ��Ԃ̏ꍇ�ɂ́A�E�����j�����Ă��猟�����܂��B���������j��s�ׂ������ɂ���ē��e�����j�󂵂��蕴�������肵�Ă��ATSA�E���͈�ؐӔC�𕉂�Ȃ��Ă��悢�ƍ��ɂ���Ď�茈�߂��Ă��܂��B���̂��߁A�ו���a����^�C�~���O�Ŏ{�������Ȃ��悤�ɑ�����܂��B����̓A�����J�{�y�����łȂ��A�n���C�A�O�A���A�A���X�J�A�T�C�p���A���̑��̃A�����J�̂̃G���A�̗��s�̍ۂ����l�ł��B
-
-�@�������A���O�̎{�������Ȃ��Ƃ������Ƃ�TSA�E���ȊO�ɂ����g���J�����Ă��܂����ꂪ����܂��B
-�@TSA���b�N�͂��������s�����������܂��BTSA���b�N�͓��ʂ�TSA����̔F���󂯂Ă���ATSA���b�N���t���Ă�����O�ł���΁A�{�������܂܋�`�̌����ɏo���Ă��悢���ƂɂȂ��Ă��܂��B��`��TSA�E����TSA���b�N�̌������L���Ă���ATSA���b�N���{�����ł��܂��B���̌��͈�ʌ����ɂ͔̔�����Ă��Ȃ����߁ATSA�E���ȊO�ɂƂ��Ă͌��J���̋Z�p����g����ȊO�ɊJ������p�͂���܂���B
-
-��TSA���b�N���t�����Ă��Ȃ��X�[�c�P�[�X
-
-�@TSA���b�N���t�����Ă��Ȃ��X�[�c�P�[�X�����ɁATSA���b�N�t���̃_�C�������싞����X�[�c�P�[�X�x���g���̔�����Ă��܂��B
-��TSA���b�N�t���̃_�C�������싞��
-
-�@�V���b�N����2�̃t�@�X�i�[�̌��ɒʂ��āA�t�@�X�i�[���J���邱�Ƃ�h���܂��BTSA���b�N�̌����͒�ʂɑ��݂��܂��B�Â��^�C�v�ł́A�s���^���u���[���^�C�v��TSA���b�N�����݂��܂��B
-
-��TSA���b�N�t���̃X�[�c�P�[�X�x���g
-
-�@�{������ƃx���g���Œ肳��A��������ƃx���g���ɂ߂邱�Ƃ��ł��܂��B�����̕������x���g��ʂ��ă��b�N���|���邱�ƂŁA�X�[�c�P�[�X�x���g�����炵�ĊO�����Ƃ�h�����Ƃ��ł��܂��B
-
-�@�t�@�X�i�[�ŊJ����^�C�v�̏ꍇ�A�x���g���{�������܂܂ł���T��Œ��̕��i��D�����Ƃ��ł��܂��B����A�d���W���J����^�C�v�̏ꍇ�A���̎�̃X�[�c�P�[�X�x���g�ŌŒ肳��Ă���ƁA�x���g��TSA���b�N���������邩�A�x���g��ؒf���邩���Ȃ���΁A���̕��i�͒D���܂���B�x���g�͐n���ŊȒP�ɐؒf���邱�Ƃ��ł��܂����A�ؒf����Ă��܂��Γ���ɂ��������Ƃ����m�ł��܂��B
-
-��TSA���b�N�ȊO�̏��O�Ŏ{�������܂܂��Ƃǂ��Ȃ邩
-
-�@�Ƃ���ŁA�uTSA���b�N���J����W�����s�݂ŁA�X�[�c�P�[�X���Ɖ󂳂�邱�Ƃ����邽�߁A�X�[�c�P�[�X�̌��͂�����TSA���b�N�t���X�[�c�P�[�X�x���g��������悤�Ɂv�Ƃ����邱�Ƃ�����悤�ł��B������TSA�E���ɔj�������ꍇ�ł��ATSA���b�N�t���X�[�c�P�[�X�x���g�ł���΁A�x���g�̐ؒf�����̔�Q�ōς݁A�X�[�c�P�[�X�������Ă�����O��j�󂳂�邱�Ƃ�����܂���B�X�[�c�P�[�X�������Ă�����O���������悤�Ƃ��Ă��A���[�J�[�ɖ₢���킹�����Ԃ������A�ň��̏ꍇ�͑Ή����镔�i�̍݌ɂ��c���Ă��炸�������邱�Ƃ����ł��܂���B
+　TSAロックを解錠する方法はいくつか存在します。例えば、バイパス解錠、ピッキングツールを使った解錠、マスターキーによる解錠などです。本稿では、もっとも簡単なバイパス解錠について紹介します。
 
 
-��0x03.) TSA���b�N�̃o�C�p�X����
+■0x02.) TSAロックの概要
 
-�@TSA���b�N�̌����̋߂��ɁuTSA00x�v�̂悤�ɍ��󂳂�Ă��܂����A���̐��l���Ƃ�TSA���b�N�̌��̌`��E�傫�����قȂ�܂��B�����ł�TSA007��TSA002���悭�������邱�Ƃ��ł��܂��B�{�e�ł�TSA002�̉������@���Љ�܂�
+　TSAロックとはアメリカ運輸保安局 TSA（Transportation Security Administration）によって認可・容認された錠前です。近年のTSAロックは文字合わせ錠のタイプのものが普及しています（図1参照）。
 
-��TSA002
+（図2：http://wizardbible.org/62/img/TSA_lock.jpg）TSAロック付きダイヤル錠
 
-�@TSA002�͎g�p�҂�3���̐����̑g�ݍ��킹���Ŏ{�������ATSA�E���͌��Ŏ{��������^�C�v�ł��i�}2�Q�Ɓj�B
+　アメリカ同時多発テロの後、爆破物や危険物の検査のためにアメリカ国内のすべての空港において、アメリカへの出入国とアメリカ国内のフライトに際して、厳重なセキュリティチェックが行われています。特に空港に預ける荷物に関しては、持ち主がいない場所でもTSA職員によってバッグやスーツケースの中を検査しています。もしスーツケース等の錠前が施錠された状態の場合には、職員が破錠してから検査します。こうした破壊行為が原因によって内容物が破壊したり紛失したりしても、TSA職員は一切責任を負わなくてもよいと国によって取り決められています。そのため、荷物を預けるタイミングで施錠をしないように促されます。これはアメリカ本土だけでなく、ハワイ、グアム、アラスカ、サイパン、その他のアメリカ領のエリアの旅行の際も同様です。
 
-�i�}2�Fhttp://wizardbible.org/62/img/TSA002_3.jpg�jTSA002�̊O��
+　しかし、錠前の施錠をしないということはTSA職員以外にも中身を開けられてしまう恐れがあります。
+　TSAロックはこうした不安を解消します。TSAロックは特別にTSAからの認可を受けており、TSAロックが付いている錠前であれば、施錠したまま空港の検査に出してもよいことになっています。空港のTSA職員はTSAロックの鍵を所有しており、TSAロックを施解錠できます。この鍵は一般向けには販売されていないため、TSA職員以外にとっては鍵開けの技術を駆使する以外に開錠する術はありません。
 
-�@�Ïؔԍ��͑��ʂɑ����܂��i�}3�Q�Ɓj�B
+●TSAロックが付属していないスーツケース
 
-�i�}3�Fhttp://wizardbible.org/62/img/TSA002_10.jpg�jTSA002�̑���
+　TSAロックが付属していないスーツケース向けに、TSAロック付属のダイヤル式南京錠やスーツケースベルトが販売されています。
+○TSAロック付属のダイヤル式南京錠
 
-�@�Ïؔԍ����Z�b�g����ƃV���b�N�����������Ƃ��ł��A�������܂��B�{�����ɂ̓V���b�N����߂�����ԂŔԍ������炵�܂��B
+　シャックルを2つのファスナーの穴に通して、ファスナーを開けることを防ぎます。TSAロックの鍵穴は底面に存在します。古いタイプでは、ピンタンブラー錠タイプのTSAロックも存在します。
 
-��TSA002�̈Ïؔԍ��̕ύX
+○TSAロック付属のスーツケースベルト
 
-�@�f�t�H���g�̈Ïؔԍ���000�ł����A�C�ӂ̔ԍ��ɕύX�ł��܂��B
-�@�Ïؔԍ����Z�b�g���ăV���b�N����������Ԃɂ��܂��B�V���b�N������������ƁA�����̓ˋN�������܂��B�V���b�N���̎��𒆐S�ɂ��Đ�[��90�x��]���āA�ˋN��90�x��̐؂茇���ɓ���܂��i�}4�Q�Ɓj�B
+　施錠するとベルトが固定され、解錠するとベルトを緩めることができます。取っ手の部分をベルトを通してロックを掛けることで、スーツケースベルトをずらして外すことを防ぐことができます。
 
-�i�}4�Fhttp://wizardbible.org/62/img/TSA002_11.jpg�j�Ïؔԍ��̕ύX���̓ˋN�̈ʒu
+　ファスナーで開けるタイプの場合、ベルトを施錠したままでも手探りで中の物品を奪うことができます。一方、硬い蓋を開けるタイプの場合、この種のスーツケースベルトで固定されていると、ベルトのTSAロックを解錠するか、ベルトを切断するかしなければ、中の物品は奪われません。ベルトは刃物で簡単に切断することができますが、切断されてしまえば盗難にあったことを検知できます。
 
-�@�V���b�N�����ォ�牟������ԂŁA�_�C�������񂵂Đ��l��ύX���܂��B�ړI�̈Ïؔԍ��ɃZ�b�g������A�V���b�N�����ォ�牟�����Ȃ��悤�ɂ��܂��B����ňÏؔԍ����ύX����܂��B
+●TSAロック以外の錠前で施錠したままだとどうなるか
 
-��TSA002�̃o�C�p�X����
-
-�@TSA002��TSA���b�N���̌����͎��̂悤�Ȍ`��ɂȂ��Ă��܂��i�}5�Q�Ɓj�B
-
-�i�}5�Fhttp://wizardbible.org/62/img/TSA002_1.jpg�jTSA002�̌����̌`��
-
-�@���̌����͒ʏ�TSA�E�������g�p���܂���BTSA���b�N�̃}�X�^�[�L�[��}�����邱�ƂŁA�Ïؔԍ����Z�b�g���邱�ƂȂ��A�������邱�Ƃ��ł��܂��B�{�e�̖ړI�̓}�X�^�[�L�[�ȊO�̂��̂�}�����ATSA���b�N���������Ă��܂����Ƃł��B������Ƃ������������΁A���̎菇�ŒN�ł������ł��܂��B
-
-�@TSA002�͎��̎菇�Ńo�C�p�X�����ł��܂��B
-
-1�F�f�B���v�����̃s�b�L���O�Ɏg�p����e���V������p�ӂ��܂��i�}6�Q�Ɓj�B
-
-�i�}6�Fhttp://wizardbible.org/62/img/TSA002_2.jpg�j�����Ώۂ�TSA002�Ɖ����Ɏg�p����e���V����
-
-�@���̃e���V�������p�ӂł��Ȃ��ꍇ�́A��r�I���݂̂���L�e���V�����Ȃǂł���p�ł��܂��B���݂�v������̂͂Ђ˂�̓��삪���邽�߂ł��B
-�@�������A�����̑O�ʂ̌����̌`��͒����`�ł����A�����ɓˋN�����邽�߁A���̓ˋN������邱�Ƃ��ł�����݂̂��̂����}���ł��܂���B
-
-2�F�e���V�����̕��̏���������TSA���b�N�̌����ɑ}�����܂��i�}7�Q�Ɓj�B
-
-�i�}7�Fhttp://wizardbible.org/62/img/TSA002_4.jpg�j�e���V�����̑}��
-
-3�F���܂ő}������ƒe�͂�����܂��B�e�͂������Ԃ����܂܁A�S�̂����i���邢�͏�j�Ɉړ�����ƁA���������ɉ�]���܂��i�}8�Q�Ɓj�B
-
-�i�}8�Fhttp://wizardbible.org/62/img/TSA002_5.jpg�j�e���V�����̑���
-
-4�F������90�x��]���ATAS002�Ƃ��������ɑ΂��āA���������ɂȂ�Ή����̐����ł��i�}9�Q�Ɓj�B
-
-�i�}9�Fhttp://wizardbible.org/62/img/TSA002_6.jpg�j��������
-
-�@TSA���b�N���������Ă��A�V���b�N���̐�[�͏オ��܂���B����ɂ�������炸�A������ԂɂȂ�̂́A�V���b�N���̐�[�ɔ閧������܂��B
-�@�V���b�N���̐�[���Z�b�g����Ă��镔���̎��͂ɐԂ��E�H�[�h�Ƌ����̃E�H�[�h������܂��B�Ԃ��E�H�[�h��2�ӏ��ɐ؂茇��������~����̏�Q���ł��B�܂��A���̓����ɂ�������̃E�H�[�h��1�ӏ��ɐ؂茇��������~����̏�Q���ł��B
-�@TSA���b�N���{��������ƁA�����̃E�H�[�h��90�x��]���܂��BTSA���b�N�̉������ɂ͐ԐF�̃E�H�[�h�̐؂茇���Ƌ����̃E�H�[�h�̋����̐؂茇���������A�V���b�N���̎��𒆐S�ɂ��ĉ�]���邱�ƂŁA������ԂɂȂ�܂��i�}10�A�}11�Q�Ɓj�B
-
-�i�}10�Fhttp://wizardbible.org/62/img/TSA002_7.jpg�j�E�H�[�h�̐؂茇�����������Ƃ���
-�i�}11�Fhttp://wizardbible.org/62/img/TSA002_8.jpg�jTSA���b�N�̉������
-
-�@�t�ɁATSA���b�N�̎{�����ɂ͐ԐF�̃E�H�[�h�̐؂茇���Ƌ����̃E�H�[�h�̋����̐؂茇��������Ȃ��̂ŁA�V���b�N���̐�[���E�H�[�h�Ɉ����|����킯�ł��B�܂�A�V���b�N���̐�[�����̈ʒu�ɂ���Ύ{����ԂɂȂ�킯�ł��i�}12�Q�Ɓj�B
-
-�i�}12�Fhttp://wizardbible.org/62/img/TSA002_9.jpg�jTSA���b�N�̎{�����
+　ところで、「TSAロックを開ける係員が不在で、スーツケースごと壊されることがあるため、スーツケースの鍵はかけずTSAロック付きスーツケースベルトをかけるように」といわれることもあるようです。万が一TSA職員に破錠される場合でも、TSAロック付きスーツケースベルトであれば、ベルトの切断だけの被害で済み、スーツケースが備えている錠前を破壊されることがありません。スーツケースが備えている錠前を交換しようとしても、メーカーに問い合わせする手間が生じ、最悪の場合は対応する部品の在庫が残っておらず交換することさえできません。
 
 
-��0x04.) �I����
+■0x03.) TSAロックのバイパス解錠
 
-�@����Љ���o�C�p�X�����͔��ɊȒP�ł����B����TSA001��ꕔ��TSA007�͂���قǊȒP�ɂ��܂������܂���B�s�b�L���O�c�[����}�X�^�[�L�[�̕����Ȃǂ��L���ł��B�ڍׂ͏o�ŗ\��̏��O�̖{�ŏЉ�܂��B
+　TSAロックの鍵穴の近くに「TSA00x」のように刻印されていますが、この数値ごとにTSAロックの鍵の形状・大きさが異なります。国内ではTSA007やTSA002をよく見かけることができます。本稿ではTSA002の解錠方法を紹介します
+
+●TSA002
+
+　TSA002は使用者は3桁の数字の組み合わせ錠で施解錠し、TSA職員は鍵で施解錠するタイプです（図2参照）。
+
+（図2：http://wizardbible.org/62/img/TSA002_3.jpg）TSA002の外観
+
+　暗証番号は側面に揃えます（図3参照）。
+
+（図3：http://wizardbible.org/62/img/TSA002_10.jpg）TSA002の側面
+
+　暗証番号をセットするとシャックルを引くことができ、解錠します。施錠時にはシャックルを戻した状態で番号をずらします。
+
+●TSA002の暗証番号の変更
+
+　デフォルトの暗証番号は000ですが、任意の番号に変更できます。
+　暗証番号をセットしてシャックルを解錠状態にします。シャックルを引っ張ると、根元の突起が見えます。シャックルの軸を中心にして先端を90度回転して、突起を90度先の切り欠きに入れます（図4参照）。
+
+（図4：http://wizardbible.org/62/img/TSA002_11.jpg）暗証番号の変更時の突起の位置
+
+　シャックルを上から押した状態で、ダイヤルを回して数値を変更します。目的の暗証番号にセットしたら、シャックルを上から押さえないようにします。これで暗証番号が変更されます。
+
+●TSA002のバイパス解錠
+
+　TSA002のTSAロック部の鍵穴は次のような形状になっています（図5参照）。
+
+（図5：http://wizardbible.org/62/img/TSA002_1.jpg）TSA002の鍵穴の形状
+
+　この鍵穴は通常TSA職員しか使用しません。TSAロックのマスターキーを挿入することで、暗証番号をセットすることなく、解錠することができます。本稿の目的はマスターキー以外のものを挿入し、TSAロックを解錠してしまうことです。ちょっとした道具さえあれば、次の手順で誰でも解錠できます。
+
+　TSA002は次の手順でバイパス解錠できます。
+
+1：ディンプル錠のピッキングに使用するテンションを用意します（図6参照）。
+
+（図6：http://wizardbible.org/62/img/TSA002_2.jpg）解錠対象のTSA002と解錠に使用するテンション
+
+　このテンションが用意できない場合は、比較的厚みのあるLテンションなどでも代用できます。厚みを要求するのはひねりの動作が入るためです。
+　ただし、内筒の前面の鍵穴の形状は長方形ですが、内部に突起があるため、その突起を避けることができる厚みのものしか挿入できません。
+
+2：テンションの幅の小さい方をTSAロックの鍵穴に挿入します（図7参照）。
+
+（図7：http://wizardbible.org/62/img/TSA002_4.jpg）テンションの挿入
+
+3：奥まで挿入すると弾力があります。弾力を押し返したまま、全体を下（あるいは上）に移動すると、解錠方向に回転します（図8参照）。
+
+（図8：http://wizardbible.org/62/img/TSA002_5.jpg）テンションの操作
+
+4：内筒が90度回転し、TAS002という文字に対して、鍵穴が横になれば解錠の成功です（図9参照）。
+
+（図9：http://wizardbible.org/62/img/TSA002_6.jpg）解錠成功
+
+　TSAロックを解錠しても、シャックルの先端は上がりません。それにもかかわらず、解錠状態になるのは、シャックルの先端に秘密があります。
+　シャックルの先端がセットされている部分の周囲に赤いウォードと金属のウォードがあります。赤いウォードは2箇所に切り欠きがある円柱状の障害物です。また、その内側にある金属のウォードは1箇所に切り欠きがある円柱状の障害物です。
+　TSAロックを施解錠すると、金属のウォードが90度回転します。TSAロックの解錠時には赤色のウォードの切り欠きと金属のウォードの金属の切り欠きが揃い、シャックルの軸を中心にして回転することで、解錠状態になります（図10、図11参照）。
+
+（図10：http://wizardbible.org/62/img/TSA002_7.jpg）ウォードの切り欠きが揃ったところ
+（図11：http://wizardbible.org/62/img/TSA002_8.jpg）TSAロックの解錠状態
+
+　逆に、TSAロックの施錠時には赤色のウォードの切り欠きと金属のウォードの金属の切り欠きが揃わないので、シャックルの先端がウォードに引っ掛かるわけです。つまり、シャックルの先端が元の位置にあれば施錠状態になるわけです（図12参照）。
+
+（図12：http://wizardbible.org/62/img/TSA002_9.jpg）TSAロックの施錠状態
+
+
+■0x04.) 終わりに
+
+　今回紹介したバイパス解錠は非常に簡単でした。他のTSA001や一部のTSA007はこれほど簡単にうまくいきません。ピッキングツールやマスターキーの複製などが有効です。詳細は出版予定の錠前の本で紹介します。
 
 

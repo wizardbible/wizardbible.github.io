@@ -1,9 +1,9 @@
-¡suma
-œJob: Student
-œWeb: http://beautiful.homelinux.net/~sky-software/
-œMail: shu_2001jp@yahoo.co.jp
-œTeamiGroupj: secret
-œComment:
-@‰‚ß‚Ä‚Ì“Še‚Å‚·BŠy‚µ‚ñ‚Å’¸‚¯‚½‚Å‚µ‚å‚¤‚©B
-@ˆê•”‰ğà‚ª”²‚¯‚½‚èAƒc[ƒ‹‚ªì‚ê‚Ä‚¢‚È‚©‚Á‚½‚è‚Æ•s”õ‚ª‚ ‚Á‚Ä‚·‚¢‚Ü‚¹‚ñB
-ƒlƒ^‚ª‚ ‚ê‚ÎŸ‰ñ‚àQ‰Á‚³‚¹‚Ä’¸‚«‚½‚¢‚Æv‚¢‚Ü‚·B
+â– suma
+â—Job: Student
+â—Web: http://beautiful.homelinux.net/~sky-software/
+â—Mail: shu_2001jp@yahoo.co.jp
+â—Teamï¼ˆGroupï¼‰: secret
+â—Comment:
+ã€€åˆã‚ã¦ã®æŠ•ç¨¿ã§ã™ã€‚æ¥½ã—ã‚“ã§é ‚ã‘ãŸã§ã—ã‚‡ã†ã‹ã€‚
+ã€€ä¸€éƒ¨è§£èª¬ãŒæŠœã‘ãŸã‚Šã€ãƒ„ãƒ¼ãƒ«ãŒä½œã‚Œã¦ã„ãªã‹ã£ãŸã‚Šã¨ä¸å‚™ãŒã‚ã£ã¦ã™ã„ã¾ã›ã‚“ã€‚
+ãƒã‚¿ãŒã‚ã‚Œã°æ¬¡å›ã‚‚å‚åŠ ã•ã›ã¦é ‚ããŸã„ã¨æ€ã„ã¾ã™ã€‚

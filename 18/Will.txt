@@ -1,52 +1,52 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- ��3��: OllyDbg�̐Ǝ㐫�ɂ��� ---
+--- 第3章: OllyDbgの脆弱性について ---
 
-���ҁFWill
+著者：Will
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) OllyDbg�Ƃ�
+■0x01.) OllyDbgとは
 
-�@OllyDbg��32bit�A�v���P�[�V�������f�o�b�O���邱�Ƃ��ł���\�t�g�E�F�A��
-���B���ɂ��L���ȃf�o�b�K�Ƃ���IDA Pro�ADriverStudio�Ɋ܂܂��Soft ICE�Ȃ�
-������܂����ADriverStudio��20���ȏ�Ƃ������Ȃ荂�z�ȃ\�t�g�E�F�A�ł��B
-�@�������AOllyDbg�̓t���[��Soft ICE�ɂ͗��Ƃ��������܂����A���Ȃ荂�@
-�\�ł��B��y�Ɏg���邱�Ƃ���\�t�g�E�F�A�̉�͂Ȃǂɂ��p�����Ă��܂��B
-
-
-��0x02.) ����̐Ǝ㐫�ɂ���
-
-�@2004�N07��21���ɁAOllyDbg��OutputDebugString�̈����ɑ����̏����w�蕶��
-�񂪊܂܂��Ɣ�������Z�L�����e�B�z�[�������݂��邱�Ƃ���������܂����B
-���̖�肪���p�����ƁA�C�ӂ̃R�[�h�����s�����A�܂���OllyDbg���N���b�V
-������邨���ꂪ����܂��B���Ȃ�O�ɔ������ꂽ�Ǝ㐫�ł����AOllyDbg�̍��
-�̕����C�����Ă��Ȃ��̂ōŐV�łł����̐Ǝ㐫������ł��܂���B
+　OllyDbgは32bitアプリケーションをデバッグすることができるソフトウェアで
+す。他にも有名なデバッガとしてIDA Pro、DriverStudioに含まれるSoft ICEなど
+がありますが、DriverStudioは20万以上というかなり高額なソフトウェアです。
+　しかし、OllyDbgはフリーでSoft ICEには劣るところもありますが、かなり高機
+能です。手軽に使えることからソフトウェアの解析などにも用いられています。
 
 
-��0x03.) �ǂ�Ȋ����ɂȂ邩�̌����Ă݂�B
+■0x02.) 今回の脆弱性について
 
-�@�܂���OllyDbg���ȉ���URL����_�E�����[�h���܂��B
+　2004年07月21日に、OllyDbgはOutputDebugStringの引数に多数の書式指定文字
+列が含まれると発生するセキュリティホールが存在することが発見されました。
+この問題が悪用されると、任意のコードを実行される、またはOllyDbgをクラッシ
+ュされるおそれがあります。かなり前に発見された脆弱性ですが、OllyDbgの作者
+の方が修正していないので最新版でもこの脆弱性を回避できません。
+
+
+■0x03.) どんな感じになるか体験してみる。
+
+　まずはOllyDbgを以下のURLからダウンロードします。
 
 http://home.t-online.de/home/Ollydbg/
 
-�@�����āA�ȉ���URL�͍����͂���crackme�ł��B
+　そして、以下のURLは今回解析するcrackmeです。
 
 http://will.wbjapan.com/cCrackme/crackme0x1.zip
 
-�@Olly��crackme���J������AF9�������Ď��s���Ă݂Ă��������Bcrackme���N��
-���܂��B�����āA�K���ɉ�����������͂��ă{�^���������Ɓc������OllyDbg���N
-���b�V�����܂��B�����������A�������OutputDebugString���N���b�V���̌�����
-���B
+　Ollyでcrackmeを開いたら、F9を押して実行してみてください。crackmeが起動
+します。そして、適当に何か数字を入力してボタンを押すと…見事にOllyDbgがク
+ラッシュします。何が原因か、もちろんOutputDebugStringがクラッシュの原因で
+す。
 
-�@������xOlly�ŊJ����Ctrl�{N�������āAOutputDebugStringA����������iou
-t�܂őł����񂾂��т܂��j�A�J�[�\�������킹�ĉE�N���b�N��set breakpoint
- on every reference���N���b�N����Ώ���OK�ł��BF9��������crackme�����s��
-���܂��B�����āA�K���ɓ��͂�����A�{�^���������ƃu���[�N�|�C���g�Ŏ~�܂�
-�܂��B
+　もう一度Ollyで開いてCtrl＋Nを押して、OutputDebugStringAを見つけたら（ou
+tまで打ち込んだら飛びます）、カーソルをあわせて右クリック→set breakpoint
+ on every referenceをクリックすれば準備OKです。F9を押してcrackmeを実行さ
+せます。そして、適当に入力した後、ボタンを押すとブレークポイントで止まり
+ます。
 
 -----
 0040141A   . 6A 01          PUSH 1                                   ; 
@@ -62,37 +62,37 @@ OutputDebugStringA
 00401433   > C2 0400        RETN 4
 -----
 
-�@������OutputDebugStringA�̈����ł���"%s%s%s%s�c"�Ƃ���������ł��B����
-�ɂ�����F8�������Ǝ��ۂɃN���b�V�����܂��B����ł͂ǂ������炢���̂��H�@
-�����͂��̕������ύX�����OK�ł��B�u00401423   . 68 28AF4100    PUSH c
-rackme.0041AF28�v�ɃJ�[�\�������킹�ăX�y�[�X�{�^���������āA�uPUSH 0041
-AF28�v��PUSH 4198E4�ɕύX����Έ�����"System"�ɕύX����܂��B�ύX���I����
-����E�N���b�N����Copy to excutable��All modifycations�������ƃ_�C�A���O
-���\�������̂ŁACopy All���N���b�N���܂��B����ƕʂ̃E�C���h�E���\����
-���̂ŁA���̃E�C���h�E��ŉE�N���b�N����Save File�ŕۑ������OK�ł��B
+　原因はOutputDebugStringAの引数である"%s%s%s%s…"という文字列です。実際
+にここでF8を押すと実際にクラッシュします。それではどうしたらいいのか？　
+答えはこの文字列を変更すればOKです。「00401423   . 68 28AF4100    PUSH c
+rackme.0041AF28」にカーソルをあわせてスペースボタンを押して、「PUSH 0041
+AF28」をPUSH 4198E4に変更すれば引数が"System"に変更されます。変更が終了し
+たら右クリックしてCopy to excutableのAll modifycationsを押すとダイアログ
+が表示されるので、Copy Allをクリックします。すると別のウインドウが表示さ
+れるので、そのウインドウ上で右クリックしてSave Fileで保存すればOKです。
 
-�@�����܂łł������xOllyDbg���I�����āA�ۑ������t�@�C�����J���Ď��s����
-�݂�ƃN���b�V�����Ȃ��Ȃ�܂����B
+　ここまでできたら一度OllyDbgを終了して、保存したファイルを開いて実行して
+みるとクラッシュしなくなりました。
 
-�@�ȏオ����̐Ǝ㐫�̉���̕��@�ł��B
-
-
-��0x04.) ���̐Ǝ㐫�̑Ή���
-
-�@��҂̕���Ver 2.0�̊J�����s���Ă���A�C�������\���͒Ⴂ�Ǝv���܂��B
-
-�@�Ή���Ƃ��Ă͎����l�����܂��B
-�E����OutputDebugString�̈����𒲂ׂ�
-�EOlly��plug-in�ŉ������
+　以上が今回の脆弱性の回避の方法です。
 
 
-��0x05.) ���ł�
+■0x04.) この脆弱性の対応策
 
-�@�ꉞcrackme�Ȃ̂ŁA��͂��Ă݂Ă��������B�`�F�b�N���[�`���͂��Ȃ�ȒP��
-�̂ŏ��S�҂̕��ł��ł���Ǝv���܂��B�p�b�`���Ƃ��܂�ɂ��ȒP�Ȃ̂ŁA�ł�
-���keygen�ł�����Ă݂Ă��������i�΁B����crackme�ɂ��Ď��ⓙ������΃T
-�C�g��BBS�ɂł��ǂ����B�����炭������x�ŕԐM������Ƃ������܂��̂ŁB
+　作者の方はVer 2.0の開発を行っており、修正される可能性は低いと思われます。
 
-�@����ł́B
+　対応策としては次が考えられます。
+・毎回OutputDebugStringの引数を調べる
+・Ollyのplug-inで回避する
+
+
+■0x05.) ついでに
+
+　一応crackmeなので、解析してみてください。チェックルーチンはかなり簡単な
+ので初心者の方でもできると思います。パッチだとあまりにも簡単なので、でき
+ればkeygenでも作ってみてください（笑。このcrackmeについて質問等があればサ
+イトのBBSにでもどうぞ。おそらく一日程度で返信がくるとおもいますので。
+
+　それでは。
 
 

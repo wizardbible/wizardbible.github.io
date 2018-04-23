@@ -1,68 +1,68 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- �恛��: �}�j�A�b�NJava�v���O���~���O��7��: �` Java�N���b�L���O �` ---
+--- 第○章: マニアックJavaプログラミング第7回: 〜 Javaクラッキング 〜 ---
 
-���ҁF����
+著者：金床
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@Java�A�v���P�[�V�����͈�ʓI�ɃN���b�N�Ɏア�Ƃ���Ă��邪�A�{���ɂ���
-�Ȃ̂��낤���B���̎������m���߂�ׂ��A���ۂɐ��i�Ƃ��Ĕ̔�����Ă���Java
-�A�v���P�[�V�������ЂƂI�сA�V���A���N���b�N�����݂邱�ƂƂ����B�{�L��
-�͋Z�p�I�ȑ��ʂɂ̂ݏœ_�𓖂Ă���̂ł��邽�߁A���i�̖��O�͖������Ȃ��B
-����Hoge�Ђ�FugaSoftware�Ƃ����\�t�g�E�F�A�Ƃ��Ă������B
-
-
-��0x02.) �T�v
-
-�@����^�[�Q�b�g�Ƃ���FugaSoftware�́AGUI�̃A�v���P�[�V�����ł���BJava��
-GUI�̃\�t�g�E�F�A�Ƃ�����Swing���g�p����̂���ʓI�����AFugaSoftware��SWT
-���g���Ă���B�����Eclipse�ł悭�m����悤�ɂȂ����AOS�l�C�e�B�u�̃��b
-�N&�t�B�[���������ł���e�N�m���W�[���B
-
-�@FugaSoftware�ɂ͎��p���������������Ă���A���̊��Ԃ��߂���ƃV���A��
-�i���o�[�̓��͂𑣂��_�C�A���O���o������悤�ɂȂ�B�����Ő������V���A��
-�i���o�[����͂ł��Ȃ���΁A�A�v���P�[�V�����̎g�p�𑱂��邱�Ƃ��ł��Ȃ�
-�Ȃ��Ă��܂��B
+　Javaアプリケーションは一般的にクラックに弱いとされているが、本当にそう
+なのだろうか。この事実を確かめるべく、実際に製品として販売されているJava
+アプリケーションをひとつ選び、シリアルクラックを試みることとした。本記事
+は技術的な側面にのみ焦点を当てるものであるため、製品の名前は明かさない。
+仮にHoge社のFugaSoftwareというソフトウェアとしておこう。
 
 
-��0x03.) �΍�Ȃ�
+■0x02.) 概要
 
-�@OS�̎��v��i�߂���ԂŋN������ƁA�u�������؂ꂽ�v�Ƃ����_�C�A���O���o
-�����邪�A������xOS�̎��v�����ɖ߂��i���p�������ɐݒ肷��j�ƁA�����Ȃ�
-�������̂悤�ɋN�����Ă����B�܂莞�v�������邾���Ŏg�������邱�Ƃ���
-���邽�߁A�����I�ɂ̓N���b�N�΍�͍s���Ă��Ȃ��Ƃ����邾�낤�B�͂�����
-�����ăN���b�N����Ӗ����܂������Ȃ��Ƃ������Ƃ����A����̓��o�[�X�G���W
-�j�A�����O���̂��̂��ړI�ł��邽�߁A���������˂�����Œ��ׂĂ݂邱�ƂƂ�
-��B
+　今回ターゲットとするFugaSoftwareは、GUIのアプリケーションである。Javaの
+GUIのソフトウェアといえばSwingを使用するのが一般的だが、FugaSoftwareはSWT
+を使っている。これはEclipseでよく知られるようになった、OSネイティブのルッ
+ク&フィールを実現できるテクノロジーだ。
+
+　FugaSoftwareには試用期限がもうけられており、その期間を過ぎるとシリアル
+ナンバーの入力を促すダイアログが出現するようになる。ここで正しいシリアル
+ナンバーを入力できなければ、アプリケーションの使用を続けることができなく
+なってしまう。
 
 
-��0x04.) �Ղ�J�n
+■0x03.) 対策なし
 
-�@�V���A���N���b�N�̍ۂɂ܂����ׂ�ׂ��_�́A�����A�v���P�[�V�����̃R�[�h
-�̒��́u�ǂ��v�ŃV���A���i���o�[�̌��؂��s���Ă���̂��Ƃ������Ƃł���B
-�����Java�A�v���P�[�V�����ł��邽�߁Ajava�R�}���h�̃I�v�V�����ł���Xrun
-hprof���g�����Ƃɂ���B���̃I�v�V�������w�肵�ăA�v���P�[�V���������s����
-�ƁA�I����ɃA�v���P�[�V�����̓�������ׂăg���[�X�������java.hprof.t
-xt�Ƃ����t�@�C���ɋL�^�����B���Ƃ���Test�Ƃ����N���X�̃A�v���P�[�V����
-�����s����ꍇ�A���̂悤�ɋN������΂悢�B
+　OSの時計を進めた状態で起動すると、「期限が切れた」というダイアログが出
+現するが、もう一度OSの時計を元に戻す（試用期限内に設定する）と、何もなか
+ったかのように起動してくれる。つまり時計をいじるだけで使い続けることがで
+きるため、現実的にはクラック対策は行われていないといえるだろう。はっきり
+いってクラックする意味がまったくないということだが、今回はリバースエンジ
+ニアリングそのものが目的であるため、もう少し突っ込んで調べてみることとす
+る。
+
+
+■0x04.) 祭り開始
+
+　シリアルクラックの際にまず調べるべき点は、長いアプリケーションのコード
+の中の「どこ」でシリアルナンバーの検証が行われているのかということである。
+今回はJavaアプリケーションであるため、javaコマンドのオプションであるXrun
+hprofを使うことにする。このオプションを指定してアプリケーションを実行する
+と、終了後にアプリケーションの動作をすべてトレースした情報がjava.hprof.t
+xtというファイルに記録される。たとえばTestというクラスのアプリケーション
+を実行する場合、次のように起動すればよい。
 
 -----
 > java -Xrunhprof Test
 -----
 
-�@����^�[�Q�b�g�Ƃ���FugaSoftware�̓��[�U��.exe�t�@�C�����N���b�N���邱
-�Ƃ�Windows�l�C�e�B�u�̃A�v���P�[�V�������N�����A���̃A�v���P�[�V��������
-���java�R�}���h�𗘗p���Ė{�̂��N������A�Ƃ����d�g�݂ɂȂ��Ă���B����
-����java�R�}���h�̈������w�肷����@��T���K�v������B
+　今回ターゲットとするFugaSoftwareはユーザが.exeファイルをクリックするこ
+とでWindowsネイティブのアプリケーションが起動し、そのアプリケーションがさ
+らにjavaコマンドを利用して本体を起動する、という仕組みになっている。その
+ためjavaコマンドの引数を指定する方法を探す必要がある。
 
-�@�K���ɂ��Ă���͂����Ɍ��������BFugaSoftware.ini�Ƃ����ݒ�t�@�C����
-���e�����̂悤�ɂȂ��Ă����̂��B
+　幸いにしてこれはすぐに見つかった。FugaSoftware.iniという設定ファイルの
+内容が次のようになっていたのだ。
 
 -----
 -vmargs
@@ -71,8 +71,8 @@ xt�Ƃ����t�@�C���ɋL�^�����B���Ƃ���Test�Ƃ����N���X�̃A�v���P�[�V����
 -XX:MinHeapFreeRatio=20
 -----
 
-�@���̃t�@�C�����ɃI�v�V�������w�肵�Ă����΁Ajava�R�}���h�ɂ��ꂪ�n����
-��Ƃ����d�g�݂ł���B�����ŁA���̃t�@�C�������̂悤�ɏ���������B
+　このファイル中にオプションを指定しておけば、javaコマンドにそれが渡され
+るという仕組みである。そこで、このファイルを次のように書き換える。
 
 -----
 -vmargs
@@ -82,17 +82,17 @@ xt�Ƃ����t�@�C���ɋL�^�����B���Ƃ���Test�Ƃ����N���X�̃A�v���P�[�V����
 -XX:MinHeapFreeRatio=20
 -----
 
-�@���̏�ԂŁA���v��i�߂Ă킴�Ɗ����؂�̓����ɐݒ肵�AFugaSoftware���N
-������B�u�������؂�Ă���v�Ƃ����_�C�A���O���o������̂ŁA���x���킴��
-�Ԉ���Ă���V���A���i���o�[����͂���B�����ăA�v���P�[�V�������I������B
-�����java.hprof.txt�����������B���̃t�@�C���͖c��ȏ�񂪋L�^����邽
-�߃T�C�Y�͑傫���Ȃ肪�������A����̓A�v���P�[�V��������K�͂ł��邱�Ƃ�
-����A�Ȃ��57MB�Ƃ����傫���ɂȂ��Ă��܂����B
+　この状態で、時計を進めてわざと期限切れの日時に設定し、FugaSoftwareを起
+動する。「期限が切れている」というダイアログが出現するので、何度かわざと
+間違っているシリアルナンバーを入力する。そしてアプリケーションを終了する。
+するとjava.hprof.txtが生成される。このファイルは膨大な情報が記録されるた
+めサイズは大きくなりがちだが、今回はアプリケーションが大規模であることも
+あり、なんと57MBという大きさになってしまった。
 
 
-��0x05.) �쐶�̃J�����������܂�
+■0x05.) 野生のカンを研ぎ澄ます
 
-�@java.hprof.txt�ɂ͎��̂悤�ȃg���[�X���O����ʂɕ���ł���B
+　java.hprof.txtには次のようなトレースログが大量に並んでいる。
 
 -----
 TRACE 2191:
@@ -102,14 +102,14 @@ TRACE 2191:
 	java.net.URL.getURLStreamHandler(<Unknown>:Unknown line)
 -----
 
-�@���̂悤�Ɂu�ǂ̃N���X�̂ǂ̃��\�b�h����΂ꂽ�̂��v�����ׂċL�^�����
-����̂ŁA���̒�����V���A���i���o�[�̓��e�����؂��Ă������Ȃ��̂�T����
-���B������c��ȗʂȂ̂ŁA��������1��1�ǂ�ł����킯�ɂ͂����Ȃ��B����
-���߁A��������炵���P��Ō����������Ă������@���̂邱�ƂɂȂ�i���Ɋ֐�
-����A��B�̂悤�ɓ�ǉ��Ă����΁A���̕��@�ɑ΂���΍�ƂȂ�j�B
+　このように「どのクラスのどのメソッドがよばれたのか」がすべて記録されて
+いるので、この中からシリアルナンバーの内容を検証していそうなものを探すの
+だ。何しろ膨大な量なので、さすがに1つ1つ読んでいくわけにはいかない。その
+ため、何かそれらしい単語で検索をかけていく方法を採ることになる（仮に関数
+名をAやBのように難読可しておけば、この方法に対する対策となる）。
 
-�@�������̒P��Ō����������ʁA�uvalid�v�Ƃ����P��ňȉ��̃g���[�X�𔭌�
-�����B
+　いくつかの単語で検索した結果、「valid」という単語で以下のトレースを発見
+した。
 
 -----
 TRACE 25030:
@@ -119,39 +119,39 @@ TRACE 25030:
 	com.hoge.fugasoftware.editors.derived.ui.FugaInputDialog.validateInput(FugaInputDialog.java:257)
 -----
 
-�@�uActivationDialog�v��uisValid�v�Ƃ����P�ꂩ��A�����ɂ����������Ƃ���
-����B�����ŁA���ɂ���ActivationDialog�Ƃ����N���X���t�R���p�C�����Ē��g
-���m���߂Ă݂邱�Ƃɂ���B
+　「ActivationDialog」や「isValid」という単語から、いかにも怪しいことがわ
+かる。そこで、次にこのActivationDialogというクラスを逆コンパイルして中身
+を確かめてみることにする。
 
-�@Java�A�v���P�[�V�����ł͑�ʂ̃N���X�t�@�C�����g���邪�A�����͕���
-jar�t�@�C���ɂ܂Ƃ߂Ċi�[����Ă���BFugaSoftware�ł���O�ł͂Ȃ��Aplugi
-n�f�B���N�g���ȉ��ɑ�ʂ�jar�t�@�C�������݂���B���̂����ǂ�jar�t�@�C����
-ActiveDialog�N���X���i�[����Ă���̂��𒲂ׂ�K�v������B�K���ɂ����̃N
-���X�̃p�b�P�[�W���ł���ucom.hoge.fugasoftware.ui.asn�v�Ɩw�Ǔ������O��
-�u\plugins\com.hoge.fugasoftware.ui_2.0.147081�v�Ƃ����f�B���N�g��������A
-���̒���ui.jar�Ɋi�[����Ă��邱�Ƃ��킩�����B���Ȃ݂�jar�t�@�C���̒��g��
-����ɂ�jar�R�}���h��-t�I�v�V�������g���Ď��̂悤�ɂ���΂悢�B
+　Javaアプリケーションでは大量のクラスファイルが使われるが、それらは普通
+jarファイルにまとめて格納されている。FugaSoftwareでも例外ではなく、plugi
+nディレクトリ以下に大量のjarファイルが存在する。このうちどのjarファイルに
+ActiveDialogクラスが格納されているのかを調べる必要がある。幸いにもこのク
+ラスのパッケージ名である「com.hoge.fugasoftware.ui.asn」と殆ど同じ名前の
+「\plugins\com.hoge.fugasoftware.ui_2.0.147081」というディレクトリがあり、
+その中のui.jarに格納されていることがわかった。ちなみにjarファイルの中身を
+見るにはjarコマンドの-tオプションを使って次のようにすればよい。
 
 -----
 >jar -t < ui.jar
 -----
 
-�@jar�t�@�C����zip�t�@�C���Ɠ����`���ł��邽�߁Aunzip�R�}���h��-l�I�v�V��
-�����g���Ē��g�����邱�Ƃ��ł���B
+　jarファイルはzipファイルと同じ形式であるため、unzipコマンドの-lオプショ
+ンを使って中身を見ることもできる。
 
-�@jar�t�@�C���̒��g��W�J����ɂ�jar�R�}���h��-x�I�v�V�������g���B������
-��unzip���g�����Ƃ��ł���B
+　jarファイルの中身を展開するにはjarコマンドの-xオプションを使う。もちろ
+んunzipも使うことができる。
 
 -----
 >jar -x < ui.jar
 -----
 
 
-��0x06.) �t�R���p�C��
+■0x06.) 逆コンパイル
 
-�@ui.jar����ActivationDialog�N���X�����邱�Ƃ͂킩�����̂ŁAjad�Ƃ����悭
-�m��ꂽ�t�R���p�C���c�[�����g���ă\�[�X�R�[�h�`���ւƕϊ�����B����Ɩ�
-��̊֐��͎��̂悤�ɂȂ��Ă��邱�Ƃ��킩�����B
+　ui.jar中にActivationDialogクラスがあることはわかったので、jadというよく
+知られた逆コンパイルツールを使ってソースコード形式へと変換する。すると問
+題の関数は次のようになっていることがわかった。
 
 -----
     public String isValid(String newText)
@@ -173,17 +173,17 @@ ActiveDialog�N���X���i�[����Ă���̂��𒲂ׂ�K�v������B�K���ɂ����̃N
     }
 -----
 
-�@���̊֐������true��Ԃ��悤�ɂ��Ă��悳���������A�ǂ����V���A���i��
-�o�[�̕]�����̂͂��̃N���X�ł͂Ȃ��A2�s�ڂɂ���uASNBridge.getDefault().
-validate�v�Ƃ����֐��ōs���Ă���悤���B�����ŁAASNBridge�N���X�̓��e��
-���Ă݂邱�Ƃɂ���B
+　この関数が常にtrueを返すようにしてもよさそうだが、どうやらシリアルナン
+バーの評価自体はこのクラスではなく、2行目にある「ASNBridge.getDefault().
+validate」という関数で行われているようだ。そこで、ASNBridgeクラスの内容を
+見てみることにする。
 
-�@��قǂƓ����悤�Ƀp�b�P�[�W�����肪�����jar�t�@�C����T���B���������
-�Ɍ�����A�ړI��jar�t�@�C���́uplugins\com.hoge.fugasoftware.project_2
-.0.147081\zornproject.jar�v�ł��邱�Ƃ��킩��B
+　先ほどと同じようにパッケージ名を手がかりにjarファイルを探す。今回もすぐ
+に見つかり、目的のjarファイルは「plugins\com.hoge.fugasoftware.project_2
+.0.147081\zornproject.jar」であることがわかる。
 
-�@jad���g����ASNBridge�N���X�̃\�[�X�R�[�h�𐶐�����B�����validate�֐�
-�̒��g�͎��̂悤�ɂȂ��Ă����B
+　jadを使ってASNBridgeクラスのソースコードを生成する。するとvalidate関数
+の中身は次のようになっていた。
 
 -----
     public boolean validate(FugaProduct fugaproduct, String s)
@@ -192,10 +192,10 @@ validate�v�Ƃ����֐��ōs���Ă���悤���B�����ŁAASNBridge�N���X�̓��e��
     }
 -----
 
-�@���ɐ����Ȋ֐����B���������true���A�Ԉ���Ă����false��Ԃ��悤�ł���B
-�֐�����ϐ������牽������Ă���̂������ׂĂ킩���Ă��܂��_�Ȃǂ�����A
-�܂������N���b�L���O�΍􂪂���Ă��Ȃ����Ƃ��킩��B���̊֐������true��
-�Ԃ��悤�A���̂悤�Ƀ\�[�X�R�[�h������������B
+　実に正直な関数だ。正しければtrueを、間違っていればfalseを返すようである。
+関数名や変数名から何をやっているのかがすべてわかってしまう点などからも、
+まったくクラッキング対策がされていないことがわかる。この関数が常にtrueを
+返すよう、次のようにソースコードを書き換える。
 
 -----
     public boolean validate(FugaProduct fugaproduct, String s)
@@ -205,8 +205,8 @@ validate�v�Ƃ����֐��ōs���Ă���悤���B�����ŁAASNBridge�N���X�̓��e��
     }
 -----
 
-�@�܂��A�����N���X�Ɂu�����؂ꂩ�ǂ����v�𔻒肵�Ă���֐����������̂ŁA
-���łɂ���������������Ă��܂��B
+　また、同じクラスに「期限切れかどうか」を判定している関数を見つけたので、
+ついでにそちらも書き換えてしまう。
 
 -----
     public boolean isExpired(FugaProduct fugaproduct)
@@ -216,34 +216,34 @@ validate�v�Ƃ����֐��ōs���Ă���悤���B�����ŁAASNBridge�N���X�̓��e��
     }
 -----
 
-�@������͏��false��Ԃ��悤�ɂ���B
+　こちらは常にfalseを返すようにする。
 
-�@�\�[�X�R�[�h��������������R�}���h���C������R���p�C������B�K�����̃N
-���X�͑��̃p�b�P�[�W�ւ̈ˑ����Ⴂ���߁A�ȒP�ɃR���p�C�����ʂ�B
+　ソースコードを書き換えたらコマンドラインからコンパイルする。幸いこのク
+ラスは他のパッケージへの依存が低いため、簡単にコンパイルが通る。
 
 -----
 >javac  com/hoge/fugasoftware/project/asn/ASNBridge.java 
 -----
 
-�@���ɍĂ�jar�t�@�C���Ɋi�[����
+　次に再びjarファイルに格納する
 
 -----
 >jar -cf zornproject.jar com/
 -----
 
-�@�����Ă���jar�t�@�C�����uplugins\com.hoge.fugasoftware.project_2.0.147
-081\zornproject.jar�v�ɏ㏑������B
+　そしてこのjarファイルを「plugins\com.hoge.fugasoftware.project_2.0.147
+081\zornproject.jar」に上書きする。
 
-�@���̏�ԂŋN������ƁA�����Ɋ����؂�̃_�C�A���O���o�����Ȃ��Ȃ�B�N��
-�b�N�����ł���B
+　この状態で起動すると、見事に期限切れのダイアログが出現しなくなる。クラ
+ック完了である。
 
 
-��0x07.) �܂Ƃ�
+■0x07.) まとめ
 
-�@Java�A�v���P�[�V�����̃��o�[�X�G���W�j�A�����O�͏��߂Ăł��������A����
-�܂ł킸��1���Ԏサ��������Ȃ������B�M�҂�Java��Eclipse�ɐe����ł����
-�����ɗ������悤���B����Java�A�v���P�[�V�����ŃN���b�N�΍���s�����Ǝv��
-�Ȃ�΁A�܂��͕ϐ�����֐������킩��ɂ������̂ɂ���̂��悳�����ł���B
+　Javaアプリケーションのリバースエンジニアリングは初めてであったが、ここ
+までわずか1時間弱しかかからなかった。筆者がJavaやEclipseに親しんでいるの
+が役に立ったようだ。もしJavaアプリケーションでクラック対策を行おうと思う
+ならば、まずは変数名や関数名をわかりにくいものにするのがよさそうである。
 
 
 

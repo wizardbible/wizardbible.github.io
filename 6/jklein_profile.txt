@@ -1,17 +1,17 @@
-��J-Klein
-��Job:�y��������T����
-��Web:- Mac Freaks -�ihttp://members.jcom.home.ne.jp/j-klein/�j
-��Mail: j-klein@jcom.home.ne.jp
-��Team�iGroup�j:N/A
-��Comment:
-�_���Ă�킯�ł͂Ȃ��̂ɉ��̎���ɂ�����̂͏����h�Ȃ��̂΂���A�p�\�R����Mac �����A�g�т� tu-ka �A�D���Ȃ��΂��|�l�͏��{�m�u�ƒ������B�g�т� tu-ka ���ƋC�t���ƁA�݂�Ȃ��ĕs�v�c�����Ɂu�Ȃ�� tu-ka �Ȃ́v�ƕ������B�����Ă��ꂪ�����������肷��B
+■J-Klein
+●Job:楽しい事を探す事
+●Web:- Mac Freaks -（http://members.jcom.home.ne.jp/j-klein/）
+●Mail: j-klein@jcom.home.ne.jp
+●Team（Group）:N/A
+●Comment:
+狙ってるわけではないのに俺の周りにあるものは少数派なものばかり、パソコンはMac だし、携帯は tu-ka 、好きなお笑い芸人は松本仁志と鳥肌実。携帯が tu-ka だと気付くと、みんなして不思議そうに「なんで tu-ka なの」と聞かれる。そしてそれが快感だったりする。
 
-�������߃c�[��:
-�Egdd
-gdd �͂����� Sniffer �Ȃ̂ł����A�g�p���@������Ȃ��̂ŏ��߂�sniffer �ɐG���l�ɂ͂����߂ł��B�ȒP�ȃp�^�[���w��ɂ��A�N�V�������ݒ�ł���̂� IDS �ɐG���Ƃ����Ӗ��ł����߂��܂����A�l�I�ɂ̓\�[�X���ǂ݂₷�������̂� Sniffer �̌�����׋������ő�ϖ��ɗ����܂����ˁB
+●お勧めツール:
+・gdd
+gdd はいわゆる Sniffer なのですが、使用方法が難しくないので初めてsniffer に触れる人にはお勧めです。簡単なパターン指定によるアクションも設定できるので IDS に触れるという意味でも勧められますし、個人的にはソースが読みやすかったのも Sniffer の原理を勉強する上で大変役に立ちましたね。
 
-�Esu �g���C
-su �g���C���c�[�����ǂ����͂��Ă����A�w�n�b�L���O�͍H�v�ƃA�C�f�B�A���x�Ƃ������ƂɋC�t�����ꂽ�Ƃ����Ӗ��Ŋ��S�[���o��ł����ˁi�傰���j
+・su トロイ
+su トロイがツールかどうかはさておき、『ハッキングは工夫とアイディアだ』ということに気付かされたという意味で感慨深い出会いでしたね（大げさ）
 
-�ENetCat
-�L���ȃc�[���Ȃ̂ł����đ����͌��Ȃ��ł����A�l�I�ɂ͑��Ȃ̃T�[�o�Ƃ��ė��p�ł���̂���Ԃ��ꂵ����������Ȃ��ł��ˁB
+・NetCat
+有名なツールなのであえて多くは語らないですが、個人的には即席のサーバとして利用できるのが一番うれしいかもしれないですね。

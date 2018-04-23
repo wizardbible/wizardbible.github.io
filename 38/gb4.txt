@@ -1,49 +1,49 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- �恛��: ���o�[�X�G���W�j�A�����O���H khallenge�ւ̃`�������W ����3-1 ---
+--- 第○章: リバースエンジニアリング実践 khallengeへのチャレンジ その3-1 ---
 
-���ҁFGreen boy 4
+著者：Green boy 4
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@�ǂ�Green boy 4�ł��B36���ɑ����AF-Secure Reverse-Engineering Challenge
-2007(khallenge 2007)�̉�͂��s�Ȃ��܂��B���񂩂琔��ɂ킽���āA���X�g��
-���ł���Level3�ɂ��Đ������Ă��������Ǝv���܂��B�{����1��Ő����ł���
-�΂悢�̂ł����A���Ȃ蒷���ɂȂ邱�Ƃ��\�z�����̂ŁA���񂩂ɕ����Đ���
-���Ă��������Ǝv���܂��B
+　どもGreen boy 4です。36号に続き、F-Secure Reverse-Engineering Challenge
+2007(khallenge 2007)の解析を行ないます。今回から数回にわたって、ラストの
+問題であるLevel3について説明していきたいと思います。本当は1回で説明できれ
+ばよいのですが、かなり長文になることが予想されるので、何回かに分けて説明
+していきたいと思います。
 
-�@�ƁA������Ƃ��̑O�ɁA���̏���؂�Ă��l�т��Ȃ���΂Ȃ�Ȃ����Ƃ͂���
-�܂��B36���̑�3�� 0x03.)�ɂ����āAOllyDump��DokoDon����̃T�C�g����͂���
-�_�E�����[�h���ł��Ȃ��悤�ȏ����������Ă��܂��܂����B�������A���{�l����
-�c�b�R�~�����������܂��āA�T�C�g�͕߂Ă�����̂́AOllyDump���͂��߂Ƃ�
-��Plugin�̓_�E�����[�h�ł���悤�ł��B��̓I�ɂ�OllyDump�̃_�E�����[�h��
-�ȉ��̕��@�ōs�Ȃ��܂��B
+　と、ちょっとその前に、この場を借りてお詫びしなければならないことはあり
+ます。36号の第3章 0x03.)において、OllyDumpはDokoDonさんのサイトからはもう
+ダウンロードができないような書き方をしてしまいました。しかし、ご本人から
+ツッコミをいただきまして、サイトは閉めているものの、OllyDumpをはじめとし
+たPluginはダウンロードできるようです。具体的にはOllyDumpのダウンロードは
+以下の方法で行ないます。
 
-1�F�ȉ���URL�ɃA�N�Z�X
+1：以下のURLにアクセス
 http://dd.x-eye.net/
 
-2�F�u�߂܂����B�v�Ƃ��������N���N���b�N
+2：「閉めました。」というリンクをクリック
 
-3�F�uollydump300110.zip�v���_�E�����[�h
+3：「ollydump300110.zip」をダウンロード
 
-�@�����m�F�s���̂��߂ɁA������L�q�����Ă��܂��A�\���󂠂�܂���ł����B
-�܂�DokoDon����A���w�E���肪�Ƃ��������܂����B
+　私が確認不足のために、誤った記述をしてしまい、申し訳ありませんでした。
+またDokoDonさん、ご指摘ありがとうございました。
 
-�@�Ƃ������ƂŁA��������Level3�̐������n�߂����Ǝv���܂��B
+　ということで、ここからLevel3の説明を始めたいと思います。
 
 
-��0x02.) �܂����s
+■0x02.) まず実行
 
-�@Level3�͎��s����ƁA���L�̂悤��Key�̓��͂����߂��܂��B���̓_��Level
-1�Ɠ��l�ł��ˁB����Key���킩��΁ALevel3�������܂��B�ł́A���ۂ�OllyDbg��
-�ǂݍ��܂��Č��܂��傤�B
+　Level3は実行すると、下記のようにKeyの入力を求められます。この点はLevel
+1と同様ですね。このKeyがわかれば、Level3が解けます。では、実際にOllyDbgで
+読み込ませて見ましょう。
 
------�@�o�͂��ꂽ���e
+-----　出力された内容
 Assembly 2007 Reverse-Engineering Challenge - Level 3
 Copyright (c) 2007 F-Secure Corporation
 
@@ -53,43 +53,43 @@ http://www.f-secure.com/security_center/asm.html
 Enter the key:
 -----
 
-�@���āA�ǂ��������̂ł��傤���H ��͂肱���́A�f�o�b�K�œǂݍ���ŉ�͂�
-�Ă݂܂��傤�B
+　さて、どうしたものでしょうか？ やはりここは、デバッガで読み込んで解析し
+てみましょう。
 
 
-��0x03.) OllyDbg�œǂݍ���
+■0x03.) OllyDbgで読み込み
 
-�@OllyDbg��FSC_Level3.exe���h���b�O���h���b�v���܂��B�O���Ŏ��s�����ہA�u
-Assembly 2007�`�v�Ƃ��������񂪕\������Ă������Ƃ��m�F�ς݂Ȃ̂ŁA���̕�
-�����\����A������̓��͂��󂯕t������ɐ��K��Key�̕�����Ɣ�r���鏈��
-������͂��ł��B�Ƃ������ƂŁA�܂����̃��b�Z�[�W���ǂ��ŕ\������邩��T
-�������Ǝv���܂��B
+　OllyDbgにFSC_Level3.exeをドラッグ＆ドロップします。前項で実行した際、「
+Assembly 2007〜」という文字列が表示されていたことを確認済みなので、その文
+字列を表示後、文字列の入力を受け付けた後に正規のKeyの文字列と比較する処理
+があるはずです。ということで、まずこのメッセージがどこで表示されるかを探
+したいと思います。
 
-�@CPU�E�B���h�E�̋t�A�Z���u�����\������Ă��镔�����E�N���b�N���ASearch 
-For->All referenced text strings���J���Ă��������B
+　CPUウィンドウの逆アセンブラが表示されている部分を右クリックし、Search 
+For->All referenced text stringsを開いてください。
 
------�@All referenced text strings�E�B���h�E�̈ꕔ
+-----　All referenced text stringsウィンドウの一部
 Text strings referenced in FSC_Leve:.text
 Address    Disassembly                               Text string
-00401086   PUSH FSC_Leve.00400F00                    ASCII "Assembly 2007 Reverse-�i���jEnter the key: "
+00401086   PUSH FSC_Leve.00400F00                    ASCII "Assembly 2007 Reverse-（略）Enter the key: "
 004010F1   MOV ESI,FSC_Leve.0040C398                 ASCII "Congratulations! Please send an e-mail to "
 00401167   MOV ESI,FSC_Leve.0040C3D4                 ASCII "Sorry, this key is not valid!"
-�c�i�ȉ����j�c
+…（以下略）…
 -----
 
-�@�ŏ��̍s�i401086�j�Ɏ��s���̃��b�Z�[�W���o�Ă��܂����B�܂��������A���s
-���ɕ\������郁�b�Z�[�W�͂��ꂼ��4010F1�A401167���Q�Ƃ��Ă��邱�Ƃ��킩
-��܂��B���̂悤�Ɏ��s���̃��b�Z�[�W���o�C�i���ɂ��̂܂ܑ��݂��邱�Ƃ���
-�����Level2�̂Ƃ��̂悤�Ƀp�b�N����Ă��Ȃ��悤�ł��B�ł͂Ƃ肠����4010
-86�Ƀu���[�N�|�C���g��ݒ肵�AF9�ł����܂Ŏ��s���ėl�q�����Ă݂܂��傤�B
+　最初の行（401086）に実行時のメッセージが出てきました。また成功時、失敗
+時に表示されるメッセージはそれぞれ4010F1、401167が参照していることがわか
+ります。このように実行時のメッセージがバイナリにそのまま存在することから
+今回はLevel2のときのようにパックされていないようです。ではとりあえず4010
+86にブレークポイントを設定し、F9でそこまで実行して様子を見てみましょう。
 
 
-��0x04.) ������̓��͏ꏊ�̔���
+■0x04.) 文字列の入力場所の判定
 
-�@���s����ƁA�ȉ��̏ꏊ�Œ�~���܂��B
+　実行すると、以下の場所で停止します。
 
------�@�u���[�N�|�C���g�i401086�j���_��CPU�E�B���h�E�̓��e
-00401086   |.  68 000F4000   PUSH FSC_Leve.00400F00                   ;  ASCII "Assembly �i���jEnter the key: "
+-----　ブレークポイント（401086）時点のCPUウィンドウの内容
+00401086   |.  68 000F4000   PUSH FSC_Leve.00400F00                   ;  ASCII "Assembly （略）Enter the key: "
 0040108B   |.  C705 50E04000>MOV DWORD PTR DS:[40E050],FSC_Leve.00401>
 00401095   |.  C705 54E04000>MOV DWORD PTR DS:[40E054],FSC_Leve.00401>
 0040109F   |.  C705 64E04000>MOV DWORD PTR DS:[40E064],FSC_Leve.00401>
@@ -99,7 +99,7 @@ Address    Disassembly                               Text string
 004010B4   |.  8D8424 100400>LEA EAX,DWORD PTR SS:[ESP+410]
 004010BB   |.  68 00040000   PUSH 400
 004010C0   |.  50            PUSH EAX
-004010C1   |.  E8 67030000   CALL FSC_Leve.0040142D                   ;  �������͎󂯕t���֐�
+004010C1   |.  E8 67030000   CALL FSC_Leve.0040142D                   ;  文字入力受け付け関数
 004010C6   |.  8D8C24 180400>LEA ECX,DWORD PTR SS:[ESP+418]
 004010CD   |.  6A 0A         PUSH 0A
 004010CF   |.  51            PUSH ECX
@@ -107,84 +107,84 @@ Address    Disassembly                               Text string
 004010D5   |.  8D9424 200400>LEA EDX,DWORD PTR SS:[ESP+420]
 004010DC   |.  52            PUSH EDX
 004010DD   |.  C600 00       MOV BYTE PTR DS:[EAX],0
-004010E0   |.  E8 EB000000   CALL FSC_Leve.004011D0                   ;  �������r�֐��H
+004010E0   |.  E8 EB000000   CALL FSC_Leve.004011D0                   ;  文字列比較関数？
 004010E5   |.  83C4 1C       ADD ESP,1C
 004010E8   |.  85C0          TEST EAX,EAX
-004010EA   |.  75 76         JNZ SHORT FSC_Leve.00401162              ;  ���ۂ̔���
+004010EA   |.  75 76         JNZ SHORT FSC_Leve.00401162              ;  合否の判定
 004010EC   |.  B9 0A000000   MOV ECX,0A
 004010F1   |.  BE 98C34000   MOV ESI,FSC_Leve.0040C398                ;  ASCII "Congratulations! Please send an e-mail to "
 -----
 
-�@��������AF8�Ői�߂Ă������Ƃ���A�܂��A4010C1��F8�������Ȃ��Ȃ�A�R�}
-���h�v�����v�g��Key�̓��͑҂��̏�ԂɂȂ�܂����B�����ł��̎��̍s��4010C6
-�Ƀu���[�N�|�C���g��ݒ��AKey�͂킩��Ȃ��̂ŁA���Ɂuabcdefgh�v�Ɠ��͂�
-��Enter���������Ƃ���A�ēx�f�o�b�K�ɏ������߂�܂����B����Ă��̂܂�F8��
-����ɐi�߂Ă����܂����B
+　ここから、F8で進めていったところ、まず、4010C1でF8が効かなくなり、コマ
+ンドプロンプトがKeyの入力待ちの状態になりました。そこでその次の行の4010C6
+にブレークポイントを設定後、Keyはわからないので、仮に「abcdefgh」と入力し
+てEnterを押したところ、再度デバッガに処理が戻りました。よってそのままF8で
+さらに進めていきました。
 
-�@����ƁA4010E0��call�����s����钼�O�܂ł͓��͂��������񂪃X�^�b�N�ɐ�
-�܂�Ă��܂������A4010E0��call����A���̌��ADD���߁i4010E5�j�ɂ���āA��
-�̕����񂪃X�^�b�N����������Ă��邱�Ƃ��킩��܂����B���̂��߁A����cal
-l���i4010E0�j�����͕�����Ɛ��K��Key���r���Ă��镔���ł���Ɛ������邱
-�Ƃ��ł��܂��B�܂��A���̌��JNZ�i4010EA�j��EAX��0�łȂ���΁A�����񂪕s��
-�ł������Ƃ��̏����ɃW�����v���܂��B����āA4010E0�ŌĂяo�����֐��̍���
-����i�����͕�����̍��۔���j�������i4010EA�j�ł����Ȃ��Ă���Ƃ�������
-�ɂȂ�܂��B�Ƃ������ƂŁA4010E0��CALL 4011D0���ڂ�����������΁A��������
-���񂪓�����͂��Ȃ̂ŁA���̍��ł͂���𒲍����Ă������Ƃɂ��܂��B
+　すると、4010E0のcallが実行される直前までは入力した文字列がスタックに積
+まれていましたが、4010E0がcallされ、その後のADD命令（4010E5）によって、そ
+の文字列がスタックから解放されていることがわかりました。そのため、このcal
+l文（4010E0）が入力文字列と正規のKeyを比較している部分であると推測するこ
+とができます。また、その後のJNZ（4010EA）でEAXが0でなければ、文字列が不正
+であったときの処理にジャンプします。よって、4010E0で呼び出した関数の合否
+判定（＝入力文字列の合否判定）をここ（4010EA）でおこなっているということ
+になります。ということで、4010E0のCALL 4011D0を詳しく調査すれば、正しい文
+字列が得られるはずなので、次の項ではそれを調査していくことにします。
 
 
-��0x05.) �������`�F�b�N���������
+■0x05.) 文字数チェック処理を特定
 
-�@4010E0�Ƀu���[�N�|�C���g��ݒ��ACtrl+F2�Ńv���Z�X���ăX�^�[�g����F9��
-�����čēx���s���܂��B���̍ہA����܂łɐݒ肵���u���[�N�|�C���g�́AAlt+B
-��Breakpoints�E�B���h�E���J���ASpace�L�[��Disable�ɐݒ肵�Ă����Ƃ悢�ł�
-�傤�BKey�͂Ƃ肠�����܂��uabcdefgh�v�Ɠ��͂��AEnter�������ƁA4010E0�Œ�
-�~����̂ŁAF7��Step into���AF8��Step over���Đi�߂Ă����܂��B
+　4010E0にブレークポイントを設定後、Ctrl+F2でプロセスを再スタートしてF9を
+押して再度実行します。その際、それまでに設定したブレークポイントは、Alt+B
+でBreakpointsウィンドウを開き、SpaceキーでDisableに設定しておくとよいでし
+ょう。Keyはとりあえずまた「abcdefgh」と入力し、Enterを押すと、4010E0で停
+止するので、F7でStep intoし、F8でStep overして進めていきます。
 
-�@F8�ł�������i�߂Ă����Ƃ킩��Ǝv���܂����A2�`3���߂����s���Ƃ�JMP����
-�ł��������ɃW�����v���Ă��܂��A���e�����ɂ킩��ɂ����Ȃ��Ă��邱�Ƃ�
-�킩��Ǝv���܂��B����́A�R�[�h����ǉ��iobfuscate�j����Ă��邱�Ƃ��\��
-����܂��B��͂�Level3�͈�ؓ�ł͂����Ȃ��悤�ł��B
+　F8でざっくり進めていくとわかると思いますが、2〜3命令を実行ごとにJMP命令
+であちこちにジャンプしてしまい、内容が非常にわかりにくくなっていることが
+わかると思います。これは、コードが難読化（obfuscate）されていることが予測
+されます。やはりLevel3は一筋縄ではいかないようです。
 
-�@�܂��AF8�Ői�߂Ă������Ƃ���A���΂炭����ƁA�ȉ��̂悤�ȃR�[�h���o��
-���܂����B
+　また、F8で進めていったところ、しばらくすると、以下のようなコードが出て
+きました。
 
------�@413E3B�t�߂�CPU�E�B���h�E
+-----　413E3B付近のCPUウィンドウ
 00413E3B    31C0            XOR EAX,EAX
 00413E3D    8A8B 68000000   MOV CL,BYTE PTR DS:[EBX+68]
-00413E43    388B 64000000   CMP BYTE PTR DS:[EBX+64],CL  ; ���͕����̂P�����ځua�v��NULL?���r
+00413E43    388B 64000000   CMP BYTE PTR DS:[EBX+64],CL  ; 入力文字の１文字目「a」とNULL?を比較
 00413E49    75 01           JNZ SHORT FSC_Leve.00413E4C
 00413E4B    40              INC EAX
 00413E4C    8883 64000000   MOV BYTE PTR DS:[EBX+64],AL
 00413E52  ^ E9 7BAEFFFF     JMP FSC_Leve.0040ECD2
 -----
 
-�@413E49�͓�ǉ���JMP���߂Ƃ͈Ⴂ�A���������JNZ�Ȃ̂ŁA���炩�̏�������
-���s�Ȃ��Ă��镔���̂悤�ł��B�܂��A���͂����������1�����ڂł���ua�v��
-NULL(00)���r���Ă���悤�Ɍ����܂�(413E3D)�B�{����Key������̔�r������
-���邩�͂킩��܂��񂪁A�����͏d�_�I�Ɍ��Ă����K�v������ƍl�����܂��B
-����āA413E49������Ƀu���[�N�|�C���g��ݒ��A��xCtrl+F2�Ńv���Z�X����
-�N�����AF9�Ŏ��s����Key����͂���ƁA�ȑO�ɐݒ肵���u���[�N�|�C���g�i4010
-E0�j�Œ�~����̂ŁAF7��������4011D0�ɓ���܂��B�����āA��������̓�����
-�ڍׂɌ��Ă����܂��B
+　413E49は難読化のJMP命令とは違い、条件分岐のJNZなので、何らかの条件判定
+を行なっている部分のようです。また、入力した文字列の1文字目である「a」と
+NULL(00)を比較しているように見えます(413E3D)。本物のKey文字列の比較部分で
+あるかはわかりませんが、ここは重点的に見ておく必要があると考えられます。
+よって、413E49あたりにブレークポイントを設定後、一度Ctrl+F2でプロセスを再
+起動し、F9で実行してKeyを入力すると、以前に設定したブレークポイント（4010
+E0）で停止するので、F7を押して4011D0に入ります。そして、ここからの動きを
+詳細に見ていきます。
 
-�@�������O�q�̒ʂ�R�[�h����ǉ�����Ă���悤�ł��邽�߁A�R�[�h��������
-���ɔ��ŁA�ꌩ�ł͊m�F���Â炢�̂ŁA����������s�����R�[�h�̃g���[�X
-���Ƃ��āA�g���[�X���O���`�F�b�N���邱�ƂŁA���̓�ǉ���������Ă݂�����
-�v���܂��B
+　ただし前述の通りコードが難読化されているようであるため、コードがあちこ
+ちに飛んで、一見では確認しづらいので、ここから実行されるコードのトレース
+をとって、トレースログをチェックすることで、この難読化を回避してみたいと
+思います。
 
-�@�܂����j���[�o�[���View->Run trace��I�����ARun trace�E�B���h�E��\��
-���܂��B����Run trace�E�B���h�E���E�N���b�N���ALog to file��I�����A����
-���t�@�C���ɕۑ�����悤�ɂ��܂��B���̌�ACtrl+F12��Trace over�����s����
-���ƂŁAF8��������Step over���Ă������ꍇ�Ɠ����x�̓��e���t�@�C���ɕۑ���
-���悤�ɂȂ�܂��B
+　まずメニューバーよりView->Run traceを選択し、Run traceウィンドウを表示
+します。次にRun traceウィンドウを右クリックし、Log to fileを選択し、結果
+をファイルに保存するようにします。その後、Ctrl+F12でTrace overを実行する
+ことで、F8を押してStep overしていった場合と同程度の内容がファイルに保存さ
+れるようになります。
 
------�@�g���[�X���O�̈ꕔ�i���[�v�P��ځj
+-----　トレースログの一部（ループ１回目）
 Address  Thread   Command                                   ; Registers and comments
 0040EB11 Main     MOV DWORD PTR DS:[EBX+78],0
-00413DE3 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162E38 -> ���͕����񂪊i�[����Ă���A�h���X
+00413DE3 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162E38 -> 入力文字列が格納されているアドレス
 00413DE9 Main     ADD DWORD PTR DS:[EBX+78],EAX
 00410AD9 Main     MOV EAX,DWORD PTR DS:[EBX+78]
-00410ADF Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162E61 -> AL��0x61�ł���AASCII�R�[�h�ł����ua�v
+00410ADF Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162E61 -> ALは0x61であり、ASCIIコードでいう「a」
 00410AE1 Main     MOV BYTE PTR DS:[EBX+64],AL
 004127C7 Main     MOV DWORD PTR DS:[EBX+78],4
 00411FDE Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162E38
@@ -193,56 +193,56 @@ Address  Thread   Command                                   ; Registers and comm
 0041220F Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162E00
 00412211 Main     MOV BYTE PTR DS:[EBX+68],AL
 00413E3B Main     XOR EAX,EAX                               ; EAX=00000000
-00413E3D Main     MOV CL,BYTE PTR DS:[EBX+68]               ; ECX=00162E00 -> AL��0x00�ł���AASCII�R�[�h�ł���NULL
+00413E3D Main     MOV CL,BYTE PTR DS:[EBX+68]               ; ECX=00162E00 -> ALは0x00であり、ASCIIコードでいうNULL
 00413E43 Main     CMP BYTE PTR DS:[EBX+64],CL
     Breakpoint at FSC_Leve.00413E49
-00413E49 Main     JNZ SHORT FSC_Leve.00413E4C               ; �u���[�N�|�C���g
+00413E49 Main     JNZ SHORT FSC_Leve.00413E4C               ; ブレークポイント
 00413E4C Main     MOV BYTE PTR DS:[EBX+64],AL
 0040ECD2 Main     AND BYTE PTR DS:[EBX+64],1
 0040ECD9 Main     XOR BYTE PTR DS:[EBX+64],1
 0040EF95 Main     MOV DWORD PTR DS:[EBX+78],0
 -----
 
-�@����́A�g���[�X���O����u���[�N������413E49�t�߂̃R�[�h�𔲂��o���A��
-���JMP���߂��ȗ��������̂ł��B�������s���Ă����Ƃ����A�����Ԍ��₷����
-�����̂ł͂Ȃ����Ǝv���܂��B��������A�ȉ��̂悤�Ȗ@�������邱�Ƃ��킩��
-�܂����B
+　これは、トレースログからブレークさせた413E49付近のコードを抜き出し、さ
+らにJMP命令を省略したものです。ただ実行していたときより、だいぶ見やすくな
+ったのではないかと思います。ここから、以下のような法則があることがわかり
+ました。
 
------ 413E43���_�ł̊e�l
-EBX      : ���L�̒l���v�Z���邽�߂̃x�[�X�A�h���X
-[EBX+8]  : ���͕�����i�P�������j�̃|�C���^
-[EBX+64] : ���͕�����i�P�������j�̒l
-[EBX+68] : �s���iNULL?���00�ł����j
-[EBX+78] : ���͕�����̃|�C���^�{�S�i410AD9�ł͓��͕�����̃|�C���^���i�[
-           ���Ă����̂ŁA�ėp�I�ɗ��p�����ϐ��H�j
+----- 413E43時点での各値
+EBX      : 下記の値を計算するためのベースアドレス
+[EBX+8]  : 入力文字列（１文字分）のポインタ
+[EBX+64] : 入力文字列（１文字分）の値
+[EBX+68] : 不明（NULL?常に00でした）
+[EBX+78] : 入力文字列のポインタ＋４（410AD9では入力文字列のポインタを格納
+           していたので、汎用的に利用される変数？）
 -----
 
-�@���̌��Ctrl+F12�����s���邽�т�413E43�Ńu���[�N���A[EBX+64]�̒l���ub�v
-�uc�v�c�ƕω����Ă����A���͕������P��������NULL�Ɣ�r����Ă���̂��킩��
-�Ǝv���܂��B�����͓��͕�������`�F�b�N���郋�[�v�̂悤�ł��B���͂�������
-��{1�񎎍s�����ۂɁA�I�[�����ł���NULL���m����r����A413E49��JNZ�ŃW��
-���v������413E4B��INC EAX�����s����܂��B
+　その後もCtrl+F12を実行するたびに413E43でブレークし、[EBX+64]の値が「b」
+「c」…と変化していき、入力文字が１文字ずつNULLと比較されているのがわかる
+と思います。ここは入力文字列をチェックするループのようです。入力した文字
+列＋1回試行した際に、終端文字であるNULL同士が比較され、413E49のJNZでジャ
+ンプせずに413E4BのINC EAXが実行されます。
 
-�@[EBX+64]�̕\���̎d�����킩��Ȃ����́ACPU�E�B���h�E�E���Registers�Z�N
-�V������EBX�̒l���N���b�N��A�E�N���b�N���j���[����Follow in Dump��I����
-��ƁACPU�E�B���h�E������Dump�Z�N�V�����ɂ��̃A�h���X���\������܂��BDump
-�Z�N�V�����̃A�h���X���_�u���N���b�N����ƁA�A�h���X����Ε\�����瑊�Ε\
-���ɐ؂�ւ��̂ŁA$+64���m�F����Ίm�F�ł��܂��̂ŁA�����Ă݂Ă��������B
-���ɂ��AMemory map�E�B���h�E����m�F������@�ȂǁA����������Ǝv���̂�
-�����g�̂��D���ȕ��@�Ŏ��{���Ă݂Ă��������B
+　[EBX+64]の表示の仕方がわからない方は、CPUウィンドウ右上のRegistersセク
+ションのEBXの値をクリック後、右クリックメニューからFollow in Dumpを選択す
+ると、CPUウィンドウ下部のDumpセクションにそのアドレスが表示されます。Dump
+セクションのアドレスをダブルクリックすると、アドレスが絶対表示から相対表
+示に切り替わるので、$+64を確認すれば確認できますので、試してみてください。
+他にも、Memory mapウィンドウから確認する方法など、いくつかあると思うので
+ご自身のお好きな方法で実施してみてください。
 
-�@���́A���̃��[�v�͓��͕������̃J�E���g�ƕ�����̏I�[�̃`�F�b�N���s�Ȃ�
-���[�v�ł���A413E4B��INC EAX�͂��̃��[�v�𔲂��邽�߂̃t���O�ɂȂ�܂��B
-�ȉ��̃g���[�X���O�́A�܂����͕������c���Ă���ꍇ�ł��B40ECD2�A40ECD9��
-����āA�t���O�͔��]����A0����1�ɂȂ�܂��B���̂��߁A40ECBB��CMP���߂�0
-�Ɣ�r����A��v���Ȃ����߂�40ECC5��JE���߂ł̓W�����v�����ɁA40ECC7�֐i
-�݁AJMP 414711�ŏI�[�`�F�b�N�����郋�[�v�̐擪�ւƖ߂�܂��B
+　実は、このループは入力文字数のカウントと文字列の終端のチェックを行なう
+ループであり、413E4BのINC EAXはこのループを抜けるためのフラグになります。
+以下のトレースログは、まだ入力文字が残っている場合です。40ECD2、40ECD9に
+よって、フラグは反転され、0から1になります。そのため、40ECBBのCMP命令で0
+と比較され、一致しないために40ECC5のJE命令ではジャンプせずに、40ECC7へ進
+み、JMP 414711で終端チェックをするループの先頭へと戻ります。
 
------ ���͕����񂪏I�[�����łȂ��ꍇ�̃g���[�X���O
+----- 入力文字列が終端文字でない場合のトレースログ
 00413E49 Main     JNZ SHORT FSC_Leve.00413E4C
 00413E4C Main     MOV BYTE PTR DS:[EBX+64],AL
-0040ECD2 Main     AND BYTE PTR DS:[EBX+64],1                ; ���̍s�ƁA���̎��̖��߂Ńt���O��1�̏ꍇ��0�A
-0040ECD9 Main     XOR BYTE PTR DS:[EBX+64],1                ; 0�̏ꍇ��1�ɕϊ�����
+0040ECD2 Main     AND BYTE PTR DS:[EBX+64],1                ; この行と、その次の命令でフラグを1の場合は0、
+0040ECD9 Main     XOR BYTE PTR DS:[EBX+64],1                ; 0の場合は1に変換する
 0040ECE0 Main     JMP FSC_Leve.0040EF95
 0040EF95 Main     MOV DWORD PTR DS:[EBX+78],0
 0041417B Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162E38
@@ -256,21 +256,21 @@ EBX      : ���L�̒l���v�Z���邽�߂̃x�[�X�A�h���X
 0040F049 Main     MOV EAX,DWORD PTR DS:[EBX+78]
 0040F04F Main     MOV EAX,DWORD PTR DS:[EAX]                ; EAX=00000001
 0040F051 Main     MOV DWORD PTR DS:[EBX+64],EAX
-0040ECBB Main     CMP DWORD PTR DS:[EBX+64],0               ; �t���O�������Ă��Ȃ��ꍇ��40ECD2-9��1�ɔ��]����
-0040ECC5 Main     JE SHORT FSC_Leve.0040ECCC                ; �̂ł���JE�ł�JMP�����ɁA���̖��߂֐i�݁A
-0040ECC7 Main     JMP FSC_Leve.00414711                     ; �I�[�`�F�b�N���[�v�̍ŏ��ɖ߂�
+0040ECBB Main     CMP DWORD PTR DS:[EBX+64],0               ; フラグがたっていない場合は40ECD2-9で1に反転する
+0040ECC5 Main     JE SHORT FSC_Leve.0040ECCC                ; のでこのJEではJMPせずに、次の命令へ進み、
+0040ECC7 Main     JMP FSC_Leve.00414711                     ; 終端チェックループの最初に戻る
 -----
 
-�@����ɑ΂��A���͕������Ȃ��Ȃ�A�I�[�������o�Ă����ꍇ�́A���L�̂悤��
-40ECBB��[EBX+64]��0�ɂȂ邽�߁A40ECC5��JE���߂�40ECCC�փW�����v���A���̏�
-���ւƐi�݂܂��B
+　それに対し、入力文字がなくなり、終端文字が出てきた場合は、下記のように
+40ECBBの[EBX+64]が0になるため、40ECC5のJE命令で40ECCCへジャンプし、次の処
+理へと進みます。
 
------ ���͕����񂪏I�[�����i=NULL�j�������ꍇ�̃g���[�X���O
+----- 入力文字列が終端文字（=NULL）だった場合のトレースログ
 00413E49 Main     JNZ SHORT FSC_Leve.00413E4C
 00413E4B Main     INC EAX                                   ; EAX=00000001
 00413E4C Main     MOV BYTE PTR DS:[EBX+64],AL
-0040ECD2 Main     AND BYTE PTR DS:[EBX+64],1                ; ���̍s�ƁA���̎��̖��߂Ńt���O��1�̏ꍇ��0�A
-0040ECD9 Main     XOR BYTE PTR DS:[EBX+64],1                ; 0�̏ꍇ��1�ɕϊ�����
+0040ECD2 Main     AND BYTE PTR DS:[EBX+64],1                ; この行と、その次の命令でフラグを1の場合は0、
+0040ECD9 Main     XOR BYTE PTR DS:[EBX+64],1                ; 0の場合は1に変換する
 0040EF95 Main     MOV DWORD PTR DS:[EBX+78],0
 0041417B Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162E38
 00414181 Main     ADD DWORD PTR DS:[EBX+78],EAX
@@ -283,20 +283,20 @@ EBX      : ���L�̒l���v�Z���邽�߂̃x�[�X�A�h���X
 0040F049 Main     MOV EAX,DWORD PTR DS:[EBX+78]
 0040F04F Main     MOV EAX,DWORD PTR DS:[EAX]                ; EAX=00000000
 0040F051 Main     MOV DWORD PTR DS:[EBX+64],EAX
-0040ECBB Main     CMP DWORD PTR DS:[EBX+64],0               ; 0�i���͕������I�[�����j�������ꍇ�́A
-0040ECC5 Main     JE SHORT FSC_Leve.0040ECCC                ; 40ECCC��JMP����
-0040ECCC Main     JMP FSC_Leve.0040E282                     ; ���[�v�𔲂��A���̏ꏊ��JMP
+0040ECBB Main     CMP DWORD PTR DS:[EBX+64],0               ; 0（入力文字が終端文字）だった場合は、
+0040ECC5 Main     JE SHORT FSC_Leve.0040ECCC                ; 40ECCCにJMPする
+0040ECCC Main     JMP FSC_Leve.0040E282                     ; ループを抜け、次の場所へJMP
 -----
 
-�@�������炳��Ƀg���[�X���O��ǂ��Ă����ƁA���L�̂悤�ȃR�[�h�����s����
-�Ă��邱�Ƃ��킩��܂��B
+　ここからさらにトレースログを追っていくと、下記のようなコードが実行され
+ていることがわかります。
 
------ ���͕������`�F�b�N�H
+----- 入力文字数チェック？
 0040E262 Main     MOV DWORD PTR DS:[EBX+78],0
 0040FDDD Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
 0040FDE3 Main     ADD DWORD PTR DS:[EBX+78],EAX
 0041165A Main     MOV EAX,DWORD PTR DS:[EBX+78]
-00411660 Main     MOV EAX,DWORD PTR DS:[EAX]                ; EAX=00000008 -> ���͕�����
+00411660 Main     MOV EAX,DWORD PTR DS:[EAX]                ; EAX=00000008 -> 入力文字数
 00411662 Main     MOV DWORD PTR DS:[EBX+64],EAX
 00411F84 Main     MOV DWORD PTR DS:[EBX+78],4
 00413E8E Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
@@ -305,7 +305,7 @@ EBX      : ���L�̒l���v�Z���邽�߂̃x�[�X�A�h���X
 0040FADD Main     MOV EAX,DWORD PTR DS:[EAX]                ; EAX=00000010
 0040FADF Main     MOV DWORD PTR DS:[EBX+68],EAX
 00413D6C Main     XOR EAX,EAX                               ; EAX=00000000
-00413D6E Main     MOV ECX,DWORD PTR DS:[EBX+68]             ; ECX=00000010 -> �����ȓ��͕������H
+00413D6E Main     MOV ECX,DWORD PTR DS:[EBX+68]             ; ECX=00000010 -> 正当な入力文字数？
 00413D74 Main     CMP DWORD PTR DS:[EBX+64],ECX
 00413D7A Main     JNZ SHORT FSC_Leve.00413D7D
 00413D7D Main     MOV DWORD PTR DS:[EBX+64],EAX
@@ -314,27 +314,27 @@ EBX      : ���L�̒l���v�Z���邽�߂̃x�[�X�A�h���X
 0040E622 Main     MOV DWORD PTR DS:[EBX+78],0
 -----
 
-�@�Ȃ��A�����ł͏ȗ����Ă��܂����A�O�q�̃��[�v�ł�[EBX+8]+200�ɕ��������J
-�E���g���āA�ۑ����Ă��܂��B���ꂪ411660�̎��_��EAX�ɓ���̂ŁA�����炭41
-3D74�Ŕ�r���Ă�����e�͕������ƌ��ĊԈႢ�Ȃ������ł��B����č��܂ł͉�
-��Key�Ƃ��āA�W���������^���Ă��܂���ł��������񂩂�16�i��0x10�A�܂�16
-�����^���ĕω����݂Ă݂����Ǝv���܂��B
+　なお、ここでは省略していますが、前述のループでは[EBX+8]+200に文字数をカ
+ウントして、保存しています。それが411660の時点でEAXに入るので、おそらく41
+3D74で比較している内容は文字数と見て間違いなさそうです。よって今までは仮
+のKeyとして、８文字しか与えていませんでしたが次回から16進で0x10、つまり16
+文字与えて変化をみてみたいと思います。
 
 
-��0x06.) 1�����ڂ̓���
+■0x06.) 1文字目の特定
 
-�@�ł́A413D74�Ƀu���[�N�|�C���g��ݒ肵�āACtrl+F2�Ńv���Z�X�����X�^�[�g
-���AF9�Ŏ��s��AKey���u0123456789abcdef�v�ɂ��Ăǂ̂悤�ɂȂ邩���݂܂���
-���B���̍ہA����ȑO�ɐݒ肵���u���[�N�|�C���g��Disable�ɐݒ肵�Ă��܂���
-���܂��܂���B
+　では、413D74にブレークポイントを設定して、Ctrl+F2でプロセスをリスタート
+し、F9で実行後、Keyを「0123456789abcdef」にしてどのようになるかをみましょ
+う。その際、それ以前に設定したブレークポイントはDisableに設定してしまって
+かまいません。
 
-�@413D74�Œ�~�������Ƃ��m�F������AECX�̒l�ƁA[EBX+64]���ׂĂ݂Ă�����
-���B0x10�ň�v���Ă��邱�Ƃ��킩��Ǝv���܂��B�ł́A��������Ctrl+F12�Ńg
-���[�X������āA������ǂ��Ă����܂��B�����ȕ�����ƕK����r���镔������
-��͂��ł���A�����ɂ�CMP���߂Ȃǔ�r���鏈�������݂���͂��ł��B�����ŁA
-�g���[�X���O����CMP�𔲂��o�����Ƃ���A���L�T�_����܂����B
+　413D74で停止したことを確認したら、ECXの値と、[EBX+64]を比べてみてくださ
+い。0x10で一致していることがわかると思います。では、ここからCtrl+F12でト
+レースを取って、処理を追っていきます。正当な文字列と必ず比較する部分があ
+るはずであり、そこにはCMP命令など比較する処理が存在するはずです。そこで、
+トレースログからCMPを抜き出したところ、下記５点ありました。
 
------ �g���[�X���O����CMP�𔲂��o��
+----- トレースログからCMPを抜き出し
 0040FAAC Main     CMP DWORD PTR DS:[EBX+64],0
 00412896 Main     CMP BYTE PTR DS:[EBX+64],CL
 0040E7F3 Main     CMP DWORD PTR DS:[EBX+64],0
@@ -342,48 +342,48 @@ EBX      : ���L�̒l���v�Z���邽�߂̃x�[�X�A�h���X
 00412758 Main     CMP DWORD PTR DS:[EBX+64],0
 -----
 
-�@���̂����A���l"0"�Ɣ�r���Ă�����̂́A�����炭�ʂ̏����ł���ƍl�����
-��̂ŁA412896��412758���������Ƃ��������ł��B�����ŁA�����̎��ӂ��m�F
-���Ă݂܂��B
+　そのうち、即値"0"と比較しているものは、おそらく別の処理であると考えられ
+るので、412896か412758が怪しいといえそうです。そこで、それらの周辺を確認
+してみます。
 
------ 412896���ӂ̃g���[�X���O
+----- 412896周辺のトレースログ
 004116C8 Main     MOV DWORD PTR DS:[EBX+78],0
 0040F9F0 Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
 0040F9F6 Main     ADD DWORD PTR DS:[EBX+78],EAX
 004141CB Main     MOV EAX,DWORD PTR DS:[EBX+78]
-004141D1 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162C30 -> ���͕����̂P������"0"
+004141D1 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162C30 -> 入力文字の１文字目"0"
 004141D3 Main     MOV BYTE PTR DS:[EBX+64],AL
 0040EA55 Main     MOV DWORD PTR DS:[EBX+78],4
 0040F2AB Main     MOV EAX,DWORD PTR DS:[EBX+8]              ; EAX=00162C24
 0040F2B1 Main     ADD DWORD PTR DS:[EBX+78],EAX
 0040E43A Main     MOV EAX,DWORD PTR DS:[EBX+78]             ; EAX=00162C28
-0040E440 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162C53 -> �{����Key�̂P������"S"
+0040E440 Main     MOV AL,BYTE PTR DS:[EAX]                  ; EAX=00162C53 -> 本当のKeyの１文字目"S"
 0040E442 Main     MOV BYTE PTR DS:[EBX+68],AL
 0041288E Main     XOR EAX,EAX                               ; EAX=00000000
 00412890 Main     MOV CL,BYTE PTR DS:[EBX+68]               ; ECX=00162C53
-00412896 Main     CMP BYTE PTR DS:[EBX+64],CL               ; "S"�Ɠ��͕������r���Ă���
+00412896 Main     CMP BYTE PTR DS:[EBX+64],CL               ; "S"と入力文字を比較している
 0041289C Main     JNZ SHORT FSC_Leve.0041289F
 -----
 
-�@�����Ȃ�q�b�g���܂����B�O�q�̃��[�v�Ɠ����悤�ȃ��[�`���ŁAByte�P�ʂ�
-������̔�r���s�Ȃ��Ă���悤�ł��B4141D1�ŉ���1�����ڂƂ��ė^����0���o
-�����āA�����[EBX+64]�ɓ���Ă��܂��B�܂�40E440�Ŗ{����Key�ł���Ǝv���
-��S���o�����A�����[EBX+68]�ɓ���A412896�ł����̕������r���Ă��܂��B
-�Ƃ������Ƃ�1�����ڂ�"S"�ɂȂ�̂ŁA����412896�Ƀu���[�N�|�C���g��ݒ��
-Ctrl+F2�Ńv���Z�X���ċN�����A�uS123456789abcdef�v��^���āA412896�Ńu���[
-�N�������_�̏�Ԃ��m�F���Ă݂Ă��������B���x��"S"���m���r���Ă���̂���
-����͂��ł��B��������1�����ڂ�S�ł��邱�Ƃ����߂邱�Ƃ��ł��܂����B
+　いきなりヒットしました。前述のループと同じようなルーチンで、Byte単位で
+文字列の比較を行なっているようです。4141D1で仮に1文字目として与えた0が出
+現して、それを[EBX+64]に入れています。また40E440で本当のKeyであると思われ
+るSが出現し、それを[EBX+68]に入れ、412896でそれらの文字を比較しています。
+ということは1文字目は"S"になるので、次は412896にブレークポイントを設定後
+Ctrl+F2でプロセスを再起動し、「S123456789abcdef」を与えて、412896でブレー
+クした時点の状態を確認してみてください。今度は"S"同士を比較しているのがわ
+かるはずです。こうして1文字目がSであることを求めることができました。
 
-��0x07.) ����
+■0x07.) 所感
 
-�@Level3�͂��ꂾ���������������Ȃ���A�܂�1�����ڂ��������ł��Ă��܂���B
-���ꂾ���A���ɂƂ���Level3�͓��ł������Ƃ����؋��ł��i����Ƃ͕ʂɎ���
-�������璷������Ƃ������R������܂����E�E�E�j�B�c��͎���ȍ~�ɐ�������
-�Ă��������Ǝv���܂��B�����A�����ω����͂�����̂́A1�����ڂ𔭌��������@
-�Ƒ傫�ȈႢ�͂Ȃ��̂ŁA�����g�łǂ�ǂ�i�߂Ă݂�ƁA�׋��ɂȂ��Ă悢��
-������܂���B
+　Level3はこれだけ長い説明をしながら、まだ1文字目しか説明できていません。
+それだけ、私にとってLevel3は難問であったという証拠です（それとは別に私の
+説明が冗長すぎるという理由もありますが・・・）。残りは次回以降に説明をし
+ていきたいと思います。ただ、多少変化球はあるものの、1文字目を発見した方法
+と大きな違いはないので、ご自身でどんどん進めてみると、勉強になってよいか
+もしれません。
 
-�@����ł́A�܂��B
+　それでは、また。
 
 
 

@@ -8,709 +8,709 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-  ---- ��0�́F�ڎ� ---
+  ---- 第0章：目次 ---
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-����1�́FDNS���g�����U��                                         ���� ��
+○第1章：DNSを使った攻撃                                         金床 著
 
-����2�́F�u���o�[�X�G���W�j�A�����O�܂�v���|�[�g          eagle0wl ��
+○第2章：「リバースエンジニアリングまつり」レポート          eagle0wl 著
 
-����3�́FUnhandledExceptionFilter()���g�����A���`�f�o�b�M���O��@
-                                                           sourcerian ��
+○第3章：UnhandledExceptionFilter()を使ったアンチデバッギング手法
+                                                           sourcerian 著
 
-����4�́F��b�Í��w�u�� �` ��9�� �`                          IPUSIRON ��
+○第4章：基礎暗号学講座 〜 第9回 〜                          IPUSIRON 著
 
-����5�́F���m�点
+○第5章：お知らせ
 
-����6�́F���҃v���t�B�[��
+○第6章：著者プロフィール
 
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- ��1��: DNS���g�����U�� ---
+--- 第1章: DNSを使った攻撃 ---
 
-���ҁF����
+著者：金床
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@Anti-DNS Pinning�ɂ��Ė^���Ńv���[���Ȃǂ���点�Ă�����Ă������A��
-���ɗ��Ă���Ɨp��̐������ł��Ă����̂ŁA�ȒP�ɂ܂Ƃ߂Ă݂����B���ɂȂ�
-�ăv���[�����������Ă݂�Ɓu�I�C�Ⴄ����\���v�Ƃ����_���o�Ă���̂ł܂�
-�������������̂ł���B
-�@�Ƃ������ƂŁA�uAnti-DNS Pinning�v�ŃO�O��Ə�ʂɏo�Ă��邠�̎����͎Q
-�l���x�����ł��肢���܂��B�v���[���������Ă��ꂽ�݂Ȃ����Ͼ�(;�L�D`)����
-
-
-��0x02.) DNS Spoofing
-
-�@�܂�ŏI�I�ɍs����U���́uAnti-DNS Pinning�v�ł͂Ȃ��uDNS Spoofing�v
-�Ȃ̂ł���B
-�@�c�Ƃ����Ȃ菑���Ă��Ӗ����킩��Ȃ��Ǝv���̂ŁA�ȒP�ɐ�������B
-
-�@�܂��A�{�e���ł̂ݎg�p����u�v���O�����v�Ƃ����I���p����`���Ă����B
-�u�v���O�����v�Ƃ�
-
-�EJavaScript
-�EFLASH
-�EJava�A�v���b�g
-�ELiveConnect�i��Java�j
-
-�@�Ȃǂ́A��ʓI�ȃE�F�u�u���E�U�������Ă���u�l�b�g���[�N�A�N�Z�X�\�͂�
-���v�@�\�̂��Ƃł���B�����̓C���i�U���҂̂��Ɓj�̃E�F�u�y�[�W�Ɋ܂�
-��Ă���A㩂̃y�[�W�𓥂�ł��܂��������ȃA���X�i�^�[�Q�b�g�̃��[�U��
-���Ɓj�̃E�F�u�u���E�U��ŉғ�����B
-
-�@�v���O���������l�b�g���[�N�A�N�Z�X�@�\�ɂ́A���ꂼ��ɃZ�L�����e�B��
-����������Ă���B���̐����́uSame Origin Policy�v�Ƃ�΂��B
-�@JavaScript�̏ꍇ�ɂ͓����h���C���ɏ�������y�[�W�̓��e�����ǂ߂Ȃ��i��
-�̃h���C���̃y�[�W���J�����Ƃ͂ł���j�B�܂��AXHR�̓_�E�����[�h���̃z�X�g
-�ɂ����ڑ��ł��Ȃ��B
-�@FLASH��Socket�N���X�̓_�E�����[�h���̃z�X�g�ɂ����ڑ��ł��Ȃ��i����Ȑ�
-��ɂ���Ė����I�ɋ����Ă��鑼�̃z�X�g�ɂ͐ڑ��ł���j�B
-�@Java�A�v���b�g��LiveConnect��Java�̓_�E�����[�h���̃z�X�g�ɂ����ڑ��ł�
-�Ȃ��B
-
-�@���̂悤�Ȑ������Ȃ���΁A�A���X�̃E�F�u�u���E�U�𓥂ݑ�ɃC���g���l�b
-�g���X�L����������A�X�p�����[���𑗐M������AExploit�R�[�h��ł����񂾂�A
-���̃T�C�g��DoS�U�����d�|������A�Ƃ�肽������ɂȂ��Ă��܂��̂��B
-�@�������u�Z�L�����e�B=�������������v�̒藝�ɂ��������A���̐�����˔j����
-��@���l���o���ꂽ�̂ł���B���ꂪDNS Spoofing���B
+　Anti-DNS Pinningについて某所でプレゼンなどをやらせてもらってきたが、こ
+こに来てやっと用語の整理ができてきたので、簡単にまとめてみたい。今になっ
+てプレゼン資料を見てみると「オイ違うだろソレ」という点が出てくるのでまっ
+たく困ったものである。
+　ということで、「Anti-DNS Pinning」でググると上位に出てくるあの資料は参
+考程度扱いでお願いします。プレゼンをきいてくれたみなさんスミマセン(;´Д`)アセアセ
 
 
-��0x03.) DNS Spoofing
+■0x02.) DNS Spoofing
 
-�@���Ȃ݂�DNS�����p����U���ɂ͐F�X�Ȏ�ނ����݂��A���̂����������́uD
-NS Spoofing�v�ƌĂ΂��B�܂�uDNS Spoofing�v�Ƃ����p��͕����̈Ӗ�����
-�̂ŁA���̓_�ɂ��Ă͂������肢�����B�u�I�����m���Ă���DNS Spoofing��
-����ȃ��c����Ȃ������v�Ƃ�����Ȃ��悤�ɁB
+　つまり最終的に行われる攻撃は「Anti-DNS Pinning」ではなく「DNS Spoofing」
+なのである。
+　…といきなり書いても意味がわからないと思うので、簡単に説明する。
 
-�@�v���O�����ɑ΂���DNS Spoofing�́A�����������̂悤�ȃC���[�W�ōs����B
-�^�v���[�����������p����B
+　まず、本稿中でのみ使用する「プログラム」というオレ用語を定義しておく。
+「プログラム」とは
 
-�E �܂�㩂̃y�[�W���ǂݍ��܂��
-�E ���̂Ƃ����O�������s����
-�E �Z��TTL(���b)������DNS���R�[�h��Ԃ�
-�E �����o���Ă���v���O�������_�E�����[�h���̃z�X�g�֐ڑ������݂�
-�E 2�x�ڂ̖��O�������s����
-�E �U���҂�DNS�T�[�o�[�͋U��IP�A�h���X(127.0.0.1 192.168.0.1�Ȃ�)��Ԃ�
-�E ����̃z�X�g���Ȃ̂Őڑ��͋������
-�E (;�L�D`)��
+・JavaScript
+・FLASH
+・Javaアプレット
+・LiveConnect（のJava）
 
-�@���̂悤�ɁA�C�������h���C���̓C����DNS�T�[�o�[�����R�ɑ��邱�Ƃ��ł�
-�邽�߁A�E�F�u�A�v���P�[�V�����ƘA�����Đݒ��ύX���邱�Ƃ�Same Origin 
-Policy���j���Ă��܂��̂ł���B���̍U����DNS Spoofing�ƌĂԁB
+　などの、一般的なウェブブラウザが備えている「ネットワークアクセス能力を
+持つ」機能のことである。これらはイヴ（攻撃者のこと）のウェブページに含ま
+れており、罠のページを踏んでしまったあわれなアリス（ターゲットのユーザの
+こと）のウェブブラウザ上で稼働する。
+
+　プログラムが持つネットワークアクセス機能には、それぞれにセキュリティ制
+限が備わっている。この制限は「Same Origin Policy」とよばれる。
+　JavaScriptの場合には同じドメインに所属するページの内容しか読めない（他
+のドメインのページを開くことはできる）。また、XHRはダウンロード元のホスト
+にしか接続できない。
+　FLASHのSocketクラスはダウンロード元のホストにしか接続できない（特殊な設
+定によって明示的に許可している他のホストには接続できる）。
+　JavaアプレットやLiveConnectのJavaはダウンロード元のホストにしか接続でき
+ない。
+
+　このような制限がなければ、アリスのウェブブラウザを踏み台にイントラネッ
+トをスキャンしたり、スパムメールを送信したり、Exploitコードを打ち込んだり、
+他のサイトにDoS攻撃を仕掛けたり、とやりたい放題になってしまうのだ。
+　しかし「セキュリティ=いたちごっこ」の定理にしたがい、この制限を突破する
+手法が考え出されたのである。それがDNS Spoofingだ。
 
 
-��0x04.) �ŐV�̍U����@?
+■0x03.) DNS Spoofing
 
-�@���Ă��Ȃ���0x03�ŏq�ׂ��U���iDNS Spoofing�j��m���Ă������낤���B�M��
-�͂�5�������炢�O�i2006�N���j�܂Œm��Ȃ������B���܂�b��ɂȂ�Ȃ�����
-�C������̂ŁA�u�ځA�ŐV�̍U����@�ł���H�v�ƍl���Ă��܂���������Ȃ��B
-�����������c
+　ちなみにDNSを悪用する攻撃には色々な種類が存在し、そのうちいくつかは「D
+NS Spoofing」と呼ばれる。つまり「DNS Spoofing」という用語は複数の意味を持
+つので、その点についてはご了承願いたい。「オレが知っているDNS Spoofingは
+そんなヤツじゃなかった」とか言わないように。
+
+　プログラムに対するDNS Spoofingは、だいたい次のようなイメージで行われる。
+某プレゼン資料より引用する。
+
+・ まず罠のページが読み込まれる
+・ このとき名前解決が行われる
+・ 短いTTL(数秒)を持つDNSレコードを返す
+・ 少し経ってからプログラムがダウンロード元のホストへ接続を試みる
+・ 2度目の名前解決が行われる
+・ 攻撃者のDNSサーバーは偽のIPアドレス(127.0.0.1 192.168.0.1など)を返す
+・ 同一のホスト名なので接続は許可される
+・ (;´Д`)エー
+
+　このように、イヴが持つドメインはイヴがDNSサーバーを自由に操ることができ
+るため、ウェブアプリケーションと連動して設定を変更することでSame Origin 
+Policyが破られてしまうのである。この攻撃をDNS Spoofingと呼ぶ。
+
+
+■0x04.) 最新の攻撃手法?
+
+　さてあなたは0x03で述べた攻撃（DNS Spoofing）を知っていただろうか。筆者
+はつい5ヶ月くらい前（2006年末）まで知らなかった。あまり話題にならなかった
+気がするので、「コレ、最新の攻撃手法でしょ？」と考えてしまうかもしれない。
+だがしかし…
 
 http://www.cs.princeton.edu/sip/news/sun-02-22-96.html
 
-�@���̋L����ǂ�ŗ~�����B�����ׂ����ƂɁA�Ȃ��1996�N�ɏ����ꂽ���̂Ȃ�
-���I
-�@�ׂ����_�Ŏ኱�قȂ�_������i�Z��TTL���g���킯�ł͂Ȃ��A�ŏ�����2��
-IP�A�h���X��Ԃ��Ă��܂��悤���j���A��{�I�ȃR���Z�v�g�͂܂�œ����ł���B
-1996�N�A�܂�11�N�O�ł���B�M�҂��ŏ��̃R���s���[�^�𔃂����̂�1997�N��
-�����悤�ɋL�����Ă���̂ŁA���Ƃ������ƂĂ��Ȃ��̂̂��Ƃ̂悤�Ɋ�����
-���܂��B
+　この記事を読んで欲しい。驚くべきことに、なんと1996年に書かれたものなの
+だ！
+　細かい点で若干異なる点がある（短いTTLを使うわけではなく、最初から2つの
+IPアドレスを返してしまうようだ）が、基本的なコンセプトはまるで同じである。
+1996年、つまり11年前である。筆者が最初のコンピュータを買ったのは1997年だ
+ったように記憶しているので、何というかとてつもない昔のことのように感じて
+しまう。
 
-�@���̋L����Sun��Java�A�v���b�g�̎����ɂ��ďq�ׂ����̂ŁA�ǂ����^�v��
-�[�������ɁuSun�̃G���W�j�A�͂��̍U����\�����Ă����I�v�Ƃ������Ă���̂�
-�^���ԂȃE�\�������悤�ł���BJVM������łɃL���b�V����Pinning����̂͂�
-�̂悤�Ɏw�E���ꂽ�����ł������悤���B
+　この記事はSunのJavaアプレットの実装について述べたもので、どうやら某プレ
+ゼン資料に「Sunのエンジニアはこの攻撃を予期していた！」とか書いてあるのは
+真っ赤なウソだったようである。JVMが超頑固にキャッシュをPinningするのはこ
+のように指摘されたせいであったようだ。
 
-�@�M�҂����̍U�����uDNS Spoofing�v�Ƃ�Ԃ��Ƃɂ����傫�ȗ��R�̂ЂƂ͂�
-�̋L���ł��̂悤�ɂ�΂�Ă��邩��ł���i�܂��A�p��̎g�������[������
-�����炾�j�B
-
-
-��0x05.) DNS Pinning
-
-�@�Ƃ������ƂŁA���̍U����11�N�O����m���Ă����̂ł���B�����āASun�͂�
-�̐Ǝ㐫�i?�j�ɑ΂��Ă�����ƑΉ����s�����B���̕��@�́u��x���O����������A
-���̌��ʂ��iJVM�̋N�����́j�i���ɃL���b�V������v�Ƃ����ɒ[�Ȃ��̂ł���B
-���̂悤�ɖ��O�����������ʂ��iDNS�v���g�R����TTL�𖳎����āj�A�v���P�[�V
-�������Ǝ��ɃL���b�V�����Ă������Ƃ��uDNS Pinning�v�Ƃ�ԁB���̗p���Moz
-illa�̊J���҂̊ԂȂǂŎg����悤�ɂȂ����悤���B
-
-�@�܂�uDNS Pinning = Anti-DNS Spoofing�v�Ȃ̂ł���B�c�����(߄t�) !
+　筆者がこの攻撃を「DNS Spoofing」とよぶことにした大きな理由のひとつはこ
+の記事でそのようによばれているからである（また、用語の使われ方も納得がい
+くからだ）。
 
 
-��0x06.) Anti-DNS Pinning
+■0x05.) DNS Pinning
 
-�@DNS Pinning�̎����ɂ͂������p�^�[��������B��q�����悤��JVM�͂��̒�
-�ł��ŉE���́u��x���O���������炻����i���ɃL���b�V������v�Ƃ���������
-�I��ł���B��x���߂���2�x�ƌ������Ƃ�ς��Ȃ��A����ݺ�e����z�����Ă���
-���Ƃ悢���낤�B
-�@�����IE��Firefox�AOpera�Ȃǂ̎�v�u���E�U�́uDNS Pinning���邪�A�A�N�Z
-�X�����s����悤��������ēx���O��������v�Ƃ���������I��ł���B�����
-�_�C�i�~�b�NDNS�ɂ���ĉ^�c����Ă���E�F�u�T�C�g�Ȃǂ������ӎ����Ă����
-�̂Ǝv����B�����Ă��̎����ɂ����DNS Spoofing�U�����\�ɂȂ�̂ł́A
-�ƃZ�L�����e�B�R�~���j�e�B�ɓ`�����̂�ϰè��ł���A�ނ̓E�F�u�T�[�o�[���
-�~���邩�t�@�C�A�E�H�[���ŃA�N�Z�X���u���b�N���邱�Ƃ�2�x�ڂ̖��O��������
-�����鎖����˂��~�߂��̂ł���i�Ƃ����Ă��A�����炭�E�F�u�u���E�U�̊J��
-�҂Ɍ��킹��΁u����͎d�l�ł��v�Ƃ������ƂɂȂ�Ǝv����j�B
+　ということで、この攻撃は11年前から知られていたのである。そして、Sunはこ
+の脆弱性（?）に対してきちんと対応を行った。その方法は「一度名前解決したら、
+その結果を（JVMの起動中は）永遠にキャッシュする」という極端なものである。
+このように名前解決した結果を（DNSプロトコルのTTLを無視して）アプリケーシ
+ョンが独自にキャッシュしておくことを「DNS Pinning」とよぶ。この用語はMoz
+illaの開発者の間などで使われるようになったようだ。
 
-�@���̂悤��DNS Pinning�̏�Ԃ�j�邱�Ƃ��uAnti-DNS Pinning�v�Ȃ̂ł���B
-
-�@���ۂ̍U���̍ۂɂ́AAnti-DNS Pinning�ɂ����2�x�ڂ̖��O�������s�킹�A��
-�ʂƂ���DNS Spoofing�U�����s���邱�ƂɂȂ�̂ł���B
-
-�@�c�����(߄t�) !!!
+　つまり「DNS Pinning = Anti-DNS Spoofing」なのである。…ナルホド(゜д゜) !
 
 
-��0x07.) FLASH
+■0x06.) Anti-DNS Pinning
 
-�@Adobe�́i�Ƃ������}�N�����f�B�A�́j���܂���C���Ȃ��Ƃ������P�ɒm���
-�����������Ȃ̂��ADNS Pinning����؍s��Ȃ��B�܂�11�N�O�̎�@�ŕ��ʂ�D
-NS Spoofing�ł���B����������͕K������FLASH�̐Ǝ㐫�ł͂Ȃ��ADNS�v���g�R
-�����̂��̖̂��Ƃ����ӌ������邾�낤�B���Ȃ݂ɕM�҂͂����DNS�v���g�R��
-�̖�肾�ƍl���Ă���B
+　DNS Pinningの実装にはいくつかパターンがある。先述したようにJVMはこの中
+でも最右翼の「一度名前解決したらそれを永遠にキャッシュする」という実装を
+選んでいる。一度決めたら2度と言うことを変えない、超ガンコ親父を想像してもら
+うとよいだろう。
+　一方でIEやFirefox、Operaなどの主要ブラウザは「DNS Pinningするが、アクセ
+スが失敗するようだったら再度名前解決する」という実装を選んでいる。これは
+ダイナミックDNSによって運営されているウェブサイトなどを強く意識しているも
+のと思われる。そしてこの事実によってDNS Spoofing攻撃が可能になるのでは、
+とセキュリティコミュニティに伝えたのがマーティソであり、彼はウェブサーバーを停
+止するかファイアウォールでアクセスをブロックすることで2度目の名前解決が発
+生する事実を突き止めたのである（といっても、おそらくウェブブラウザの開発
+者に言わせれば「それは仕様です」ということになると思われる）。
 
+　このようにDNS Pinningの状態を破ることが「Anti-DNS Pinning」なのである。
 
-��0x08.) �܂Ƃ�
+　実際の攻撃の際には、Anti-DNS Pinningによって2度目の名前解決を行わせ、結
+果としてDNS Spoofing攻撃が行われることになるのである。
 
-�@�N�����炵�΂炭Anti-DNS Pinning�l�^�̃f������Ȃǂɖ������Ă����̂�
-���A�ŏ��ɃE�F�u�u���E�U�𒲂ׁA���̌�Java�𒲂ׁA�Ō��FLASH�𒲂ׂ�����
-�ŁA�p��ɂ��č������Ă��܂��Ă����B���ۂɂ͂����Ƃ����n�I�Ȃ̂�FLASH�ŁA
-�E�F�u�u���E�U��Java�A�v���b�g�Ȃǂ͈����̑΍���s���Ă����̂ł���B�M
-�҂���q����1996�N�̋L��������Ȃ��������Ƃ������̍ő�̌����Ȃ̂����c�B
-
-�@�Ƃ������ƂŁA�����ł̊ȒP�Ȃ܂Ƃ߂�
-
-�EDNS Spoofing��11�N�O���炠��U�������AFLASH�ɂ͍��̎��_�ł��L��
-�EDNS Pinning�͂��̑΍�ł���A�E�F�u�u���E�U��Java�A�v���b�g���������Ă�
-��
-�EAnti-DNS Pinning�͍ŐV�̍U����@�ł���ADNS Pinning��j��\��������
-
-�@�Ƃ������ƂɂȂ�B���ݎ��M���̖^���ЂɂĂ���ɏڂ����������s���Ă����
-�ŁA�y���݂ɂ��Ē��������B
+　…ナルホド(゜д゜) !!!
 
 
+■0x07.) FLASH
 
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+　Adobeは（というかマクロメディアは）あまりやる気がないというか単に知らな
+かっただけなのか、DNS Pinningを一切行わない。つまり11年前の手法で普通にD
+NS Spoofingできる。しかしこれは必ずしもFLASHの脆弱性ではなく、DNSプロトコ
+ルそのものの問題という意見もあるだろう。ちなみに筆者はこれはDNSプロトコル
+の問題だと考えている。
 
---- ��2��: �u���o�[�X�G���W�j�A�����O�܂�v���|�[�g ---
 
-���ҁFeagle0wl
+■0x08.) まとめ
+
+　年末からしばらくAnti-DNS Pinningネタのデモ制作などに明け暮れていたのだ
+が、最初にウェブブラウザを調べ、その後Javaを調べ、最後にFLASHを調べたせい
+で、用語について混乱してしまっていた。実際にはもっとも原始的なのがFLASHで、
+ウェブブラウザやJavaアプレットなどは一歩先の対策を行っていたのである。筆
+者が先述した1996年の記事をしらなかったことが混乱の最大の原因なのだが…。
+
+　ということで、ここでの簡単なまとめは
+
+・DNS Spoofingは11年前からある攻撃だが、FLASHには今の時点でも有効
+・DNS Pinningはその対策であり、ウェブブラウザやJavaアプレットが実装してい
+る
+・Anti-DNS Pinningは最新の攻撃手法であり、DNS Pinningを破る可能性がある
+
+　ということになる。現在執筆中の某書籍にてさらに詳しく説明を行っているの
+で、楽しみにして頂きたい。
+
+
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
+--- 第2章: 「リバースエンジニアリングまつり」レポート ---
 
-��0x01.) �͂��߂�
+著者：eagle0wl
 
-�@�Z�L�����e�B�Ɋ֘A����Z�p�Ƃ��ẮA���܂ЂƂm���x�̒Ⴂ�u���o�[�X�G
-���W�j�A�����O�v�B�����ł��̋Z�p�����ɂ������[�N�V���b�v���J�Â�����
-�������A�M�҂��Q�����Ă��܂����B�ڍׂ͈ȉ��̃����N����B
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-�E�J�[�l�M�[��������w�Z�L�����e�B�E���[�N�V���b�v
-�u���Z�L�����e�B�̂��߂̃��o�[�X�G���W�j�A�����O�v
+
+■0x01.) はじめに
+
+　セキュリティに関連する技術としては、いまひとつ知名度の低い「リバースエ
+ンジニアリング」。国内でこの技術を主題にしたワークショップが開催されると
+聞きつけ、筆者も参加してきました。詳細は以下のリンクから。
+
+・カーネギーメロン大学セキュリティ・ワークショップ
+「情報セキュリティのためのリバースエンジニアリング」
 http://www.cmuj.jp/070409workshop/index.html
 
-�@���̃��[�N�V���b�v�́A�J�[�l�M�[��������w���{�Z�̕��c�\�j�����̉�����
-���b�������オ��A����4��9���ɊJ�Â���܂����B���o�[�X�G���W�j�A�����O
-�Ƃ����g�s�b�N�ł��̂悤�ȍÂ����s���邱�Ǝ��́A���ɉ���I�Ȏ��݂ŁA
-���̂悤�ȏ��݂��ĉ����������c�����ɖ{���Ɋ��ӂ������܂��B
+　このワークショップは、カーネギーメロン大学日本校の武田圭史教授の音頭に
+より話が持ち上がり、去る4月9日に開催されました。リバースエンジニアリング
+というトピックでこのような催しが行われること自体、非常に画期的な試みで、
+このような場を設けて下さった武田教授に本当に感謝いたします。
 
-�@����̃��[�N�V���b�v�ł����A���O��t�J�n�Ƌ��ɉ��傪�E������2�����炸��
-������}����Ƃ����A�ʏ�ł͗L�蓾�Ȃ�����オ��������Ă��܂����B�����A
-���ł�130���������l�ߏ�ԂŁA���Ȃ�������������ł��i�΁j�B�u����5�R�}
-�Ƃ����Ȃ��Ȃ��n�[�h�ȃX�P�W���[���ł������A�Ō�܂ŋ����[���������Ƃ���
-���܂����B
+　今回のワークショップですが、事前受付開始と共に応募が殺到して2日足らずで
+定員を迎えるという、通常では有り得ない盛り上がりを見せていました。事実、
+会場でも130名がすし詰め状態で、かなり蒸し暑かったです（笑）。講演も5コマ
+というなかなかハードなスケジュールでしたが、最後まで興味深く聞くことがで
+きました。
 
-�@�M�҂̎���ł́u�s�������������ǂ��łɒ��ߐ؂��Ă����v�u�s���Ă��ă�
-�|�[�g���ė~�����v�Ƃ̐�������������܂����B�����A���[�N�V���b�v���ł��u
-���������ł��~�����A�Ƃ����₢���킹���������ł��܂����v�Ƃ̔�����������
-���Ƃ���A�����֐S�����܂��Ă��Ă���悤�Ɋ����܂��B�����ŁA���񃏁[�N�V
-���b�v�ɎQ�����邱�Ƃ��ł����҂̐Ӗ��Ƃ��āi�H�j�A�G�z�Ȃ��烌�|�[�g����
-�����߂鎟��ł��B
+　筆者の周りでは「行きたかったけどすでに締め切られていた」「行ってきてレ
+ポートして欲しい」との声も多く聞かれました。事実、ワークショップ中でも「
+資料だけでも欲しい、という問い合わせが相次いでいました」との発言があった
+ことから、相当関心が高まってきているように感じます。そこで、今回ワークシ
+ョップに参加することができた者の責務として（？）、僭越ながらレポートをし
+たためる次第です。
 
-�@�Ȃ��A�\��ɂ��Ȃ��Ă���u���o�[�X�G���W�j�A�����O�܂�v�̗R���ł����A
-���c���������blog�ɂ���܂��悤�ɁA���i�K�̉����i�H�j���痈�Ă��܂��B
+　なお、表題にもなっている「リバースエンジニアリングまつり」の由来ですが、
+武田教授さんのblogにありますように、企画段階の仮名（？）から来ています。
 
 http://motivate.jp/archives/2007/03/post_119.html
 
 
-��0x02.) ���̕��͋C
+■0x02.) 会場の雰囲気
 
-�@�����4��9���i���j�J�Âł������A�����ł���͎̂d���Ȃ��Ƃ��Ă��A�w����
-�Ƃ��Ă͎Q�����Â炢����肾�����悤�Ɏv���܂��B�M�҂͊J�n30���O�ɓ�����
-�܂������A���łɔ����߂��̐Ȃ����܂��Ă��܂����B�ŏI�I�ɉ��͖����B�o��
-�҂�130�l�𒴂���قǂŁA���ɏ��ꂵ�������ł��i�΁j�B���ɂ́AWizard 
-Bible�ł�����݂̕��ȂǁA�Z�L�����e�B�E�G�Ō�����������𑽐�������������
-�����B�Z�L�����e�B�̐��E�͋����Ɗ���������ł���܂��B�Ə����Ă����Ȃ���A
-�M�҂̓Z�L�����e�B�ƊE�̐l�Ԃł͖��������i�ߋ��`�j�̂ŁA���̂قƂ�ǂ̕�
-�Ƃ͏��Ζʂł����i�Q�����Ă��������搶���Љ�ĉ�����܂����j�B��������
-��ŃR�l�N�V���������܂�o���̂͂Ȃ�Ƃ����������Ƃł��B
+　今回は4月9日（月）開催でしたが、平日であるのは仕方ないとしても、学生に
+とっては参加しづらい日取りだったように思います。筆者は開始30分前に到着し
+ましたが、すでに半分近くの席が埋まっていました。最終的に会場は満員。出席
+者は130人を超えるほどで、非常に暑苦しかったです（笑）。会場には、Wizard 
+Bibleでお馴染みの方など、セキュリティ界隈で見聞きする方を多数お見かけしま
+した。セキュリティの世界は狭いと感じた次第であります。と書いておきながら、
+筆者はセキュリティ業界の人間では無かった（過去形）ので、そのほとんどの方
+とは初対面でした（参加していた金床先生が紹介して下さりました）。こういう
+場でコネクションが生まれ出すのはなんとも嬉しいことです。
 
-�@��قǎ����܂������[�N�V���b�v�ڍ׃y�[�W�ɁA���[�N�V���b�v�̎ʐ^�����_
-����܂��̂ŁA�ق�̏����ł������̕��͋C�𖡂킦��̂ł͂Ȃ����Ǝv����
-���B�������ǂ��ł������ł����A�M�҂̌��p���f���Ă���ʐ^������܂��i�΁j�B
-
-
-��0x03.) �S�̂̊��z
-
-�@����́A���o�[�X�G���W�j�A�����O���ނɂ������̎��݂͑���ڂƂ�����
-�ƂŃC���g���_�N�V�����I�Ȕ��\�����������悤�Ɏv���܂��B���������āA�[��
-���ݍ��񂾔��\�͂قƂ�ǂȂ������悤�Ɏv���܂��B�܂��A�������Ԃ��Z������
-�̂��A���\���e������������Ă����肵�Ă��܂����B�ł�����͈��ڂł��B��
-��̓����Ɋ��ґ�ł��B
+　先ほど示しましたワークショップ詳細ページに、ワークショップの写真が数点
+ありますので、ほんの少しですが会場の雰囲気を味わえるのではないかと思いま
+す。激しくどうでもいいですが、筆者の後ろ姿が映っている写真があります（笑）。
 
 
-��0x04.) ���o�[�X�G���W�j�A�����O�̌���Ɖۑ�
+■0x03.) 全体の感想
 
-�@���߂͕��c�����ɂ��u���o�[�X�G���W�j�A�����O�̌���Ɖۑ�v�Ƒ肵���A
-���o�[�X�G���W�j�A�����O�̃C���g���_�N�V�����I�ȓ��e�ł����B���o�[�X�G��
-�W�j�A�����O�Ƃ͉����A���̖ړI�Ƃ́A��͎�@�E��͖W�Q��@�A����̓�����
-�ǂ̉�����s���܂������A��r�I��邢���e�������ȂƂ�����ۂł��B�����A
-�M�҂̓\�t�g�E�F�A�N���b�L���O����������A����Ӗ��C���M�����[�Ȑl��Ȃ�
-�ŁA�u�s���ȖړI�ł͂Ȃ��v�i�΁j���p����ɂ��Ă͉��߂čl�����������
-���낪�������̂������ł��B
-
-�@���������A���o�[�X�G���W�j�A�����O�͉���ړI�Ƃ��čs�����̂������ɋL��
-�܂��B
-
-�E�E�C���X�E���[���E�}���E�F�A�Ȃǂ̉�͂ɂ��΍R��̌���
-�E�o�b�N�h�A�E�l���̑��M�ȂǁA�{���̎d�l�ɂ͂Ȃ�����̔����E���
-�E�\�t�g�E�F�A�̐Ǝ㐫�̔����E���
-�E�iOpenOffice�Ȃǁj�����\�t�g�E�F�A�Ƃ̌݊����m�ۂ̂��߂̉��
-�E�������i�iEPSON���J������PC-98�݊��@�Ȃǁj�̊J��
-�EDRM�Ƃ��������쌠�ی�@�\�̉��
-�E�Q�[������
-�Eexploit�Ȃǂ̕s���ȃ\�t�g�E�F�A�̊J���̂��߂̉��
-
-�@���o�[�X�G���W�j�A�����O�Ɋւ����̓I�Ȍ�������Ƃ��ẮA�����������
-�܂��B
-
-�E�v���O�����̕����i�f�R���p�C���j
-�E�v���g�R���̉��
-�EP2P�A�v���P�[�V�����Ȃǂ̉�́i������Winny,Share�B�C�O��Skype�Ȃǁj
-�E�Í����R�[�h�̉��
-�E�}���E�F�A��͂̎�����
-�E�Ǝ㐫��͂̎�����
-�E�v���O�����̓�ǉ�
-�EFuzzing
-
-�@Fuzzing�Ƃ̓A�^�b�N�x�N�^�i�v���O�����̓��́j�ɑ΂��āA�u���[�g�t�H�[�X
-�I�ɗl�X�ȓ��͒l�𐶐��E���������A�G���[���̈ӂɈ����N������@���w���܂��B
-
-�@�܂��A�����ł͂قƂ�ǌ����Ȃ��ł����A�w�p�I�ȃJ���t�@�����X�E�A�h�z
-�b�N�Ȍ�����́A�C�O�ł͓K���J�Â���Ă��邻���ł��B���Z�L�����e�B�E�\
-�t�g�E�F�A�H�w�̈ꕪ��Ƃ��Ď��グ���邱�Ƃ������ł����A���o�[�X�G��
-�W�j�A�����O��̂̃J���t�@�����X�Ƃ��āA�J�i�_�E�����g���I�[���ŊJ�Â���
-��REcon�ihttp://recon.cx/�j�Ȃǂ��m���Ă��܂��B�n�b�J�[�J���t�@�����X��
-�����ẮA�Ǝ㐫�����𒆐S�Ƃ��锭�\���펞�s���Ă��邱�Ƃ́AWB�ǎ҂ł�
-��΂��������Ǝv���܂��B
+　今回は、リバースエンジニアリングを題材にした初の試みは第一回目というこ
+とでイントロダクション的な発表が多かったように思います。したがって、深く
+踏み込んだ発表はほとんどなかったように思います。また、準備期間が短かった
+のか、発表内容が著しく被っていたりしていました。でも今回は一回目です。今
+後の動きに期待大です。
 
 
-��0x05.) ���o�[�X�G���W�j�A�����O�ɂ��Ǝ㐫�č�
+■0x04.) リバースエンジニアリングの現状と課題
 
-�@2�Ԗڂ́A�������eEye Digital Security�̉L������̔��\�ł����B�L������
-�̂���́A����Z�p�I�ɍ��x�Ȃ��̂������̂ł����A�O���̔��\�́ueEye Secur
-ity Forum / Autumn 2006�v�̂��̂ƂقƂ�Ǔ����ł����i���j�B
+　初めは武田教授による「リバースエンジニアリングの現状と課題」と題した、
+リバースエンジニアリングのイントロダクション的な内容でした。リバースエン
+ジニアリングとは何か、その目的とは、解析手法・解析妨害手法、今後の動向な
+どの解説が行われましたが、比較的ゆるい内容だったなという印象です。ただ、
+筆者はソフトウェアクラッキングから入った、ある意味イレギュラーな人種なの
+で、「不正な目的ではない」（笑）利用事例については改めて考えさせられると
+ころがあったのも事実です。
 
-�E�Z�L�����e�B�E�v���t�F�b�V���i���̂��߂̃��o�[�X�G���W�j�A�����O
+　そもそも、リバースエンジニアリングは何を目的として行うものかを次に記し
+ます。
+
+・ウイルス・ワーム・マルウェアなどの解析による対抗策の検討
+・バックドア・個人情報の送信など、本来の仕様にはない動作の発見・解析
+・ソフトウェアの脆弱性の発見・解析
+・（OpenOfficeなど）既存ソフトウェアとの互換性確保のための解析
+・競合製品（EPSONが開発したPC-98互換機など）の開発
+・DRMといった著作権保護機構の回避
+・ゲーム改造
+・exploitなどの不正なソフトウェアの開発のための解析
+
+　リバースエンジニアリングに関する具体的な研究事例としては、次が挙げられ
+ます。
+
+・プログラムの復元（デコンパイル）
+・プロトコルの解析
+・P2Pアプリケーションなどの解析（国内はWinny,Share。海外はSkypeなど）
+・暗号化コードの解読
+・マルウェア解析の自動化
+・脆弱性解析の自動化
+・プログラムの難読化
+・Fuzzing
+
+　Fuzzingとはアタックベクタ（プログラムの入力）に対して、ブルートフォース
+的に様々な入力値を生成・投入させ、エラーを故意に引き起こす手法を指します。
+
+　また、国内ではほとんど見られないですが、学術的なカンファレンス・アドホ
+ックな研究会は、海外では適時開催されているそうです。情報セキュリティ・ソ
+フトウェア工学の一分野として取り上げられることが多いですが、リバースエン
+ジニアリング主体のカンファレンスとして、カナダ・モントリオールで開催され
+るREcon（http://recon.cx/）などが知られています。ハッカーカンファレンスに
+おいては、脆弱性検査を中心とする発表が常時行われていることは、WB読者であ
+ればご存じだと思います。
+
+
+■0x05.) リバースエンジニアリングによる脆弱性監査
+
+　2番目は、お馴染みeEye Digital Securityの鵜飼さんの発表でした。鵜飼さん
+のそれは、毎回技術的に高度なものが多いのですが、前半の発表は「eEye Secur
+ity Forum / Autumn 2006」のものとほとんど同じでした（汗）。
+
+・セキュリティ・プロフェッショナルのためのリバースエンジニアリング
 http://www.scs.co.jp/event/2006/1027_eeye/
 
-�@�������㔼�́A���ۂ̐Ǝ㐫��͎���Ƃ��āA�A�j���[�V�����J�[�\���̏���
-�ɂ�����o�b�t�@�I�[�o�[�t���[�ƁAWindows LSASS�̃����[�g�o�b�t�@�I�[�o�[
-�t���[��2�����ނɂ��āA���ۂɐƎ㐫�𔭌�����v���Z�X���Љ�Ă��܂����B
+　しかし後半は、実際の脆弱性解析事例として、アニメーションカーソルの処理
+におけるバッファオーバーフローと、Windows LSASSのリモートバッファオーバー
+フローの2件を題材にして、実際に脆弱性を発見するプロセスを紹介していました。
 
-�EWindows ANI File Parsing Buffer Overflow
+・Windows ANI File Parsing Buffer Overflow
 http://research.eeye.com/html/advisories/published/AD20050111.html
 
-�EWindows Local Security Authority Service Remote Buffer Overflow
+・Windows Local Security Authority Service Remote Buffer Overflow
 http://research.eeye.com/html/advisories/published/AD20040413C.html
 
-�@�A�j���[�V�����J�[�\���̐Ǝ㐫�Ƃ����ƁA���ŋ�Microsoft���΍�p�b�`��
-�ً}�����[�X���Ă��܂������A����Ƃ͕ʕ��ł��i�L������H���A���R�^�C����
-�[�Șb��ɂȂ����Ƃ̂��Ɓj�B
+　アニメーションカーソルの脆弱性というと、つい最近Microsoftが対策パッチを
+緊急リリースしていましたが、それとは別物です（鵜飼さん曰く、偶然タイムリ
+ーな話題になったとのこと）。
 
-�EMicrosoft�Aani�t�@�C���Ǝ㐫�΍�p�b�`��4���Ƀ����[�X
+・Microsoft、aniファイル脆弱性対策パッチを4日にリリース
 http://slashdot.jp/security/article.pl?sid=07/04/02/098253
 
-�@�������Ȃ��炱��0-day�́A����Љ�鎖��ɒu����Ǝ㐫�Ɠ��l�̃R�[�h��
-�����ɂ����݂��Ă������߂Ɉ����N�����ꂽ���̂Ƃ̂��Ƃł��i�{���Ƀ^�C����
-�[�ł��ˁj�B
+　しかしながらこの0-dayは、今回紹介する事例に置ける脆弱性と同様のコードが
+他所にも存在していたために引き起こされたものとのことです（本当にタイムリ
+ーですね）。
 
-�@�㔼�̔��\�́A�o�C�i���G�f�B�^�̃o�C�i���\���AWinDBG�̃f�o�b�O��ʁAID
-A Pro�̋t�A�Z���u�����X�g�̃X�N���[���V���b�g���A������A�Z�p���Ń��|�[
-�g���ɂ������\�Ȃ̂Łi�΁j�A�{���|�[�g�ł͊��������Ē����܂��B
+　後半の発表は、バイナリエディタのバイナリ表示、WinDBGのデバッグ画面、ID
+A Proの逆アセンブルリストのスクリーンショットが連続する、技術寄りでレポー
+トしにくい発表なので（笑）、本レポートでは割愛させて頂きます。
 
 
-��0x06.) �}���E�F�A�̃��o�[�X�G���W�j�A�����O
+■0x06.) マルウェアのリバースエンジニアリング
 
-�@�����āh���E�̃z�V�U���h���Ɛ��V�T�񂳂�ɂ�锭�\�ł��B�{�l�H���A�Z��
-���Ԃ����^�����Ă��Ȃ��Ǝv���Ă����悤�ŁA�v���[���̓��e�����Ə������x
-���Ń{�����[�����T���߂ł����B���A���V���񂪖{�C�o���Ď����������Ƃ��
-���Ȃ����ƂɂȂ邱�Ƃ͊m���Ȃ̂Łi��΁j�A�܂��A���Ȃ̂ł͂Ȃ����ȂƁc�B
+　続いて”世界のホシザワ”こと星澤裕二さんによる発表です。本人曰く、短い
+時間しか与えられていないと思っていたようで、プレゼンの内容も割と初歩レベ
+ルでボリュームも控えめでした。が、星澤さんが本気出して資料作ったらとんで
+もないことになることは確実なので（苦笑）、まあアリなのではないかなと…。
 
-�@���V����̓R���s���[�^�E�C���X�Ȃǂ̃}���E�F�A�����Ȃ̂ŁA�}���E�F�A
-�̋@�\��ړI�̒����A�}���E�F�A�����o����V�O�l�`���̍쐬�A�����ă}���E�F
-�A�J���҂̈Ӑ}��T�邽�߂Ƀ��o�[�X�G���W�j�A�����O���s���Ă��܂��B������
-�d�v�Ȃ̂́A�u�}���E�F�A�̉�͂ɂ͎��Ԃ������邱�Ƃ��ł��Ȃ��v�Ƃ�������
-�ł��B�܂�A��͂��s���Ă���Ԃɂ�������Q�͎��X�Ɣ������邽�߁A���̃�
-�o�[�X�G���W�j�A�����O�Ƃ͈قȂ�A�Ƃɂ����u���ԂƂ̏����v��͎��Ԃ̒Z�k
-���d�v�ۑ�ɂȂ�܂��B����ɋߔN�̃}���E�F�A�́A������p�b�J�[���ǉ�
-�E�A���`�f�o�b�O�ȂǂƂ������A���g����͂���ɂ�������e�N�j�b�N���p����
-��Ă��邽�߁A�l��ɂ���͂��Ƃǂ����Ă����Ԃ��������Ă��܂��܂��B����
-���߁A�ߔN�̃}���E�F�A��͂ɂ����ẮA���̉�́E���\�܂ł̍�Ƃ����Ȃ莩
-��������Ă���悤�ł��B������񎩓����ɂ����E������܂��̂ŁA���Ƃɂ�
-���͂��s���܂����A���o���邽�߂̃V�O�l�`���쐬�����ł��邱�Ƃ��l��
-��ƁA���ɍ����I�Ƃ����܂������R�̗���ł���悤�Ɏv���܂��B
+　星澤さんはコンピュータウイルスなどのマルウェアが専門なので、マルウェア
+の機能や目的の調査、マルウェアを検出するシグネチャの作成、そしてマルウェ
+ア開発者の意図を探るためにリバースエンジニアリングを行っています。ここで
+重要なのは、「マルウェアの解析には時間をかけることができない」ということ
+です。つまり、解析を行っている間にも感染被害は次々と発生するため、他のリ
+バースエンジニアリングとは異なり、とにかく「時間との勝負」解析時間の短縮
+が重要課題になります。さらに近年のマルウェアは、いわゆるパッカーや難読化
+・アンチデバッグなどといった、自身を解析されにくくするテクニックが用いら
+れているため、人手による解析だとどうしても時間がかかってしまいます。その
+ため、近年のマルウェア解析においては、その解析・発表までの作業がかなり自
+動化されているようです。もちろん自動化にも限界がありますので、手作業によ
+る解析も行われますが、検出するためのシグネチャ作成が第一であることを考え
+ると、非常に合理的といいますか当然の流れであるように思います。
 
-�@�⑫�ɂȂ�܂����A���V���񂪏�������Z�L���A�u���C���ł́A2007�N3������
-�h�S�����������Ƀ}���E�F�A�̉�͂Ƌ쏜�c�[���̐������s���h�uSecureBrai
-n Zero-Hour Response System�v��̔����Ă��܂��B
+　補足になりますが、星澤さんが所属するセキュアブレインでは、2007年3月から
+”全自動かつ高速にマルウェアの解析と駆除ツールの生成を行う”「SecureBrai
+n Zero-Hour Response System」を販売しています。
 
 http://www.securebrain.co.jp/news/070312_zhr.html
 
-�@�}���E�F�A�̃��o�[�X�G���W�j�A�����O�́u�ڍׂȓ���ȂǓ��Ȃ���΂Ȃ��
-����񂪑������߁A���ԂƎ�Ԃ�������v�Ƃ̂��ƂŁA�m�E�n�E���ł܂��Ă���
-�����Ƃ�����u�o���Ɗ��ꂪ�K�v�v�Ƃ��B����ɁuOS��l�b�g���[�N�E�v���O��
-�~���O����Ȃǂ̕��L���m�����K�v�s���v�������ł��B�M�҂��C���������Ƃ�
-�ɃR���s���[�^�E�C���X����͂���i�t��������j���Ƃ�����܂����A�}���E�F
-�A��OS�Ȃǂ̓���ɋ����֘A���Ă��鐫����A���L���m�����v������A�������R
-�[�h���̂��댯�Ȃ��̂ł��邽�߁A���Ղɂ�������s����킯�ɂ��������A����
-�Ɂi��ʂɃE�C���X�̓R�[�h�T�C�Y���������Ƃ͂����j�ڍׂȓ����m�邽�߂�
-�̓R�[�h�𕝍L���������Ȃ���΂Ȃ�Ȃ����߁A���m�ɂ���Ă͎��ԂƎ�Ԃ���
-�����Ă��܂��܂��i�P�Ɏ��̃X�L�����Ⴂ������������܂��񂪁c�j�B
+　マルウェアのリバースエンジニアリングは「詳細な動作など得なければならな
+い情報が多いため、時間と手間がかかる」とのことで、ノウハウが固まっていな
+いことからも「経験と慣れが必要」とも。さらに「OSやネットワーク・プログラ
+ミング言語などの幅広い知識が必要不可欠」だそうです。筆者も気が向いたとき
+にコンピュータウイルスを解析する（フリをする）ことがありますが、マルウェ
+アはOSなどの動作に強く関連している性質上、幅広い知識が要求され、しかもコ
+ード自体が危険なものであるため、安易にそれを実行するわけにもいかず、さら
+に（一般にウイルスはコードサイズが小さいとはいえ）詳細な動作を知るために
+はコードを幅広く精査しなければならないため、モノによっては時間と手間がか
+かってしまいます（単に私のスキルが低いだけかもしれませんが…）。
 
-�@�O�q���܂������A�قƂ�ǂ̃}���E�F�A�́u�p�b�J�[�v�ƌĂ΂����s�\�t
-�@�C����p�̈��k�E�Í����c�[�����p�����Ă��邽�߁A���o�[�X�G���W�j�A��
-���O���s���ɂ́A�t�̏������s���A���p�b�N�Ƃ�����Ƃ��K�v�ɂȂ�܂��B���V
-����H���u�ߔN�̃{�b�g�͂���9���ȏオ�p�b�N����Ă���A���Y�ł���΁A����
-��郏���N���b�N�E�F�A��9���ȏオ�p�b�N����Ă���B�܂��A�p�b�J�[��150��
-�ވȏ㑶�݂��邪�A���ۂɎg���Ă���p�b�J�[��10�����x�v�Ƃ̂��Ƃł��B��
-���Ő��V�����150��ވȏ�A�Ƌ�܂������A���̐�����A����p�b�J�[�̃o�[
-�W�����Ⴂ�ł������Ƃ��Ă��p�b�N��@���o�[�W�������ɖ���قȂ�i���݊���
-���Ȃ��j���߁A������ʃJ�E���g�Ƃ���ƁA���̎�ނ͂���ɖc��Ȃ��̂ɂ�
-����̂ł͂Ȃ����Ɛ����ł��܂��B
+　前述しましたが、ほとんどのマルウェアは「パッカー」と呼ばれる実行可能フ
+ァイル専用の圧縮・暗号化ツールが用いられているため、リバースエンジニアリ
+ングを行うには、逆の処理を行うアンパックという作業が必要になります。星澤
+さん曰く「近年のボットはその9割以上がパックされており、国産であれば、いわ
+ゆるワンクリックウェアも9割以上がパックされている。また、パッカーは150種
+類以上存在するが、実際に使われているパッカーは10％程度」とのことです。こ
+こで星澤さんは150種類以上、と仰りましたが、その性質上、同一パッカーのバー
+ジョン違いであったとしてもパック手法がバージョン毎に毎回異なる（＝互換性
+がない）ため、それらを別カウントとすると、その種類はさらに膨大なものにな
+るものではないかと推測できます。
 
-�@�������Ȃ���A�p�b�J�[�̈Í������������A���̎��s�t�@�C���𕜌����邱��
-�̂ł���u�A���p�b�J�[�v���L�u�̎�ő�������Ă���͂��ł��B����Ɋւ�
-�Đ��V����́u�A���p�b�J�[��250�`300��ވȏオ���邪�A����œ�������s
-�t�@�C���͕s���S�Ȃ��̂������A�Ⴆ�΃R�}���h�{�^������������������ĂȂ�
-�P�[�X������v�Ƌ��Ă��܂��B
+　しかしながら、パッカーの暗号化を解除し、元の実行ファイルを復元すること
+のできる「アンパッカー」も有志の手で多数作られているはずです。それに関し
+て星澤さんは「アンパッカーも250〜300種類以上があるが、それで得られる実行
+ファイルは不完全なものが多い、例えばコマンドボタンが正しく復元されてない
+ケースもある」と仰っています。
 
-�@����ɁA�}���E�F�A���L�̃g�s�b�N�Ƃ��āA�|�����t�B�b�N�E���^���t�B�b�N
-�Z�p������܂��B���҂Ƃ��A�������g��g�ݑւ��邱�ƂŃA���`�E�C���X�ɂ��
-���o������ɂ���Z�p�ł��B���҂̈Ⴂ�ɂ��Ă͊������܂����A�������g��g
-�ݑւ���Ƃ����Ă��K���I���W�i���̃R�[�h�͂���͂��ł��B�����A���V����H
-���u�A���`�E�C���X�I�i���o�j�ɂ͂�����x�΍R�Z�p�͊m�����Ă��邪�A��͂�
-��ԂɊւ��Ă͕��ׂ����傷��v�Ƃ̂��ƂŁA�}���E�F�A�΍�Ɋւ��ẮA����
-���Ȃ茵�����킢����������̂ł́A�Ǝv��������B
+　さらに、マルウェア特有のトピックとして、ポリモフィック・メタモフィック
+技術があります。両者とも、自分自身を組み替えることでアンチウイルスによる
+検出を困難にする技術です。両者の違いについては割愛しますが、自分自身を組
+み替えるといっても必ずオリジナルのコードはあるはずです。ただ、星澤さん曰
+く「アンチウイルス的（検出）にはある程度対抗技術は確立しているが、解析の
+手間に関しては負荷が増大する」とのことで、マルウェア対策に関しては、今後
+かなり厳しい戦いを強いられるのでは、と思った次第。
 
 
-��0x07.) �\�t�g�E�F�A���i�J���E�񋟎҂��猩�����o�[�X�G���W�j�A�����O
+■0x07.) ソフトウェア製品開発・提供者から見たリバースエンジニアリング
 
-�@���������_���ς���āA�Ǝ㐫�����̂��߂Ƀ��o�[�X�G���W�j�A�����O�����
-����ɂ���}�C�N���\�t�g�̒��̐l�ł���A�Z�L�����e�B���X�|���X�}�l�[�W��
-�̏��쎛����ɂ�锭�\�ł����B���쎛����͔��Ƀ��[���A�̂�����ŁA�b��
-��Ԗʔ�����ꂩ��̏΂����₦�܂���ł����B�Ƃ����̂��A�ŏ��݂̒͂Ŏ���
-�悤�Ȃ���肪�������̂ŁA���ꂵ�����͋C��������ꂪ��C�ɉ���܂����B
+　すこし視点が変わって、脆弱性発見のためにリバースエンジニアリングされる
+立場にあるマイクロソフトの中の人である、セキュリティレスポンスマネージャ
+の小野寺さんによる発表でした。小野寺さんは非常にユーモアのある方で、話が
+一番面白く会場からの笑いが絶えませんでした。というのも、最初の掴みで次の
+ようなやり取りがあったので、堅苦しい雰囲気だった会場が一気に解れました。
 
-���쎛����u���̒��ŁAMicrosoft Office���i���f�o�b�K�ɓǂݍ��܂�������
-�̂�����A����肢�܂��v
-�i�L��������͂��߂Ƃ��鏭������肪�オ��j
-���쎛����u�͂��A��������ĉ����������̓}�C�N���\�t�g�̎g�p�����_��Ɉ�
-�����Ă��܂��ˁv�i���΁j
+小野寺さん「会場の中で、Microsoft Office製品をデバッガに読み込ませたこと
+のある方、挙手願います」
+（鵜飼さんをはじめとする少数から手が上がる）
+小野寺さん「はい、手を挙げて下さった方はマイクロソフトの使用許諾契約に違
+反していますね」（会場笑）
 
-�@�܂��O������Ƃ��ă}�C�N���\�t�g���i�́A�g�p�����_�񏑂ɂ���Ƃ���A��
-�o�[�X�G���W�j�A�����O�������Ă��܂���B���o�[�X�G���W�j�A�����O�̒�`
-�Ƃ��āA�uMicrosoft �G���J���^�v�iMS�̒��̕��炵���ł��ˁj�̃��o�[�X�G��
-�W�j�A�����O�̒�`�����p���Ă��܂��B
+　まず前提条件としてマイクロソフト製品は、使用許諾契約書にあるとおり、リ
+バースエンジニアリングを許可していません。リバースエンジニアリングの定義
+として、「Microsoft エンカルタ」（MSの中の方らしいですね）のリバースエン
+ジニアリングの定義を引用しています。
 
 -----
-�y�������鑼�Ђ́z�V���i��ߋ��̐����v���Z�X�Ȃǂ𕪉��E���͂��A���̐��\
-�E�\���Ȃǂ�ǂ݂Ƃ�A�����V���i�Ȃǂɉ��p����Z�p�B�i�y�z�͕M�ҁj
+【競合する他社の】新製品や過去の製造プロセスなどを分解・分析し、その性能
+・構造などを読みとり、それを新製品などに応用する技術。（【】は筆者）
 -----
 
-�@�����ŁA���쎛����́y�������鑼�Ђ́z���������Đ������Ă��܂����B����
-�́A���o�[�X�G���W�j�A�����O���ׂĂ��֎~���Ƃ����Ӗ��ł͂Ȃ��A���А��i��
-�΂��郊�o�[�X�G���W�j�A�����O�́i���R�����j�F�߂��A�����i���Ёj�ȊO��
-������L������̂ɂ��Ă̂���͔F�߂��Ȃ��A�Ƃ����Ӗ��Řb����i�߂Ă�
-�邩��ł��ˁB
+　ここで、小野寺さんは【競合する他社の】を強調して説明していました。これ
+は、リバースエンジニアリングすべてが禁止だという意味ではなく、自社製品に
+対するリバースエンジニアリングは（当然だが）認められ、自分（自社）以外が
+権利を有するものについてのそれは認められない、という意味で話しを進めてい
+るからですね。
 
-�@���쎛����H���u�\�t�g�E�F�A�ɂ͊�Ɣ閧���������񂠂邽�߁A���o�[�X�G
-���W�j�A�����O�𐧌��������B�������A���А��i�Ɋւ��Ă͊J���E�T�|�[�g���~
-���ɐi�߂邽�߂Ƀ��o�[�X�G���W�j�A�����O���K�v�v�Ƃ̂��ƂŁA���o�[�X�G��
-�W�j�A�����O�ɂ́i�@���I�Ɂj���S�Ȃ��̂Ƃ����łȂ����̂�����Ƃ̂��ƁB
+　小野寺さん曰く「ソフトウェアには企業秘密がたくさんあるため、リバースエ
+ンジニアリングを制限したい。しかし、自社製品に関しては開発・サポートを円
+滑に進めるためにリバースエンジニアリングが必要」とのことで、リバースエン
+ジニアリングには（法律的に）安全なものとそうでないものがあるとのこと。
 
-�@�Ⴆ�΁A�}���E�F�A�̉�͂ɂ����āA���쎛����́u���쌠�Ȃǂ͈�ʂ̃A�v
-���P�[�V�����Ɠ��������ł��邪�A�J���ҕs�ڂƂ������ƂɂȂ��Ă��邽�߁A��
-�o�[�X�G���W�j�A�����O�����Ƃ���ŊJ���҂��������咣���邱�Ƃ͂Ȃ��̂Ŗ�
-��Ȃ����낤�v�Ƃ̌�����񎦂��Ă��܂����i�����Ń}�C�N���\�t�g�̌�������
-�ł͂Ȃ����Ƃ������j�B
+　例えば、マルウェアの解析において、小野寺さんは「著作権などは一般のアプ
+リケーションと同じ扱いであるが、開発者不詳ということになっているため、リ
+バースエンジニアリングしたところで開発者が権利を主張することはないので問
+題ないだろう」との見解を提示していました（ここでマイクロソフトの公式見解
+ではないことを強調）。
 
-�@�Ǝ㐫�̉�͂ɂ��Ắu�O���[�]�[���A���i��͂Ƃ͈قȂ�A�Ǝ㐫��͂�
-�悤�ȁA�{���N���肦�Ȃ����ƂɂȂ��Ă���h�s�v�c�ȋ����h�ɂ��A�v���P�[
-�V�����̉e������͂���̂ł���΁A���Ȃ��̂ł́v�ƃR�����g���Ă܂����i
-�����ōēx�}�C�N���\�t�g�̌��������ł͂Ȃ����Ƃ������j�B����Ɋւ��Ă͗l
-�X�Ȍ���������悤�Ɏv���܂����u�Ǝ㐫��́v�Ɋւ��Č����΁A�O���[�]�[��
-�ł����Ă������̗��v�ɓK���̂ŗL��΋��e�����̂ł́A�Ƃ̈�ۂ��󂯂܂�
-���B�������A�{���́i���Ȃ��Ƃ������ɂ����Ắj�������͂���Ă��炸�A����
-���J���ҁE���o�[�X�G���W�j�A�̔��f����킹�����ł͂Ȃ����Ǝv���Ă��܂��B
+　脆弱性の解析については「グレーゾーン、製品解析とは異なり、脆弱性解析の
+ような、本来起こりえないことになっている”不思議な挙動”によるアプリケー
+ションの影響を解析するのであれば、問題ないのでは」とコメントしてました（
+ここで再度マイクロソフトの公式見解ではないことを強調）。これに関しては様
+々な見解があるように思いますが「脆弱性解析」に関して言えば、グレーゾーン
+であっても公共の利益に適うので有れば許容されるのでは、との印象を受けまし
+た。しかし、本件は（少なくとも国内においては）明文化はされておらず、それ
+が開発者・リバースエンジニアの判断を迷わせる一因ではないかと思っています。
 
-�@�܂��A���o�[�X�G���W�j�A�����O�̑j�~�i�A���`�f�o�b�O�E�A���`�N���b�N�j
-�ɂ��Ă��u.NET Framework (CLI) �����̃o�C�i���Ȃǂ͓�ǉ����Ȃ��Ƃقڊ�
-�S�ȃ\�[�X�𕜌��ł���v�Ƃ̂��ƁB.NET �����̃o�C�i���͔��ɍ������x�ŕ�
-���i�f�R���p�C���j���\�ł����A�uReflactor for .NET�v�����肪.NET�f�R��
-�p�C���Ƃ��ėL���ł��ˁB�܂��A�u.NET��v�R���|�[�l���g�͓�ǉ����{�����
-���Ȃ��v�Ƃ��B
+　また、リバースエンジニアリングの阻止（アンチデバッグ・アンチクラック）
+についても「.NET Framework (CLI) 向けのバイナリなどは難読化しないとほぼ完
+全なソースを復元できる」とのこと。.NET 向けのバイナリは非常に高い精度で復
+元（デコンパイル）が可能ですが、「Reflactor for .NET」あたりが.NETデコン
+パイラとして有名ですね。また、「.NET主要コンポーネントは難読化が施されて
+いない」とも。
 
-�EReflactor for .NET
+・Reflactor for .NET
 http://www.aisto.com/roeder/dotnet/
 
-�@�]�k�ł����AJava�Ɋւ��Ă��N���X�t�@�C������̃f�R���p�C�����e�Ղł��B
-����Ɋւ��Ắw�N���b�L���O�E�o�C�u���x���Q�l�ɂ��Ē��������Ǝv���܂��B
+　余談ですが、Javaに関してもクラスファイルからのデコンパイルが容易です。
+これに関しては『クラッキング・バイブル』を参考にして頂きたいと思います。
 
-�@�����Windows Vista�݂̂ɓ��ڂ���Ă���A�uProtected Processes�v�Ƃ���
-�@�\�ɂ��Ă��Љ�Ă��܂����B����́A�L��̂Ɍ�����Windows���F��Rootk
-it�̂悤�Ȃ��̂ŁA�J�[�l���iOS�j���x���Ńv���Z�X��ی삷��@�\�ŁA�f�o�b
-�K�̃A�^�b�`�Ȃǂ��s�\�ɂȂ�Z�p�Ƃ̂��Ƃł��B�g���悤�ɂ���Ă͊댯��
-�@�\�ƂȂ肤��̂ŁAMicrosoft�̔F�؂��K�v�Ƃ̂��Ƃł����B
-
-
-��0x08.) ���o�[�X�G���W�j�A�����O�Ə��Z�L�����e�B�̖@�I���
-
-�@�Ō�́A�ٌ�m�̍�����v����ɂ�郊�o�[�X�G���W�j�A�����O�Ɋւ��@��
-�Ɋւ��锭�\�ł����B���o�[�X�G���W�j�A�����O�Ɋւ���@���ɂ��ẮA����
-�ƍ��O�ł��̓������傫���قȂ��Ă��܂��B���ɍ����Ɋւ��Ă̓��o�[�X�G���W
-�j�A�����O�Ɋւ��Ă͖���������Ă��炸�A��������ɏ��Ȃ��̂�����̂悤
-�ł��B
-
-�@����@�̓����Ƃ��āA�č����O���ł� DMCA�iDigital Millenium Copyright A
-ct�F�f�W�^���~���j�A�����쌠�@�j�����݂��Ă���A���쌠�ی�V�X�e���̖���
-�����֎~����K�肪���݂��܂����A�ꕔ��O���ǉ�����A�Í������E�Z�L�����e
-�B�e�X�g�Ȃǂ͂��̗�O�����ɂ�����悤�ł��B����ɁA�A�����J�ɂ�UCITA�iU
-niform Computer Information Transaction Act�j�Ƃ����A���o�[�X�G���W�j�A��
-���O�֎~�����𐳓�������@�������݂��Ă��邻���ł����A�K����B���ŁA����
-�ɍ̗p���Ă���B�͏��Ȃ��Ƃ̂��Ƃł��B
-
-�@EU�ł�EU Directive�iEuropian Communities Council Directive on the Lega
-l Protection of Computer Programs�j�Ƃ����@�������݂��A����6���ɋt�R���p
-�C���̋K�肪���݂��A9��2���Ɂu�t�R���p�C���Ɋւ���6���ɔ����邢���Ȃ�_��
-���e�������v�Ƃ̋L�ڂ�����Ƃ̂��ƁB�܂�f�R���p�C����@���ŔF�߂Ă���
-��ł��ˁBEU�͐i��ł��܂��ˁi�H�j�B
-
-�@�΂��ē��{�ł́A���o�[�X�G���W�j�A�����O�Ɋւ��ẮA�������͂قƂ�ǂ�
-��Ă��炸�A��������ɏ��Ȃ��ł��B���̂��߁u���߁v�Ƃ������x���ł�����
-���̂ł����i���{�̖@���x�̌��E�ł���ˁc�j�A�����Ő��Ƃ̌����𒮂�����
-���ł��邱�Ƃ͔��ɋM�d�ł͂Ȃ����Ǝv���܂��B
-
-�@��������́u�t�A�Z���u���E�t�R���p�C���Ƃ�����Ƃ��A�v���O�����̕�����
-�݂Ȃ��꒘�쌠�N�Q�ɊY������̂��H�v�Ƃ����₢�������s���܂����B����Ɋ�
-���ẮA�w���̍����͖��m�ł͂Ȃ����̂́A���o�[�X�G���W�j�A�����O��F�߂�
-�������命���̂悤�ł��B�܂��u�t�R���p�C���œ���ꂽ�\�[�X�R�[�h�v�̈ʒu
-�Â��Ƃ��āA2�ʂ�̌��������݂���悤�ł��B
-
-1) �{���̃\�[�X�R�[�h�ƁA�t�R���p�C���œ�����\�[�X�R�[�h�͋@�B�I�ɂ͍�
-�v���Ȃ����u�|��v�Ɠ��l�̈����ł���A�ʌ̕\���Ƃ݂Ȃ���邽�߁A�@����
-���Ȃ��i�Ƃ������߁j
-
-2) �@�B�I�Ƀ\�[�X�R�[�h����o���邱�Ƃ���A�@�B�I�ȕ����ł��遨�������N�Q
-�ƂȂ�B�_���̐��������ᔽ�̍ۂɌY���I���ق��\�ƂȂ�i�Ƃ������߁j
-
-�@�������A�t�R���p�C������������N�Q����Ƃ��Ă��A���炩�̗��R�Ń��o�[�X
-�G���W�j�A�����O���F�߂���P�[�X�����ɑ����悤�ł��B�܂�A1)�̌���
-�����ɂȂ�A�Ƃ������Ƃł��傤���B���̔F�߂��闝�R�Ƃ��āA
-
-�E�����Ȃ�u�����v�Ɍ������y�Ԃ��̂Ɖ��߂���ׂ��ł͂Ȃ�
-�E��l�̕����I���Y�𓥂܂��ĐV���Ȃ�n�슈���𑣐i���邱�Ƃ́A�@���x�̎�
-�|�ɓK��
-�E�V���ȑn�슈���̍�Ɖߒ��ɂ����镡���͋��e�����
-
-�Ƃ������������݂��Ă���Ƃ̂��ƂŁA�O�q���܂������u�O���[�]�[���ł�����
-�������̗��v�ɓK���̂ŗL��΋��e�����v�̂ł͂Ƃ������߂��K�p�����悤
-�ł��B����͂���Ŗ]�܂������ƂȂ̂ł����A���������ꂸ���߂ŏ��؂�^�p
-�͌��S�ł͂Ȃ��Ɗ���������ł��B
+　さらにWindows Vistaのみに搭載されている、「Protected Processes」という
+機能についても紹介していました。これは、有り体に言えばWindows公認のRootk
+itのようなもので、カーネル（OS）レベルでプロセスを保護する機構で、デバッ
+ガのアタッチなどが不可能になる技術とのことです。使いようによっては危険な
+機能となりうるので、Microsoftの認証が必要とのことでした。
 
 
-��0x09.) �p�l���f�B�X�J�b�V����
+■0x08.) リバースエンジニアリングと情報セキュリティの法的問題
 
-�@�e�p�l���X�g�ɂ�锭�\��́A�p�l���f�B�X�J�b�V�����`���ŎQ���҂��܂ޓ�
-�_���s���܂����B���ł���ۂɎc�������̂��������L���Ă��������Ǝv����
-���B
+　最後は、弁護士の高橋郁夫さんによるリバースエンジニアリングに関わる法律
+に関する発表でした。リバースエンジニアリングに関する法律については、国内
+と国外でその動向が大きく異なっています。特に国内に関してはリバースエンジ
+ニアリングに関しては明文化されておらず、事例も非常に少ないのが実情のよう
+です。
 
-���{�e�̓��������ɋN�����Ă��܂����A�M�҂́i���j���߂����Ȃ��炸�܂܂��
-���܂��B���̓_���e�͉������B
+　制定法の動向として、米国合衆国では DMCA（Digital Millenium Copyright A
+ct：デジタルミレニアム著作権法）が存在しており、著作権保護システムの無効
+化を禁止する規定が存在しますが、一部例外が追加され、暗号研究・セキュリテ
+ィテストなどはその例外事項にあたるようです。さらに、アメリカにはUCITA（U
+niform Computer Information Transaction Act）という、リバースエンジニアリ
+ング禁止条項を正当化する法律も存在しているそうですが、規定も曖昧で、実際
+に採用している州は少ないとのことです。
 
-�@�u�Z�L�����e�B�S�̗̂��v���l������ƁA�̂�т�Ƃ��Ă����Ȃ��P�[�X��
-����B��ҕs�ڂ��邢�͌p���I�ȃ����e�i���X���s���Ă��Ȃ�Winny,Share�̂�
-���ȃ\�t�g�E�F�A�̏ꍇ���ƁA���o�[�X�G���W�j�A�����O������𓾂Ȃ��̂ł�
-�Ȃ����v�Ƃ�������������A����ɑ����`�ŁAShare�̃��o�[�X�G���W�j�A�����O
-�֎~�����ɂ��Ẵc�b�R�~������܂����B
+　EUではEU Directive（Europian Communities Council Directive on the Lega
+l Protection of Computer Programs）という法律が存在し、その6条に逆コンパ
+イルの規定が存在し、9条2項に「逆コンパイルに関する6条に反するいかなる契約
+内容も無効」との記載があるとのこと。つまりデコンパイルを法律で認めている
+訳ですね。EUは進んでいますね（？）。
 
-�Q�l�FShare EX2 �� readme.txt �ɋL�ڂ���Ă���֎~����
+　対して日本では、リバースエンジニアリングに関しては、明文化はほとんどさ
+れておらず、判例も非常に少ないです。そのため「解釈」というレベルでしかな
+いのですが（日本の法制度の限界ですよね…）、ここで専門家の見解を聴くこと
+ができることは非常に貴重ではないかと思います。
+
+　高橋さんは「逆アセンブル・逆コンパイルという作業が、プログラムの複製と
+みなされ著作権侵害に該当するのか？」という問いかけを行いました。これに関
+しては、学説の根拠は明確ではないものの、リバースエンジニアリングを認める
+向きが大多数のようです。まず「逆コンパイルで得られたソースコード」の位置
+づけとして、2通りの見解が存在するようです。
+
+1) 本来のソースコードと、逆コンパイルで得られるソースコードは機械的には合
+致しない→「翻訳」と同様の扱いであり、別個の表現とみなされるため、法律上
+問題ない（という解釈）
+
+2) 機械的にソースコードを作出することから、機械的な複製である→複製権侵害
+となる。契約上の制限条項違反の際に刑事的制裁も可能となる（という解釈）
+
+　しかし、逆コンパイルが複製権を侵害するとしても、何らかの理由でリバース
+エンジニアリングが認められるケースが非常に多いようです。つまり、1)の見解
+が正になる、ということでしょうか。その認められる理由として、
+
+・いかなる「複製」に権利が及ぶものと解釈するべきではない
+・先人の文化的所産を踏まえて新たなる創作活動を促進することは、法制度の趣
+旨に適う
+・新たな創作活動の作業過程における複製は許容される
+
+という見解が存在しているとのことで、前述しましたが「グレーゾーンであって
+も公共の利益に適うので有れば許容される」のではという解釈が適用されるよう
+です。それはそれで望ましいことなのですが、明文化されず解釈で乗り切る運用
+は健全ではないと感じた次第です。
+
+
+■0x09.) パネルディスカッション
+
+　各パネリストによる発表後は、パネルディスカッション形式で参加者を含む討
+論が行われました。中でも印象に残ったものをいくつか記していきたいと思いま
+す。
+
+※本稿はメモを元に起こしていますが、筆者の（超）解釈も少なからず含まれて
+います。その点ご容赦下さい。
+
+　「セキュリティ全体の利益を考慮すると、のんびりとしていられないケースが
+ある。作者不詳あるいは継続的なメンテナンスが行われていないWinny,Shareのよ
+うなソフトウェアの場合だと、リバースエンジニアリングせざるを得ないのでは
+ないか」という発言があり、それに続く形で、Shareのリバースエンジニアリング
+禁止条項についてのツッコミもありました。
+
+参考：Share EX2 の readme.txt に記載されている禁止事項
 --------------------
-�֎~����
+禁止事項
 
-  �{�\�t�g�E�F�A�̔̔��B
-  �C���^�[�l�b�g��ȊO�̃��f�B�A�ł̔z�z�B
-  ���o�[�X�G���W�j�A�����O�B
-  �������Ҕł̔z�z�B
-  �Ӑ}�I��Share�l�b�g���[�N�ւ̍U���B
+  本ソフトウェアの販売。
+  インターネット上以外のメディアでの配布。
+  リバースエンジニアリング。
+  改造改編版の配布。
+  意図的なShareネットワークへの攻撃。
 
-�֎~�����Ɉᔽ�����ꍇ�A���쌠�҂̗�����K�v�Ƃ����ɁA�C�ӂ̌l�܂��͒c
-�̂��֎~�����ɂ��Ă̒��ӊ����A�ꍇ�ɂ���Ă͖@�I�[�u���s������̂Ƃ���
-���B
+禁止事項に違反した場合、著作権者の了承を必要とせずに、任意の個人または団
+体が禁止事項についての注意勧告、場合によっては法的措置を行えるものとしま
+す。
 --------------------
 
-�@�����āA�u�w�Z�Ń\�t�g�E�F�A�̊J���͋����Ă���邪�A��́E�f�o�b�O�ɂ�
-���Ă͋����Ă���Ȃ��v�u���o�[�X�G���W�j�A�����O�Z�p�̑̌n���A�g���[�j��
-�O�̏���ǂ̂悤�ɂ��ėp�ӂ���ׂ������ۑ肾�v�u�U���ґ��͏��̋��L����
-���Ă��邪�A�h�䑤�͏��̋��L���ł��Ă��Ȃ��̂ł́H�v�u���o�[�X�G���W�j
-�A�����O�Z�p�̓I�[�v���ł͂Ȃ��B�A�����J�ł̓I�[�v�������A�����ɂ����Ă�
-��͋Z�p�̒~�ς��Ȃ���Ă��炸�A�č��Ɠ��{�̋Z�p�͂̍��͈��|�I�v�Ƃ������A
-�i�����ɂ�����j����Ə�񋤗L�̕s���Ɋւ��锭�����ڗ����܂����B���ɁA��
-�V����̓��[�N�V���b�v�S�̂�ʂ��āA��̓G���W�j�A�̈琬�Ə�񋤗L�̏d�v
-�������x���������Ă������Ƃ���ۂɎc��܂����B
+　続いて、「学校でソフトウェアの開発は教えてくれるが、解析・デバッグにつ
+いては教えてくれない」「リバースエンジニアリング技術の体系化、トレーニン
+グの場をどのようにして用意するべきかが課題だ」「攻撃者側は情報の共有がで
+きているが、防御側は情報の共有ができていないのでは？」「リバースエンジニ
+アリング技術はオープンではない。アメリカではオープンだが、国内においては
+解析技術の蓄積がなされておらず、米国と日本の技術力の差は圧倒的」といった、
+（国内における）教育と情報共有の不備に関する発言も目立ちました。特に、星
+澤さんはワークショップ全体を通して、解析エンジニアの育成と情報共有の重要
+性を何度も強調していたことが印象に残りました。
 
-�@���o�[�X�G���W�j�A�����O�ɑ΂��������A���m�ƕ��y�̑��g�ɂȂ��Ă����
-�ł͂Ƃ����w�E���B�u����tcpdump���g�����Ǝ��̂��������Ƃ�������������
-�����A�����݃��o�[�X�G���W�j�A�����O�ɂ����ē������Ƃ��N�����Ă���̂ł�
-�Ȃ����낤���v�Ƃ��B�������A��ԋC�ɂȂ����̂́u���{�ɂ����o�[�X�G���W�j
-�A�����O�n�̎����͂�����̂́A�N���b�N�n�������v�u7�`8�N�O���Ƀ\�t�g�E�F
-�A�̕s�����p�����s���Ă������A���̃C���[�W�𖢂��Ɉ��������Ă���̂ł͂�
-�����H�v�u�͍̂U���ȂǂɎg���Ă������Ƃ���A���_�[�O���E���h�ȃC���[�W
-�������v�u���o�[�X�G���W�j�A�����O�̃C���[�W�A�b�v���K�v�ł͂Ȃ����v�Ƃ�
-�����Ӗ������̔������݂��܂����B����͊m���ɂ��̒ʂ�ł���A�w�N���b�J
-�[�E�v���O������S�x�w�N���b�L���O�E�o�C�u���x�Ȃ�Ƃ����X�g���[�g�ȃ^�C
-�g���̏��Ў��M�Ɋւ�����҂Ƃ��Ă͋�΂��邵������܂���ł����B�������A
-������L��������ꏏ�ɂȂ��Č����Ă���̂��ǂ����Ǝv���܂������c�B
-
-
-��0x0A.) ���[�N�V���b�v�I����
-
-�@�p�l���f�B�X�J�b�V�����ł́A�Q���҂������ł���悤�ɂȂ��Ă����̂ł����A
-���[�N�V���b�v�I����Ɍʂɘb�����ق��������Ǝv���A�ˌ������s���܂����B
-���ɐ��V����Ƃ͒������b�����邱�Ƃ��ł��܂������i���肪�Ƃ��������܂����j�A
-���̂����̒��Łu�Ǝ㐫�����J������A����𔭌������l�͕]������ă|�W
-�V�������悭�Ȃ邯��ǂ��A���o�[�X�G���W�j�A�����O�ɂ͂��ꂪ�Ȃ��̂����
-�ł͂Ȃ����v�Ƃ�������ۓI�ȃR�����g�������������Ƃ��ł��܂����B
-
-�@���o�[�X�G���W�j�A�����O�Z�p�Ɋւ�����́A�Ȃ��Ȃ��\�ɏo�Ă��Ȃ�����
-�ł��B�A���`�f�o�b�O�Z�p��p�b�J�[�E��ǉ��Z�p�Ȃǂ́A�ꌾ�ł����΁h��i�h
-�̂悤�Ȃ��̂ŁA�햾����������΂���ł����܂��ł��B�����B�����Ƃ����S
-���̌���ɂȂ���Ƃ����\����A���͂Ȃ��Ȃ��O�ɏo�čs���Ȃ����̂ł��B
-Hack�ɂ��Ă�Krack�ɂ��Ă��A�U����@���҂ݏo���ꂽ��A����ɑ΂���h���@
-�����J����Ă������������A�Ƃ����_�ł͕ς��܂���B�������A�Ǝ㐫����
-���J�͈�ʂɌ����̗��v�ɓK�����Ƃł����A�A���`�f�o�b�O�Z�p�����J�����Ƃ�
-��ŉ�͎ґ����������邾���ł��B���o�[�X�G���W�j�A�����O�Ɋւ�����͂�
-���Ȃ��O�ɏo�čs���Ȃ��A�Ƃ����̂�����̂悤�ł��c�i����ł����N�O�Ɣ��
-��Ƃ悭�Ȃ��Ă͂��܂����j�B
-
-�@�L������Ƃ����b�����邱�Ƃ��ł��܂������A���h�����̌�w�N���b�L���O�E
-�o�C�u���̒��̐l�ł��x�Ƃ������u�ԁA�L������̔����ȏΊ�����邱�Ƃ��ł�
-���C�����܂����B���Ƀ��A�Ȍo�����Ǝv���܂��i�����j�B
+　リバースエンジニアリングに対する誤解が、周知と普及の足枷になっているの
+ではという指摘も。「かつてtcpdumpを使うこと自体けしからんという風潮があっ
+たが、今現在リバースエンジニアリングにおいて同じことが起こっているのでは
+ないだろうか」とも。しかし、一番気になったのは「日本にもリバースエンジニ
+アリング系の資料はあるものの、クラック系が多い」「7〜8年前頃にソフトウェ
+アの不正利用が横行していたが、そのイメージを未だに引きずっているのではな
+いか？」「昔は攻撃などに使われていたことからアンダーグラウンドなイメージ
+が強い」「リバースエンジニアリングのイメージアップが必要ではないか」とい
+った意味合いの発言がみられました。これは確かにその通りであり、『クラッカ
+ー・プログラム大全』『クラッキング・バイブル』なんというストレートなタイ
+トルの書籍執筆に関わった者としては苦笑するしかありませんでした。しかし、
+それを鵜飼さんも一緒になって言っているのもどうかと思いましたが…。
 
 
-��0x0B.) �Ō��
+■0x0A.) ワークショップ終了後
 
-�@���o�[�X�G���W�j�A�����O�Ƃ����Ɠ��̖ڂ����Ȃ��A�ǂ��炩�Ƃ����ΑO����
-�ł͂Ȃ��Z�p�ł���悤�ɑ����������������܂������A�����ŋ߂ɂȂ��ď�
-�X�ɐ���オ��������Ă��܂��BP2P�\�t�g�E�F�A��}���E�F�A�̂悤�ɁA���o�[
-�X�G���W�j�A�����O���鉿�l�̂���\�t�g�E�F�A���o�Ă��Ă��邱�Ƃ��傫����
-���Ɏv���܂��B
+　パネルディスカッションでは、参加者も発言できるようになっていたのですが、
+ワークショップ終了後に個別に話したほうがいいと思い、突撃を敢行しました。
+特に星澤さんとは長くお話しすることができましたが（ありがとうございました）、
+そのやり取りの中で「脆弱性を公開したら、それを発見した人は評価されてポジ
+ションがよくなるけれども、リバースエンジニアリングにはそれがないのが問題
+ではないか」といった印象的なコメントをいただくことができました。
 
-�@����̃��[�N�V���b�v�́A���{�ɂ�����ǓI�ȕ�����Ŕj���邢���؂��|��
-�ɂ��Ȃ����Ǝv���܂��B�����130�l�̐Ȃ�2���Ŗ��܂������Ƃ�A���������ł�
-��������~�����A�Ƃ����₢���킹���������ł������Ƃ�������炩���Ǝv����
-���B���[�N�V���b�v�̍Ō�ŁA���c���񂪎�����J�Â������Ƌ��Ă��܂�����
-�ŁA���c����̏��ɉ������[���𑗂�΁A����E��O��̃��[�N�V���b�v���J
-�Â���邩���m��܂����B����J�Î��͂������M�҂��Q���������ł��B
+　リバースエンジニアリング技術に関する情報は、なかなか表に出てこないもの
+です。アンチデバッグ技術やパッカー・難読化技術などは、一言でいえば”手品”
+のようなもので、種明かしをすればそれでおしまいです。情報を隠すことが安全
+性の向上につながるという構造上、情報はなかなか外に出て行かないものです。
+HackにしてもKrackにしても、攻撃手法が編み出されたら、それに対する防御手法
+も公開されていたちごっこ、という点では変わりません。しかし、脆弱性情報の
+公開は一般に公共の利益に適うことですが、アンチデバッグ技術を公開したとこ
+ろで解析者側が損をするだけです。リバースエンジニアリングに関する情報はな
+かなか外に出て行かない、というのが現状のようです…（それでも数年前と比べ
+るとよくなってはいますが）。
+
+　鵜飼さんともお話しすることができましたが、名刺交換の後『クラッキング・
+バイブルの中の人です』といった瞬間、鵜飼さんの微妙な笑顔を見ることができ
+た気がしました。非常にレアな経験だと思います（爆死）。
 
 
+■0x0B.) 最後に
 
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+　リバースエンジニアリングというと日の目を見ない、どちらかといえば前向き
+ではない技術であるように捉えられる向きがありましたが、ここ最近になって徐
+々に盛り上がりを見せています。P2Pソフトウェアやマルウェアのように、リバー
+スエンジニアリングする価値のあるソフトウェアが出てきていることも大きいよ
+うに思います。
 
---- ��3��: UnhandledExceptionFilter()���g�����A���`�f�o�b�M���O��@ ---
+　今回のワークショップは、日本における閉塞的な風潮を打破するいい切っ掛け
+にもなったと思います。それは130人の席が2日で埋まったことや、資料だけでも
+いいから欲しい、という問い合わせが相次いでいたことからも明らかだと思いま
+す。ワークショップの最後で、武田さんが次回も開催したいと仰っていましたの
+で、武田さんの所に応援メールを送れば、第二回・第三回のワークショップが開
+催されるかも知れませんよ。次回開催時はもちろん筆者も参加するつもりです。
 
-���ҁFsourcerian
+
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
+--- 第3章: UnhandledExceptionFilter()を使ったアンチデバッギング手法 ---
 
-��0x01.) �͂��߂�
+著者：sourcerian
 
-�@�O��u�A���`�f�o�b�M���O�̘b�͏I���ł��v�Ə����Ă����Ȃ��琫�������
-���܂��A���`�f�o�b�M���O�̘b�ł��B���܂��ŃC���|�[�g�֐��Ăяo���̉B����
-�s���Ă���̂œǂ�ł݂Ă��������B�O��͓���̃f�o�b�K���A�^�b�`����Ă�
-�Ȃ��Ɠ��삵�Ȃ��d�g�݂ł������A����̓f�o�b�K���A�^�b�`����Ă���Ɠ���
-���Ȃ��d�g�݂ƂȂ�܂��B
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x02.) UnhandledExceptionFilter()API��SetUnhandledExceptionFilter()API
+■0x01.) はじめに
 
-�@����̃A���`�f�o�b�M���O��@�̍����ƂȂ�̂�UnhandledExceptionFilter()
-API��SetUnhandledExceptionFilter()API�ł��BUnhandledExceptionFilter()API
-�̓A�v���P�[�V�����G���[�_�C�A���O�{�b�N�X��\�����A�A�����C���h���s����
-�v���Z�X���I��������֐��ł��B��{�I�ɂ͍\������O�����̃t�B���^���̒���
-�g��API�ł����A�����I�ɌĂяo���܂ł��Ȃ��AC�����^�C����J�[�l����������
-�̗�O��ߑ�����UnhandledExceptionFilter()API���Ăяo���܂�(C�����^�C����
-�ꍇ�͈ꕔ��O���V�O�i���ɕϊ����܂�)�B�A�v���P�[�V�����G���[�_�C�A���O��
-�\�����������Ȃ����SetErrorMode()API���g�������ŏ\���ł����A�f�o�b�O���
-�̎��W��Ǝ��̃_�C�A���O�{�b�N�X��\�����������ꍇ��SetUnhandledExceptio
-nFilter()API���g���܂��B
+　前回「アンチデバッギングの話は終わりです」と書いておきながら性懲りもな
+くまたアンチデバッギングの話です。おまけでインポート関数呼び出しの隠蔽も
+行っているので読んでみてください。前回は特定のデバッガがアタッチされてい
+ないと動作しない仕組みでしたが、今回はデバッガがアタッチされていると動作
+しない仕組みとなります。
+
+
+■0x02.) UnhandledExceptionFilter()APIとSetUnhandledExceptionFilter()API
+
+　今回のアンチデバッギング手法の根幹となるのがUnhandledExceptionFilter()
+APIとSetUnhandledExceptionFilter()APIです。UnhandledExceptionFilter()API
+はアプリケーションエラーダイアログボックスを表示し、アンワインドを行って
+プロセスを終了させる関数です。基本的には構造化例外処理のフィルタ式の中で
+使うAPIですが、明示的に呼び出すまでもなく、Cランタイムやカーネルが未処理
+の例外を捕捉してUnhandledExceptionFilter()APIを呼び出します(Cランタイムの
+場合は一部例外をシグナルに変換します)。アプリケーションエラーダイアログを
+表示させたくなければSetErrorMode()APIを使うだけで十分ですが、デバッグ情報
+の収集や独自のダイアログボックスを表示させたい場合はSetUnhandledExceptio
+nFilter()APIを使います。
 
 -----
-// �t�B���^�֐��̃|�C���^�^
+// フィルタ関数のポインタ型
 typedef LONG (WINAPI *PTOP_LEVEL_EXCEPTION_FILTER)(
     struct _EXCEPTION_POINTERS *ExceptionInfo
 );
 typedef PTOP_LEVEL_EXCEPTION_FILTER LPTOP_LEVEL_EXCEPTION_FILTER;
 
-// SetUnhandledExceptionFilter()�̐錾
+// SetUnhandledExceptionFilter()の宣言
 LPTOP_LEVEL_EXCEPTION_FILTER SetUnhandledExceptionFilter(
 	LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter
 );
 -----
 
-�@SetUnhandledExceptionFilter()API�Ńt�B���^�֐����Z�b�g�����UnhandledE
-xceptionFilter()�֐��̓Z�b�g���ꂽ�t�B���^�֐����Ăяo���A���̖߂�l�ɂ�
-���ē����ς��܂��B
+　SetUnhandledExceptionFilter()APIでフィルタ関数をセットするとUnhandledE
+xceptionFilter()関数はセットされたフィルタ関数を呼び出し、その戻り値によ
+って動作を変えます。
 
-�EEXCEPTION_EXECUTE_HANDLER
-�@�v���Z�X���I��������B
+・EXCEPTION_EXECUTE_HANDLER
+　プロセスを終了させる。
 
-�EEXCEPTION_CONTINUE_EXECUTION
-�@��O�����ꏊ�ɖ߂��ď����𑱍s������B
+・EXCEPTION_CONTINUE_EXECUTION
+　例外発生場所に戻って処理を続行させる。
 
-�EEXCEPTION_CONTINUE_SEARCH
-�@�{���̓���(�A�v���P�[�V�����G���[�_�C�A���O�̕\��)���s���B
+・EXCEPTION_CONTINUE_SEARCH
+　本来の動作(アプリケーションエラーダイアログの表示)を行う。
 
-�@���āA�������炪����̏d�v�ȂƂ���ł����AUnhandledExceptionFilter()AP
-I�́A�A�v���P�[�V�����f�o�b�K���A�^�b�`����Ă���ꍇ�ɃZ�b�g���ꂽ�t�B��
-�^�֐����Ăяo���Ȃ��Ƃ����d�l�Ƃ������o�O������܂��BWindows95�`Windows
-Vista�܂ň�т��Ă��邻�̓���̓o�O�Ƃ������d�l�Ƃ����v���܂��񂪁AKno
-wledge Base Q173652�ihttp://support.microsoft.com/kb/173652�j�ł́A�o�O��
-������Ă���̂Ńo�O�Ȃ�ł��傤�B�o�O���d�l���͂��Ă����A�f�o�b�O���Ƃ�
-���łȂ����ɓ��삪�Ⴄ���̂𗘗p����΃f�o�b�M���O�΍�ɂȂ�̂͊ԈႢ��
-��܂���B����͂��̓���̈Ⴂ�𗘗p���ăA���`�f�o�b�M���O���������܂��B
+　さて、ここからが今回の重要なところですが、UnhandledExceptionFilter()AP
+Iは、アプリケーションデバッガがアタッチされている場合にセットされたフィル
+タ関数を呼び出さないという仕様というかバグがあります。Windows95〜Windows
+Vistaまで一貫しているその動作はバグというより仕様としか思えませんが、Kno
+wledge Base Q173652（http://support.microsoft.com/kb/173652）では、バグと
+書かれているのでバグなんでしょう。バグか仕様かはさておき、デバッグ時とそ
+うでない時に動作が違うものを利用すればデバッギング対策になるのは間違いあ
+りません。今回はこの動作の違いを利用してアンチデバッギングを実装します。
 
 
-��0x03.) SetUnhandledExceptionFilter()API�̃T���v���R�[�h
+■0x03.) SetUnhandledExceptionFilter()APIのサンプルコード
 
-�@�A���`�f�o�b�M���O�̎����Ɏ��|����O��SetUnhandledExceptionFilter()A
-PI�̎g���������Ă݂܂��傤�B�ȉ��̓A�v���P�[�V�����G���[�_�C�A���O�̑��
-��Ƀ��b�Z�[�W�{�b�N�X�őf���C�������b�Z�[�W��\�����ďI������T���v����
-���B
+　アンチデバッギングの実装に取り掛かる前にSetUnhandledExceptionFilter()A
+PIの使い方を見てみましょう。以下はアプリケーションエラーダイアログの代わ
+りにメッセージボックスで素っ気無いメッセージを表示して終了するサンプルで
+す。
 
 -----
 LONG WINAPI MyUnhandledExceptionFilter(
@@ -719,54 +719,54 @@ LONG WINAPI MyUnhandledExceptionFilter(
 {
 	MessageBox(
 		NULL
-	,	"�s���ȏ������s�������ߋ����I������܂��B"
-	,	"�A�v���P�[�V�����G���["
+	,	"不正な処理を行ったため強制終了されます。"
+	,	"アプリケーションエラー"
 	,	MB_ICONEXCLAMATION
 	);
-	return EXCEPTION_EXECUTE_HANDLER;	// �v���Z�X���I��������
+	return EXCEPTION_EXECUTE_HANDLER;	// プロセスを終了させる
 }
 
 int main()
 {
-	// �t�B���^�֐����Z�b�g����
+	// フィルタ関数をセットする
 	SetUnhandledExceptionFilter(MyUnhandledExceptionFilter);
 
-	// �A�N�Z�X�o�C�I���[�V������O�������I
+	// アクセスバイオレーション例外が発生！
 	*(int*)0 = 0;
 
-	// �����I������邽�ߎ��s����Ȃ�
-	printf("�����I������邽�ߎ��s����Ȃ�\n");
+	// 強制終了されるため実行されない
+	printf("強制終了されるため実行されない\n");
 }
 -----
 
-�@�ꌩ�A�P���Ɍ�����R�[�h�ł����A���ʉ��ł��낢��Ɠ����Ă��܂��B������
-����͎��̂悤�ɂȂ�܂��B
+　一見、単純に見えるコードですが、水面下でいろいろと動いています。処理の
+流れは次のようになります。
 
-1�F�u*(int*)0 = 0;�v�ŃA�N�Z�X�o�C�I���[�V������O�������B
+1：「*(int*)0 = 0;」でアクセスバイオレーション例外が発生。
 
-2�FC�����^�C�����A�N�Z�X�o�C�I���[�V������O��ߑ�����SIGSEGV�V�O�i���ɕ�
-�����A�V�O�i���n���h�����Ăяo�����Ƃ��邪�A�V�O�i���n���h����SIG_DFL���Z
-�b�g����Ă��邽��UnhandledExceptionFilter()API���Ăяo���B
+2：Cランタイムがアクセスバイオレーション例外を捕捉してSIGSEGVシグナルに変
+換し、シグナルハンドラを呼び出そうとするが、シグナルハンドラにSIG_DFLがセ
+ットされているためUnhandledExceptionFilter()APIを呼び出す。
 
-3�FUnhandledExceptionFilter()API��SetUnhandledExceptionFilter()API�ɂ��
-�ăZ�b�g���ꂽMyUnhandledExceptionFilter()�֐����Ăяo���B
+3：UnhandledExceptionFilter()APIはSetUnhandledExceptionFilter()APIによっ
+てセットされたMyUnhandledExceptionFilter()関数を呼び出す。
 
-4�FMyUnhandledExceptionFilter()�֐��̓��b�Z�[�W�{�b�N�X��\�����āAEXCEP
-TION_EXECUTE_HANDLER��Ԃ��B
+4：MyUnhandledExceptionFilter()関数はメッセージボックスを表示して、EXCEP
+TION_EXECUTE_HANDLERを返す。
 
-5�FEXCEPTION_EXECUTE_HANDLER��߂��ꂽUnhandledExceptionFilter()API���v��
-�Z�X�������I������B
+5：EXCEPTION_EXECUTE_HANDLERを戻されたUnhandledExceptionFilter()APIがプロ
+セスを強制終了する。
 
-�@���ӂ��ׂ��_�̓X�e�b�v2���炢�ł��傤���B������O�ł����Asignal()�֐���
-��O�ɑΉ�����V�O�i���̃n���h�����Z�b�g���Ă���ꍇ�́A���̃V�O�i���n��
-�h�����Ă΂��UnhandledExceptionFilter()API�͌Ăяo����܂���Bsignal()��
-�����g���Ă���ꍇ�͎��O��UnhandledExceptionFilter()API���Ăяo������A�t
-�B���^�֐��ŕߑ���������O�ƃV�O�i���̑Ή��ɋC������Ȃǂ��Ă��������B
-�Ȃ��A��O�ƃV�O�i���̑Ή���C�����^�C���̃\�[�X��winxfltr.c�ɒ�`����Ă�
-�܂��B���̑Ή��\�͎Q�l���x�ɂ���winxfltr.c���m�F���Ă��������B
+　注意すべき点はステップ2ぐらいでしょうか。当たり前ですが、signal()関数で
+例外に対応するシグナルのハンドラをセットしてある場合は、そのシグナルハン
+ドラが呼ばれてUnhandledExceptionFilter()APIは呼び出されません。signal()関
+数を使っている場合は自前でUnhandledExceptionFilter()APIを呼び出したり、フ
+ィルタ関数で捕捉したい例外とシグナルの対応に気をつけるなどしてください。
+なお、例外とシグナルの対応はCランタイムのソースのwinxfltr.cに定義されてい
+ます。次の対応表は参考程度にしてwinxfltr.cを確認してください。
 
 -------------------------------------------
-��O                           | �V�O�i��
+例外                           | シグナル
 -------------------------------------------
 STATUS_ACCESS_VIOLATION	       | SIGSEGV
 STATUS_ILLEGAL_INSTRUCTION     | SIGILL
@@ -781,13 +781,13 @@ STATUS_FLOAT_UNDERFLOW         | SIGFPE
 -------------------------------------------
 
 
-��0x04.) �A���`�f�o�b�M���O�̎���
+■0x04.) アンチデバッギングの実装
 
-�@�O�u���������Ȃ��Ă��܂��܂������A���ۂɃA���`�f�o�b�M���O�̎����Ɏ��
-�|����܂��傤�B�b���ȒP�ɂ��邽�߂ɁA�f�o�b�K���A�^�b�`����Ă��Ȃ��ꍇ
-�Ƀ��b�Z�[�W�{�b�N�X��"Hello world"��\���������Ƃ��Đ������Ă����܂��B
-�@���̓f�o�b�K���A�^�b�`����Ă����EIP(���s���̃A�h���X)��NULL�ɂȂ��đ�
-�s�s�\�ȏ�ԂɊׂ�T���v���ł��B
+　前置きが長くなってしまいましたが、実際にアンチデバッギングの実装に取り
+掛かりましょう。話を簡単にするために、デバッガがアタッチされていない場合
+にメッセージボックスで"Hello world"を表示する例をとって説明していきます。
+　次はデバッガがアタッチされているとEIP(実行中のアドレス)がNULLになって続
+行不可能な状態に陥るサンプルです。
 
 -----
 LONG WINAPI MyUnhandledExceptionFilter(
@@ -816,18 +816,18 @@ int main()
 }
 -----
 
-�@main()�֐��ł�SetUnhandledExceptionFilter()API�Ńt�B���^�֐����Z�b�g��A
-s_pMessageBoxA�i���b�Z�[�W�{�b�N�X�̊֐��|�C���^�j���o�R����API�Ăяo����
-���悤�Ƃ��Ă��܂��B���R�As_pMessageBoxA�ɂ�NULL���Z�b�g����Ă���̂ł�
-�̌Ăяo���͎��s�A�h���X��0�Ԓn�iNULL�j�ɔ�΂��ăA�N�Z�X�o�C�I���[�V����
-��O�𔭐������錋�ʂɂȂ�܂��B�������炪�d�v�ȕ���_�ŁA�f�o�b�K���A�^
-�b�`����Ă��Ȃ���΃t�B���^�֐������̗�O���󂯎���Ď��s�A�h���X��Mess
-ageBoxA()API�̃A�h���X�ɔ�΂��܂����A�f�o�b�K���A�^�b�`����Ă���ꍇ��
-0�Ԓn�ɔ�񂾎��_�ő��s�s�\�ȏ�ԂɊׂ�܂��i�f�o�b�K��EIP��MessageBox
-A�̃A�h���X�ɕύX����Θb�͕ʂł����j�B
-�@�������A��L�̕��@�ł͂��Ƃ��Ƃ̃\�[�X�Ɏ��������K�v�������A�\�[�X
-�R�[�h�̉ǐ��������Ă��܂��܂��B������ւ�����Ƃ����Ă݂��̂����̃R�[
-�h�ł��B
+　main()関数ではSetUnhandledExceptionFilter()APIでフィルタ関数をセット後、
+s_pMessageBoxA（メッセージボックスの関数ポインタ）を経由してAPI呼び出しを
+しようとしています。当然、s_pMessageBoxAにはNULLがセットされているのでこ
+の呼び出しは実行アドレスを0番地（NULL）に飛ばしてアクセスバイオレーション
+例外を発生させる結果になります。ここからが重要な分岐点で、デバッガがアタ
+ッチされていなければフィルタ関数がその例外を受け取って実行アドレスをMess
+ageBoxA()APIのアドレスに飛ばしますが、デバッガがアタッチされている場合は
+0番地に飛んだ時点で続行不可能な状態に陥ります（デバッガがEIPをMessageBox
+Aのアドレスに変更すれば話は別ですが）。
+　しかし、上記の方法ではもともとのソースに手を加える必要がある上、ソース
+コードの可読性が落ちてしまいます。そこらへんを何とかしてみたのが次のコー
+ドです。
 
 -----
 #ifndef _DEBUG
@@ -886,7 +886,7 @@ int EntryPoint(void)
 	modUser  	  = LoadLibrary("user32.dll");
 	s_rgImport[2] = GetProcAddress(modUser,   "MessageBoxA");
 
-	// �t�B���^�֐��̃Z�b�g
+	// フィルタ関数のセット
 	SetUnhandledExceptionFilter(MyUnhandledExceptionFilter);
 
 	return mainCRTStartup();
@@ -900,34 +900,34 @@ int main()
 }
 -----
 
-�@���Ȃ�g���b�L�[�Ȃ��Ƃ����Ă��܂����A�������Ă��邩�킩��܂����H
-�@�܂��Amain()�֐����猩�Ă݂܂��傤�B���ʂ�MessageBox()API���Ăяo���Ă�
-�邾���ł����A����ł��f�o�b�K���A�^�b�`����Ă���Ɛ����������Ȃ��悤��
-�Ȃ��Ă��܂��B���R�A���̎d�g�݂�main()����ɂ���܂��Bmain()����������
-���������SetUnhandledExceptionFilter()API���Ăяo���Ă��镔����EntryP
-oint()�֐��Ɉڂ�܂����BEntryPoint()�֐��̓��X�g�̖`���ɂ���
+　かなりトリッキーなことをしていますが、何をしているかわかりますか？
+　まず、main()関数から見てみましょう。普通にMessageBox()APIを呼び出してい
+るだけですが、これでもデバッガがアタッチされていると正しく動かないように
+なっています。当然、その仕組みはmain()より上にあります。main()がすっきり
+した代わりにSetUnhandledExceptionFilter()APIを呼び出している部分はEntryP
+oint()関数に移りました。EntryPoint()関数はリストの冒頭にある
 
 -----
 #pragma comment(linker, "/ENTRY:EntryPoint")
 -----
 
-�Ƃ�������C�����^�C���X�^�[�g�A�b�v���[�`���ɑ����ăv���O�����G���g���|
-�C���g�ɂȂ�܂��B�{���Ȃ烊���J�ɂ���ăv���O�����G���g���|�C���g�ƂȂ�
-�v���O�����̃��[�h��ɌĂяo�����C�����^�C���X�^�[�g�A�b�v���[�`���́AE
-ntryPoint()�֐�����
+という文でCランタイムスタートアップルーチンに代わってプログラムエントリポ
+イントになります。本来ならリンカによってプログラムエントリポイントとなり
+プログラムのロード後に呼び出されるCランタイムスタートアップルーチンは、E
+ntryPoint()関数内の
 
 -----
 return mainCRTStartup();
 -----
 
-�Ƃ������Ŏ蓮�ŌĂяo����邱�ƂɂȂ�܂��BmainCRTStartup()��C�����^�C��
-�̏��������main()�֐����Ăяo��C�����^�C���X�^�[�g�A�b�v���[�`�����̂���
-�ł��BC�����^�C���X�^�[�g�A�b�v���[�`����main()�֐���WinMain()�֐��ɂ��
-�ă����N�����֐����قȂ�܂��̂ňȉ��̃��X�g���Q�l�Ɏ����̃v���O������
-�C�����Ă��������B
+という式で手動で呼び出されることになります。mainCRTStartup()はCランタイム
+の初期化後にmain()関数を呼び出すCランタイムスタートアップルーチンそのもの
+です。Cランタイムスタートアップルーチンはmain()関数やWinMain()関数によっ
+てリンクされる関数が異なりますので以下のリストを参考に自分のプログラムを
+修正してください。
 
 ---------------------------------------------------------------
-�A�v���P�[�V�����̊J�n�֐� | C�����^�C���X�^�[�g�A�b�v���[�`��
+アプリケーションの開始関数 | Cランタイムスタートアップルーチン
 ---------------------------------------------------------------
 main()                     | mainCRTStartup()
 wmain()	                   | wmainCRTStartup()
@@ -935,20 +935,20 @@ WinMain()                  | WinMainCRTStartup()
 wWinMain()                 | wWinMainCRTStartup()
 ---------------------------------------------------------------
 
-�@EntryPoint()�֐��̒�`�ɂ���āAC�����^�C���X�^�[�g�A�b�v���[�`�����Ă�
-�o�����O�Ƀt�B���^�֐��̃Z�b�g���s���Ă���A�Ƃ������ƂɂȂ�܂��BEntr
-yPoint()�֐��ł͑��ɂ�����̃R�A�Ƃ������鏈�������Ă��܂��BFARPROC�̔z��
-�ł���s_rgImport�̃C���f�b�N�X1��2��GetCommandLineA()API��MessageBoxA()A
-PI�̃A�h���X���i�[���Ă��܂��B���̃C���f�b�N�X�l�͏d�v�Ȃ̂Ŋo���Ă�����
-���������B
-�@���x�̓t�B���^�֐��ł���MyUnhandledExceptionFilter()�֐������Ă݂܂���
-���B���s�A�h���X���w�����W�X�^��Eip��1�`MAXIMPORTINDEX(2)�̊Ԃ̏ꍇ�́AE
-ip�̒l���C���f�b�N�X��s_rgImport����A�h���X�����o���āAEip�����̃A�h��
-�X�ɃZ�b�g����A�Ƃ������Ƃ����Ă��܂��B�܂�A�h���X1�Ԓn�܂���2�Ԓn��
-���ł��܂����ꍇ��GetCommandLineA()API�܂���MessageBoxA()API�̃A�h���X
-�ɔ�΂��A�Ƃ������Ƃ����Ă��܂��B
-�@�����āA�A�h���X1�Ԓn��2�Ԓn�ɔ�΂��d�g�݂�񋟂��Ă���̂��ȉ��̃R�[
-�h�ɂȂ�܂��B
+　EntryPoint()関数の定義によって、Cランタイムスタートアップルーチンが呼び
+出される前にフィルタ関数のセットを行っている、ということになります。Entr
+yPoint()関数では他にも今回のコアとも言える処理をしています。FARPROCの配列
+であるs_rgImportのインデックス1と2にGetCommandLineA()APIとMessageBoxA()A
+PIのアドレスを格納しています。このインデックス値は重要なので覚えておいて
+ください。
+　今度はフィルタ関数であるMyUnhandledExceptionFilter()関数を見てみましょ
+う。実行アドレスを指すレジスタのEipが1〜MAXIMPORTINDEX(2)の間の場合は、E
+ipの値をインデックスにs_rgImportからアドレスを取り出して、Eipをそのアドレ
+スにセットする、ということをしています。つまりアドレス1番地または2番地に
+飛んでしまった場合はGetCommandLineA()APIまたはMessageBoxA()APIのアドレス
+に飛ばす、ということをしています。
+　そして、アドレス1番地や2番地に飛ばす仕組みを提供しているのが以下のコー
+ドになります。
 
 -----
 __declspec(naked) LPCSTR WINAPI _imp__GetCommandLineA()
@@ -973,29 +973,29 @@ __declspec(naked) int WINAPI _imp__MessageBoxA(
 }	}
 -----
 
-�@__asm�u���b�N��0x02��3��0x00�̓W�����v������A�h���X�ŁA�t�B���^�֐�
-�̒��ł�s_rgImport�z��̃C���f�b�N�X�ɂȂ�l�ł��B���̒�`�����̂����Ȃ�
-�̂��𗝉�����ɂ̓C���|�[�g�֐����ǂ̂悤�Ƀ����N����邩�m��Ȃ��Ƃ���
-�Ȃ��ł��傤�B�ϐ�����֐������R���p�C�����烊���J�ɓn�����ۂ�__declsp
-ec�C���q��Ăяo���K��ɂ���Ė��O�ɃA���_�[�o�[(_)��A�b�g�}�[�N(@)����
-���܂��B
+　__asmブロックの0x02と3つの0x00はジャンプさせるアドレスで、フィルタ関数
+の中ではs_rgImport配列のインデックスになる値です。この定義が何故そうなる
+のかを理解するにはインポート関数がどのようにリンクされるか知らないといけ
+ないでしょう。変数名や関数名がコンパイラからリンカに渡される際に__declsp
+ec修飾子や呼び出し規約によって名前にアンダーバー(_)やアットマーク(@)がつ
+きます。
 
-�E__declspec(import)�C���q
-�@�Ăяo���K����D�悳��Đ擪��_imp__���t���܂��B
+・__declspec(import)修飾子
+　呼び出し規約より優先されて先頭に_imp__が付きます。
 
-�E__stdcall(WINAPI/CALLBACK)
-�@�擪�ɃA���_�[�X�R�A(_)���t���A�����ɃA�b�g�}�[�N (@) ���t���A���̌��
-�Ƀp�����[�^ ���X�g�̃o�C�g���������܂��B
+・__stdcall(WINAPI/CALLBACK)
+　先頭にアンダースコア(_)が付き、末尾にアットマーク (@) が付き、その後ろ
+にパラメータ リストのバイト数が続きます。
 
-�E__cdecl(����l�BC++�ł�extern "C")
-�@�擪�ɃA���_�[�X�R�A(_)���t���܂��B
+・__cdecl(既定値。C++ではextern "C")
+　先頭にアンダースコア(_)が付きます。
 
-�E__fastcall
-�@�擪�Ɩ����ɃA�b�g�}�[�N(@)���t���A���̌��Ƀp�����[�^���X�g�̃o�C�g��
-�������܂��B
+・__fastcall
+　先頭と末尾にアットマーク(@)が付き、その後ろにパラメータリストのバイト数
+が続きます。
 
-�@��L�𓥂܂���MessageBoxA()API���ǂ̂悤�Ȗ��O�Ń����J�ɓn����邩�l��
-�Ă݂܂��傤�B����WinUser.h�Ɋ܂܂��MessageBoxA()API�̐錾�ł��B
+　上記を踏まえてMessageBoxA()APIがどのような名前でリンカに渡されるか考え
+てみましょう。次はWinUser.hに含まれるMessageBoxA()APIの宣言です。
 
 -----
 WINUSERAPI
@@ -1008,50 +1008,50 @@ MessageBoxA(
     IN UINT uType);
 -----
 
-��WINUSERAPI�̓v���v���Z�b�T�ɂ��__declspec(import)�ɕϊ�����܂��B
-��WINAPI�̓v���v���Z�b�T�ɂ��__stdcall�ɕϊ�����܂��B
+※WINUSERAPIはプリプロセッサにより__declspec(import)に変換されます。
+※WINAPIはプリプロセッサにより__stdcallに変換されます。
 
-�@��L�̐錾��__declspec(import)��_imp__MessageBoxA�ƂȂ�A__stdcall�Ă�
-�o���K���16�o�C�g�̈����ɂ����__imp__MessageBoxA@16�ɂȂ�܂��B�������A
-����͊֐��̃v���g�^�C�v�錾�ł͂Ȃ��A�֐��|�C���^�̐錾�ł��邱�Ƃɒ���
-���Ă��������B�C���|�[�g�֐���IAT�i�C���|�[�g�A�h���X�e�[�u���j�Ɋ܂܂��
-�֐��A�h���X���Q�Ƃ��ČĂяo����邽�߁A�R���p�C����MessageBoxA()API�̌�
-�яo����__imp__MessageBoxA@16�֐��|�C���^���o�R�����֐��Ăяo���ɕϊ����A
-�u__imp__MessageBoxA@16�Ƃ����֐��|�C���^���ǂ����ɂ��锤������T���Ă���
-�����N���Ă��������v�ƃ����J�Ɏw������̂ł��B__imp__MessageBoxA@16��use
-r32.lib�C���|�[�g���C�u�����Ɋ܂܂�Ă��āA�����N����鎞��IAT�̃G���g��
-�̂ЂƂƂȂ�܂��B
-�@��قǂ�_imp__MessageBoxA()�֐��̒�`��__stdcall�Ăяo���K���16�o�C�g
-�̈����ɂ����MessageBoxA�̐錾�ƑS������__imp__MessageBoxA@16�Ƃ������O
-�Ń����J�ɓn����܂��i���͈����̐����������Ă���Ζ߂�l�̌^������̌^��
-���ł��悢�j�B�����ă����J�ɓn�����ƁAuser32.lib�C���|�[�g���C�u������
-�܂܂��__imp__MessageBoxA@16�����D�悵�ă����N����AMessageBoxA()API��
-�A�h���X���i�[�����֐��|�C���^�Ƃ��ė��p����邱�ƂɂȂ�܂��B
-�@�܂�A�����J�����܂��ăC���|�[�g�֐��̃A�h���X���`���Ă����ł��B
-���̌��ʁAmain()���ł�MessageBox()API�Ăяo���͖{���Ȃ�IAT�̃G���g�����o
-�R���čs����͂����A�܂������ʂ̊֐��|�C���^�i���̒l��0x00000002�j���o
-�R����悤�ɂȂ�AMessageBoxA()API�̌Ăяo���������͂��Ȃ̂ɃA�h���X2�Ԓn
-�ɔ��ł��܂��A�Ƃ������ƂɂȂ�܂��B
-�@�Ȃ��A�����J�����܂������Ƃɂ����MessageBoxA�p��IAT�G���g���͍����
-����B���̂��߃��[�h����0x00000002��MessageBoxA()API�̃A�h���X�ŏ㏑����
-���悤�Ȃ��Ƃ͂���܂��񂵁A���Y���Ƃ��ċt�A�Z���u�����ꂽ����MessageB
-oxA()API�̌Ăяo�����B�����邱�Ƃ��ł��܂��B
-�@�܂��A�����ō쐬�����\�[�X�݂̂Ȃ炸�ÓI���C�u�������g�p���Ă���C���|
-�[�g�֐��ɂ����̃g���b�N���g���܂��BGetCommandLineA()��C�����^�C���X�^�[
-�g�A�b�v���[�`�����g�p����API�̈�ł����A_imp__GetCommandLineA���`��
-�ă����J�����܂��Ă��܂��B
-�@����́A2��API�ɂ������̃g���b�N���g���Ă��Ȃ���Ɋ֐��|�C���^�̔z��
-�Ŗ{���̃A�h���X���擾���Ă��邽�߁A��������r�I�ȒP�ł��傤�B�p�t�H�[�}
-���X���]���ɂȂ�܂����A�֐��|�C���^�̔z��ł͂Ȃ��A�z�z���switch���Ŗ{
-���̃A�h���X�ɔ�΂��悤�ɂ�����ŁA�����Ƃ��������API�Ăяo���ɍ���̃g
-���b�N���g�����Ƃŉ������s���ɂ������邱�Ƃ��ł��܂��B�������AAPI�Ăяo��
-�̂��тɗ�O���������邱�̃R�[�h�̓p�t�H�[�}���X��傫���ቺ������_�ɒ�
-�ӂ��Ă��������BGetMessage()API�Ȃǃ��[�v�ɑg�ݍ��܂�ĕp�ɂɌĂяo�����
-�悤��API�ɂ��̃g���b�N���g���̂͂��E�߂��܂���B
-�@�܂��A��肷����IAT�G���g�����ЂƂ��Ȃ����s�\�t�@�C���ɂ��Ă��܂��ƁA
-Windows2000/2000Server�œ��삵�Ȃ��Ȃ��Ă��܂��i���[�h�Ɏ��s���Ă��܂��j
-�̂ŁA���ӂ��Ă��������B���Ȃ݂ɃC���|�[�g�֐��Ăяo�����B��������������
-�ꍇ�ɂ͓��������ňȉ��̂悤�Ȏ�@���g���܂��B
+　上記の宣言は__declspec(import)で_imp__MessageBoxAとなり、__stdcall呼び
+出し規約と16バイトの引数によって__imp__MessageBoxA@16になります。ただし、
+これは関数のプロトタイプ宣言ではなく、関数ポインタの宣言であることに注意
+してください。インポート関数はIAT（インポートアドレステーブル）に含まれる
+関数アドレスを参照して呼び出されるため、コンパイラはMessageBoxA()APIの呼
+び出しを__imp__MessageBoxA@16関数ポインタを経由した関数呼び出しに変換し、
+「__imp__MessageBoxA@16という関数ポインタがどこかにある筈だから探してきて
+リンクしてください」とリンカに指示するのです。__imp__MessageBoxA@16はuse
+r32.libインポートライブラリに含まれていて、リンクされる時にIATのエントリ
+のひとつとなります。
+　先ほどの_imp__MessageBoxA()関数の定義も__stdcall呼び出し規約と16バイト
+の引数によってMessageBoxAの宣言と全く同じ__imp__MessageBoxA@16という名前
+でリンカに渡されます（実は引数の数さえあっていれば戻り値の型や引数の型は
+何でもよい）。そしてリンカに渡されると、user32.libインポートライブラリに
+含まれる__imp__MessageBoxA@16よりも優先してリンクされ、MessageBoxA()APIの
+アドレスを格納した関数ポインタとして利用されることになります。
+　つまり、リンカをだましてインポート関数のアドレスを定義している訳です。
+その結果、main()内でのMessageBox()API呼び出しは本来ならIATのエントリを経
+由して行われるはずが、まったく別の関数ポインタ（その値は0x00000002）を経
+由するようになり、MessageBoxA()APIの呼び出しをしたはずなのにアドレス2番地
+に飛んでしまう、ということになります。
+　なお、リンカをだましたことによってMessageBoxA用のIATエントリは作られま
+せん。そのためロード時に0x00000002がMessageBoxA()APIのアドレスで上書きさ
+れるようなことはありませんし、副産物として逆アセンブルされた時にMessageB
+oxA()APIの呼び出しを隠蔽することができます。
+　また、自分で作成したソースのみならず静的ライブラリが使用しているインポ
+ート関数にもこのトリックが使えます。GetCommandLineA()はCランタイムスター
+トアップルーチンが使用するAPIの一つですが、_imp__GetCommandLineAを定義し
+てリンカをだましています。
+　今回は、2つのAPIにしかこのトリックを使っていない上に関数ポインタの配列
+で本来のアドレスを取得しているため、解除が比較的簡単でしょう。パフォーマ
+ンスが犠牲になりますが、関数ポインタの配列ではなく連想配列やswitch文で本
+来のアドレスに飛ばすようにした上で、もっとたくさんのAPI呼び出しに今回のト
+リックを使うことで解除を行いにくくすることができます。ただし、API呼び出し
+のたびに例外が発生するこのコードはパフォーマンスを大きく低下させる点に注
+意してください。GetMessage()APIなどループに組み込まれて頻繁に呼び出される
+ようなAPIにこのトリックを使うのはお薦めしません。
+　また、やりすぎてIATエントリがひとつもない実行可能ファイルにしてしまうと、
+Windows2000/2000Serverで動作しなくなってしまう（ロードに失敗してしまう）
+ので、注意してください。ちなみにインポート関数呼び出しを隠蔽したいだけの
+場合には同じ原理で以下のような手法が使えます。
 
 -----
 #ifndef _DEBUG
@@ -1106,354 +1106,354 @@ int main()
 }
 -----
 
-�@�������API�Ăяo���̂��тɗ�O����������킯�ł͂Ȃ��̂Ńp�t�H�[�}���X
-��ቺ�����邱�ƂȂ�API�Ăяo�����B���ł��܂��B���X����ȃ}�N���͎g���Ă�
-�܂����A�����͂���Ȃ��ł��傤�B
+　こちらはAPI呼び出しのたびに例外が発生するわけではないのでパフォーマンス
+を低下させることなくAPI呼び出しを隠蔽できます。少々特殊なマクロは使ってい
+ますが、説明はいらないでしょう。
 
 
-��0x05.) ��������
+■0x05.) さいごに
 
-�@�O��ƍ���ɋ��ʂ��Ă����邱�Ƃ́u�v���e�N�V�����̎d�g�݂��΂�Ă�����
-������v�Ƃ������Ƃł��B�v���O�����̉�͂�������h���ɂ́u�v���e�N�V��
-���̎d�g�݂��΂�ɂ����v���̂�u�v���e�N�V�����̎d�g�݂��΂�Ă���������
-��v�Ȃ��̂����̂��d�v�ł��B�v���e�N�V��������������ꍇ�́u�d�g�݂���
-��₷���������ȒP�Ȃ��́v�ɂȂ�Ȃ��悤�ɒ��ӂ��Ă��������B
+　前回と今回に共通していえることは「プロテクションの仕組みがばれても解除
+が困難」ということです。プログラムの解析や改ざんを防ぐには「プロテクショ
+ンの仕組みがばれにくい」ものや「プロテクションの仕組みがばれても解除が困
+難」なものを作るのが重要です。プロテクションを実装する場合は「仕組みがば
+れやすく解除が簡単なもの」にならないように注意してください。
 
 
-
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-
---- ��4��: ��b�Í��w�u�� �` ��9�� �` ---
-
-���ҁFIPUSIRON
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
+--- 第4章: 基礎暗号学講座 〜 第9回 〜 ---
 
-��0x01.) �͂��߂�
+著者：IPUSIRON
 
-�@���ʌ��Í��X�L�[���ł́A���M�҂Ǝ�M�҂������閧�������L���Ă���K�v��
-����܂����B����O�����đ���ɓn���Ă����΂悢�킯�ł����A����ɂ͓��R��
-�E������܂��B�C���^�[�l�b�g�̂悤�ɉ��u�n�ɂ���l�Ɉ��S�ɓn���͍̂����
-�����A����ύX����Ƃ��ɂ��s�ւł��B�܂��������O�ɋ��L�ł����Ƃ��Ă��A��
-�����̒ʐM���肪�����Ȃ�ɂ�āA�Ǘ����Ȃ���΂Ȃ�Ȃ����̐����c��ɂ�
-���Ă��܂��܂��B
-
-�@���̌��z�������������邽�߂̕��@�ɂ́A���Z���^�[�𗘗p������@�A���J
-���Í��X�L�[���𗘗p������@������܂��B
-�@WB32�ł͌��J���Í��X�L�[������������̂ŁA���K���łɁA���J���Í��X�L
-�[�����g�������z���ɂ��ĉ�����Ă����܂��B���J���Í��X�L�[���ł́A�Í�
-�������Ƃ��Ɏ����̔閧������J������؎g���܂���B���M��i��M�ҁj�̌�
-�J����p���āA�������Í������āA���M���܂��B�Í������󂯎������M�҂͎�
-���̔閧���ŕ������܂��B���ꂪ���J���Í��X�L�[���ł����B��������z���ɗ�
-�p����ɂ́A���ʌ��𕽕��Ƃ��Ă݂Ă�����Í������đ���΂悢���ƂɂȂ��
-���B
-
-�@����̋L���̘b��́ADH���z�������Ƃ������@�ł��BDH���z���������g���ƁA
-���ʌ����Í������đ���Ƃ������\���ʐM�������ɁA����������Ă��邩�킩
-��Ȃ��悤�Ȉ��S�łȂ��l�b�g���[�N�i�Ⴆ�΁A�C���^�[�l�b�g��LAN���j�ł���
-�Ă����ʌ������L���邱�Ƃ��ł��Ă��܂��܂��B
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x02.) DH���z������
+■0x01.) はじめに
 
-�@DH���z�������́uDH�v�Ƃ́ADiffie�i�f�B�t�B�[�j��Hellman�i�w���}���j�̓�
-�����ł��B����ł�DH���z�������̒�`�����Ɏ����܂��B���n����Zp^*�̂悤��
-�\�L�A�������Ȃǂ̊T�O���g���܂��B�܂�������Ɨ������Ă��Ȃ��l��WB32���Q
-�l�ɂ��Ă��������B
+　共通鍵暗号スキームでは、送信者と受信者が同じ秘密鍵を共有している必要が
+ありました。鍵を前もって相手に渡しておけばよいわけですが、これには当然限
+界があります。インターネットのように遠隔地にいる人に安全に渡すのは困難で
+すし、鍵を変更するときにも不便です。また鍵を事前に共有できたとしても、暗
+号文の通信相手が多くなるにつれて、管理しなければならない鍵の数が膨大にな
+ってしまいます。
 
-[1]�l�b�g���[�N���J���
+　この鍵配送問題を解決するための方法には、鍵センターを利用する方法、公開
+鍵暗号スキームを利用する方法があります。
+　WB32では公開鍵暗号スキームを解説したので、復習ついでに、公開鍵暗号スキ
+ームを使った鍵配送について解説しておきます。公開鍵暗号スキームでは、暗号
+文を作るときに自分の秘密鍵や公開鍵を一切使いません。送信先（受信者）の公
+開鍵を用いて、平文を暗号化して、送信します。暗号文を受け取った受信者は自
+分の秘密鍵で復号します。これが公開鍵暗号スキームでした。これを鍵配送に利
+用するには、共通鍵を平文としてみてそれを暗号化して送ればよいことになりま
+す。
 
-�@�l�b�g���[�N�S�̂ŋ��ʂɎg�p������Ƃ��āA�����_���ɐ������ꂽ�傫��
-�f��p��Zp^*�̌��n��g�����J����Ă���Ɖ��肵�܂��B
+　今回の記事の話題は、DH鍵配送方式という方法です。DH鍵配送方式を使うと、
+共通鍵を暗号化して送るといった予備通信をせずに、いつ盗聴されているかわか
+らないような安全でないネットワーク（例えば、インターネットやLAN内）であっ
+ても共通鍵を共有することができてしまいます。
 
-[2]�������A���S���Y��
 
-�@Alice��0��a��p-2�ƂȂ�a�������_���ɑI�сA���̂悤��y_A���v�Z���܂��B
+■0x02.) DH鍵配送方式
+
+　DH鍵配送方式の「DH」とは、Diffie（ディフィー）とHellman（ヘルマン）の頭
+文字です。それではDH鍵配送方式の定義を次に示します。原始元やZp^*のような
+表記、合同式などの概念を使います。まだきちんと理解していない人はWB32を参
+考にしてください。
+
+[1]ネットワーク公開情報
+
+　ネットワーク全体で共通に使用する情報として、ランダムに生成された大きな
+素数pとZp^*の原始元gが公開されていると仮定します。
+
+[2]鍵生成アルゴリズム
+
+　Aliceは0≦a≦p-2となるaをランダムに選び、次のようにy_Aを計算します。
 
 y_A=g^a (mod p)
 
-�@���ɁAy_A�����J���Ƃ��Č��J���Aa��閧���Ƃ��Ĕ閧�ɕێ����܂��B
+　次に、y_Aを公開鍵として公開し、aを秘密鍵として秘密に保持します。
 
-�@�܂��ABob��0��b��p-2�ƂȂ�a�������_���ɑI�сA���̂悤��y_B���v�Z���܂��B
+　また、Bobは0≦b≦p-2となるaをランダムに選び、次のようにy_Bを計算します。
 
 y_B=g^b (mod p)
 
-�@���ɁAy_B�����J���Ƃ��Č��J���Ab��閧���Ƃ��Ĕ閧�ɕێ����܂��B
+　次に、y_Bを公開鍵として公開し、bを秘密鍵として秘密に保持します。
 
-[3]�����L�A���S���Y��
+[3]鍵共有アルゴリズム
 
-�@Alice�́A�����̔閧��a�ƃ{�u�̌��J��y_B����͂Ƃ��āA���̂悤��K_A���v
-�Z���܂��B
+　Aliceは、自分の秘密鍵aとボブの公開鍵y_Bを入力として、次のようにK_Aを計
+算します。
 
 K_A=(y_B)^a (mod p)
 
-�@���ꂪAlice�̌��ƂȂ�܂��B
+　これがAliceの鍵となります。
 
-�@�܂��ABob�́A�����̔閧��b��Alice�̌��J��y_A����͂Ƃ��āA���̂悤��K_B
-���v�Z���܂��B
+　また、Bobは、自分の秘密鍵bとAliceの公開鍵y_Aを入力として、次のようにK_B
+を計算します。
 
 K_B=(y_A)^b (mod p)
 
-�@���ꂪBob�̌��ƂȂ�܂��B
+　これがBobの鍵となります。
 
-�@�ȏ�̃A���S���Y���̓������摜�ɂ���Ǝ��̂悤�ɂȂ�܂��i�}1�Q�Ɓj�B
+　以上のアルゴリズムの動きを画像にすると次のようになります（図1参照）。
 
-�i�}1�jhttp://s-akademeia.sakura.ne.jp/main/image9/K.jpg
-
-
-��0x03.) DH�����L�����͖{���Ɉ��S���H
-
-�@�܂��m�F���ׂ����Ƃ́A�����L�����Ƃ͍ŏI�I�ɓ����������L�ł��Ă���Ƃ�
-�����ƂȂ̂ŁAAlice��Bob�̗��҂��ŏI�I�ɓ����lK_A��K_B�͈�v���Ă��邱��
-���m�F���Ȃ���΂Ȃ�܂���B������K=g^ab mod p�Ƃ����ƁAK=K_A=K_B�ƂȂ��
-���B����K��Alice��Bob��2�ҊԂŋ��L�ł������ł��B
-
-�@���Ɋm�F���ׂ����Ƃ́A�ʐM�H�𓐒����Ă���A�h�o�[�T���[�����L���ł���
-K���v�Z�ł��Ȃ��Ƃ������Ƃł��BK���v�Z���悤�Ƃ���f���ȕ��@�́Ay_A,y_B��
-��a,b����肵�āAg^ab mod p���v�Z����Ƃ������@�ł��Bg�͌��J���ł����A
-a,b�͈�l�����_���Ȃ̂ŁAg^a��g^b����l�ɕ��z���邱�ƂɂȂ�܂��B��������
-�󋵂ɂ����āA�A�h�o�[�T���[��g^a��g^b����a,b�����o���̂͗��U�ΐ����i
-�ڍׂ�WB32�j����ł��܂���B
-�@K���v�Z��������ЂƂ̕��@�́ADH���z���ɂ�������J���ł���p,g,y_A�i
-��g^a mod p�j,y_B�i��g^b mod p�j����AK=g^ab mod p�����߂悤�Ƃ���A�v��
-�[�`�ł��B���̖���DH���Ƃ����܂��i�}2�Q�Ɓj�B�A�h�o�[�T���[��DH����
-�������Ƃ��ł��Ȃ����Ƃ������Ȃ���΁ADH�����L�͈��S�łȂ��Ƃ������Ƃɂ�
-��܂��B
-
-�i�}2�jhttp://s-akademeia.sakura.ne.jp/main/image9/dh.jpg
+（図1）http://s-akademeia.sakura.ne.jp/main/image9/K.jpg
 
 
-��0x04.) DH��� vs ���U�ΐ����
+■0x03.) DH鍵共有方式は本当に安全か？
 
-�@���J��񂩂璼��g^ab mod p���v�Z���Ȃ��Ă��Aa,b���v�Z���Ă���g^ab mod p
-���v�Z�ł��Ă��܂��΁ADH�����������Ƃ��ł��܂��B�܂�A0x03�ŌĂׂ���
-�Ƃ̑O�ҁi���U�ΐ����j�́A��҂Ɋ܂܂�Ă��܂��Ă���킯�ł��B����āA
-���U�ΐ���肪�����Ă��܂��΁ADH���������Ă��܂��܂��B�������A���̋t�A
-����DH��肪������΁A���U�ΐ����������邩�ǂ����͂܂��킩���Ă��܂���B
-DH���́A���U�ΐ��������₳�������ł���\��������킯�ł��B����
-���A�Í��Ɏg���Ă���قƂ�ǂ̌Q�ɂ����ẮA���U�ΐ�����DH���͌v�Z
-�ʗ��_�̈Ӗ��̂����āA�������ƐM�����Ă��܂��B����Ɠ����ɁAp���\���傫
-���Ƃ��ɁADH�������������I�i���������Ԃŉ����邱�Ɓj�ȃA���S���Y���͌�
-�����Ă��܂���B�����I�ɂ����̂悤�ȃA���S���Y���͍��Ȃ����낤�Ƃ���
-�����DH����Ƃ����܂��BDH����́A���U�ΐ���������v�����邱�Ƃ��傫��
-�̂ŁA��苭������ƂȂ�܂��B
+　まず確認すべきことは、鍵共有方式とは最終的に同じ鍵を共有できているとい
+うことなので、AliceとBobの両者が最終的に得た値K_AとK_Bは一致していること
+を確認しなければなりません。ここでK=g^ab mod pとおくと、K=K_A=K_Bとなりま
+す。このKがAliceとBobの2者間で共有できた鍵です。
 
-�@�ȏ�̂��Ƃ��܂Ƃ߂�΁A���̂悤�ɂȂ�܂��B
+　次に確認すべきことは、通信路を盗聴しているアドバーサリーが共有鍵である
+Kを計算できないということです。Kを計算しようとする素直な方法は、y_A,y_Bか
+らa,bを特定して、g^ab mod pを計算するという方法です。gは公開情報ですが、
+a,bは一様ランダムなので、g^aやg^bも一様に分布することになります。こういう
+状況において、アドバーサリーはg^aやg^bからa,bを取り出すのは離散対数問題（
+詳細はWB32）からできません。
+　Kを計算するもうひとつの方法は、DH鍵配送における公開情報であるp,g,y_A（
+＝g^a mod p）,y_B（＝g^b mod p）から、K=g^ab mod pを求めようとするアプロ
+ーチです。この問題をDH問題といいます（図2参照）。アドバーサリーがDH問題を
+解くことができないことを示せなければ、DH鍵共有は安全でないということにな
+ります。
 
-�E���U�ΐ���肪�������DH�����L�����͈��S�łȂ�
-�EDH��肪�������DH�����L�����͈��S�łȂ�
-�E���U�ΐ���肪�������DH��肪������
-�EDH��肪������˗��U�ΐ���肪������Ƃ͌���Ȃ�
-�EDH��肪�����Ȃ���DH�����L�����͈��S
+（図2）http://s-akademeia.sakura.ne.jp/main/image9/dh.jpg
 
 
-��0x05.) DH����ElGamal�Í��̊֌W
+■0x04.) DH問題 vs 離散対数問題
 
-�@ElGamal�Í���WB32�ŏЉ�����J���Í��X�L�[���̈��ł��B����ElGamal��
-���̉�ǂ����U�ΐ����Ɠ����x�ɍ���ǂ����͂킩���Ă��܂���B���Ȃ킿�A
-�A�h�o�[�T���[�͗��U�ΐ��ł���閧��x�����߂�ȊO�̕��@�ŉ�ǂ���\����
-����܂��B�������Ȃ���AElGamal�Í��̈��S����DH���̍���Ɠ����ł��邱
-�Ƃ��킩���Ă��܂��B�����藝�Ƃ��ď����Ǝ��̂悤�ɂȂ�܂��B
+　公開情報から直接g^ab mod pを計算しなくても、a,bを計算してからg^ab mod p
+を計算できてしまえば、DH問題を解くことができます。つまり、0x03で呼べたこ
+との前者（離散対数問題）は、後者に含まれてしまっているわけです。よって、
+離散対数問題が解けてしまえば、DH問題も解けてしまいます。しかし、その逆、
+即ちDH問題が解ければ、離散対数問題も解けるかどうかはまだわかっていません。
+DH問題は、離散対数問題よりもやさしい問題である可能性があるわけです。ただ
+し、暗号に使われているほとんどの群においては、離散対数問題とDH問題は計算
+量理論の意味のおいて、等価だと信じられています。それと同時に、pが十分大き
+いときに、DH問題を解く効率的（多項式時間で解けること）なアルゴリズムは見
+つかっていません。将来的にもそのようなアルゴリズムは作れないだろうという
+仮定をDH仮定といいます。DH仮定は、離散対数仮定よりも要求することが大きい
+ので、より強い仮定となります。
 
-[�藝]
-�uElGamal�Í��ɂ����āA���J��pk=(p,g,y)����шÍ���c=(c1,c2)���畽��m����
-�߂�����I�ȃA���S���Y��A�����݂���v
-�́uDH�������������I�ȃA���S���Y��B�����݂���v
+　以上のことをまとめれば、次のようになります。
 
-�@�ؖ��ɂ͋A���@��p���܂��B���̏ؖ��A�v���[�`�ł͈Í��ɂ�����ؖ��\��
-�S���̐��E�ł͂悭�o�ꂵ�܂��B����̏ؖ���ʂ��ċA�����̂������}�X�^�[
-���Ă��炦����Ǝv���܂��B��������ɂ́A�}�������Ŏ��ۂɕ`���Ă݂�̂���
-�ʓI�ł��B�A���S���Y���͓��͂Əo�͂̃Z�b�g�ɂȂ��Ă���̂ŁA����𖾊m��
-���Ă������Ƃ��|�C���g�ł��B
+・離散対数問題が解ける⇒DH鍵共有方式は安全でない
+・DH問題が解ける⇒DH鍵共有方式は安全でない
+・離散対数問題が解ける⇒DH問題が解ける
+・DH問題が解ける⇒離散対数問題が解けるとは限らない
+・DH問題が解けない⇒DH鍵共有方式は安全
 
-[1]�i�˂������j
 
-�@ElGamal�Í�����ǂ���C�ӂ̃A���S���Y��A�𗘗p���āADH���������A���S
-���Y��B�����܂��BA������ŗ��p���āAB�̓��͂Əo�͂ɍ����悤�ɁA�����Ōv
-�Z�ł���΂悢���ƂɂȂ�܂��B���̐}�̂悤�ɃA���S���Y��B���\������΁AD
-H��肪���������ƂɂȂ�܂��i�}3�Q�Ɓj�B
+■0x05.) DH問題とElGamal暗号の関係
 
-�i�}3�jhttp://s-akademeia.sakura.ne.jp/main/image9/dh_elgamal1.jpg
+　ElGamal暗号はWB32で紹介した公開鍵暗号スキームの一種です。このElGamal暗
+号の解読が離散対数問題と同程度に困難かどうかはわかっていません。すなわち、
+アドバーサリーは離散対数である秘密鍵xを求める以外の方法で解読する可能性は
+あります。しかしながら、ElGamal暗号の安全性はDH問題の困難さと等価であるこ
+とがわかっています。これを定理として書くと次のようになります。
 
-�@�A���S���Y���͍\������܂������A�m�F���ׂ����Ƃ͂���������܂��B
-�@�܂��AA�̓��͂����������ǂ����Ƃ����_�ł��i�@�j�BA���猩��c=(c1,c2)=(
-g^r,R)��ElGamal�̈Í����ƂȂ��Ă���Ƃ��܂��BElGamal�Í��̕����A���S���Y
-���ł͎��̂悤�Ȍv�Z�𕜍����܂��B
+[定理]
+「ElGamal暗号において、公開鍵pk=(p,g,y)および暗号文c=(c1,c2)から平文mを求
+める効率的なアルゴリズムAが存在する」
+⇔「DH問題を解く効率的なアルゴリズムBが存在する」
 
-m=c2�~c1^{p-1-x} mod p
+　証明には帰着法を用います。この証明アプローチでは暗号における証明可能安
+全性の世界ではよく登場します。今回の証明を通じて帰着方のやり方をマスター
+してもらえたらと思います。理解するには、図を自分で実際に描いてみるのが効
+果的です。アルゴリズムは入力と出力のセットになっているので、それを明確に
+しておくことがポイントです。
 
-�@c1=g^r�Ac2=R��������ƁAR=mg^{xr}�����藧���܂��B�܂�AA��R=mg^{xr}
-�𖞂����悤�ȕ���m�͏o�͂���Ƃ������ƂɂȂ�܂��B
+[1]（⇒を示す）
 
-�@���ɁAB�̏o�͂�DH�������������ʂł��邱�Ƃ��m�F���܂��i�A�j�BB��R/m��
-�v�Z����΁Ag^xr�ƂȂ�A������o�͂��܂��B����ƁA���傤�Ǔ���(p,g,g^x,
-g^r)�ɑ΂��āA�������DH�������������ʂł���g^xr���o�͂ł��Ă��܂��B
+　ElGamal暗号を解読する任意のアルゴリズムAを利用して、DH問題を解くアルゴ
+リズムBを作ります。Aを内部で利用して、Bの入力と出力に合うように、内部で計
+算できればよいことになります。次の図のようにアルゴリズムBを構成すれば、D
+H問題が解けたことになります（図3参照）。
 
-[2]�i���������j
+（図3）http://s-akademeia.sakura.ne.jp/main/image9/dh_elgamal1.jpg
 
-�@���x�͋t�������̂ŁA�A���@���t�ɍl���܂��BDH���������C�ӂ̃A���S���Y
-��B�𗘗p���āAElGamal�Í�����ǂ���A�����܂��BB������ŗ��p���āAA�̓�
-�͂Əo�͂ɍ����悤�ɁA�����Ōv�Z�ł���΂悢���ƂɂȂ�܂��B���̐}�̂悤
-�ɃA���S���Y��A���\������΁AElGamal�Í������������ƂɂȂ�܂��i�}4�Q�Ɓj�B
+　アルゴリズムは構成されましたが、確認すべきことはいくつかあります。
+　まず、Aの入力が正しいかどうかという点です（①）。Aから見てc=(c1,c2)=(
+g^r,R)はElGamalの暗号文となっているとします。ElGamal暗号の復号アルゴリズ
+ムでは次のような計算を復号します。
 
-�i�}4�jhttp://s-akademeia.sakura.ne.jp/main/image9/dh_elgamal2.jpg
+m=c2×c1^{p-1-x} mod p
 
-�@�A���S���Y���͍\������܂������A�m�F���ׂ����Ƃ͂���������܂��B
-�@�܂��AA�̓��͂����������ǂ����Ƃ����_�ł��i�@�j�B�����A�̓��͂����̂�
-��B�̓��͂ɂ��Ă��܂��΂悢���ƂɂȂ�܂��B
+　c1=g^r、c2=Rを代入すると、R=mg^{xr}が成り立ちます。つまり、AはR=mg^{xr}
+を満たすような平文mは出力するということになります。
 
-�@���ɁAA�̏o�͂�ElGamal�Í������������ʂł��邱�Ƃ��m�F���܂��i�A�j�BB��
-g^xr���o�͂���̂ŁAA��{my^r}/g^(xr)���v�Z���܂��B����ƁA���̂悤�ɓW�J
-�ł��܂��B
+　次に、Bの出力がDH問題を解いた結果であることを確認します（②）。BはR/mを
+計算すれば、g^xrとなり、これを出力します。すると、ちょうど入力(p,g,g^x,
+g^r)に対して、きちんとDH問題を解いた結果であるg^xrを出力できています。
+
+[2]（←を示す）
+
+　今度は逆を示すので、帰着法も逆に考えます。DH問題を解く任意のアルゴリズ
+ムBを利用して、ElGamal暗号を解読するAを作ります。Bを内部で利用して、Aの入
+力と出力に合うように、内部で計算できればよいことになります。次の図のよう
+にアルゴリズムAを構成すれば、ElGamal暗号が解けたことになります（図4参照）。
+
+（図4）http://s-akademeia.sakura.ne.jp/main/image9/dh_elgamal2.jpg
+
+　アルゴリズムは構成されましたが、確認すべきことはいくつかあります。
+　まず、Aの入力が正しいかどうかという点です（①）。これはAの入力をそのま
+まBの入力にしてしまえばよいことになります。
+
+　次に、Aの出力がElGamal暗号を解いた結果であることを確認します（②）。Bは
+g^xrを出力するので、Aは{my^r}/g^(xr)を計算します。すると、次のように展開
+できます。
 
 {my^r}/g^(xr)=m(g^x)^r/g^(xr)={mg^(xr)}/g^(xr)=m
 
-�@����ƌ���m���v�Z�ł���̂ŁAB�͂�����o�͂���΁A���܂�ElGamal�Í�����
-�������ƂɂȂ�܂��B
+　すると結局mが計算できるので、Bはこれを出力すれば、うまくElGamal暗号を解
+いたことになります。
 
 
-��0x06.) ������
+■0x06.) おわりに
 
-�@����͂��܂萔�w�I�ȋL�q���Ȃ������̂ŁA�ǂ݂₷�������̂ł͂Ȃ��ł���
-�����B�ؖ��\���S���̐��E�ł́A�u���鉼�肪�^�Ȃ�΁A���̈Í��͈��S�ł�
-��v�Ƃ����悤�ȋc�_�����܂��B���̋c�_�̏ؖ��ɂ����āA�A���@��w���@�Ȃ�
-�����p����܂��B�w���@�͐��w����������Ƃ�����l�Ȃ���m���Ǝv���܂��B��
-���A�A���@�͎����g�Í����w��ŏ��߂ĐG�ꂽ���̂Ȃ̂ŁA���񏉂߂ĕ������l
-���������Ƃł��傤�B�|�C���g�𗝉�����΁i�ؖ����Ȃ��邱�Ƃ́j�������
-�ł͂Ȃ��̂ŁA�������藝�����Ă����܂��傤�B
-�@�����10��ƂȂ�܂������A�S�̂Ƃ��đ��20����l���Ă��܂��̂ŁA���傤
-�ǔ������I�������ƂɂȂ�܂��B����͑҂��ɑ҂���RSA�Í��̉���Ȃ̂ł��y��
-�݂ɁB
+　今回はあまり数学的な記述がなかったので、読みやすかったのではないでしょ
+うか。証明可能安全性の世界では、「ある仮定が真ならば、この暗号は安全であ
+る」というような議論をします。その議論の証明において、帰着法や背理法など
+が利用されます。背理法は数学をやったことがある人なら既知だと思います。一
+方、帰着法は私自身暗号を学んで初めて触れたものなので、今回初めて聞いた人
+も多いことでしょう。ポイントを理解すれば（証明をなぞることは）難しいもの
+ではないので、しっかり理解しておきましょう。
+　今回で10回となりましたが、全体として大体20回を考えていますので、ちょう
+ど半分を終えたことになります。次回は待ちに待ったRSA暗号の解説なのでお楽し
+みに。
 
-�@����ł͂܂������ɉ�܂��傤�B
+　それではまた来月に会いましょう。
 
 
-
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-
- --- ��5�́F���m�点 ---
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-��Wizard Bible�ihttp://wizardbible.org/�j�ł͐����A���M���C�^�[���W����
-���܂��B
-�@�������e�̃e�[�}�͍L�`�ł́uunder ground�v�ł��B�Ⴆ�΃n�b�L���O����T
-�����K�X�̍����@�Ȃǂƕ��L�����e���l���Ă��܂��B�܂�����ȐE�Ƃ�����
-�������̃��N�`���[�Ȃǂ��܂܂�܂��B
-�@��񂫂�ł��\���܂���B�܂��K������A�ڂ���`��������܂���̂ŁA�ł�
-��͈͂ō\���܂���B�C�y�ɐ��������Ă��������B
+ --- 第5章：お知らせ ---
 
-��Kenji Aiko����Q&A������Ă���܂����B���߂ĎQ������l�ł��킩��₷��
-������Ă��܂��̂ŁA�Q�l�ɂ��Ă��������B
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○Wizard Bible（http://wizardbible.org/）では随時、執筆ライターを募集して
+います。
+　扱う内容のテーマは広義での「under ground」です。例えばハッキングからサ
+リンガスの合成法などと幅広い内容を考えています。また特殊な職業や趣味を持
+った方のレクチャーなども含まれます。
+　一回きりでも構いません。また必ず毎回連載する義務もありませんので、でき
+る範囲で構いません。気軽に声をかけてください。
+
+○Kenji AikoさんがQ&Aを作ってくれました。初めて参加する人でもわかりやすく
+書かれていますので、参考にしてください。
 
 http://wizardbible.org/wbQandA.html
 
-��Wizard Bible�ɎQ����]�̕��͋C�y�Ƀ��[���iipusiron@gmail.com�j���������B
+○Wizard Bibleに参加希望の方は気軽にメール（ipusiron@gmail.com）ください。
 
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-  ---- ��6�́F���҃v���t�B�[�� ---
+  ---- 第6章：著者プロフィール ---
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-������
-��Job: �v���O���}�[
-��Web: http://guardian.jumperz.net/, http://www.jumperz.net/
-��Mail: anvil@jumperz.net
-��Comment:
-�@�����Ȑl�Ɓi�I�t�Łj�b�����ċ����̂��A�݂�ȈӊO�Ȃقǂ�WizardBible��
-�ǂ�ł���Ƃ������ƁB�挎���Ȃ�Č������ʂ���tessy����̂������Ńt�c�[��
-�Z�L��memo���烊���N����Ă����A���Ȃ�̐����œǎґ������Ȃ�ł͂Ȃ��ł�
-�傤���B
-�@�c�Ƃ������ƂŁuROM�̓_���v�u�����o�����Ɏ��������~�����Ƃ����̂͐���
-�����Ȃ��i�N�}�[�ȂЂƂ̖����H�j�v�Ƃ�����{�ɂ̂��Ƃ�A�������ǂ�ł�
-�邠�Ȃ��A���Ў������瓊�e�����肢���܂��B�Ƃ����Ă��ꏊ��WB�ł���K�v��
-�Ȃ��A�u���O�Ȃǂŏ�񔭐M���Ē����邾���ł����ꂵ���̂ł����B���{�ɂ͗D
-�ꂽ�Z�p�҂��������񂢂�̂ɁA��񔭐M����l���܂��ꕔ�Ȃ͔̂��ɂ�����
-���܂���B�Ƃ肠�����K���Ƀn���h�����ł��Ԃ������āA�C�y�ɓ��e�����肢��
-�܂��B
-�@�^WebAppSec�{�ł����A�ǂ���琔���Ԍ�ɓ��e���e�����������{���䂪�Ƃ�
-��������悤�ŁA���Ƀ��N���N���Ă���Ƃ���ł��i����܂ǂ��񂩂�d�b��
-����܂����j�B���ݎ茳�̌��e�̎�����34��������ŁA���낻��I��肪������
-���������ł��B�R�ꂾ����SQL�C���W�F�N�V�����̏͂������オ�����̂ŁA��͎c
-���Ă��������l�^�iHTTP Request Smuggling�Ƃ��j�������Ă����܂��BApache2��
-�񂩂��G���Ă݂��肵�āA�u�����A2�ɂȂ��Ăǂ�ȐV�@�\���H�v�Ƃ��O�O������A
-�o�Ă����uApache2�̐V�@�\�v�݂����ȋL����2001�N�̂���(;�L�D`)���Ԃ�����
-�c���ꐙ�B�o�[�W�����A�b�v���ʓ|�Ȃ̂ł����Â��̂��g�������Ă��܂���
-�ł����c�B���Ȃ݂�Apache2�̓p�t�H�[�}���X�͂ނ��Ⴍ���ᑬ���Ȃ��Ă܂��ˁB
-�@���A���Ɩ^MHN�搶�̖{���i��ł���Ƃ����\�������܂����B���Ɋy���݂ł�
-�ˁB
-���g�ѓd�b:
-�@����̂���̃P�[�^�C�ł����A����Ȃ��ʘb�ɂ����g���܂���B���[����ł�
-�Ă���Ǝv���悤�ɑłĂ��C���C�����Ă��܂��̂Ń_���ł��B�@��͌Â����|��
-�ł����A���낻�낢�[����搶���g���Ă����L�[�������ς������ɂ��悤��
-�Ƃ��v���Ă܂��B���ƁAiPhone�͋�������̂œ��{�ł��g����悤�ɂȂ��Ăق�
-���B
-�@�f���Ƃ������Z�O�Ƃ��͂܂����������Ȃ��̂ł����A���y��D���l�ԂȂ̂ŁA
-MP3�v���[���[�Ɠ������Ă��܂������Ƃ���i���݂͓��ł̃M�K�r�[�g���g�p���j�B
-�d�r�̎�����g������Ȃǂ��낢�뒲�ׂĂ݂����Ƃ���ł��B�ł����ׂ�̂߂�
-�ǂ�������������Â��̂��g�������Ă��܂��̂ł����c�B
+■金床
+●Job: プログラマー
+●Web: http://guardian.jumperz.net/, http://www.jumperz.net/
+●Mail: anvil@jumperz.net
+●Comment:
+　いろんな人と（オフで）話をして驚くのが、みんな意外なほどにWizardBibleを
+読んでいるということ。先月号なんて月光仮面ことtessyさんのおかげでフツーに
+セキュmemoからリンクされてたし、かなりの勢いで読者増加中なんではないでし
+ょうか。
+　…ということで「ROMはダメ」「情報を出さずに自分だけ欲しいというのは成り
+立たない（クマーなひとの名言？）」という基本にのっとり、今これを読んでい
+るあなた、ぜひ次号から投稿をお願いします。といっても場所がWBである必要は
+なく、ブログなどで情報発信して頂けるだけでもうれしいのですが。日本には優
+れた技術者がたくさんいるのに、情報発信する人がまだ一部なのは非常にいただ
+けません。とりあえず適当にハンドル名でもぶちあげて、気軽に投稿をお願いし
+ます。
+　某WebAppSec本ですが、どうやら数時間後に入稿第一弾を刷った見本が我が家に
+到着するようで、非常にワクワクしているところです（昨日まどさんから電話が
+ありました）。現在手元の原稿の字数は34万文字弱で、そろそろ終わりが見えて
+きた感じです。山場だったSQLインジェクションの章が書き上がったので、後は残
+しておいた小ネタ（HTTP Request Smugglingとか）を書いていきます。Apache2な
+んかも触ってみたりして、「おっ、2になってどんな新機能が？」とかググったら、
+出てきた「Apache2の新機能」みたいな記事が2001年のだし(;´Д`)世間から取り
+残され杉。バージョンアップが面倒なのでついつい古いのを使い続けてしまうの
+ですが…。ちなみにApache2はパフォーマンスはむちゃくちゃ速くなってますね。
+　あ、あと某MHN先生の本も進んでいるという噂をききました。非常に楽しみです
+ね。
+●携帯電話:
+　今回のお題のケータイですが、限りなく通話にしか使いません。メールを打っ
+ていると思うように打てずイライラしてしまうのでダメです。機種は古い京ポン
+ですが、そろそろいーぐる先生が使っていたキーがいっぱいあるやつにしようか
+とか思ってます。あと、iPhoneは興味あるので日本でも使えるようになってほす
+ぃ。
+　映像とかワンセグとかはまったく興味ないのですが、音楽大好き人間なので、
+MP3プレーヤーと統合してしまいたいところ（現在は東芝のギガビートを使用中）。
+電池の持ちや使い勝手などいろいろ調べてみたいところです。でも調べるのめん
+どくさいからついつい古いのを使い続けてしまうのですが…。
 
 
-��eagle0wl
-��Job: Programmer / Reverse Engineer
-��Web: http://www.mysys.org/eagle0wl/ �i�x�~���E�U���ȍ~�ĊJ�\��j
-��Mail: masm0wl��hotmail.com
-��Team�iGroup): backsection
-��Comment:
-�@�F�l���v���Ԃ�ł��Beagle0wl�ł��B�������łȂ����́w�N���b�L���O�E�o�C
-�u���x�̒��̐l�Ƃ����F���ō\���܂���B�̒��s�ǂƃ��`�x�[�V�����̑r���Ȃ�
-�Ŗ񔼔N�O�ɃE�F�u�T�C�g����܂������A���̊Ԃɗl�X�ȏo���������茻�݂�
-����܂��B
-�@�x���c�Ƃ����������`�x�[�V�����������Ă���Ԃɂ��A���o�[�X�G���W�j�A
-�����O�ɑ΂��闬�ꂪ�ŋ߂ɂȂ��Ėڂ܂��邵���ς���Ă��Ă�����ɋ�����
-���܂��B����Ƌ��ɁA�����������������Ă����Ȃ��Ǝv���悤�ɂȂ�A����
-�|�[�g���������߂�����ł��i��΁j�B�E�F�u��ł̊������ڂ��ڂ��ĊJ������
-�Ǝv���܂��B
-���g�ѓd�b:
-�@W-ZERO3[es]�����C���Ɏg���Ă��܂��B�Ƃ͂����S�R�g�����Ȃ��Ă��炸�A�E�F
-�u�u���E�Y�Ƃۂ��M�R���炢�����g���Ă��܂���BUSB�ڑ��Ń��f���Ƃ��Ďg����
-�̂͌��\�X�e�L�ł��ˁB�����d�Ԃ̒��ŃX�^�C���X�y����2�񖳂����Ă���̂ŁA
-�O�͂Ń^�b�`�ł���@�\���~�����ł��i�΁j�B
+■eagle0wl
+●Job: Programmer / Reverse Engineer
+●Web: http://www.mysys.org/eagle0wl/ （休止中・６月以降再開予定）
+●Mail: masm0wl＠hotmail.com
+●Team（Group): backsection
+●Comment:
+　皆様お久しぶりです。eagle0wlです。ご存じでない方は『クラッキング・バイ
+ブル』の中の人という認識で構いません。体調不良とモチベーションの喪失など
+で約半年前にウェブサイトを閉じましたが、その間に様々な出来事があり現在に
+至ります。
+　休眠…というよりもモチベーションを失っている間にも、リバースエンジニア
+リングに対する流れが最近になって目まぐるしく変わってきており非常に驚いて
+います。それと共に、自分もうかうかしていられないと思うようになり、今回レ
+ポートをしたためた次第です（苦笑）。ウェブ上での活動もぼちぼち再開したい
+と思います。
+●携帯電話:
+　W-ZERO3[es]をメインに使っています。とはいえ全然使いこなせておらず、ウェ
+ブブラウズとぽけギコぐらいしか使っていません。USB接続でモデムとして使える
+のは結構ステキですね。満員電車の中でスタイラスペンを2回無くしているので、
+念力でタッチできる機能が欲しいです（笑）。
 
 
-��sourcerian
-��Job: �I�T�[��
-��mail:sourcerian@gmail.com
-��Comment:
-�@���{�t�@���R���̖���sorcerian�𕶎����Ė������܂����Bso[u]rcerian�Ȃ̂�
-���ԈႢ�����悤�B�����A��������ł��Ƃ��B
-���g�ѓd�b:
-�@GPS����ړ����x������o���ď���Ƀh���C�u���[�h�ɂȂ�@�\���~�����B�t��
-�[�n���h�t�H���𔃂����Ęb�ł����ˁH
+■sourcerian
+●Job: オサーン
+●mail:sourcerian@gmail.com
+●Comment:
+　日本ファルコムの名作sorcerianを文字って命名しました。so[u]rcerianなので
+お間違い無きよう。ええ、おっさんですとも。
+●携帯電話:
+　GPSから移動速度を割り出して勝手にドライブモードになる機能が欲しい。フリ
+ーハンドフォンを買えって話ですかね？
 
 
-��IPUSIRON
-��Job:Student
-��Web:http://akademeia.info/
-��Mail:ipusiron��gmail.com
-��Team�iGroup):N/A
-��Comment:
-�@������Ȃ���DS�����܂����B�ł��A�܂��ƈȊO�Ńv���C�������Ƃ�����܂���
-�i���j�B
-���g�ѓd�b:
-�@j-phone����vodafone�ɐ؂�ւ���������̌g�ѓd�b�uJ-SH53�v�Ƃ����@����g
-���Ă��܂��B�g�ѓd�b�ɓ�������Ă���f�W�J���ɕs�����o�Ă����̂Ɠd���̒�
-�q�������Ȃǂ̗��R����A�V�����g�т�؂芷�������Ɗ���Ă��܂����ALOVE��
-�z���p���ł��Ȃ����߁A�d���Ȃ��g�������Ă��܂��B�����ł͓d�g������ɂ���
-���߁A��p�̊O���A���e�i���p���Ă�����Ƒ�ςł��Bvodafone�@��̒��ŏ���
-�āi�H�jSD�J�[�h�̔��������\�ȃ^�C�v�ł������A�t�����Ă���8MB��SD�J�[�h
-�̂܂܂ł��B1GB��microSD�J�[�h��1k���傢�̎���Ɂi�΁j�B
-�@����͂����ƍ��@�\�Ȍg�ѓd�b���o�ꂷ��Ǝv���܂����A�l�I�ɂ͎�񂵃n
-���h���t���g�ѓd�b���~�����ł��B
+■IPUSIRON
+●Job:Student
+●Web:http://akademeia.info/
+●Mail:ipusiron＠gmail.com
+●Team（Group):N/A
+●Comment:
+　今さらながらDS買いました。でも、まだ家以外でプレイしたことがありません
+（汗）。
+●携帯電話:
+　j-phoneからvodafoneに切り替わった時期の携帯電話「J-SH53」という機種を使
+っています。携帯電話に内蔵されているデジカメに不満が出てきたのと電源の調
+子が悪いなどの理由から、新しい携帯を切り換えたいと願っていますが、LOVE定
+額を継続できないため、仕方なく使い続けています。部屋では電波が入りにくい
+ため、専用の外部アンテナ利用していたりと大変です。vodafone機種の中で初め
+て（？）SDカードの抜き差し可能なタイプでしたが、付属していた8MBのSDカード
+のままです。1GBのmicroSDカードが1kちょいの時代に（笑）。
+　今後はもっと高機能な携帯電話が登場すると思いますが、個人的には手回しハ
+ンドル付き携帯電話が欲しいです。
 
 

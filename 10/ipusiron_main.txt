@@ -1,57 +1,57 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- ��R��: �u���[�X�N���[���ƒ��ǂ��Ȃ낤�� ---
+--- 第３章: ブルースクリーンと仲良くなろうよ ---
 
-���ҁFIPUSIRON
+著者：IPUSIRON
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �u���[�X�N���[�����ĉ��H
+■0x01.) ブルースクリーンって何？
 
-�@�ꌾ��Windows�Ƃ����Ă��A95/98/Me/NT/2000/XP/2003�Ƃ������l�X�ȃo�[�W���������݂��܂��B������܂Ƃ߂�Windows�t�@�~���[�A95/98/Me��Windows9x�V���[�Y�ANT/2000/XP/2003��WindowsNT�V���[�Y�ƌĂԂ��Ƃɂ��܂��B
-�@�����ł͉������̖����Ǝv���đ�����s�����̂ɁA��ʂ�����ɐ��Ȃ�A�����I���𑣂���錻�ۂ�m���Ă���ł��傤���BWindows9x�V���[�Y���g�������Ƃ�������Ȃ�΁A��x�͑̌��������Ƃ����邱�Ƃł��傤�i���肵����100��͒�����l�॥��j�B�����ŁA�u�����ł͉������̖����Ǝv��������v�Ƃ����̂��̂ł��B�����ł͖�薳���Ǝv���Ă��APC���ɂƂ��Ă͖�肪�������킯�ł��B�Ȃ��A���̂悤�ȐH���Ⴂ���N����̂��Ƃ����ƁA���[�U�[�͉��C�Ȃ��\�t�g�E�F�A�𑀍삵�Ă������A���̃\�t�g�E�F�A�Ƀo�O�������āA�{���A�N�Z�X���Ă͂Ȃ�Ȃ�Windows�̐S�����i�����Ɍ����΁A�J�[�l�������j�������������肵�Ă��܂��A�ُ��Ԃ������N�����Ă��܂�����ł��B
-�@�ُ��ԂɂȂ��Ă��܂��ƁAWindows�����̂��Ƃ����[�U�[�ɒm�点�邽�߂ɁA��ʂ�����܂��B���������ڍׂɌ����ƁAWindows�t�@�~���[�̓J�[�l�����N���b�V���i�p�j�b�N�j���Ă��܂��ƁA�f�B�X�v���C��VGA���[�h�ɐ؂�ւ���āA����ʂɂȂ�d�l�ɂȂ��Ă���킯�ł��B���̉�ʂ����Ȃ錻�ۂ���ʓI�ɂ̓u���[�X�N���[���A�����ɂ�BSOD�iBlue Screen Of Death�j�ƌĂт܂��B
-
-
-��0x02.) Windows9x�V���[�Y�Ńu���[�X�N���[���ɂȂ�����ǂ����邩
-
-�@���߂Ă��������i�΁j�BWindows9x�V���[�Y�Ńu���[�X�N���[���ɂȂ��Ă��܂����ꍇ�A���߂�[Ctrl]+[Alt]+[Del]��A�łōċN�����邵������܂���B�������A�u���[�X�N���[���ɂȂ���������˂��~�߂邱�Ƃ�����ł��B
-�@���[�U�[�ɂƂ��Ăł��邱�Ƃ́A�g�p���Ȃ��Ȃ����A�v���P�[�V�����͂��܂߂ɃA���C���X�g�[���A�C���X�g�[��������}�ɂ��������Ȃ����炻�̃A�v���P�[�V�����͎g�p���Ȃ��Ƃ��������Ƃ��炢�ł��傤�B��Ԃ悢�̂́A�ăC���X�g�[�����āA�Œ���̃A�v���P�[�V���������C���X�g�[�����Ȃ����Ƃł��傤�B
+　一言でWindowsといっても、95/98/Me/NT/2000/XP/2003といった様々なバージョンが存在します。これをまとめてWindowsファミリー、95/98/MeをWindows9xシリーズ、NT/2000/XP/2003をWindowsNTシリーズと呼ぶことにします。
+　自分では何も問題の無いと思って操作を行ったのに、画面が勝手に青くなり、強制終了を促される現象を知っているでしょうか。Windows9xシリーズを使ったことがある方ならば、一度は体験したことがあることでしょう（下手したら100回は超える人も・・・）。ここで、「自分では何も問題の無いと思った操作」というのが肝です。自分では問題無いと思っても、PC側にとっては問題があったわけです。なぜ、このような食い違いが起こるのかというと、ユーザーは何気なくソフトウェアを操作している一方、そのソフトウェアにバグがあって、本来アクセスしてはならないWindowsの心臓部（厳密に言えば、カーネル部分）を書き換えたりしてしまい、異常状態を引き起こしてしまうからです。
+　異常状態になってしまうと、Windowsがこのことをユーザーに知らせるために、画面を青くします。もう少し詳細に言うと、Windowsファミリーはカーネルがクラッシュ（パニック）してしまうと、ディスプレイがVGAモードに切り替わって、青い画面になる仕様になっているわけです。この画面が青くなる現象を一般的にはブルースクリーン、正式にはBSOD（Blue Screen Of Death）と呼びます。
 
 
-��0x03.) WindowsNT�V���[�Y�Ńu���[�X�N���[���ɂȂ�����ǂ����邩
+■0x02.) Windows9xシリーズでブルースクリーンになったらどうするか
 
-�@WindowsNT�V���[�Y�̏ꍇ�A��ʂɎc���ꂽ���b�Z�[�W����ǂ��邱�ƂŃu���[�X�N���[���̌�����˂��~�߂邱�Ƃ��ł��܂��B�܂��AOS�̃N���b�V���_���v���̎�ł���̂ŁA�������ɏڍׂ�m�邱�Ƃ��ł��܂��B
+　諦めてください（笑）。Windows9xシリーズでブルースクリーンになってしまった場合、諦めて[Ctrl]+[Alt]+[Del]を連打で再起動するしかありません。しかも、ブルースクリーンになった原因を突き止めることも困難です。
+　ユーザーにとってできることは、使用しなくなったアプリケーションはこまめにアンインストール、インストールしたら急におかしくなったらそのアプリケーションは使用しないといったことぐらいでしょう。一番よいのは、再インストールして、最低限のアプリケーションしかインストールしないことでしょう。
 
-�@�u���H�@WindowsNT�V���[�Y�ł̓u���[�X�N���[�����������Ƃ��Ȃ����āH�@�v
-�@�u���[�X�N���[���́A�J�[�l����ԓ��ŉ��炩�̌����ŏ�Q�����������Ƃ��ɕ\���������̂Ȃ̂ŁA������������u���[�X�N���[�����������Ƃ������l�����邱�Ƃł��傤�B����ɁA�}�[�t�B�[�̖@���ł͂���܂��񂪁A�������Ȃ��Ƃ��Ɍ����ĕ\������A�����Ō������v���Ƃ��Ɍ����ĕ\������Ȃ����̂ł��B
-�@�����ŁA�Ӑ}�I�Ƀu���[�X�N���[���𔭐���������@�������Ă����܂��B���̕��@���K�p�ł�����������ɗ񋓂��܂��B
-�EWindows2000/XP�̂�
-�EPS/2�̃L�[�{�[�h�̂݁iUSB�͕s�j
-�E���W�X�g���G�f�B�^�̑��삪������\��
 
-�@�ł́A���@�������܂��B
+■0x03.) WindowsNTシリーズでブルースクリーンになったらどうするか
 
-1�F���W�X�g���G�f�B�^���N�����܂��B�uHKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\i8042prt\Parameters�v�L�[�ɁA�V�K��DWORD�l�ŁuCrashOnCtrlScroll�v�A���̒l���u1�v�Ƃ��Ēǉ����܂��B���Ȃ݂ɁA�ui8042prt�v��PS/2�̃L�[�{�[�h�ƃ}�E�X�𐧌䂷��Intel8042�|�[�g�h���C�o�̂��Ƃł��B
+　WindowsNTシリーズの場合、画面に残されたメッセージを解読することでブルースクリーンの原因を突き止めることができます。また、OSのクラッシュダンプを採取できるので、これを基に詳細を知ることもできます。
 
-2�F���W�X�g���G�f�B�^���I�����āA�}�V�����ċN�����܂��B
+　「え？　WindowsNTシリーズではブルースクリーンを見たことがないって？　」
+　ブルースクリーンは、カーネル空間内で何らかの原因で障害が発生したときに表示されるものなので、もしかしたらブルースクリーンを見たことが無い人もいることでしょう。それに、マーフィーの法則ではありませんが、見たくないときに限って表示され、実験で見たい思うときに限って表示されないものです。
+　そこで、意図的にブルースクリーンを発生させる方法を教えておきます。この方法が適用できる条件を次に列挙します。
+・Windows2000/XPのみ
+・PS/2のキーボードのみ（USBは不可）
+・レジストリエディタの操作が分かる能力
 
-3�F�ċN����A���܂������΁A[�ECtrl]�L�[�������Ȃ���[ScrollLock]�L�[��2�񉟂��΁A�u���[�X�N���[�����Ӑ}�I�ɋN�������Ƃ��ł��܂��B
+　では、方法を示します。
 
-�@������Ƒ҂��Ă��������B�u���[�X�N���[���𔭐������Ƃ͏I���܂������A�f�t�H���g�ł͎����I�ɍċN������悤�ɐݒ肳��Ă���̂ŁA��ʂɕ\�����ꂽ���b�Z�[�W��ǂݎ�邱�Ƃ��ł��܂���B�����ŁA�����I�ɍċN�����Ȃ��悤�ɐݒ肵�Ă����܂��傤�B
+1：レジストリエディタを起動します。「HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\i8042prt\Parameters」キーに、新規でDWORD値で「CrashOnCtrlScroll」、その値を「1」として追加します。ちなみに、「i8042prt」はPS/2のキーボードとマウスを制御するIntel8042ポートドライバのことです。
 
-1�F�u�R���g���[���p�l���v���́u�V�X�e���v���_�u���N���b�N���܂��B
+2：レジストリエディタを終了して、マシンを再起動します。
 
-2�F�u�V�X�e���̃v���p�e�B�v���\�������̂ŁA�u�ڍׁv�^�u���u�N��/�񕜁v�{�^���������܂��B
+3：再起動後、うまくいけば、[右Ctrl]キーを押しながら[ScrollLock]キーを2回押せば、ブルースクリーンを意図的に起こすことができます。
 
-3�F�u�N��/�񕜁v�E�B���h�E���\�����ꂽ��A�u�V�X�e���G���[�v�����́u�����I�ɍċN������v�̃`�F�b�N�{�b�N�X�̃`�F�b�N���͂����܂��B�����āA�u�V�X�e�����O�ɃC�x���g���������ށv�i��ł��̃C�x���g��\��������@�����y����j�Ɓu�Ǘ��x���𑗐M����v�̃`�F�b�N�{�b�N�X�Ƀ`�F�b�N�����Ă����܂��B
+　ちょっと待ってください。ブルースクリーンを発生する作業は終わりましたが、デフォルトでは自動的に再起動するように設定されているので、画面に表示されたメッセージを読み取ることができません。そこで、自動的に再起動しないように設定しておきましょう。
 
-4�F�ݒ��A[OK]�{�^���������܂��B�ċN���𑣂���܂��̂ŁA�ċN�����Ă����܂��傤�B
+1：「コントロールパネル」内の「システム」をダブルクリックします。
 
-�@����ŏ������ł��܂����B[�ECtrl]�L�[�������Ȃ���[ScrollLock]�L�[��2�񉟂��āA�u���[�X�N���[�����Ӑ}�I�ɋN�����Ă݂܂��傤�i�u���[�X�N���[����̓}�V���̃��Z�b�g�{�^�������Ȃ��̂ŁA�����炶�ߐS�̏��������Ă������Ɓj�B���̂Ƃ��\������郁�b�Z�[�W�͎��̂悤�ɂȂ��Ă���͂��ł��B
+2：「システムのプロパティ」が表示されるので、「詳細」タブ＞「起動/回復」ボタンを押します。
+
+3：「起動/回復」ウィンドウが表示されたら、「システムエラー」部分の「自動的に再起動する」のチェックボックスのチェックをはずします。そして、「システムログにイベントを書き込む」（後でこのイベントを表示する方法を言及する）と「管理警告を送信する」のチェックボックスにチェックを入れておきます。
+
+4：設定後、[OK]ボタンを押します。再起動を促されますので、再起動しておきましょう。
+
+　これで準備ができました。[右Ctrl]キーを押しながら[ScrollLock]キーを2回押して、ブルースクリーンを意図的に起こしてみましょう（ブルースクリーン後はマシンのリセットボタンしかないので、あからじめ心の準備をしておくこと）。このとき表示されるメッセージは次のようになっているはずです。
 
 -----
 *** STOP: 0x000000E2 (0x00000000,0x00000000,0x00000000,0x00000000)
@@ -62,29 +62,29 @@ Beginning dump of physical memory
 Physical memory dump complete. Contact your system administrator or thechnical support group.
 -----
 
-�@1�s�ڂɒ��ڂ��Ă��������B
+　1行目に着目してください。
 
 -----
 0x000000E2 (0x00000000,0x00000000,0x00000000,0x00000000)
 -----
 
-�@���̉p������i0x�ƂȂ��Ă���̂�16�i���\���j���u���[�X�N���[������������������˂��~�߂�q���g�ƂȂ�킯�ł��B���̉p�����������Ӗ����Ă��邩�́AMS��Web�T�C�g�Ŕz�z����Ă���DDK�iDriver Development Kit�j�Ƃ����f�o�C�X�h���C�o�J���L�b�g���C���X�g�[�����āA�uDDK Documentation�v�Ƃ����w���v�t�@�C�����Q�Ƃ��邱�Ƃŕ�����܂�(*1)�B
+　この英数字列（0xとなっているので16進数表示）がブルースクリーンが発生した原因を突き止めるヒントとなるわけです。この英数字が何を意味しているかは、MSのWebサイトで配布されているDDK（Driver Development Kit）というデバイスドライバ開発キットをインストールして、「DDK Documentation」というヘルプファイルを参照することで分かります(*1)。
 
-DDK�̃g�b�v�y�[�W�Fhttp://www.microsoft.com/japan/whdc/ddk/winddk.mspx
-FAQ�Fhttp://www.microsoft.com/japan/whdc/ddk/ddkfaq.mspx
+DDKのトップページ：http://www.microsoft.com/japan/whdc/ddk/winddk.mspx
+FAQ：http://www.microsoft.com/japan/whdc/ddk/ddkfaq.mspx
 
-�@����URI����ADDK���_�E�����[�h���āA�C���X�g�[�����܂��B�ƌ��������Ƃ���ł����A���݂͎c�O�Ȃ���_�E�����[�h�ł��Ȃ��悤�ł��BWindows2000�p��DDK��Server 2003 DDK��CD-ROM�Ɋ܂܂�܂��B����CD-ROM���̂̓^�_�ł����A������25$������܂��B
+　このURIから、DDKをダウンロードして、インストールします。と言いたいところですが、現在は残念ながらダウンロードできないようです。Windows2000用のDDKはServer 2003 DDKのCD-ROMに含まれます。このCD-ROM自体はタダですが、送料で25$かかります。
 
-�@���݂́A�uDebugging Tools for Windows�v�Ƃ����c�[���̒��ɁuDDK Documentation�v���܂܂�Ă���̂ŁA���������URI����_�E�����[�h���܂��B����̓x�[�^�łł���Version 6.3.11�i2004�N3��1���j�𗘗p���邱�Ƃɂ��܂��B
+　現在は、「Debugging Tools for Windows」というツールの中に「DDK Documentation」が含まれているので、これを次のURIからダウンロードします。今回はベータ版であるVersion 6.3.11（2004年3月1日）を利用することにします。
 
 http://www.microsoft.com/japan/whdc/ddk/debugging/default.mspx
 
-�@�uDebugging Tools for Windows �x�[�^�ł̃_�E�����[�h�v�Ƃ��������N���N���b�N���܂��BWindowsNT�̕��͂܂��uInstall Windows Installer 1.1 (Windows NT 4.0 - x86) 1.4MB�v�����炩���߃C���X�g�[�����Ă����K�v������܂��BWindows2000/XP�Ȃǂ̏ꍇ�A����͏Ȃ��āuInstall 32-bit Beta Version 6.3.11 (March 1, 2004) 10MB�v���C���X�g�[�����邾����OK�ł��B
+　「Debugging Tools for Windows ベータ版のダウンロード」というリンクをクリックします。WindowsNTの方はまず「Install Windows Installer 1.1 (Windows NT 4.0 - x86) 1.4MB」をあらかじめインストールしておく必要があります。Windows2000/XPなどの場合、これは省いて「Install 32-bit Beta Version 6.3.11 (March 1, 2004) 10MB」をインストールするだけでOKです。
 
-�@����ł́A�uDebugging Tools for Windows�v�̃C���X�g�[�����I������Ƃ��܂��B
+　それでは、「Debugging Tools for Windows」のインストールが終わったとします。
 
-�@�u�X�^�[�g�v���j���[���u�v���O�����v���uDebugging Tools for Windows�v���uDebugging Help�v���N�����܂��B
-�@�uDebugging Tools for Windows�v���uBug Checks (Blue Screens)�v���uBug Check Code Reference�v�Ńo�O�`�F�b�N�R�[�h���m�F�ł��܂��B�Ӑ}�I�Ɉ����N�������u���[�X�N���[���̃o�O�`�F�b�N�R�[�h�́A1�s�ڂ̐擪�����́u0x000000E2�v�ł��B���̍��ڂ͎��̂悤�ɂȂ��Ă��܂��B
+　「スタート」メニュー＞「プログラム」＞「Debugging Tools for Windows」＞「Debugging Help」を起動します。
+　「Debugging Tools for Windows」＞「Bug Checks (Blue Screens)」＞「Bug Check Code Reference」でバグチェックコードを確認できます。意図的に引き起こしたブルースクリーンのバグチェックコードは、1行目の先頭部分の「0x000000E2」です。この項目は次のようになっています。
 
 -----
 Bug Check 0xE2: MANUALLY_INITIATED_CRASH
@@ -99,30 +99,30 @@ Comments
 For details on manually-initiated crash dumps, see Forcing a System Crash.
 -----
 
-�@�܂�A����́uMANUALLY_INITIATED_CRASH�v�Ƃ����Ӗ��ł��邱�Ƃ��������܂��B
+　つまり、これは「MANUALLY_INITIATED_CRASH」という意味であることが判明します。
 
 
-�@�Ȃ��A�Ӑ}�I�Ƀu���[�X�N���[���𔭐�����d�g�݂����݂���̂��Ƃ����ƁAOS���X�g�[�����Ă��܂����Ƃ��ɁA�������_���v���̎悵�ĉ�͂ł���悤�ɂ��邽�߂ł��B
+　なぜ、意図的にブルースクリーンを発生する仕組みが存在するのかというと、OSがストールしてしまったときに、メモリダンプを採取して解析できるようにするためです。
 
-(*1) �O��MSDN�ɉ������Ă��Ȃ���Γ���ł��܂���ł������A���݂̓t���[�Ŏg���܂��B
+(*1) 前はMSDNに加入していなければ入手できませんでしたが、現在はフリーで使えます。
 
 
-��0x04.) �������_���v�ƋY���
+■0x04.) メモリダンプと戯れる
 
-�@�o�O�`�F�b�N�R�[�h�Ńu���[�X�N���[���̌����ł���T�v��������܂����A�ڍׂ͂܂�������܂���B�����ŁuDebugging Tools for Windows�v�ɕt�����Ă���uWindows Debugger�v�iWinDdg�j��p���āA�ۑ������C�x���g�i�����ł̓N���b�V�������C�x���g�Ȃ̂ŃN���b�V���_���v�ƌĂԂ��Ƃɂ���j���_���v���܂��B
+　バグチェックコードでブルースクリーンの原因である概要が分かりますが、詳細はまだ分かりません。そこで「Debugging Tools for Windows」に付属している「Windows Debugger」（WinDdg）を用いて、保存したイベント（ここではクラッシュしたイベントなのでクラッシュダンプと呼ぶことにする）をダンプします。
 
-�@�N���b�V���_���v�̓f�t�H���g�Łu%SystemRoot%\Minidump�v�ɕۑ�����Ă���͂��ł��B�ۑ��ꏊ��ύX����ɂ́A�O�q�����u�N��/�񕜁v�E�B���h�E�ŕύX�ł��܂��B�������A�f�t�H���g�̂܂܂ł́u�f�o�b�O���̏������݁v�̕������u�ŏ��������_���v�i64KB�j�v�ɂȂ��Ă��܂��B����ł̓_���v�ʂ����Ȃ��A���ʂ����Ȃ��̂ŁA�u�J�[�l���������_���v�v�ɕύX���Ă����܂��傤�B�u���S�������_���v�v�ɂ���ΑS�Ẵ������̃_���v���s���܂����A�����܂ł���K�v�͂߂����ɂȂ��ł��傤�B�ڍׂ͎���URI�Ŋm�F�ł��܂��B
+　クラッシュダンプはデフォルトで「%SystemRoot%\Minidump」に保存されているはずです。保存場所を変更するには、前述した「起動/回復」ウィンドウで変更できます。しかし、デフォルトのままでは「デバッグ情報の書き込み」の部分が「最小メモリダンプ（64KB）」になっています。これではダンプ量が少なく、情報量を少ないので、「カーネルメモリダンプ」に変更しておきましょう。「完全メモリダンプ」にすれば全てのメモリのダンプを行いますが、そこまでする必要はめったにないでしょう。詳細は次のURIで確認できます。
 
 http://support.microsoft.com/default.aspx?scid=kb;ja;254649
 
-�@�������AHDD�̗e�ʂ͍Œ���u�����������{1MB�v���K�v�ɂȂ�܂��B�Ȃ��Ȃ�΁A�N���b�V���_���v�͈�U�y�[�W���O�t�@�C���i�uC:\pagefile.sys�v�Ɉʒu����j�ɍ̎悳�ꂳ��A���̌��OS�N�����Ɏw�肵���ۑ���ɃR�s�[�����d�g�݂ɂȂ��Ă��邩��ł��B
-�@2GB�ȏ�̃�������ς�ł���}�V���̏ꍇ���ӂ��ׂ��_������܂��B����Ɋւ��Ă͎���URI���Q�l�ɂ��Ă��������B
+　ただし、HDDの容量は最低限「物理メモリ＋1MB」が必要になります。なぜならば、クラッシュダンプは一旦ページングファイル（「C:\pagefile.sys」に位置する）に採取されされ、その後にOS起動時に指定した保存先にコピーされる仕組みになっているからです。
+　2GB以上のメモリを積んでいるマシンの場合注意すべき点があります。これに関しては次のURIを参考にしてください。
 
 http://support.microsoft.com/default.aspx?scid=kb;ja;274598
 http://support.microsoft.com/default.aspx?scid=kb;JA;241046
 
-�@����ł̓f�o�b�K�ŃN���b�V����������ǂݍ���Ō��܂��傤�B
-�@�܂��AWinDdg���N�����܂��B�����āA���j���[�́uFile�v���uOpen Crash Dump�v�ŁA�uMEMORY.DMP�v�t�@�C�����w�肵�܂��B�����ł͈Ӑ}�I�Ɉ����N�������u���[�X�N���[���̃N���b�V�����������g���܂��B����ƁA���̂悤�ɕ\�������͂��ł��B
+　それではデバッガでクラッシュメモリを読み込んで見ましょう。
+　まず、WinDdgを起動します。そして、メニューの「File」＞「Open Crash Dump」で、「MEMORY.DMP」ファイルを指定します。ここでは意図的に引き起こしたブルースクリーンのクラッシュメモリを使います。すると、次のように表示されるはずです。
 
 -----
 Microsoft (R) Windows Debugger  Version 6.3.0011.2
@@ -185,14 +185,14 @@ BugCheck E2, {0, 0, 0, 0}
 ***** Kernel symbols are WRONG. Please fix symbols to do analysis.
 
 *** ERROR: Module load completed but symbols could not be loaded for i8042prt.sys
-Probably caused by : i8042prt.sys ( i8042prt+1dc3 )�@�������ɒ��ځB
+Probably caused by : i8042prt.sys ( i8042prt+1dc3 )　←ここに着目。
 
 Followup: MachineOwner
 -----
 
-�@������3�s�ڂ́ui8042prt.sys�v�ɒ��ڂ��Ă��������B�ui8042prt.sys�v�̓L�[�{�[�h�h���C�o�ł��B�܂�A�o�O�`�F�b�N�R�[�h�ɂ�鐄���A�Ӑ}�I�ɋN������[�ECtrl]�{�^���������Ȃ���[ScrollLock]�L�[��2�񉟂������Ƃƍ��v���܂��B
+　下から3行目の「i8042prt.sys」に着目してください。「i8042prt.sys」はキーボードドライバです。つまり、バグチェックコードによる推測、意図的に起こした[右Ctrl]ボタンを押しながら[ScrollLock]キーを2回押したことと合致します。
 
-�@�R�}���h���͗��Ɏ��̂悤�ɓ��͂��Ă݂܂��i�����ɂ�kd���[�h�̂Ƃ��A���͗��Ɂu!analyze -v�v�j�B����ł��ڍׂȏ����`�F�b�N�ł��܂��B�ڍׂȎg�����̓w���v�i�p��j���Q�Ƃ��Ă��������B
+　コマンド入力欄に次のように入力してみます（厳密にはkdモードのとき、入力欄に「!analyze -v」）。これでより詳細な情報をチェックできます。詳細な使い方はヘルプ（英語）を参照してください。
 
 -----
 kd> !analyze -v
@@ -254,8 +254,8 @@ Followup: MachineOwner
 -----
 
 
-��0x05.) ������
+■0x05.) おわりに
 
-�@�����̍u���͂������ł����ł��傤���B
-�@Windows�������������Ƃ͎����ł����A�������Ƃ���Windows�����ł͋Ɩ����ł��Ȃ������唼���Ǝv���܂��BWindows�����[�U�[�ɑ΂��ĕ��݊�肵�Ă��Ȃ��Ȃ�΁A���[�U�[�ł����X��Windows�ɑ΂��ĕ��݊�邵���Ȃ��悤�ȋC�����܂��B���̍u����ǂ�ŁAWindows�Ə����ł��S���߂Â��邱�Ƃ��ł����l���ЂƂ�ł���������{�]�ł��B
+　今月の講座はいかがでしたでしょうか。
+　Windows嫌いが多いことは事実ですが、現実問題としてWindows無しでは業務ができない方が大半だと思います。Windowsがユーザーに対して歩み寄りしてこないならば、ユーザーである我々がWindowsに対して歩み寄るしかないような気もします。この講座を読んで、Windowsと少しでも心を近づけることができた人がひとりでも増えたら本望です。
 

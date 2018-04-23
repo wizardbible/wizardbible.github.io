@@ -1,30 +1,30 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- ��1��: �}�j�A�b�NJava�v���O���~���O��l��:
-           �` ���p���x�Ŏg��XMLEncoder/Decoder �` ---
+--- 第1章: マニアックJavaプログラミング第四回:
+           〜 実用速度で使うXMLEncoder/Decoder 〜 ---
 
-���ҁF����
+著者：金床
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@�M�҂�XML���匙���ł���BXML�͂����炭HTML�̃E�F�u�ł̐������󂯂ďo��
-�������̂ł��邪�AHTML�͂�����f�U�C�i�[�n�̐l�Ɏ󂯓�����͂�������
-�́A�v���O���}�[�n�̐l�ɂ͂���قǍ����͕]������Ă��Ȃ��̂ł͂Ȃ����B
+　筆者はXMLが大嫌いである。XMLはおそらくHTMLのウェブでの成功を受けて出て
+きたものであるが、HTMLはいわゆるデザイナー系の人に受け入れられはしたもの
+の、プログラマー系の人にはそれほど高くは評価されていないのではないか。
 
-�@XML���f�[�^�̕ۑ��`���Ƃ��Ďg���̂́A�ꍇ�ɂ���Ă͈����Ȃ��B���ɊK�w�\
-����ۑ�����ꍇ�ɂ͓K���Ă���A�M�҂�NoFTP@JUMPERZ.NET�Ƃ���FTP�N���C�A
-���g���J�������ۂɁA�K�w�\�������u�b�N�}�[�N�̕ۑ��`���Ƃ���XML��I����
-���B
+　XMLをデータの保存形式として使うのは、場合によっては悪くない。特に階層構
+造を保存する場合には適しており、筆者もNoFTP@JUMPERZ.NETというFTPクライア
+ントを開発した際に、階層構造を持つブックマークの保存形式としてXMLを選択し
+た。
 
-�@���񂴂肷��̂́A�T�[�o�[�Ȃǂ̐ݒ�t�@�C����XML�`���ł���ꍇ���B����
-�I�[�v���\�[�X��Java�v���_�N�g�ɂ͂��̌X���������ŁATomcat�����ߐ�������
-�v���_�N�g���ݒ�t�@�C����XML�`���Ƃ��Ă���B�����ň�A�M�҂𓀂�t����
-���ݒ�t�@�C���̈ꕔ���Љ�悤�B
+　うんざりするのは、サーバーなどの設定ファイルがXML形式である場合だ。特に
+オープンソースのJavaプロダクトにはこの傾向が顕著で、Tomcatを初め数多くの
+プロダクトが設定ファイルをXML形式としている。ここで一つ、筆者を凍り付かせ
+た設定ファイルの一部を紹介しよう。
 
 -----
   <mime-mapping>
@@ -56,11 +56,11 @@ x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
     <mime-type>image/x-jg</mime-type>
   </mime-mapping>
 
-�c�ȉ����񂦂�Ƒ���
+…以下えんえんと続く
 -----
 
-�@�����Tomcat�̐ݒ�t�@�C���ł���web.xml�̈ꕔ�ł���B�����Ⴒ���Ⴕ�Ă�
-�ĕ�����ɂ����̂ŁA�^�O������S�������Ă݂悤�B����Ǝ��̂悤�ɂȂ�B
+　これはTomcatの設定ファイルであるweb.xmlの一部である。ごちゃごちゃしてい
+て分かりにくいので、タグ部分を全部消してみよう。すると次のようになる。
 
 -----
 abs
@@ -79,10 +79,10 @@ art
 image/x-jg
 -----
 
-�@�������肵�āA�����s���Ă��邩������悤�ɂȂ�BApache�Ȃǂ̐ݒ���s
-�����o��������΃s���Ƃ��邾�낤�B����̓t�@�C���̊g���q�Ƃ���ɑΉ�����
-MIME�^�C�v�̈ꗗ�̈ꕔ�ł���BApache�ł�mime.types�Ƃ����t�@�C�����Ŏ���
-�悤�ɋL�q�����B���̕����͂邩�ɂ킩��₷���B
+　すっきりして、何が行われているか分かるようになる。Apacheなどの設定を行
+った経験があればピンとくるだろう。これはファイルの拡張子とそれに対応する
+MIMEタイプの一覧の一部である。Apacheではmime.typesというファイル名で次の
+ように記述される。この方がはるかにわかりやすい。
 
 -----
 image/x-cmu-raster              ras     
@@ -96,42 +96,42 @@ image/x-xpixmap                 xpm
 image/x-xwindowdump             xwd  
 -----
 
-�@���̂悤�ɁA�K�w�\���ł��Ȃ���ʂ̃f�[�^�����ԏꍇ�AXML�̎g�p�͂��܂��
-���璷�ł���A���ʂ�d���������v���O���}�̐_�o���t���ł���̂ł���B�܂��A
-XML�`���Ƃ����̂̓v���O�����ɂƂ��Ă͓ǂݏ������₷���`�������A�l�Ԃ�����
-�e�L�X�g�G�f�B�^�œǂݏ�������̂ɂ͌����Ă��Ȃ��B���ɁA�ꕔ�̃^�O�̑Ή�
-������Ă��܂����ꍇ�Ƀt�@�C���S�̂ɉe�����o���Ă��܂��_�Ȃǂ͔��ɂ���
-�����Ȃ��B
-�@XML��l�Ԃ��ҏW����K�v������ꍇ�A��p�̎g���₷���G�f�B�^�Ȃǂ������
-�ǂ����A�T�[�o�[�̐ݒ�t�@�C���Ƃ����̂̓^�[�~�i�������g���Ȃ��Ȃǂ̕s��
-�Ȋ��ŕҏW����K�v���łĂ�����̂Ȃ̂ŁAXML�`���ł͂Ȃ��A�Ⴆ��vi�̂悤
-�ȃV���v���ȃG�f�B�^�ł����Ȃ�������`�����D�܂����B
+　このように、階層構造でもない大量のデータが並ぶ場合、XMLの使用はあまりに
+も冗長であり、無駄や重複を嫌うプログラマの神経を逆撫でするのである。また、
+XML形式というのはプログラムにとっては読み書きしやすい形式だが、人間が直接
+テキストエディタで読み書きするのには向いていない。特に、一部のタグの対応
+がずれてしまった場合にファイル全体に影響が出してしまう点などは非常にいた
+だけない。
+　XMLを人間が編集する必要がある場合、専用の使いやすいエディタなどがあれば
+良いが、サーバーの設定ファイルというのはターミナルしか使えないなどの不便
+な環境で編集する必要がでてくるものなので、XML形式ではなく、例えばviのよう
+なシンプルなエディタでも問題なく扱える形式が好ましい。
 
 
-��0x02.) �I�u�W�F�N�g�̕ۑ�
+■0x02.) オブジェクトの保存
 
-�@����Java�ł́A�I�u�W�F�N�g���t�@�C���ɕۑ����邽�߂̎�y�ȕ��@��2�p��
-����Ă���B�ЂƂ̓V���A���C�[�[�V�����A�����ЂƂ�XML�G���R�[�h�i�ƃf
-�R�[�h�j�ł���B�ǂ�����X�g���[���ɑ΂��ăI�u�W�F�N�g��ǂݏ����ł����
-���ɐ݌v����Ă��邽�߁A�t�@�C���X�g���[�����w�肷��΃t�@�C���ւ̓ǂݏ�
-���A�܂�f�[�^�Ƃ��Ă̕ۑ����\�ɂȂ�B�܂��A�\�P�b�g�X�g���[���Ȃǂ�
-�w�肷��΃l�b�g���[�N�z���ɃI�u�W�F�N�g�����Ƃ肷�邱�Ƃ��\���B
+　さてJavaでは、オブジェクトをファイルに保存するための手軽な方法が2つ用意
+されている。ひとつはシリアライゼーション、もうひとつがXMLエンコード（とデ
+コード）である。どちらもストリームに対してオブジェクトを読み書きできるよ
+うに設計されているため、ファイルストリームを指定すればファイルへの読み書
+き、つまりデータとしての保存が可能になる。また、ソケットストリームなどを
+指定すればネットワーク越しにオブジェクトをやりとりすることが可能だ。
 
-�@�V���A���C�[�[�V������JDK1.1�̍����瑶�݂���A�Â��悭�m��ꂽ��@���B
-��̓I�ɂ�ObjectInputStream�N���X��ObjectOutputStream�N���X���g���B���̕�
-�@�̌��_�͓ǂݏ����̑ΏۂƂȂ�N���X�̒�`�̕ύX�Ɏア���Ƃ��B���鎞�_��
-�I�u�W�F�N�g���t�@�C���ɏ����o�����Ƃ���B���̌�\�t�g�E�F�A���A�b�v�f�[
-�g����A�N���X�̒�`���ύX����Ă��܂��ƁA���͂�ߋ��ɕۑ������t�@�C����
-��͐������I�u�W�F�N�g���č\�z���邱�Ƃ��ł��Ȃ��̂ł���B
-�@���̌��_�ɑΏ�������@�͑��݂�����̂́A��Ԃ��������ɖ{���I�łȂ���
-�߁A�I�u�W�F�N�g�̕ۑ��ɃV���A���C�[�[�V�������g�����Ƃ͐����ł��Ȃ��B
+　シリアライゼーションはJDK1.1の頃から存在する、古くよく知られた手法だ。
+具体的にはObjectInputStreamクラスとObjectOutputStreamクラスを使う。この方
+法の欠点は読み書きの対象となるクラスの定義の変更に弱いことだ。ある時点で
+オブジェクトをファイルに書き出したとする。その後ソフトウェアがアップデー
+トされ、クラスの定義が変更されてしまうと、もはや過去に保存したファイルか
+らは正しくオブジェクトを再構築することができないのである。
+　この欠点に対処する方法は存在するものの、手間がかかる上に本質的でないた
+め、オブジェクトの保存にシリアライゼーションを使うことは推奨できない。
 
-�@��������̃I�u�W�F�N�g�̕ۑ����@�ł���XML�G���R�[�h�́AJDK1.4�œo�ꂵ���A
-��r�I�V�������@�ł���B�V���A���C�[�[�V�����ł̎��s�̌o�������ɁA�N���X
-�̕ύX�ɋ������ɂȂ��Ă���B
-�@�V���A���C�[�[�V�������o�C�i���`���̏o�͂��s���Ă����̂ɑ΂��AXML�G���R
-�[�h�͂��̖��̒ʂ�I�u�W�F�N�g��XML�`���Ƃ��ďo�͂���B�Ⴆ�Ύ��̂悤�ȃR
-�[�h�����Ă݂悤�B
+　もう一方のオブジェクトの保存方法であるXMLエンコードは、JDK1.4で登場した、
+比較的新しい方法である。シリアライゼーションでの失敗の経験を元に、クラス
+の変更に強い作りになっている。
+　シリアライゼーションがバイナリ形式の出力を行っていたのに対し、XMLエンコ
+ードはその名の通りオブジェクトをXML形式として出力する。例えば次のようなコ
+ードを見てみよう。
 
 -----
 XMLEncoder e = new XMLEncoder( System.out );
@@ -139,7 +139,7 @@ e.writeObject( new JButton( "hoge" ) );
 e.close();
 -----
 
-�@���̃R�[�h�̏o�͎͂��̂悤�ɂȂ�B
+　このコードの出力は次のようになる。
 
 -----
 <?xml version="1.0" encoding="UTF-8"?> 
@@ -150,43 +150,43 @@ e.close();
 </java> 
 -----
 
-�@���̂悤�ɃI�u�W�F�N�g��XML�`���œf���o�����Ƃ��\�ɂȂ�B�t�ɂ���XML
-��XMLDecoder�œǂݍ��߂΁A�I�u�W�F�N�g�𕜌��ł���B
+　このようにオブジェクトをXML形式で吐き出すことが可能になる。逆にこのXML
+をXMLDecoderで読み込めば、オブジェクトを復元できる。
 
 
-��0x03.) XMLEncoder/Decoder�̓���
+■0x03.) XMLEncoder/Decoderの特徴
 
-�@XML�`���ŃI�u�W�F�N�g��ǂݏ������邽�߂ɂ́A
+　XML形式でオブジェクトを読み書きするためには、
 
-�E�N���X���f�t�H���g�R���X�g���N�^������
-�E�ۑ��������v���p�e�B�i�t�B�[���h�j�ɂ��āA�Q�b�^�[�ƃZ�b�^�[������
+・クラスがデフォルトコンストラクタをもつ
+・保存したいプロパティ（フィールド）について、ゲッターとセッターを持つ
 
-�@�Ƃ��������𖞂����΁A�Ƃ肠�����͂悢�i�����Ȓ�`�ɂ��Ă�XMLEncoder
-��javadoc���Q�Ɓj�B������JavaBeans�ƌĂ΂��X�^�C�����B���̏����͊ȒP
-�ɖ������邾�낤�B
+　という条件を満たせば、とりあえずはよい（厳密な定義についてはXMLEncoder
+のjavadocを参照）。いわゆるJavaBeansと呼ばれるスタイルだ。この条件は簡単
+に満たせるだろう。
 
-�@�G���R�[�h�ƃf�R�[�h�͂��̃Q�b�^�[�ƃZ�b�^�[�ɂ���čs���邽�߁A����
-�ɂ͓����ɑ��݂��Ȃ��v���p�e�B�i�̂悤�Ȃ��́j��ǂݏ������邱�Ƃ��ł���B
-�܂�I�u�W�F�N�g�w���v���O���~���O�炵���A�O���Ɍ��J����C���^�[�t�F�[
-�X�i�Q�b�^�[�ƃZ�b�^�[�j�ƁA�����̎��������S�ɕ����ł���̂��B���̂��ߔ�
-��ɏ_��ȃv���O���~���O���\�ƂȂ�B
+　エンコードとデコードはこのゲッターとセッターによって行われるため、実際
+には内部に存在しないプロパティ（のようなもの）を読み書きすることもできる。
+つまりオブジェクト指向プログラミングらしく、外部に公開するインターフェー
+ス（ゲッターとセッター）と、内部の実装を完全に分離できるのだ。このため非
+常に柔軟なプログラミングが可能となる。
 
 
-��0x04.) �����o���͒x��
+■0x04.) 書き出しは遅い
 
-�@������x�̃{�����[���̂���N���X�̃C���X�^���X���������A���ŏ����o��
-�Ă݂�ƕ����邪�AXMLEncoder�̃G���R�[�h�����͔��ɒx���B���ɔߌ��I�Ȃ�
-��byte�^�̔z��Ȃǂ������o���Ƃ����B
-�@�Ȃ��x���̂��Ƃ����ƁA�z��̗v�f�S�Ă����̂悤��XML�Ƃ��ď����o���Ă���
-����ł���B
+　ある程度のボリュームのあるクラスのインスタンスをいくつか連続で書き出し
+てみると分かるが、XMLEncoderのエンコード処理は非常に遅い。特に悲劇的なの
+がbyte型の配列などを書き出すときだ。
+　なぜ遅いのかというと、配列の要素全てを次のようにXMLとして書き出している
+からである。
 
-�@�Ⴆ�Δz�񂪎��̂悤�Ȃ��̂������Ƃ����
+　例えば配列が次のようなものだったとすると
 
 -----
 byte[]{ ( byte )0x01, ( byte )0x02, ( byte )0x03, ( byte )0x04 }
 -----
 
-�@���̂悤��XML�ɃG���R�[�h�����̂��B
+　次のようにXMLにエンコードされるのだ。
 
 -----
    <array class="byte" length="4"> 
@@ -205,25 +205,25 @@ byte[]{ ( byte )0x01, ( byte )0x02, ( byte )0x03, ( byte )0x04 }
    </array> 
 -----
 
-�@�߂܂����o����ǎ҂�����̂ł͂Ȃ����낤���B
-�@������4byte�̃f�[�^��ۑ����邽�߂ɁA�Ȃ��285byte���g���Ă���̂��B��
-�܂菈�����x���x���΂���łȂ��A�f���o���ꂽ�f�[�^�����ɃX�y�[�X�����
-�Ƃ����A2�d�Ƀf�����b�g�����\���ɂȂ��Ă���̂ł���B������񂢂�������
-���b�g�������āA�ۑ����ꂽ�f�[�^���e�L�X�g�t�@�C����v���O�����ȂǂŕύX
-���₷���Ƃ����ʂ����B
+　めまいを覚える読者もいるのではないだろうか。
+　たった4byteのデータを保存するために、なんと285byteも使っているのだ。つ
+まり処理速度が遅いばかりでなく、吐き出されたデータが非常にスペースを取る
+という、2重にデメリットを持つ構造になっているのである。もちろんいちおうメ
+リットもあって、保存されたデータをテキストファイルやプログラムなどで変更
+しやすいという面も持つ。
 
 
-��0x05.) �p�t�H�[�}���X�`���[�j���O
+■0x05.) パフォーマンスチューニング
 
-�@���Ă������炪�}�j�A�b�N�v���O���~���O�ƂȂ�B����byte�z��̏����o����
-���܂�ɂ��x�����߁A100byte��1000byte�P�ʂ̃f�[�^�������v���O�����ł́AX
-MLEncoder�̎g�p�͎��p�I�ł͂Ȃ��B�������A�I�u�W�F�N�g�̃t�@�C���ւ̕ۑ���
-���߂ɁA�N���X���Ƃɂ��������G���R�[�_�[�ƃf�R�[�_�[�������̂��ʓ|���B��
-���A�p�t�H�[�}���X�̖��𔲂����΁A�ύX�ɑ΂��鋭���ȂǁAXMLEncoder/Dec
-oder�̓����͔��ɖ��͂�����B�����ŁA���̂悤�ɂ���B
+　さてここからがマニアックプログラミングとなる。このbyte配列の書き出しは
+あまりにも遅いため、100byteや1000byte単位のデータを扱うプログラムでは、X
+MLEncoderの使用は実用的ではない。しかし、オブジェクトのファイルへの保存の
+ために、クラスごとにいちいちエンコーダーとデコーダーを書くのも面倒だ。ま
+た、パフォーマンスの問題を抜かせば、変更に対する強さなど、XMLEncoder/Dec
+oderの動きは非常に魅力がある。そこで、次のようにする。
 
-�@�܂��A�����ł͓ǂݏ����Ώۂ̃N���X�̗�Ƃ��āAbyte�z��̃v���p�e�Bbuff
-er������MHoge�N���X���l����B���̃N���X�̒�`�͈ȉ��̂悤�Ȃ��̂��B
+　まず、ここでは読み書き対象のクラスの例として、byte配列のプロパティbuff
+erを持つMHogeクラスを考える。このクラスの定義は以下のようなものだ。
 
 -----
 public class MHoge
@@ -243,16 +243,16 @@ buffer = b;
 }
 -----
 
-�@���ƂȂ�̂�byte�z��̏����o���Ȃ̂ŁA���������邱�Ƃɂ���B������
-byte�z��ɑ΂���Q�b�^�[�E�Z�b�^�[�͒�`����Ă���A�����͗l�X�ȃv���O
-�����̒��Ŏg���Ă��邽�߁A���R�Ȃ���폜���邱�Ƃ͂ł��Ȃ��B�����āAXM
-LEncoder�͕K���Q�b�^�[���Ăяo���Ă��܂��B�ł͂ǂ�����΂悢���낤���B
+　問題となるのはbyte配列の書き出しなので、これを避けることにする。しかし
+byte配列に対するゲッター・セッターは定義されており、それらは様々なプログ
+ラムの中で使われているため、当然ながら削除することはできない。そして、XM
+LEncoderは必ずゲッターを呼び出してしまう。ではどうすればよいだろうか。
 
-�@XMLEncoder����Ăяo�����ꍇ�A�܂�I�u�W�F�N�g�������o���ꍇ�̂݁A
-��̔z���Ԃ��悤�ɂ���̂ł���B��̓I�ɂ̓N���X�Ƀt���O����������A
-���̃t���O��on�̊Ԃ�XMLEncode/Decode���s����ƍl���Abyte�z��̃v���p�e
-�B�Ɋւ���Q�b�^�[�E�Z�b�^�[�͉������Ȃ��B�ύX���MHoge�N���X�̃R�[�h�͎�
-�̂悤�ɂȂ�B
+　XMLEncoderから呼び出される場合、つまりオブジェクトを書き出す場合のみ、
+空の配列を返すようにするのである。具体的にはクラスにフラグを一つ持たせ、
+そのフラグがonの間はXMLEncode/Decodeが行われると考え、byte配列のプロパテ
+ィに関するゲッター・セッターは何もしない。変更後のMHogeクラスのコードは次
+のようになる。
 
 -----
 
@@ -288,17 +288,17 @@ if( !xmlFlag )
 //--------------------------
 }
 
-�@xmlFlag��true�̏ꍇ��getBuffer()�͋��byte�z���Ԃ����߁A�����͂�����
-�I���B
-�@�������A���̏�Ԃł͓��R�Ȃ���A�̐S��buffer�̓��e��XML�Ƃ��ēf���o����
-�Ȃ��B�I�u�W�F�N�g�̏�Ԃ�ۑ��E��������Ƃ����{���̖ړI���B������Ȃ���
-�ł���B
+　xmlFlagがtrueの場合はgetBuffer()は空のbyte配列を返すため、処理はすぐに
+終わる。
+　しかし、この状態では当然ながら、肝心のbufferの内容がXMLとして吐き出され
+ない。オブジェクトの状態を保存・復元するという本来の目的が達成されないの
+である。
 
-�@����byte�z��̗v�f�ЂƂЂƂ����������^�O�ň͂�ŏo�͂���Ƃ����_
-�ɂ������B�����ŁA������A��̃f�[�^�̌ł܂�Ƃ��Ă܂Ƃ߂ďo�́E���͂�
-��悤�ɂ��Ă��܂��΂悢�B������byte�z��ł���buffer��String�N���X�Ƃ���
-�o�́E���͂��邽�߂�getBufferString()�y��setBufferString()���\�b�h���`
-����B
+　問題はbyte配列の要素ひとつひとつをいちいちタグで囲んで出力するという点
+にあった。そこで、これを、一つのデータの固まりとしてまとめて出力・入力す
+るようにしてしまえばよい。そこでbyte配列であるbufferをStringクラスとして
+出力・入力するためのgetBufferString()及びsetBufferString()メソッドを定義
+する。
 
 -----
 public class MHoge
@@ -344,8 +344,8 @@ buffer = MStringUtil.hexStringToByteArray( s );
 }
 -----
 
-�@������MStringUtil�N���X�ɂ�byte�z���String�N���X�^�̃I�u�W�F�N�g�̕ϊ�
-���s�����\�b�h����`����Ă�����̂��B���g�͎��̂悤�ɂȂ��Ă���B
+　ここでMStringUtilクラスにはbyte配列とStringクラス型のオブジェクトの変換
+を行うメソッドが定義されているものだ。中身は次のようになっている。
 
 -----
 public static final String byteToHexString( byte[] data )
@@ -383,8 +383,8 @@ return array;
 }
 -----
 
-�@���̂悤�ȃR�[�h��MHoge�N���X�̃I�u�W�F�N�g���G���R�[�h����B�G���R�[�h
-�̑O��Ńt���O��ω������Ă���B
+　次のようなコードでMHogeクラスのオブジェクトをエンコードする。エンコード
+の前後でフラグを変化させている。
 
 -----
 MHoge hoge = new MHoge();
@@ -398,7 +398,7 @@ e.close();
 hoge.setXmlFlag(false);
 -----
 
-�@�o�͎͂��̂悤�ɂȂ�B
+　出力は次のようになる。
 
 -----
 <?xml version="1.0" encoding="UTF-8"?> 
@@ -415,30 +415,30 @@ hoge.setXmlFlag(false);
 </java> 
 -----
 
-�@bufferString�Ƃ��āu01020304�v�Ƃ����f�[�^���o�͂���Ă���Abyte�z��
-�܂Ƃ߂ĂЂƂ̃f�[�^�Ƃ��ēǂݏ�������邱�Ƃ��m�F�ł���B
-�@1000byte�P�ʂ̃f�[�^�ɂȂ�ƁA���̕��@�ɂ���ăp�t�H�[�}���X�I�ɂ͉��{
-�E���\�{�������������s���邱�ƂɂȂ�Abyte�z��̃v���p�e�B�����N���X
-�ɑ΂���XMLEncoder/Decoder�����p���邽�߂̉��Ƃ��Ă��̂悤�ȕ��@�������
-�������Ƃ��킩��B
+　bufferStringとして「01020304」というデータが出力されており、byte配列が
+まとめてひとつのデータとして読み書きされることが確認できる。
+　1000byte単位のデータになると、この方法によってパフォーマンス的には何倍
+・何十倍も速く処理が行われることになり、byte配列のプロパティを持つクラス
+に対してXMLEncoder/Decoderを実用するための解としてこのような方法もあると
+いうことがわかる。
 
 
-��0x06.) �܂Ƃ�
+■0x06.) まとめ
 
-�@���̕��@�̃����b�g�́AXMLEncoder/Decoder�𗘗p���邱�ƂŁA�N���X���Ƃ�
-�G���R�[�_�[�E�f�R�[�_�[����邱�Ƃ�����邱�Ƃ��ł���_�ɂ���B�f�����b
-�g�Ƃ��ẮA�N���X�ɏ����ύX��������K�v������_����������B����������
-�ύX�͌��܂�؂����p�^�[���ɉ����čs���΂悢���̂Ȃ̂ŁA��x�������Ă���
-���΃o�O����ꍞ�މ\���͖w�ǂȂ��B
-�@���Ȃ�}�����炦�ōl�����d�g�݂Ȃ̂ŁA���ɂ��ǂ��������@������͂����B
-�Ⴆ��XMLEncoder/Decoder�̂悤�ȓ��������A�������Ȃ��̂����Ƃ�������
-�ǂ����邾�낤�B
+　この方法のメリットは、XMLEncoder/Decoderを利用することで、クラスごとに
+エンコーダー・デコーダーを作ることを避けることができる点にある。デメリッ
+トとしては、クラスに少し変更を加える必要がある点があげられる。しかしこの
+変更は決まり切ったパターンに沿って行えばよいものなので、一度理解してしま
+えばバグを入れ込む可能性は殆どない。
+　かなり急ごしらえで考えた仕組みなので、他にも良い解決方法があるはずだ。
+例えばXMLEncoder/Decoderのような働きをし、かつ高速なものを作るという解な
+どもあるだろう。
 
-�@�M�҂͌��݊J������Doorman@JUMPERZ.NET�Ƃ����\�t�g�E�F�A�ŁAHTTP�Z�b�V��
-���̃f�[�^�̃G���R�[�h�E�f�R�[�h�ɂ��̕��@�𗘗p���Ă���B�܂��AXML���Ƃ�
-�����Ă��t�@�C���̃T�C�Y���傫���Ȃ��Ă��܂��̂ŁAgzip���k�𕹗p���Ă���B
-�@XML�͌����Ȃ̂����AXMLEncoder/Decoder�͂ƂĂ��֗��ł������߂ł���@�\���B
-�������������x�͔��ɒx���̂ŁA���ɂ���Ắi���Ƃ����̕��@���g���Ă��j
-���p�������������Ȃ��B
+　筆者は現在開発中のDoorman@JUMPERZ.NETというソフトウェアで、HTTPセッショ
+ンのデータのエンコード・デコードにこの方法を利用している。また、XMLだとど
+うしてもファイルのサイズが大きくなってしまうので、gzip圧縮を併用している。
+　XMLは嫌いなのだが、XMLEncoder/Decoderはとても便利でおすすめできる機能だ。
+ただし処理速度は非常に遅いので、環境によっては（たとえこの方法を使っても）
+実用が難しいかもしれない。
 
 

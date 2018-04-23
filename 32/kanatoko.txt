@@ -1,63 +1,63 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- �恛��: SPAM�{�b�g�΍� ---
+--- 第○章: SPAMボット対策 ---
 
-���ҁF����
+著者：金床
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@�{�e�ł͌f����u���O�ɑ΂������ʂɐ�`�ړI�̏������݂��s���A������
-SPAM�{�b�g�����グ��B�����͎�ɉp�ꌗ�ō쐬����Ă���A�����I�ɃE�F
-�u�y�[�W�����񂵁A�t�H�[���^�O��������Ǝ蓖���莟��ɏ������݂��s���B
-�M�҂̌f���ɂ��ŋ߂�������SPAM�{�b�g�����荞��ł���悤�ɂȂ������߁A
-�΍���u����K�v�ɔ���ꂽ�B
-
-
-��0x02.) SPAM�{�b�g�ƖC��̈Ⴂ
-
-�@SPAM�{�b�g�͂��ăA���O���V�[���Ő푈���܂����������u�C��v�Ƃ͈قȂ�A
-����̌f���ɑ΂��Ă̔����̂悤�ȑ��d���e�͖ړI�Ƃ��Ă��Ȃ��B���̂��߁A
-�΍�������������قȂ�B���Ƃ��΋��x�̎アCAPTCHA�ł��\���΍􂪂ł���B
-����̌f�������X�Ɂi�����������v���O�����Łj�r�炷���Ƃ�ړI�Ƃ��Ă���
-�ꍇ�ɂ�CAPTCHA�̉摜�������I�ɉ�͂�������˔j����悤�ȋZ�p���p������
-�\�������邪�ASPAM�{�b�g�͂��̂悤�Ȃ��Ƃ͂��Ȃ��ƍl������B
+　本稿では掲示板やブログに対し無差別に宣伝目的の書き込みを行う、いわゆる
+SPAMボットを取り上げる。これらは主に英語圏で作成されており、自動的にウェ
+ブページを巡回し、フォームタグを見つけると手当たり次第に書き込みを行う。
+筆者の掲示板にも最近いくつかのSPAMボットが入り込んでくるようになったため、
+対策を講じる必要に迫られた。
 
 
-��0x03.) CAPTCHA
+■0x02.) SPAMボットと砲台の違い
 
-�@�O���ŐG�ꂽ���ACAPTCHA��p����΂قڊm����SPAM�{�b�g�΍�ɂȂ�BCAPTC
-HA�摜����͂���قǂ̍��x��SPAM�{�b�g�̓o��͂܂��܂���ƂȂ邾�낤�B��
-�����A���Ɂu�G���O���b�h�v�ȂǂƌĂ΂��d�g�݂��������ꂽ�ꍇ�͂��̌���
-�ł͂Ȃ��B
-�@�������ACAPTCHA�ɂ̓��[�U�r���e�B�̖ʂœ�_������B������Ə������݂�
-�������Ȃ̂ɂ킴�킴�����╶����ǂ݂Ƃ�A����ɂ������͂���̂͂ƂĂ�
-�ʓ|�ł��邽�߁A�i���ɖ��ӎ��̂����Ɂj���[�U���������݂�����Ă��܂��\
-��������B�R�����g���ւ̏������݂͔��˓I�ɍs�������B�v���������Ƃ���u
-�ɂ��ď����A�����I�������̏u�ԂɁu���e�v�{�^���������B�������ݏI�������
-�ʂ�����typo�ɋC�Â��uorz�v��ԁB���ꂪ�]�܂����p�ł���B�摜���當�����
-�ǂ݂Ƃ��Ă���Ƃ��̌f���Ȃ�u���O�Ȃ�ɐ����Ă���u��C�v�������Ă���
-���悤�ȋC������͕̂M�҂������낤���B
-�@���̂悤�ȗ��R����A�\�Ȃ��CAPTCHA�ȊO�́A���[�U�r���e�B�ɗD�ꂽ�΍�
-���D�܂����B
+　SPAMボットはかつてアングラシーンで戦争をまきおこした「砲台」とは異なり、
+特定の掲示板に対しての爆撃のような多重投稿は目的としていない。そのため、
+対策もやや方向性が異なる。たとえば強度の弱いCAPTCHAでも十分対策ができる。
+特定の掲示板を執拗に（自動化したプログラムで）荒らすことを目的としている
+場合にはCAPTCHAの画像を自動的に解析しそこを突破するような技術が用いられる
+可能性があるが、SPAMボットはそのようなことはしないと考えられる。
 
 
-��0x04.) JavaScript
+■0x03.) CAPTCHA
 
-�@�f����u���O�̃R�����g���̂悤�ȏ������݂��������ʂł́A�u��������
-�O�v�̉�ʂƁA�u�������ސ�v�̉�ʂ����݂���i�ȉ��u���1�v�y�сu���2�v
-�Ƃ�ԁj�B�����Ń��[�U�ɑ΂���JavaScript�̎g�p�������ł���ꍇ�ɂ́A���
-1�ɂ�����JavaScript�̃R�[�h�����삵�Ȃ��ꍇ�R�����g�����e�ł��Ȃ��悤�ɂ�
-��Ƃ�����@���l������B�Ⴆ�Ύ��̂悤�Ȃ��̂��B
+　前項で触れたが、CAPTCHAを用いればほぼ確実なSPAMボット対策になる。CAPTC
+HA画像を解析するほどの高度なSPAMボットの登場はまだまだ先となるだろう。た
+だし、俗に「エログリッド」などと呼ばれる仕組みが投入された場合はこの限り
+ではない。
+　しかし、CAPTCHAにはユーザビリティの面で難点がある。ちょっと書き込みた
+いだけなのにわざわざ数字や文字を読みとり、さらにそれを入力するのはとても
+面倒であるため、（特に無意識のうちに）ユーザが書き込みを避けてしまう可能
+性がある。コメント欄への書き込みは反射的に行いたい。思いついたことを一瞬
+にして書き、書き終えたその瞬間に「投稿」ボタンを押下。書き込み終わった画
+面を見てtypoに気づき「orz」状態。これが望ましい姿である。画像から文字列を
+読みとっているとその掲示板なりブログなりに生じている「空気」が逃げてしま
+うような気がするのは筆者だけだろうか。
+　このような理由から、可能ならばCAPTCHA以外の、ユーザビリティに優れた対策
+が好ましい。
+
+
+■0x04.) JavaScript
+
+　掲示板やブログのコメント欄のような書き込みが生じる場面では、「書き込み
+前」の画面と、「書き込む先」の画面が存在する（以下「画面1」及び「画面2」
+とよぶ）。ここでユーザに対してJavaScriptの使用を強制できる場合には、画面
+1においてJavaScriptのコードが動作しない場合コメントが投稿できないようにす
+るという手法が考えられる。例えば次のようなものだ。
 
 -----
 <FORM ...>
  <INPUT TYPE="HIDDEN" NAME="js" VALUE="js">
-�i���j
+（略）
 </FORM>
 
 <script>
@@ -65,101 +65,101 @@ document.forms[0].js.value="ss";
 </script>
 -----
 
-�@SPAM�{�b�g��JavaScript�����߂��Ȃ��ꍇ�ɂ́A�ujs=js�v�Ƃ����p�����[�^��
-���M�����B�����JavaScript��L���ɂ��Ă��郆�[�U�̃E�F�u�u���E�U�����
-�ujs=ss�v�Ƃ����p�����[�^��������B���̕��������2�ɂ����Ĕ��ʂ��邱��
-�ŁA������SPAM�{�b�g���Ւf�ł���B
-�@���̕��@�̃����b�g�͂��Ȃ�̗L���������邱�ƂƁA���[�U�r���e�B�ɗD���
-���邱�Ƃ��B�����ăf�����b�g��JavaScript��L���ɂ��Ă��Ȃ��Ə������݂���
-���Ȃ��Ȃ��Ă��܂����Ƃɂ���B���̂��߁A���Ƃ���JavaScript���L���łȂ���
-���p�ł��Ȃ��悤�ɍ��ꂽ�E�F�u�A�v���P�[�V�����ł͏\���Ɏ��p�I�ȑ΍��
-�Ȃ�B
+　SPAMボットがJavaScriptを解釈しない場合には、「js=js」というパラメータが
+送信される。一方でJavaScriptを有効にしているユーザのウェブブラウザからは
+「js=ss」というパラメータが送られる。この部分を画面2において判別すること
+で、多くのSPAMボットを遮断できる。
+　この方法のメリットはかなりの有効性があることと、ユーザビリティに優れて
+いることだ。そしてデメリットはJavaScriptを有効にしていないと書き込みがで
+きなくなってしまうことにある。そのため、もともとJavaScriptが有効でないと
+利用できないように作られたウェブアプリケーションでは十分に実用的な対策と
+なる。
 
 
-��0x05.) Cookie
+■0x05.) Cookie
 
-�@�����悤��Cookie�𗘗p������@���l������B������SPAM�{�b�g�ɂ�Cookie
-�Ɂi�s���S�Ȃ���j�Ή����Ă�����̂����������邽�߁A�����P�ɉ��1��Coo
-kie�𔭍s���A��������2�Ŋm�F����Ƃ������@�͉������Ă��܂��\������
-���B�����ŁACookie�ׂ̍��Ȏd�g�݂𗘗p����̂��悢���낤�B
-�@�Ⴆ�Ύ��̂悤�ɁAdomain�����ɊԈ�����l�i�E�F�u�T�C�g�̃z�X�g�Ƃ͈ق�
-��l�j���w�肷��B
+　同じようにCookieを利用する方法も考えられる。しかしSPAMボットにはCookie
+に（不完全ながら）対応しているものも多く見られるため、ただ単に画面1でCoo
+kieを発行し、それを画面2で確認するという方法は回避されてしまう可能性が高
+い。そこで、Cookieの細かな仕組みを利用するのがよいだろう。
+　例えば次のように、domain属性に間違った値（ウェブサイトのホストとは異な
+る値）を指定する。
 
 -----
 Set-Cookie: foo=bar; Path=/; Domain=.foobar
 -----
 
-�@domain�����̒l���s���Ȃ��߁A�E�F�u�u���E�U�͂���Cookie���󂯓���Ȃ��B
-����Ŏ������Â�SPAM�{�b�g�ł͎󂯓���Ă��܂���������Ȃ��B���̂悤�ȍ�
-���ȓ_��t�����ƂŁACookie�𗘗p����΍���\�ł���\���͂���B
+　domain属性の値が不正なため、ウェブブラウザはこのCookieを受け入れない。
+一方で実装が甘いSPAMボットでは受け入れてしまうかもしれない。このような細
+かな点を付くことで、Cookieを利用する対策も可能である可能性はある。
 
-�@Cookie�𗘗p������@�̃����b�g����уf�����b�g��JavaScript�̏ꍇ�Ƃق�
-�����ł���B
+　Cookieを利用する方法のメリットおよびデメリットはJavaScriptの場合とほぼ
+同じである。
 
 
-��0x06.) �����Q��
+■0x06.) 文字参照
 
-�@�����Q�ƂƂ�HTML���Ŏg�p����邢����G�X�P�[�v�����̂��Ƃ��BXSS�΍��
-�V���O���N�I�[�g���u&#39;�v�ɕϊ�����Ⴊ�悭�m���Ă���B��������̂悤
-�Ɏg���B
+　文字参照とはHTML中で使用されるいわゆるエスケープ処理のことだ。XSS対策で
+シングルクオートを「&#39;」に変換する例がよく知られている。これを次のよう
+に使う。
 
 -----
 <FORM>
  <INPUT TYPE="HIDDEN" NAME="param1" VALUE="&#12354;">
-�i���j
+（略）
 </FORM>
 -----
 
-�@�����Łu&#12354;�v�̕����������Q�Ƃɂ���ċL�q���ꂽ�f�[�^���i12345�ł�
-�Ȃ�12354�ł��邱�Ƃɒ��Ӂj�B�u&#12354;�v�͓��{��̂Ђ炪�Ȃ́u���v�̂���
-�ł���ihttp://www.fileformat.info/info/unicode/char/3042/index.htm�j�B��
-�̂��߁A�Ӗ��Ƃ��Ă͎��̂悤�ɋL�q����Ă���ꍇ�Ɠ������B
+　ここで「&#12354;」の部分が文字参照によって記述されたデータだ（12345では
+なく12354であることに注意）。「&#12354;」は日本語のひらがなの「あ」のこと
+である（http://www.fileformat.info/info/unicode/char/3042/index.htm）。そ
+のため、意味としては次のように記述されている場合と等しい。
 
 -----
 <FORM>
- <INPUT TYPE="HIDDEN" NAME="param1" VALUE="��">
-�i���j
+ <INPUT TYPE="HIDDEN" NAME="param1" VALUE="あ">
+（略）
 </FORM>
 -----
 
-�@�E�F�u�u���E�U���t�H�[�������s����ۂɁA���́u���v�͂����URL�G���R�[�h
-����đ�����B�Ⴆ��Shift_JIS��p���Ă���y�[�W�ł���΁A���̒l�̓��N�G
-�X�g���Łuparam1=%82%A0�v�ƂȂ�B�܂肱���ł͈ȉ��̏������s����B
+　ウェブブラウザがフォームを実行する際に、この「あ」はさらにURLエンコード
+されて送られる。例えばShift_JISを用いているページであれば、この値はリクエ
+スト中で「param1=%82%A0」となる。つまりここでは以下の処理が行われる。
 
-�E&#12354;���u���v�ł���ƔF������
-�E�y�[�W�̕����R�[�h��Shift_JIS�ł���ƔF������
-�E�u���v��URL�G���R�[�h���K�v�ł���ƔF������
-�E�u���v��URL�G���R�[�h���āu%82%A0�v�Ƃ���
+・&#12354;が「あ」であると認識する
+・ページの文字コードがShift_JISであると認識する
+・「あ」のURLエンコードが必要であると認識する
+・「あ」をURLエンコードして「%82%A0」とする
 
-�@����4�̃X�e�b�v�͒ʏ�̃E�F�u�u���E�U�͖��Ȃ��s�����ASPAM�{�b�g�ɂ�
-�Ȃ��Ȃ���������ƂȂ�B12354���u���v�ł��邱�Ƃ�F�����邽�߂ɂ�Unico
-de�ɑΉ����Ă���K�v�����邵�A�����Shift_JIS�Ƃ������{��̕����R�[�h�ɂ�
-�Ή����Ă���K�v�����邩�炾�B���̂��߁A���2�ɂ�����param1�̒l���u%82%A
-0�v�łȂ��ꍇ�̏������݂����ۂ��邱�Ƃő΍�ƂȂ�B
+　この4つのステップは通常のウェブブラウザは問題なく行うが、SPAMボットには
+なかなか難しい処理となる。12354が「あ」であることを認識するためにはUnico
+deに対応している必要があるし、さらにShift_JISという日本語の文字コードにも
+対応している必要があるからだ。そのため、画面2においてparam1の値が「%82%A
+0」でない場合の書き込みを拒否することで対策となる。
 
-�@�M�҂͂������̃E�F�u�A�v���P�[�V�����ł��̕��@�������Ă݂����A�����
-�˔j�����{�b�g�͍��̂Ƃ��둶�݂��Ȃ��B
-�@���̕��@��JavaScript��Cookie��p����ꍇ�̃f�����b�g�ł������u���[�U��
-�ݒ��L���ɂ��Ă��Ȃ��Ə������݂ł��Ȃ��v�Ƃ����_���N���A����BJavaScri
-pt��Cookie���Ƃ��ɖ����ł����Ă��������������݂��\�ł���A���̓_���傫
-�ȃ����b�g�ƂȂ�B�܂��A�������CAPTCHA�̓ǂݍ��݂̂悤�Ȗ��ʂȃX�e�b�v��
-�s�v�ƂȂ�A���[�U�r���e�B�ɂ��D��Ă���Ƃ����邾�낤�B
+　筆者はいくつかのウェブアプリケーションでこの方法を試してみたが、これを
+突破したボットは今のところ存在しない。
+　この方法はJavaScriptやCookieを用いる場合のデメリットであった「ユーザが
+設定を有効にしていないと書き込みできない」という点をクリアする。JavaScri
+ptとCookieがともに無効であっても正しく書き込みが可能であり、この点が大き
+なメリットとなる。また、もちろんCAPTCHAの読み込みのような無駄なステップが
+不要となり、ユーザビリティにも優れているといえるだろう。
 
 
-��0x07.) �܂Ƃ�
+■0x07.) まとめ
 
-�@���̂悤�ɁA8-1�ɂ����Ă�B�{�^�����قډ������ςȂ��ŋ삯�����鎾������
-�����厖�ł��邱�Ƃ��킩�����B�������A�㔼��2�A���W�����v���K�v�ƂȂ��
-���ł͂�����B�_�b�V���͎g�p�����A�����鐡�O�܂Œʏ�̕��s�ŋ߂Â��Ă���W
-�����v���邱�ƂŁA�m���ɃN���A�[�ł���BSPAM�{�b�g�ł̏������݂�焈Ղ���
-����Ǘ��҂̕��X�ɂ͐��񕶎��Q�Ƃ̕��@���e�X�g���Ăق����B������񂱂��
-�u�������������v�ł���ASPAM�Ǝ҂����̕��@��F�����鎞�_�Ŏg���Ȃ��Ȃ��
-�@�ł͂���B���������ɊC�O�������Ă���{�b�g�ɂ͂��΂炭�̊Ԃ͗L���Ȃ�
-�ł͂Ȃ����ƍl���Ă���B
+　このように、8-1においてはBボタンをほぼ押しっぱなしで駆け抜ける疾走感が
+何より大事であることがわかった。ただし、後半の2連続ジャンプが必要となる箇
+所ではあえてBダッシュは使用せず、落ちる寸前まで通常の歩行で近づいてからジ
+ャンプすることで、確実にクリアーできる。SPAMボットでの書き込みに辟易して
+いる管理者の方々には是非文字参照の方法をテストしてほしい。もちろんこれも
+「いたちごっこ」であり、SPAM業者がこの方法を認識する時点で使えなくなる方
+法ではある。しかし特に海外からやってくるボットにはしばらくの間は有効なの
+ではないかと考えている。
 
-�@�ǎ҂��\���ĂЂƂ���
+　読者を代表してひとこと
 
-�@�u�@�܁@���@���@�ׁ@�H�@���@(`�D�L)�m�@�S�@���@�@�@�v
+　「　ま　た　小　細　工　か　(`Д´)ノ　ゴ　ラ　ァ　」
 
 
 

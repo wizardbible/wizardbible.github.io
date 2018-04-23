@@ -8,372 +8,372 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-  ---- ��O�́F�ڎ� ---
+  ---- 第０章：目次 ---
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-����P�́F��ʎ��̂��Ėׂ���!? �`��������Ԏӗ����󂯎�邽�߂Ɂ`
+○第１章：交通事故って儲かる!? 〜たくさん慰謝料を受け取るために〜
 
-                                                       �R�{�m��R ��
+                                                       山本洋介山 著
 
-����Q�́FPing�v���O��������낤                       Kenji Aiko ��
+○第２章：Pingプログラムを作ろう                       Kenji Aiko 著
 
-����R�́F�������[�U�[�̑��݂ɂ����ẴR���s���[�^���\�z��Tips
+○第３章：制限ユーザーの存在においてのコンピュータ環境構築のTips
 
-                                                         IPUSIRON ��
+                                                         IPUSIRON 著
 
-����S�́F�c�i���c�s�l�@���񁕔\�����Q                        MaD ��
+○第４章：ＤＪ＆ＤＴＭ　速報＆能書き２                        MaD 著
 
-����T�́F���m�点
+○第５章：お知らせ
 
-����U�́F���҃v���t�B�[��
-
-
-
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-
---- ��P��: ��ʎ��̂��Ėׂ���!? �`��������Ԏӗ����󂯎�邽�߂Ɂ` ---
-
-���ҁF�R�{�m��R
-
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-
-
-��0x01.) �͂��߂�
-
-�@�ŋ߁A�������������Ȃ��Ƃ������U�炷�����Łu�s���A�N�Z�X�֎~�@�̋����v
-�Ƃ��̃��P�̕�����Ȃ����R�Ōx�@�ɘA��čs���ꂻ���Ȃ̂ŁA�n�b�L���O�Ȃ�
-���̌��e�͕|���ď����Ȃ��C���ł��B����Ȃ킯�ł��܂ɂ͕ʂ̃A���O���Ȃ���
-���B
-
-��0x02.) ��ʎ��̂��ĕ|����
-
-�@���܂�A��ʎ��̂Ȃ�đ����������Ȃ����̂ł����A�����v���Ă��Ă����ꂾ
-���Ԃ̑������̒��ł�����A���낢��ƍ~�肩�����Ă��āA�����ɂȂ�܂��񂪁A
-���Ȃ񂩂͑傫�����́A���������̂��܂߂ĂT��������Ă��܂��B
-�@�܂��A����Ȃ킯�ŁA�ȑO���̐܂Ɍo���������Ƃƕی����ɋ���������Ƃ���
-���Ă݂܂��B�m��Ȃ��ƁA���炦����̂����炦�Ȃ��킯�ŁA�m���Ă����Ƃ���
-���Ƃ����邩������܂���B�Ȃ��A���̂Ƃ��Ă͂悭���郀�`�ł��A�P�����x��
-����ȂɂЂǂ��Ȃ������z�肵�Ă��܂��B
-�@�Ȃ��A�����ŏ����Ă邱�Ƃ��Q�l�ɂ��āA�Ђǂ��ڂɂ���������ƌ����ĐӔC
-�͎��܂��񂵁A�C�ӕی��ɓ����Ă���΂��낢��Ȍ��͕ی�������s���Ă�
-��܂��̂ŁA�C�ӕی��͓����Ƃ����������낢��Ƃ������Ǝv���܂��B�������A
-�����炪���s�҂������蓯��҂������肷��ƁA�܂�Ŏg���Ȃ��ی�����������
-���邱�Ƃ��܂܂���킯�ŁA�܂��A�m���Ă����Ă�������������܂���B
-
-
-��0x03.) ���̂ɑ������Ƃ��ɂ��ׂ�����
-
-�@���͓̂����艮�ł��Ȃ����艽�̑O�G����Ȃ��N������̂ŁA���ɏ��߂đ���
-�����͌y�����̂ł����Ă������Ȃ񂾂��킩��Ȃ��Ȃ��āA�y���p�j�b�N��Ԃ�
-�ׂ�Ǝv���܂��B
-�@�����ł܂��A���̂ɑ��������ɉ�������΂����̂����A�v���o�����Ɍ�Ō��
-����H�ڂɊׂ�Ȃ��悤�ɁA�o���₷���������������Ă����܂��B
-
-�E�������ł��x�@�ɓd�b
-
-�@�܂��͌x�@�ɘA�����܂��傤�B���������炱��Ȏq���ł��ł��邱�Ƃ��A�Ǝv
-���l�����邩������܂��񂪁A���̂ɑ�������͂���Ȋ�{�I�Ȃ��Ƃ��l�����
-�Ȃ����炢�������邱�Ƃ�����̂ł��B�}�ɒn�k�ɑ��������ɖ�������đ������A
-�Ƃ����΂��b�𕷂������Ƃ�����l������ł��傤�B
-
-�@�Ƃ������A�x�@�ɓd�b���邱�Ƃ����o���Ă����΂����ł��傤�B�����A������
-���ڗ����̂Ȃ�΁A����ۂǂ̎R�̒��ł��Ȃ�����A���Ă���l���A�����Ă�
-�����̂ł��B
-�@���肪�����邱�Ƃ��l���đ���̓������o���Ă��������������̂�������܂�
-�񂪁A�K���ɂ����͓�����ꂽ���Ƃ͂���܂���̂ŁA�ڂ����ǂ����݂ɂ���
-�͒m��܂���B
-
-�@�x�@�ɘA������͓̂�����O���Ǝv���l�������ł��傤�B�������A����ɂ��
-�ẮA�Ƌ��̓_����d���Ȃǂ̓s���ŁA���X�ŏ����������Ƙb�����������Ă���
-�l�����܂��B
-�@����͊�{�I�ɂ͎~�߂Ă��������������ł��傤�B
-�@�����荂�߂̈Ԏӗ������炦����������Ƃ����āA������������Ă��܂��ƁA
-�����Ă�������A���悪�R��������A�x�@�����̏ؖ��𔭍s���Ă���Ȃ��i�͂�
-�ĂȂ����瓖����O�j�̂ŕی����������ł��Ȃ�������ƁA��X�g���u���̌���
-�ɂȂ�܂��B
-
-�E��Ύӂ�Ȃ�
-
-�@���{�l�͂Ȃ��Ȃ��ŕ������ς܂��悤�Ƃ������ŁA�����炪�������Ȃ��̂ɁA
-�ꉞ���݂��l�Ƃ������Ƃł����Ɏӂ�l������Ǝv���܂����A����͌�ʎ��̂�
-���ɂ͂���Ă͂����Ȃ����Ƃł��B
-�@���ɏo����̎��̂ȂǂŎ����ɔ񂪂���̂��Ȃ��̂��悭�킩��Ȃ��ꍇ��
-�ǂ́A��Ɏӂ����Ƃ������ƂŁA�M�����ӔC��F�߂��Ƃ������Ƃ��������A�Ƃ�
-�����ƂɂȂ�܂��B�܂��A�����ɑS����̂Ȃ��ꍇ�ł��A�ߎ������i��q�j�̎Z
-��̂Ƃ��ɕs���ɓ����Ă��܂��B
-
-�E�~�}�Ԃ��Ă�
-
-�@���ʁA�~�}�Ԃ��ĂԂ��ǂ������x�@�ɕ�����܂��̂ŁA�������ł��~�}�Ԃ���
-��ł��炢�A�a�@�ɘA��čs���Ă��炢�܂��傤�B
-�@���̂ɑ��������͋������Ă���̂ŁA���X�̉��䂾�ƒɂ��Ȃ����̂ł��B����
-����߂Ă���}�ɒɂ��Ȃ��Ă��܂��B������ƃV�`���G�[�V�����͈Ⴂ�܂����A
-���̗F�l�Ńo�C�N�ł������痎���āi�����j��ڍ������܂��Ă���̂Ɍ��ꌟ��
-�ɕt�����������̎҂����܂����A�~�}�Ԃŉ^�΂��܂ł͒ɂ��Ȃ����������ł�
-��B
-�@�ǂ�������ł����肵�Ă���̂ŁA����ۂǂ̗p�����Ȃ���΂P�ӂ��炢�͌�
-�����@���Ă������ł��傤�B
-�@�܂��A�~�}�Ԃŉ^�΂�Ă������ƂŁA�قڐl�g���̊m��ɂȂ�܂��̂ŁA�ی�
-���̖ʂ�����~�}�Ԃŉ^�΂�邱�Ƃ͏d�v�ł��B�t�ɑ債���O�����Ȃ�����Ƃ�
-���ċ~�}�Ԃ��Ă΂Ȃ��āA��Œɂ݂��o�Ă��Ă����������ŏ�������Ă��܂��A
-�ی����������Ȃ��\�����Ȃ��Ƃ͌����Ȃ��̂ŁA����͊�{�ł��B
-
-�@��ʎ��̂ɂ͑傫�������āA�����Ɛl�g�̂Q��ނɕ������A��{�I�ɐl�g��
-��������̐ӔC���d���Ȃ�A�_���̈������������Ă��܂��B
-�@���̂��N���������肪�����ł��܂������A�Ƃ����Ă����Ƃ���ŁA������ɂ�
-���̓��ɂ��Ȃ�܂��񂵁A���̂ɑ����O�͑S���̑��l�Ȃ̂ł�����A�������
-�邱�Ƃ͖��p�ł��B
-�@�܂��A���̗D�����Œɂ��ڂɉ���Ƃ�����܂��B�����ł��܂���ƈԎӗ���
-������������A�ƌ����Ă����Ƃ���ŏ��F�������ŕ����Ȃ��P�[�X������܂�
-�̂ŁA�n���ɕa�@�ɒʂ��ĈԎӗ����҂��������A�g�̂ɂ����z�ɂ��D�����ƌ���
-�܂��B
-
-
-��0x04.) ���ȈԎӗ��̂��炢��
-
-�@���̂ɑ����ĕa�@�ɍs������́A����̎��Ẫt�F�[�Y�ɓ����Ă��܂��B����
-���A���悭�ی��������炤�ɂ͂������炪�{�Ԃł��B
-
-�@���āA���̂ɑ����ĉ���������ꍇ�A�N�����Ô�𕥂��̂ł��傤���B
-�@������������ɂ��摼�l�̎��Ô�Ȃ񂩕��������Ȃ��A�����Ȃ��A�Ƃ����l��
-���܂����A���������l�Ɏ��̂��N������Ă��K�v�ŏ����̕ۏ���󂯂���悤
-�Ɏ����ӕی��Ƃ������̂�����A���ׂẴi���o�[��t�����Ԃ͋����I�Ɏ�����
-�ی��ɉ������Ă��܂��B
-�@�����A�����ӕی��ɓ����ĂȂ��Ԃɏ���Ă��āA�߂܂����Ƃ��ɂ́A���Ƌ���
-������ɂȂ�܂��B
-�@�܂��A�ʂɎ����ӕی��ŕۏႵ����Ȃ����╨���̏����̂��߂Ƀh���C�o�[��
-�Ǝ��ɓ���ŔC�ӕی��Ƃ������̂�����A�펯�I�ȃh���C�o�[�͂���ɂ�������
-�Ă���Ǝv���܂��B
-
-�@�����Ȏ��̂̏ꍇ�́A�����ӕی����g�����ƂɂȂ�܂��B
-�@�����ӕی��̌��x��120���~�ŁA����͎��Ô�A�x�ƕ⏞�A�Ԏӗ��Ȃǂ��ׂĊ�
-�߂����̂ł��B�����ӕی��̌��x��˔j���Ă��Ă����͂��낢��Ɩʓ|�Ȃ���
-�ɂȂ��Ă���̂ŁA�y������Ȃ���x�����ς��ɋߕt���Ă�����A���炾��ʉ@
-��������E�ꕜ�A���邭�炢�̕��������I���Ǝv���܂��B
-
-�@�����ӕی��̌��x�M���M���܂ŋߕt���ɂ͎��Ô�A�x�ƕ⏞�A�Ԏӗ��̌v�Z��
-�@��m���Ă������ق��������Ǝv���܂��̂ŁA�ȒP�ɉ�����܂��B
-
-�@�܂��A���Ô�ł����A���̎��Ô�Ƃ������͈̂ӊO�ƋȎ҂ł��B�����ӕی���
-�g���ƌ��N�ی����g���Ȃ��ƌ����܂�����A���R�f��10�����S�ŁA���ꂪ�v��
-�������R�X�g���������Ă��܂����̂ł��B���ꂾ�Ɠ��@1��1���~�Ƃ��AMRI1��
-5���Ƃ����������肵�܂��B�y������ł��܂߂ɒʉ@���Ă���΁A�������l���Ă�
-���莡�Ô�͂�����܂��B�������A�ی������x������܂ł͎��ȕ��S������
-������܂��B
-�@�Ƃ͂������͌��N�ی����g�����肷��̂ŁA�ʓ|�łȂ���Εa�@�Ɍ����Ă݂�
-�Ƃ����ł��傤�B120���~���玡�Ô�����������̂��x�ƕ⏞�{�Ԏӗ��̌��x�z��
-�̂ŁA���Ô�����点�΁A���炦�邨����������\�����オ���Ă��܂��B
-
-�@���ɋx�ƕ⏞�ł��B���@������ʉ@�ŉ�Ђ��x�񂾂肷��ƁA�x�ƕ⏞�Ƃ���
-�̂����炦�܂��B����͓����̂W�����炢���炦�܂��̂ŁA�Ԏӗ��ƍ��킹���
-����ɉ�Ђɍs�����ׂ����Ă��܂��܂��ˁB���䂵���񂾂��炻�ꂭ�炢�͂�
-����Ă����R���Ƃ͎v���܂����B�܂��A�x�ƕ⏞�͎��Â̂��߂ɗL���x�ɂ�����
-���Ă����̕��x�����܂��̂ŖY��Ȃ��悤�ɂ��܂��傤�B
-
-�@�����āA�݂�ȑ�D���ȈԎӗʂł��B�Ԏӗ��͎����ӕی��̏ꍇ�A1��4100�~�~
-����܂ł̓����ƌ��܂��Ă��܂��B�Ƃ͂����a�@�ɒʂ��ĂȂ��Ƃ���Ȃɏo�܂�
-��B��������Ԏӗ������炤�ɂ́A��������2����1�񂭂炢�̃y�[�X�Œʂ��΂�
-���Ǝv���܂��B����ȏ�ʂ��Ă��Ԏӗ��͑����邱�Ƃ͂���܂���B
-�@���̑��A���@���Ă���ꍇ�͏��o��Ƃ���1000�~���x�x�����ꂽ��A�ʉ@�⌟
-���ŕʂ̕a�@�ɍs���ۂ̌�ʔ�Ȃǂ������ł��܂��B
-
-�@�Ƃ͂������`�ł���3�������炢�ʉ@���āA���n�r���A�����𑱂��Ă��邾����
-�ȒP��120���̌��x���炢�͓˔j���Ă��܂��܂��B�ӊO�Ƃ������Ďg���Ă������
-�ŁA������@��ɂ��炾��߂������Ǝv���Ă�����Ȃɂ͊ȒP�ɂ����Ȃ����̂�
-���B
-
-
-��0x05.) �傫�����̂̏ꍇ
-
-�@�����ӕی��ł�120���~�����J�o�[���Ă���܂��񂪁A������I�[�o�[�����ꍇ
-�ɂ͂ǂ�����΂����ł��傤���B
-�@�����΂�悭����̂͑�����̔C�ӕی����略���Ă��炤���Ƃł��B����͑�
-�l�������Ƃ�1���~�Ƃ������Ă܂��̂ŁA������ł������Ă��ꂻ���ȋC�����܂�
-���A�����ӂ̂悤�Ȕ�Q�ҕی�̊ϓ_����̎��P���Ƃ���Ȃ��̂ł���ȂɊÂ�
-����ł͂���܂���B�����Ƃ��A�������������Ȃ񂩂͂���Ȃ��Ƃ������Ă�
-��܂���B
-
-�@����Ȃ킯�ő���̔C�ӕی����略���Ă��炤���Ƃ������̂ł����A���̔C��
-�ی��Ƃ������͎̂����ӂƈ���āA�ߎ������Ƃ������̂ɂ���Ă��炦����z��
-�ς���Ă���V�X�e���ɂȂ��Ă��܂��B���̂̃V�`���G�[�V�����ɉ����ĉ��Q�ҁA
-��Q�ҁA�o���̉ߎ��𔻒肵�āA���̊����ɉ����đo�������݂ɕ⏞�𕉒S����
-���Ƃ������̂ł��̂ŁA��Q�҂Ȃ̂ɑ���̕ۏ������K�v������܂��B������
-���̂ł����A����͕����i��q�j�ł����l�ł��B
-
-�@���̉ߎ������ł����A�ԑΎԁA�o�C�N�̏ꍇ�A�����������Ȃ��Ǝv���Ă��܂�
-������0:100�ɂȂ邱�Ƃ͂���܂���B
-�@���̌o���Ō����܂��ƁA�M�������̐��������̎Ԃɓ˂����܂ꂽ�Ƃ��͂�����
-��0:100�ł������A�����ŋ}�Ƀ������ԂɊ������܂�Ă�10:90�ł����B10�͂���
-�ɂ�������A�ƕی����ɐ�������܂����B�ی����ɂ���0:100�ɂ��邽�߂ɂ͑�
-��ɂ���ۂǂ̉ߎ����Ȃ�����_�����Ƃ������ƂŁA���̕��͎��ȕ��S�ɂȂ���
-���܂��܂��B
-
-�@�ڂ��������ɂ��Ă͐{�A�Ԗ{�ƌĂ΂�Ă���u���Q�����z�Z���v�Ȃ�
-�Ă����{������A���Ⴒ�ƂɁu�����_�Ńo�C�N�Ǝ����Ԃ̏o������̂̏ꍇ�A
-�o�C�N�F�ԁ@70�F30�v�Ȃǂ̂悤�ɊG����Ŋ������������Ă܂��̂ŁA���̕�
-���Q�l�ɂ��Ă��������B�u����^�C���X�v�̕ʍ��ł������悤�Ȃ��̂�����܂�
-���A��{�I�ɓ����ł��B
-�@��ʓI�ɕی����͂�����g���đ�܂��Ȋ����𔻒f���A�C���v�f�ƌĂ΂��A
-�ꎞ��~�`���ᔽ����-10�A�M����������-20�̂悤�ȍׂ��ȃV�`���G�[�V������
-�������C�����{�������̂��ߎ������Ƃ��Ă�����Ɏ��������Ă��܂��B��������
-�n�߂ɂ͂�����Ƒ�����Ɍ����Ă��܂��̂ŁA������ƃS�l���5�`10�����炢
-�͏C�����ꂽ�肵�܂��̂ŁA�Ƃ肠�����L�ۂ݂ɂ͂��Ȃ����������Ǝv���܂��B
-
-�@���̉ߎ������ɉ����ĕی������x������킯�ł����A�����ӂ͈̔͂𒴂���
-�������Ȃ��P�[�X���l���Ă݂邱�Ƃɂ��܂��B�ߎ�������70�F30���炢�ŁA����
-���Ƃ������`�ł��ł��炾��Ǝ��Â��������΂��āA��Ô�Ȃ�150���~���炢��
-�������ꍇ�ł��B
-�@���̏ꍇ�A���肪�x�����̂�105���~�ł����A����͂��łɎ����ӕی��ŕ����
-�Ă���̂ŁA�C�ӕی������1�~�������Ă��Ȃ����ƂɂȂ�܂��B�����������ӂ�
-�͈͂𒴂���30���~���͎����̎x�����Ƃ������ƂɂȂ�A�呹�Ƃ������ƂɂȂ�
-�܂��B���߂Ɏ��Â�؂�グ�Ďd���ł����Ƃ������������ꍇ�����邱�Ƃ͒m��
-�Ă��������������ł��傤�B�������Ԏӗ��̌v�Z���@���ς���Ă���̂ŁA�^��
-�����ƌ��炳���ꍇ�����邩������܂���B
-
-�@���`�ł��Ƃ������Ă�3����������Ƃ����A�������A���������ƕی�������
-�d�b���������Ă��܂��B����ł����΂炭�͒ʂ��Ă������̂ł����A�C�ӕی���
-�g���悤�ɂȂ�ƁA�ʉ@�̈Ԏӗ��ɂ��Ă����N���o�ƂقƂ�Ǒ����邱�Ƃ͂�
-���̂ŁA�������������Ă���΋x�ƕ⏞�����炦��Ȃǂ̗��R���Ȃ����莦�k��
-������������������܂���B
-�@����ł��A�̂�肭����1�N���炢�����L�΂��ƁA�������ɕی�������A����
-�������A���̂ւ�ŏǏ�Œ�ɂ����ւ񂩁A�ƕ�����܂��B�Ǐ�Œ�Ƃ�����
-�͌��ǂ��c�������Ƃɂ��Ă��̕��̈Ԏӗ�����悹�������ɂ���ŏI���A
-�Ƃ������Ƃł��B
-�@�����Ȃ�Ƃ���ȏ�̏�ς݂͂قږ]�߂܂���̂ŁA�Ǐ���Œ肳���āA���k
-�������������Ǝv���܂��B���܂�ɒ������ƕی����ɉR���Ă΂�肳��āA��
-�܂��ɂ̓u�`�؂���āA���������ɂ���Ƒi���邼�R���A�Ƃ�����ꂽ�肵��
-���B
-
-�@�^�ǂ��g�̂��قڊ������Ă���Ȃ�A�����������x���Ԏӗ��ɏ�ς݂���邭
-�炢�ł����A�^�����{���ɐg�̂������܂܂Ȃ�A�f�f���̒�o���K�v�ɂȂ�܂��B
-�@�ی����Ɏw�肳�ꂽ�a�@�Ō����i�_�o��Q�Ȃ�MRI�Ƃ��ؓd�}�Ƃ��j����āu��
-��Ⴈ�������g�`�łƂ��A���O�A�������v�Ƃ������A���ׂĂ�����Ă���
-�Ƃ���ȊO�ɂ������ꏊ���������ꂽ�肵�āA�߂ł�����Q���F�肳���Ɠ���
-�ɉ������Ԏӗ������炦�邱�ƂɂȂ�܂����A�����Ƃ��܂肤�ꂵ���Ȃ��ł���
-���B���N���ł��B
-�@���Ȃ݂Ƀ��`�ł��ł�����Ɛ_�o������Ă��邭�炢�Ȃ�75���A�Ђǂ�����
-����200�����炢��ς݂����͂��ł��B
-
-�@�����A���肪�C�ӕی��ɓ����Ă��Ȃ��ꍇ�͒��ڐ������邱�ƂɂȂ�܂��B�C
-�ӕی��ɓ����ĂȂ��Ď��̂��N�����悤�ȓz�͂������������Ȃ��̂ŁA�����ӈ�
-��̏�ς݂͊��Ҕ��ł��B����قǉ��䂪�Ђǂ��Ȃ��Ȃ炠����߂ē���������
-���Ԍ����̖ʂ���͏ォ������܂���B
-�@�܂��A�^�N�V�[���C�ӕی��ɓ����Ă��Ȃ����Ƃ������̂ŁA�^�N�V�[��Ђ̒S
-���҂Ƃ̌��ɂȂ�܂����A�^�N�V�[��Ђ͂��Ȃ薳���Ȃ��Ƃ������Ă��܂��B
-�@�ǂ���ɂ���A�����Ƃ��炦�Ȃ��ꍇ�́A�ٔ��ł����蒸���A�Ƃ�������
-�ɂȂ�܂��B
-�@���������ΐ̂̉f��u�g���b�N��Y�v�ł��l�𝛂ˎE���ĈԎӗ��������Ȃ���
-�������l���o�Ă��܂����ˁB
-
-
-��0x06.) �����͂ǂ�����H
-
-�@���܂ł͎�ɉ���̂��Ƃ������Ă��܂������A�Ō�ɕ����ɂ��ĐG��Ă���
-���Ƃɂ��܂��B
-�@�����Ƃ͂��̎��̂ŉ�ꂽ�A�ԁA�p�[�c�A���Ȃǂ̂��ƂŁA���������ɕۏ�
-�����߂邱�Ƃ��ł��܂��B�Ƃ͂��������͎����ӕی��ł̓J�o�[���Ă���܂���
-�̂ŁA�C�ӕی����g�����A���͂ŉ��Ƃ�����A�Ƃ������ƂɂȂ�܂��B
-�@�������A�����炪���炦��A�Ƃ������Ƃ́A����ɂ����l�̌���������킯�ŁA
-�����A���������s�҂ł��A�M��������O���s���ӂȂǂ�����ɉ�������̉ߎ���
-����ꍇ�A���̏����̉ߎ����𕉒S����K�v���o�Ă��܂��B
-�@�����ł��A�ߎ������Ƃ����̂����ɂȂ��Ă��܂��B�ߎ������ɉ����ĕ]����
-���܂��Ă��܂��̂ŁA���ۂ̌v�Z�Ƃ��Ă�
-
-�����̑��Q�~�����̉ߎ������|����̑��Q�~����̉ߎ�����
-
-�Ƃ������ƂɂȂ�܂��B
-
-�@���������������̂̒��ł́A���肪�N���E���A�����炪250CC�o�C�N�A�����_��
-�������܂�ĉߎ�������2�F8�̂Ƃ��A�����炪�S���A���肪�t�F���_�[�ƃ��C�g
-�����ŁA�����2���̕������z�Ƃ��đ傫���Ȃ�A���ʁA�������܂ꂽ�̂Ɏ�����
-���𕥂��A�Ƃ����Ђǂ��P�[�X������܂����B
-�@�����A���肪�t�F���[���Ȃǂ̍����ȎԂ��S�������ꍇ�A�����̒l�i���Ƃ���
-���Ƃ͑z���ł���ł��傤�B���Ƃ��ߎ�������0.5�F9.5�ł����Ă��A����5�����@
-������яo�����Ȓl�i�ɂȂ��Ă��܂��̂ł��B
-�@���s�җD��̐��̒��ł����A���X�N���l����Ƃނ�݂ɐM���𖳎���������
-�o������͂��Ȃ���������ł��B�܂��A�o�C�N�ł��C�ӕی��ɓ������������S��
-�Ƃ�����ł��傤�B
-
-
-��0x07.) �Ō��
-�@�����ƁA��ʎ��̂ł̕ی����ɂ��ď����Ă��܂������A���͓̂ˑR�~�肩��
-���Ă�����̂ŁA�}�Ɏ��̂ɑ�������ǂ����Ă����̂��킩��Ȃ��l���قƂ��
-���Ǝv���܂��B���ꂭ�炢�m���Ă����΁A�������Q�҂�ی����Ƙb������i�K��
-�Ȃ��āA��ÂɑΉ����ł���̂ł͂Ȃ��ł��傤���B
-�@���ƁA�ʓ|�Ȃ�s�����m��ٌ�m�Ȃǂɗ��ނƂ����������܂����A�Œ�1����
-�����Ă�����܂��̂ŁA���̓_�͂����ӂ��B
-�@�Ō�ɁA���@����Ǝ������`�œ����Ă��鏝�Q�ی���������\���炦�܂��̂ŁA
-����ɐ�������̂��Y��Ȃ��悤�ɂ��܂��傤�B�́A�e������Ɏ������`��Ƒ�
-���`�œ����Ă������Q�ی������\�ȏ������ɂȂ������̂ł����B
+○第６章：著者プロフィール
 
 
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- ��Q��: Ping�v���O��������낤 ---
+--- 第１章: 交通事故って儲かる!? 〜たくさん慰謝料を受け取るために〜 ---
 
-���ҁFKenji Aiko
+著者：山本洋介山
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@����ping���K�v�Ȃ̂��H�@����́A�C���^�[�l�b�g������Ƀp�P�b�g��͂���
-���Ƃ�ۏ؂��Ȃ�����ł��B����ɁA�C���^�[�l�b�g�̓p�P�b�g�𑗐M��������
-�ɑ���ɓ͂��邱�Ƃ������ۏ؂��܂���i�����������TCP�𗘗p���邱�Ƃŉ���
-���Ă��܂����j�B�C���^�[�l�b�g�ł̓f�[�^�̓p�P�b�g�P�ʂŕ�������đ��M��
-��܂��B�܂�ꌩ�����؂�Ƀf�[�^�𑗐M�����悤�Ɍ����Ă��A���͓����I��
-�͂������̃p�P�b�g�ɕ�������đ��M����Ă���킯�ł��B
+　最近、何かいい加減なことを書き散らすだけで「不正アクセス禁止法の教唆」
+とかのワケの分からない理由で警察に連れて行かれそうなので、ハッキングなん
+かの原稿は怖くて書けない気分です。そんなわけでたまには別のアングラなこと
+を。
 
-�@���Ă��āA�Ⴆ�΃p�P�b�g������ɑ��M�����Ƃ��܂��傤�B�������A�l�b�g��
-�[�N�@��̃g���u���⍬�G�Ȃǂň���Ƀp�P�b�g���������͂��Ȃ������A������
-�͓r���Ńp�P�b�g�f�[�^�����Ă��܂����Ƃ��܂��B���̂Ƃ��A���̃p�P�b�g��
-�j������܂��B���M���ɂ͂Ȃ�̒ʒm������܂���B�Ȃ�̒ʒm���Ȃ��A�����p
-�P�b�g������j���A���ł�����A���ꂪ�C���^�[�l�b�g�ł��B
+■0x02.) 交通事故って怖いね
 
-�@�����A���l�Ɏ莆�𑗂����Ƃ��܂��i���l���܂��񂯂ǂ� T_T;�j�B���̎莆��
-�X�֋ǂ֓n��A����ɕʂ̗X�֋ǂ֓n��A�ǂ�Ȃɓ�������ł��悤�ƁA�ǂ��
-�ɓ����j�󂳂�Ă��悤�ƁA�ǂ�ȂɃg���u���ɂ݂܂��悤�ƁA�X�֋ǂ̐l��
-�K���莆��͂��Ă����ł��傤�B�������A�C���^�[�l�b�g�͂����ł͂Ȃ��̂�
-���B�C���^�[�l�b�g�̏ꍇ�A��������ł���u�����h�N�T�v�Ƃ������t��f����
-�āA���̏�Ŏ莆��j��̂ĂĂ��܂��܂��B���̂�������������Ȃ�ł��i��
-���h�N�T�Ƃ͌����܂��񂯂ǂ�^^;�j�B
-
-�@�������A���ꂶ��܂����̂ŁA����l��ping�Ƃ����v���O���������܂����B
-���̃v���O�������瑗��ꂽ�p�P�b�g�Ɍ����ẮA�����A�Ȃɂ��̃G���[�Ɍ���
-��ꂽ�Ƃ��ɂ��p�P�b�g��j�����Ēm����ł͂Ȃ��A�����Ƃ��̌����𑗐M
-���ɋ����Ă���܂��B
-
-�@�����A��������ł�����A�u���߂�A�����a�؂��ĂĂ����A���O�̎莆�����
-��������v�Ƃ����Ė߂��Ă��܂��B�������Ă���A�u�����A����4�������H��
-���������̂ł��O�̎莆�x��Ȃ������̂�v�Ƃ����Ė߂��Ă��܂��B����[�A��
-�Ă��֗��ɂȂ�܂����ˁB
-
-�@�Ƃ������ƂŁA����͂���ping�v���O����������Ă݂邱�Ƃɂ��܂��B
+　あまり、交通事故なんて遭いたくもないものですが、そう思っていてもこれだ
+け車の多い世の中ですから、いろいろと降りかかってきて、自慢になりませんが、
+私なんかは大きいもの、小さいものを含めて５回も遭っています。
+　まあ、そんなわけで、以前その折に経験したことと保険屋に教わったことを書
+いてみます。知らないと、もらえるものももらえないわけで、知っておくといい
+ことがあるかもしれません。なお、事故としてはよくあるムチ打ち、捻挫程度の
+そんなにひどくない怪我を想定しています。
+　なお、ここで書いてることを参考にして、ひどい目にあったからと言って責任
+は取りませんし、任意保険に入っていればいろいろな交渉は保険屋が代行してく
+れますので、任意保険は入っといた方がいろいろとお得だと思います。しかし、
+こちらが歩行者だったり同乗者だったりすると、まるで使えない保険屋だったり
+することもままあるわけで、まあ、知っておいてもいいかもしれません。
 
 
-��0x02.) ping�iPacket INternet Groper�j�Ƃ�
+■0x03.) 事故に遭ったときにすべきこと
 
-�@�C���^�[�l�b�g��C���g���l�b�g�Ȃǂ�TCP/IP�l�b�g���[�N��f�f����v���O
-�����B�ڑ�����Ă��邩�ǂ������ׂ����R���s���[�^��IP�A�h���X���w�肷��ƁA
-ICMP���g���Ēʏ�32�o�C�g���x�̃f�[�^�𑗐M���A����̃R���s���[�^����ԐM
-�����邩�ǂ����A�ԐM������ꍇ�͂ǂ̂��炢���Ԃ��������Ă��邩�A�Ȃǂ̃f
-�[�^�����Ƀl�b�g���[�N��f�f����B
+　事故は当たり屋でもない限り何の前触れもなく起こるもので、特に初めて遭っ
+た時は軽いものであっても何がなんだかわからなくなって、軽いパニック状態に
+陥ると思います。
+　そこでまず、事故に遭った時に何をすればいいのかを、思い出せずに後で後悔
+する羽目に陥らないように、覚えやすく少しだけ書いておきます。
 
-�@IT�p�ꎫ��e-words���ihttp://e-words.jp/w/ping.html�j
+・何が何でも警察に電話
 
-�@ping�R�}���h�́ALinux�͂������AWindows�ɂ��f�t�H���g�ŃC���X�g�[����
-��Ă��܂��B�R�}���h�v�����v�g�Ɉȉ��̂悤�ɓ��͂���Ƃ��ŁA�����ɓn����
-�z�X�g�܂ł̃l�b�g���[�N�󋵂�����ł��邩�ǂ����𔻒f�ł��܂��B
+　まずは警察に連絡しましょう。何を今さらこんな子供でもできることを、と思
+う人もいるかもしれませんが、事故に遭った後はこんな基本的なことも考えられ
+ないくらい混乱することもあるのです。急に地震に遭った時に枕を抱えて走った、
+という笑い話を聞いたことがある人もいるでしょう。
 
------  �R�}���h�v�����v�g
+　ともかく、警察に電話することだけ覚えておけばいいでしょう。ただ、そこそ
+こ目立つ事故ならば、よっぽどの山の中でもない限り、見ている人が連絡してく
+れるものです。
+　相手が逃げることも考えて相手の特徴を覚えておいた方がいいのかもしれませ
+んが、幸いにも私は逃げられたことはありませんので、詳しい追い込みについて
+は知りません。
+
+　警察に連絡するのは当たり前だと思う人も多いでしょう。しかし、相手によっ
+ては、免許の点数や仕事などの都合で、内々で処理したいと話を持ちかけてくる
+人もいます。
+　これは基本的には止めておいた方がいいでしょう。
+　相場より高めの慰謝料をもらえそうだからといって、これを承諾してしまうと、
+教えてもらった連絡先が嘘だったり、警察が事故証明を発行してくれない（届け
+てないから当たり前）ので保険金が請求できなかったりと、後々トラブルの原因
+になります。
+
+・絶対謝らない
+
+　日本人はなあなあで物事を済ませようとしがちで、こちらが悪くもないのに、
+一応お互い様ということですぐに謝る人がいると思いますが、これは交通事故の
+時にはやってはいけないことです。
+　特に出会い頭の事故などで自分に非があるのかないのかよくわからない場合な
+どは、先に謝ったということで、貴方が責任を認めたということを示した、とい
+うことになります。また、自分に全く非のない場合でも、過失割合（後述）の算
+定のときに不利に働いてきます。
+
+・救急車を呼ぶ
+
+　普通、救急車を呼ぶかどうかを警察に聞かれますので、何が何でも救急車を呼
+んでもらい、病院に連れて行ってもらいましょう。
+　事故に遭った時は興奮しているので、少々の怪我だと痛くないものです。興奮
+が冷めてから急に痛くなってきます。ちょっとシチュエーションは違いますが、
+私の友人でバイクでがけから落ちて（自損）大腿骨を骨折しているのに現場検証
+に付き合った剛の者がいますが、救急車で運ばれるまでは痛くなかったそうです
+よ。
+　どうせ頭を打ったりしているので、よっぽどの用事がなければ１晩くらいは検
+査入院してもいいでしょう。
+　また、救急車で運ばれていくことで、ほぼ人身事故確定になりますので、保険
+金の面からも救急車で運ばれることは重要です。逆に大した外傷がないからとい
+って救急車を呼ばなくて、後で痛みが出てきても物損扱いで処理されてしまい、
+保険金が払われない可能性がないとは言えないので、これは基本です。
+
+　交通事故には大きく分けて、物損と人身の２種類に分けられ、基本的に人身の
+方が相手の責任が重くなり、点数の引かれ方も違ってきます。
+　事故を起こした相手が物損ですませたい、といってきたところで、こちらには
+何の得にもなりませんし、事故に遭う前は全くの他人なのですから、情けをかけ
+ることは無用です。
+　また、その優しさで痛い目に会うこともあります。物損ですませると慰謝料を
+多く払うから、と言ってきたところで所詮口だけで払われないケースもあります
+ので、地道に病院に通って慰謝料を稼いだ方が、身体にも財布にも優しいと言え
+ます。
+
+
+■0x04.) 上手な慰謝料のもらい方
+
+　事故に遭って病院に行った後は、怪我の治療のフェーズに入ってきます。もち
+ろん、よりよく保険金をもらうにはここからが本番です。
+
+　さて、事故に遭って怪我をした場合、誰が治療費を払うのでしょうか。
+　怪我をさせたにせよ他人の治療費なんか払いたくない、払えない、という人が
+いますが、そういう人に事故を起こされても必要最小限の保障を受けられるよう
+に自賠責保険というものがあり、すべてのナンバーを付けた車は強制的に自賠責
+保険に加入しています。
+　もし、自賠責保険に入ってない車に乗っていて、捕まったときには、即免許取
+り消しになります。
+　また、別に自賠責保険で保障しきれない分や物損の処理のためにドライバーが
+独自に入るで任意保険というものがあり、常識的なドライバーはこれにも加入し
+ていると思われます。
+
+　小さな事故の場合は、自賠責保険を使うことになります。
+　自賠責保険の限度は120万円で、これは治療費、休業補償、慰謝料などすべて含
+めたものです。自賠責保険の限度を突破してしてから後はいろいろと面倒なこと
+になってくるので、軽い怪我なら限度いっぱいに近付いてきたら、だらだら通院
+するよりも職場復帰するくらいの方が効率的だと思います。
+
+　自賠責保険の限度ギリギリまで近付くには治療費、休業補償、慰謝料の計算方
+法を知っておいたほうがいいと思いますので、簡単に解説します。
+
+　まず、治療費ですが、この治療費というものは意外と曲者です。自賠責保険を
+使うと健康保険が使えないと言われますから、自由診療10割負担で、これが思っ
+たよりもコストがかかってしまうものです。これだと入院1日1万円とか、MRI1回
+5万とかかかったりします。軽い怪我でもまめに通院していれば、自分が考えてい
+るより治療費はかかります。しかも、保険金が支払われるまでは自己負担だった
+りもします。
+　とはいえ実は健康保険が使えたりするので、面倒でなければ病院に言ってみる
+といいでしょう。120万円から治療費を引いたものが休業補償＋慰謝料の限度額な
+ので、治療費を減らせば、もらえるお金が増える可能性も上がってきます。
+
+　次に休業補償です。入院したり通院で会社を休んだりすると、休業補償という
+のがもらえます。これは日給の８割くらいもらえますので、慰謝料と合わせると
+下手に会社に行くより儲かってしまいますね。怪我したんだからそれくらいはも
+らっても当然だとは思いますが。また、休業補償は治療のために有給休暇を消費
+してもその分支払われますので忘れないようにしましょう。
+
+　そして、みんな大好きな慰謝量です。慰謝料は自賠責保険の場合、1日4100円×
+直るまでの日数と決まっています。とはいえ病院に通ってないとそんなに出ませ
+ん。きっちり慰謝料をもらうには、だいたい2日に1回くらいのペースで通えばい
+いと思います。それ以上通っても慰謝料は増えることはありません。
+　その他、入院している場合は諸経費として1000円程度支給されたり、通院や検
+査で別の病院に行く際の交通費なども請求できます。
+
+　とはいえムチ打ちで3ヵ月くらい通院して、リハビリ、検査を続けているだけで
+簡単に120万の限度くらいは突破してしまいます。意外とお金って使っているもの
+で、怪我を機会にだらだら過ごそうと思ってもそんなには簡単にいかないもので
+す。
+
+
+■0x05.) 大きい事故の場合
+
+　自賠責保険では120万円しかカバーしてくれませんが、これをオーバーした場合
+にはどうすればいいでしょうか。
+　いちばんよくあるのは相手方の任意保険から払ってもらうことです。これは対
+人無制限とか1億円とか言ってますので、いくらでも払ってくれそうな気がします
+が、自賠責のような被害者保護の観点からの慈善事業じゃないのでそんなに甘い
+もんではありません。もっとも、大怪我をした時なんかはそんなことも言ってら
+れません。
+
+　そんなわけで相手の任意保険から払ってもらうことが多いのですが、この任意
+保険というものは自賠責と違って、過失割合というものによってもらえる金額が
+変わってくるシステムになっています。事故のシチュエーションに応じて加害者、
+被害者、双方の過失を判定して、その割合に応じて双方が相互に補償を負担しあ
+うというものですので、被害者なのに相手の保障をする必要があります。困った
+ものですが、これは物損（後述）でも同様です。
+
+　その過失割合ですが、車対車、バイクの場合、自分が悪くないと思ってもまず
+割合が0:100になることはありません。
+　私の経験で言いますと、信号無視の酔っ払いの車に突っ込まれたときはさすが
+に0:100でしたが、直線で急にヨレた車に巻き込まれても10:90でした。10はそこ
+にいたから、と保険屋に説明されました。保険屋によると0:100にするためには相
+手によっぽどの過失がない限りダメだということで、その分は自己負担になって
+しまいます。
+
+　詳しい割合については青本、赤本と呼ばれている「損害賠償額算定基準」なん
+ていう本があり、事例ごとに「交差点でバイクと自動車の出会い頭事故の場合、
+バイク：車　70：30」などのように絵入りで割合が解説されてますので、その辺
+を参考にしてください。「判例タイムス」の別冊でも似たようなものがあります
+が、基本的に同じです。
+　一般的に保険屋はこれを使って大まかな割合を判断し、修正要素と呼ばれる、
+一時停止義務違反だと-10、信号無視だと-20のような細かなシチュエーションに
+応じた修正を施したものを過失割合としてこちらに持ちかけてきます。向こうも
+始めにはちょっと相手寄りに言ってきますので、ちょっとゴネると5〜10％くらい
+は修正されたりしますので、とりあえず鵜呑みにはしない方がいいと思います。
+
+　その過失割合に応じて保険金が支払われるわけですが、自賠責の範囲を超えて
+得をしないケースを考えてみることにします。過失割合が70：30くらいで、ちょ
+っとしたムチ打ちでだらだらと治療を引き延ばして、医療費など150万円くらいか
+かった場合です。
+　この場合、相手が支払うのは105万円ですが、これはすでに自賠責保険で払われ
+ているので、任意保険からは1円も入ってこないことになります。しかも自賠責の
+範囲を超えた30万円分は自分の支払いということになり、大損ということになり
+ます。早めに治療を切り上げて仕事でもしといた方がいい場合もあることは知っ
+ておいた方がいいでしょう。しかも慰謝料の計算方法も変わってくるので、運が
+悪いと減らされる場合があるかもしれません。
+
+　ムチ打ちとか言っても3ヵ月もするともう、ええやろ、治ったやろと保険屋から
+電話がかかってきます。それでもしばらくは通ってもいいのですが、任意保険を
+使うようになると、通院の慰謝料にしても半年も経つとほとんど増えることはな
+いので、そこそこ治っていれば休業補償がもらえるなどの理由がない限り示談し
+た方がいいかもしれません。
+　それでも、のらりくらりと1年くらい引き伸ばすと、さすがに保険屋から、もう
+ええやろ、このへんで症状固定にせえへんか、と聞かれます。症状固定というの
+は後遺症が残ったことにしてその分の慰謝料を上乗せする代わりにこれで終わり、
+ということです。
+　そうなるとこれ以上の上積みはほぼ望めませんので、症状を固定させて、示談
+した方がいいと思います。あまりに長引くと保険屋に嘘つき呼ばわりされて、し
+まいにはブチ切れられて、いい加減にせんと訴えるぞコラ、とか言われたりしま
+す。
+
+　運良く身体がほぼ完治しているなら、お小遣い程度が慰謝料に上積みされるく
+らいですが、運悪く本当に身体が悪いままなら、診断書の提出が必要になります。
+　保険屋に指定された病院で検査（神経障害ならMRIとか筋電図とか）されて「こ
+りゃおかしい波形でとるわ、お前、あかんわ」とか言われ、調べてもらっている
+ところ以外にも悪い場所が発見されたりして、めでたく障害が認定されると等級
+に応じた慰謝料がもらえることになりますが、きっとあまりうれしくないでしょ
+う。健康第一です。
+　ちなみにムチ打ちでちょっと神経がやられているくらいなら75万、ひどいもの
+だと200万くらい上積みされるはずです。
+
+　もし、相手が任意保険に入っていない場合は直接請求することになります。任
+意保険に入ってなくて事故を起こすような奴はだいたい金がないので、自賠責以
+上の上積みは期待薄です。それほど怪我がひどくないならあきらめて働いた方が
+時間効率の面からは上かもしれません。
+　また、タクシーも任意保険に入っていないことが多いので、タクシー会社の担
+当者との交渉になりますが、タクシー会社はかなり無茶なことを言ってきます。
+　どちらにせよ、ちゃんともらえない場合は、裁判でがっつり頂く、ということ
+になります。
+　そういえば昔の映画「トラック野郎」でも人を撥ね殺して慰謝料が払えなくて
+逃げた人が出てきましたね。
+
+
+■0x06.) 物損はどうする？
+
+　今までは主に怪我のことを書いてきましたが、最後に物損について触れておく
+ことにします。
+　物損とはその事故で壊れた、車、パーツ、服などのことで、これも相手に保障
+を求めることができます。とはいえ物損は自賠責保険ではカバーしてくれません
+ので、任意保険を使うか、自力で何とかする、ということになります。
+　ただし、こちらがもらえる、ということは、相手にも同様の権利があるわけで、
+もし、自分が歩行者でも、信号無視や前方不注意などこちらに何かしらの過失が
+ある場合、その少しの過失分を負担する必要が出てきます。
+　ここでも、過失割合というのが問題になってきます。過失割合に応じて評価が
+決まってきますので、実際の計算としては
+
+自分の損害×自分の過失割合−相手の損害×相手の過失割合
+
+ということになります。
+
+　私が遭遇した事故の中では、相手がクラウン、こちらが250CCバイク、交差点で
+巻き込まれて過失割合が2：8のとき、こちらが全損、相手がフェンダーとライト
+交換で、相手の2割の方が金額として大きくなり、結果、巻き込まれたのに自分が
+金を払う、というひどいケースもありました。
+　もし、相手がフェラーリなどの高価な車が全損した場合、相当の値段だという
+ことは想像できるでしょう。たとえ過失割合が0.5：9.5であっても、その5％が鼻
+血が飛び出そうな値段になってしまうのです。
+　歩行者優先の世の中ですが、リスクを考えるとむやみに信号を無視したり飛び
+出したりはしない方が無難です。また、バイクでも任意保険に入った方が安心だ
+といえるでしょう。
+
+
+■0x07.) 最後に
+　ざっと、交通事故での保険金について書いてきましたが、事故は突然降りかか
+ってくるもので、急に事故に遭ったらどうしていいのかわからない人がほとんど
+だと思います。これくらい知っておけば、いざ加害者や保険屋と話をする段階に
+なって、冷静に対応ができるのではないでしょうか。
+　あと、面倒なら行政書士や弁護士などに頼むという手もありますが、最低1割は
+持っていかれますので、その点はご注意を。
+　最後に、入院すると自分名義で入っている傷害保険からも結構もらえますので、
+これに請求するのも忘れないようにしましょう。昔、親が勝手に自分名義や家族
+名義で入っていた傷害保険が結構な小遣いになったものでした。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第２章: Pingプログラムを作ろう ---
+
+著者：Kenji Aiko
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　何故pingが必要なのか？　それは、インターネットが宛先にパケットを届ける
+ことを保証しないからです。さらに、インターネットはパケットを送信した順番
+に相手に届けることさえも保証しません（ただしこれはTCPを利用することで解決
+していますが）。インターネットではデータはパケット単位で分割されて送信さ
+れます。つまり一見いっぺんにデータを送信したように見えても、実は内部的に
+はいくつかのパケットに分割されて送信されているわけです。
+
+　さてさて、例えばパケットを宛先に送信したとしましょう。しかし、ネットワ
+ーク機器のトラブルや混雑などで宛先にパケットが正しく届かなかった、もしく
+は途中でパケットデータが壊れてしまったとします。そのとき、そのパケットは
+破棄されます。送信元にはなんの通知もありません。なんの通知もなく、ただパ
+ケットだけを破棄、消滅させる、それがインターネットです。
+
+　私が、恋人に手紙を送ったとします（恋人いませんけどね T_T;）。その手紙は
+郵便局へ渡り、さらに別の郵便局へ渡り、どんなに道が混んでいようと、どんな
+に道が破壊されていようと、どんなにトラブルにみまわれようと、郵便局の人は
+必ず手紙を届けてくれるでしょう。しかし、インターネットはそうではないので
+す。インターネットの場合、道が混んでたら「メンドクサ」という言葉を吐き捨
+て、その場で手紙を破り捨ててしまいます。ものすごい自分勝手なやつです（メ
+ンドクサとは言いませんけどね^^;）。
+
+　しかし、これじゃまずいので、ある人がpingというプログラムを作りました。
+このプログラムから送られたパケットに限っては、もし、なにかのエラーに見ま
+われたときにもパケットを破棄して知らん顔ではなく、ちゃんとその原因を送信
+元に教えてくれます。
+
+　もし、道が混んでいたら、「ごめん、道が渋滞しててさぁ、お前の手紙送れな
+かったよ」といって戻ってきます。道が壊れてたら、「わりっ、国道4号線が工事
+中だったのでお前の手紙遅れなかったのよ」といって戻ってきます。いやー、と
+ても便利になりましたね。
+
+　ということで、今回はこのpingプログラムを作ってみることにします。
+
+
+■0x02.) ping（Packet INternet Groper）とは
+
+　インターネットやイントラネットなどのTCP/IPネットワークを診断するプログ
+ラム。接続されているかどうか調べたいコンピュータのIPアドレスを指定すると、
+ICMPを使って通常32バイト程度のデータを送信し、相手のコンピュータから返信
+があるかどうか、返信がある場合はどのくらい時間がかかっているか、などのデ
+ータを元にネットワークを診断する。
+
+　IT用語辞書e-wordsより（http://e-words.jp/w/ping.html）
+
+　pingコマンドは、Linuxはもちろん、Windowsにもデフォルトでインストールさ
+れています。コマンドプロンプトに以下のように入力するとこで、引数に渡した
+ホストまでのネットワーク状況が正常であるかどうかを判断できます。
+
+-----  コマンドプロンプト
 C:\>ping -n 1 yahoo.co.jp
 
 Pinging yahoo.co.jp [211.14.15.5] with 32 bytes of data:
@@ -388,16 +388,16 @@ C:\>
 -----
 
 
-��0x03.) ICMP�iInternet Control Message Protocol�j�Ƃ�
+■0x03.) ICMP（Internet Control Message Protocol）とは
 
-�@IP�̃G���[���b�Z�[�W�␧�䃁�b�Z�[�W��]������v���g�R���B TCP/IP�Őڑ�
-���ꂽ�R���s���[�^��l�b�g���[�N�@��ԂŁA�݂��̏�Ԃ��m�F���邽�߂ɗp��
-����B�l�b�g���[�N�f�f�v���O����ping���g���B
+　IPのエラーメッセージや制御メッセージを転送するプロトコル。 TCP/IPで接続
+されたコンピュータやネットワーク機器間で、互いの状態を確認するために用い
+られる。ネットワーク診断プログラムpingが使う。
 
-�@IT�p�ꎫ��e-words���ihttp://e-words.jp/w/ICMP.html�j
+　IT用語辞書e-wordsより（http://e-words.jp/w/ICMP.html）
 
 
-��0x04.) ICMP Header Format
+■0x04.) ICMP Header Format
 
 -----
 Echo or Echo Reply Message
@@ -412,42 +412,42 @@ Echo or Echo Reply Message
 |     Data ...
 +-+-+-+-+-
 
-�iRFC792���j
+（RFC792より）
 -----
 
-�@�ŏ���4�o�C�g�ł���Type�ȊO��Type�̒l�ɂ���ĉς��܂��B�ڍׂ�RFC 792
-���݂Ă��������B
+　最初の4バイトであるType以外はTypeの値によって可変します。詳細はRFC 792
+をみてください。
 
 -----
-Type 8�iEcho Request�j echo�v��
-Type 0�iEcho Reply�j   echo����
+Type 8（Echo Request） echo要求
+Type 0（Echo Reply）   echo応答
 -----
 
-�@�ڑ�����Ă��邩�ǂ������ׂ����R���s���[�^��Type��8�ɂ���ICMP�p�P�b�g��
-���M����ƁA���̃R���s���[�^����Type��0�ɂ����p�P�b�g���ԓ�����܂��B����
-��ping�̎d�g�݂ł��B
+　接続されているかどうか調べたいコンピュータへTypeを8にしたICMPパケットを
+送信すると、そのコンピュータからTypeを0にしたパケットが返答されます。これ
+がpingの仕組みです。
 
-�@Type�ɂ̓p�P�b�g�̃^�C�v���w�肳��܂��Bping�ɂ͊�{�I��Echo Request��
-Echo Reply�𗘗p���܂����A�p�P�b�g�^�C�v�͑��ɂ����X����܂��B
+　Typeにはパケットのタイプが指定されます。pingには基本的にEcho Requestと
+Echo Replyを利用しますが、パケットタイプは他にも多々あります。
 
-�@Code�ɂ̓G���[�R�[�h��������܂��B�G���[���Ȃ��ꍇ��0��������Ă���
-�����A�G���[�̏ꍇ��0�ȊO�̃G���[�ɑΉ������l��������܂��B���M���͊�{
-�I��0���w�肵�Ă����Ζ��Ȃ��ł��傤�B
+　Codeにはエラーコードが入れられます。エラーがない場合は0が入れられていま
+すが、エラーの場合は0以外のエラーに対応した値が入れられます。送信側は基本
+的に0を指定しておけば問題ないでしょう。
 
-�@Checksum�̓f�[�^�����Ă��邩�ǂ����𔻒f����t�B�[���h�ł��B�ǂ�����
-������2�o�C�g�Ŕ��f�ł���̂��͊��������Ă��������܂��B
+　Checksumはデータが壊れているかどうかを判断するフィールドです。どうして
+たった2バイトで判断できるのかは割愛させていただきます。
 
-�@Identifier�Ƃ͂����鎯�ʎq�ł��ˁB���ʎq�Ƃ͂܂�A���ʂ��邽�߂̒l
-�ł��B�͂��A���̂܂܂ł��ˁi�����B�܂�A���M�����܂����ʎq��K���Ȓl��
-�ݒ肵�Ĉ���Ƀf�[�^�𑗐M���܂��B����͂��̎��ʎq��ύX�����ɑ��M���։�
-���f�[�^��ԐM���܂��B����Ƒ��M���͂ǂ̑��M�p�P�b�g�ɑ΂��Ẳ����p�P�b
-�g�ł��邩��������킯�ł��B�ǂ̃p�P�b�g�ɑ΂��Ă̓����ł���̂��A�𖾊m
-�ɂ��邽�߂ɁA���ʎq�͗p�����܂��B
+　Identifierとはいわゆる識別子ですね。識別子とはつまり、識別するための値
+です。はい、そのままですね（ぉぃ。つまり、送信元がまず識別子を適当な値に
+設定して宛先にデータを送信します。宛先はこの識別子を変更せずに送信元へ応
+答データを返信します。すると送信元はどの送信パケットに対しての応答パケッ
+トであるかが分かるわけです。どのパケットに対しての答えであるのか、を明確
+にするために、識別子は用いられます。
 
-�@Sequence Number�͂悭�킩��܂���(^^;�BRFC792�ɂ͈ȉ��̂悤�ɏ�����Ă�
-��܂��B
+　Sequence Numberはよくわかりません(^^;。RFC792には以下のように書かれてあ
+ります。
 
------  rfc792���p
+-----  rfc792引用
 Sequence Number
 
 If code = 0, a sequence number to aid in matching echos and replies, may be zero.
@@ -461,18 +461,18 @@ The identifier and sequence number may be used by the echo sender to aid in matc
 Code 0 may be received from a gateway or a host.
 -----
 
-�@�Ƃ����悤�ɂ���܂��B�v����Ɂu�G�R�[�̑��M���������ƃG�R�[�v���Ƃ̑�
-���t���̎肪����Ƃ��Ďg�p�\�ł���B�v�Ƃ���܂��̂ŁA�K���Ȓl�ō\���
-���Ƃ������Ƃł��傤�B
+　というようにあります。要するに「エコーの送信側が応答とエコー要求との対
+応付けの手がかりとして使用可能である。」とありますので、適当な値で構わな
+いということでしょう。
 
 
-��0x05.) �\�[�X�R�[�h
+■0x05.) ソースコード
 
-�@Windows Ping �̃\�[�X�R�[�h�͈ȉ��ł��B�uBorland C++ Compiler 5.5�v��
-�uVisual C++.NET�v�ŃR���p�C�����m�F���Ă��܂��B
+　Windows Ping のソースコードは以下です。「Borland C++ Compiler 5.5」と
+「Visual C++.NET」でコンパイルを確認しています。
 http://kenjinet.s26.xrea.com/windows/win_ping.cpp
 
-�@�ł͑���������n�߂܂��B�܂��͊֐��̐��������܂��B
+　では早速解説を始めます。まずは関数の説明をします。
 
 -----
 USHORT ip_checksum(USHORT *data, int size)
@@ -493,10 +493,10 @@ USHORT ip_checksum(USHORT *data, int size)
 }
 -----
 
-�@�`�F�b�N�T�����v�Z����֐��ł��B����͂��̂܂܃R�s�y����΁A�ʂ̃v���O
-�����ł����p�ł��܂��B�Ƃ����Ă��u�`�F�b�N�T���v�Ō�������΁A���\������
-���ȃv���O�������łĂ��܂��B���̊֐��ɂ��Ă̏ڍׂ�
-�uhttp://kenjinet.s26.xrea.com/html.cgi?checksum.txt�v�Ȃǂ��������������B
+　チェックサムを計算する関数です。これはそのままコピペすれば、別のプログ
+ラムでも利用できます。といっても「チェックサム」で検索すれば、結構同じよ
+うなプログラムがでてきます。この関数についての詳細は
+「http://kenjinet.s26.xrea.com/html.cgi?checksum.txt」などをご覧ください。
 
 -----
 int host2ip(char *hostname, sockaddr_in &dest)
@@ -521,11 +521,11 @@ int host2ip(char *hostname, sockaddr_in &dest)
 }
 -----
 
-�@�z�X�g���A��������IP�A�h���X����l�b�g���[�N�o�C�g�I�[�_�[�ɕϊ������
-���ł��B�܂���IP�A�h���X���Ɖ��肵�āAinet_addr�Ŏ擾���Ă��܂��B�����G��
-�[���ł�悤�Ȃ�΁A�����炭�z�X�g�����낤�Ƃ������ƂŁAgethostbyname�ō�
-�`�������W���܂��B����ł��_���Ȃ�G���[�Ƃ������Ƃ�-1��߂�l�Ƃ��ĕԂ�
-�܂��B
+　ホスト名、もしくはIPアドレスからネットワークバイトオーダーに変換する関
+数です。まずはIPアドレスだと仮定して、inet_addrで取得しています。もしエラ
+ーがでるようならば、おそらくホスト名だろうということで、gethostbynameで再
+チャレンジします。これでもダメならエラーということで-1を戻り値として返し
+ます。
 
 -----
 void init_ping_packet(ICMPHeader *icmp_hdr, int packet_size, int seq_no)
@@ -551,7 +551,7 @@ void init_ping_packet(ICMPHeader *icmp_hdr, int packet_size, int seq_no)
 }
 -----
 
-�@ping�p�P�b�g���쐬���Ă��܂��B�\�[�X�R�[�h�̍ŏ��̕���
+　pingパケットを作成しています。ソースコードの最初の方に
 
 -----
 struct ICMPHeader {
@@ -564,20 +564,20 @@ struct ICMPHeader {
 };
 -----
 
-�@�Ƃ����悤��ICMPHeader����`����Ă܂��̂ŁA���ꂼ��ICMP�w�b�_�t�H�[�}
-�b�g�ƏƂ炵���킹�Ē��ׂĂ݂Ă��������BBYTE��1�o�C�g�̕ϐ����`���܂��B
-USHORT��2�o�C�g�ł��ˁB������ULONG��4�o�C�g�ł��Btimestamp�̓f�[�^���ɂ�
-����Ă��܂����A����̓p�P�b�g���ԐM���Ă��鎞�ԑ���̂��߂ɗ��p����f
-�[�^�ł��B
+　というようにICMPHeaderが定義されてますので、それぞれICMPヘッダフォーマ
+ットと照らし合わせて調べてみてください。BYTEは1バイトの変数を定義します。
+USHORTは2バイトですね。そしてULONGは4バイトです。timestampはデータ部にい
+れられていますが、これはパケットが返信してくる時間測定のために利用するデ
+ータです。
 
-�@init_ping_packet�֐��̓p�P�b�g�̒����������ɂƂ�܂��B���̃v���O������
-�́A�p�P�b�g�̒����A�܂�ǂꂾ���傫�ȃf�[�^�𑊎�ɑ��M����̂������[
-�U�[�����߂邱�Ƃ��ł���̂ŁA���̒����ɂȂ�܂�ICMP�p�P�b�g�ɓK���ȃf�[
-�^�Ńp�f�B���O���Ȃ���΂Ȃ�܂���B���̃p�f�B���O����f�[�^��
-�udeadmeat = 0xDEADBEEF�v�ł��ˁB
+　init_ping_packet関数はパケットの長さを引数にとります。このプログラムで
+は、パケットの長さ、つまりどれだけ大きなデータを相手に送信するのかをユー
+ザーが決めることができるので、その長さになるまでICMPパケットに適当なデー
+タでパディングしなければなりません。そのパディングするデータが
+「deadmeat = 0xDEADBEEF」ですね。
 
-�@while�ł܂킵��memcpy�Ńp�f�B���O���Ă��܂��B�����āA�Ō�Ƀ`�F�b�N�T��
-���v�Z���āAICMP�p�P�b�g�����ƂȂ�܂��B
+　whileでまわしてmemcpyでパディングしています。そして、最後にチェックサム
+を計算して、ICMPパケット完成となります。
 
 -----
 int send_ping(SOCKET sd, const sockaddr_in& dest, ICMPHeader *send_buf, int packet_size)
@@ -596,9 +596,9 @@ int send_ping(SOCKET sd, const sockaddr_in& dest, ICMPHeader *send_buf, int pack
 }
 -----
 
-�@�֐������݂�Ε�����܂����A����̓p�P�b�g�𑗐M����֐��ł��B���M����
-���p�P�b�g�̃f�[�^��cout�ŏo�͂��āAsendto�ő��M���Ă��܂��B�����͓��ɐ�
-���̕K�v�͖����Ǝv���܂��B
+　関数名をみれば分かりますが、これはパケットを送信する関数です。送信すべ
+きパケットのデータをcoutで出力して、sendtoで送信しています。ここは特に説
+明の必要は無いと思います。
 
 -----
 int recv_ping(SOCKET sd, sockaddr_in &source, IPHeader *recv_buf, int packet_size)
@@ -621,8 +621,8 @@ int recv_ping(SOCKET sd, sockaddr_in &source, IPHeader *recv_buf, int packet_siz
 }
 -----
 
-�@�ԓ��̎�M�p�P�b�g�ł��Brecvfrom���Ă�ł��邾���ł��ˁB�G���[�̏ꍇ��
-WSAGetLastError�ɓK�؂ȃG���[�R�[�h���������̂ŁA�����\�����Ă��܂��B
+　返答の受信パケットです。recvfromを呼んでいるだけですね。エラーの場合は
+WSAGetLastErrorに適切なエラーコードが入れられるので、それを表示しています。
 
 -----
 void die(ICMPHeader *&send_buf, IPHeader *&recv_buf)
@@ -640,9 +640,9 @@ void die(ICMPHeader *&send_buf, IPHeader *&recv_buf)
 }
 -----
 
-�@die�͂��̂܂܃v���O�������I������֐��ł��Bmain�֐��Ń��������m�ۂ��Ă�
-��̂ŁA�I���v���O�����Ƀ������̊J�������Ă��܂��B���̊֐��̓G���[�ɂ��
-�I�������ꍇ�ȂǂɌĂяo����܂��B
+　dieはそのままプログラムを終了する関数です。main関数でメモリを確保してい
+るので、終了プログラムにメモリの開放をしています。この関数はエラーにより
+終了した場合などに呼び出されます。
 
 -----
 int decode_reply(IPHeader *reply, int bytes, sockaddr_in *from) 
@@ -656,10 +656,10 @@ int decode_reply(IPHeader *reply, int bytes, sockaddr_in *from)
     }
 -----
 
-�@decode_reply�́A�󂯎�����p�P�b�g�i�܂�T�[�o����̕ԓ��p�P�b�g�j��
-���H����֐��ł��Bheader_len�ɂ́Areply->h_len * 4���������܂����A����
-�́AIP�w�b�_�̒���������킵�Ă��܂��B����IP�w�b�_�̒������p�P�b�g�̃|�C
-���^�ɉ��Z�����ICMP�w�b�_�̈ʒu�ɂȂ�܂��B�����icmphdr�ɑ�����Ă��܂��B
+　decode_replyは、受け取ったパケット（つまりサーバからの返答パケット）を
+加工する関数です。header_lenには、reply->h_len * 4が代入されますが、これ
+は、IPヘッダの長さをあらわしています。そのIPヘッダの長さをパケットのポイ
+ンタに加算するとICMPヘッダの位置になります。それをicmphdrに代入しています。
 
 -----
     if (icmphdr->type != ICMP_ECHO_REPLY && icmphdr->type != ICMP_TTL_EXPIRE) {
@@ -672,13 +672,13 @@ int decode_reply(IPHeader *reply, int bytes, sockaddr_in *from)
     }
 -----
 
-�@����Type���������Ă��܂��BICMP_ECHO_REPLY�A�܂�Type��0�ł͂Ȃ��A����
-ICMP_TTL_EXPIRE�ł��Ȃ��Ȃ�΁A�G���[�Ƃ݂Ȃ��uICMP�p�P�b�g�̃^�C�v�ł͖�
-���v�Ƃ����悤�ȏo�͂����܂��B
+　次はTypeを検査しています。ICMP_ECHO_REPLY、つまりTypeが0ではない、かつ
+ICMP_TTL_EXPIREでもないならば、エラーとみなし「ICMPパケットのタイプでは無
+い」というような出力をします。
 
-�@GetCurrentProcessId�͂��̃v���O�����̃v���Z�XID�ł��Binit_ping_packet��
-ICMP�̎��ʎq�ɂ̓v���Z�XID�������悤�ɂȂ��Ă��܂��̂ŁA�������ʎq����
-���悤�Ȃ�΁A������G���[�Ƃ݂Ȃ��܂��B
+　GetCurrentProcessIdはこのプログラムのプロセスIDです。init_ping_packetで
+ICMPの識別子にはプロセスIDをいれるようになっていますので、もし識別子が違
+うようならば、これもエラーとみなします。
 
 -----
     cout << endl << bytes << " bytes from ";
@@ -696,10 +696,10 @@ ICMP�̎��ʎq�ɂ̓v���Z�XID�������悤�ɂȂ��Ă��܂��̂ŁA�������ʎq����
 }
 -----
 
-�@�����́A�擾�����p�P�b�g�f�[�^��͌�ɁA�o�͂��镔���ł��B�ԓ��ɂǂꂾ
-�����Ԃ����������̂��Ȃǂ��\�����Ă��܂��B
+　ここは、取得したパケットデータ解析後に、出力する部分です。返答にどれだ
+け時間がかかったのかなども表示しています。
 
-�@�ł́A���悢��main�֐��ɓ���܂��B
+　では、いよいよmain関数に入ります。
 
 -----
 int main(int argc, char *argv[])
@@ -717,9 +717,9 @@ int main(int argc, char *argv[])
     }
 -----
 
-�@���`���N�`�������܂�̃\�[�X�ł����ǁA�v���O�����������Ƀz�X�g�ƃp�P�b
-�g�̃T�C�Y�ƁAttl�̒l���Ƃ�܂��B�z�X�g�̂ݕK�{�ł��̂ŁA2�ȉ��Ȃ�΃G��
-�[�Ƃ��A�I�����܂��B
+　メチャクチャお決まりのソースですけど、プログラムが引数にホストとパケッ
+トのサイズと、ttlの値をとります。ホストのみ必須ですので、2以下ならばエラ
+ーとし、終了します。
 
 -----
     int packet_size = DEFAULT_PACKET_SIZE;
@@ -733,8 +733,8 @@ int main(int argc, char *argv[])
     }
 -----
 
-�@�����p�P�b�g�T�C�Y���w�肳��Ȃ�������ADEFAULT_PACKET_SIZE�ɐݒ肵�܂��B
-�������Attl���ݒ肳��Ȃ�������ADEFAULT_TTL�ɐݒ肵�܂��B
+　もしパケットサイズが指定されなかったら、DEFAULT_PACKET_SIZEに設定します。
+同じく、ttlも設定されなかったら、DEFAULT_TTLに設定します。
 
 -----
     WSAData wsaData;
@@ -744,8 +744,8 @@ int main(int argc, char *argv[])
     }
 -----
 
-�@Windows�l�b�g���[�N�v���O�����ɂ͕K�{�̍��ڂł��B���܂��Ȃ��Ƃ���������
-�����ł����ł��傤�B���Ȃ݂Ƀo�[�W����2.1�𗘗p���܂��B
+　Windowsネットワークプログラムには必須の項目です。おまじないとかそういう
+感じでいいでしょう。ちなみにバージョン2.1を利用します。
 
 -----
     SOCKET sd;
@@ -755,10 +755,10 @@ int main(int argc, char *argv[])
     }
 -----
 
-�@raw�\�P�b�g���g���܂��BWindows���ď����O�܂�raw�\�P�b�g���g���Ȃ�������
-���ł��ˁB����A���Ȃ�I����Ă���B����Hacking���Ȃɂ��Ȃ��B�����l����
-�ƁA���܂�Windows���Ă����Ԑi�����Ă�Ȃ��B���\�A���肵�Ă邵�B�ƁA�܂���
-�W�Ȃ��b�ł���(^^;�B
+　rawソケットを使います。Windowsって少し前までrawソケットが使えなかったよ
+うですね。それ、かなり終わってるやん。正直Hackingもなにもない。そう考える
+と、いまのWindowsってだいぶ進化してるなぁ。結構、安定してるし。と、まぁ関
+係ない話でした(^^;。
 
 -----
     if (setsockopt(sd, IPPROTO_IP, IP_TTL, (const char *)&ttl, sizeof(ttl)) == SOCKET_ERROR) {
@@ -767,12 +767,12 @@ int main(int argc, char *argv[])
     }
 -----
 
-�@�����́Attl�̂��߂����ɏ�����Ă��܂��Bttl�͎c�O�Ȃ���ICMP�w�b�_�ł͂�
-���AIP�w�b�_�ɂ���̂ŁAIP�w�b�_��TTL�����ݒ肷�邽�߂�setsockopt���g����
-����킯�ł��B���Ȃ݂�ttl�Ƃ́A�p�P�b�g�̎����ł��B���[�^��ʂ邽�тɂ���
-�l��1�����Z����Ă����āA0�ɂȂ�ƃp�P�b�g���j������܂��BTTL��1�o�C�g
-�Ȃ̂ŁA�ő��255�܂ł����ݒ�ł��܂��񂪁A����Ȑ��̃��[�^��ʂ邱�ƂȂ�
-�āA�Ӑ}�I�ɍ\�z���Ȃ����肠�肦�܂���̂ŁA�܂���肠��܂���B
+　ここは、ttlのためだけに書かれています。ttlは残念ながらICMPヘッダではな
+く、IPヘッダにあるので、IPヘッダのTTLだけ設定するためにsetsockoptを使って
+いるわけです。ちなみにttlとは、パケットの寿命です。ルータを通るたびにこの
+値が1ずつ減算されていって、0になるとパケットが破棄されます。TTLは1バイト
+なので、最大で255までしか設定できませんが、そんな数のルータを通ることなん
+て、意図的に構築しない限りありえませんので、まず問題ありません。
 
 -----
     sockaddr_in dest, source;
@@ -784,8 +784,8 @@ int main(int argc, char *argv[])
     packet_size = max(sizeof(ICMPHeader), min(MAX_PING_DATA_SIZE, (UINT)packet_size));
 -----
 
-�@�܂��͈���̐ݒ�ł��ˁB�Z���������Ă�킯�ł��B�����āA�p�P�b�g�̃T�C
-�Y�����߂܂��B
+　まずは宛先の設定ですね。住所を書いてるわけです。そして、パケットのサイ
+ズを決めます。
 
 -----
     if ((send_buf = (ICMPHeader *)new char[packet_size]) == 0) {
@@ -799,8 +799,8 @@ int main(int argc, char *argv[])
     }
 -----
 
-�@�����̓������Ǘ��ł��B�܂��݂�΂킩��̂ŁA�����s�v�ł��ˁBC�Ȃ�malloc
-��calloc�Ȃǂ��g���܂����AC++�Ȃ̂�new�ł���Ă��܂��B
+　ここはメモリ管理です。まぁみればわかるので、説明不要ですね。Cならmalloc
+やcallocなどを使いますが、C++なのでnewでやっています。
 
 -----
     int seq_no = 0;
@@ -812,7 +812,7 @@ int main(int argc, char *argv[])
     }
 -----
 
-�@���M�����ł��B���ꂼ��̊֐��Ƀf�[�^��n���āA���M���������Ă��܂��B
+　送信処理です。それぞれの関数にデータを渡して、送信処理をしています。
 
 -----
     while (1) {
@@ -832,8 +832,8 @@ int main(int argc, char *argv[])
     }
 -----
 
-�@��M�����ł��ˁB�܂������p�P�b�g����M���āA���̃f�[�^��decode_reply��
-�n���āA�R���\�[���֏o�͂��Ă��܂��B
+　受信処理ですね。まず応答パケットを受信して、そのデータをdecode_replyに
+渡して、コンソールへ出力しています。
 
 -----
     delete[]send_buf;
@@ -844,11 +844,11 @@ int main(int argc, char *argv[])
 }
 -----
 
-�@�Ō�Ƀ��������J�����ďI���ƂȂ�܂��B
+　最後にメモリを開放して終了となります。
 
-�@�ł́A�R���p�C�����Ď��s���Ă݂Ă��������B
+　では、コンパイルして実行してみてください。
 
------  �R�}���h�v�����v�g
+-----  コマンドプロンプト
 C:\>myping yahoo.co.jp
 Sending 32 bytes to 203.141.35.113...
 32 bytes from 203.141.35.113, icmp_seq 0, 12 hops, time: 30 ms.
@@ -860,458 +860,458 @@ Sending 64 bytes to 66.218.71.198...
 C:\>
 -----
 
-�@����Ȋ����ł��ˁB�����A����M���ł��Ă��܂��B
+　こんな感じですね。無事、送受信ができています。
 
 
-��0x06.) ��������
+■0x06.) さいごに
 
-�@���āA�������������ł��傤���BWindows���h���GUI�Ȃǂ����ł͂Ȃ��A�n��
-��raw�\�P�b�g�ɑΉ���������AOS���̂̈��萫����������Ɗ撣���Ă�݂�����
-���B�u�ł��A���萫�Ƃ��Araw�\�P�b�g�Ƃ��A������ĕ���OS�Ƃ��ē�����O�̋@
-�\����Ȃ��̂��H�v�Ƃ����f�p�ȋ^��͒u���Ă����āAWindows�����������Ȃ���
-�v���������̍��ł��B�����O�z�[����������̘b���ۂ��̂ŁA�C����XP�ł��g��
-�Ă��悤���ȂƎv���܂��B���́A����g�����v���O�����������Ƃ��ɁuWinsock 
-Programmer's FAQ�v�Ƃ����T�C�g�ɔ��ɂ����b�ɂȂ�܂����B�Ƃ��������̃T
-�C�g�ɂ���ping�̃T���v���\�[�X�R�[�h��C++���ɏ��������������������肷���
-���A����̎����������T���v���\�[�X�Ȃ̂ł���(^^;�BWinsock�Ɋւ��ďڂ����m
-�肽�����ɂ͂����߂̃T�C�g�ł��B���āA�Ō�ɂȂ�܂����������܂ŕt������
-�ēǂ�ł������������{���ɗL���������܂����B
+　さて、いかがだったでしょうか。Windowsも派手なGUIなどだけではなく、地味
+にrawソケットに対応させたり、OS自体の安定性をあげたりと頑張ってるみたいで
+す。「でも、安定性とか、rawソケットとか、それって普通OSとして当たり前の機
+能じゃないのか？」という素朴な疑問は置いておいて、Windowsも悪く無いなぁと
+思う今日この頃です。ロングホーンも当分先の話っぽいので、気長にXPでも使っ
+ていようかなと思います。実は、今回使ったプログラムを書くときに「Winsock 
+Programmer's FAQ」というサイトに非常にお世話になりました。というかこのサ
+イトにあるpingのサンプルソースコードをC++風に書き直しただけだったりするの
+が、今回の私が書いたサンプルソースなのですが(^^;。Winsockに関して詳しく知
+りたい方にはお勧めのサイトです。さて、最後になりましたがここまで付き合っ
+て読んでくださった方本当に有り難うございました。
 
-�@�ł́A�܂�����܂�...
-
-
-��0x07.) �Q�l�\�[�X
-
-�@Winsock Programmer's FAQ
-�@http://www.kt.rim.or.jp/~ksk/wskfaq-ja/index.html
+　では、また会う日まで...
 
 
+■0x07.) 参考ソース
 
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+　Winsock Programmer's FAQ
+　http://www.kt.rim.or.jp/~ksk/wskfaq-ja/index.html
 
---- ��R�́F�������[�U�[�̑��݂ɂ����ẴR���s���[�^���\�z��Tips ---
 
-���ҁFIPUSIRON
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
+--- 第３章：制限ユーザーの存在においてのコンピュータ環境構築のTips ---
 
-��0x01.) �͂��߂�
+著者：IPUSIRON
 
-�@���k�p�A�q���p�A�Q�X�g�p�i�F�l�Ȃǁj�ɕ����ɂ���PC��G�点��@�������
-���Ƃł��傤�B�������Ȃ���A�R���s���[�^�ɒ��ڐG�点��Ƃ������Ƃ͑����
-�S�Ă̌�����^���邱�ƂƓ��l�ł��B���̂悤�ȂƂ��A�����炪������Z�L����
-�e�B�𑊎�ɔc�������Ȃ���΁A�������㏸�����邱�Ƃ�h�����Ƃ��ł��܂��B
-���̕s���Ȃ��̂���ԋ��|�Ɋ�����Ƃ����̂Ƃ�����Ǝ��Ă܂��ˁB
-�@���̂悤�ȏ�ʂŖ��ɗ��悤�ȃe�N�j�b�N�������Љ�܂��B
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x02.) ���O�I���O�Ɏw�肵�����b�Z�[�W��\��
+■0x01.) はじめに
 
-�@���O�I���O�ɃR���s���[�^�̗��p�ɂ����鐧��������\�����邱�ƂŁA���k�A
-��u�҂Ȃǂ̗��p���[�U�[�ɒ��ӂ𑣂����Ƃ��ł��܂��B
-
-�Ώ�OS�FWindows2000/XP Pro/XP Home
-
-�@���W�X�g���́uHKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\Current
-Version\Winlogon�v�ɂ����āA�uLegalNoticeCaption�v�̒l���\������_�C�A��
-�O���A�uLegalNoticeText�v���\�����鐧���������w�肷��Ƃ���ł��B
-�@�Ⴆ�΁A�uLegalNoticeCaption�v�Ɂu���ӎ����v�A�uLegalNoticeText�v�Ɂu��
-��ɐݒ��ύX���Ȃ��ł��������B�v�Ɠ��͂��邱�Ƃ��ł��܂��B
-�@�����A�\�����Ȃ��悤�ɖ߂��ꍇ�́A�uLegalNoticeCaption�v�ƁuLegalNotic
-eText�v�̃f�[�^���󔒂ɂ��Ă�����OK�ł��B
+　生徒用、子供用、ゲスト用（友人など）に部屋にあるPCを触らせる機会もある
+ことでしょう。しかしながら、コンピュータに直接触らせるということは相手に
+全ての権限を与えることと同値です。そのようなとき、こちらが備えるセキュリ
+ティを相手に把握させなければ、権限を上昇させることを防ぐことができます。
+正体不明なものが一番恐怖に感じるというのとちょっと似てますね。
+　このような場面で役に立つようなテクニックを少し紹介します。
 
 
-��0x03.) �R���g���[���p�l���̐���
+■0x02.) ログオン前に指定したメッセージを表示
 
-�@���p���[�U�[�ɃR���g���[���p�l���o�R�Őݒ�ύX���֎~�܂��͈ꕔ�֎~����
-���ꍇ�ɍs���ݒ�ł��B
+　ログオン前にコンピュータの利用における制限事項を表示することで、生徒、
+受講者などの利用ユーザーに注意を促すことができます。
 
-�Ώ�OS�FWindows2000/XP Pro
+対象OS：Windows2000/XP Pro/XP Home
 
-���R���g���[���p�l�����J���������Ȃ��ꍇ
+　レジストリの「HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\Current
+Version\Winlogon」において、「LegalNoticeCaption」の値が表示するダイアロ
+グ名、「LegalNoticeText」が表示する制限事項を指定するところです。
+　例えば、「LegalNoticeCaption」に「注意事項」、「LegalNoticeText」に「勝
+手に設定を変更しないでください。」と入力することもできます。
+　もし、表示さないように戻す場合は、「LegalNoticeCaption」と「LegalNotic
+eText」のデータを空白にしておけばOKです。
 
-1�F�u�t�@�C�������w�肵�Ď��s�v�ɂ����āA�ugpedit.msc�v�i�O���[�v�|���V�[
-�G�f�B�^�j�Ɠ��͂��āA�O���[�v�|���V�[�𗧂��グ�܂��B
 
-2�F�u���[�U�[�̍\���v���u�Ǘ��p�e���v���[�g�v���u�R���g���[���p�l���v��I
-�����܂��B
+■0x03.) コントロールパネルの制限
 
-3�F�E������u�R���g���[���p�l���ւ̃A�N�Z�X���֎~����v�Ƃ������ڂ��_�u��
-�N���b�N���܂��B
+　利用ユーザーにコントロールパネル経由で設定変更を禁止または一部禁止した
+い場合に行う設定です。
 
-4�F�u�R���g���[���p�l���ւ̃A�N�Z�X���֎~����̃v���p�e�B�v�E�B���h�E���\
-�����ꂽ��A�u�L���v�Ƃ������W�I�{�^���Ƀ`�F�b�N�����܂��B
+対象OS：Windows2000/XP Pro
 
-5�F����Ŋ����ł��B
+●コントロールパネルを開かせたくない場合
 
-������̃R���g���[���p�l������������
+1：「ファイル名を指定して実行」において、「gpedit.msc」（グループポリシー
+エディタ）と入力して、グループポリシーを立ち上げます。
 
-�@��L�ݒ�̃X�e�b�v2�܂ł͓����ł��B
+2：「ユーザーの構成」＞「管理用テンプレート」＞「コントロールパネル」を選
+択します。
 
-3�F�E������u�w�肳�ꂽ�R���g���[���p�l���̍��ڂ݂̂�\������̃v���p�e�B�v
-�Ƃ������ڂ��_�u���N���b�N���܂��B
+3：右側から「コントロールパネルへのアクセスを禁止する」という項目をダブル
+クリックします。
 
-4�F�u�w�肳�ꂽ�R���g���[���p�l���̍��ڂ݂̂�\������̃v���p�e�B�v�E�B��
-�h�E���\�����ꂽ��A�u�L���v�Ƃ������W�I�{�^���Ƀ`�F�b�N�����āA[�\��]�{
-�^���������܂��B
+4：「コントロールパネルへのアクセスを禁止するのプロパティ」ウィンドウが表
+示されたら、「有効」というラジオボタンにチェックをします。
 
-5�F�u���e�̕\���v�E�B���h�E���\�������̂ŁA[�ǉ�]�{�^���������܂��B
+5：これで完了です。
 
-6�F�u���ڂ̒ǉ��v�̂����āA������R���g���[���p�l�����ڂ̃t�@�C�������w
-�肵�āA[OK]�{�^���������܂��B����ƁA�u���e�̕\���v�E�B���h�E�ɖ߂�̂ŁA
-������J��Ԃ��ċ��������̃R���g���[���p�l����ݒ肵�܂��B
-�@�����ŁA�R���g���[���p�l�����ڂ̃t�@�C�����Ƃ������̂�����܂������A��
-�Ȃ��͎̂��̒ʂ�ł��B
+●特定のコントロールパネルだけを許可
+
+　上記設定のステップ2までは同じです。
+
+3：右側から「指定されたコントロールパネルの項目のみを表示するのプロパティ」
+という項目をダブルクリックします。
+
+4：「指定されたコントロールパネルの項目のみを表示するのプロパティ」ウィン
+ドウが表示されたら、「有効」というラジオボタンにチェックをして、[表示]ボ
+タンを押します。
+
+5：「内容の表示」ウィンドウが表示されるので、[追加]ボタンを押します。
+
+6：「項目の追加」のおいて、許可するコントロールパネル項目のファイル名を指
+定して、[OK]ボタンを押します。すると、「内容の表示」ウィンドウに戻るので、
+これを繰り返して許可する特定のコントロールパネルを設定します。
+　ここで、コントロールパネル項目のファイル名というものが現れましたが、主
+なものは次の通りです。
 
 =====
-�t�@�C�����@�R���g���[���p�l������
-access.cpl ���[�U�[�⏕�̃I�v�V���� ���[�U�[�⏕�̃I�v�V����
-appwiz.cpl�@�v���O�����̒ǉ��ƍ폜
-desk.cpl�@��ʁA��ʂ̃v���p�e�B
-hdwwiz.cpl�@�n�[�h�E�F�A�̒ǉ�
-inetcpl.cpl�@�C���^�[�l�b�g�I�v�V����
-intl.cpl�@�n��ƌ���̃I�v�V����
-main.cpl �}�E�X �}�E�X�̃v���p�e�B 
-mmsys.cpl �T�E���h�ƃI�[�f�B�I�f�o�C�X�̃v���p�e�B
-ncpa.cpl�@�l�b�g���[�N�ڑ�
-nusrmgr.cpl�@���[�U�[�A�J�E���g
-odbccp32.cpl�@ODBC�f�[�^�\�[�X�A�h�~�j�X�g���[�^
-powercfg.cpl�@�d���I�v�V����
-sysdm.cpl�@�V�X�e���̃v���p�e�B
-telephon.cpl�@�d�b�ƃ��f���̃I�v�V����
-timedata.cpl�@���t�Ǝ���
-wuaucpl.cpl�@�V�X�e���̃v���p�e�B�́u�����X�V�v�^�u
+ファイル名　コントロールパネル項目
+access.cpl ユーザー補助のオプション ユーザー補助のオプション
+appwiz.cpl　プログラムの追加と削除
+desk.cpl　画面、画面のプロパティ
+hdwwiz.cpl　ハードウェアの追加
+inetcpl.cpl　インターネットオプション
+intl.cpl　地域と言語のオプション
+main.cpl マウス マウスのプロパティ 
+mmsys.cpl サウンドとオーディオデバイスのプロパティ
+ncpa.cpl　ネットワーク接続
+nusrmgr.cpl　ユーザーアカウント
+odbccp32.cpl　ODBCデータソースアドミニストレータ
+powercfg.cpl　電源オプション
+sysdm.cpl　システムのプロパティ
+telephon.cpl　電話とモデムのオプション
+timedata.cpl　日付と時刻
+wuaucpl.cpl　システムのプロパティの「自動更新」タブ
 =====
 
-�@���Ȃ݂ɁA�u*.cpl�t�@�C���v�́A�u%SystemRoot%\system32�v�̉��ɑ��݂���
-���B
+　ちなみに、「*.cplファイル」は、「%SystemRoot%\system32」の下に存在しま
+す。
 
-7�F����Ŋ����ł��B�ݒ��A�R���g���[���p�l�����J���Ă��A�w�肳�ꂽ�R���g
-���[���p�l�����ڂ����\������Ă��Ȃ��͂��ł��B
-
-
-��0x05.) �R���g���[���p�l�����̃t�H���_���\��
-
-�@0x04�̕��@�ł̓R���g���[���p�l�����ڂ͐���ł��Ă��A�u�^�X�N�v��u�t�H
-���g�v�Ƃ������t�H���_�܂ł͔�\���ɂł��܂���B�����ŁA��������\����
-���邽�߂ɁA���̐ݒ���s���܂��B
-
-�Ώ�OS�FWindows2000/XP Pro
-
-1�F�u�t�@�C�������w�肵�Ď��s�v�ɂ����āA�ugpedit.msc�v�i�O���[�v�|���V�[
-�G�f�B�^�j�Ɠ��͂��āA�O���[�v�|���V�[�𗧂��グ�܂��B
-
-2�F�u���[�U�[�̍\���v���u�Ǘ��p�e���v���[�g�v���u�R���g���[���p�l���v��I
-�����܂��B
-
-3�F�E������u�w�肳�ꂽ�R���g���[���p�l���̃A�v���b�g���\���ɂ���v�Ƃ�
-�����ڂ��_�u���N���b�N���܂��B
-
-4�F�u�w�肳�ꂽ�R���g���[���p�l���̃A�v���b�g���\���ɂ���̃v���p�e�B�v
-�E�B���h�E���\�����ꂽ��A�u�L���v�Ƃ������W�I�{�^���Ƀ`�F�b�N�����܂��B
-
-5�F����Ŋ����ł��B
+7：これで完了です。設定後、コントロールパネルを開いても、指定されたコント
+ロールパネル項目しか表示されていないはずです。
 
 
-��0x06.) �h���C�u���g�p�s�ɂ���
+■0x05.) コントロールパネル内のフォルダを非表示
 
-�@���p���[�U�[�ɏ����FDD��CD-ROM���g�p���ꂽ���Ȃ��ꍇ�̐ݒ�ł��B
+　0x04の方法ではコントロールパネル項目は制御できても、「タスク」や「フォ
+ント」といったフォルダまでは非表示にできません。そこで、これらも非表示に
+するために、次の設定を行います。
 
-�Ώ�OS�FWindows98/98SE
+対象OS：Windows2000/XP Pro
 
-�@�uHKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies
-\Explorer�v�ɁA�G�N�X�v���[���[�̊e��|���V�[���ݒ肳��Ă��܂��B�����ŁA
-�uNoDrives�v���쐬����΁ACD-ROM��FDD�̃h���C�u�������Ȃ����邱�Ƃ��ł���
-���B����ɁA�uNofind�v���쐬���邱�ƂŁA�h���C�u��T�����邱�Ƃ��ł��Ȃ�
-�Ȃ�܂��B����2�̐ݒ�����Ă������ʂ�����܂��B�Е������ł͂��܂�Ӗ���
-����܂���B
+1：「ファイル名を指定して実行」において、「gpedit.msc」（グループポリシー
+エディタ）と入力して、グループポリシーを立ち上げます。
 
+2：「ユーザーの構成」＞「管理用テンプレート」＞「コントロールパネル」を選
+択します。
 
-��0x07.) Windows Messenger�̒�~
+3：右側から「指定されたコントロールパネルのアプレットを非表示にする」とい
+う項目をダブルクリックします。
 
-�@���p���[�U�[��Windows Messenger�𗘗p�����`���b�g���֎~������A�s�v�ȃl
-�b�g���[�N�g���t�B�b�N���y���������ꍇ�ɗL���ȕ��@�ł��B
+4：「指定されたコントロールパネルのアプレットを非表示にするのプロパティ」
+ウィンドウが表示されたら、「有効」というラジオボタンにチェックをします。
 
-�Ώ�OS�FWindows2000/XP Pro
-
-1�F�u�t�@�C�������w�肵�Ď��s�v�ɂ����āA�ugpedit.msc�v�i�O���[�v�|���V�[
-�G�f�B�^�j�Ɠ��͂��āA�O���[�v�|���V�[�𗧂��グ�܂��B
-
-2�F�u�R���s���[�^�̍\���v���u�Ǘ��p�e���v���[�g�v���uWindows�R���|�[�l��
-�g�v���uWindows Messenger�v��I�����܂��B
-
-3�F�E������uWindows Messenger�̎��s�������Ȃ��v�Ƃ������ڂ��_�u���N��
-�b�N���܂��B
-
-4�F�uWindows Messenger�̎��s�������Ȃ��̃v���p�e�B�v�E�B���h�E���\����
-�ꂽ��A�u�L���v�Ƃ������W�I�{�^���Ƀ`�F�b�N�����܂��B
-
-5�F����Ŋ����ł��B�������A���̐ݒ�𔽉f�������ꍇ�A�����[�g�A�V�X�^���g
-��MSN�G�N�X�v���[���ɂ����āAWindows Messenger�𗘗p�����@�\�����s���邱
-�Ƃ͂ł��܂���B
+5：これで完了です。
 
 
-��0x08.) �R�}���h�v�����v�g�̎g�p�֎~
+■0x06.) ドライブを使用不可にする
 
-�@CUI�x�[�X�̃A�^�b�N�c�[���Ȃǂ�����ɗ��p���ꂽ��A�ݒ�ύX�c�[���Ȃǂ�
-�s���ɗ��p����邱�Ƃ��֎~���邽�߂ɁA�R�}���h�v�����v�g�̎g�p�֎~���I�X
-�X�����܂��B
+　利用ユーザーに勝手にFDDやCD-ROMを使用されたくない場合の設定です。
 
-�Ώ�OS�FWindows2000/XP Pro
+対象OS：Windows98/98SE
 
-1�F�u�t�@�C�������w�肵�Ď��s�v�ɂ����āA�ugpedit.msc�v�i�O���[�v�|���V�[
-�G�f�B�^�j�Ɠ��͂��āA�O���[�v�|���V�[�𗧂��グ�܂��B
-
-2�F�u���[�U�[�̍\���v���u�Ǘ��p�e���v���[�g�v���u�V�X�e���v��I�����܂��B
-
-3�FWindowsXP�Ȃ�΁A�E������u�R�}���h�v�����v�g�ɃA�N�Z�X�ł��Ȃ��悤��
-����v�Ƃ������ڂ��_�u���N���b�N���܂��B����AWindows2000�Ȃ�΁A�u�R�}��
-�h�v�����v�g�𖳌��ɂ���v�Ƃ������ڂ��_�u���N���b�N���܂��B
-
-4�F�u�R�}���h�v�����v�g�ɃA�N�Z�X�ł��Ȃ��悤�ɂ���v�E�B���h�E���\������
-����A�u�L���v�Ƃ������W�I�{�^���Ƀ`�F�b�N�����܂��B�o�b�`�t�@�C���̂ݎ�
-�s����Ƃ����ݒ�ɂ�������΁A�u�R�}���h�v�����v�g�X�N���v�g������������
-���܂����H�@�v�Ƃ����Ƃ���Łu�͂��v��I�����܂��B
+　「HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Policies
+\Explorer」に、エクスプローラーの各種ポリシーが設定されています。ここで、
+「NoDrives」を作成すれば、CD-ROMやFDDのドライブを見えなくすることができま
+す。さらに、「Nofind」を作成することで、ドライブを探索することができなく
+なります。この2つの設定をしてこそ効果があります。片方だけではあまり意味が
+ありません。
 
 
-��0x09.) MMC�̗��p
+■0x07.) Windows Messengerの停止
 
-�Ώ�OS�FWindows2000/XP Pro/XP Home
+　利用ユーザーにWindows Messengerを利用したチャットを禁止したり、不要なネ
+ットワークトラフィックを軽減したい場合に有効な方法です。
 
-�@�C�x���g�r���[�A�A�Ǘ��c�[����O���[�v�|���V�[�G�f�B�^�́AMMC�iMicroso
-ft�Ǘ��R���\�[���j�ƌĂ΂��MMC�R���\�[���i�Ǘ��E�B���h�E�j�ő��삵�܂��B
-MMC���g�����ƂŁA�T�[�r�X�Ǘ��̂��߂̃R���|�[�l���g�i�X�i�b�v�C���j�𑀍�
-���邱�Ƃ��ł��܂��B�X�i�b�v�C����ǉ����Ă������ƂŁAMMC�R���\�[�����쐬
-���邱�Ƃ��ł���킯�ł��B
-�@����𗘗p���邱�ƂŁA�I���W�i����MMC�R���\�[�����쐬���邱�Ƃ��ł��܂��B
-�����A�쐬�ɂ͍쐬�҃��[�h�ƃ��[�U�[���[�h��2������܂��B�O�҂͍쐬�҂�
-�Ȃ��Ă�MMC�R���\�[���̓��e��ύX�ł���ۑ����@�ŁA��҂͕ύX�ł��Ȃ����[
-�h�ł��B��ʓI�ɁA���[�U�[���[�h�ŕۑ����Ă����ق����悢�ł��傤�B
+対象OS：Windows2000/XP Pro
 
+1：「ファイル名を指定して実行」において、「gpedit.msc」（グループポリシー
+エディタ）と入力して、グループポリシーを立ち上げます。
 
-��0x10.) CD-ROM�̋��L���֎~
+2：「コンピュータの構成」＞「管理用テンプレート」＞「Windowsコンポーネン
+ト」＞「Windows Messenger」を選択します。
 
-�@Windows 2000/XP Pro�̏ꍇ�ACD-ROM�h���C�u���l�b�g���[�N�z���ɋ��L���Ďg
-�p���邱�Ƃ��ł��܂��B����ł́A0x06�̕��@�Ń��[�J���}�V����CD-ROM�h���C
-�u���g�p�s�ɂ��Ă��A�l�b�g���[�N�z���Ŏ������܂ꂽPC����C���X�g�[����
-��Ă��܂��܂��B
-�@���̐ݒ�ɂ��ACD-ROM����̃C���X�g�[���𐧌����邱�Ƃ��ł��܂��B
+3：右側から「Windows Messengerの実行を許可しない」という項目をダブルクリ
+ックします。
 
-�Ώ�OS�FWindows2000/XP Pro
+4：「Windows Messengerの実行を許可しないのプロパティ」ウィンドウが表示さ
+れたら、「有効」というラジオボタンにチェックをします。
 
-��WindowsXP�̏ꍇ
-
-1�F�X�^�[�g���j���[���u�R���g���[���p�l���v���J���܂��B
-
-2�F�u�p�t�H�[�}���X�ƃ����e�i���X�v���u�Ǘ��c�[���v��I�����܂��B
-
-3�F�u���[�J���Z�L�����e�B�|���V�[�v���u���[�J���|���V�[�v���u�Z�L�����e�B
-�I�v�V�����v��I�����܂��B
-
-4�F�E������u�f�o�C�X�FCD-ROM�ւ̃A�N�Z�X���A���[�J�����O�I�����[�U�[����
-�ɐ�������v���_�u���N���b�N���܂��B
-
-5�F�u�f�o�C�X�FCD-ROM�ւ̃A�N�Z�X���A���[�J�����O�I�����[�U�[�����ɐ�����
-��̃v���p�e�B�v�E�B���h�E���\�����ꂽ��A�u�L���v�Ƃ������W�I�{�^���Ƀ`
-�F�b�N������āA[OK]�{�^���������܂��B
+5：これで完了です。ただし、この設定を反映させた場合、リモートアシスタント
+やMSNエクスプローラにおいて、Windows Messengerを利用した機能を実行するこ
+とはできません。
 
 
-��0x11.) �h���C�����ɂ����郍�[�J�����[�U�[�ً̋}�ǉ�
+■0x08.) コマンドプロンプトの使用禁止
 
-�@�h���C�����ł͒ʏ�AAdministrator�A�J�E���g��Guest�A�J�E���g�����Ȃ�
-���Ƃ������ł����A�ً}�Q�X�g�A�J�E���g�iGuest�A�J�E���g�Ƃ͕ʁBWB4�̑�9��
-���Q�Ɓj��ǉ�����Ƃ��A���[�N�O���[�v�ɖ߂��ēo�^����͖̂ʓ|�ł��B�Ȃ�
-�Ƃ��A�h���C�����̂܂܂Ń��[�J�����[�U�[��o�^�������Ƃ���ł��B
+　CUIベースのアタックツールなどを勝手に利用されたり、設定変更ツールなどを
+不正に利用されることを禁止するために、コマンドプロンプトの使用禁止をオス
+スメします。
 
-1�F�u�R���g���[���p�l���v���u���[�U�[�A�J�E���g�v�i�u���[�U�[�ƃp�X���[�h�v�j
-���u�ڍאݒ�v�^�u�i�u���ҁv�^�u�j��I�����܂��B�����ŁA[�ڍאݒ�]�{�^��
-�i[�ڍ�]�{�^���j�������܂��B
+対象OS：Windows2000/XP Pro
 
-2�F�u���[�J�����[�U�[�ƃO���[�v�v�E�B���h�E���\�����ꂽ��A�����́u���[�U
-�[�v�t�H���_���E�N���b�N���āu�V�������[�U�[�v��I�����܂��B
+1：「ファイル名を指定して実行」において、「gpedit.msc」（グループポリシー
+エディタ）と入力して、グループポリシーを立ち上げます。
 
-3�F����ƁA�u�V�������[�U�[�v�E�B���h�E���\������܂��B�����ɁA���[�U�[���A
-�t���l�[���i�ȗ��\�j�A�����i�ȗ��\�j�A�p�X���[�h����͂��܂��B
-�@�����āA�u���[�U�[�͎��񃍃O�I�����Ƀp�X���[�h�̕ύX���K�v�v�Ƃ����`�F
-�b�N�{�b�N�X�̃`�F�b�N���͂����܂��B
-�@��́A[�쐬]�{�^���������܂��B
+2：「ユーザーの構成」＞「管理用テンプレート」＞「システム」を選択します。
 
-4�F����ŁA���[�J�����[�U�[�̈ꗗ�ɓo�^�������[�U���\�������͂��ł��B
+3：WindowsXPならば、右側から「コマンドプロンプトにアクセスできないように
+する」という項目をダブルクリックします。一方、Windows2000ならば、「コマン
+ドプロンプトを無効にする」という項目をダブルクリックします。
+
+4：「コマンドプロンプトにアクセスできないようにする」ウィンドウが表示され
+たら、「有効」というラジオボタンにチェックをします。バッチファイルのみ実
+行するという設定にしたければ、「コマンドプロンプトスクリプト処理も無効に
+しますか？　」というところで「はい」を選択します。
 
 
-��0x12.) ������
+■0x09.) MMCの利用
 
-�@����̓��W�X�g���G�f�B�^��|���V�[�G�f�B�^���g�����e�N�j�b�N���Љ��
-�����B���W�X�g���G�f�B�^��Windows���J�X�^�}�C�Y���邽�߂Ɏg�������Ƃ�����
-���������Ǝv���܂����A�|���V�[�G�f�B�^�͍��񏉂߂Ďg�p�����l�����邱�Ƃ�
-���傤�B��������������ɁA�|���V�[�G�f�B�^���g���|���Ă����ƁA��������
-����������܂���B
-�@����̓n�[�h�E�F�A�ɂ��Z�L�����e�B�ɂ��ďЉ�����ł��B
+対象OS：Windows2000/XP Pro/XP Home
 
-�@�ł́A�����܂���܂��傤�B
+　イベントビューア、管理ツールやグループポリシーエディタは、MMC（Microso
+ft管理コンソール）と呼ばれるMMCコンソール（管理ウィンドウ）で操作します。
+MMCを使うことで、サービス管理のためのコンポーネント（スナップイン）を操作
+することができます。スナップインを追加していくことで、MMCコンソールを作成
+することができるわけです。
+　これを利用することで、オリジナルのMMCコンソールを作成することができます。
+ただ、作成には作成者モードとユーザーモードの2つがあります。前者は作成者で
+なくてもMMCコンソールの内容を変更できる保存方法で、後者は変更できないモー
+ドです。一般的に、ユーザーモードで保存しておくほうがよいでしょう。
+
+
+■0x10.) CD-ROMの共有を禁止
+
+　Windows 2000/XP Proの場合、CD-ROMドライブをネットワーク越しに共有して使
+用することができます。これでは、0x06の方法でローカルマシンのCD-ROMドライ
+ブを使用不可にしても、ネットワーク越しで持ち込まれたPCからインストールさ
+れてしまいます。
+　この設定により、CD-ROMからのインストールを制限することができます。
+
+対象OS：Windows2000/XP Pro
+
+●WindowsXPの場合
+
+1：スタートメニュー＞「コントロールパネル」を開きます。
+
+2：「パフォーマンスとメンテナンス」＞「管理ツール」を選択します。
+
+3：「ローカルセキュリティポリシー」＞「ローカルポリシー」＞「セキュリティ
+オプション」を選択します。
+
+4：右側から「デバイス：CD-ROMへのアクセスを、ローカルログオンユーザーだけ
+に制限する」をダブルクリックします。
+
+5：「デバイス：CD-ROMへのアクセスを、ローカルログオンユーザーだけに制限す
+るのプロパティ」ウィンドウが表示されたら、「有効」というラジオボタンにチ
+ェックをいれて、[OK]ボタンを押します。
+
+
+■0x11.) ドメイン環境におけるローカルユーザーの緊急追加
+
+　ドメイン環境では通常、AdministratorアカウントとGuestアカウントしかない
+ことが多いですが、緊急ゲストアカウント（Guestアカウントとは別。WB4の第9章
+を参照）を追加するとき、ワークグループに戻して登録するのは面倒です。なん
+とか、ドメイン環境のままでローカルユーザーを登録したいところです。
+
+1：「コントロールパネル」＞「ユーザーアカウント」（「ユーザーとパスワード」）
+＞「詳細設定」タブ（「招待」タブ）を選択します。そこで、[詳細設定]ボタン
+（[詳細]ボタン）を押します。
+
+2：「ローカルユーザーとグループ」ウィンドウが表示されたら、左側の「ユーザ
+ー」フォルダを右クリックして「新しいユーザー」を選択します。
+
+3：すると、「新しいユーザー」ウィンドウが表示されます。そこに、ユーザー名、
+フルネーム（省略可能）、説明（省略可能）、パスワードを入力します。
+　そして、「ユーザーは次回ログオン時にパスワードの変更が必要」というチェ
+ックボックスのチェックをはずします。
+　後は、[作成]ボタンを押します。
+
+4：これで、ローカルユーザーの一覧に登録したユーザが表示されるはずです。
+
+
+■0x12.) おわりに
+
+　今回はレジストリエディタやポリシーエディタを使ったテクニックを紹介しま
+した。レジストリエディタはWindowsをカスタマイズするために使ったことがある
+方も多いと思いますが、ポリシーエディタは今回初めて使用した人もいることで
+しょう。これをきっかけに、ポリシーエディタも使い倒しておくと、いつか役に
+立つかもしれません。
+　次回はハードウェアによるセキュリティについて紹介するつもりです。
+
+　では、来月また会いましょう。
 
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- ��S��: �c�i���c�s�l�@���񁕔\�����Q ---
+--- 第４章: ＤＪ＆ＤＴＭ　速報＆能書き２ ---
 
-���ҁFMaD
-
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-
-
-��0x01.) �͂��߂�
-
-�@�u�c�i�v�̃V���{���Ƃ����Ӗ��ł́A�����̐l���u�^�[���e�[�u���v�𓪂ɕ�
-���ׂ�̂ł͂Ȃ��ł��傤���H�@�����ŁA���̂c�i�̃V���{���Ƃ������ׂ��u�^
-�[���e�[�u���v�ɂ��āA���̗��j��U��Ԃ�Ȃ���ATechnics�����������Ĕ�
-������c�i�p�b�c�v���C���[�uSL-DZ1200�v���Љ�܂��B
-
-
-��0x02.) �c�i��ԃ^�[���e�[�u���̒a��
-
-�@1978�N��Technics�������u�[���ƂȂ��Ă����u�J���I�P�v��ړI�Ƃ����X�܂�
-�^�[�Q�b�g�Ƃ��āA���R�[�h�̉�]�����グ�������邱�Ƃɂ��A�s�b�`�i�����j
-���̂���ɍ��킹�邱�Ƃ��ł����p�R���g���[���[��������J���I�P�������R
-�[�h�v���C���[�Ƃ��ĊJ�����ꂽ�uSL-1200�V���[�Y�v�ł����A����́u��ꋻ���v
-�Ƃ������@�ރ����^���Ǝ҂ɂ��A�����ŁA�J���I�P�X�𒆐S�ɍL����n�߂܂��B
-�@SL-1200�V���[�Y�̐�p�R���g���[���[�ƁA�n�C�g���N�i������]���́j�ɒ���
-�������E���̂c�i�������g���n�߂āA��������u�c�i�̒�ԃ^�[���e�[�u����
-Technics SL-1200�v�̗��j���n�܂�܂��B
-
-
-��0x03.) �c�i�����b�c�v���[���[�̒a��
-
-�@�����āA1986�N��SL-1200�̌^�Ԃ��p�������b�c�v���[���[�uSL-P1200�v������
-����܂��B����͓����̂b�c�v���[���[�Ƃ��Ă͒������f�X�N�g�b�v�^�ŁA�s�b
-�`�R���g���[���[��������J���I�P�i���c�i�j�ړI�Ƃ��ĊJ������܂����B
-�@�����A�c�i�v���C�Ɏg����b�c�v���C���[�́A���̈�@��݂̂ƂȂ��Ă��܂�
-���B�������A�����Ńs�b�`���킹����X�^���o�C���ł���قǂ̋@�\���͂����
-����ł����B�����u�g����@�킪���ꂵ���Ȃ��v�Ƃ������R�ŁA�����̓������N
-���u�ł͂悭�ݒu����Ă��܂����B
-
-
-��0x04.) �c�i��Ԃb�c�v���[���[�̒a��
-
-�@�����������A1994�N�ɓ˔@�APioneer�����S�Ȃc�i���������������uCDJ-50�v��
-�����b�c�v���C���[�������[�X���܂��B�������SL-P1200�ł͎����ł��Ȃ�����
-��������������Ă���A���Ɂu�}�X�^�[�e���|�@�\�v�𓋍ڂ������Ƃő�u���[
-�N�����܂����B�u�}�X�^�[�e���|�@�\�v�Ƃ́ABPM���グ�������Ă��A�I���W�i��
-�̃L�[��ۂ����܂܂Ŕ����\�ƂȂ�@�\�̂��ƂŁA�T���v���[�Ȃǂ̃^�C���X
-�g���b�`�ɑ�������Z�p�ŁA����ɂ��A�v���C�̕����L�������ƍl����c�i��
-�Ԃłb�c�Ƃ����\�[�X���c�i�v���C�Ɏ�荞�܂�邱�ƂɂȂ�܂��B�܂�u�b
-�c�i�v�Ƃ����c�i�X�^�C���̖����J���A��������c�i�̒��ł��u�A�i���O�h�v��
-�u�f�W�^���h�v�Ƃ����c�i�X�^�C���ɕ�����邱�ƂɂȂ�킯�ł��B
-
-
-��0x05.) �c�i��ԃX�N���b�`�b�c�v���[���[�̒a��
-
-�@�c�i��Ԃb�c�v���[���[�̒�ԂƌĂ΂��uCDJ-50�v�̐����ɂ��APioneer��
-���X�ƐV�@��������[�X����̂ł����A������̋@���Technics SL-1200�V���[
-�Y�ɂ���A�A�i���O�I�ȑ��쐫�Ɣ�r����ƁA���|�I��Technics SL-1200�V���[
-�Y�ɌR�z���オ��A����HIPHOP�n�v���C���[�̊Ԃł́u�R�X��Ȃ��v�Ƃ������R
-����A�܂��܂��c�i�p�b�c�v���[���[�Ƃ��Ď󂯓�����Ȃ����̂ƂȂ��Ă���
-�����B�M�҂����ۂ̂Ƃ���c�i�p�b�c�v���[���[���g�����Ȃ����߂̋Z�p�����n
-�ł��������߁A�Ȗ��ȃ~�b�N�X�������Ȃ��ꍇ�ɂ�Technics SL-1200�V���[�Y��
-�d���Ȃ��I��ł��܂����B�����O�~�b�N�X�̍ہA�r�[�g����x�����n�߂�ƁA��
-�̕t�����Ȃ��悤�Ȍ��ʂƂȂ邱�Ƃ�������������ł��B
-�@�����������A2001�N�̉āAPioneer�����S�ȃX�N���b�`�c�i���������������uC
-DJ-1000�v�Ƃ����b�c�v���C���[�������[�X���܂��B
-�@����̖ڋʂ́uVINAL�@�\�v�Ƃ������̂ŁA���̃��[�h�ɂ���Ƃǂ̂悤�Ȉʒu
-�ł����Ă��K�V�K�V�ƃR�X�邱�Ƃ��ł���̂ł��B����ɂ͋����܂����B�u����
-����A�c�i�p�b�c�v���[���[�̎��オ�����ȁv�Ǝv���܂����B���Ԃł悭�����
-��u�X�N���b�`���ł���v�Ƃ������Ƃł͂Ȃ��A�܂�A����̓R�X������Ȃ�
-�n�E�X�n�̃v���C���[�ł����Ă��A�C�ӂ̈ʒu��Technics SL-1200�V���[�Y�̂�
-���ɁA�L�����L�����Ɖ񂹂΁A�ȒP�ɃT�[�`�ł��邽�߁A����ɂ��Technics S
-L-1200�V���[�Y�Ɠ����������ł���Ƃ������ƂɂȂ�A�������A�j����΂Ȃ��A
-�ꖇ�̂b�c������΁A�����ł�����������킯�ł�����A�񖇔��������Ȃ���
-���ACD-R��������΂�����ł��Ă��邱�ƂɂȂ�܂��B
-�@��������������܂߂āA�c�i�p�b�c�v���[���[�́A�V������}���邱�ƂɂȂ�
-�܂��B
-
-
-��0x06.) Technics VS Pioneer
-
-�@�c�i�p�b�c�v���[���[�́uPioneer�v�����S�ȃX�N���b�`�c�i��������������
-�uCDJ-1000�v�́A�A�i���O�h�̊Ԃł��󂯓������悤�ɂȂ�A�ȍ~�A���̘H
-���̗����łƂ��āuCDJ-800�v�������[�X���Ă���Ȃ�L����������͂��߂܂��B
-�@�����āA2003�N�ɂ�DENON���W���O�������A�i���O���l�ɉ�]����uDN-S500
-0�v�������[�X����A����Ȃ�i���𐋂��܂��B�����āA���̋@�킠���肩��uM
-P3�v��������悤�ɂ��Ȃ�A����́A������̃��[�J�[��MP3�̋@�\���d�����Ȃ�
-�Ă͂Ȃ�Ȃ��󋵂ɂȂ��Ă���悤�ł��B
-
-�@�����������ŁATechnics���d�������グ�ă����[�X����̂��uSL-DZ1200�v�Ƃ�
-�����Ƃł��B���悢��uTechnics VS Pioneer�v�Ƃ����\�}�łc�i�p�b�c�v���[��
-�[���߂����Ă̒�ԋ@��Ƃ��Ă̔M���킢���J��L�����邱�ƂɂȂ�܂��B��
-�����i�́A100,000�~�O��ƂȂ��Ă��܂��B�������������͎̂��̃T�C�g�ƂȂ��
-���B
-
-�@http://www.otaiweb.com/player/cd.htm
-
-
-��0x07.) �X�y�b�N���V���{���uSL-DZ1200�v
-
-�@�E���́uSL-1200����p�����ꂽ�_�C���N�g�h���C�u�v�Ƃ����_�ł����A�X�N��
-�b�`�̑��쐫�́ADENON DN-S5000/3000�ɌR�z���オ�邩�Ǝv���܂��B�n�E�X�n��
-�ǂŃL���ƂȂ�A�M�̃t�`����������A�}�����肷������ȑ���ł͐\��������
-�܂���B�������悭�ł��Ă��܂��B�������A����ȊO�ł́A�Ȃ��V����������
-�܂���B�����ɍw�������̂ł����A���ɂ��Ă����΂悩�����ƓÂ����������
-�Ă��܂��B�����A�����MP3���g���悤�ȓx���̂���v���C���[�ɂ͍ō����Ǝv��
-�܂��B
-�@�M�҂́ASL-1200MK3�����g���Ȃ��̂ŁA�ł���΃u���b�N�o�[�W�����������
-�Ǝv���܂��B���Ȃ݂ɓ����������ꂽDJ MIXER�́uMZ-1200�v�ł����A����͕���
-���B���݂͂��łɃf�W�^���C�����S�n�����������@��iNUMARK�ADENON�j�������
-���ł��̂ŁA���Ȃ��炸�e���W���[���Ƀf�W�^���C���𓋍ڂ��ׂ����Ǝv���܂��B
-����ɓ�����DSP�����������Ȃ���͂��ł��̂ŁA���߂ăt�B���^�[���炢�͓���
-���ׂ��ł��B���ƁA�Z�p���[�g�A�E�g�B�uCH1�ACH2���t�����g�ցACH3�ACH4����
-�A�֕������ďo�͂��܂��v�B����Ȃ��ł��i�{�j�B
-
-�@http://www.sl-1200.com/
-
-
-��0x08.) ������
-
-�@����́ADJ MIXER�̃��[�e�B���O����b����w�ԂƂ����X�p���^������������
-���܂��i�΁j�B
-
-�@�c�Ƃ������ƂŁAny�̊J���җl�A�����ԁA�J�������l�ł����B
-�@���Ȃ��̑ߕ߂́A�x�@�́u�����c�v�𗧂Ă邽�߂̑ߕ߂ɑ��Ȃ�܂���B
-�@�ډ��A�g�b�v�����̖ړI�́u�C���^�[�l�b�g�Ƃ́A�Ȃɂ����Ă������Ƃ�����
-�̂ł͂Ȃ��B��ӂ̃N�Y�ǂ��Ɏ��d�����Ȃ������Ƃ��ł���΂Ȃ�ł������B��
-�̂��߂ɂ́A��w�֌W�҂��A�Q��B���ɕ�����₷������H�@hehehe...�v�Ƃ�
-�����Ƃł��B���D���l�ł����B
-�@�Ȃ��A���̑��̎����ɂ��Ă̓m�[�R�����g�Ƃ��܂��B
-
-
+著者：MaD
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
- --- ��T�́F���m�点 ---
+
+■0x01.) はじめに
+
+　「ＤＪ」のシンボルという意味では、多くの人が「ターンテーブル」を頭に浮
+かべるのではないでしょうか？　ここで、このＤＪのシンボルともいうべき「タ
+ーンテーブル」について、その歴史を振り返りながら、Technicsが満を持して発
+売するＤＪ用ＣＤプレイヤー「SL-DZ1200」を紹介します。
+
+
+■0x02.) ＤＪ定番ターンテーブルの誕生
+
+　1978年にTechnicsが当時ブームとなっていた「カラオケ」を目的とした店舗を
+ターゲットとして、レコードの回転数を上げ下げすることにより、ピッチ（音程）
+を歌い手に合わせることができる専用コントローラーを備えたカラオケ向けレコ
+ードプレイヤーとして開発された「SL-1200シリーズ」ですが、これは「第一興商」
+といった機材レンタル業者により、国内で、カラオケ店を中心に広がり始めます。
+　SL-1200シリーズの専用コントローラーと、ハイトルク（高い回転動力）に着眼
+した世界中のＤＪたちが使い始めて、そこから「ＤＪの定番ターンテーブル＝
+Technics SL-1200」の歴史が始まります。
+
+
+■0x03.) ＤＪ向けＣＤプレーヤーの誕生
+
+　そして、1986年にSL-1200の型番を継承したＣＤプレーヤー「SL-P1200」が発売
+されます。これは当時のＣＤプレーヤーとしては珍しいデスクトップ型で、ピッ
+チコントローラーを備えたカラオケ（＝ＤＪ）目的として開発されました。
+　当時、ＤＪプレイに使えるＣＤプレイヤーは、この一機種のみとなっていまし
+た。しかし、数分でピッチ合わせからスタンバイができるほどの機能性はありま
+せんでした。ただ「使える機種がこれしかない」という理由で、根性の入ったク
+ラブではよく設置されていました。
+
+
+■0x04.) ＤＪ定番ＣＤプレーヤーの誕生
+
+　そうした中、1994年に突如、Pioneerが完全なＤＪ向けをうたった「CDJ-50」と
+いうＣＤプレイヤーをリリースします。こちらはSL-P1200では実現できなかった
+部分が解決されており、特に「マスターテンポ機能」を搭載したことで大ブレー
+クをしました。「マスターテンポ機能」とは、BPMを上げ下げしても、オリジナル
+のキーを保ったままで発音可能となる機能のことで、サンプラーなどのタイムス
+トレッチに相当する技術で、これにより、プレイの幅を広げたいと考えるＤＪの
+間でＣＤというソースがＤＪプレイに取り込まれることになります。つまり「Ｃ
+ＤＪ」というＤＪスタイルの幕が開き、ここからＤＪの中でも「アナログ派」と
+「デジタル派」というＤＪスタイルに分かれることになるわけです。
+
+
+■0x05.) ＤＪ定番スクラッチＣＤプレーヤーの誕生
+
+　ＤＪ定番ＣＤプレーヤーの定番と呼ばれる「CDJ-50」の成功により、Pioneerは
+続々と新機種をリリースするのですが、いずれの機種もTechnics SL-1200シリー
+ズにある、アナログ的な操作性と比較すると、圧倒的にTechnics SL-1200シリー
+ズに軍配が上がり、特にHIPHOP系プレイヤーの間では「コスれない」という理由
+から、まだまだＤＪ用ＣＤプレーヤーとして受け入れられないものとなっていま
+した。筆者も実際のところＤＪ用ＣＤプレーヤーを使いこなすための技術が未熟
+であったため、綿密なミックスをおこなう場合にはTechnics SL-1200シリーズを
+仕方なく選んでいました。ロングミックスの際、ビートが一度狂い始めると、手
+の付けられないような結果となることが多かったからです。
+　そうした中、2001年の夏、Pioneerが完全なスクラッチＤＪ向けをうたった「C
+DJ-1000」というＣＤプレイヤーをリリースします。
+　これの目玉は「VINAL機能」というもので、このモードにするとどのような位置
+であってもガシガシとコスることができるのです。これには驚きました。「いよ
+いよ、ＤＪ用ＣＤプレーヤーの時代がきたな」と思いました。世間でよくいわれ
+る「スクラッチができる」ということではなく、つまり、それはコスりをしない
+ハウス系のプレイヤーであっても、任意の位置をTechnics SL-1200シリーズのよ
+うに、キュルキュルと回せば、簡単にサーチできるため、これによりTechnics S
+L-1200シリーズと同じ扱いができるということになり、しかも、針が飛ばない、
+一枚のＣＤがあれば、何枚でも複製を作れるわけですから、二枚買いをしなくと
+も、CD-Rさえあればいくらでも焼けることになります。
+　こうした事情も含めて、ＤＪ用ＣＤプレーヤーは、新時代を迎えることになり
+ます。
+
+
+■0x06.) Technics VS Pioneer
+
+　ＤＪ用ＣＤプレーヤーは「Pioneer」が完全なスクラッチＤＪ向けをうたった
+「CDJ-1000」は、アナログ派の間でも受け入れられるようになり、以降、この路
+線の廉価版として「CDJ-800」をリリースしてさらなる広がりを見せはじめます。
+　そして、2003年にはDENONよりジョグ部分がアナログ同様に回転する「DN-S500
+0」がリリースされ、さらなる進化を遂げます。そして、この機種あたりから「M
+P3」を扱えるようにもなり、今後は、いずれのメーカーもMP3の機能を重視しなく
+てはならない状況になっているようです。
+
+　こうした中で、Technicsが重い腰を上げてリリースするのが「SL-DZ1200」とい
+うことです。いよいよ「Technics VS Pioneer」とした構図でＤＪ用ＣＤプレーヤ
+ーをめぐっての定番機種としての熱い戦いが繰り広げられることになります。実
+売価格は、100,000円前後となっています。けっこう安いのは次のサイトとなりま
+す。
+
+　http://www.otaiweb.com/player/cd.htm
+
+
+■0x07.) スペックがショボい「SL-DZ1200」
+
+　ウリは「SL-1200から継承されたダイレクトドライブ」という点ですが、スクラ
+ッチの操作性は、DENON DN-S5000/3000に軍配が上がるかと思います。ハウス系な
+どでキモとなる、皿のフチを押したり、抑えたりする微妙な操作では申し分あり
+ません。ここがよくできています。しかし、それ以外では、なんら新しさを感じ
+ません。すぐに購入したのですが、一台にしておけばよかったと禿げしく後悔し
+ています。ただ、現場でMP3を使うような度胸のあるプレイヤーには最高かと思い
+ます。
+　筆者は、SL-1200MK3しか使えないので、できればブラックバージョンがあれば
+と思います。ちなみに同時発売されたDJ MIXERの「MZ-1200」ですが、これは糞で
+す。現在はすでにデジタルインを４系統装備した機種（NUMARK、DENON）があるわ
+けですので、少なからず各モジュールにデジタルインを搭載すべきだと思います。
+さらに内部でDSP処理をおこなえるはずですので、せめてフィルターくらいは搭載
+すべきです。あと、セパレートアウト。「CH1、CH2をフロントへ、CH3、CH4をリ
+アへ分割して出力します」。いらないです（怒）。
+
+　http://www.sl-1200.com/
+
+
+■0x08.) おわりに
+
+　次回は、DJ MIXERのルーティングを基礎から学ぶというスパルタ教室をおこな
+います（笑）。
+
+　…ということで、nyの開発者様、長い間、開発お疲れ様でした。
+　あなたの逮捕は、警察の「メンツ」を立てるための逮捕に他なりません。
+　目下、トップたちの目的は「インターネットとは、なにをしてもいいというも
+のではない。底辺のクズどもに自重をうながすことができればなんでもいい。そ
+のためには、大学関係者をアゲろ。非常に分かりやすいだろ？　hehehe...」とい
+うことです。ご愁傷様でした。
+　なお、その他の事件についてはノーコメントとします。
+
+
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-��Wizard Bible�ihttp://2600ch.com/�j�ł͐����A���M���C�^�[���W���Ă���
-���B
-�@�������e�̃e�[�}�͍L�`�ł́uunder ground�v�ł��B�Ⴆ�΁A�n�b�L���O����
-�T�����K�X�̍����@�Ȃǂƕ��L�����e���l���Ă��܂��B�܂��A�e��A����ȐE��
-�������������̃��N�`���[�Ȃǂ��܂܂�܂��B
-�@��񂫂�ł��\���܂���B�܂��A�K���A����A�ڂ���`��������܂���̂ł�
-����͈͂ō\���܂���B�C�y�ɐ��������Ă��������B��������񏑂������Ƃ�
-����l���C�y�ɐ��������Ă��������i�S���C�ɂ��Ă��Ȃ����i�Ȃ̂Łj�B
+ --- 第５章：お知らせ ---
 
-��Kenji Aiko����Q&A������Ă���܂����B���߂ĎQ������l�ł��킩��₷��
-������Ă��܂��̂ŁA�Q�l�ɂ��Ă��������B
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○Wizard Bible（http://2600ch.com/）では随時、執筆ライターを募集していま
+す。
+　扱う内容のテーマは広義での「under ground」です。例えば、ハッキングから
+サリンガスの合成法などと幅広い内容を考えています。また、各種、特殊な職業
+や趣味を持った方のレクチャーなども含まれます。
+　一回きりでも構いません。また、必ず、毎回連載する義務もありませんのでで
+きる範囲で構いません。気軽に声をかけてください。もちろん一回書いたことが
+ある人も気軽に声をかけてください（全く気にしていない性格なので）。
+
+○Kenji AikoさんがQ&Aを作ってくれました。初めて参加する人でもわかりやすく
+書かれていますので、参考にしてください。
 
 http://akademeia.info/wizardbible/wbQandA.html
 
-���x���ҁA�Q����]�җp�̃X���b�h�𗧂Ă܂����B
+○支援者、参加希望者用のスレッドを立てました。
 
 http://ruffnex.oc.to/ipusiron/cgi/forum/patio.cgi?mode=view&no=17
 
@@ -1320,131 +1320,131 @@ http://ruffnex.oc.to/ipusiron/cgi/forum/patio.cgi?mode=view&no=17
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-  ---- ��U�́F���҃v���t�B�[�� ---
+  ---- 第６章：著者プロフィール ---
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-�@����͊e���҂Ɉ�ې[���Q�[�����Љ�Ă��炢�܂����B
+　今回は各著者に印象深いゲームを紹介してもらいました。
 
-���R�{�m��R
-��Job:����l
-��Web:bogus.jp�ihttp://bogus.jp/�j
-��Mail: bogus@bogus.jp
-��Team�iGroup�j:N/A
-��Comment:
-�@���ǂ����g�Ƃ��Ă͔~�J�͂ǂ����Ă��g�̂̋�������Ȃ��Ă��܂��B�F
-����A���̂ɂ͒��ӂ��܂��傤�B
-����ې[���Q�[���F�u�I�����_�Ȃ͓d�C�E�i�M�̖������邩�v
-�@�u�O���u�v��u�M���̖�]�v�ŗL���Ȍ��h���o���Ă����u�X�g���x���[�|���m�v
-�V���[�Y�̂P�ŁA�D��ꂽ�_�b�`���C�t�u���X���v�����߂��G���A�h�x���`
-���[�B���e�͂Ƃ��������낢��Ǝa�V�ȗv�f���ڂ����A���h�͐G�ꂽ���Ȃ��ߋ�
-�̂悤�ł��B
-
-
-��Kenji Aiko
-��Job: Student
-��Web: http://ruffnex.oc.to/kenji/
-��Mail: kenjinet@s26.xrea.com
-��Team�iGroup): N/A
-��Comment:
-�@�O��̋L���ŁA�����Linux�̃l�^�ɂȂ�Ƃ������Ă����āA�܂�Windows�l�^
-�ɂȂ��Ă��܂��܂���(^^;�B���̎�������Linux�l�^�ł������Ǝv���Ă܂��B����
-�͂����ƁA�܂�IE�̃Z�L���z���������ꂽ�悤�ł���
-�ihttp://www.itmedia.co.jp/enterprise/articles/0406/12/news009.html�j�B
-���͂��̂悤�ȃZ�L�����e�B�z�[������������邽�тɁA�U���R�[�h��T���Ƀl
-�b�g������낤�낵�Ă��܂�(^^;�B������IE�ŉ{�������������ŁA�����PC�ŔC
-�ӂ̃R�[�h�����s�ł����ł���B����Ȗʔ������Ȃ��ƂȂ��ł����āi�΁j�B
-�ł������ȍU���R�[�h�����Ă���A�ȑO�ɂ�������OS���s����ɂȂ����Ƃ��A
-�Ȃ�Ƃ��B
-����ې[���Q�[���F�uMOTHER�v
-�@�uMOTHER�v�ł��ˁB�uMOTHER2�v�������ł��B�����O�ɃQ�[���{�[�C�A�h�o���X
-�Ŕ������ꂽ�悤�ł����A�ł���΃t�@�~�R���ł�����ق��������ł��B�ǂ���
-���Ƃ����ƁA�K�x�ɉ���F����������Ă���t�@�~�R���̕��������Ǝv���܂��B
-�ł��Q�[���{�[�C�A�h�o���X�ł������ł�(^^;�B�G���f�B���O�̂��ƁA�����ł�
-�Ȃ��A�����ł��Ȃ��A�B�����ł��Ȃ��A�ʂ̉������`����Ă���Q�[���ł��B��
-���ă��X�{�X�Ƃ̑Ό��́A�����炭�ꐶ�Y��Ȃ����̂ɂȂ�Ǝv���܂��i������
-�����ł��ȁi�΁j�j�B�ł��z���g�����Q�[���ł��B�Ƃ������N���A��Ɏc��Q�[
-�����Ǝv���܂��B���������Ӗ��ň�ې[���Q�[���ł��B
+■山本洋介山
+●Job:怪我人
+●Web:bogus.jp（http://bogus.jp/）
+●Mail: bogus@bogus.jp
+●Team（Group）:N/A
+●Comment:
+　後遺症を持つ身としては梅雨はどうしても身体の具合が悪くなってきます。皆
+さん、事故には注意しましょう。
+●印象深いゲーム：「オランダ妻は電気ウナギの夢を見るか」
+　「三国志」や「信長の野望」で有名な光栄が出していた「ストロベリーポルノ」
+シリーズの１つで、奪われたダッチワイフ「南極X号」を取り戻すエロアドベンチ
+ャー。内容はともかくいろいろと斬新な要素満載だが、光栄は触れたくない過去
+のようです。
 
 
-��MaD
-��Job:DATA HOUSE
-��Web:http://www.data-house.co.jp/
-��Mail:mad@data-house.co.jp
-��Team�iGroup�j:secret
-��Comment:
-�@���n�J�[�W���p�\�Ɗ�Ȃ�28���̕S�~���C�^�[�B��́A�󂫊ʏE���Ƌ����r
-�̃t�^�W�߁B�Q�����˂�ł́u���}�T���L�v�A�u���߁E�ہv�A�u�哯�Ȍ|�l
-�v�A�u�D�_�E���\�t�v�Ƃ��Ēʂ��Ă���B�E�\�΂�����̂ŗF�B�͂��Ȃ��B
-�@���݂͉�ЂŃq�b�L�[�����Ă��邪�A�����̓l�b�g�J�t�F�̓X���Ȃ�Ƃ�����
-�W�Ɍ������Ă܂�������B�Ƃ����I(`�D�L)�B
-����ې[���Q�[��
-�@���Ƃ��ƃA�[�P�C�h�Q�[���̃h�X�����u���[�J�[������Ă��܂����̂ŁA�Q�[
-���̓A�[�P�C�h�������܂���B���C��➑̂̓Z�K�̃G�A���V�e�B���S�䂭�炢
-�u���Ă��܂��āA�������Q�[�Z���Ƃc�i�u�[�X�̂悤�ɂȂ��Ă����̂ł��B
-�@�\�\�\�����͂����Ƃ��āA�����������Q�[���̏Љ�Ƃ����܂Ђ�B
-
-���O���f�B�E�X�P
-�@-12V�̃p���[�T�v���C��K�v�Ƃ���ϑԊ�Ƃ��āA���̋؂ł͗L���ȃR�i�~
-�̃o�u���V�X�e����B���j�b�g��������c�C���r�[�ɂ��Ή��B
-�@�Q�[�����e�͊ȒP�Ȃ񂾂��ǁA10���Ƃ�����Ƃ��̓I�V�b�R�Ƃ��䖝���Ȃ���
-�����Ȃ�����A�����炪�����̕ʂ�ځB�Q���ڈȍ~�̓U�u�悯���X�������_�I�@
-�ŏI�ʂ̈��O�̖ʂ̃{�X�̂Ƃ��A����ʒu�Ń_�u����ł��Ȃ���ʂ悯���āA
-�{�X����������ƁA�ŏI�ʂ��o�O��n�߂āA�Ō�͉�ʂ��^���ԂɂȂ�B���Z�b
-�g���Ȃ��ƒ���Ȃ��̂ŁA�悭�Q�[�Z���ł����������܂ܕ��u���ċA��܂����B
-
-���O���f�B�E�X�Q
-�@-12V��K�v�Ƃ��Ȃ��Ȃ������A�Q����łP���i�㑤�j��ROM�������A�ʂ�
-�Q�[����ROM��̌����ł������Ή����Ă͂��B�ƂĂ��d����ł����B
-�@�ΎR�̖ʂ̓t�H�[�X�t�B�[���h������Ɗ��ʂ蔲������Ƃ��A�ُ�Ȃ�
-�炢���n�������������ƂŗL���B�Ў�ŉ������z���Ȃ�����n�ŃI�[�g�A�˂��g
-���Ă̂�т�Ƃł���Q�[���̏G��B��ʖڂ̍ŏ��̃U�R�̂Ƃ��ŘA�˃{�[�h��
-�ō��̃N���b�N�ɂ���ƃ��b�v���̉����t�H�[�h�o�b�N���N�����ă����O���W��
-���[�V�����݂����ȑf�G�ȉ����Y����Ȃ��B
-
-���O���f�B�E�X�R
-�@�ŋ߂ł����܂����ǁA�P���ł��Ȃ��Ȃ��Ă܂��i�΁j�B�g���v���R�A�̎����Z
-���܂��v���o���Ȃ��̂��ɂ��B��́A�΂̖ʂł�����񎀂�ŁA�ŏI�ʂœ����S
-�`���S�`���ɂȂ��ăN���u�Ƀy�V�����R�ɂ���Ă��܂��܂��B���������ɖ��G��
-�[�h���L�����ăQ�[�Z���ŋ֎~�Ⴊ�o�����킭���̊�B��Փx�ُ͈�ɍ���
-���ǁA�ڂ��̒��ł́A������z����ʔ����̃Q�[���͂���܂���B�Ƃɂ�������
-������Q�[���ł��B�ō��͂Q�T�ڂ̃o�u�������E�ł����B���ʂ܂łɈ�x�ł���
-����R�T�ڂ܂ł��������ł��B���ƂȂ�X�悯���A�o�r�łŒb��������A����
-�͊ȒP�ɂȂ����̂����c�c�B
-
-���O���f�B�E�X�S
-�@���񂱁B
-�@����Ȃ��B
-
-���O���f�B�E�X�T
-�@�o�r�ł����悢��ł��ˁR( �L�[`)�m�B
-�@�ł��A�O���R���P������܂ł͂��Ȃ��B
-�@�����ɂ͏���������킯�B
-�@���ꂪ�^�̃O���t�@���Ȃ̂��B
-
-�@�����I�@���܂���I�@�u�Q�[���v�䂤����o�L�o�L�Ɍ����Č����Č��Ă�I
-�@�u��_���v�䂤����u�A�}�v�̂��Ƃ�I�@�����������W���[�W�̃I�b�T����I
-�@��{���o���Ƃ���I�@���񂱁I
+■Kenji Aiko
+●Job: Student
+●Web: http://ruffnex.oc.to/kenji/
+●Mail: kenjinet@s26.xrea.com
+●Team（Group): N/A
+●Comment:
+　前回の記事で、今回はLinuxのネタになるとかいっておいて、またWindowsネタ
+になってしまいました(^^;。この次こそはLinuxネタでいこうと思ってます。それ
+はそうと、またIEのセキュホが発見されたようですね
+（http://www.itmedia.co.jp/enterprise/articles/0406/12/news009.html）。
+私はこのようなセキュリティホールが発見されるたびに、攻撃コードを探しにネ
+ット上をうろうろしています(^^;。だってIEで閲覧させただけで、相手のPCで任
+意のコードが実行できるんですよ。こんな面白そうなことないですって（笑）。
+でもいろんな攻撃コード試してたら、以前にも増してOSが不安定になったとか、
+なんとか。
+●印象深いゲーム：「MOTHER」
+　「MOTHER」ですね。「MOTHER2」もいいです。少し前にゲームボーイアドバンス
+で発売されたようですが、できればファミコンでやったほうがいいです。どちら
+かというと、適度に音や色が制限されているファミコンの方があうと思います。
+でもゲームボーイアドバンスでもいいです(^^;。エンディングのあと、感動でも
+ない、驚きでもない、達成感でもない、別の何かが伝わってくるゲームです。そ
+してラスボスとの対決は、おそらく一生忘れないものになると思います（少し大
+げさでかな（笑））。でもホントいいゲームです。というかクリア後に残るゲー
+ムだと思います。そういう意味で印象深いゲームです。
 
 
-��IPUSIRON
-��Job:�T�C�g�X�V
-��Web:- Security Akademeia -�ihttp://akademeia.info/�j
-��Mail:ipusiron@ruffnex.oc.to
-��Team�iGroup�j:TeamSA
-��Comment:
-�@�Z�L�����e�B�Œ@�����̂͑z�肵�Ă܂������A��K��MMORPG�Œ@�����
-�Ƃ͎v���Ă����܂���ł����i�΁j�B
-�@�f�X�g���C���[������Web�T�C�g���쐬���܂����B
-�@http://www.akademeia.info/main/lineage/
-�@�uWizard Bible�ǂ݂܂����v�ƍŏ���Wis���Ă��ꂽ���i����̂��H�@�j������
-�΁A�������v���[���g���܂��B4�IIPUSIRON�Ńv���C���Ă���̂ł�낵���ł��B
-����ې[���Q�[���F�u�������̒����v
-�@����قǃC���p�N�g�������䖞�ڂ̃Q�[���̓v���C�������Ƃ�����܂���B��
-���X�ɍs���Β䓁�œ���؂��Ă��܂����C�t������A�В�������Ƌ����x����
-���������Ă�����A����ɋA��Ύq���ƍȂ��U�����Ă����襥��B���{����n��
-�C�Ɉړ�����Ƃ��̔�s�@����{�I�ɔ�������ɂȂ��Ă���d�l���Ӗ��s���ł�
-�i�΁j�B
-�@3D��MMORPG�́u�������̒����2�v����������ǂ�Ȃӂ��ɂȂ�̂��A�z������
-�����Ō��\�y�����B
+■MaD
+●Job:DATA HOUSE
+●Web:http://www.data-house.co.jp/
+●Mail:mad@data-house.co.jp
+●Team（Group）:secret
+●Comment:
+　元ハカージャパソと危ない28号の百円ライター。趣味は、空き缶拾いと牛乳瓶
+のフタ集め。２ちゃんねるでは「矢崎マサユキ」、「白鶴・丸」、「大同曲芸人
+」、「泥棒・詐欺師」として通っている。ウソばかりつくので友達はいない。
+　現在は会社でヒッキーをしているが、将来はネットカフェの店員なるという目
+標に向かってまっしぐら。とぁっ！(`Д´)。
+●印象深いゲーム
+　もともとアーケイドゲームのドス黒いブローカーをやっていましたので、ゲー
+ムはアーケイドしかやりません。メイン筐体はセガのエアロシティを４台くらい
+置いていまして、部屋がゲーセンとＤＪブースのようになっていたのです。
+　——能書きはおいといて、根性入ったゲームの紹介といきまひょ。
+
+○グラディウス１
+　-12Vのパワーサプライを必要とする変態基板として、その筋では有名なコナミ
+のバブルシステム基板。ユニット式だからツインビーにも対応。
+　ゲーム内容は簡単なんだけど、10周とかするときはオシッコとか我慢しないと
+いけないから、そこらが勝負の別れ目。２周目以降はザブよけがスリル満点！　
+最終面の一個手前の面のボスのとき、ある位置でダブルを打ちながら玉よけして、
+ボスが自爆すると、最終面がバグり始めて、最後は画面が真っ赤になる。リセッ
+トしないと直らないので、よくゲーセンでそれをやったまま放置して帰りました。
+
+○グラディウス２
+　-12Vを必要としなくなったが、２枚基板で１枚（上側）がROM基板だから、別の
+ゲームはROM基板の交換でいくつか対応してはず。とても重い基板でした。
+　火山の面はフォースフィールドをつけると岩を通り抜けられるとか、異常なく
+らい安地が多かったことで有名。片手で煙草を吸いながら安地でオート連射を使
+ってのんびりとできるゲームの秀作。二面目の最初のザコのとこで連射ボードを
+最高のクロックにするとリップルの音がフォードバックを起こしてリングモジュ
+レーションみたいな素敵な音が忘れられない。
+
+○グラディウス３
+　最近でもしますけど、１周できなくなってます（笑）。トリプルコアの自爆技
+をまだ思い出せないのが痛い。大体、火の面でもう一回死んで、最終面で頭がゴ
+チャゴチャになってクラブにペシャンコにされてしまいます。発売当初に無敵モ
+ードが広がってゲーセンで禁止例が出たいわくつきの基板。難易度は異常に高い
+けど、ぼくの中では、これを越える面白さのゲームはありません。とにかく根性
+がいるゲームです。最高は２週目のバブルが限界でした。死ぬまでに一度でいい
+から３週目までいきたいです。問題となる氷よけも、ＰＳ版で鍛えたから、そこ
+は簡単になったのだが……。
+
+○グラディウス４
+　うんこ。
+　いらない。
+
+○グラディウス５
+　ＰＳ版がいよいよですねヽ( ´ー`)ノ。
+　でも、グラ３を１周するまではやらない。
+　物事には順序があるわけ。
+　それが真のグラファンなのだ。
+
+　おい！　おまいら！　「ゲーム」ゆうたらバキバキに撃って撃って撃墜や！
+　「阪神尼崎」ゆうたら「アマ」のことや！　根性入ったジャージのオッサンや！
+　基本を覚えとけや！　うんこ！
+
+
+■IPUSIRON
+●Job:サイト更新
+●Web:- Security Akademeia -（http://akademeia.info/）
+●Mail:ipusiron@ruffnex.oc.to
+●Team（Group）:TeamSA
+●Comment:
+　セキュリティ板で叩かれるのは想定してましたが、大規模MMORPG板で叩かれる
+とは思ってもいませんでした（笑）。
+　デストロイヤー向けのWebサイトも作成しました。
+　http://www.akademeia.info/main/lineage/
+　「Wizard Bible読みました」と最初にWisしてくれた方（いるのか？　）がいれ
+ば、著書をプレゼントします。4鯖IPUSIRONでプレイしているのでよろしくです。
+●印象深いゲーム：「たけしの挑戦状」
+　これほどインパクトが強く謎満載のゲームはプレイしたことがありません。理
+髪店に行けば剃刀で頭を切られてしまいライフが減り、社長を殴ると強い警備員
+がかけつけてきたり、自宅に帰れば子供と妻が攻撃してきたり・・・。日本からハワ
+イに移動するときの飛行機が基本的に爆発するになっている仕様も意味不明です
+（笑）。
+　3DのMMORPGの「たけしの挑戦状2」があったらどんなふうになるのか、想像する
+だけで結構楽しい。

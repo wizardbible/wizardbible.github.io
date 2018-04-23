@@ -1,61 +1,61 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- ��1��: AntiCracking Techniques �` Obfuscating API Call �` ---
+--- 第1章: AntiCracking Techniques 〜 Obfuscating API Call 〜 ---
 
-���ҁFsuma
+著者：suma
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@AntiCracking�Ƃ̓v���O�����̃��o�[�X�G���W�j�A�����O��h���Z�p�ł��B�A
-�Z���u���R�[�h���R���s���[�^��Ŏ��s�����ȏ�A���o�[�X�G���W�j�A�����O
-���̂��̂�h�����Ƃ͂ł��܂���B���̂��߁u�h���v�ł͂Ȃ��u���o�[�X�G���W
-�j�A�����O�̎ז�������v���d�_�ɂ����܂��B�܂��AAntiCracking�ɂ�������
-���\�Ȍ���ŏ����ɂƂǂ߂邱�Ƃ��l���Ă݂܂��B
+　AntiCrackingとはプログラムのリバースエンジニアリングを防ぐ技術です。ア
+センブリコードがコンピュータ上で実行される以上、リバースエンジニアリング
+そのものを防ぐことはできません。そのため「防ぐ」ではなく「リバースエンジ
+ニアリングの邪魔をする」を重点におきます。また、AntiCrackingにかかる手間
+を可能な限り最小限にとどめることも考えてみます。
 
-�@�R���p�C����Visual Studio .NET 2003���g�p���A����ɂ�C++���g�p���܂��B
-��{�I�ȋU���̎d�g�݂�C��C++�œ��ɈႢ���Ȃ��̂ŁAC++���킩��Ȃ��Ă�����
-�ł���Ǝv���܂��B�R���p�C����Borland C/C++ Compiler�i�Ȍ�BCC�ƌĂт܂��j
-���g�p���Ă��\���܂���B
+　コンパイラはVisual Studio .NET 2003を使用し、言語にはC++を使用します。
+基本的な偽装の仕組みはCとC++で特に違いがないので、C++がわからなくても理解
+できると思います。コンパイラはBorland C/C++ Compiler（以後BCCと呼びます）
+を使用しても構いません。
 
 
-��0x02.) Win32API�Ăяo���̋U��
+■0x02.) Win32API呼び出しの偽装
 
-�@Win32API��DLL�iDynamic Link Library�j�ɂ���Ē񋟂���Ă��܂��BWin32AP
-I��Windows�v���O����������Ŕ��ɏd�v�ł��B�����ŁA���o�[�X�G���W�j�A
-�����O�̃q���g�ƂȂ�Win32API�̌Ăяo�����U��������@�ɂ��Đ������܂��B
+　Win32APIはDLL（Dynamic Link Library）によって提供されています。Win32AP
+IはWindowsプログラムを作る上で非常に重要です。そこで、リバースエンジニア
+リングのヒントとなるWin32APIの呼び出しを偽装する方法について説明します。
 
-��OllyDbg�ŌĂяo���𒲂ׂ�
+●OllyDbgで呼び出しを調べる
 
-�@OllyDbg���g����Win32API�̌Ăяo���𒲂ׂ܂��B�U�����ĂȂ��v���O�����ƋU
-�������v���O�����̈Ⴂ�����Ă݂܂��傤�B
-�@�\�[�X�R�[�h�A�v���W�F�N�g�t�@�C���A���s�t�@�C�����܂Ƃ߂��A�[�J�C�u��p�ӂ��Ă��܂��B�܂Ƃ߂ă_�E�����[�h����������������ǂ����B
+　OllyDbgを使ってWin32APIの呼び出しを調べます。偽装してないプログラムと偽
+装したプログラムの違いを見てみましょう。
+　ソースコード、プロジェクトファイル、実行ファイルをまとめたアーカイブを用意しています。まとめてダウンロードしたい方こちらをどうぞ。
 
 http://beautiful.homelinux.net/~sky-software/wb/1/obf_all.zip
 
 
-�����ʂ�MessageBox���Ăяo���v���O����
+●普通にMessageBoxを呼び出すプログラム
 
-�@���ʂ�MessageBox���Ăяo���v���O�����͎���URL����_�E�����[�h�ł��܂��B
+　普通にMessageBoxを呼び出すプログラムは次のURLからダウンロードできます。
 
-http://beautiful.homelinux.net/~sky-software/wb/1/msgbox.cpp�i�\�[�X�R�[�h�j
-http://beautiful.homelinux.net/~sky-software/wb/1/msgbox.vcproj�i�v���W�F�N�g�t�@�C���j
-http://beautiful.homelinux.net/~sky-software/wb/1/msgbox.exe�i���s�t�@�C���j
+http://beautiful.homelinux.net/~sky-software/wb/1/msgbox.cpp（ソースコード）
+http://beautiful.homelinux.net/~sky-software/wb/1/msgbox.vcproj（プロジェクトファイル）
+http://beautiful.homelinux.net/~sky-software/wb/1/msgbox.exe（実行ファイル）
 
 -----
 const char *title = "title", *msg = "message";
 MessageBox(NULL, msg, title, MB_OK);
 -----
 
-�@OllyDbg�ł́A�v���O�������J���Ă���Ctrl+N�������A�����̒m�肽���֐���I
-������Enter�������ƁA�֐����Ăяo���Ă���i�Q�Ƃ��Ă���j�A�h���X��m�邱
-�Ƃ��ł��܂��B�쐬�������s�t�@�C����OllyDbg�Ō��Ă݂܂��傤�B�s���菇�́u
-Ctrl+N��MessageBoxA��I������Enter���A�h���X0040100E�ŎQ�Ƃ���Ă��镔��
-��I������Enter�v�ƂȂ�܂��B
+　OllyDbgでは、プログラムを開いてからCtrl+Nを押し、自分の知りたい関数を選
+択してEnterを押すと、関数を呼び出している（参照している）アドレスを知るこ
+とができます。作成した実行ファイルをOllyDbgで見てみましょう。行う手順は「
+Ctrl+N→MessageBoxAを選択してEnter→アドレス0040100Eで参照されている部分
+を選択してEnter」となります。
 
 -----
 00401000  /$ 6A 00          PUSH 0                                   ; /Style = MB_OK|MB_APPLMODAL
@@ -65,25 +65,25 @@ Ctrl+N��MessageBoxA��I������Enter���A�h���X0040100E�ŎQ�Ƃ���Ă��镔��
 0040100E  |. FF15 C4504000  CALL DWORD PTR DS:[<&USER32.MessageBoxA>>; \MessageBoxA
 -----
 
-�@OllyDbg���g���ƊȒP��MessageBox���Ăяo���������邱�Ƃ��ł��܂����B�R
-�[�h������ƁAMessageBoxA���Ăяo���������܂ŕ\������Ă��܂��B
+　OllyDbgを使うと簡単にMessageBoxが呼び出しを見つけることができました。コ
+ードを見ると、MessageBoxAを呼び出した引数まで表示されています。
 
-�@��������������܂��񂪔O�̂��ߐ������܂��BMessageBox���Ăяo���Ă����
-���Ȃ̂ɁAOllyDbg�ł�MessageBoxA���\������Ă��܂��BWin32API�̒���UNICOD
-E�ɑΉ����Ă���֐�������܂��BANSI�ł�UNICODE�ł�����APlatformSDK�̃w�b
-�_�t�@�C�����Ő錾����Ă��܂��BMessageBox�̏ꍇMessageBoxA��MessageBoxW
-������܂��BA��ANSI�AW��Wide�̗��ł��B
+　ご存じかもしれませんが念のため説明します。MessageBoxを呼び出しているは
+ずなのに、OllyDbgではMessageBoxAが表示されています。Win32APIの中にUNICOD
+Eに対応している関数があります。ANSI版とUNICODE版があり、PlatformSDKのヘッ
+ダファイル内で宣言されています。MessageBoxの場合MessageBoxAとMessageBoxW
+があります。AはANSI、WはWideの略です。
 
 
-���萔�̃X�N�����u��1
+●定数のスクランブル1
 
-�@�萔�̃X�N�����u��1�̃v���O�����͎���URL����_�E�����[�h�ł��܂��B
+　定数のスクランブル1のプログラムは次のURLからダウンロードできます。
 
-http://beautiful.homelinux.net/~sky-software/wb/1/obf1.cpp�i�\�[�X�R�[�h�j
-http://beautiful.homelinux.net/~sky-software/wb/1/obf1.vcproj�i�v���W�F�N�g�t�@�C���j
-http://beautiful.homelinux.net/~sky-software/wb/1/obf1.exe�i���s�t�@�C���j
+http://beautiful.homelinux.net/~sky-software/wb/1/obf1.cpp（ソースコード）
+http://beautiful.homelinux.net/~sky-software/wb/1/obf1.vcproj（プロジェクトファイル）
+http://beautiful.homelinux.net/~sky-software/wb/1/obf1.exe（実行ファイル）
 
-�@���x�͋U��������ԂŌĂяo���Ă݂܂��B�\�[�X�R�[�h�����Ă��������B
+　今度は偽装した状態で呼び出してみます。ソースコードを見てください。
 
 -----
 const DWORD_PTR msgbox = ((DWORD_PTR)MessageBox + 0x7F12AE11);
@@ -97,31 +97,31 @@ int main()
 }
 -----
 
-�@DWORD_PTR�^��msgbox�Ƃ����萔��錾���Ă��܂��B���̐錾�ɂ����Message
-Box�̃A�h���X��0x7F12AE11�𑫂����l��msgbox�ɓ��邱�ƂɂȂ�܂��Bmain����
-��msgbox�̒l����0x7F12AE11���������ƂŁAMessageBox�̃A�h���X�𕜌����A��
-�яo���Ă��܂��B0x7F12AE11�̑���ɕʂ̒l�𑫂���������Ă��\���܂���B
-�����E�������t�ɂ�����AXOR�Ȃǂ̕ʂ̉��Z���g�����Ƃ��ł��܂��B
+　DWORD_PTR型のmsgboxという定数を宣言しています。この宣言によってMessage
+Boxのアドレスに0x7F12AE11を足した値がmsgboxに入ることになります。main内で
+はmsgboxの値から0x7F12AE11を引くことで、MessageBoxのアドレスを復元し、呼
+び出しています。0x7F12AE11の代わりに別の値を足したり引いても構いません。
+足す・引くを逆にしたり、XORなどの別の演算を使うこともできます。
 
-�@������msgbox�̐錾��main�֐����ɂȂ����ƁAconst�C���q�����Ă��邱�Ƃ�
-�Y��Ă͂����܂���B�Ⴆ��VC++�̏ꍇ�Amain���ɐ錾������Aconst��t���Y��
-��ƃR���p�C���̍œK���ŕ��ʂ�MessageBox�̌Ăяo�����ꍇ�Ƃ����Ȃ��R�[
-�h����������邱�ƂɂȂ�܂��BBCC�ł͊m�F���Ă��܂��񂪁A�R���p�C���E�œK
-���I�v�V�����̈Ⴂ�ɂ���ĈӐ}���Ȃ��R�[�h�����������\��������܂��B
-���̂��߃R���p�C������������R�[�h��c�����Ă����K�v������܂��B
+　ここでmsgboxの宣言がmain関数内にないこと、const修飾子がついていることを
+忘れてはいけません。例えばVC++の場合、main内に宣言したり、constを付け忘れ
+るとコンパイラの最適化で普通にMessageBoxの呼び出した場合とかわらないコー
+ドが生成されることになります。BCCでは確認していませんが、コンパイラ・最適
+化オプションの違いによって意図しないコードが生成される可能性があります。
+そのためコンパイラが生成するコードを把握しておく必要があります。
 
-�@�R���p�C�������������R�[�h�𒲂ׂ�ɂ́A�쐬�������s�t�@�C����OllyDbg��
-�J���Ă��璲�ׂ���@������܂����ʂ̕��@������܂��B�R���p�C���̒��ɂ́A
-�A�Z���u������̃\�[�X�R�[�h�𐶐����T�|�[�g���Ă�����̂�����܂��BVisu
-al Studo .NET�̏ꍇ�́u�v���W�F�N�g�I�v�V������\����C/C++���o�̓t�@�C��
-���A�Z���u���̏o�́v����I���ł��܂��B�\�[�X�R�[�h�ƃA�Z���u���R�[�h�̗�
-���Ɣ�ׂČ��邱�Ƃ��ł���u�A�Z���u�� �R�[�h�ƃ\�[�X �R�[�h (/Fas)�v����
-�����߂ł��B
+　コンパイラが生成したコードを調べるには、作成した実行ファイルをOllyDbgで
+開いてから調べる方法もありますが別の方法もあります。コンパイラの中には、
+アセンブリ言語のソースコードを生成をサポートしているものがあります。Visu
+al Studo .NETの場合は「プロジェクトオプションを表示→C/C++→出力ファイル
+→アセンブリの出力」から選択できます。ソースコードとアセンブリコードの両
+方と比べて見ることができる「アセンブリ コードとソース コード (/Fas)」がお
+すすめです。
 
-�@��قǂƓ����悤��OllyDbg�Œ��ׂĂ݂܂��B�������A�uCtrl+N��MessageBoxA
-��I������Enter�c�v�Ƃ����������ǂ��Ă�MessageBoxA�̌Ăяo���𔭌��ł���
-����B�Ăяo�����U������Ă��邱�Ƃ��킩��܂��B�Ƃ肠�����AHome�L�[����
-�����A�A�h���X00401000�ɃW�����v���Ă��������B
+　先ほどと同じようにOllyDbgで調べてみます。しかし、「Ctrl+N→MessageBoxA
+を選択してEnter…」という順をたどってもMessageBoxAの呼び出しを発見できま
+せん。呼び出しが偽装されていることがわかります。とりあえず、Homeキーを押
+すか、アドレス00401000にジャンプしてください。
 
 ------
 00401000  /$ A1 C0724000    MOV EAX,DWORD PTR DS:[4072C0]
@@ -133,43 +133,43 @@ al Studo .NET�̏ꍇ�́u�v���W�F�N�g�I�v�V������\����C/C++���o�̓t�@�C��
 00401018  |. FFD0           CALL EAX
 ------
 
-�@���ʂ�MessageBox���Ăяo�����ꍇ�ƍ\�������Ă��܂��B����Ă���̂�MOV��
-�߁AADD���߁AXOR���߂ł��B�g���Ă���l��MessageBoxA�̃A�h���X���Ȃ����߁A
-OllyDbg��MessageBoxA���Ăяo����Ă��邱�Ƃ����o�ł��Ă��܂���B
+　普通にMessageBoxを呼び出した場合と構成が似ています。違っているのはMOV命
+令、ADD命令、XOR命令です。使われている値にMessageBoxAのアドレスがないため、
+OllyDbgはMessageBoxAが呼び出されていることを検出できていません。
 
-�@���łɓ�����m���߂Ă݂܂��B�A�h���X00401000��F2�L�[�������ău���[�N
-�|�C���g���������AF9�L�[�������Ď��s���Ă݂܂��傤�B�A�h���X00401000�ł�
-������~�܂�̂�F8�L�[��������1���߂����s���܂��B�A�h���X00401013��ADD
-���߂����s��Ƀ��W�X�^EAX�ɉ��������Ă���̂��m�F���Ă��������B�uEAX 77D
-304EA USER32.MessageBoxA�v�̂悤�ɕ\������Ă���Ǝv���܂��BEAX�ɂ�Messa
-geBoxA�̃A�h���X�������Ă��܂��B������xF8�L�[�������Ǝ��̂悤�ɕ\������
-�܂��B
+　ついでに動作を確かめてみます。アドレス00401000でF2キーを押してブレーク
+ポイントをしかけ、F9キーを押して実行してみましょう。アドレス00401000でい
+ったん止まるのでF8キーを押して1命令ずつ実行します。アドレス00401013のADD
+命令を実行後にレジスタEAXに何が入っているのか確認してください。「EAX 77D
+304EA USER32.MessageBoxA」のように表示されていると思います。EAXにはMessa
+geBoxAのアドレスが入っています。もう一度F8キーを押すと次のように表示され
+ます。
 
 -----
 00401018  |. FFD0           CALL EAX                                 ;  USER32.MessageBoxA
 -----
 
-�@�����F8�L�[��������MessageBoxA���Ăяo����܂��BOllyDbg�ł̓��W�X�^��
-Win32API�A�h���X�������Ă���ƌ��o�ł��邱�Ƃ��킩��܂����B
+　さらにF8キーを押すとMessageBoxAが呼び出されます。OllyDbgではレジスタに
+Win32APIアドレスが入っていると検出できることがわかりました。
 
 
-���萔�̃X�N�����u��2
+●定数のスクランブル2
 
-�@�萔�̃X�N�����u��2�̃v���O�����͎���URL����_�E�����[�h�ł��܂��B
+　定数のスクランブル2のプログラムは次のURLからダウンロードできます。
 
-http://beautiful.homelinux.net/~sky-software/wb/1/obf2.cpp�i�\�[�X�R�[�h�j
-http://beautiful.homelinux.net/~sky-software/wb/1/obf2.vcproj�i�v���W�F�N�g�t�@�C���j
-http://beautiful.homelinux.net/~sky-software/wb/1/obf2.exe�i���s�t�@�C���j
+http://beautiful.homelinux.net/~sky-software/wb/1/obf2.cpp（ソースコード）
+http://beautiful.homelinux.net/~sky-software/wb/1/obf2.vcproj（プロジェクトファイル）
+http://beautiful.homelinux.net/~sky-software/wb/1/obf2.exe（実行ファイル）
 
-�@�����͗����悤�Ɍ��č\���܂���B�C�����C���A�Z���u�����g�p������@�ł��B
-�C�����C���A�Z���u���ŋL�q�����R�[�h��VC++�ł͍œK������܂���B���̂��߁A
-��قǔ�ׂď���������R�[�h����������܂��B
+　ここは流すように見て構いません。インラインアセンブラを使用する方法です。
+インラインアセンブラで記述したコードはVC++では最適化されません。そのため、
+先ほど比べて少し違ったコードが生成されます。
 
-�@BCC���g���ăR���p�C������ꍇ�ATurbo Assembler���C���X�g�[������Ă���
-�K�v������܂��BTurbo Assembler��Borland C/C++ Compiler 5.5�ɂ͓��������
-���炸�AC++ Builder�܂���C++ BuilderX�Ȃǂɕt�����Ă��܂��BC++ BuilderX 
-Personal�ł͖����Ŏg�����ATurbo Assemlber���t�����Ă���̂ł�������g��
-�������܂��B
+　BCCを使ってコンパイルする場合、Turbo Assemblerがインストールされている
+必要があります。Turbo AssemblerはBorland C/C++ Compiler 5.5には同梱されて
+おらず、C++ BuilderまたはC++ BuilderXなどに付属しています。C++ BuilderX 
+Personal版は無料で使える上、Turbo Assemlberも付属しているのでそちらを使う
+手もあります。
 
 -----
 const char *title = "title", *msg = "message";
@@ -200,16 +200,16 @@ _asm {
 -----
 
 
-��LoadLibrary�̎g�p
+●LoadLibraryの使用
 
-�@LoadLibrary���g�p�����v���O�����͎���URL����_�E�����[�h�ł��܂��B
+　LoadLibraryを使用したプログラムは次のURLからダウンロードできます。
 
-http://beautiful.homelinux.net/~sky-software/wb/1/obf3.cpp�i�\�[�X�R�[�h�j
-http://beautiful.homelinux.net/~sky-software/wb/1/obf3.vcproj�i�v���W�F�N�g�t�@�C���j
-http://beautiful.homelinux.net/~sky-software/wb/1/obf3.exe�i���s�t�@�C���j
+http://beautiful.homelinux.net/~sky-software/wb/1/obf3.cpp（ソースコード）
+http://beautiful.homelinux.net/~sky-software/wb/1/obf3.vcproj（プロジェクトファイル）
+http://beautiful.homelinux.net/~sky-software/wb/1/obf3.exe（実行ファイル）
 
-�@LoadLibrary��GetProcAddress���g���ČĂяo���܂��BLoadLibrary��user32.d
-ll�����[�h���A GetProcAddress��MessageBoxA�̃A�h���X���擾���Ă��܂��B
+　LoadLibraryとGetProcAddressを使って呼び出します。LoadLibraryでuser32.d
+llをロードし、 GetProcAddressでMessageBoxAのアドレスを取得しています。
 
 -----
 HINSTANCE hUser = LoadLibrary("user32.dll");
@@ -223,7 +223,7 @@ if (!msgbox) {
 }
 ------
 
-�@OllyDbg�Ō���Ǝ��̂悤�ɂȂ�܂��B
+　OllyDbgで見ると次のようになります。
 
 ------
 00401000  /$ 68 E4504000    PUSH obf2.004050E4                       ; /FileName = "user32.dll"
@@ -238,7 +238,7 @@ if (!msgbox) {
 0040101F  |> 83C8 FF        OR EAX,FFFFFFFF
 ------
 
-�@������MessageBoxA���Ăяo�������ł��B
+　続いてMessageBoxAを呼び出す部分です。
 
 ------
 const char *title = "title", *msg = "message";
@@ -253,50 +253,50 @@ msgbox(NULL, msg, title, MB_OK);
 00401031  |. FFD0           CALL EAX
 -----
 
-�@���̒i�K�ł́ALoadLibrary�œ��I�Ƀ��[�h�������߁AMessageBoxA�̌Ăяo��
-��OllyDbg�Ɍ��o����Ă��܂���B�����ł�������m���߂Ă݂܂��B�A�h���X004
-01031�Ńu���[�N�|�C���g���������Ē�~������ƁAEAX��MessageBoxA�̃A�h���X
-�������Ă��邱�Ƃ��킩��܂��BLoadLibrary��GetProcAddress���g�����ꍇ�ł��A
-OllyDbg��Win32API�̃A�h���X�����o�ł��邱�Ƃ��킩��܂����B
+　この段階では、LoadLibraryで動的にロードしたため、MessageBoxAの呼び出し
+はOllyDbgに検出されていません。ここでも動作を確かめてみます。アドレス004
+01031でブレークポイントをしかけて停止させると、EAXにMessageBoxAのアドレス
+が入っていることがわかります。LoadLibraryとGetProcAddressを使った場合でも、
+OllyDbgはWin32APIのアドレスを検出できることがわかりました。
 
 
-��0x03.) ��Ԃ����炷
+■0x03.) 手間を減らす
 
-�@�U���̎d�g�݂ɂ��ė������Ē������ł��傤���BWin32API�̃A�h���X���o��
-���Ȃ����Ƃ��̂ƂȂ�܂��B�����ŏI��肽���Ƃ���ł����A�ŏ��ɁuAntiCrac
-king�ɂ������Ԃ��\�Ȍ���ŏ����ɂƂǂ߂邱�Ƃ��l���Ă݂܂��v�Ə�����
-�悤�ɁA��Ԃ����炷���Ƃ��l���Ă݂܂��B
+　偽装の仕組みについて理解して頂けたでしょうか。Win32APIのアドレスを出さ
+せないことが肝となります。ここで終わりたいところですが、最初に「AntiCrac
+kingにかかる手間を可能な限り最小限にとどめることも考えてみます」と書いた
+ように、手間を減らすことも考えてみます。
 
-���\�[�X�R�[�h�̉ǐ�
+●ソースコードの可読性
 
-�@MessageBox���Ăяo�����\�[�X�R�[�h���r���܂��Bmsgbox.cpp�̏ꍇ�A����
-���₷�����Ȃ��A���Â炭������܂���B�������Aobf1.cpp�`obf3.cpp�̃\�[�X
-�R�[�h�͂ǂ��ł��傤���B��s�ōςޏ������킴�킴�����s�ɓW�J���邱�ƂŃ\
-�[�X�R�[�h�����Â炭�Ȃ��Ă��܂��B���ۂɃv���O���������ꍇ�͑�����Win3
-2API���Ăяo�����߁A�ǐ��ɑ傫�ȉe����^����ƍl�����܂��B
+　MessageBoxを呼び出したソースコードを比較します。msgbox.cppの場合、特に
+見やすくもなく、見づらくもありません。しかし、obf1.cpp〜obf3.cppのソース
+コードはどうでしょうか。一行で済む処理をわざわざ複数行に展開することでソ
+ースコードが見づらくなっています。実際にプログラムを作る場合は多くのWin3
+2APIを呼び出すため、可読性に大きな影響を与えると考えられます。
 
-���U��������
+●偽装する手間
 
-�@�������\�[�X�R�[�h�Ɏ�������邱�ƁA�R�[�f�B���O���ɋU�����Ă������ƁA
-�����Ƃ��ЂƂЂƂ̌Ăяo�������ƂŕύX���邱�ƂɂȂ�܂��B�P���ȍ�
-�Ƃ̌J��Ԃ����R�[�f�B���O�̈�Ɏ������킯�ɂ͂����܂���B
+　完成たソースコードに手を加えること、コーディング時に偽装していくこと、
+両方ともひとつひとつの呼び出しを手作業で変更することになります。単調な作
+業の繰り返しをコーディングの一環に取り入れるわけにはいきません。
 
 
-��0x04.) ��Ԃ����炷���߂�
+■0x04.) 手間を減らすために
 
-�@�P���ȍ�Ƃ̌J��Ԃ��ƁA�\�[�X�R�[�h�̉ǐ��ɂ��Ď��グ�܂����B�P
-���ȍ�Ƃ���������̂ɖ𗧂c�[���Ƃ͉��ł��傤���BC/C++�̃v���v���Z�b�T
-�ł��B�}�N����錾���邱�ƂŁA�v���v���Z�b�T�������I�ɓW�J���܂��B���ۂ�
-�g�����v���O����������Ă݂܂��B
+　単調な作業の繰り返しと、ソースコードの可読性について取り上げました。単
+調な作業を解決するのに役立つツールとは何でしょうか。C/C++のプリプロセッサ
+です。マクロを宣言することで、プリプロセッサが自動的に展開します。実際に
+使ったプログラムを作ってみます。
 
-http://beautiful.homelinux.net/~sky-software/wb/1/obf4.cpp�i�\�[�X�R�[�h�j
-http://beautiful.homelinux.net/~sky-software/wb/1/obf4.h�i�w�b�_�t�@�C���j
-http://beautiful.homelinux.net/~sky-software/wb/1/obf4.vcproj�i�v���W�F�N�g�t�@�C���j
-http://beautiful.homelinux.net/~sky-software/wb/1/obf4.exe�i���s�t�@�C���j
+http://beautiful.homelinux.net/~sky-software/wb/1/obf4.cpp（ソースコード）
+http://beautiful.homelinux.net/~sky-software/wb/1/obf4.h（ヘッダファイル）
+http://beautiful.homelinux.net/~sky-software/wb/1/obf4.vcproj（プロジェクトファイル）
+http://beautiful.homelinux.net/~sky-software/wb/1/obf4.exe（実行ファイル）
 
-�@�\�[�X�R�[�h��msgbox.cpp�Ɣ�ׂāAobf4.h���C���N���[�h���Ă��邾���ł��B
+　ソースコードはmsgbox.cppと比べて、obf4.hをインクルードしているだけです。
 
------�@obf4.cpp
+-----　obf4.cpp
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include "obf4.h"
@@ -309,10 +309,10 @@ int main()
 }
 -----
 
-�@�����ăw�b�_�t�@�C���ł��Bobf1.cpp�ł̐錾�������w�b�_�t�@�C���Ɉڂ��A
-MessageBox���}�N���ōĐ錾���Ă��܂��B
+　続いてヘッダファイルです。obf1.cppでの宣言部分をヘッダファイルに移し、
+MessageBoxをマクロで再宣言しています。
 
------�@obf4.h
+-----　obf4.h
 #pragma once
 typedef int (WINAPI *_MessageBox)(HWND, LPCTSTR, LPCTSTR, UINT);
 
@@ -321,62 +321,62 @@ const DWORD_PTR p_MessageBox = ((DWORD_PTR)MessageBox + 0x7F12AE11);
 #define MessageBox ((_MessageBox)(p_MessageBox - 0x7F12AE11))
 -----
 
-�@�R���p�C�������ƌ��ǁA�v���v���Z�b�T�ɓW�J�����obf1.cpp�ƕς��Ȃ�
-�Ȃ�܂��B
+　コンパイルされると結局、プリプロセッサに展開されてobf1.cppと変わらなく
+なります。
 
 
-��0x05.) GetProcAddress�̎���
+■0x05.) GetProcAddressの自作
 
-�A�[�J�C�u�i�\�[�X�R�[�h�E�v���W�F�N�g�t�@�C���̂݁j
+アーカイブ（ソースコード・プロジェクトファイルのみ）
 http://beautiful.homelinux.net/~sky-software/wb/1/apicaller.zip
 
-�@LoadLibrary��GetProcAddress���g�p���邱�ƂŌĂяo�����U�����邱�Ƃ��ł�
-�܂����B�������A����ł�OllyDbg�ŃX�e�b�v���s����΃A�h���X�����o�ł��܂�
-���B�����Ŏ��́uOllyDbg��GetProcAddress�̌Ăяo����Hook���邱�Ƃ�Win32AP
-I�̃A�h���X�𒲂ׂĂ���v�ƍl���A���̉���̂���GetProcAddress���쐬���܂�
-�����A�������Ƃ���GetProcAdderss�͊֌W����܂���ł����B�����炭�ALoadLi
-brary���Ă΂ꂽ�i�K�ŃA�h���X����͂���Ă���̂ł��傤�B
+　LoadLibraryとGetProcAddressを使用することで呼び出しを偽装することができ
+ました。しかし、それでもOllyDbgでステップ実行すればアドレスが検出できまし
+た。そこで私は「OllyDbgはGetProcAddressの呼び出しをHookすることでWin32AP
+Iのアドレスを調べている」と考え、この仮定のもとGetProcAddressを作成しまし
+たが、試したところGetProcAdderssは関係ありませんでした。おそらく、LoadLi
+braryが呼ばれた段階でアドレスが解析されているのでしょう。
 
-�@GetProcAddress�̎���ɉ����āA���̂��Ƃ��l���č쐬���܂����B
+　GetProcAddressの自作に加えて、次のことを考えて作成しました。
 
-1�F���삵��GetProcAddress�ɕ�����̃n�b�V�����g�p����
-2�F�擾�����A�h���X�̓X�N�����u�����ă������ɕۑ�����
-3�FWin32API���Ăяo���ۂ̓X�N�����u�������l�����ɖ߂��Ă���Ăяo��
-4�FGetProcAddress�������API Hook�̑΍�����˂�
-5�F�Ăяo���̓v���v���Z�b�T�Ɏ����W�J������
+1：自作したGetProcAddressに文字列のハッシュを使用する
+2：取得したアドレスはスクランブルしてメモリに保存する
+3：Win32APIを呼び出す際はスクランブルした値を元に戻してから呼び出す
+4：GetProcAddressを自作にAPI Hookの対策もかねる
+5：呼び出しはプリプロセッサに自動展開させる
 
-�@GetProcAddress�����삷�邱�Ƃ�DLL����A�h���X���擾����ĂȂ��悤�ɂ݂�
-�����A������̃n�b�V�������ێ����Ȃ����ƂŁA���o�[�X�G���W�j�A�����O����
-���ڂ���ɂɂ������܂��BLoadLibrary�Ǝ����GetProcAddress���g�����ƂŁAI
-AT��������������@���g��API Hook�̑΍􂪉\�ł��B
+　GetProcAddressを自作することでDLLからアドレスが取得されてないようにみせ
+かけ、文字列のハッシュしか保持しないことで、リバースエンジニアリング時に
+注目されににくくします。LoadLibraryと自作のGetProcAddressを使うことで、I
+ATを書き換える方法を使うAPI Hookの対策が可能です。
 
-�@�����܂��񂪎��Ԃ̓s����AGetProcAddress�̍쐬���@�ƁA�\�[�X�R�[�h�̍�
-���������͏Ȃ����Ē����܂��B���߂�Ȃ����B
-
-
-��0x06.) �w�b�_�t�@�C���̐���
-
-�@�w�b�_�t�@�C���ɐ錾���܂Ƃ߂邱�Ƃ�Win32API���Ăяo�����̃\�[�X�R�[�h
-�̕ύX���ӎ�����K�v�͂Ȃ��Ȃ�܂����B�������A�錾��������Ԃ͉������Ă�
-�܂���B�����ŁA�w�b�_�t�@�C����������������c�[�����쐬���܂��B
-
-�@PlatformSDK�̃w�b�_�t�@�C������S�Ă̐錾�𒊏o���邩�A�������Ăяo��W
-in32API�̂ݒ��o���ăw�b�_�t�@�C�����쐬����c�[�������Ƃ悢�ł��傤�B��
-���Ń\�[�X�R�[�h�ƃv���O���������J�������Ƃ���ł����A�p�����������ƂɎ�
-�������񏈗������ŁA���̋L���������܂łɍ쐬���邱�Ƃ��ł��܂���ł����B
-�����Œ��킵�Ă݂Ă��������B
+　すいませんが時間の都合上、GetProcAddressの作成方法と、ソースコードの細
+かい説明は省かせて頂きます。ごめんなさい。
 
 
-��0x07.) �I����
+■0x06.) ヘッダファイルの生成
 
-�@��Ԃ����炷���߂Ɂu�v���v���Z�b�T�����p����v�u�w�b�_�t�@�C����������
-������v�̂ӂ��̎�i���Љ�܂����B�P���ȍ�Ƃ̓v���O�����ɂ�点�܂�
-�傤�B
+　ヘッダファイルに宣言をまとめることでWin32APIを呼び出す側のソースコード
+の変更を意識する必要はなくなりました。しかし、宣言を書く手間は解決してい
+ません。そこで、ヘッダファイルを自動生成するツールを作成します。
 
-�@�����Win32API�Ăяo���̋U���ł����BWin32API�Ɍ��炸�ADLL�̊֐����Ăяo
-���ۂɂ��̃e�N�j�b�N���g�����Ƃ��ł��܂��B���o�[�X�G���W�j�A�����O��h��
-���߂̕��@�͂��ꂾ���ł͂���܂��񂵁A���ꂾ���ŏ\���Ƃ͂����܂���B����
-�̂�����͂��Ў����Œ��ׂĂ݂Ă��������B�܂��A���ʂƂ͈�������_�ōl���A
-���ۂɃv���O����������Ă͂��������ł��傤���B
+　PlatformSDKのヘッダファイルから全ての宣言を抽出するか、自分が呼び出すW
+in32APIのみ抽出してヘッダファイルを作成するツールを作るとよいでしょう。こ
+こでソースコードとプログラムを公開したいところですが、恥ずかしいことに私
+が文字列処理が苦手で、この記事を書くまでに作成することができませんでした。
+自分で挑戦してみてください。
+
+
+■0x07.) 終わりに
+
+　手間を減らすために「プリプロセッサを活用する」「ヘッダファイルを自動生
+成する」のふたつの手段を紹介しました。単純な作業はプログラムにやらせまし
+ょう。
+
+　今回はWin32API呼び出しの偽装でした。Win32APIに限らず、DLLの関数を呼び出
+す際にこのテクニックを使うことができます。リバースエンジニアリングを防ぐ
+ための方法はこれだけではありませんし、これだけで十分とはいえません。興味
+のある方はぜひ自分で調べてみてください。また、普通とは違った視点で考え、
+実際にプログラムを作ってはいいかがでしょうか。
 
 

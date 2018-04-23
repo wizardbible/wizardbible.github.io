@@ -1,11 +1,11 @@
-��IPUSIRON
-��Job: ����x����
-��Web: http://akademeia.info
-��Twitter: @ipusiron
-��Mail: ipusiron@gmail.com
-��Comment:
-�@�F�l�̂������ɂ��A�uIT�G���W�j�A�{���2016�v�Z�p�������3�^�C�g���Ɂw�n�b�J�[�̊w�Z�x���I�΂�܂����B���̌�A�f�u�T�~2016�̃v���[�����ɎQ�����A�uIT�G���W�j�A�{���2016�v�̓��ʏ܂𒸂��܂����B�ڍׂ́w�n�b�J�[�̊w�Z�x�����T�C�g�̃g�b�v�y�[�W�ɋL�ڂ��܂����̂ŁA���m�F���������B
+■IPUSIRON
+●Job: 自宅警備員
+●Web: http://akademeia.info
+●Twitter: @ipusiron
+●Mail: ipusiron@gmail.com
+●Comment:
+　皆様のおかげにより、「ITエンジニア本大賞2016」技術書部門の3タイトルに『ハッカーの学校』が選ばれました。その後、デブサミ2016のプレゼン大会に参加し、「ITエンジニア本大賞2016」の特別賞を頂きました。詳細は『ハッカーの学校』公式サイトのトップページに記載しましたので、ご確認ください。
 http://s-akademeia.sakura.ne.jp/main/books/school/
-�@�܂��A�܂ڂ낵������ɂāAGW�ɕ����ՃC�x���g���J�Â���܂��B������Security Akademeia�����炩�̍Â���������\��ł��B�ڍׂ́ASecurity Akademeia�̃g�b�v�y�[�W�̂��m�点�����m�F���������B
+　また、まぼろし博覧会にて、GWに文化祭イベントが開催されます。そこでSecurity Akademeiaも何らかの催し物をする予定です。詳細は、Security Akademeiaのトップページのお知らせをご確認ください。
 http://data-house.sblo.jp/
 

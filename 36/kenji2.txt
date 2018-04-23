@@ -1,45 +1,45 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- �恛��: Windows�V�X�e���v���O���~���O �ԊO�� �`Java�` ---
+--- 第○章: Windowsシステムプログラミング 番外編 〜Java〜 ---
 
-���ҁFKenji Aiko
+著者：Kenji Aiko
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@Java�A�v���P�[�V�����́AVM��œ��삷��Ƃ������̐�����A�f�R���p�C���i
-���s�t�@�C������\�[�X�R�[�h�ɕ������邱�Ɓj��e�Ղɍs����B���̂��߁A�N
-���b�N�s�ׂɑ΂��āA����قǋ��łł͂Ȃ��ƌ����Ă���B
-�@����́A���̎������m���߂邽�߂ɁA���ۂɐ��i�Ƃ��Ĕ̔��A�z�z����Ă���
-Java�A�v���P�[�V�������ɃV���A���N���b�N���s�����B�������A���i�����o��
-�킯�ɂ͂����Ȃ����߁A���̃e�L�X�g�ł́A���������Ă����������Ƃɂ���B
-
-
-��0x02.) �T�v
-
-�@���̃\�t�g�E�F�A�ɂ͎g�p����������A������߂���ƁA�V���A���i���o�[��
-���͂��Ȃ���΃A�v���P�[�V�������g�p�ł��Ȃ��Ȃ�B����āA���̃A�v���P�[
-�V�������N���b�N����ɂ́A����2�̂����ꂩ�̕��@���K�v�ƂȂ�B
-
-�i1�j�V���A���i���o�[����肷��
-�i2�j���Ԑ�������������
-
-�@�ǂ���ł��悢���A���́A���₷���ȒP�ȕ��@��I�Ԃ��ƂɂȂ�B�������A
-�ǂ��炪�ȒP���́A���ۂɂ���Ă݂Ȃ���Ε�����Ȃ����߁A�Ƃ肠�����͗���
-�ɏœ_�𓖂ĂĐi�߂Ă����B
+　Javaアプリケーションは、VM上で動作するというその性質上、デコンパイル（
+実行ファイルからソースコードに復元すること）を容易に行える。そのため、ク
+ラック行為に対して、それほど強固ではないと言われている。
+　今回は、この事実を確かめるために、実際に製品として販売、配布されている
+Javaアプリケーションを例にシリアルクラックを行った。ただし、製品名を出す
+わけにはいかないため、このテキストでは、伏せさせていただくことにする。
 
 
-��0x03.) OllyDbg
+■0x02.) 概要
 
-�@�v���O������OllyDbg��ŋN�������A�K���ɃX�e�b�v��i�߂Ă����ƁA����ꏊ
-����AOllyDbg���̏����Ɋւ�炸�A�v���O�������i�ݎn�߂邱�Ƃ��m�F�ł���B
-�܂�A�ʂ̃v���Z�X����������A���ꂪ�N�����Ă���킯���B���̎�������A
-������CreateProcess�֐����Ăяo����Ă���Ƒz���ł���B
-�@�����ڍׂɏ�����ǂ��Ă����ƁACreateProcess���Ă΂�Ă���ꏊ��������B
+　このソフトウェアには使用期限があり、それを過ぎると、シリアルナンバーを
+入力しなければアプリケーションを使用できなくなる。よって、このアプリケー
+ションをクラックするには、次の2つのいずれかの方法が必要となる。
+
+（1）シリアルナンバーを特定する
+（2）時間制限を解除する
+
+　どちらでもよいが、大抵は、やりやすい簡単な方法を選ぶことになる。ただし、
+どちらが簡単かは、実際にやってみなければ分からないため、とりあえずは両方
+に焦点を当てて進めていく。
+
+
+■0x03.) OllyDbg
+
+　プログラムをOllyDbg上で起動させ、適当にステップを進めていくと、ある場所
+から、OllyDbg内の処理に関わらず、プログラムが進み始めることが確認できる。
+つまり、別のプロセスが生成され、それが起動しているわけだ。この事実から、
+内部でCreateProcess関数が呼び出されていると想像できる。
+　少し詳細に処理を追っていくと、CreateProcessが呼ばれている場所が見つかる。
 
 -----  OllyDbg
 00402B9B  |. 52             PUSH EDX
@@ -48,42 +48,42 @@ Java�A�v���P�[�V�������ɃV���A���N���b�N���s�����B�������A���i�����o��
 00402BA4  |. 85C0           TEST EAX,EAX
 -----
 
-�@�����ŁACreateProcess�ɓn����Ă���������m�F����ƁA�ǂ����JavaVM�ij
-avaw�j���N�����Ă���悤���B
-�@�܂�A���̃v���O�����͂����܂ł��N�����̂ݎ��s����邾���̂��̂ŁA�{
-���̃A�v���P�[�V�����ƂȂ郁�C���̃v���O�����́AJava�ŋL�q����Ă���ACr
-eateProcess�ŕʃv���Z�X�Ƃ��ē����킯���B
+　ここで、CreateProcessに渡されている引数を確認すると、どうやらJavaVM（j
+avaw）が起動しているようだ。
+　つまり、このプログラムはあくまでも起動時のみ実行されるだけのもので、本
+物のアプリケーションとなるメインのプログラムは、Javaで記述されており、Cr
+eateProcessで別プロセスとして動くわけだ。
 
 
-��0x04.) �V���A���i���o�[�̔F��
+■0x04.) シリアルナンバーの認証
 
-�@CreateProcess�ŋN�������V�����v���Z�X�ijavaw�j�́A�E�B���h�E���\������
-��ƁA�ŏ��ɁA�V���A���i���o�[��v�����Ă���B�����ŁA���݂̓������擾���A
-�����w��̊��Ԃ��߂��Ă�����A�A�v���P�[�V�������g�킹�Ȃ��悤�ɂȂ��Ă�
-��B
-�@������Windows�̎��Ԃ������i�߂āA�ēx�v���O�������N������ƁA�w��̎���
-���߂������ƂɂȂ�A�A�v���P�[�V�������g���Ȃ��Ȃ�B�t�Ɏ��Ԃ�߂��ƁA��
-���A�v���P�[�V�������g����悤�ɂȂ�B
-�@�܂�A���̃A�v���P�[�V�����̔F�؂́AWindows�̎��Ԃɏ]���Ă���B
-�@�Ƃ������Ƃ́A���Ԏ擾�n��API�Ƀu���C�N�|�C���g���d�|����΁A�����q���g
-�������邩������Ȃ��B���Ԏ擾�n��API��T���B
+　CreateProcessで起動した新しいプロセス（javaw）は、ウィンドウが表示され
+ると、最初に、シリアルナンバーを要求してくる。ここで、現在の日時を取得し、
+もし指定の期間を過ぎていたら、アプリケーションを使わせないようになってい
+る。
+　試しにWindowsの時間を少し進めて、再度プログラムを起動すると、指定の時間
+が過ぎたことになり、アプリケーションが使えなくなる。逆に時間を戻すと、ま
+たアプリケーションが使えるようになる。
+　つまり、このアプリケーションの認証は、Windowsの時間に従っている。
+　ということは、時間取得系のAPIにブレイクポイントを仕掛ければ、何かヒント
+が得られるかもしれない。時間取得系のAPIを探す。
 
-�EGetSystemTime
-�EGetLocalTime
-�EGetSystemTimeAsFileTime
+・GetSystemTime
+・GetLocalTime
+・GetSystemTimeAsFileTime
 
-�@�����̊֐��Ƀu���C�N�|�C���g���d�|����B
+　これらの関数にブレイクポイントを仕掛ける。
 
 
-��0x05.) JavaVM
+■0x05.) JavaVM
 
-�@���s�t�@�C���͂����̏���ł���A�����ŐV���ȃv���Z�X����������Ă���B
-�����āA���̃v���Z�X��JavaVM�ł���A���ꂪ�N��������ԂŁA�l�X�ȃE�B���h
-�E����������Ă����B�܂�A������̖{�̂�Java�ō���Ă���B
-�@�^�X�N�}�l�[�W���[�Ńv���Z�X���m�F����ƁAjavaw�̋N�����m�F�ł���B�u�{
-�̂͂��������I�v�Ƃ����킯�ŁA�N������javaw��OllyDbg�ŃA�^�b�`����B����
-�āA���Ԏ擾�n��API�Q�Ƀu���C�N�|�C���g���d�|����B����ƁA���������Ƀu��
-�C�N�|�C���g�Ɉ���������B
+　実行ファイルはただの飾りであり、内部で新たなプロセスが生成されている。
+そして、そのプロセスはJavaVMであり、それが起動した状態で、様々なウィンド
+ウが生成されていく。つまり、事実上の本体はJavaで作られている。
+　タスクマネージャーでプロセスを確認すると、javawの起動が確認できる。「本
+体はこっちか！」というわけで、起動中のjavawにOllyDbgでアタッチする。そし
+て、時間取得系のAPI群にブレイクポイントを仕掛ける。すると、いい感じにブレ
+イクポイントに引っかかる。
 
 -----  OllyDbg
 080ACC4A   50            PUSH EAX
@@ -91,28 +91,28 @@ eateProcess�ŕʃv���Z�X�Ƃ��ē����킯���B
 080ACC51   FF75 FC       PUSH DWORD PTR SS:[EBP-4]
 -----
 
-�@GetSystemTimeAsFileTime�֐������Ԏ擾�ɗ��p����Ă��邱�Ƃ�������B����
-���AJava�̃R�[�h������API���Ăяo���Ă���Ƃ͍l���ɂ����B�����炭�A����A
-PI�́AJavaVM�ɂ���ČĂяo����Ă���͂����B�Ăяo�����̃��W���[�������m
-�F����ƁAjvm�ƂȂ��Ă���B�����āA���̃��W���[����jvm.dll�Ƃ��đ��݂���B
+　GetSystemTimeAsFileTime関数が時間取得に利用されていることが分かる。ただ
+し、Javaのコードが直接APIを呼び出しているとは考えにくい。おそらく、このA
+PIは、JavaVMによって呼び出されているはずだ。呼び出し元のモジュール名を確
+認すると、jvmとなっている。そして、このモジュールはjvm.dllとして存在する。
 
 
-��0x06.) jvm.dll
+■0x06.) jvm.dll
 
-�@���ӏ��͓���ł����B���Ƃ̓o�C�i�����x���ŕύX���������OK���B
-�@jvm.dll��kernel32.dll���C���|�[�g���Ă���B�����āAkernle32.dll��GetSy
-stemTimeAsFileTime���G�N�X�|�[�g���Ă���B����āA�܂��́Ajvm.dll���o�C�i
-���G�f�B�^�ŊJ���AKERNEL32.dll�̉ӏ���LERNEL32.dll�ɕύX����B
-�@�����āAC:\WINDOWS\system32�ȉ�����kernel32.dll���R�s�[���Ă��āA�o�C�i
-���G�f�B�^�ŊJ���AGetSystemTimeAsFileTime�֐���s���̂悢�悤�ɏ���������B
+　問題箇所は特定できた。あとはバイナリレベルで変更を加えればOKだ。
+　jvm.dllはkernel32.dllをインポートしている。そして、kernle32.dllはGetSy
+stemTimeAsFileTimeをエクスポートしている。よって、まずは、jvm.dllをバイナ
+リエディタで開き、KERNEL32.dllの箇所をLERNEL32.dllに変更する。
+　続いて、C:\WINDOWS\system32以下からkernel32.dllをコピーしてきて、バイナ
+リエディタで開き、GetSystemTimeAsFileTime関数を都合のよいように書きかえる。
 
------  kernel32.dll�i�ύX�O:GetSystemTimeAsFileTime�֐��j
+-----  kernel32.dll（変更前:GetSystemTimeAsFileTime関数）
 00000BE0                 8B FF 55 8B EC A1 18 00 FE 7F 8B 
 00000BF0  15 14 00 FE 7F 3B 05 1C 00 FE 7F 75 ED 8B 4D 08 
 00000C00  89 11 89 41 04 5D C2 04 00 90 90 90 90 90
 -----
 
------  kernel32.dll�i�ύX�O:GetSystemTimeAsFileTime�֐��j
+-----  kernel32.dll（変更前:GetSystemTimeAsFileTime関数）
 008717E5 >/$ 8BFF           MOV EDI,EDI
 008717E7  |. 55             PUSH EBP
 008717E8  |. 8BEC           MOV EBP,ESP
@@ -127,18 +127,18 @@ stemTimeAsFileTime���G�N�X�|�[�g���Ă���B����āA�܂��́Ajvm.dll���o�C�i
 00871806  \. C2 0400        RETN 4
 -----
 
-�@GetSystemTimeAsFileTime�֐��́A�����̍\���́i8�o�C�g�j�ɁA100ns�i�i�m�Z
-�J���h�j�P�ʂ̎��Ԃ�����B��L�̃o�C�i�������ĕ�����Ƃ���AEAX���W�X�^
-�ɏ��4�o�C�g�AEDX���W�X�^�ɉ���4�o�C�g������B100ns��1�Ȃ̂ŁA1�b��1000
-0000�A60�b��600000000�i0x23C34600�j�ƂȂ�B
+　GetSystemTimeAsFileTime関数は、引数の構造体（8バイト）に、100ns（ナノセ
+カンド）単位の時間を入れる。上記のバイナリを見て分かるとおり、EAXレジスタ
+に上位4バイト、EDXレジスタに下位4バイトが入る。100nsが1なので、1秒は1000
+0000、60秒は600000000（0x23C34600）となる。
 
------  kernel32.dll�i�ύX��:GetSystemTimeAsFileTime�֐��j
+-----  kernel32.dll（変更後:GetSystemTimeAsFileTime関数）
 00000BE0                 8B FF 55 8B EC A1 18 00 FE 7F 8B 
 00000BF0  15 14 00 FE 7F 3B 05 1C 00 FE 7F 75 ED 8B 4D 08 
 00000C00  89 11 B8 E2 FA C7 01 89 41 04 5D C2 04 00 
 -----
 
------  kernel32.dll�i�ύX��:GetSystemTimeAsFileTime�֐��j
+-----  kernel32.dll（変更後:GetSystemTimeAsFileTime関数）
 008717E5 >/$ 8BFF           MOV EDI,EDI
 008717E7  |. 55             PUSH EBP
 008717E8  |. 8BEC           MOV EBP,ESP
@@ -154,22 +154,22 @@ stemTimeAsFileTime���G�N�X�|�[�g���Ă���B����āA�܂��́Ajvm.dll���o�C�i
 0087180B  \. C2 0400        RETN 4
 -----
 
-�@�ύX���@�͗l�X�����A����̓V���v���ɁA���4�o�C�g���Œ�l�Ƃ����B����
-�ŁA���Ԃ͐i�܂Ȃ��Ȃ�B����āA���܂ł������؂�ɂȂ�Ȃ��B
-�@�Ō�ɁA���̃t�@�C���̃t�@�C������lernel32.dll�Ƃ���B����Ŋ������B
-�@jvm.dll�͂��̕ύX���ꂽlernel32.dll��ǂݏo���A����lernel32.dll���G�N�X
-�|�[�g���Ă���GetSystemTimeAsFileTime�֐����Ăяo���B�������A����GetSyst
-emTimeAsFileTime�֐��́A���4�o�C�g���Œ�̂��ߎ��Ԃ��i�܂Ȃ��B�܂�A�i
-���Ɋ������؂�Ȃ��Ƃ������ƂɂȂ�B����ŃN���b�N�͐����ƂȂ�B
+　変更方法は様々だが、今回はシンプルに、上位4バイトを固定値とした。これ
+で、時間は進まなくなる。よって、いつまでも期限切れにならない。
+　最後に、このファイルのファイル名をlernel32.dllとする。これで完了だ。
+　jvm.dllはこの変更されたlernel32.dllを読み出し、このlernel32.dllがエクス
+ポートしているGetSystemTimeAsFileTime関数を呼び出す。しかし、このGetSyst
+emTimeAsFileTime関数は、上位4バイトが固定のため時間が進まない。つまり、永
+遠に期限が切れないということになる。これでクラックは成功となる。
 
 
-��0x07.) ��������
+■0x07.) さいごに
 
-�@����A���R�ɂ��A��������Ɠ����\�t�g�E�F�A����́i�N���b�N�j�����炵���A
-�������A���ꂼ�ꂪ�܂������قȂ���@�ł���𐬌������Ă������Ƃ���A�x��
-�Ȃ�����AWB vol36�ɖ{�e�L�X�g��ǉ������Ă�������B
-�@��͂ЂƂƂ��Ă��l�X�ȃA�v���[�`������A�ƂĂ��ʔ����Ǝv���B�@���
-��΂��ЂƂ��`�������W���Ă݂Ă͂ǂ����낤���B
+　今回、偶然にも、金床さんと同じソフトウェアを解析（クラック）したらしく、
+しかも、それぞれがまったく異なる方法でそれを成功させていたことから、遅れ
+ながらも、WB vol36に本テキストを追加させてもらった。
+　解析ひとつとっても様々なアプローチがあり、とても面白いと思う。機会があ
+ればぜひともチャレンジしてみてはどうだろうか。
 
 
 

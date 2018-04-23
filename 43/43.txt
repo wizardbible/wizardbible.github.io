@@ -8,189 +8,189 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-  ---- ��0�́F�ڎ� ---
+  ---- 第0章：目次 ---
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-����1��: VMware Server�g���̗J�T                                   ���� ��
+○第1章: VMware Server使いの憂鬱                                   金床 著
 
-����2��: �f�W�^���t�H�����W�b�N����                          Kenji Aiko ��
+○第2章: デジタルフォレンジック入門                          Kenji Aiko 著
 
-����3��: ��b�Í��w�u���E��18�� �`������]�ƃ��W�����h���L���` IPUSIRON ��
+○第3章: 基礎暗号学講座・第18回 〜平方剰余とルジャンドル記号〜 IPUSIRON 著
 
-����4��: ���m�点
+○第4章: お知らせ
 
-����5��: ���҃v���t�B�[��
+○第5章: 著者プロフィール
 
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- ��1��: VMware Server�g���̗J�T ---
+--- 第1章: VMware Server使いの憂鬱 ---
 
-���ҁF����
+著者：金床
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@�߳���܁B�M�҂̉�Ђ̻��ް�ł́AVMware Server��1�n���{�i�I�ɉ^�p����
-����Bν�OS��Linux�ł���B����͂��́uLinux��ő��点��VMware Server��1.0
-�n��v�ŕM�҂��͂܂�ɂ͂܂������X�̓_�ɂ��Č��؂������Ȃ��Ă����B�ȉ�
-�̋L���̓��e��ν�OS��Windows�̏ꍇ�Ƃ͑S���֌W���Ȃ��̂Œ��ӂ��Ă�������
-�����B
+　ポウンニチワ。筆者の会社のサーバーでは、VMware Serverの1系列を本格的に運用して
+いる。ホストOSはLinuxである。今回はこの「Linux上で走らせるVMware Serverの1.0
+系列」で筆者がはまりにはまった数々の点について検証をおこなっていく。以下
+の記事の内容はホストOSがWindowsの場合とは全く関係がないので注意していただき
+たい。
 
 
-��0x02.) ��؂��ި���ɏ������܂��H�H
+■0x02.) メモリがディスクに書き込まれる？？
 
-�@�޽�OS���N������ƁAvmx̧�ق��u����Ă����ިڸ�ؓ��Ɋg���q��.vmem��̧�
-ق����������B�M�҂̊��ŁA����.vmem̧�ق�ls����ނŊm�F����Ǝ��̂悤��
-�Ȃ�B
+　ゲストOSを起動すると、vmxファイルが置かれているディレクトリ内に拡張子が.vmemのファイ
+ルが生成される。筆者の環境で、この.vmemファイルをlsコマンドで確認すると次のように
+なる。
 
 -----
 [root@raptor CentOS5_4]# ls -l *.vmem
 -rw------- 1 root root 2344615936 Oct  3 15:36 564def5e-64dc-af0a-2c64-7bbc2c6ee46d.vmem
 -----
 
-�@���傗�������ނł������������شŽ������
-�@�c�Ƃ��������ł���B�������傫�����Ă悭�킩��Ȃ��̂�-h��߼�݂��t����
-�Ǝ��̂悤�ɂȂ�B
+　ちょｗｗｗサイズでかすぎｗｗｗアリエナスｗｗｗ
+　…という感じである。桁数が大きすぎてよくわからないので-hオプションも付ける
+と次のようになる。
 
 -----
 [root@raptor CentOS5_4]# ls -lh *.vmem
 -rw------- 1 root root 2.2G Oct  3 15:36 564def5e-64dc-af0a-2c64-7bbc2c6ee46d.vmem
 -----
 
-�@2.2G�ł��c�B
-�@����2.2�Ƃ��������́A���͹޽�OS�Ɋ��蓖�Ă���؂̗ʂ��̂��̂ł���B�޽�
-OS���N������ƁA���̂悤�ɕK�����蓖�Ă���؂̗ʂƓ������ނ�̧�ق���������
-�Ă��܂��B2.2G��̧�قƂ����̂͌����Ė����ł��黲�ނł͂Ȃ��A�ި���̈�����
-��̫��ݽ�ւ̉e�������O�����B
+　2.2Gでつか…。
+　この2.2という数字は、実はゲストOSに割り当てたメモリの量そのものである。ゲスト
+OSを起動すると、このように必ず割り当てたメモリの量と同じサイズのファイルが生成され
+てしまう。2.2Gのファイルというのは決して無視できるサイズではなく、ディスクの圧迫や
+パフォーマンスへの影響が懸念される。
 
-�@����VMware�ɂͻ�����ނƂ����@�\������B��؂̓��e���ꎞ�I�ɂ��ׂ��ި����
-�ޔ����A�޽�OS���ꎞ�I�ɒ�~����B�����Č�قǂ܂��ި��������؂ւƓ��e��
-�ǂݍ��݁A���̎��_�����Ƃ��ĊJ���邽�߂̋@�\���B���̂��Ƃ�m���Ă����
-��Ʊ�ł���΁u�����A�Ȃ�قǂ���vmem̧�قͻ�����ނ̂��߂Ɏg����̂��ȁv
-�Ǝv�����낤�B
+　さてVMwareにはサスペンドという機能がある。メモリの内容を一時的にすべてディスクに
+退避し、ゲストOSを一時的に停止する。そして後ほどまたディスクからメモリへと内容を
+読み込み、その時点から作業を再開するための機能だ。このことを知っているエン
+ジニアであれば「ああ、なるほどこのvmemファイルはサスペンドのために使われるのだな」
+と思うだろう。
 
-�@�M�҂͂ЂƂ��������Ă݂��B2.2G�قǂ���؂����蓖�Ă��޽�OS���N������i
-�����ł͹޽Ăɂ�Linux���g�����j�B�N��������A�����ɻ�����ނ�����B���̻���
-��ނ̏������ǂ̂��炢�̎��Ԃ�v���邩�𒲂ׂĂ݂��B����Ƌ������ƂɁA��u�A
-�킸�����b�Ż�����ނ��I�����Ă��܂����B
+　筆者はひとつ実験をしてみた。2.2Gほどのメモリを割り当てたゲストOSを起動する（
+ここではゲストにもLinuxを使った）。起動したら、すぐにサスペンドさせる。このサスペ
+ンドの処理がどのくらいの時間を要するかを調べてみた。すると驚くことに、一瞬、
+わずか数秒でサスペンドが終了してしまった。
 
-�@�M�҂��ȑO�g���Ă����AWindows��œ��삷��VMware Workstation��3�n��ł́A
-������ނ͂���Ȃ�̎��Ԃ�v���鏈���������B�܂�A�u�����A��؂̓��e����
-�̂܂��ި���ɏ�������ł��܂��ˁv�Ƃ��������̎��Ԃ��|�����Ă����B����͐V
-����VMware�ł���VMware Server�̓����Ƃ܂������قȂ��Ă����B2.2G������؂�
-���e���ި���ɏ������ނ��߂ɂ́A���Ȃ�̎��Ԃ��K�v�Ȃ͂����B�ɂ�������炸�A
-VMware Server�͈�u�Ż�����ނ����������B
+　筆者が以前使っていた、Windows上で動作するVMware Workstationの3系列では、
+サスペンドはそれなりの時間を要する処理だった。つまり、「ああ、メモリの内容をそ
+のままディスクに書き込んでいますね」という感じの時間が掛かっていた。これは新
+しいVMwareであるVMware Serverの動きとまったく異なっていた。2.2Gものメモリの
+内容をディスクに書き込むためには、かなりの時間が必要なはずだ。にもかかわらず、
+VMware Serverは一瞬でサスペンドを完了した。
 
-�@�����̂��Ƃ���A�M�҂͎��̂悤�ȓ�����z�������B
+　これらのことから、筆者は次のような動きを想像した。
 
-�@1. VMware Server�́A�����؂̓��e��.vmem̧�قɓ��������Ă���
-�@2. ���̂��߁A������ނ͈�u�ŏI���
-�@3. �N������ۂɂ͊��蓖�Ă���؂Ɠ����ނ̋����̧�ق����񐶐������
+　1. VMware Serverは、常にメモリの内容を.vmemファイルに同期させている
+　2. そのため、サスペンドは一瞬で終わる
+　3. 起動する際には割り当てたメモリと同サイズの巨大なファイルが毎回生成される
 
-�@����1���������Ƃ���ƁA�Ƃ�ł��Ȃ����ƂɂȂ�B��؂ւ̏������݂����邽
-�т��ި���ɂ��������݂��������邱�ƂɂȂ�A��̫��ݽ���傫���ቺ���Ă��܂�
-���낤�B���̂��ߕM�҂́u����͂Ƃ�ł��Ȃ��������ȁv�Ǝv���Ă����B
-�@�������K���Ȃ��ƂɕM�҂̑z���͊Ԉ���Ă����B�܂���.vmem̧�ق̻��ނɂ�
-�Ă̊��Ⴂ�����������B
-�@���̃t�@�C���͎��́u�X�p�[�X�t�@�C���v�ƌĂ΂��A���ۂ̃T�C�Y�ƌ�����
-�̃T�C�Y���قȂ���̂Ȃ̂��B���ʂ�ls -l��ll�ȂǂŊm�F�����2.2G����悤��
-�����邪�Als�R�}���h��-s�I�v�V�������g���Ǝ��ۂ̃T�C�Y���m�F���邱�Ƃ���
-����B
+　仮に1が事実だとすると、とんでもないことになる。メモリへの書き込みがあるた
+びにディスクにも書き込みが発生することになり、パフォーマンスが大きく低下してしまう
+だろう。そのため筆者は「これはとんでもない改悪だな」と思っていた。
+　しかし幸いなことに筆者の想像は間違っていた。まずは.vmemファイルのサイズについ
+ての勘違いから説明する。
+　このファイルは実は「スパースファイル」と呼ばれる、実際のサイズと見た目
+のサイズが異なるものなのだ。普通にls -lやllなどで確認すると2.2Gあるように
+見えるが、lsコマンドの-sオプションを使うと実際のサイズを確認することがで
+きる。
 
 -----
 [root@raptor CentOS5_4]# ls -lsh *.vmem
 184M -rw------- 1 root root 2.2G Oct  4 23:35 CentOS5.vmem
 -----
 
-�@���̂悤�ɁA���ۂɃf�B�X�N��ɐ�߂�T�C�Y��184M�Ȃ̂ł���Bstrace���g
-���Ċm�F�����Ƃ���A���̂悤�ȃV�X�e���R�[���ɂ���Ă��̃X�p�[�X�t�@�C��
-����������Ă��邱�Ƃ��m�F�ł����B
+　このように、実際にディスク上に占めるサイズは184Mなのである。straceを使
+って確認したところ、次のようなシステムコールによってこのスパースファイル
+が生成されていることが確認できた。
 
 -----
 pwrite64(106, "\0", 1, 3774873599) = 1
 -----
 
-�@������106�͂��̂Ƃ���̧���ި�������ł���B�����3.6G�قǂ���؂����蓖��
-�Ă݂��Ƃ����ڰ��ƂȂ��Ă���B�����̧�ق̍Ō��1�޲Ă���NULL�����������
-���邱�Ƃ��킩��B̧�ق����傾���������݂͂킸��1�޲ĂȂ̂ŁA���̏����͈�
-�u�ŏI������B
+　ここで106はこのときのファイルディスクリプタである。これは3.6Gほどのメモリを割り当て
+てみたときのトレースとなっている。巨大なファイルの最後の1バイトだけNULLを書き込んで
+いることがわかる。ファイルが巨大だが書き込みはわずか1バイトなので、この処理は一
+瞬で終了する。
 
 
-��0x03.) .vmem̧�ق͍X�V����Ă���̂��H�H
+■0x03.) .vmemファイルは更新されているのか？？
 
-�@���ĕM�҂�����ɂ���.vmem̧�قł͂܂����̂��A�u����̧�ق͂��X�V�����
-����̂��H�v�Ƃ����_�ł���Bls -l�ɂ����.vmem̧�ق̍X�V���������Ă�����
-�����A�ǂ��ɂ��X�V����Ȃ��B���܂ł����Ă���ѽ���߂��Â��܂܂Ȃ̂ł���B
+　さて筆者がさらにこの.vmemファイルではまったのが、「このファイルはいつ更新されて
+いるのか？」という点である。ls -lによって.vmemファイルの更新日時を見ていたの
+だが、どうにも更新されない。いつまでたってもタイムスタンプが古いままなのである。
 
-�@���_���珑���ƁALinux�ł̓t�@�C���́i������j�X�V�����ɂ�3��ނ̃f�[
-�^�����݂��A�M�҂����Ă����̂�mtime�ƌĂ΂����̂������̂��B�ڂ����́uU
-NIX�̕��� �v�ɑf���炵���L��������̂ŁA��������Q�Ɗ肢�����B
+　結論から書くと、Linuxではファイルの（いわゆる）更新日時には3種類のデー
+タが存在し、筆者が見ていたのはmtimeと呼ばれるものだったのだ。詳しくは「U
+NIXの部屋 」に素晴らしい記事があるので、そちらを参照願いたい。
 
 http://x68000.q-e-d.net/~68user/unix/pickup?%A5%BF%A5%A4%A5%E0%A5%B9%A5%BF%A5%F3%A5%D7
 
-�@.vmem�t�@�C�������X�V���ꂽ�����m�F����ɂ�ls -lu���K�؂ł���B
+　.vmemファイルがいつ更新されたかを確認するにはls -luが適切である。
 
-�@�����VMware Server��.vmem�t�@�C�����X�V����ۂɁiread��write�ł͂Ȃ��j
-mmap2�Ƃ����V�X�e���R�[�����g���Ă��邱�Ƃ������ł���B
-
-
-��0x04.) .vmem�t�@�C���͂Ȃ�184M�����Ȃ��̂��H
-
-�@���ď������΂�΂�Ő\����Ȃ��̂����A�Ăѐ�قǂ̻�����ނɘb��߂��B
-2.2G�̃����������蓖�Ă��Q�X�gOS���N������ɻ�����ނ������Ƃ���A.vmem̧
-�ق̎��ۂ̻��ނ͂킸��184M�����Ȃ��B����͎��́A�N������̹޽�OS�́A����
-�ɂ���؂ւ̱��������̒��x�����s���Ă��Ȃ�����ł���B
-
-�@�Â�VMware�ł́A�޽�OS���N�������u�Ԃ�ν�OS�͎��ۂ�2.2G����؂��m�ۂ��A
-�޽�OS�̂��߂Ɋ��蓖�ĂĂ����B�������V����VMware�ł́A�޽�OS�����ۂ���؂�
-�g���Ƃ��ɂȂ��Ă͂��߂�ν�OS����؂��m�ۂ���̂ł���B���̂��ߕ����̹޽�
-OS���g���ꍇ�Ɍ��ʓI����؂��g�����Ƃ��ł���A�Ƃ������ƂɂȂ�B
-
-�@�޽�OS�����؂����ۂɑ�ʂɏ������۾��i�Ⴆ��malloc�ŷ޶����ق���؂�
-�m�ۂ��A����ɂ�����؂̂��ׂĂ̗̈�ɏ������݂��s�����́j�𑖂点����ɻ
-�����ނ��s���ƁA������ނ̏����Ɏ��Ԃ�������A�����.vmem̧�ق̎��ۂ̻���
-���傫���Ȃ邱�Ƃ��m�F�ł���B
-
-�@��������؊Ǘ���.vmem̧�قւ̱����͂��ׂ�mmap2�Ƃ����V�X�e���R�[���ɂ�
-���čs���Ă���Astrace�ɂ���Ē������Ă݂�Ɣ��ɑ�ʂ�mmap2��munmap��
-�Ăяo����Ă��邱�Ƃ��m�F�ł���B
+　これはVMware Serverが.vmemファイルを更新する際に（readやwriteではなく）
+mmap2というシステムコールを使っていることが原因である。
 
 
-��0x05.) mainMem.useNamedFile = "FALSE"���
+■0x04.) .vmemファイルはなぜ184Mしかないのか？
 
-�@�M�҂Ɠ������u�ŋ߂�VMware�̓������̓��e����Ƀf�B�X�N�ɓ��������Ă���v
-�Ɗ��Ⴂ���Ă���l�͂������񂢂��悤�ŁA�u���̓�����off�ɂ�����@�͂Ȃ���
-�H�v�Ƃ����c�_���e�n�ōs���Ă����B�܂�A�Q�X�g���N��������ⓚ���p��
-�z�X�gOS�̃������������Ղ�i�Ⴆ��2.2G�j���蓖�Ă�B�����ăT�X�y���h���s
-���Ƃ��ɂȂ��ď��߂ăf�B�X�N�ɏ������߂΂悢�ł͂Ȃ����A�Ƃ����ӌ��ł���B
-����́u�������͂������񂠂邩��A�Ƃɂ����p�t�H�[�}���X���d���������v��
-�����l�X�̊肢�ł������i���_���ɏ����ƁALinux�ł͂���͎����ł��Ȃ��BW
-indows�͂���Ȃ����j�B
+　さて順序がばらばらで申し訳ないのだが、再び先ほどのサスペンドに話を戻す。
+2.2Gのメモリを割り当てたゲストOSを起動直後にサスペンドさせたところ、.vmemファ
+イルの実際のサイズはわずか184Mしかない。これは実は、起動直後のゲストOSは、実際
+にはメモリへのアクセスをその程度しか行っていないからである。
 
-�@�����̔M�S�Ȋ肢�ɁA�_�͓�����^�����B�u���A.vmx�t�@�C����mainMem.us
-eNamedFile = "FALSE"�̍s��ǉ����ׂ��v�ƁB
+　古いVMwareでは、ゲストOSが起動した瞬間にホストOSは実際に2.2Gのメモリを確保し、
+ゲストOSのために割り当てていた。しかし新しいVMwareでは、ゲストOSが実際にメモリを
+使うときになってはじめてホストOSのメモリを確保するのである。このため複数のゲスト
+OSを使う場合に効果的にメモリを使うことができる、ということになる。
 
-�@���̍s��.vmx�t�@�C�����G�f�B�^�ŕҏW���ǉ����邱�ƂŁA����N��������.v
-mem�t�@�C������������Ȃ��Ȃ�̂ł���B�c�Ȃ񂾁A�ŏ����炻�����Ă�I�Ƃ�
-�������ł���B
+　ゲストOS上でメモリを実際に大量に消費するプロセス（例えばmallocでギガレベルのメモリを
+確保し、さらにそのメモリのすべての領域に書き込みを行うもの）を走らせた後にサ
+スペンドを行うと、サスペンドの処理に時間がかかり、さらに.vmemファイルの実際のサイズ
+も大きくなることが確認できる。
 
-�@�������M�҂����ׂĂ݂��Ƃ���A���삪���������B�Q�X�gOS���N�����Ă��A��
-�ς�炸�z�X�gOS�̃��������������ď����Ȃ��̂��B�܂�u�Q�X�g���N��
-������ⓚ���p�Ńz�X�gOS�̃������������Ղ�i�Ⴆ��2.2G�j���蓖�Ă�v�Ƃ�
-�����Ƃ��ł��Ă��Ȃ��̂ł���B
+　これらのメモリ管理や.vmemファイルへのアクセスはすべてmmap2というシステムコールによ
+って行われており、straceによって調査してみると非常に大量のmmap2やmunmapが
+呼び出されていることが確認できる。
 
-�@vmware�֘A�̉p��̃t�H�[�����ł�����ɋc�_����Ă����̂ŋ�J���ĉ�ǂ�
-���̂����A��͂肱�̍s��ǉ����Ă��i���Ȃ��Ƃ�Linux�ł́j�Q�X�g�Ƀ�������
-�����Ȃ�g�킹�邱�Ƃ͂ł��Ȃ��Ə����Ă������B������strace�ɂ���ē����
-�ώ@���Ă݂��Ƃ���A�܂��ЂƂƂ�ł��Ȃ����������o�����B���̈�A�̃V�X
-�e���R�[���ł���B
+
+■0x05.) mainMem.useNamedFile = "FALSE"の罠
+
+　筆者と同じく「最近のVMwareはメモリの内容を常にディスクに同期させている」
+と勘違いしている人はたくさんいたようで、「この同期をoffにする方法はないか
+？」という議論が各地で行われていた。つまり、ゲストが起動したら問答無用で
+ホストOSのメモリをたっぷり（例えば2.2G）割り当てる。そしてサスペンドを行
+うときになって初めてディスクに書き込めばよいではないか、という意見である。
+これは「メモリはたくさんあるから、とにかくパフォーマンスを重視したい」と
+いう人々の願いであった（結論を先に書くと、Linuxではこれは実現できない。W
+indowsはしらないｗ）。
+
+　これらの熱心な願いに、神は答えを与えた。「汝、.vmxファイルにmainMem.us
+eNamedFile = "FALSE"の行を追加すべし」と。
+
+　この行を.vmxファイルをエディタで編集し追加することで、次回起動時から.v
+memファイルが生成されなくなるのである。…なんだ、最初からそうしてよ！とい
+う感じである。
+
+　しかし筆者が調べてみたところ、動作がおかしい。ゲストOSを起動しても、相
+変わらずホストOSのメモリがたいして消費されないのだ。つまり「ゲストが起動
+したら問答無用でホストOSのメモリをたっぷり（例えば2.2G）割り当てる」とい
+うことができていないのである。
+
+　vmware関連の英語のフォーラムでさかんに議論されていたので苦労して解読し
+たのだが、やはりこの行を追加しても（少なくともLinuxでは）ゲストにメモリを
+いきなり使わせることはできないと書いてあった。そしてstraceによって動作を
+観察してみたところ、またひとつとんでもない事実が発覚した。次の一連のシス
+テムコールである。
 
 -----
 open("/tmp/vmware-root/mm0", O_RDWR|O_CREAT|O_EXCL|O_LARGEFILE, 0600) = 102
@@ -198,75 +198,75 @@ unlink("/tmp/vmware-root/mm0")          = 0
 pwrite64(102, "\0", 1, 268435455)       = 1
 -----
 
-�@�Ȃ��/tmp�ȉ���̧�ق��쐬���A������unlink���Ă���̂��B�����Ă���̧��
-�ި������������.vmem̧�قƂ��Ďg�������Ă���̂ł���B
+　なんと/tmp以下にファイルを作成し、すぐにunlinkしているのだ。そしてそのファイル
+ディスクリプタを実質.vmemファイルとして使い続けているのである。
 
-�@�M�҂͂���Ȃ������̂����ALinux�ł͂��̂悤�ɁA������۾�����open�ɂ��
-�č쐬����̧�ق�unlink�i��ʓI�Ɂu̧�ق̍폜�v�Ƃ���鏈���j������ł���
-��̧�قɂ��ď������񂾂�ǂݍ��񂾂肷�邱�Ƃ��ł���̂��B�����Ă���̧
-�ق���۾��̏I�����Ɏ��ۂɍ폜�����B������B��̧�قƂ��������ł���B
+　筆者はしらなかったのだが、Linuxではこのように、あるプロセス中でopenによっ
+て作成したファイルをunlink（一般的に「ファイルの削除」とされる処理）した後でもそ
+のファイルについて書き込んだり読み込んだりすることができるのだ。そしてこのファ
+イルはプロセスの終了時に実際に削除される。いわゆる隠しファイルという感じである。
 
-�@unlink����Ă��邽�߼�ق���͂���̧�ق͌����Ȃ��B�Ⴆ��ls -l�ȂǂŊm�F
-���悤�Ƃ��Ă����邱�Ƃ��ł��Ȃ��B������������۾��i�����ł�VMware�̂��ꂼ
-��̹޽�OS����۾��ł���vmware-vmx�j�͉ғ�������̧�ق��g��������B����̧�
-ق�.vmem���̂��̂ł���A�g�p�𑱂��Ă���΂��Ȃ�傫�Ȼ��ނɂȂ�B���Ȃ�
-�傫�ȉB��̧�ق������/tmp�ȉ��ɍ쐬����邱�ƂɂȂ邽�߁A����Ƀn�}����
-���܂��l�����邱�Ƃ��낤�i���ۂɕM�҂̐g���Ɉꖼ�m�F����Ă���j�B�Ⴆ��
-/tmp�̃T�C�Y���������Ƃ��A/tmp������ȃt�@�C���V�X�e���i���Ƃ��΃������j
-�ɂȂ��Ă���ꍇ�Ȃǂɂ͌������n���ł���B
+　unlinkされているためシェルからはこのファイルは見えない。例えばls -lなどで確認
+しようとしても見ることができない。しかしこのプロセス（ここではVMwareのそれぞ
+れのゲストOSのプロセスであるvmware-vmx）は稼働中このファイルを使い続ける。このファイ
+ルは.vmemそのものであり、使用を続けていればかなり大きなサイズになる。かなり
+大きな隠しファイルが勝手に/tmp以下に作成されることになるため、これにハマって
+しまう人もいることだろう（実際に筆者の身内に一名確認されている）。例えば
+/tmpのサイズが小さいとか、/tmpが特殊なファイルシステム（たとえばメモリ）
+になっている場合などには激しく地雷である。
 
-�@���̂悤�ɁALinux�ł́umainMem.useNamedFile = "FALSE"�v�̍s��
+　このように、Linuxでは「mainMem.useNamedFile = "FALSE"」の行は
 
-�@�E.vmem�t�@�C����/tmp�ȉ��̉B���t�@�C���ɂ��Ă��܂�
+　・.vmemファイルを/tmp以下の隠しファイルにしてしまう
 
-�@�Ƃ����Ӗ����������Ȃ��B����ɂ���ĉ��������P����邱�Ƃ͕��ʂ͂Ȃ���
-�v����̂ŁA���̍s�̒ǉ��͂��K�v���Ȃ��ƕM�҂͍l����B
+　という意味しか持たない。これによって何かが改善されることは普通はないと
+思われるので、この行の追加はやる必要がないと筆者は考える。
 
 
-��0x06.) �����Ȃ�X���b�v�����
+■0x06.) いきなりスワップする罠
 
-�@�Q�X�gOS�𕡐��N�����Ă���ꍇ�A���R�Ȃ���u���A�ǂ̂��炢�̃���������
-���Ă��邩�H�v�Ƃ������Ƃ��C�ɂȂ邾�낤�B����Ȃ��Ȃ��́ufree�v�R�}���h
-��ł��A���̌��ʂɖ�������͂����B�������܂��܂�����������ʂɋ󂢂Ă���
-�͂��Ȃ̂ɁA�����Ȃ�X���b�v���͂��܂��ĘT�������o���͂Ȃ����낤���B
+　ゲストOSを複数起動している場合、当然ながら「今、どのくらいのメモリが空
+いているか？」ということが気になるだろう。そんなあなたは「free」コマンド
+を打ち、その結果に満足するはずだ。しかしまだまだメモリが大量に空いている
+はずなのに、いきなりスワップがはじまって狼狽した経験はないだろうか。
 
-�@Linux�ł́A�Ԃ����Ⴏfree�R�}���h�͖��ɗ����Ȃ��Bfree�ł́A���̂Ƃ��g�p
-����Ă���u���L�n�v���������܂������J�E���g����Ȃ����炾�B�u���L�n�v��
-�����Ƃ��āA�M�҂��m���Ă���͈̂ȉ���2�ł���i���Ȃ݂ɕM�҂�Linux��OS
-���̂��̂ɂ��Ă̒m���͂����������ƂȂ��Ƃ������A���Ȃ�ڂ����Ȃ����Ȃ�
-���۽��j�B
+　Linuxでは、ぶっちゃけfreeコマンドは役に立たない。freeでは、そのとき使用
+されている「共有系」メモリがまったくカウントされないからだ。「共有系」メ
+モリとして、筆者が知っているのは以下の2つである（ちなみに筆者はLinuxのOS
+そのものについての知識はたいしたことないというか、かなり詳しくない方なの
+でヨロスコ）。
 
-�@1. ���L������
-�@2. MAP_SHARED��mmap���ꂽ������
+　1. 共有メモリ
+　2. MAP_SHAREDでmmapされたメモリ
 
-�@1�͈قȂ�v���Z�X�ԂŃ������̈�����L���邽�߂̎d�g�݂ŁAshmget�Ƃ����V
-�X�e���R�[���ɂ���Ċm�ۂ��邱�Ƃ��ł���BPostgreSQL�̂悤�ȃf�[�^�x�[�X
-�ł悭�g�p�����悤���B
+　1は異なるプロセス間でメモリ領域を共有するための仕組みで、shmgetというシ
+ステムコールによって確保することができる。PostgreSQLのようなデータベース
+でよく使用されるようだ。
 
-�@�����łЂƂ]�k�ł���B�M�҂͐�PostgreSQL�̃`���[�j���O�Ɏ��s��������
-������BPostgreSQL�ɑ�ʂ̋��L�������̎g�p�������Ă��܂�������PostgreS
-QL��OS�̃��������ʂɏ���A���̂�������������Tomcat�����؁B�E�F�u�T
-�[�o�[�̗l�q�����������A�ƃA���[�g�̃��[�����g�тɓ����B��϶ނ̗����ǂ݂�
-���f���Ă���Ăă����[�g���烍�O�C���������̂́Aps��segmentation falt�ɂ�
-���Ă��܂�����OS�̏�Ԃ��܂������c���ł��Ȃ��B�����������Ȃ��璴�����Łu
-reboot�v�Ƒł����񂾂Ƃ���A�����ɍċN�����ċ㎀�Ɉꐶ�𓾂��̂ł���B��
-�̌�����������ɓ����悤����ؕs�����������邪�A�Ȃ��Ȃ�������˂��~�߂邱
-�Ƃ��ł��Ȃ������B�����܂ł��Ȃ����Afree�̌��ʂ������؂���ʂɋ󂢂Ă���
-�悤�Ɍ��������炾�BPostgreSQL����ʂɏ���Ă������L��؂́Afree����͂�
-�������m�F�ł��Ȃ������̂ł���B
+　ここでひとつ余談である。筆者は昔PostgreSQLのチューニングに失敗したこと
+がある。PostgreSQLに大量の共有メモリの使用を許可してしまったためPostgreS
+QLはOSのメモリを大量に消費し、そのあおりをくらったTomcatがシボリ。ウェブサ
+ーバーの様子がおかしい、とアラートのメールが携帯に到着。ヤンマガの立ち読みを
+中断してあわててリモートからログインしたものの、psがsegmentation faltにな
+ってしまうためOSの状態をまったく把握できない。脂汗をかきながら超高速で「
+reboot」と打ち込んだところ、無事に再起動して九死に一生を得たのである。そ
+の後も数日おきに同じようなメモリ不足が発生するが、なかなか原因を突き止めるこ
+とができなかった。言うまでもないが、freeの結果からはメモリが大量に空いている
+ように見えたからだ。PostgreSQLが大量に消費していた共有メモリは、freeからはま
+ったく確認できなかったのである。
 
-�@���L��؂̗l�q�́Aipcs����ނŊm�F���邱�Ƃ��ł���B���������L���������X
-�p�[�X�t�@�C���̏ꍇ�Ǝ��Ă��āA�u�m�ۂ͂��Ă��邪���ۂɂ͏����Ă���
-���v���Ƃ�����B�Ⴆ�Ύ��̂悤�ȃR�[�h�ŋ��L���������m�ۂ��ꂽ�Ƃ���B
+　共有メモリの様子は、ipcsコマンドで確認することができる。しかし共有メモリもス
+パースファイルの場合と似ていて、「確保はしてあるが実際には消費されていな
+い」ことがある。例えば次のようなコードで共有メモリが確保されたとする。
 
 -----
 #define SHM_SIZE 1024 * 1024 * 1024
-�i�����j
+（中略）
 shmget(IPC_PRIVATE, SHM_SIZE, 0700 | IPC_CREAT )
 -----
 
-�@���̂Ƃ�ipcs -m����Ǝ��̂悤�ɂȂ邽�߁A1G�̋��L�����������݂���悤��
-������B
+　このときipcs -mすると次のようになるため、1Gの共有メモリが存在するように
+見える。
 
 -----
 ------ Shared Memory Segments --------
@@ -274,12 +274,12 @@ key        shmid      owner      perms      bytes      nattch     status
 0x00000000 589835     root      700        1073741824 0
 -----
 
-�@�������m�ۂ��ꂽ�̈�ɑ΂��Ď��ۂɃA�N�Z�X�i�������݁H�j���s��ꂽ�Ƃ�
-�͂��߂Ė{���Ƀ�������������B���̂��Ƃ�ipcs�ł͊m�F�ł����A/proc/me
-minfo��MAPPED�Ȃǂ����邱�ƂŊm�F���邱�Ƃ��ł���B
+　しかし確保された領域に対して実際にアクセス（書き込み？）が行われたとき
+はじめて本当にメモリが消費される。このことはipcsでは確認できず、/proc/me
+minfoのMAPPEDなどを見ることで確認することができる。
 
-�@����2�����A�����mmap�V�X�e���R�[����MAP_SHARED�ŌĂяo�����ꍇ�Ɋm�ۂ�
-��郁�����̈�ł���B�Ⴆ�Ύ��̂悤�ȃR�[�h�Ŋm�ۂ��邱�Ƃ��ł���B
+　次に2だが、これはmmapシステムコールをMAP_SHAREDで呼び出した場合に確保さ
+れるメモリ領域である。例えば次のようなコードで確保することができる。
 
 -----
 #include <stdio.h>
@@ -312,112 +312,112 @@ return 0;
 }
 -----
 
-�@�G���[�����܂��������Ă��܂����Ƃ��B���̃R�[�h���g���ꍇ�A���炩����
-dd��hoge�Ƃ������O��1G�̃t�@�C�����쐬���Ă����K�v������B
+　エラー処理まったくしていませんがナニか。このコードを使う場合、あらかじめ
+ddでhogeという名前の1Gのファイルを作成しておく必要がある。
 
-�@���̂悤��mmap�Ŋm�ۂ��ꂽ��؂�free����͂܂������m�F�ł��Ȃ��i���L���
-�ł͂Ȃ����߁Aipcs����������Ȃ��j�Btop����ނ�SHR�̍s���A���邢��/proc/m
-eminfo��MAPPED�Ȃǂ����邱�ƂŊm�F���邱�Ƃ��ł���BVMware Server���m�ۂ�
-���ʂ���؂͂������߂ł���̂ŁA�m��Ȃ��ꍇ�ɂ͔��ɂ���������B
-
-
-��0x07.) VMware����ݸނ܂Ƃ�
-
-�@�Ƃ������Ƃňȉ��ɕM�ғI�Ȃ܂Ƃ߂������Ă����B
-
-�@�E���ׂĂ̹޽�OS���ق���؂�����Ă����v�ȗʂ���؂�ν�OS�ɍڂ��Ă���
-�@�EνĂ���؂����ۂɂ��������Ă���̂��͂Ԃ����Ⴏ�킩��Ȃ��̂ŁA
-�C�ɂ��Ȃ�������
-�@�E�ǂ����Ă��C�ɂȂ�ꍇ��/proc/meminfo������
-�@�EmainMem.useNamedFile = "FALSE"�͎g��Ȃ�
-�@�E���̂ق��͕��ʂɂ��iFit all virtual�c��Disable memory page trimming
-�Ȃǁj
-
-�@���ɗ����Ȃ�free����ނ͉�����Ă��܂��傤�Bfree free!
+　このようにmmapで確保されたメモリもfreeからはまったく確認できない（共有メモリ
+ではないため、ipcsからも見えない）。topコマンドのSHRの行か、あるいは/proc/m
+eminfoのMAPPEDなどを見ることで確認することができる。VMware Serverが確保す
+る大量のメモリはこのタイプであるので、知らない場合には非常にやっかいだ。
 
 
+■0x07.) VMwareチューニングまとめ
 
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+　ということで以下に筆者的なまとめを書いておく。
 
---- ��2��: �f�W�^���t�H�����W�b�N���� ---
+　・すべてのゲストOSがフルにメモリを消費しても大丈夫な量のメモリをホストOSに載せておく
+　・ホストのメモリが実際にいくつ消費されているのかはぶっちゃけわからないので、
+気にしないｗｗｗ
+　・どうしても気になる場合は/proc/meminfoを見る
+　・mainMem.useNamedFile = "FALSE"は使わない
+　・そのほかは普通にやる（Fit all virtual…やDisable memory page trimming
+など）
 
-���ҁFKenji Aiko
+　役に立たないfreeコマンドは解放してやりましょう。free free!
+
+
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
+--- 第2章: デジタルフォレンジック入門 ---
 
-��0x01.) �͂��߂�
+著者：Kenji Aiko
 
-�@�f�W�^���t�H�����W�b�N�i�ȉ��t�H�����W�b�N�j�Ƃ́A�p�\�R���̃n�[�h�f�B
-�X�N�Ɏc��f�[�^�����ȕ��@�ŕۑS�A��͂��A���p�҂ɂ��s���s�ׂ̍��Ղ�
-�������邱�ƁA�炵���ł��B�ڂ����͈ȉ����Q�Ƃ��������B
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-�f�W�^���E�t�H�����W�b�N�Ƃ�
+
+■0x01.) はじめに
+
+　デジタルフォレンジック（以下フォレンジック）とは、パソコンのハードディ
+スクに残るデータを特殊な方法で保全、解析し、利用者による不正行為の痕跡を
+調査すること、らしいです。詳しくは以下を参照ください。
+
+デジタル・フォレンジックとは
 http://itpro.nikkeibp.co.jp/article/Keyword/20070323/266134/
 
-�@�����ɂ̓n�[�h�f�B�X�N�Ə�����Ă���܂����A�f�[�^�̕ۑ��}�̂̓n�[�h�f
-�B�X�N�����ł͂���܂���̂ŁA�Ӗ��Ƃ��ẮA�t���b�s�[�f�B�X�N��CD�ADVD�A
-USB�������ASD�J�[�h�ȂǁA���l�ȕۑ����f�B�A�ɑ΂��Ă̏ڍׂȃf�[�^��͂��A
-���̂Ƃ��Ắu�f�W�^���t�H�����W�b�N�v�̈Ӗ����ȂƎv���܂��i���Ԃ�j�B
-�@����Łu���Ⴀ��̓I�Ƀt�H�����W�b�N���Ă��������������邱�ƂȂ̂��H�v
-�Ƃ����̂����̃e�L�X�g�̃e�[�}�Ȃ̂ł����A�ȒP�Ɍ����΁u�L���}�̂ɕۑ���
-��Ă���f�[�^���_���v���āA�������͂��悤���I�v�Ƃ����b�ł��B
-�@Linux�}�V����USB���������w���Add�R�}���h��ł�USB�������ɕۑ�����Ă�
-��f�[�^���_���v����܂��B
+　ここにはハードディスクと書かれてありますが、データの保存媒体はハードデ
+ィスクだけではありませんので、意味としては、フロッピーディスクやCD、DVD、
+USBメモリ、SDカードなど、多様な保存メディアに対しての詳細なデータ解析が、
+総称としての「デジタルフォレンジック」の意味かなと思います（たぶん）。
+　それで「じゃあ具体的にフォレンジックっていったい何をすることなのか？」
+というのがこのテキストのテーマなのですが、簡単に言えば「記憶媒体に保存さ
+れているデータをダンプして、それを解析しようぜ！」という話です。
+　LinuxマシンにUSBメモリを指し、ddコマンドを打つとUSBメモリに保存されてい
+るデータがダンプされます。
 
 -----  terminal
 # dd if=/dev/sdb1 of=/home/kenji/usb.bin
 -----
 
-�@���̃_���v���ꂽ�f�[�^�iusb.bin�j���o�C�i���G�f�B�^�ŉ�͂���΁A����
-����ȏ�񂪓����܂��B���ꂪ�A�t�H�����W�b�N�̊�{�I�ȍ�Ƃł��B���A51
-2GB�Ƃ�����n�[�h�f�B�X�N���_���v���āA������o�C�i���G�f�B�^�ŉ�͂����
-�����ʂɖ����Ȃ̂ŁA���낢��ȃc�[�����g���Ă�����������i�������͕֗��Ɂj
-���āA���΂₭�f�[�^��͂��s���Ƃ����̂��A�{�i�I�ȃt�H�����W�b�N��ƂƂ�
-�����̂��Ǝv���܂��B
+　このダンプされたデータ（usb.bin）をバイナリエディタで解析すれば、いろ
+いろな情報が得られます。これが、フォレンジックの基本的な作業です。が、51
+2GBとかあるハードディスクをダンプして、それをバイナリエディタで解析すると
+か普通に無理なので、いろいろなツールを使ってそれを自動化（もしくは便利に）
+して、すばやくデータ解析を行うというのが、本格的なフォレンジック作業とい
+うものかと思います。
 
 
-��0x02.) �폜�����t�@�C���͂����ƍ폜����Ă܂���
+■0x02.) 削除したファイルはきっと削除されてません
 
-�@USB��������100�̉摜���ۑ�����Ă��܂��B����USB��������WindowsXP����
-�ǂݍ��݁A�S���̉摜���R�s�[������AUSB���������̂��t�H�[�}�b�g���܂��B�t
-�H�[�}�b�g�����̂ŁA����100�̉摜�����邱�Ƃ͂ł��܂��񂪁A���͕�������
-����ɂ́A�܂������̉摜�̃f�[�^�͕ۑ�����Ă��܂��B
-�@�t�H�[�}�b�g����USB��������dd�R�}���h�Ń_���v���A�o�C�i���G�f�B�^�œ���
-�̃t�@�C���f�[�^����������ƁA�����炭�q�b�g���܂��B����͉��̂��H�@����
-�́AOS���S�������̂������h�C����ł��i�z���g���H�j�BWindows���Ǘ�����USB
-�������́A��������FAT�Ƃ����t�@�C���V�X�e�����g���Ă��܂��B�����āA�t�@
-�C���V�X�e���ɂ̓w�b�_�Ƃ����t�@�C�����Ǘ�����f�[�^���t������Ă���A��
-���ɂ́A�폜�t���O�Ƃ����A���̃t�@�C�����폜���ꂽ���̂ł��邩�ǂ�������
-������t���O�����݂��܂��B�ڂ����͈ȉ��̃A�h���X���Q�Ƃ̂��ƁB
+　USBメモリに100個の画像が保存されています。このUSBメモリをWindowsXPから
+読み込み、全部の画像をコピーした後、USBメモリ自体をフォーマットします。フ
+ォーマットしたので、もう100個の画像を見ることはできませんが、実は物理メモ
+リ上には、まだこれらの画像のデータは保存されています。
+　フォーマットしたUSBメモリをddコマンドでダンプし、バイナリエディタで特定
+のファイルデータを検索すると、おそらくヒットします。これは何故か？　答え
+は、OSが全部消すのがメンドイからです（ホントか？）。Windowsが管理するUSB
+メモリは、だいたいFATというファイルシステムが使われています。そして、ファ
+イルシステムにはヘッダというファイルを管理するデータが付加されており、そ
+こには、削除フラグという、このファイルが削除されたものであるかどうかを意
+味するフラグが存在します。詳しくは以下のアドレスを参照のこと。
 
-FAT FS �t�H�[�}�b�g�̎����ɂ��Ă̊o������
+FAT FS フォーマットの実装についての覚え書き
 http://www.geocities.co.jp/SiliconValley-PaloAlto/2038/fat.html
 
-�@�t�@�C�����폜����Ƃ����s�ׂ́A�ꌩ�u�t�@�C���f�[�^�����݂��镨������
-�������ׂ�0�Ŗ��߂�v�Ƃ����悤�ȁA�{���ɍ폜����Ƃ�����ۂ��󂯂܂����A
-���ۂ́u�t�@�C���V�X�e����A�f�[�^�������Ȃ��悤�ɂȂ�v�Ƃ��������ł���A
-�{���Ƀf�[�^�������Ă���킯�ł͂���܂���B����́A�S��0�ɏ���������Ǝ�
-�Ԃ������邪�A�폜�t���O�𗧂Ă邾���Ȃ��u�łł��邽�߁A���̂悤�Ȏd�l
-�ɂȂ��Ă���ƍl�����܂��B
-�@���̂悤�ȁA�폜���ꂽ�t�@�C����������A�������t�@�C���𕜌��ł���A��
-��������������A�t�H�����W�b�N�Ƃ����Z�p���g���܂��B
+　ファイルを削除するという行為は、一見「ファイルデータが存在する物理メモ
+リをすべて0で埋める」というような、本当に削除するという印象を受けますが、
+実際は「ファイルシステム上、データが見えないようになる」というだけであり、
+本当にデータが消えているわけではありません。これは、全部0に書き換えると時
+間がかかるが、削除フラグを立てるだけなら一瞬でできるため、このような仕様
+になっていると考えられます。
+　このような、削除されたファイルが見える、消したファイルを復元できる、と
+いう方向性から、フォレンジックという技術が使われます。
 
 
-��0x03.) �t�H�����W�b�N�c�[��
+■0x03.) フォレンジックツール
 
-�@���́A�t���[�̃t�H�����W�b�N�c�[���Ƃ����̂́A�قƂ�ǂȂ��A���̗L�p
-�ȃc�[���͗L���ł��������Ȃ荂���ł��B��Ŏ���o������̂ł͂���܂���B
-������������́uEncase�v�u�t�H�����W�b�N�v�ȂǂŌ������Ă݂�Ƃ悢���Ǝv
-���܂��B
-�@�Ƃ����킯�ŁA�{�i�I�Ƀt�H�����W�b�N���w�т������́A�������Ƃ��Ă�
-���ƂɏA�E���Ă��������i�΁j�B�܂��Ȃ񂾂���Ƃ��������ł����A�������A
-�t�H�����W�b�N�̓v���O���~���O�ƈႢ�A���I�ȋ@�킪�K�v�ŁA��łł���
-�قǊȒP�ł͂Ȃ��悤�ł��B
-�@����ł��u���͋C�����ł����킢�������I�v�Ƃ������́Asleuthkit�Aautopsy
-�Ƃ����c�[��������܂��B
+　実は、フリーのフォレンジックツールというのは、ほとんどなく、大抵の有用
+なツールは有料でしかもかなり高価です。趣味で手を出せるものではありません。
+興味がある方は「Encase」「フォレンジック」などで検索してみるとよいかと思
+います。
+　というわけで、本格的にフォレンジックを学びたい方は、それを専門としてい
+る企業に就職してください（笑）。まぁなんだそれという感じですが、しかし、
+フォレンジックはプログラミングと違い、専門的な機器が必要で、趣味でできる
+ほど簡単ではないようです。
+　それでも「雰囲気だけでも味わいたいぜ！」という方は、sleuthkit、autopsy
+というツールがあります。
 
 sleuthkit
 http://www.sleuthkit.org/sleuthkit/
@@ -425,13 +425,13 @@ http://www.sleuthkit.org/sleuthkit/
 autopsy
 http://www.sleuthkit.org/autopsy/
 
-The Sleuth Kit & Autopsy �C���X�g�[���E�ݒ�
+The Sleuth Kit & Autopsy インストール・設定
 http://pen-test.jpn.org/forensic:tsk:install
 
-�@sleuthkit�̓_�E�����[�h�T�C�g����\�[�X�R�[�h���_�E�����[�h���Aconfigure
-�Amake�Amake install�A�̃R���{��OK�ł��Bautopsy�͏�����₱�����A�܂��̓f
-�[�^�⃍�O��ۑ�����f�B���N�g�������K�v������܂��B�Ȃ̂ŁA���炩���߁u
-mkdir /var/evidence�v�Ɠ��͂��A�ۑ��������Ă����āAmake�����s���܂��B
+　sleuthkitはダウンロードサイトからソースコードをダウンロードし、configure
+、make、make install、のコンボでOKです。autopsyは少しややこしく、まずはデ
+ータやログを保存するディレクトリを作る必要があります。なので、あらかじめ「
+mkdir /var/evidence」と入力し、保存先を作っておいて、makeを実行します。
 
 -----  terminal
 # tar xvzf sleuthkit-2.52.tar.gz
@@ -440,11 +440,11 @@ mkdir /var/evidence�v�Ɠ��͂��A�ۑ��������Ă����āAmake�����s���܂��B
 # ln -s sleuthkit-2.52 sleuthkit
 # cd sleuthkit
 # ./configure
-�i�ȗ��j
+（省略）
 # make
-�i�ȗ��j
+（省略）
 # make install
-�i�ȗ��j
+（省略）
 # mkdir /var/evidence
 # tar xvzf autopsy-2.10.tar.gz
 # cp -r autopsy-2.10 /usr/local/
@@ -452,189 +452,189 @@ mkdir /var/evidence�v�Ɠ��͂��A�ۑ��������Ă����āAmake�����s���܂��B
 # ln -s autopsy-2.10 autopsy
 # cd autopsy
 # make
-�i�ȗ��j
+（省略）
 Enter the directory where you installed it:
-/usr/local/sleuthkit�i��sleuthkit�̃C���X�g�[�������́j
+/usr/local/sleuthkit（←sleuthkitのインストール先を入力）
 
 Have you purchased or downloaded a copy of the NSRL (y/n) [n]
-n�i�����́j
+n（←入力）
 
 Enter the directory that you want to use for the Evidence Locker:
-/var/evidence�i���f�[�^�⃍�O�̕ۑ������́j
+/var/evidence（←データやログの保存先を入力）
 -----
 
-�@����ŃC���X�g�[�������ł��B���Ƃ�autopsy�����s���܂��B
+　これでインストール完了です。あとはautopsyを実行します。
 
 -----  terminal
 # ./autopsy -C 172.17.0.38
 -----
 
-�@IP�A�h���X�̕����ɂ́AWebGUI�𗘗p����PC��IP�A�h���X����͂��܂��Bauto
-psy�̓f�t�H���g�Ń|�[�g9999�Ԃ��g���܂��̂ŁA�u���E�U����uhttp://172.17.
-0.38:9999/autopsy�v�Ɠ��͂���ƁA�X�q�����Ԃ�������PC�����Ă����ʂ��\��
-����܂��B
+　IPアドレスの部分には、WebGUIを利用するPCのIPアドレスを入力します。auto
+psyはデフォルトでポート9999番を使いますので、ブラウザから「http://172.17.
+0.38:9999/autopsy」と入力すると、帽子をかぶった犬がPCを見ている画面が表示
+されます。
 
 http://ruffnex.oc.to/kenji/forensic/pic/1.png
 
 
-��0x04.) �t�H�����W�b�N������Ă݂�
+■0x04.) フォレンジックをやってみる
 
 http://ruffnex.oc.to/kenji/forensic/wb43.zip
 
-�@�����Ƀt�H�����W�b�N�̑ΏۂƂȂ�t�@�C����p�ӂ��܂����B���̒��ɉB����
-�Ă���p�X���[�h��T���Ă��������BUSB�������̃C���[�W�t�@�C���Ȃ̂ŁAmou
-nt����Γ��e���J�����Ƃ͂ł��܂����A�ΏۂƂȂ�p�X���[�h�������ꂽ�t�@�C
-���͍폜���Ă��邽�߁A��p�̃t�H�����W�b�N�c�[�����g���ĉ�͂���K�v����
-��܂��B
+　ここにフォレンジックの対象となるファイルを用意しました。この中に隠され
+ているパスワードを探してください。USBメモリのイメージファイルなので、mou
+ntすれば内容を開くことはできますが、対象となるパスワードが書かれたファイ
+ルは削除しているため、専用のフォレンジックツールを使って解析する必要があ
+ります。
 
 -----  terminal
 # mount -o loop wb43.bin /mnt/usb
 # tree /mnt/usb
 
-�i�ۑ����ꂽ���e���\������邪�A�폜���ꂽ�t�@�C���͓��R�o�͂���Ȃ��j
+（保存された内容が表示されるが、削除されたファイルは当然出力されない）
 
 -----
 
-�@�Ƃ����킯�ŁA��������autopsy���g���܂��B�܂��A���̉�ʂ���A�^�񒆂́u
-NEW CASE�v��I�т܂��B����ƁuCREATE A NEW CASE�v�Ƃ�����ʂɈړ����A�uCa
-se Name�v�uDescription�v�uInvestigator Names�v��3�̓��̓{�b�N�X���\����
-��܂��B�����ɓ��͂��閼�O�̓v���W�F�N�g���Ȃ̂ŁA�K���ō\���܂���B����
-�āutest_wb43�v�Ɠ��͂��āA�uNEW CASE�v���N���b�N���Ă��������B
+　というわけで、さっそくautopsyを使います。まず、犬の画面から、真ん中の「
+NEW CASE」を選びます。すると「CREATE A NEW CASE」という画面に移動し、「Ca
+se Name」「Description」「Investigator Names」の3つの入力ボックスが表示さ
+れます。ここに入力する名前はプロジェクト名なので、適当で構いません。すべ
+て「test_wb43」と入力して、「NEW CASE」をクリックしてください。
 
 http://ruffnex.oc.to/kenji/forensic/pic/2.png
 
-�@���ɁuCreating Case: test_wb43�v�Ƃ�����ʂɈڂ�܂��B���̂܂܁uADD HO
-ST�v���N���b�N���Ă��������B����ɁuADD A NEW HOST�v��ʂɈڂ�܂��B�f�t
-�H���g�̂܂܁A�����ύX�����ɁuADD HOST�v���N���b�N���Ă��������B
+　次に「Creating Case: test_wb43」という画面に移ります。そのまま「ADD HO
+ST」をクリックしてください。さらに「ADD A NEW HOST」画面に移ります。デフ
+ォルトのまま、何も変更せずに「ADD HOST」をクリックしてください。
 
 http://ruffnex.oc.to/kenji/forensic/pic/3.png
 http://ruffnex.oc.to/kenji/forensic/pic/4.png
 
-�@�uAdding host: host1 to case test_wb43�v�Ƃ�����ʂɈڂ�܂��B�uADD IM
-AGE�v���N���b�N���Ă��������B����ŉ�͂̏������ł��܂����B���̉�ʂɂ́A
-8�قǃ{�^��������܂����A�uADD IMAGE FILE�v�������Ă��������B����ƁuAD
-D A NEW IMAGE�v��ʂɐi�݂܂��B�����ŁuLocation�v�Ɂu��͑Ώۂ̃t�@�C���p
-�X�v���A�uType�v�ɁuDisk�v���A�����āuImport Method�v�ɁuCopy�v�����܂��B
+　「Adding host: host1 to case test_wb43」という画面に移ります。「ADD IM
+AGE」をクリックしてください。これで解析の準備ができました。次の画面には、
+8つほどボタンがありますが、「ADD IMAGE FILE」を押してください。すると「AD
+D A NEW IMAGE」画面に進みます。ここで「Location」に「解析対象のファイルパ
+ス」を、「Type」に「Disk」を、そして「Import Method」に「Copy」を入れます。
 
 http://ruffnex.oc.to/kenji/forensic/pic/5.png
 http://ruffnex.oc.to/kenji/forensic/pic/6.png
 http://ruffnex.oc.to/kenji/forensic/pic/7.png
 
-�@����ŁuNEXT�v���N���b�N���܂��B����ƁAWarning���o�āuDisk Image�v�Ɓu
-Volume Image�v�̑I�������܂��܂��B�����ŁuVolume Image�v��I�����uOK�v��
-�N���b�N���Ă��������B
+　これで「NEXT」をクリックします。すると、Warningが出て「Disk Image」と「
+Volume Image」の選択がせまられます。ここで「Volume Image」を選択し「OK」を
+クリックしてください。
 
 http://ruffnex.oc.to/kenji/forensic/pic/8.png
 
-�@�Ō�ɁuImage File Details�v�Ƃ�����ʂ��o�܂��B���ׂĂ̍��ڂ̓f�t�H��
-�g�̂܂܂ō\���܂���B�uADD�v���N���b�N���Ă��������B�������Ԃ�������A��
-�͂��I�����܂��B��͂��I��������uOK�v���N���b�N���Ă��������B
+　最後に「Image File Details」という画面が出ます。すべての項目はデフォル
+トのままで構いません。「ADD」をクリックしてください。少し時間がかかり、解
+析が終了します。解析が終了したら「OK」をクリックしてください。
 
 http://ruffnex.oc.to/kenji/forensic/pic/9.png
 http://ruffnex.oc.to/kenji/forensic/pic/10.png
 
-�@����œǂݍ��݂͊����ł��B�uANALYZE�v���N���b�N���āA��͉�ʂֈڂ�܂��B
-���Ɉ�ԍ��́uFILE ANALYSIS�v���N���b�N���܂��B����ƁA���ݕۑ�����Ă���
-�t�@�C����A�폜���ꂽ�t�@�C���Ȃǂ��\������܂��B
+　これで読み込みは完了です。「ANALYZE」をクリックして、解析画面へ移ります。
+次に一番左の「FILE ANALYSIS」をクリックします。すると、現在保存されている
+ファイルや、削除されたファイルなどが表示されます。
 
 http://ruffnex.oc.to/kenji/forensic/pic/11.png
 http://ruffnex.oc.to/kenji/forensic/pic/12.png
 http://ruffnex.oc.to/kenji/forensic/pic/13.png
 
-�@�܂��A�����ɁuALL DELETED FILES�v�Ƃ����{�^��������A������N���b�N����
-���ƂŁA�폜���ꂽ�t�@�C�����m�F�A�����ł��܂��B
+　また、左下に「ALL DELETED FILES」というボタンがあり、これをクリックする
+ことで、削除されたファイルを確認、復元できます。
 
 http://ruffnex.oc.to/kenji/forensic/pic/14.png
 
-�@�폜���ꂽ�t�@�C�����ЂƂ����Ă����ƁA�p�X���[�h�������ꂽ�t�@�C��
-�i���łɍ폜����Ă���t�@�C���j���\������܂��B���̂悤�ɁAOS����͌���
-�Ȃ��f�[�^���_���v���ĉ�͂��邱�ƂŁA�폜���ꂽ��A�B���ꂽ�t�@�C����
-�����邱�Ƃ��ł��܂��B
+　削除されたファイルをひとつずつ見ていくと、パスワードが書かれたファイル
+（すでに削除されているファイル）が表示されます。このように、OSからは見え
+ないデータをダンプして解析することで、削除されたり、隠されたファイルを復
+元することができます。
 
 
-��0x05.) �f�[�^�����S�ɏ����ɂ́H
+■0x05.) データを完全に消すには？
 
-�@Windows����t�H�[�}�b�g���s����USB��������t���b�s�[�Ȃǂ́AOS����͌�
-���Ȃ��Ȃ�܂����A���S�Ƀf�[�^��������Ă���킯�ł͂Ȃ����߁Aautopsy����
-���e����͂ł��܂��B�t���b�s�[�i��������USB�������j�����Add�R�}���h���g
-���ƁA���e���_���v�ł��܂��B���̃_���v�����f�[�^��autopsy�œǂݍ��ނ��ƂŁA
-�܂����S�ɏ�����Ă��Ȃ��f�[�^����͂ł��܂��B
+　Windowsからフォーマットを行ったUSBメモリやフロッピーなどは、OSからは見
+えなくなりますが、完全にデータが消されているわけではないため、autopsyから
+内容を解析できます。フロッピー（もしくはUSBメモリ）を入れ、ddコマンドを使
+うと、内容がダンプできます。そのダンプしたデータをautopsyで読み込むことで、
+まだ完全に消されていないデータを解析できます。
 
 -----  terminal
 # dd if=/dev/sdb1 of=/home/kenji/floppy.bin
 
-�ifloppy.bin��autopsy�ŉ�͉\�j
+（floppy.binをautopsyで解析可能）
 
 -----
 
-�@�Ƃ����킯�ŁA�t�H�[�}�b�g�͊��S�Ƀf�[�^���������@�Ƃ��Ă͕K����������
-���Ȃ��킯�ł����A�ł́A�u���S�Ƀf�[�^�������ɂ͂ǂ�������悢���H�v�Ƃ�
-���ƁA������dd�R�}���h���g���܂��B
+　というわけで、フォーマットは完全にデータを消す方法としては必ずしも正し
+くないわけですが、では、「完全にデータを消すにはどうしたらよいか？」とい
+うと、同じくddコマンドを使います。
 
 -----  terminal
 # dd if=/dev/zero of=/dev/sdb1
 -----
 
-�@USB�������։\�Ȍ���[�����������݂܂��B�܂��A�[���ł͂Ȃ��������g����
-���悢�ł��B
+　USBメモリへ可能な限りゼロを書き込みます。また、ゼロではなく乱数を使って
+もよいです。
 
 -----  terminal
 # dd if=/dev/uramdom of=/dev/sdb1
 -----
 
-�@���̂悤�ȕ��@�ŕ����������𖄂߂邱�ƂŁA�f�[�^�����S�ɏ����ł��܂��B
-�ڂ����͈ȉ����Q�Ƃ̂��ƁB
+　このような方法で物理メモリを埋めることで、データを完全に消去できます。
+詳しくは以下を参照のこと。
 
-Linux(UNIX)�W���R�}���h�ɂ��f�[�^����
+Linux(UNIX)標準コマンドによるデータ抹消
 http://www.cybernetic-survival.net/dd.htm
 
 
-��0x06.) ��������
+■0x06.) さいごに
 
-�@�����A���񏑂������̂́A�܂�������啪��ł͂���܂���(^^;�B�Ƃ������A
-���͍���͂��܂��܃t�H�����W�b�N�������w�ԋ@����������߁A����̋L�O��
-���������̂ł��i�o�������j�B
-�@�R���s���[�^�Z�L�����e�B�͂��Ȃ蕝���L���̂ŁA���镪��ł͓V�˓I�ȃG��
-�W�j�A�ł��A���������O���Ώ��S�҃��x��������������܂��B�ł��A������
-������Ɋw�Ԏp������؂��Ȃ��ƁA�ŋ߉��߂Ċ����܂����B
+　正直、今回書いたものは、まったく専門分野ではありません(^^;。というか、
+実は今回はたまたまフォレンジックを少し学ぶ機会があったため、それの記念に
+書いたものです（覚え書き）。
+　コンピュータセキュリティはかなり幅が広いので、ある分野では天才的なエン
+ジニアでも、専門を少し外れれば初心者レベルだったりもします。でも、だから
+こそ常に学ぶ姿勢が大切だなぁと、最近改めて感じました。
 
 
-
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-
---- ��3��: ��b�Í��w�u���E��18�� �`������]�ƃ��W�����h���L���` ---
-
-���ҁFIPUSIRON
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
+--- 第3章: 基礎暗号学講座・第18回 〜平方剰余とルジャンドル記号〜 ---
 
-��0x01.) �͂��߂�
+著者：IPUSIRON
 
-�@�O���WB42�ł�Rabin�Í����Љ�A����Rabin�Í���OW-CPA���S�ł��邽�߂�
-�́A�f��������������ł��邱�ƂƓ����ł��邱�Ƃ��q�ׂ��B�������A�d�l�ʂ�
-�ɕ������Ă��A�����������Ɉ�ӂɌ���ł��Ȃ��Ƃ��������������Ă����B
-�@���̈�Ӑ��Ɋւ���ۑ�����������Í�����������B���̈Í���������邽��
-�ɂ́A����ɂ������̐��w�I�T�O����������K�v������B
-�@�����ō���͕�����]�i2�������������A������]�A���W�����h���L���j�A����
-�̓��R�r�L���i�K�E�X�̕��A���ݖ@���A���R�r�L���j�A�����Ă��̌�ň�Ӑ�
-�̖������P�����Í��������Љ��\��ł���B
-
-�y�ǋL�z�ꕔ�̕��͂Ń��W�����h���L�������O�����W���L���ƊԈႦ�ĕ\�L���Ă��܂����B���݂͏C���ς݂ł��B�w�E���肪�Ƃ��������܂��B�@��
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x02.) 2������������
+■0x01.) はじめに
 
-�@x^2��a (mod p)�Ƃ���2�������������ɂ́A��������Ƃ��ƂȂ��Ƃ�������B
+　前回のWB42ではRabin暗号を紹介し、そのRabin暗号がOW-CPA安全であるために
+は、素因巣分解が困難であることと等価であることを述べた。しかし、仕様通り
+に復号しても、正しい平文に一意に決定できないという特徴を持っていた。
+　この一意性に関する課題を解決した暗号方式がある。この暗号を解説するため
+には、さらにいくつかの数学的概念を準備する必要がある。
+　そこで今回は平方剰余（2次合同方程式、平方剰余、ルジャンドル記号）、次回
+はヤコビ記号（ガウスの補題、相互法則、ヤコビ記号）、そしてその後で一意性
+の問題を改善した暗号方式を紹介する予定である。
 
-�@���̎����𐔒l��ōl�@���邽�߂ɁAp=7�i��f���j�̂Ƃ����l���Ă݂�B�܂�
-��@�\�������B��@�\�Ȃ̂�0�͏��O����A����ȊO��1�`6�̊|���Z�̕\�ɂȂ�B
-mod 7�ōl����̂ŁA7�Ŋ������]�肪������Ă���B
+【追記】一部の文章でルジャンドル記号をラグランジュ記号と間違えて表記していました。現在は修正済みです。指摘ありがとうございます。　◇
+
+
+■0x02.) 2次合同方程式
+
+　x^2≡a (mod p)という2次合同方程式には、解があるときとないときがある。
+
+　この事実を数値例で考察するために、p=7（奇素数）のときを考えてみる。まず
+乗法表を書く。乗法表なので0は除外され、それ以外の1〜6の掛け算の表になる。
+mod 7で考えるので、7で割った余りが書かれている。
 
 -----------------------------
-| �~| 1 | 2 | 3 | 4 | 5 | 6 |
+| ×| 1 | 2 | 3 | 4 | 5 | 6 |
 |---+---+---+---+---+---+---|
 | 1 | 1 | 2 | 3 | 4 | 5 | 6 |
 |---+---+---+---+---+---+---|
@@ -649,12 +649,12 @@ mod 7�ōl����̂ŁA7�Ŋ������]�肪������Ă���B
 | 6 | 6 | 5 | 4 | 3 | 2 | 1 |
 -----------------------------
 
-�@���̕\����킩�邱�ƂƂ��āA���ׂĂ̍s��1�`6�̒l��1��o�Ă���B�����p
-=7�Ƒf����I����������ł���B�����Ap����������Ȃ�A�����͂����Ȃ��B0��
-�o�ꂵ����A�����l���o�ꂵ���肷��̂ł���B
+　この表からわかることとして、すべての行は1〜6の値が1回出ている。これはp
+=7と素数を選択したからである。もし、pが合成するなら、こうはいかない。0が
+登場したり、同じ値が登場したりするのである。
 
-�@�����ŏd�v�Ȃ̂́A�Ίp���̕����ł���B1��ڂ̕����ƑΊp���̕���������
-�o���Ă����B
+　ここで重要なのは、対角線の部分である。1列目の部分と対角線の部分だけを抽
+出しておく。
 
 ---------
 | x |x^2|
@@ -672,9 +672,9 @@ mod 7�ōl����̂ŁA7�Ŋ������]�肪������Ă���B
 | 6 | 1 |
 ---------
 
-�@���̕\�ɒ��ڂ���ƁAx^2�̕������㉺�ΏۂɂȂ��Ă��邱�Ƃ��킩��B�����
-���ϓI�ɗ������邽�߂ɂ́Ax�̗�̂Ƃ��������������΂悢�Bmod7�̐��E�ł́A
-4��-3�A5��-2�A6��-1�Ȃ̂ŁA���̂悤�ɏ�����������B
+　この表に注目すると、x^2の部分が上下対象になっていることがわかる。これを
+直観的に理解するためには、xの列のところを書き換えればよい。mod7の世界では、
+4≡-3、5≡-2、6≡-1なので、次のように書き換えられる。
 
 ---------
 | x |x^2|
@@ -692,97 +692,97 @@ mod 7�ōl����̂ŁA7�Ŋ������]�肪������Ă���B
 | -1| 1 |
 ---------
 
-�@�������������Ă݂�Ύ����ł��낤�Bx�̗�ɂ́A1,2,3�Ƀ}�C�i�X�����ċt
-���ɂ���3,2,1���o�ꂵ�Ă���B
-�@Z_p^*�̔C�ӂ�b�ɂ����āAb^2=(-b)^2 (mod p)�����藧�B�܂�A2��b��
--b��2��̐��E�ł͈�v����Ƃ������Ƃł���B
+　こう書き換えてみれば自明であろう。xの列には、1,2,3にマイナスをつけて逆
+順にした3,2,1が登場している。
+　Z_p^*の任意のbにおいて、b^2=(-b)^2 (mod p)が成り立つ。つまり、2つのbと
+-bが2乗の世界では一致するということである。
 
-�@���̕\����2������������x^2��a (mod 7)�̉������݂���Ƃ���a�A�������݂�
-�Ȃ��Ƃ���a����������Bx^2�̗�ɓo�ꂷ�鐔�́A���鐮��x�̕�����mod p�̐�
-�E�ōl�����l�ł���B�܂�Aa=1,4,2�̂Ƃ���x=1,2,3�Ƃ����������邱�Ƃ���
-����B
-�@����A�c���a=3,5,6�ɂ͉����Ȃ��B�Ȃ��Ȃ�΁Ax^2�̗�̂Ƃ���ɓo�ꂵ��
-������ł���B
+　この表から2次合同方程式x^2≡a (mod 7)の解が存在するときのa、解が存在し
+ないときのaが判明する。x^2の列に登場する数は、ある整数xの平方をmod pの世
+界で考えた値である。つまり、a=1,4,2のときにx=1,2,3という解があることがわ
+かる。
+　一方、残りのa=3,5,6には解がない。なぜならば、x^2の列のところに登場しな
+いからである。
 
-�@������2�������������̉��̗L���ɂ���āAa�̌Ăі���ς��Ă����B
+　ここで2次合同方程式の解の有無によって、aの呼び名を変えておく。
 
-[��`]���鐮��x�̕�����mod p�ō����Ȑ������imod p�́j������]�ƌĂԁB����A
-�����łȂ��������imod p�́j�������]�ƌĂԁB
+[定義]ある整数xの平方にmod pで合同な整数を（mod pの）平方剰余と呼ぶ。一方、
+そうでない整数を（mod pの）平方非剰余と呼ぶ。
 
-�@p=7�̗�ł����΁Ap=7�̕�����]��1,4,2�ł���Ap=7�̕������]��3,5,6�ł�
-��B
+　p=7の例でいえば、p=7の平方剰余は1,4,2であり、p=7の平方非剰余は3,5,6であ
+る。
 
-�@p�̒l����ʂ̏ꍇ�ip=N�j�ł�������]�Ƃ����T�O�͐��藧���A�܂���p����
-�f���Ƃ��ăX�^�[�g����B
+　pの値が一般の場合（p=N）でも平方剰余という概念は成り立つが、まずはpを奇
+素数としてスタートする。
 
-�@������]��������ƒ�`����Ǝ��̂悤�ɂȂ�B
+　平方剰余をきちんと定義すると次のようになる。
 
-[��`]p�i��2�j�F�f���Ap��a������؂�Ȃ��Ƃ���B
-�ua��p��@�Ƃ��镽����]�v
-��def�ux^2��a (mod p)���������v
-�́u��b��Z,b^2��a (mod p)�v
+[定義]p（≠2）：素数、pはaを割り切らないとする。
+「aがpを法とする平方剰余」
+⇔def「x^2≡a (mod p)が解を持つ」
+⇔「∃b∈Z,b^2≡a (mod p)」
 
-�@����ɁA������]�E�������]�̏W�����`����B
+　さらに、平方剰余・平方非剰余の集合を定義する。
 
-[��`]mod p�̕�����]�̏W����QR_p�Amod p�̕������]�̏W����QNR_p�ƕ\�L��
-��B
+[定義]mod pの平方剰余の集合をQR_p、mod pの平方非剰余の集合をQNR_pと表記す
+る。
 
-�@����������Ǝ��̂悤�ɂȂ�B
+　言い換えると次のようになる。
 
-QR_p={a|a��Z_N^* �� (��x��Z_p^* s.t. a��x^2 (mod p))}
-QNR_p={a|a��Z_N^* �� (��x��Z_p^* s.t. a��x^2 (mod p))}
+QR_p={a|a∈Z_N^* ∧ (∃x∈Z_p^* s.t. a≡x^2 (mod p))}
+QNR_p={a|a∈Z_N^* ∧ (∃x∈Z_p^* s.t. a≠x^2 (mod p))}
 
-�@p=7�̗�ł����΁AQR_7={1,2,4}�AQNR_7={3,5,6}�ł���B
+　p=7の例でいえば、QR_7={1,2,4}、QNR_7={3,5,6}である。
 
-�@���l��p=3�̂Ƃ����l�@����ƁAQR_3={1}�AQNR_3={2}�ł���i�e���m���߂ė~
-�����j�Bp=5�̂Ƃ��́AQR_5={1,4}�AQNR_5={2,3}�ł���B
-�@p��������̏ꍇ���A�iQR_p�Ɋ܂܂��l�̐��j���iQNR_p�Ɋ܂܂��l�̐��j�A
-����|QR_p|=|QNR_p|�Ƃ����֌W�ɂȂ��Ă��邱�Ƃ��m�F�ł���B�����āA|QR_p|
-=(p-1)/2�ł���B
+　同様にp=3のときを考察すると、QR_3={1}、QNR_3={2}である（各自確かめて欲
+しい）。p=5のときは、QR_5={1,4}、QNR_5={2,3}である。
+　pがいずれの場合も、（QR_pに含まれる値の数）＝（QNR_pに含まれる値の数）、
+即ち|QR_p|=|QNR_p|という関係になっていることが確認できる。そして、|QR_p|
+=(p-1)/2である。
 
 
-��0x03.) ������]�Ǝw��
+■0x03.) 平方剰余と指数
 
-�@�e�f��p�ɑ΂��āA���n��g�i�������j�����݂���B���̂Ƃ��A1�`(p-1)�܂ł�
-������g�ׂ̂��ŕ\�����Ƃ��ł����B
+　各素数pに対して、原始元g（正整数）が存在する。このとき、1〜(p-1)までの
+整数をgのべきで表すことができた。
 
-�@a�̎w����t�Ƃ���ƁA�w���̒�`���Ind_g(a)=t�����݂���B�܂�Aa��g^t
- (mod p)�����藧�B
-�@�����At�������A����t=2s�Ȃ�΁Aa��g^(2s)��(g^s)^2 (mod p)�ł���B
+　aの指数をtとすると、指数の定義よりInd_g(a)=tが存在する。つまり、a≡g^t
+ (mod p)が成り立つ。
+　もし、tが偶数、即ちt=2sならば、a≡g^(2s)≡(g^s)^2 (mod p)である。
 
-�@����(g^s)^2��a (mo p)��2��������x^2��a (mod p)���r����ƁAg^s��x�̉�
-�ł���B�܂�Aa�͕�����]�ł���B
+　この(g^s)^2≡a (mo p)と2次方程式x^2≡a (mod p)を比較すると、g^sはxの解
+である。つまり、aは平方剰余である。
 
-�@����͋t�����藧�B
+　これは逆も成り立つ。
 
-�@�ȏ���܂Ƃ߂āA�藝�Ƃ��Ă������B
+　以上をまとめて、定理としておこう。
 
-[�藝]
-�E�u����a��mod p�̎w���F�����v�́ua��mod p�̕�����]�v
-�E�u����a��mod p�̎w���F��v�́ua��mod p�̕������]�v
+[定理]
+・「整数aのmod pの指数：偶数」⇔「aはmod pの平方剰余」
+・「整数aのmod pの指数：奇数」⇔「aはmod pの平方非剰余」
 
-�@�Ⴆ�΁Ap=7�̂Ƃ��ɂ�����ŏ��̌��n����g=3�ł���B���̂Ƃ��̎w��t���v�Z
-���āA�w���\�����i�w���\���茳�ɂ���Όv�Z�̎�Ԃ͏Ȃ���j�B
+　例えば、p=7のときにおける最小の原始根はg=3である。このときの指数tを計算
+して、指数表を作る（指数表が手元にあれば計算の手間は省ける）。
 
-[1]a=1�̂Ƃ��At=Ind_g(a)=Ind_3(1)=0�ƂȂ�B
-�@�Ȃ��Ȃ�΁Ag=3��t=0�悷��΁Amod 7�̐��E��a=1�ɂȂ邩��ł���B
+[1]a=1のとき、t=Ind_g(a)=Ind_3(1)=0となる。
+　なぜならば、g=3をt=0乗すれば、mod 7の世界でa=1になるからである。
 
-[2]a=2�̂Ƃ��At=Ind_g(a)=Ind_3(2)=2�ƂȂ�B
-�@�Ȃ��Ȃ�΁Ag=3��t=2�悷��΁Amod 7�̐��E��a=2�ɂȂ邩��ł���B
+[2]a=2のとき、t=Ind_g(a)=Ind_3(2)=2となる。
+　なぜならば、g=3をt=2乗すれば、mod 7の世界でa=2になるからである。
 
-[3]a=3�̂Ƃ��At=Ind_g(a)=Ind_3(3)=1�ƂȂ�B
-�@�Ȃ��Ȃ�΁Ag=3��t=1�悷��΁Amod 7�̐��E��a=3�ɂȂ邩��ł���B
+[3]a=3のとき、t=Ind_g(a)=Ind_3(3)=1となる。
+　なぜならば、g=3をt=1乗すれば、mod 7の世界でa=3になるからである。
 
-[4]a=4�̂Ƃ��At=Ind_g(a)=Ind_3(4)=4�ƂȂ�B
-�@�Ȃ��Ȃ�΁Ag=3��t=4�悷��΁Amod 7�̐��E��a=4�ɂȂ邩��ł���B
+[4]a=4のとき、t=Ind_g(a)=Ind_3(4)=4となる。
+　なぜならば、g=3をt=4乗すれば、mod 7の世界でa=4になるからである。
 
-[5]a=5�̂Ƃ��At=Ind_g(a)=Ind_3(5)=5�ƂȂ�B
-�@�Ȃ��Ȃ�΁Ag=3��t=5�悷��΁Amod 7�̐��E��a=5�ɂȂ邩��ł���B
+[5]a=5のとき、t=Ind_g(a)=Ind_3(5)=5となる。
+　なぜならば、g=3をt=5乗すれば、mod 7の世界でa=5になるからである。
 
-[5]a=6�̂Ƃ��At=Ind_g(a)=Ind_3(6)=3�ƂȂ�B
-�@�Ȃ��Ȃ�΁Ag=3��t=3�悷��΁Amod 7�̐��E��a=6�ɂȂ邩��ł���B
+[5]a=6のとき、t=Ind_g(a)=Ind_3(6)=3となる。
+　なぜならば、g=3をt=3乗すれば、mod 7の世界でa=6になるからである。
 
-�@�����p=7����g=3�̎w���\�������鏀�����ł����B
+　これでp=7かつg=3の指数表が書ける準備ができた。
 
 ---------
 | a | t |
@@ -800,35 +800,35 @@ QNR_p={a|a��Z_N^* �� (��x��Z_p^* s.t. a��x^2 (mod p))}
 | 6 | 6 |
 ---------
 
-�@�w��t=�����A����t=0,2,4�̂Ƃ��Aa�͂��ꂼ��1,2,4�ł���B������p=7�̕�
-����]�ł������B
-�@�܂��A�w��t=��A����t=1,3,5�̂Ƃ��Aa�͂��ꂼ��3,6,5�ł���B������p
-=7�̕������]�ł������B
+　指数t=偶数、即ちt=0,2,4のとき、aはそれぞれ1,2,4である。これらはp=7の平
+方剰余であった。
+　また、指数t=奇数、即ちt=1,3,5のとき、aはそれぞれ3,6,5である。これらはp
+=7の平方非剰余であった。
 
-�@�ȏ�ɂ��A�m���ɒ藝�����藧���Ƃ��m�F�ł����B
+　以上により、確かに定理が成り立つことが確認できた。
 
 
-��0x04.) ������]�̏�@��
+■0x04.) 平方剰余の乗法性
 
-�@a,b�𕽕���]�Ƃ���ƁAx^2��a�Ay^2��b (mod p)�𖞂���x,y�����݂���B
-�@����āA(xy)^2=x^2�Ey^2=ab (mod p)�ƂȂ�Aab��������]�ł��邱�Ƃ��킩
-��B
+　a,bを平方剰余とすると、x^2≡a、y^2≡b (mod p)を満たすx,yが存在する。
+　よって、(xy)^2=x^2・y^2=ab (mod p)となり、abも平方剰余であることがわか
+る。
 
-�@�܂�A�u�i������]�j�~�i������]�j���i������]�j�v�����藧�B�����
-�w���̌��t���g���Č���������΁A�u�ia�̎w���������j�~�ib�̎w���������j��
-�iab�̎w���������j�v�ƂȂ�B�Ȃ��Ȃ�΁A���̂悤�Ɍv�Z�ł��邩��ł���B
+　つまり、「（平方剰余）×（平方剰余）＝（平方剰余）」が成り立つ。これを
+指数の言葉を使って言い換えれば、「（aの指数が偶数）×（bの指数が偶数）⇒
+（abの指数が偶数）」となる。なぜならば、次のように計算できるからである。
 
 Ind(ab)
-=Ind(a)+Ind(b)�@�i��Ind�̐����j
-=�����{����
-=����
+=Ind(a)+Ind(b)　（∵Indの性質）
+=偶数＋偶数
+=偶数
 
-�@��������������]�E�������]�̊֌W���́A��@�\���璼�ϓI�ɗ����ł���B
-������p=7�̏ꍇ���l���Ă����̂ŁA�����ł�p=7�̏�@�\��p���邱�Ƃɂ����
-�ŁA�Ăш��p����B
+　こうした平方剰余・平方非剰余の関係性は、乗法表から直観的に理解できる。
+ずっとp=7の場合を考えてきたので、ここでもp=7の乗法表を用いることにするの
+で、再び引用する。
 
 -----------------------------
-| �~| 1 | 2 | 3 | 4 | 5 | 6 |
+| ×| 1 | 2 | 3 | 4 | 5 | 6 |
 |---+---+---+---+---+---+---|
 | 1 | 1 | 2 | 3 | 4 | 5 | 6 |
 |---+---+---+---+---+---+---|
@@ -843,12 +843,12 @@ Ind(ab)
 | 6 | 6 | 5 | 4 | 3 | 2 | 1 |
 -----------------------------
 
-�@���Z�Ώۂ̕����i1�s�ځE1��ځj�̕����𕽕���]�ƕ������]�̕����ɂ܂�
-�߂��`�ɏ��������B�܂�A1,2,3,4,5,6�Ƃ���������1,4,2,3,5,6�i�O��3����
-����]QR_7�̌��A�㔼3���������]QNR_7�̌��j�Ƃ���̂ł���B
+　演算対象の部分（1行目・1列目）の部分を平方剰余と平方非剰余の部分にまと
+めた形に書き直す。つまり、1,2,3,4,5,6という部分を1,4,2,3,5,6（前半3つが平
+方剰余QR_7の元、後半3つが平方非剰余QNR_7の元）とするのである。
 
 -----------------------------
-| �~| 1 | 4 | 2 | 3 | 5 | 6 |
+| ×| 1 | 4 | 2 | 3 | 5 | 6 |
 |---+---+---+---+---+---+---|
 | 1 | 1 | 4 | 2 | 3 | 5 | 6 |
 |---+---+---+---+---+---+---|
@@ -863,21 +863,21 @@ Ind(ab)
 | 6 | 6 | 3 | 5 | 4 | 2 | 1 |
 -----------------------------
 
-�@���̕\�͎��̂悤�ȕ\�ɋA�����Ă��邱�Ƃ��킩��B
+　この表は次のような表に帰着していることがわかる。
 
 --------------------------------------
-| �~       | ������]   | �������] |
+| ×       | 平方剰余   | 平方非剰余 |
 |----------+------------+------------|
-| ������] | ������]   | �������] |
+| 平方剰余 | 平方剰余   | 平方非剰余 |
 |----------+------------+------------|
-| ������] | �������] | ������]   |
+| 平方剰余 | 平方非剰余 | 平方剰余   |
 --------------------------------------
 
-�@����ɁAQR_7={1,2,4}�͏�@�Q�𐬂����Ƃ��킩��B�Ȃ��Ȃ�΁A�C�ӂ̌���
-�΂��ċt�������݂��A����ɒP�ʌ������݂��Ă��邩��ł���B
+　さらに、QR_7={1,2,4}は乗法群を成すこともわかる。なぜならば、任意の元に
+対して逆元が存在し、さらに単位元も存在しているからである。
 
 -----------------
-| �~| 1 | 4 | 2 |
+| ×| 1 | 4 | 2 |
 |---+---+---+---|
 | 1 | 1 | 4 | 2 |
 |---+---+---+---|
@@ -886,268 +886,268 @@ Ind(ab)
 | 2 | 2 | 1 | 4 |
 -----------------
 
-�@�ȏ�̊ώ@�ɂ��A���̊֌W�������ϓI�ɓ�����B
+　以上の観察により、次の関係式が直観的に得られる。
 
-[�藝]
-�E�i������]�j�~�i������]�j���i������]�j
-�E�i������]�j�~�i�������]�j���i�������]�j
-�E�i�������]�j�~�i�������]�j���i�������]�j
+[定理]
+・（平方剰余）×（平方剰余）＝（平方剰余）
+・（平方剰余）×（平方非剰余）＝（平方非剰余）
+・（平方非剰余）×（平方非剰余）＝（平方非剰余）
 
 
-��0x05.) ���W�����h���L��
+■0x05.) ルジャンドル記号
 
-�@p=2�̕�����]��1�����Ȃ̂ŁA�ȉ���p����f���Ƃ���B
+　p=2の平方剰余は1だけなので、以下はpを奇素数とする。
 
-�@p���������Ƃ���1����(p-1)/2�܂ŏ��ɒ��ׂ�Ε�����]�ł��邩�������]��
-���邩���킩��B����ɁA�����^�����x�A����mod p�ɂ��Ă̕��������킩
-��B
+　pが小さいときは1から(p-1)/2まで順に調べれば平方剰余であるか平方非剰余で
+あるかがわかる。さらに、それを与える解x、即ちmod pについての平方根もわか
+る。
 
-�@����ł͖{��ł��郋�W�����h���L���i(��/��)�Ƃ����\�L�j���`����B
+　それでは本題であるルジャンドル記号（(○/△)という表記）を定義する。
 
-[��`]p�F��f���Ƃ���B
-�E(a,p)=1����a��p�̕�����]�̂Ƃ��A(a/p)=1
-�E(a,p)=1����a��p�̕������]�̂Ƃ��A(a/p)=-1
-�Ep|a�̂Ƃ��A(a/p)=0
+[定義]p：奇素数とする。
+・(a,p)=1かつaがpの平方剰余のとき、(a/p)=1
+・(a,p)=1かつaがpの平方非剰余のとき、(a/p)=-1
+・p|aのとき、(a/p)=0
 
-�@�Ⴆ�΁Ap=7�̂Ƃ��AQR_7={1,2,4}�ł������̂ŁA���W�����h���L�����g���Ύ�
-�̂悤�ɂȂ�B
+　例えば、p=7のとき、QR_7={1,2,4}であったので、ルジャンドル記号を使えば次
+のようになる。
 
-�E(1/7)=(2/7)=(4/7)=1
-�E(3/7)=(5/7)=(6/7)=-1
+・(1/7)=(2/7)=(4/7)=1
+・(3/7)=(5/7)=(6/7)=-1
 
-�@��قǌ���������]�E�������]�̊֌W���Ƃ���v���Ă���B�Ⴆ�΁A(2/7)�~
-(3/7)=1�~(-1)=-1�A�܂�(6/7)=-1�ň�v����B
+　先ほど見た平方剰余・平方非剰余の関係式とも一致している。例えば、(2/7)×
+(3/7)=1×(-1)=-1、また(6/7)=-1で一致する。
 
-�@���W�����h���L����p�����ŏ��̒藝���Љ��B
+　ルジャンドル記号を用いた最初の定理を紹介する。
 
-[�藝]�ua��b (mod p)�v�ˁu(a/p)=(b/p)�v
+[定理]「a≡b (mod p)」⇒「(a/p)=(b/p)」
 
-�@�ؖ��͂قƂ�ǎ��������A������Ə����Ǝ��̂悤�ɂȂ�B
+　証明はほとんど自明だが、きちんと書くと次のようになる。
 
-[�ؖ�]�i���Ӂj��(a/p)��1 or -1�ŁA�ǂ��炪�I�΂�邩��x^2��a (mod p)����
-�������ǂ����Ɉˑ�����B
-�@����A�i�E�Ӂj��(b/p)��1 or -1�ŁA�ǂ��炪�I�΂�邩��x^2��b (mod p)��
-���������ǂ����Ɉˑ�����B������Aa��b (mod p)�Ȃ̂ŁA�E�ӂ̒l��x^2��
-a (mod p)�����������ǂ����Ɉˑ�����Ƃ�����B����́A���ӂ̘b�Ƃ܂�����
-�����󋵂ł���B����āA�󋵂Ɉˑ����錋�ʂ���v����͖̂��炩�ł���B�@��
+[証明]（左辺）＝(a/p)＝1 or -1で、どちらが選ばれるかはx^2≡a (mod p)が解
+を持つかどうかに依存する。
+　一方、（右辺）＝(b/p)＝1 or -1で、どちらが選ばれるかはx^2≡b (mod p)が
+解を持つかどうかに依存する。仮定より、a≡b (mod p)なので、右辺の値はx^2≡
+a (mod p)が解を持つかどうかに依存するといえる。これは、左辺の話とまったく
+同じ状況である。よって、状況に依存する結果も一致するのは明らかである。　□
 
-�@���̒藝�ɂ��A���W�����h���L���̕��q�𕪕�Ŋ������]��ɒu�������Ă�
-���Ȃ����Ƃ��ۏႳ�ꂽ�B
-�@�Ⴆ�΁A(72/7)=(2/7)=(-5/7)�ƌv�Z�ł���B
+　この定理により、ルジャンドル記号の分子を分母で割った余りに置き換えても
+問題ないことが保障された。
+　例えば、(72/7)=(2/7)=(-5/7)と計算できる。
 
-�@���łɁA���̌��ʂ������B
+　すでに、次の結果を見た。
 
-[�藝]
-�E�u����a��mod p�̎w���F�����v�́ua��mod p�̕�����]�v
-�E�u����a��mod p�̎w���F��v�́ua��mod p�̕������]�v
+[定理]
+・「整数aのmod pの指数：偶数」⇔「aはmod pの平方剰余」
+・「整数aのmod pの指数：奇数」⇔「aはmod pの平方非剰余」
 
-�@a��Z_p^*={1,�c,p-1}��𑖂�ƁA�w��Ind(a)��{0,�c,p-2}�̂����ꂩ1�ɏd
-�������ɊY������Ƃ��������͉ߋ��ɏq�ׂ��Bp�͊�i���f���j�Ȃ̂ŁA�W��
-{0,�c,p-2}�Ɋ܂܂�錳�͋�������B
-�@�܂�A���̂��������͋����ł���A�c��̔����͊�ł���B����āA����
-��]�̌��͑S�̂̔����ł���B|QR_p|=|QNR_p|=|Z_p^*|/2=(p-1)/2�����藧�B
+　aがZ_p^*={1,…,p-1}上を走ると、指数Ind(a)は{0,…,p-2}のいずれか1つに重
+複せずに該当するという事実は過去に述べた。pは奇数（かつ素数）なので、集合
+{0,…,p-2}に含まれる元は偶数個ある。
+　つまり、そのうち半分は偶数であり、残りの半分は奇数である。よって、平方
+剰余の個数は全体の半分である。|QR_p|=|QNR_p|=|Z_p^*|/2=(p-1)/2が成り立つ。
 
-�@��������W�����h���L�����g���΁A���̂悤�ɕ\�L�ł���B
+　これをルジャンドル記号を使えば、次のように表記できる。
 
-[�藝](a/p)=(-1)^{Ind(a)}
+[定理](a/p)=(-1)^{Ind(a)}
 
-�@���ɁA���W�����h���L���̏�@���ɂ��Č��Ă݂�B
+　次に、ルジャンドル記号の乗法性について見てみる。
 
-[�藝](ab/p)=(a/p)(b/p)
+[定理](ab/p)=(a/p)(b/p)
 
-[�ؖ�]�ꍇ��������B
+[証明]場合分けする。
 
-[1]p|a�܂���p|b�̂Ƃ�
+[1]p|aまたはp|bのとき
 
-�@���W�����h���L���̒�`�ɂ�藼�ӂƂ�0�ł���B
+　ルジャンドル記号の定義により両辺とも0である。
 
-[2]a/|p����b/|p�̂Ƃ�
+[2]a/|pかつb/|pのとき
 
-�i���Ӂj
+（左辺）
 =(a/p)(b/p)
-=(-1)^{Ind(a)}�~(-1)^{Ind(b)}
+=(-1)^{Ind(a)}×(-1)^{Ind(b)}
 =(-1)^{Ind(a)+Ind(b)}
 =(-1)^{Ind(ab)}
 =(ab/p)
-=�i�E�Ӂj�@��
+=（右辺）　□
 
-�@���̏ؖ��͕�����]�̏�@���̏ؖ��ƂقƂ�Ǔ����ł��������낤�B�P�ɕ\��
-���Ⴄ�����ł���B
+　この証明は平方剰余の乗法性の証明とほとんど同じであっただろう。単に表現
+が違うだけである。
 
-�@���̒藝�ɂ��A������n�ɑ΂���(n/p)�����߂�Ƃ��́An��f�������������
-�悢�B��������΁A�ŏI�I��(-1/p) or (2/p) or (��f���j�̐ςɋA���ł���B
-�@n���傫���Ƃ��́An��f���������ł��Ȃ��B���̂��߁A���W�����h���L������
-�ł͍���̂ŁA�g���ł̃��R�r�L���Ƃ������̂����݂���B����͎���������
-�\��ł���B
+　この定理により、合成数nに対する(n/p)を求めるときは、nを素因数分解すれば
+よい。そうすれば、最終的に(-1/p) or (2/p) or (奇素数）の積に帰着できる。
+　nが大きいときは、nを素因数分解できない。そのため、ルジャンドル記号だけ
+では困るので、拡張版のヤコビ記号というものが存在する。これは次回解説する
+予定である。
 
-�@����͍Ō�ɃI�C���[�K���ƌĂ΂��藝���Љ��B(a,p)=1�ł����Ă��A
-(a,p)��1�ł����藧�B
+　今回は最後にオイラー規準と呼ばれる定理を紹介する。(a,p)=1であっても、
+(a,p)≠1でも成り立つ。
 
-[�藝](a/p)��a^{(p-1)/2} (mod p)
+[定理](a/p)≡a^{(p-1)/2} (mod p)
 
-�@�܂��ؖ�����O�ɁAp=7,a=4�̂Ƃ��Ŋώ@���Ă݂�B
+　まず証明する前に、p=7,a=4のときで観察してみる。
 
 (a/p)
-��a^{(p-1)/2} (mod p)�@�i��I�C���[�K�����j
-��4^{(7-1)/2} (mod 7)
-��4^3 (mod 7)
-��64 (mod 7)
-��1 (mod 7)
+≡a^{(p-1)/2} (mod p)　（∵オイラー規準より）
+≡4^{(7-1)/2} (mod 7)
+≡4^3 (mod 7)
+≡64 (mod 7)
+≡1 (mod 7)
 
-�@���łɌ����悤��4��QR_7���(4/7)=1�ł���A�݂�����v����B
+　すでに見たように4∈QR_7より(4/7)=1であり、互いが一致する。
 
-�@����ł͏ؖ��ɓ��낤�B
+　それでは証明に入ろう。
 
-[�ؖ�]���ӂ�(a/p)��0,1,-1�ł��邩�ɂ��A�ꍇ��������B
+[証明]左辺の(a/p)が0,1,-1であるかにより、場合分けする。
 
-[1]�i���Ӂj��(a/p)=0�̂Ƃ�
+[1]（左辺）＝(a/p)=0のとき
 
-�@���W�����h���L���̒�`���p|a�ł���B
+　ルジャンドル記号の定義よりp|aである。
 
-�i�E�Ӂj
-��a^{(p-1)/2} (mod p)
-��0^{(p-1)/2} (mod p)�@�i��a��p�Ŋ���؂��̂ŁAmod p�̐��E��a�͂������
-0�ɂȂ�j
-��0
+（右辺）
+≡a^{(p-1)/2} (mod p)
+≡0^{(p-1)/2} (mod p)　（∵aはpで割り切れるので、mod pの世界でaはもちろん
+0になる）
+≡0
 
-�@����āA���ӂƉE�ӂ���v����B
+　よって、左辺と右辺が一致する。
 
-[2]�i���Ӂj��(a/p)=1�̂Ƃ�
+[2]（左辺）＝(a/p)=1のとき
 
-��x��Z;a��x^2 (mod p)
+∃x∈Z;a≡x^2 (mod p)
 
-�i�E�Ӂj
-��a^{(p-1)/2} (mod p)
-��x^(p-1) (mod p)�@�i��a��x^2�j
-��1 (mod p)�@�i��t�F���}�[�̏��藝�j
+（右辺）
+≡a^{(p-1)/2} (mod p)
+≡x^(p-1) (mod p)　（∵a≡x^2）
+≡1 (mod p)　（∵フェルマーの小定理）
 
-�@����āA���ӂƉE�ӂ���v����B
+　よって、左辺と右辺が一致する。
 
-[3]�i���Ӂj��(1/p)=-1�̂Ƃ�
+[3]（左辺）＝(1/p)=-1のとき
 
-�@p�̌��n����g�Ƃ���ƁAInd_g(a)=2m+1�����藧�B
+　pの原始元をgとすると、Ind_g(a)=2m+1が成り立つ。
 
-�i�E�Ӂj
-��a^{(p-1)/2} (mod p)
-��{a^(2m+1)}^{(p-1)/2}�@�i��Ind_g(a)=2m+1���Aa=g^(2m+1)�j
-��{g^(p-1)}^m�Eg^{(p-1)/2}
-��g^{(p-1)/2}�@�i�挴�n���̒�`���Ag^(p-1)��1�j
-��-1�@�i��log_g(-1)=(p-1)/2)
+（右辺）
+≡a^{(p-1)/2} (mod p)
+≡{a^(2m+1)}^{(p-1)/2}　（∵Ind_g(a)=2m+1より、a=g^(2m+1)）
+≡{g^(p-1)}^m・g^{(p-1)/2}
+≡g^{(p-1)/2}　（∵原始元の定義より、g^(p-1)≡1）
+≡-1　（∵log_g(-1)=(p-1)/2)
 
-�@����āA���ӂƉE�ӂ���v����B
+　よって、左辺と右辺が一致する。
 
-�@���������āA[1]�`[3]���A�藝�����藧�B�@��
-
-
-��0x06.) ������
-
-�@�܂��܂����w�I�����͑������߁A����͂���ŏI���܂��B����̓��W�����h
-���L���̐��E������Ɍ��Ă����\��ł��B��̓I�ɂ����΁A�K�E�X�̕⏕�藝�A
-���ݖ@���Ȃǂł��B�����āA�����G�ꂽ�����W�����h���L���̌v�Z�ɂ͕��q�̑f
-�����������K�v�ł���A���q�̑f�����������ł��Ȃ��قǑ傫���Ƃ��i�������
-�����ƁA�����mod������Ă����q���傫���܂܂ł���j�A�v�Z�s�\�ɂȂ��Ă�
-�܂��܂��B���̖������������T�O�Ƃ��ă��R�r�L�������݂���̂ŁA�������
-�����\��ł��B
-�@�Ȃ��A�����̕׋������˂Ă���Ă���̂ŁA���������Ċ��Ⴂ��ԈႢ������
-��������܂���B���̂Ƃ��̓Z�L�����e�B�A�J�f���C�A�̌f���ł���낵����
-�ŁA�����Ă��������B�X�������肢���܂��B
+　したがって、[1]〜[3]より、定理が成り立つ。　□
 
 
+■0x06.) おわりに
 
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+　まだまだ数学的準備は続くため、今回はこれで終わります。次回はルジャンド
+ル記号の世界をさらに見ていく予定です。具体的にいえば、ガウスの補助定理、
+相互法則などです。そして、少し触れたがルジャンドル記号の計算には分子の素
+因数分解が必要であり、分子の素因数分解ができないほど大きいとき（分母も大
+きいと、分母でmodを取っても分子が大きいままである）、計算不可能になってし
+まいます。この問題を解決した概念としてヤコビ記号が存在するので、これも次
+回解説予定です。
+　なお、自分の勉強も兼ねてやっているので、もしかして勘違いや間違いがある
+かもしれません。そのときはセキュリティアカデメイアの掲示板でもよろしいの
+で、教えてください。宜しくお願いします。
 
- --- ��4��: ���m�点 ---
+
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-��Wizard Bible�ihttp://wizardbible.org/�j�ł͐����A���M���C�^�[���W����
-���܂��B
-�@�������e�̃e�[�}�͍L�`�ł́uunder ground�v�ł��B�Ⴆ�΃n�b�L���O��Z�L
-�����e�B����s�b�L���O�Ȃǂƕ��L�����e���l���Ă��܂��B�܂�����ȐE�Ƃ��
-���̉���Ȃǂł��\���܂���B
-�@��񂫂�ł��\���܂���B�܂��K������A�ڂ���`��������܂���̂ŁA�ł�
-��͈͂ō\���܂���B�C�y�ɐ��������Ă��������B
+ --- 第4章: お知らせ ---
 
-��Kenji Aiko����Q&A������Ă���܂����B���߂ĎQ������l�ł��킩��₷��
-������Ă��܂��̂ŁA�Q�l�ɂ��Ă��������B
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○Wizard Bible（http://wizardbible.org/）では随時、執筆ライターを募集して
+います。
+　扱う内容のテーマは広義での「under ground」です。例えばハッキングやセキ
+ュリティからピッキングなどと幅広い内容を考えています。また特殊な職業や趣
+味の解説などでも構いません。
+　一回きりでも構いません。また必ず毎回連載する義務もありませんので、でき
+る範囲で構いません。気軽に声をかけてください。
+
+○Kenji AikoさんがQ&Aを作ってくれました。初めて参加する人でもわかりやすく
+書かれていますので、参考にしてください。
 
 http://wizardbible.org/wbQandA.html
 
-��Wizard Bible�ɎQ����]�̕��͋C�y�Ƀ��[���iipusiron@gmail.com�j���������B
+○Wizard Bibleに参加希望の方は気軽にメール（ipusiron@gmail.com）ください。
 
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-  ---- ��5��: ���҃v���t�B�[�� ---
+  ---- 第5章: 著者プロフィール ---
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-������
-��Job: �v���O���}�[
-��Web: http://guardian.jumperz.net/, http://www.jumperz.net/
-��Mail: anvil@jumperz.net
-��Comment:
-�@8�`9���͋v���Ԃ��DVD���؂�Ă��Đ��{�̉f������܂����B���������s������
-�́u�o�C�I�n�U�[�h3�v�̎��Ɂu�A�C�E�A���E���W�F���h�v�����Ă��܂������Ƃ�
-���B���傗����������������2�{�����f�悗��������������
-�@���Ă��Đ��N�Ԃ�Ɂu����́I�v�Ǝv�����f��Əo��܂����B�u�~�X�g�v��
-���B
-�@�}�_�@�t�@�b�J�I�I�I
-�@�J�b�N�@�T�J�I�I�I
-�@�ƃ`�F�[���\�[����ɂ������l���f���̂Ă�f�G�ȉf��ł��B�u�V���[�V����
-�N�̋�Ɂv�u�O���[���}�C���v�ɑ����������҂̑�3��ڂŁA�S�����邱�Ɗ�
-�Ⴂ�Ȃ��B���Ј�����l��Ƒ��Ƒ����Č��ė~�����f��ł��B
-�@�c�������ƂŃ{�N�ɕ�����������Ƃ͌ł��ւ��܂��B
-�������̊��p���Ă�������W�@
-�@�E�܂�Google�Œ��ׂ�
-�@�E�悢�y�[�W���烊���N����Ă���L���Ȃǂ�������
-�@�E�����̎茳�ŃS�\�S�\���āA�֘A������ǂ��L�[���[�h�������������
-��Google�Œ��ׂ�
-�@�ƌ��������ł��B�܂����ʂł��ˁB
-�@�u�����A����Ȃ��Ƃ��I�v�Ɗ��S��������l�^�̋L�������N�O�̂��̂ł���
-�Ƃ������Ƃ��������߁A���X�̍ŐV����ǂ�������K�v�͊����Ă��܂���B�l
-�b�g��ɒ~�ς��ꂽ��ʂ̏��̒����玩���ɂƂ��Ă̋��i�Ȃ���Ȃ��ķ݂łj
-��T�����Ƃɋ���������܂��B���̂���RSS���[�_�͎g���Ă��܂���B
+■金床
+●Job: プログラマー
+●Web: http://guardian.jumperz.net/, http://www.jumperz.net/
+●Mail: anvil@jumperz.net
+●Comment:
+　8〜9月は久しぶりにDVDを借りてきて数本の映画を見ました。しかし失敗したの
+は「バイオハザード3」の次に「アイ・アム・レジェンド」を見てしまったことで
+す。ちょｗｗｗｗｗｗｗこの2本同じ映画ｗｗｗｗｗｗｗｗ
+　さてさて数年ぶりに「これは！」と思った映画と出会えました。「ミスト」で
+す。
+　マダ　ファッカ！！！
+　カック　サカ！！！
+　とチェーンソーを手にした黒人が吐き捨てる素敵な映画です。「ショーシャン
+クの空に」「グリーンマイル」に続く感動巨編の第3作目で、心を洗われること間
+違いなし。ぜひ愛する人や家族と揃って見て欲しい映画です。
+　…見たあとでボクに文句を言うことは固く禁じます。
+●自分の活用している情報収集法
+　・まずGoogleで調べる
+　・よいページからリンクされている記事などをあたる
+　・自分の手元でゴソゴソして、関連するより良いキーワードが見つかったらま
+たGoogleで調べる
+　と言う感じです。まぁ普通ですね。
+　「おお、こんなことが！」と感心させられるネタの記事が数年前のものである
+ということが多いため、日々の最新情報を追いかける必要は感じていません。ネ
+ット上に蓄積された大量の情報の中から自分にとっての金（カネじゃなくてキンでつ）
+を探すことに興味があります。そのためRSSリーダは使っていません。
 
 
-��Kenji Aiko
-��Job: engineer
-��Web: http://ruffnex.oc.to/kenji/
-��Mail: kenji@ruffnex.oc.to
-��Comment:
-�@�C�Â���10���A���N���c���Ƃ��날��3�����ƂȂ�܂����B���[��A�v���Ԃ���
-DEFCON�Ƃ����ABlackHat�Ƃ����A���N�͗��I���܂����1�N���Ȃ��i���j�B�����[�A
-�ł����������p��b�ʂ��n�߂�1�N�ł��B�ǂ���ł���Ȃ�ɘb����悤�ɂȂ���
-�����킯���A�Ǝv�����A�p��ŏ�����CFP�ŗ��I���Ă���Ӗ��ˁ[��corz�B
-�������̊��p���Ă�������W�@:
-�@2ch�̃j���[�X����́A�ŋߘb��̃j���[�X��m��ɂ͂����Ă����Ǝv����
-���B���ɖ����j���[�X���`�F�b�N���邱�Ƃ�������O�ł͂Ȃ��l�̏ꍇ�A1�T�Ԃ�
-�炢�j���[�X�����Ȃ������肷�邱�Ƃ�����܂����A����ł�2ch�̃j���[�X����
-�ɏオ���Ă���j���[�X���������m�F����ƁA���������̘b�肪������܂��B
+■Kenji Aiko
+●Job: engineer
+●Web: http://ruffnex.oc.to/kenji/
+●Mail: kenji@ruffnex.oc.to
+●Comment:
+　気づけば10月、今年も残すところあと3ヶ月となりました。うーん、思い返せば
+DEFCONといい、BlackHatといい、今年は落選しまくりの1年だなぁ（泣）。ああー、
+でももうすぐ英会話通い始めて1年です。どおりでそれなりに話せるようになって
+きたわけだ、と思いつつも、英語で書いたCFPで落選してたら意味ねーよ…orz。
+●自分の活用している情報収集法:
+　2chのニュース速報板は、最近話題のニュースを知るにはうってつけだと思いま
+す。特に毎日ニュースをチェックすることが当たり前ではない人の場合、1週間く
+らいニュースを見なかったりすることもありますが、それでも2chのニュース速報
+板に上がっているニュースをいくつか確認すると、だいだいの話題が分かります。
 
 
-��IPUSIRON
-��Job: �I�[�N�iOblivion�j
-��Web: http://akademeia.info
-��Mail: ipusiron@gmail.com
-��Comment:
-�@�Z�L�����e�B�̏H�̎����ɂȂ�܂����ˁB�Z�L�����e�B�̃C�x���g����������
-����悤�ł��B
+■IPUSIRON
+●Job: オーク（Oblivion）
+●Web: http://akademeia.info
+●Mail: ipusiron@gmail.com
+●Comment:
+　セキュリティの秋の時期になりましたね。セキュリティのイベントもたくさん
+あるようです。
 http://ja.avtokyo.org/
 http://www.blackhat.com/html/bh-japan-08/bh-jp-08-main.html
-�@�Ƃ���ŁA2�N�Ԃ�̐V����10���ɏo��\��ł��B�ڍׂ͌�قǌf���ō��m��
-�܂��B
-�������̊��p���Ă�������W�@:
-�@���ɂ���Ƃ��������@�͂��Ă܂��񂪁A�{���ɒ���I�ɍs���ĕ��ς݂̖{�̃`
-�F�b�N�͂悭���܂��B���ς݂̖{�͔���؂��邢�͖{�������肽���{�ł���A�g
-�����h��ǂލޗ��ɂł��܂��i��Ԋy�����̂̓g�����h����邱�Ƃ�������܂�
-�񂪁j�B
-�@���łɑ̌n������Ă�����Ɋւ��ẮA�ŏ��͖{�𔃂�������A����ł���
-��Ȃ��ꍇ��Web�T�C�g���Q�l����悤�ɂ��Ă��܂��B���R�͎��̓�����k������
-������������ł��B
+　ところで、2年ぶりの新刊が10月に出る予定です。詳細は後ほど掲示板で告知し
+ます。
+●自分の活用している情報収集法:
+　特にこれといった方法はしてませんが、本屋に定期的に行って平積みの本のチ
+ェックはよくします。平積みの本は売れ筋あるいは本屋が売りたい本であり、ト
+レンドを読む材料にできます（一番楽しいのはトレンドを作ることかもしれませ
+んが）。
+　すでに体系化されている情報に関しては、最初は本を買いあさり、それでも足
+りない場合はWebサイトを参考するようにしています。理由は紙の匂いを嗅ぐ方が
+落ち着くからです。
 

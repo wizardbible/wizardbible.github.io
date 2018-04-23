@@ -1,177 +1,177 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- �恛��: ��b�Í��w�u�� �` ��6�� �` ---
+--- 第○章: 基礎暗号学講座 〜 第6回 〜 ---
 
-���ҁFIPUSIRON
+著者：IPUSIRON
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@�O��܂ł̓u���b�N�Í��̗��p���[�h��Feistal�\���Ȃǂɂ��ĉ�����܂����B
-����͋��ʌ��Í��n�̔F�؂ɂ��ĉ�����܂��B
-
-
-��0x02.) MAC�Ƃ�
-
-�@MAC�iMessage Authentication Code�j�Ƃ̓��b�Z�[�W��F�؂��邽�߂̎d�g��
-�ł��B�G�ɂ��Ȃ肷�܂��⃁�b�Z�[�W�̉������h�~���邱�Ƃ��ړI�ł��B��
-�b�Z�[�W�F�؂͈Í��������d�v�Ƃ������܂��B�Í������K�v�Ȃ��ꍇ�ł�����
-���A���̃��b�Z�[�W���M���ł�����̂ł��邱�Ƃ͏�Ɋm���߂邱�Ƃ��ł��Ȃ�
-��΂Ȃ�Ȃ�����ł��B
-
-�@����ȍ~�œo�ꂷ����J���Í��n�̏ꍇ�̓f�W�^�������Ƃ����d�g�݂������
-�����A���ʌ��Í��n�ł͂���ɑΉ������Z�L�����e�B�@�\��MAC�Ŏ������܂��B��
-�����f�W�^�������̏ꍇ�͐��^���E�F�؁E�۔F�����`�F�b�N�ł��܂����AMAC�̏�
-���͐��^���E�F�؂����ł��܂���B
+　前回まではブロック暗号の利用モードやFeistal構造などについて解説しました。
+今回は共通鍵暗号系の認証について解説します。
 
 
-��0x03.) MAC�̎d�g��
+■0x02.) MACとは
 
-�@MAC��2�̃A���S���Y���ł���A�������A���S���Y��G�ƔF�؎q�����A���S���Y
-��S�ŕ\����܂��i�}1�A�}2�Q�Ɓj�B
+　MAC（Message Authentication Code）とはメッセージを認証するための仕組み
+です。敵によるなりすましやメッセージの改ざんを防止することが目的です。メ
+ッセージ認証は暗号化よりも重要ともいえます。暗号化が必要ない場合であって
+も、そのメッセージが信頼できるものであることは常に確かめることができなけ
+ればならないからです。
 
-�i�}1�jhttp://security2600.sakura.ne.jp/main2/image1/MAC2.jpg
-�i�}2�jhttp://security2600.sakura.ne.jp/main2/image1/MAC3.jpg
-
-�@����MAC�̎d�g�݂������܂��i�}3�Q�Ɓj�B
-
-1�F���M�҂Ǝ�M�҂�G�Ő������ꂽ�閧��K�����L���Ă����܂��B�����ł̃Z�L��
-���e�B�p�����[�^k�Ƃ̓r�b�g�����Ӗ����܂��B
-�@�����͔閧���Í��n�ł̈Í����̂Ƃ��Ɠ��l�Ɉ�ԍŏ��ɕK�v�ȏ����ł��B��
-�����Í��n�̈��S���͂��̌��z���ɋ����ˑ����Ă��܂����AMAC�̏ꍇ�ł����l��
-���B
-
-2�F���ɑ��M�҂�K�𗘗p���āA���b�Z�[�WM�ɑ΂���F�؎q�iMAC�l�jTag�𐶐���
-�āA�y�A(M,Tag)����M�҂ɑ���܂��B
-
-3�F��M�҂�(M,Tag)���󂯎������AK�𗘗p����(M,Tag)�̐��������`�F�b�N��
-�܂��B
-
-�i�}3�jhttp://security2600.sakura.ne.jp/main2/image1/MAC1.jpg
+　次回以降で登場する公開鍵暗号系の場合はデジタル署名という仕組みがありま
+すが、共通鍵暗号系ではそれに対応したセキュリティ機能をMACで実現します。た
+だしデジタル署名の場合は正真性・認証・否認性をチェックできますが、MACの場
+合は正真性・認証しかできません。
 
 
-��0x04.) MAC�̈��S��
+■0x03.) MACの仕組み
 
-�@��M�҂�accept���Ă��܂��悤��(M,Tag)��G���������Ă��܂����Ƃ��U���ƌ�
-�т܂��B��ʂɌ�K�����߂�����A�U������ق����e�Ղł��B
+　MACは2つのアルゴリズムである、鍵生成アルゴリズムGと認証子生成アルゴリズ
+ムSで表されます（図1、図2参照）。
 
-�@�Í��݌v�҂�K�����߂��Ȃ����Ƃ͓��R�����A�U������s�\�ł���悤��M
-AC���\������K�v������܂��B��K��m�炸�Ɍ��؎��𖞂����悤��(M,Tag)����
-��Ȃ��Ƃ��AMAC�͈��S�ł���Ƃ����܂��B
+（図1）http://security2600.sakura.ne.jp/main2/image1/MAC2.jpg
+（図2）http://security2600.sakura.ne.jp/main2/image1/MAC3.jpg
 
-�@�G�̍ł��P���ȍU�����@�́A���M�҂����M����(M,Tag)�����������ɋU��������
-�邱�Ƃł��B�����čł����͂ȓG�̍U�����@�́A�I�����b�Z�[�W�U��������܂��B
-�I�����b�Z�[�W�U���Ƃ͉��炩�̕��@�ŕ����̃��b�Z�[�W�ƔF�؎q�̑g����肵�A
-���̏����U�����邱�Ƃł��B�I�����b�Z�[�W�U���̃��f���́A���b�Z�[�WM1,�c
-,M_q�����R�ɑI��ŁA����ɑΉ�����F�؎q�����ł���󋵂ɂ����ċU������
-�݂�ƍl���邱�Ƃ��ł��܂��i�}4�Q�Ɓj�B���̂Ƃ��G��M/��{M1,�c,M_q}�ł���
-�悤��(M,Tag)���U���ł����Ƃ��A�G�͋U���ɐ����������ƂɂȂ�܂��B
+　次にMACの仕組みを示します（図3参照）。
 
-�i�}4�jhttp://security2600.sakura.ne.jp/main2/image1/MAC4.jpg
+1：送信者と受信者はGで生成された秘密鍵Kを共有しておきます。ここでのセキュ
+リティパラメータkとはビット長を意味します。
+　ここは秘密鍵暗号系での暗号化のときと同様に一番最初に必要な準備です。秘
+密鍵暗号系の安全性はこの鍵配送に強く依存していますが、MACの場合でも同様で
+す。
 
-[��`]~
-�G���U���ł���m���������ł�����x�ɏ������Ƃ��A����MAC�����͑I�����b�Z�[
-�W�U���ɑ΂��Ĉ��S�ł���Ƃ����B
+2：次に送信者はKを利用して、メッセージMに対する認証子（MAC値）Tagを生成し
+て、ペア(M,Tag)を受信者に送ります。
 
+3：受信者は(M,Tag)を受け取ったら、Kを利用して(M,Tag)の正当性をチェックし
+ます。
 
-��0x05.) �e��MAC
-
-�@MAC�̓u���b�N�Í��𗘗p���Ď����ł��܂��BWB28/29�ł�������܂������A�u
-���b�N�Í��ɂ͗l�X�ȗ��p���[�h������܂����B���̒��ł����S�ł������̂�CB
-C���[�h��CTR���[�h�ł���AMAC�ł�CBC��p�����������g���Ă��܂��B�܂���
-�ɂ͂�������ނ�����܂��B
-
-�ECBC-MAC�iCipher Block Chaining-MAC�j
-�EEMAC�iEncrypted MAC�j
-�EOMAC�iOne key MAC�j
-�EUMAC�iUniversal-hash MAC�j
-�EHMAC�iHash MAC�j
-
-�@�{�u���ł�CBC-MAC�EEMAC�EOMAC�����ɍi���ĉ�����܂��B
+（図3）http://security2600.sakura.ne.jp/main2/image1/MAC1.jpg
 
 
-��0x06.) CBC-MAC����
+■0x04.) MACの安全性
 
-�@CBC-MAC�����̓u���b�N�Í��̗��p���[�h�̂ЂƂł���CBC���[�h�𗘗p����
-�������������ł��B
+　受信者がacceptしてしまうような(M,Tag)を敵が生成してしまうことを偽造と呼
+びます。一般に鍵Kを求めるよりも、偽造するほうが容易です。
 
-�@���b�Z�[�W��M=(m1,m2,�c,m_t)�Ƃ��āA�ei�ɂ�����|m_i|=n�im_i��n�r�b�g��
-�ł��邱�Ƃ��Ӗ�����j�ł���Ƃ��܂��B���̂Ƃ�CBC-MAC�����͎��̂悤�ɋL�q
-����܂��B
-�@���̓u���b�N�Í��̌�K�Ƃ��āA�F�؎q�����A���S���Y���͎��̂悤�Ɍv�Z����
-���B
+　暗号設計者はKを求められないことは当然だが、偽造すら不可能であるようなM
+ACを構成する必要があります。鍵Kを知らずに検証式を満たすような(M,Tag)を作
+れないとき、MACは安全であるといいます。
+
+　敵の最も単純な攻撃方法は、送信者が送信した(M,Tag)を何も見ずに偽造を試み
+ることです。そして最も強力な敵の攻撃方法は、選択メッセージ攻撃があります。
+選択メッセージ攻撃とは何らかの方法で複数のメッセージと認証子の組を入手し、
+その情報を偽造することです。選択メッセージ攻撃のモデルは、メッセージM1,…
+,M_qを自由に選んで、それに対応する認証子を入手できる状況において偽造を試
+みると考えることができます（図4参照）。このとき敵がM/∈{M1,…,M_q}である
+ような(M,Tag)を偽造できたとき、敵は偽造に成功したことになります。
+
+（図4）http://security2600.sakura.ne.jp/main2/image1/MAC4.jpg
+
+[定義]~
+敵が偽造できる確率が無視できる程度に小さいとき、そのMAC方式は選択メッセー
+ジ攻撃に対して安全であるという。
+
+
+■0x05.) 各種MAC
+
+　MACはブロック暗号を利用して実現できます。WB28/29でも解説しましたが、ブ
+ロック暗号には様々な利用モードがありました。その中でも安全であったのはCB
+CモードとCTRモードであり、MACではCBCを用いた方式が使われています。また他
+にはいくつか種類があります。
+
+・CBC-MAC（Cipher Block Chaining-MAC）
+・EMAC（Encrypted MAC）
+・OMAC（One key MAC）
+・UMAC（Universal-hash MAC）
+・HMAC（Hash MAC）
+
+　本講座ではCBC-MAC・EMAC・OMACだけに絞って解説します。
+
+
+■0x06.) CBC-MAC方式
+
+　CBC-MAC方式はブロック暗号の利用モードのひとつであるCBCモードを利用して
+実現した方式です。
+
+　メッセージをM=(m1,m2,…,m_t)として、各iにおいて|m_i|=n（m_iはnビット長
+であることを意味する）であるとします。このときCBC-MAC方式は次のように記述
+されます。
+　鍵はブロック暗号の鍵Kとして、認証子生成アルゴリズムは次のように計算しま
+す。
 
 c1=E_K(m1)
 c2=E_K(c1+m2)
-�c
+…
 c_t=E_k(c_(t-1)+m_t)
 
-�@�Ō�ɔF�؎q��Tag=c_t�Ƃ��܂��B�}�ɂ���Ǝ��̂悤�ɂȂ�܂��i�}5�Q�Ɓj�B
+　最後に認証子をTag=c_tとします。図にすると次のようになります（図5参照）。
 
-�i�}5�jhttp://security2600.sakura.ne.jp/main2/image1/CBC-MAC.jpg
-
-
-��CBC-MAC�����̈��S��
-
-�@�e���b�Z�[�W�̒���t�����̏ꍇ�ACBC-MAC�����͑I�����b�Z�[�W�U���ɑ΂�
-�Ĉ��S�ł��邱�Ƃ��ؖ�����Ă��܂��B�������قȂ钷���̃��b�Z�[�W��������
-���A�����ϒ��̏ꍇ�͊ȒP�ɋU������Ă��܂��B���̋U��������Ɏ����B
-
-�@�܂��G��n�r�b�g����m�ɑ΂���F�؎qTag����肵���Ƃ��܂��B
-�@����M'=(m,m+Tag)����΁A(M',Tag)�Ƃ������b�Z�[�W�ƔF�؎q�̃y�A��CBC-MA
-C�̌��؎���ʉ߂��Ď�M�҂�accept�����Ă��܂����Ƃ��ł��܂��B
-�@����ēG�͋U���ɐ����������ƂɂȂ�܂��B
+（図5）http://security2600.sakura.ne.jp/main2/image1/CBC-MAC.jpg
 
 
-�����K���
+●CBC-MAC方式の安全性
 
-�@CBC-MAC�����ɂ��Ď��̐ݖ�ɓ�����B
+　各メッセージの長さtが一定の場合、CBC-MAC方式は選択メッセージ攻撃に対し
+て安全であることが証明されています。しかし異なる長さのメッセージを許すと
+き、即ち可変長の場合は簡単に偽造されてしまう。その偽造例を次に示す。
 
-�i1�jm��{0,1}^n�ɑ΂���F�؎q��Tag�ł������Ƃ���B���̂Ƃ�M'=(m,m+Tag)��
-�΂���F�؎q��Tag�ł��邱�Ƃ������B
+　まず敵はnビット長のmに対する認証子Tagを入手したとします。
+　次にM'=(m,m+Tag)すれば、(M',Tag)というメッセージと認証子のペアでCBC-MA
+Cの検証式を通過して受信者にacceptさせてしまうことができます。
+　よって敵は偽造に成功したことになります。
 
-�@�܂�CBC-MAC�̍\�����v���o���܂��傤�B
-�@�A�^�b�J�[��M��m+Tag��t�����܂��B����Ǝ�M�҂͎��̂悤�Ɍv�Z����͂�
-�ł��i�}6�Q�Ɓj�B
 
-�i�}6�jhttp://security2600.sakura.ne.jp/main2/image1/CBC-MAC2.jpg
+●練習問題
 
-�@Tag'��Tag�ƈ�v����Ύ�M�҂�accept���܂��B�����Tag'=Tag�𓱂����Ƃ���
-�W�ƂȂ�܂��B
+　CBC-MAC方式について次の設問に答えよ。
+
+（1）m∈{0,1}^nに対する認証子がTagであったとする。このときM'=(m,m+Tag)に
+対する認証子もTagであることを示せ。
+
+　まずCBC-MACの構造を思い出しましょう。
+　アタッカーがMにm+Tagを付加します。すると受信者は次のように計算するはず
+です（図6参照）。
+
+（図6）http://security2600.sakura.ne.jp/main2/image1/CBC-MAC2.jpg
+
+　Tag'がTagと一致すれば受信者はacceptします。よってTag'=Tagを導くことが目
+標となります。
 
 Tag'
 =c2
 =E_K(c1+m+Tag)
-=E_K(E_K(m) + m + Tag)�@�i��c1=E_K(m)�j
-=E_K(Tag + m + Tag)�@�i�扼����AE_K(m)=Tag�j
+=E_K(E_K(m) + m + Tag)　（∵c1=E_K(m)）
+=E_K(Tag + m + Tag)　（∵仮定より、E_K(m)=Tag）
 =E_K(m)
 =Tag
 
-�i2�jM=(m1,m2)�ɑ΂���F�؎q��Tag�ł������Ƃ���B������m1,m2��{0,1}^n�ł�
-��B���̏��𗘗p���ċU������B
+（2）M=(m1,m2)に対する認証子がTagであったとする。ただしm1,m2∈{0,1}^nであ
+る。この情報を利用して偽造せよ。
 
-�@CBC-MAC�̍\���ɉ���𖞂����悤�ɏ��������Ă����܂��i�}7�Q�Ɓj�B
+　CBC-MACの構造に仮定を満たすように書き下していきます（図7参照）。
 
-�i�}7�jhttp://security2600.sakura.ne.jp/main2/image1/CBC-MAC3.jpg
+（図7）http://security2600.sakura.ne.jp/main2/image1/CBC-MAC3.jpg
 
-�@����Ǝ��̊֌W�������藧���܂��B
+　すると次の関係式が成り立ちます。
 
-�Ec1=E_K(m)
-�ETag=c2=E_K(c1+m2)=E_K(E_K(m1))
+・c1=E_K(m)
+・Tag=c2=E_K(c1+m2)=E_K(E_K(m1))
 
-�@���̂Ƃ��G��M'=(m1,m2,m1+Tag,m2)���U������΂��܂������܂��B����́i1�j
-�̌��ʂ��琄������킯�ł����A�i2�j�ł�m1��m2��2���邩�班�����G�ɂȂ�
-�Ă��܂��B���ꂪ�{���ɋU���ɐ������Ă��邩�������B
+　このとき敵はM'=(m1,m2,m1+Tag,m2)を偽造すればうまくいきます。これは（1）
+の結果から推測するわけですが、（2）ではm1とm2の2つあるから少し複雑になっ
+ています。これが本当に偽造に成功しているかを示す。
 
-�@M'�ɑ΂���CBC-MAC�̎d�g�݂�K�p�����܂��i�}8�Q�Ɓj�B
+　M'に対してCBC-MACの仕組みを適用させます（図8参照）。
 
-�i�}8�jhttp://security2600.sakura.ne.jp/main2/image1/CBC-MAC4.jpg
+（図8）http://security2600.sakura.ne.jp/main2/image1/CBC-MAC4.jpg
 
-�@����Ǝ������藧���A�ŏI�I��Tag'=Tag���������Ƃ��ł����OK�ł��B
+　すると次が成り立ち、最終的にTag'=Tagが示すことができればOKです。
 
 c1'
 =E_K(m1)
@@ -194,174 +194,174 @@ Tag'
 =E_K(c1 + m2)
 =Tag
 
-�i3�j�u���b�N�Í��������_���u�����ł���ꍇ���l����BM=(m1,m2)�ɑ΂���F
-�؎q��Tag�AM'=(m1',m2')�ɑ΂���F�؎q��Tag'�Ƃ����Ƃ��ATag=Tag'�ƂȂ�m��
-�����߂�BM��M'�̊֌W�ɂ��ďꍇ�������čl����B
+（3）ブロック暗号がランダム置換族である場合を考える。M=(m1,m2)に対する認
+証子をTag、M'=(m1',m2')に対する認証子をTag'としたとき、Tag=Tag'となる確率
+を求めよ。MとM'の関係について場合分けして考えよ。
 
-�@M,M'���ꂼ��ɂ����āA2�Ԗڂ̈Í����A���S���Y��E_K�ւ̓��͎͂��̂悤��
-�Ȃ�܂��B
+　M,M'それぞれにおいて、2番目の暗号化アルゴリズムE_Kへの入力は次のように
+なります。
 
-x=m2 + E_K(m1)�Ax'=m2' + E_K(m1')
+x=m2 + E_K(m1)、x'=m2' + E_K(m1')
 
-�@�����Tag=Tag'�ƂȂ�K�v�\�������͎������藧�Ƃ��ł��B
+　よってTag=Tag'となる必要十分条件は次が成り立つときです。
 
 m2 + E_K(m1)=m2' + E_K(m1')
-E_K(m1) + E_K(m1')=m2 + m2'�@��(*)
+E_K(m1) + E_K(m1')=m2 + m2'　←(*)
 
-�@�uE_K(��) + E_K(��)=�� + ���v�ƌ���ƁA���ӂ�2�́���(m1,m1')�Ƃ����y
-�A�̓��́A�E�ӂ�2�́��͏o�͂��l���邱�Ƃ��ł��܂��B�����Ŏ��̂悤��4��
-�ɏꍇ�������܂��B
+　「E_K(□) + E_K(□)=○ + ○」と見ると、左辺の2つの□は(m1,m1')というペ
+アの入力、右辺の2つの○は出力を考えることができます。そこで次のように4つ
+に場合分けします。
 
 |-----------------------|
-|           |   ����    |
+|           |   入力    |
 |           |-----------|
-|           | ��  | ��  |
+|           | ＝  | ≠  |
 |-----------+-----+-----|
-| �o�� | �� | [4] | [1] |
+| 出力 | ＝ | [4] | [1] |
 |      |----+-----+-----|
-|      | �� | [2] | [3] |
+|      | ≠ | [2] | [3] |
 |-----------------------|
 
-[1]m1��m1'����m2=m2'�̂Ƃ�
+[1]m1≠m1'かつm2=m2'のとき
 
-�@(*)��E_K(m1) + E_K(m1')=0^n�ƂȂ�B���̂Ƃ�m1��m1'�͋N���肦�Ȃ��B���
-��Pr[Tag=Tag']=0
+　(*)はE_K(m1) + E_K(m1')=0^nとなる。このときm1≠m1'は起こりえない。よっ
+てPr[Tag=Tag']=0
 
-[2]m1=m1'����m2��m2'�̂Ƃ�
+[2]m1=m1'かつm2≠m2'のとき
 
-�@���̂Ƃ��K��Tag��Tag'�ƂȂ�B�����Pr[Tag=Tag']=0
+　このとき必ずTag≠Tag'となる。よってPr[Tag=Tag']=0
 
-[3]m1��m1'����m2��m2'�̂Ƃ�
+[3]m1≠m1'かつm2≠m2'のとき
 
-�@���}�̂悤�ɍl���āA(*)�𖞂����p�^�[���̑��������߂܂��i�}9�Q�Ɓj�B��
-�������l�����͈ȑO��WB�ł�����Ă���̂ŁA�u����֐��̑����v�Z�������ł�
-�Ȃ��ꍇ�͖߂��Ċm�F���Ă݂Ă��������B�|�C���g��(*)�Ƃ������ɔ����Ă��
-�Ԃł̑����Ƃ������Ƃł��B
+　次図のように考えて、(*)を満たすパターンの総数を求めます（図9参照）。こ
+ういう考え方は以前のWBでもやっているので、置換や関数の総数計算が理解でき
+ない場合は戻って確認してみてください。ポイントは(*)という式に縛られてる状
+態での総数ということです。
 
-�i�}9�jhttp://security2600.sakura.ne.jp/main2/image1/CBC-MAC5.jpg
+（図9）http://security2600.sakura.ne.jp/main2/image1/CBC-MAC5.jpg
 
 Pr[Tag=Tag']
 =Pr[E_K(m1) + E_K(m1')=m2 + m2']
-={(2^n)�~1�~(2^n-2)!}/(2^n)!
+={(2^n)×1×(2^n-2)!}/(2^n)!
 =1/(2^n-1)
 
-[4]m1=m1'����m2=m2'�̂Ƃ�
+[4]m1=m1'かつm2=m2'のとき
 
 Pr[Tag=Tag']
-={2^n�~(2^n-1)!}/(2^n)!
+={2^n×(2^n-1)!}/(2^n)!
 =(2^n)!/(2^n)!
 =1
 
-�@���ʂɑ�����Ă��킩��悤��(*)��0^n=0^n�ƂȂ肢�ł����藧�B
+　普通に代入してもわかるように(*)は0^n=0^nとなりいつでも成り立つ。
 
-�i4�jM=(m1,m2)�ɑ΂���F�؎q��Tag�AM'=(m1',m2')�ɑ΂���F�؎q��Tag'�Ƃ���
-�Ƃ��ATag=Tag'�ƂȂ�m����1/2�ł������B���̂Ƃ�{E_K}�͋[�������_���u����
-�łȂ����Ƃ��ؖ�����B
+（4）M=(m1,m2)に対する認証子をTag、M'=(m1',m2')に対する認証子をTag'とした
+とき、Tag=Tag'となる確率が1/2であった。このとき{E_K}は擬似ランダム置換族
+でないことを証明せよ。
 
-�@{0,1}^n��̒u���΂��I���N���Ƃ��鎯�ʃA���S���Y��D�����̂悤�ɍ\������
-���B
-�@D�͂܂��΂�CBC-MAC�����̈Í��A���S���Y���Ƃ��ė��p���āAM�ɑ΂���F�؎q
-Tag�AM'�ɑ΂���F�؎qTag'�����߂܂��B���̂Ƃ�Tag=Tag'�Ȃ�D^��=1�ATag��Ta
-g'�Ȃ�D^��=0�Ƃ��܂��i�}10�Q�Ɓj�B
+　{0,1}^n上の置換πをオラクルとする識別アルゴリズムDを次のように構成しま
+す。
+　DはまずπをCBC-MAC方式の暗号アルゴリズムとして利用して、Mに対する認証子
+Tag、M'に対する認証子Tag'を求めます。このときTag=Tag'ならD^π=1、Tag≠Ta
+g'ならD^π=0とします（図10参照）。
 
-�i�}10�jhttp://security2600.sakura.ne.jp/main2/image1/CBC-MAC6.jpg
+（図10）http://security2600.sakura.ne.jp/main2/image1/CBC-MAC6.jpg
 
-�@���̂Ƃ��΂�{E_K}���烉���_���ɑI�΂�Ă���Ɖ��肷��ƁA���̂悤�ɂȂ�
-�܂��B
+　このときπが{E_K}からランダムに選ばれていると仮定すると、次のようになり
+ます。
 
 P_random=Pr[Tag=Tag']=1/2
 
-�@����΂������_���u����P_n���烉���_���ɑI�΂�Ă���Ƃ��́A(3)�̌��ʂ�
-�莟�̂悤�ɂȂ�܂��B
+　一方πがランダム置換族P_nからランダムに選ばれているときは、(3)の結果よ
+り次のようになります。
 
 P_A=Pr[Tag=Tag']=1/(2^n-1)
 
-�@�����D�̃A�h�o���e�[�W�͎��̂悤�ɂȂ�܂��B
+　よってDのアドバンテージは次のようになります。
 
 Adv(D)
 =|P_random - P_A|
 =|1/2 - 1/(2^n-1)|
-��1/2
+≒1/2
 
-�@����͏\���傫���ł��B�䂦��{E_K}�͋[�������_���u�����ł͂Ȃ����Ƃ��킩
-��܂��B
+　これは十分大きいです。ゆえに{E_K}は擬似ランダム置換族ではないことがわか
+ります。
 
 
 
-��0x07.) EMAC����
+■0x07.) EMAC方式
 
-�@EMAC�����͉ϒ��̃��b�Z�[�W�ɑ΂��Ă����S��MAC�����ł��B�u���b�N�Í���
-����2�K�v�Ƃ������������B
+　EMAC方式は可変長のメッセージに対しても安全なMAC方式です。ブロック暗号の
+鍵が2つ必要という特徴を持つ。
 
-�@EMAC������CBC-MAC�����ɂ�����F�؎q��V������K2�ňÍ������ĔF�؎qTag��
-�������܂��B
+　EMAC方式はCBC-MAC方式における認証子を新しい鍵K2で暗号化して認証子Tagを
+生成します。
 
 Tag=E_K2(CBC_K1(M))
 
-�@�}�ɂ���Ǝ��̂悤�ɂȂ�܂��i�}11�Q�Ɓj�B
+　図にすると次のようになります（図11参照）。
 
-�i�}11�jhttp://security2600.sakura.ne.jp/main2/image1/EMAC.jpg
-
-
-��EMAC�����̈��S��
-
-�@�e���b�Z�[�W�̒������u���b�N��n�̐����{�ł���Ɖ��肵�܂��B���̂Ƃ�EMA
-C�����͑I�����b�Z�[�W�U���ɑ΂��Ĉ��S�ł��邱�Ƃ��ؖ�����Ă��܂��B
+（図11）http://security2600.sakura.ne.jp/main2/image1/EMAC.jpg
 
 
-��0x07.) OMAC����
+●EMAC方式の安全性
 
-�@OMAC�����̓u���b�N�Í��̌����ЂƂōς݁A���b�Z�[�W�����u���b�N��n�̐�
-���{�ł���K�v���Ȃ��Ƃ�������������MAC�����ł��B
+　各メッセージの長さがブロック長nの整数倍であると仮定します。このときEMA
+C方式は選択メッセージ攻撃に対して安全であることが証明されています。
 
-�@���̓u���b�N�Í��̌�K�Ƃ��āA�F�؎q�����A���S���Y���͂܂����̂悤�Ɍv�Z
-���܂��B
+
+■0x07.) OMAC方式
+
+　OMAC方式はブロック暗号の鍵がひとつで済み、メッセージ長がブロック長nの整
+数倍である必要がないという特徴を持つMAC方式です。
+
+　鍵はブロック暗号の鍵Kとして、認証子生成アルゴリズムはまず次のように計算
+します。
 
 L=E_K(0^n)
 
-�@���Ƀ��b�Z�[�WM=(m1,m2,�c,m_t)�ɑ΂��Ď��̂悤�Ɍv�Z���܂��B
+　次にメッセージM=(m1,m2,…,m_t)に対して次のように計算します。
 
 c1=E_K(m1)
 c2=E_K(c1+m2)
-�c
+…
 c_t-1=E_K(c_(t-2)+m_(t-1))
 
-�@�Ō�ɔF�؎q�����̂悤�ɋ��߂܂��B
+　最後に認証子を次のように求めます。
 
-[1]|m_t|=n�̏ꍇ�́ATag=E_K1(c_(t-1)+m_t+L�Eu))
-[2]|m_t|��n�̏ꍇ�́ATag==E_K1(c_(t-1)+(m_t||1||0^i)+(L�Eu^2))
+[1]|m_t|=nの場合は、Tag=E_K1(c_(t-1)+m_t+L・u))
+[2]|m_t|＜nの場合は、Tag==E_K1(c_(t-1)+(m_t||1||0^i)+(L・u^2))
 
-�@������i��|m_t||1||0^i|=n�ƂȂ�悤�ɑI�т܂��i||�͘A�����Ӗ�����j�B��
-��u�͊g���GF(2^n)��̓���̗v�f�ł���A�u�E�v��GF(2^n)��̏�Z��\���B
-L�Eu^2�� L�Eu^(-1)�ɒu�������Ă��A���S���E�����͂قړ����ɂȂ�܂��B
+　ここでiは|m_t||1||0^i|=nとなるように選びます（||は連結を意味する）。ま
+たuは拡大体GF(2^n)上の特定の要素であり、「・」はGF(2^n)上の乗算を表す。
+L・u^2は L・u^(-1)に置き換えても、安全性・効率はほぼ同じになります。
 
-�@�}�ɂ���Ǝ��̂悤�ɂȂ�܂��i�}12�Q�Ɓj�B
+　図にすると次のようになります（図12参照）。
 
-�i�}12�jhttp://security2600.sakura.ne.jp/main2/image1/OMAC.jpg
+（図12）http://security2600.sakura.ne.jp/main2/image1/OMAC.jpg
 
-�@����𗝉�����ɂ͎���̊g��̗̂������K�v�Ȃ̂ŁA�����OMAC�����Ƃ�
-���̂�����񂾂Ɠ��̕Ћ��ɋL�����Ă������x�ŏ\���ł��B
-
-
-��OMAC�����̈��S��
-
-�@OMAC�����͔C�ӂ̉ϒ��̃��b�Z�[�W�ɂ����āA�I�����b�Z�[�W�U���ɑ΂���
-���S�ł��邱�Ƃ��ؖ�����Ă��܂��B
+　これを理解するには次回の拡大体の理解が必要なので、今回はOMAC方式とい
+ものがあるんだと頭の片隅に記憶しておく程度で十分です。
 
 
-��0x08.) ������
+●OMAC方式の安全性
 
-�@����ł���Ɣ閧���Í��n�i�{���j�̘b�͏I���ł��B�������������ł��ˁc�B
-�d�l��ǂ񂾂����ł́u�Ӂ[��v�Ƃ������x�̗����ŏI����Ă��܂��܂��B�d�l
-�Ɏ��ۂɐ��l�����ėV��ł݂���i��������Í���������āA�Í������琳��
-�������ɂ�����ƕ�������邱�Ƃ��m���߂�j�A�G�̗���ɂȂ��Ă�����U��
-��z�肵�Ă݂��肵�Ă݂Ă��������B�܂������������Ƃ��d�v�ł����A������
-������邱�Ƃ��׋��ɂȂ�܂��B�������邱�Ƃŗ���������ɐ[�߂邱�Ƃ���
-����͂��ł��B
+　OMAC方式は任意の可変長のメッセージにおいて、選択メッセージ攻撃に対して
+安全であることが証明されています。
 
-�@����͌��J���Í��n�ɓ���O�ɕK�v�Ȋ�{�I�Ȑ��w�ɂ��ĉ�����܂��B����
-����܂ł̘b�𗝉����Ă��Ȃ��Ă��A����ȍ~����[���̏�Ԃ��痝�����邱��
-���\�Ȃ̂ŁA����܂łɓ��e��ǂ��Ȃ��Ȃ��Ă��܂����Ƃ����l�ł��t���b�V
-���ȋC�����Ń`�������W���Ă݂Ă��������B
+
+■0x08.) おわりに
+
+　今回でやっと秘密鍵暗号系（＋α）の話は終わりです。正直長かったですね…。
+仕様を読んだだけでは「ふーん」という程度の理解で終わってしまいます。仕様
+に実際に数値を入れて遊んでみたり（平文から暗号文を作って、暗号文から正し
+い平文にきちんと復号されることを確かめる）、敵の立場になってあらゆる攻撃
+を想定してみたりしてみてください。また問題を解くことも重要ですが、自分で
+問題を作ることも勉強になります。そうすることで理解をさらに深めることがで
+きるはずです。
+
+　次回は公開鍵暗号系に入る前に必要な基本的な数学について解説します。実は
+今回までの話を理解していなくても、次回以降からゼロの状態から理解すること
+も可能なので、これまでに内容を追えなくなってしまったという人でもフレッシ
+ュな気持ちでチャレンジしてみてください。
 
 

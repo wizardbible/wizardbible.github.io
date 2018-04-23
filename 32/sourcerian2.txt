@@ -1,151 +1,151 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- �恛��: �o�C�i���v���e�N�V����2�@�`�A�v���P�[�V�����f�o�b�M���O�̖h�~�` ---
+--- 第○章: バイナリプロテクション2　〜アプリケーションデバッギングの防止〜 ---
 
-���ҁFsourcerian
+著者：sourcerian
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@�f�o�b�K�ɂ͑�ʂ��ăJ�[�l���f�o�b�K�ƃA�v���P�[�V�����f�o�b�K�������
-���BSoftIce��WinDBG�Ȃǂ̓J�[�l���f�o�b�K�AW32Dasm��OllyDbg�Ȃǂ̓A�v���P
-�[�V�����f�o�b�K�ɕ��ނ���܂��B����͂��̃A�v���P�[�V�����f�o�b�K�ɂ��
-�f�o�b�M���O��h���Ƃ������b�ł��B�ޏo
+　デバッガには大別してカーネルデバッガとアプリケーションデバッガがありま
+す。SoftIceやWinDBGなどはカーネルデバッガ、W32DasmやOllyDbgなどはアプリケ
+ーションデバッガに分類されます。今回はそのアプリケーションデバッガによる
+デバッギングを防ぐというお話です。退出
 
-�@�{��ɓ���O�ɗp��̐��������Ȃ��Ɠ��������������ł��B�v���O�����̕s��
-�����o�O�ibug�j�A�o�O����菜�����Ƃ��f�o�b�O�idebug�j�A�o�O�̌�����˂�
-�~�߂��Ƃ��f�o�b�M���O�idebugging�j�A�f�o�b�M���O�̎菕��������c�[����
-�f�o�b�K�idebugger�j�A���łɃf�o�b�M���O�����v���O�����̂��Ƃ��f�o�b
-�M�idebuggee�j�Ƃ����܂��B�N���b�J�B�́u������t�𒴂����瓮�삵�Ȃ��Ȃ�
-�o�O�v��u�V���A���ԍ�����͂��Ȃ��Ƌ@�\�ɐ���������o�O�v�Ȃǂ��A�l�X��
-�c�[���i���̂����̂ЂƂ��f�o�b�K�j���g���āA�u���̂��̂悤�ȓ����ɂȂ�
-�̂��v�𒲍�����(�f�o�b�M���O)�A��菜���Ă��܂��܂��i�f�o�b�O�j�B
+　本題に入る前に用語の説明をしないと頭が混乱しそうです。プログラムの不具
+合をバグ（bug）、バグを取り除くことをデバッグ（debug）、バグの原因を突き
+止める作業をデバッギング（debugging）、デバッギングの手助けをするツールを
+デバッガ（debugger）、ついでにデバッギングされるプログラムのことをデバッ
+ギ（debuggee）といいます。クラッカ達は「ある日付を超えたら動作しなくなる
+バグ」や「シリアル番号を入力しないと機能に制限があるバグ」などを、様々な
+ツール（そのうちのひとつがデバッガ）を使って、「何故そのような動きになる
+のか」を調査して(デバッギング)、取り除いてしまいます（デバッグ）。
 
-�@�����ō���̖ړI�́A�A�v���P�[�V�����f�o�b�K�Ńu���C�N�|�C���g��ݒu��
-����API�R�[���Œ�~�����Ĉ����𒲂ׂ���X�^�b�N�t���[���𒲂ׂăo�O�̉ӏ�
-�𐄒肵���肷�邱�Ƃ�h�����ƂɂȂ�܂��B�Ȍ�A���������A�v���P�[�V����
-�f�o�b�K�Ə����͖̂ʓ|�Ȃ̂Łu�f�o�b�K�v�ƕ\�L�����ꍇ�́u�A�v���P�[�V��
-���f�o�b�K�v���w�����ƂƂ��܂��B
+　そこで今回の目的は、アプリケーションデバッガでブレイクポイントを設置し
+たりAPIコールで停止させて引数を調べたりスタックフレームを調べてバグの箇所
+を推定したりすることを防ぐことになります。以後、いちいちアプリケーション
+デバッガと書くのは面倒なので「デバッガ」と表記した場合は「アプリケーショ
+ンデバッガ」を指すこととします。
 
-���g�p����t�@�C��
+●使用するファイル
 
-�Ehttp://wizardbible.org/32/AntiDebugging.v3.zip
-�Ehttp://wizardbible.org/32/DebuggerSample.zip
-
-
-��0x02.) �ǂ�����Ėh���̂�
-
-�@�悭����̂��f�o�b�K�����o���ꂽ�ꍇ�v���O�������I�������Ă��܂��Ƃ���
-���̂ł��B�f�o�b�K�̌��o���@��Degital Travesia�́wOllyDbg�xQ&A�ihttp://h
-p.vector.co.jp/authors/VA028184/OllyDbgQA.htm�j�ɋL�ڂ���Ă��܂��̂ł���
-����ǂ����B���ɂ�google�ȂǂŁudetect debugger�v��uanti debugging�v�Ȃ�
-���L�[���[�h�Ɍ�������Ƃ�������Ђ�������܂��B
-�@���������̕��@�͂��܂���ʂ�����܂���B�N���b�J�ɂ��Ă݂�΃f�o�b�K��
-���o�����𒲂ׂĎ�菜���Ă��܂��΂悢�����̘b�ł��B�f�o�b�K�̌��o�͌���
-�肫���������̂��ߓ˂��~�߂�̂��ȒP�ł��B�f�o�b�K���o�������I���ɉB����
-����悤�Ȃ��̂�����܂��������Ȓm���Ŏd����ł��n���̃N���b�J����ɂ�
-3���Ƃ����Ȃ��ł��傤�B
-
-�@�����ō���Љ��̂��u�f�o�b�M���O����Ă��܂��̂����Ȃ玩������ɂ�
-�Ă��܂��v�Ƃ������@�ł��B
-�@�f�o�b�K�͍ŏ��Ɂu���̃v���Z�X�����Ƀf�o�b�M���O�����Ă��������v��Wind
-ows�ɂ��肢���Ȃ���΂����܂���B���̂Ƃ��A�^�[�Q�b�g�v���Z�X�����̃f�o�b
-�K�ɂ���Ċ��Ƀf�o�b�M���O����Ă����ꍇ�A���̂��肢�͋p������Ă��܂���
-���B�u�����i�f�o�b�M�j�ɂ͂������l�i�f�o�b�K�j������̂Œ��߂Ȃ����v��
-������̂ł��iXP��Vista�ɂ͂��̗������󂵂Ă��܂����@���������肵�܂����j�B
-�@���������āA�f�o�b�M���O���ꂽ���Ȃ��v���Z�X������Ȃ�A��������ɂ���
-�v���Z�X���f�o�b�M���O���Ă��܂��΂悢���ƂɂȂ�܂��B�������A���v���Z�X
-���f�o�b�M���O���邱�Ƃ͂ł��܂���̂ŁA�f�o�b�K�S���ƃf�o�b�M�S���i����
-�ƒS���j�Ƀv���Z�X�𕪂��ē��삳���܂��B�f�o�b�K�S���̓f�o�b�M���O�����
-���܂��܂����A����ƒS���̂ق��̓f�o�b�M���O���邱�Ƃ��ł��Ȃ��Ȃ�܂��B
+・http://wizardbible.org/32/AntiDebugging.v3.zip
+・http://wizardbible.org/32/DebuggerSample.zip
 
 
-��0x03.) �f�o�b�K�̊�b
+■0x02.) どうやって防ぐのか
 
-�@���āA��Ƀf�o�b�M���O���Ă��܂��΂悢�Ƃ����̂͊ȒP�ł����A�f�o�b�K��
-�Ȃ�ɂ͂������̎菇�⌈�܂肪����܂��B
+　よくあるのがデバッガが検出された場合プログラムを終了させてしまうという
+ものです。デバッガの検出方法はDegital Travesiaの『OllyDbg』Q&A（http://h
+p.vector.co.jp/authors/VA028184/OllyDbgQA.htm）に記載されていますのでそち
+らをどうぞ。他にもgoogleなどで「detect debugger」や「anti debugging」など
+をキーワードに検索するとたくさんひっかかります。
+　しかしこの方法はあまり効果がありません。クラッカにしてみればデバッガの
+検出部分を調べて取り除いてしまえばよいだけの話です。デバッガの検出は決ま
+りきった処理のため突き止めるのも簡単です。デバッガ検出部分を巧妙に隠して
+あるようなものもありますが生半可な知識で仕込んでも熟練のクラッカ相手には
+3分ともたないでしょう。
 
-�@�f�o�b�K�̊�{�I�ȍ\���͎��̂悤�ɂȂ��Ă��܂��B
-
-�@�V�K�v���Z�X���f�o�b�M�Ƃ��Đ���(�܂��͊����v���Z�X���A�^�b�`)
-�A�f�o�b�O�C�x���g��ҋ@
-�B�f�o�b�O�C�x���g������
-�C���s���@���w�肵�ăX���b�h���ĊJ
-�D�A�֖߂�
-
-�@�e�X�̃X�e�b�v������ǂ��Đ������Ă����܂��B
-
-�@�v���Z�X���f�o�b�M�Ƃ��Đ���(�܂��͊����v���Z�X���A�^�b�`)
-
-�@�O�q�����u�^�[�Q�b�g�v���Z�X�����Ƀf�o�b�M���O�����Ă��������v��Window
-s�ɂ��肢���镔���ł��BCreateProcess()API�Ńv���Z�X��V�����������鎞��D
-EBUG_PROCESS�t���O���w�肷��ƐV���������v���Z�X�̓f�o�b�M�ƂȂ�A�f
-�o�b�M�v���Z�X�𐶐������f�o�b�K�ɂƂ��ăf�o�b�M���O�ΏۂƂȂ�܂��B
-�@DEBUG_PROCESS�t���O�����ł̓f�o�b�M��������q�v���Z�X���f�o�b�M���O�Ώ�
-�ƂȂ�܂��i�������A�q�v���Z�X�̐�����DEBUG_PROCESS�t���O���w�肵���ꍇ��
-����)�BDEBUG_ONLY_THIS_PROCESS�t���O���w�肷��Ǝq�v���Z�X�̓f�o�b�M���O
-�ΏۊO�ƂȂ�܂��B
-�@�����v���Z�X���f�o�b�M���O�������ꍇ��DebugActiveProcess()API���g���܂��B
-���̏ꍇ�A�q�v���Z�X�̓f�o�b�M���O�ΏۊO�ƂȂ�܂��B
-
-�A�f�o�b�O�C�x���g�̑ҋ@
-
-�@�f�o�b�M�̎��s���ɗ�O������������DLL�����[�h�����肷��ƃf�o�b�O�C�x��
-�g�Ƃ��ăf�o�b�K���ɓ`�����܂��B�f�o�b�O�C�x���g�͗�O�����A�v���Z�X��
-�����E�I���A�X���b�h�̐����E�I���ADLL�̃��[�h�E�A�����[�h�ɕ��ނ���A��O
-�����̓u���C�N�|�C���g�ւ̓��B�iINT 3�̎��s�j��A�N�Z�X�o�C�I���[�V������
-�ǂ���ɍׂ������ނ���܂��B
-�@�f�o�b�M�̋N�����܂��̓A�^�b�`���ɂ͕K���u���C�N�|�C���g��O����������
-���i���̃u���C�N�|�C���g��API���ݒu�������̂ł��̏ꏊ�̓G���g���|�C���g��
-�͂���܂���j�B������t�@�[�X�g�`�����X�C�x���g�ƌ����A���̎��Ƀu���C�N
-�|�C���g�̐ݒu�ȂǏ��������s���܂��B
-�@�f�o�b�O�C�x���g�̑ҋ@�ɂ�WaitForDebugEvent()API���g���܂��B
-
-�B�f�o�b�O�C�x���g������
-
-�@�f�o�b�O�C�x���g���f�o�b�K�ɓ`������ƃf�o�b�M�̑S�X���b�h����~���
-�ɂȂ�܂��B����𗘗p���ă������̓��e��X�^�b�N�̏�Ԃ�\��������A�f�o
-�b�M�������𑱂�����悤�ɗ�O�̏������s���܂��B�܂��A�f�o�b�M���I����
-���ꍇ�A�܂�f�o�b�O�C�x���g������ȏ㔭�����Ȃ��Ȃ����ꍇ�ɂ́A�f�o�b
-�O�C�x���g�ҋ@�̃��[�v���甲���Ȃ��ƃf�o�b�K�����܂ł����Ă��I�����Ȃ�
-���ƂɂȂ�܂��B
-
-�C���s���@���w�肵�ăX���b�h���ĊJ
-
-�@�f�o�b�O�C�x���g�������̓f�o�b�M�̑S�X���b�h����~��Ԃɂ���킯�ł���
-��A�������I��������Ƃ�Windows�ɓ`���āA�f�o�b�M�̑S�X���b�h���ĊJ������
-���Ȃ���΂����܂���B���̎��A��O���f�o�b�M�̗�O�n���h���ɓn�����ǂ�
-�����w�肵�܂��B��������O�����ȊO�̃f�o�b�O�C�x���g�ł͂��̎w��͖�����
-��܂��B
-�@���̗�O��n�����ǂ����̎w����f�o�b�K�͓K�؂ɔ��f���Ȃ���΂����܂���B
-��O���f�o�b�M�̗�O�n���h���ŏ������Ȃ���΂����Ȃ��̂Ƀf�o�b�K�Ńu���b
-�N���Ă��܂��Ɠ����f�o�b�O�C�x���g�������ɔ���������A�f�o�b�K���ݒu����
-�u���C�N�|�C���g�ւ̓��B���f�o�b�M�̗�O�n���h���ɓn���Ă��܂��Ƌ����I��
-���Ă��܂��\��������܂��B
-�@Digital Travesia�ɋL�ڂ���Ă���u6.�\������O�n���h����p�����f�o�b�O
-���o�v�ihttp://hp.vector.co.jp/authors/VA028184/OllyDbgQA.htm�j�Ō��o����
-��悤�ȃf�o�b�K�͓K�؂ɔ��f���Ă��Ȃ��f�o�b�K�ł��B�K�؂Ȕ��f������f�o
-�b�K�͌��o����܂���B�T���v���v���O����DebuggerSample.zip��p�ӂ��܂����B
-debuggee.exe�́u�\������O�n���h����p�����f�o�b�O���o�v��IsDebuggerPres
-ent()API�̖߂�l�̕\�����s���܂��Bdebugger.exe��debuggee.exe���f�o�b�M��
-���ċN�����āA�u���C�N�|�C���g��O�����������ꍇ�ɗ�O���f�o�b�M�ɓn����
-�ǂ����m�F���Ă��܂��B�n�����ǂ����ł��̌�̏����̈Ⴂ���m�F���Ă��������B
+　そこで今回紹介するのが「デバッギングされてしまうのが嫌なら自分が先にし
+てしまえ」という方法です。
+　デバッガは最初に「このプロセスを私にデバッギングさせてください」とWind
+owsにお願いしなければいけません。このとき、ターゲットプロセスが他のデバッ
+ガによって既にデバッギングされていた場合、そのお願いは却下されてしまいま
+す。「こいつ（デバッギ）にはもう恋人（デバッガ）がいるので諦めなさい」と
+いわれるのです（XPやVistaにはその恋仲を壊してしまう方法もあったりしますが）。
+　したがって、デバッギングされたくないプロセスがあるなら、自分が先にその
+プロセスをデバッギングしてしまえばよいことになります。ただし、自プロセス
+をデバッギングすることはできませんので、デバッガ担当とデバッギ担当（実作
+業担当）にプロセスを分けて動作させます。デバッガ担当はデバッギングされて
+しまいますが、実作業担当のほうはデバッギングすることができなくなります。
 
 
-��0x04.) �f�o�b�K�̎���
+■0x03.) デバッガの基礎
 
-�@�����܂Ő�������Ό�̓\�[�X�t�@�C���������ق��������ł��傤�BC����ŋL
-�q����Ǝ��̂悤�ɂȂ�܂��B
+　さて、先にデバッギングしてしまえばよいというのは簡単ですが、デバッガと
+なるにはいくつかの手順や決まりがあります。
+
+　デバッガの基本的な構造は次のようになっています。
+
+①新規プロセスをデバッギとして生成(または既存プロセスをアタッチ)
+②デバッグイベントを待機
+③デバッグイベントを処理
+④続行方法を指定してスレッドを再開
+⑤②へ戻る
+
+　各々のステップを順を追って説明していきます。
+
+①プロセスをデバッギとして生成(または既存プロセスをアタッチ)
+
+　前述した「ターゲットプロセスを私にデバッギングさせてください」とWindow
+sにお願いする部分です。CreateProcess()APIでプロセスを新しく生成する時にD
+EBUG_PROCESSフラグを指定すると新しく作られるプロセスはデバッギとなり、デ
+バッギプロセスを生成したデバッガにとってデバッギング対象となります。
+　DEBUG_PROCESSフラグだけではデバッギが作った子プロセスもデバッギング対象
+となります（ただし、子プロセスの生成にDEBUG_PROCESSフラグを指定した場合を
+除く)。DEBUG_ONLY_THIS_PROCESSフラグを指定すると子プロセスはデバッギング
+対象外となります。
+　既存プロセスをデバッギングしたい場合はDebugActiveProcess()APIを使います。
+その場合、子プロセスはデバッギング対象外となります。
+
+②デバッグイベントの待機
+
+　デバッギの実行中に例外が発生したりDLLをロードしたりするとデバッグイベン
+トとしてデバッガ側に伝えられます。デバッグイベントは例外発生、プロセスの
+生成・終了、スレッドの生成・終了、DLLのロード・アンロードに分類され、例外
+発生はブレイクポイントへの到達（INT 3の実行）やアクセスバイオレーションな
+どさらに細かく分類されます。
+　デバッギの起動時またはアタッチ時には必ずブレイクポイント例外が発生しま
+す（このブレイクポイントはAPIが設置したものでその場所はエントリポイントで
+はありません）。これをファーストチャンスイベントと言い、この時にブレイク
+ポイントの設置など初期化を行います。
+　デバッグイベントの待機にはWaitForDebugEvent()APIを使います。
+
+③デバッグイベントを処理
+
+　デバッグイベントがデバッガに伝えられるとデバッギの全スレッドが停止状態
+になります。これを利用してメモリの内容やスタックの状態を表示したり、デバ
+ッギが処理を続けられるように例外の処理を行います。また、デバッギが終了し
+た場合、つまりデバッグイベントがこれ以上発生しなくなった場合には、デバッ
+グイベント待機のループから抜けないとデバッガがいつまでたっても終了しない
+ことになります。
+
+④続行方法を指定してスレッドを再開
+
+　デバッグイベント処理中はデバッギの全スレッドが停止状態にあるわけですか
+ら、処理が終わったことをWindowsに伝えて、デバッギの全スレッドを再開させて
+やらなければいけません。この時、例外をデバッギの例外ハンドラに渡すかどう
+かを指定します。ただし例外発生以外のデバッグイベントではこの指定は無視さ
+れます。
+　この例外を渡すかどうかの指定をデバッガは適切に判断しなければいけません。
+例外をデバッギの例外ハンドラで処理しなければいけないのにデバッガでブロッ
+クしてしまうと同じデバッグイベントが無限に発生したり、デバッガが設置した
+ブレイクポイントへの到達をデバッギの例外ハンドラに渡してしまうと強制終了
+してしまう可能性があります。
+　Digital Travesiaに記載されている「6.構造化例外ハンドラを用いたデバッグ
+検出」（http://hp.vector.co.jp/authors/VA028184/OllyDbgQA.htm）で検出され
+るようなデバッガは適切に判断していないデバッガです。適切な判断をするデバ
+ッガは検出されません。サンプルプログラムDebuggerSample.zipを用意しました。
+debuggee.exeは「構造化例外ハンドラを用いたデバッグ検出」とIsDebuggerPres
+ent()APIの戻り値の表示を行います。debugger.exeはdebuggee.exeをデバッギと
+して起動して、ブレイクポイント例外が発生した場合に例外をデバッギに渡すか
+どうか確認してきます。渡すかどうかでその後の処理の違いを確認してください。
+
+
+■0x04.) デバッガの実装
+
+　ここまで説明すれば後はソースファイルを見たほうが早いでしょう。C言語で記
+述すると次のようになります。
 
 ----------------------------------------------------------------------------
-DEBUG_EVENT de = { 0 };			// �f�o�b�O�C�x���g���
-STARTUPINFO	si = { 0 };			// CreateProcess() ����߂������
-PROCESS_INFORMATION pi = { 0 };	// CreateProcess() ����߂������
-// �v���Z�X���f�o�b�O�ΏۂƂ��Đ�������
+DEBUG_EVENT de = { 0 };			// デバッグイベント情報
+STARTUPINFO	si = { 0 };			// CreateProcess() から戻される情報
+PROCESS_INFORMATION pi = { 0 };	// CreateProcess() から戻される情報
+// プロセスをデバッグ対象として生成する
 BOOL bCreate = CreateProcess(
 	NULL					// lpApplicationName
 ,	"debuggee.exe"			// lpCommandLine
@@ -162,53 +162,53 @@ if( bCreate == FALSE )
 	return 1;
 }
 
-// �f�o�b�O�C�x���g�̑ҋ@
+// デバッグイベントの待機
 while( WaitForDebugEvent(&de, INFINITE) )
 {
-	// �X���b�h�̑��s���@
-	DWORD dwContinueStatus = DBG_CONTINUE;	// �����l�͗�O���f�o�b�M�ɓn���Ȃ�
+	// スレッドの続行方法
+	DWORD dwContinueStatus = DBG_CONTINUE;	// 初期値は例外をデバッギに渡さない
 
-	// ��O����
+	// 例外発生
 	if( de.dwDebugEventCode == EXCEPTION_DEBUG_EVENT )
 	{
 		EXCEPTION_RECORD* per = &de.u.Exception.ExceptionRecord;
 
-		// �u���C�N�|�C���g�ɓ��B
+		// ブレイクポイントに到達
 		if( per->ExceptionCode == EXCEPTION_BREAKPOINT )
 		{
-			// �t�@�[�X�g�`�����X�C�x���g
+			// ファーストチャンスイベント
 			if( bFirstChance )
 			{
 				bFirstChance = FALSE;
-				// �u���C�N�|�C���g�̐ݒu�ȂǏ��������s��
+				// ブレイクポイントの設置など初期化を行う
 			}
 			else
 			{
-				// �g�Ɋo���̂Ȃ��u���C�N�|�C���g�̓f�o�b�M�ɏ���������B
+				// 身に覚えのないブレイクポイントはデバッギに処理させる。
 				dwContinueStatus = DBG_EXCEPTION_NOT_HANDLED;
 			}
 		}
-		// ���̑��̗�O����
+		// その他の例外処理
 		else
 		{
-			// �f�o�b�M�̗�O�n���h���ɗ�O������������B
+			// デバッギの例外ハンドラに例外を処理させる。
 			dwContinueStatus = DBG_EXCEPTION_NOT_HANDLED;
 		}
 	}
-	// �v���Z�X���I������
+	// プロセスが終了した
 	else if( de.dwDebugEventCode == EXIT_PROCESS_DEBUG_EVENT )
 	{
-		// �f�o�b�O�C�x���g�̑ҋ@�����߂�B�f�o�b�M�̎q�v���Z�X���܂߂�
-		// �f�o�b�O�ΏۂƂ��Ă���ꍇ�͑S�Ẵv���Z�X���I������܂ŏ���
-		// �𑱂���
+		// デバッグイベントの待機を辞める。デバッギの子プロセスを含めて
+		// デバッグ対象としている場合は全てのプロセスが終了するまで処理
+		// を続ける
 		break;
 	}
-	// ���̑��ADLL�̃��[�h/�A�����[�h�A�v���Z�X�̐����A�X���b�h�̐���/�I��
+	// その他、DLLのロード/アンロード、プロセスの生成、スレッドの生成/終了
 	//else
 	//{
 	//}
 
-	// ���s���@���w�肵�ăX���b�h���ĊJ
+	// 続行方法を指定してスレッドを再開
 	if( !ContinueDebugEvent(de.dwProcessId
 		, de.dwThreadId, dwContinueStatus) )
 	{
@@ -216,63 +216,63 @@ while( WaitForDebugEvent(&de, INFINITE) )
 	}
 }
 
-// �v���Z�X�n���h���ƃX���b�h�n���h�����N���[�Y����
+// プロセスハンドルとスレッドハンドルをクローズする
 CloseHandle(pi.hProcess);
 CloseHandle(pi.hThread);
 ----------------------------------------------------------------------------
 
 
-��0x05.) �A���`�f�o�b�M���O�̎���
+■0x05.) アンチデバッギングの実装
 
-�@�f�o�b�K�̍��g�݂��o�����Ƃ���ŃA���`�f�o�b�M���O�̎����Ɏ��|�����
-���B�O�q�����悤�Ƀf�o�b�K�S���ƃf�o�b�M�S���i����ƒS���j�Ƀv���Z�X��
-���ē��삳���܂��B�������A�v���O�������f�o�b�K�S���ƃf�o�b�M�S���ɕ�����
-�K�v�͂���܂���BC�����^�C���X�^�[�g�A�b�v���[�`���iWinMainCRTStartup�j
-�����s�����O�Ƀf�o�b�K���������s�����悤�ɂ��āA���̎菇���s���܂��B
+　デバッガの骨組みが出来たところでアンチデバッギングの実装に取り掛かりま
+す。前述したようにデバッガ担当とデバッギ担当（実作業担当）にプロセスを分
+けて動作させます。しかし、プログラムをデバッガ担当とデバッギ担当に分ける
+必要はありません。Cランタイムスタートアップルーチン（WinMainCRTStartup）
+が実行される前にデバッガ部分が実行されるようにして、次の手順を行います。
 
-�@���v���O�������f�o�b�M�Ƃ��ċN��
-�A�t�@�[�X�g�`�����X�C�x���g�ŃG���g���|�C���g�Ƀu���C�N�|�C���g��ݒu
-�B�G���g���|�C���g�ɐݒu�����u���C�N�|�C���g�ɓ��B������I���W�i���G���g
-���|�C���g�iWinMainCRTStartup�j�ɃW�����v
+①自プログラムをデバッギとして起動
+②ファーストチャンスイベントでエントリポイントにブレイクポイントを設置
+③エントリポイントに設置したブレイクポイントに到達したらオリジナルエント
+リポイント（WinMainCRTStartup）にジャンプ
 
-�@�u���C�N�|�C���g�̐ݒu�Ƃ́A�ݒu�������ꏊ�̃v���O�����R�[�h��0xCC�iIN
-T 3�̃}�V����R�[�h�j�ɕύX���邱�Ƃł��B�܂��A�I���W�i���G���g���|�C���g
-�ւ̃W�����v�̓X���b�h��CPU��ԁiCONTEXT�j�𑀍삷��GetThreadContext()AP
-I��SetThreadContext()API���g���Č��ݎ��s���̃A�h���X�iEIP�j��ύX���܂��B
-��������������̂�AntiDebugging.c�ł��B�f�o�b�M���O��h�~�������v���O����
-�̃v���W�F�N�g��AntiDebugging.c��ǉ����A�v���W�F�N�g�̐ݒ�ŃG���g���|�C
-���g��EntryPoint�ɂ��邾���Ńf�o�b�M���O���h�~�ł��܂��B�T���v���Ƃ���An
-tiDebugging.v1.zip��p�ӂ��܂����̂ŁAOllyDbg�ȂǂŃf�o�b�M���O�������Ă�
-�ĉ������B�u���C�N�|�C���g�͏�肭�@�\���Ȃ����A�����v���Z�X�̃A�^�b�`��
-���s���܂��B
-
-
-��0x06.) �ȒP�ɉ�������Ă��܂��A���`�f�o�b�M���O
-
-�@�m���Ƀf�o�b�M���O���h���܂������A������ȒP�ɉ������Ă��܂����Ƃ��ł�
-�܂��B
-
-�@SetThreadContext()API�Ƀu���C�N�|�C���g��ݒu�B
-�A�@�Őݒu�����u���C�N�|�C���g�ɓ��B������AAPI�ɓn���ꂽ������CONTEXT�\
-���̂�Eip�̒l���T����B
-�B�v���O�����̃G���g���|�C���g���A��Eip�̒l�ŏ���������B
-
-�@���������ꂾ���ł��B����̓f�o�b�K�������f�o�b�M���I���W�i���G���g���|
-�C���g�ɃW�����v�����邾���̖��������ʂ����Ă��Ȃ�����ł��B�����h����
-�̓f�o�b�K���������삵�Ȃ��ƃf�o�b�M�����삵�Ȃ��悤�ɂ��Ă��K�v������
-�܂��B����͂��̕��@�Ɛ������s���܂��B
+　ブレイクポイントの設置とは、設置したい場所のプログラムコードを0xCC（IN
+T 3のマシン語コード）に変更することです。また、オリジナルエントリポイント
+へのジャンプはスレッドのCPU状態（CONTEXT）を操作するGetThreadContext()AP
+IとSetThreadContext()APIを使って現在実行中のアドレス（EIP）を変更します。
+これを実装したのがAntiDebugging.cです。デバッギングを防止したいプログラム
+のプロジェクトにAntiDebugging.cを追加し、プロジェクトの設定でエントリポイ
+ントをEntryPointにするだけでデバッギングが防止できます。サンプルとしてAn
+tiDebugging.v1.zipを用意しましたので、OllyDbgなどでデバッギングを試してみ
+て下さい。ブレイクポイントは上手く機能しないし、既存プロセスのアタッチも
+失敗します。
 
 
-��0x07.) �Ō��
+■0x06.) 簡単に解除されてしまうアンチデバッギング
 
-�@�O���PackedFileLoader�ł�PE�t�H�[�}�b�g�̒m�����肫�Ő������Ă��܂���
-���߂��Ȃ�������Ȃ��Ă��܂��܂������A����͂������ł����ł��傤���B�ق�
-��ǃf�o�b�K�̐����ŏI����Ă��܂����C�����܂����A�f�o�b�K�̎d�g�݂𗝉�
-����̂͂ƂĂ��d�v�Ȃ��Ƃł��B�A���p�b�N��ɋt�A�Z���u������dispe��W�F�l
-���b�N�A���p�b�J�Ȃǂ��f�o�b�K�Ȃ̂ő΍�����Ă��Ŗ��ɂ�����ł��B��
-���ΐe�v���Z�X�̃v���O������WaitForDebugEvent()API���C���|�[�g���Ă����
-���̓f�o�b�K���A�^�b�`����Ă���Ɣ��f�ł��܂��B�����ł����낢��ƍl����
-�݂Ă��������B
+　確かにデバッギングが防げましたが、これを簡単に解除してしまうことができ
+ます。
+
+①SetThreadContext()APIにブレイクポイントを設置。
+②①で設置したブレイクポイントに到達したら、APIに渡された引数のCONTEXT構
+造体のEipの値を控える。
+③プログラムのエントリポイントを②のEipの値で書き換える。
+
+　たったこれだけです。これはデバッガ部分がデバッギをオリジナルエントリポ
+イントにジャンプさせるだけの役割しか果たしていないからです。これを防ぐに
+はデバッガ部分が動作しないとデバッギが動作しないようにしてやる必要があり
+ます。次回はその方法と説明を行います。
+
+
+■0x07.) 最後に
+
+　前回のPackedFileLoaderではPEフォーマットの知識ありきで説明してしまった
+ためかなり説明を省いてしまいましたが、今回はいかがでしたでしょうか。ほと
+んどデバッガの説明で終わってしまった気もしますが、デバッガの仕組みを理解
+するのはとても重要なことです。アンパック後に逆アセンブルするdispeやジェネ
+リックアンパッカなどもデバッガなので対策をたてる上で役にたつからです。例
+えば親プロセスのプログラムがWaitForDebugEvent()APIをインポートしている場
+合はデバッガがアタッチされていると判断できます。自分でもいろいろと考えて
+みてください。
 
 
 

@@ -1,61 +1,61 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- �恛��: FreeBSD Kernel Hacking ---
+--- 第○章: FreeBSD Kernel Hacking ---
 
-���ҁFKenji Aiko
+著者：Kenji Aiko
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@�ŋ�FreeBSD���g���n�߂��̂ŁA�����I�ȈӖ������߂āA���񎩕����w�񂾉ߒ�
-���������Ƃɂ��܂����B���ێg���n�߂Đ������ł����A�l�I��FreeBSD���Ȃ���
-����������Ăėǂ������ł��B����������΂��Ўg���Ă݂Ă��������B
-�@���Ȃ݂ɁA���̋L����FreeBSD���ōs���܂����A���̊��iLinux, Windows�j
-�̃J�[�l���ɂ��Ēm�肽����΁A���[���C���[�׋���̎������ƂĂ��Q�l�ɂ�
-��܂��B
+　最近FreeBSDを使い始めたので、メモ的な意味もこめて、今回自分が学んだ過程
+を書くことにしました。実際使い始めて数ヶ月ですが、個人的にFreeBSDもなかな
+か洗練されてて良い感じです。興味があればぜひ使ってみてください。
+　ちなみに、この記事はFreeBSD環境で行いますが、他の環境（Linux, Windows）
+のカーネルについて知りたければ、ローレイヤー勉強会の資料がとても参考にな
+ります。
 
-�@�u���[���C���[�׋���v���J����
-�@http://groups.google.co.jp/group/lowlayer/files
+　「ローレイヤー勉強会」公開資料
+　http://groups.google.co.jp/group/lowlayer/files
 
-�@���Ȃ݂ɁA���̋L���ł́AFreeBSD 7.0���g���܂��B
+　ちなみに、この記事では、FreeBSD 7.0を使います。
 
 
-��0x02.) ���\�z
+■0x02.) 環境構築
 
-�@FreeBSD�̃J�[�l�����W���[�������i�R���p�C������j�ꍇ�AFreeBSD���̂�
-�\�[�X�R�[�h���K�v�ł��B����āA�ŏ��ɁAFreeBSD�̃\�[�X�R�[�h���_�E�����[
-�h���܂��B
+　FreeBSDのカーネルモジュールを作る（コンパイルする）場合、FreeBSD自体の
+ソースコードが必要です。よって、最初に、FreeBSDのソースコードをダウンロー
+ドします。
 
 -----  terminal
 # pkg_add ftp://ftp.jp.freebsd.org/pub/FreeBSD/ports/i386/packages/All/cvsup-without-gui-16.1h_4.tbz
 # cp /usr/share/examples/cvsup/stable-supfile ./
 # vi stable-supfile
-�i"CHANGE_THIS.FreeBSD.org" �� "cvsup.jp.FreeBSD.org" �ɕύX�j
-# cvsup stable-supfile�i���݂�csup�����j
+（"CHANGE_THIS.FreeBSD.org" を "cvsup.jp.FreeBSD.org" に変更）
+# cvsup stable-supfile（現在はcsup推奨）
 
-�i/usr/src�ȉ��ɃJ�[�l���̃\�[�X�R�[�h���_�E�����[�h�����j
+（/usr/src以下にカーネルのソースコードがダウンロードされる）
 
 -----
 
-�@�ȏ�̎菇�ŁA/usr/src�ȉ��ɃJ�[�l���̃\�[�X�R�[�h���W�J����܂��B
+　以上の手順で、/usr/src以下にカーネルのソースコードが展開されます。
 
 
-��0x03.) �R���p�C��
+■0x03.) コンパイル
 
-�@FreeBSD�̃J�[�l�����W���[���v���O���~���O�ɂ��ẮA�ȉ��̃T�C�g���Q�l
-�ɂȂ�܂��B
+　FreeBSDのカーネルモジュールプログラミングについては、以下のサイトが参考
+になります。
 
-�@FreeBSD Architecture Handbook
-�@http://www.freebsd.org/doc/en/books/arch-handbook/
-�@http://www.freebsd.org/doc/en/books/arch-handbook/driverbasics-kld.html
+　FreeBSD Architecture Handbook
+　http://www.freebsd.org/doc/en/books/arch-handbook/
+　http://www.freebsd.org/doc/en/books/arch-handbook/driverbasics-kld.html
 
-�@��L�̃T���v���v���O�������R�s�[���A�����ɃJ�[�l�����W���[�������܂��B
-�J�[�l���\�[�X��/usr/src/sys/modules/�ȉ��ɐV�����f�B���N�g�����쐬���A��
-�̒��ŃT���v�����W���[�����R���p�C�����܂��B
+　上記のサンプルプログラムをコピーし、試しにカーネルモジュールを作ります。
+カーネルソースの/usr/src/sys/modules/以下に新しいディレクトリを作成し、そ
+の中でサンプルモジュールをコンパイルします。
 
 -----  terminal
 # cd /usr/src/sys/modules/
@@ -106,13 +106,13 @@ static moduledata_t skel_mod = {
 };  
 
 DECLARE_MODULE(skeleton, skel_mod, SI_SUB_KLD, SI_ORDER_ANY);
-^C�iCtrl + C�j
+^C（Ctrl + C）
 # cat >Makefile
 SRCS=skeleton.c
 KMOD=skeleton
 
 .include <bsd.kmod.mk>
-^C�iCtrl + C�j
+^C（Ctrl + C）
 # make
 Warning: Object directory not changed from original /usr/src/sys/modules/skeleton
 @ -> /usr/src/sys
@@ -139,7 +139,7 @@ Id Refs Address    Size     Name
  1    8 0xc0400000 906518   kernel
  2    1 0xc0d07000 6a32c    acpi.ko
  3    1 0xc1afc000 22000    linux.ko
- 4    1 0xc1c67000 2000     skeleton.ko�i���ǉ�����Ă���j
+ 4    1 0xc1c67000 2000     skeleton.ko（←追加されている）
 # kldunload ./skeleton.ko
 Skeleton KLD unloaded.
 # kldstat
@@ -150,18 +150,18 @@ Id Refs Address    Size     Name
 #
 -----
 
-�@���s����ƁA���W���[���̃��[�h���ɁuSkeleton KLD loaded.�v�Ƃ���������
-���o�͂���A�A�����[�h���ɁuSkeleton KLD unloaded.�v���o�͂���܂��B�܂��A
-���݃J�[�l���Ƀ��[�h����Ă��郂�W���[����kldstat�����s���邱�ƂŊm�F�ł�
-�܂��B
-�@���Ƃ́A�uFreeBSD Architecture Handbook�v�̃T�C�g�́uII. Device Drivers�v
-�̍��ڂ�ǂނ��ƂŁA�J�[�l�����W���[���Ɋւ����ʂ�̂��Ƃ�������܂��B
+　実行すると、モジュールのロード時に「Skeleton KLD loaded.」という文字列
+が出力され、アンロード時に「Skeleton KLD unloaded.」が出力されます。また、
+現在カーネルにロードされているモジュールはkldstatを実行することで確認でき
+ます。
+　あとは、「FreeBSD Architecture Handbook」のサイトの「II. Device Drivers」
+の項目を読むことで、カーネルモジュールに関する一通りのことが分かります。
 
 
-��0x04.) �J�[�l���ւ̈ڍs
+■0x04.) カーネルへの移行
 
-�@���[�U�[�����h����J�[�l���Ɉڍs����ہA���荞�݁uint 80h�v���Ăяo����
-���邱�Ƃ��m�F���܂��B
+　ユーザーランドからカーネルに移行する際、割り込み「int 80h」を呼び出して
+いることを確認します。
 
 -----  terminal
 $ cat > test.c
@@ -170,7 +170,7 @@ int main(void)
     write(1, "Hello", 5, 0);
     return 0;
 }
-^C�iCtrl + C�j
+^C（Ctrl + C）
 $ gcc test.c -o test
 $ gdb test
 GNU gdb 6.1.1 [FreeBSD]
@@ -194,29 +194,29 @@ Continuing.
 Breakpoint 2, 0x281533ac in write () from /lib/libc.so.7
 (gdb) x/4i write
 0x281533ac <write>:     mov    $0x4,%eax
-0x281533b1 <write+5>:   int    $0x80�i���R�R�j
+0x281533b1 <write+5>:   int    $0x80（←ココ）
 0x281533b3 <write+7>:   jb     0x28153398 <close+12>
 0x281533b5 <write+9>:   ret
 (gdb)
 -----
 
-�@�A�h���X�u0x281533b1�v�ŁA�uint $0x80�v���Ăяo���A�J�[�l���ɏ�����n��
-�Ă��܂��B
+　アドレス「0x281533b1」で、「int $0x80」を呼び出し、カーネルに処理を渡し
+ています。
 
 
-��0x05.) IDT�iInterrupt Descriptor Table�j�̓��e���m�F
+■0x05.) IDT（Interrupt Descriptor Table）の内容を確認
 
-�@���荞�݂ɑ΂���W�����v�悪�L�q����Ă���IDT���m�F���܂��B���荞�݂��
-�O�Ɋւ���ڍׂ͈ȉ��̃T�C�g���Q�l�ɂȂ�܂��i�������Ă����\�q�b�g���܂��j�B
+　割り込みに対するジャンプ先が記述されているIDTを確認します。割り込みや例
+外に関する詳細は以下のサイトが参考になります（検索しても結構ヒットします）。
 
-�@�v���e�N�g���[�h�̊��荞��/��O
-�@http://caspar.hazymoon.jp/OpenBSD/annex/interrupt_protect.html
+　プロテクトモードの割り込み/例外
+　http://caspar.hazymoon.jp/OpenBSD/annex/interrupt_protect.html
 
-�@���荞�݁uint 80h�v�ŁA�J�[�l�������h�ɏ������ڂ�A�܂��AIDTR���W�X�^��
-�Q�Ƃ���܂��B���̃��W�X�^�ɂ�IDT�̃A�h���X���i�[����Ă��܂��BIDT�̃A�h
-���X������������A�e�[�u���̐擪����80h�Ԗڂ̏���ǂݎ��A�����ɋL�q��
-��Ă���A�h���X�փW�����v���܂��B
-�@IDT��80h�Ԗڂ̏����m�F����v���O�������ȉ��Ɏ����܂��B
+　割り込み「int 80h」で、カーネルランドに処理が移り、まず、IDTRレジスタが
+参照されます。このレジスタにはIDTのアドレスが格納されています。IDTのアド
+レスが分かったら、テーブルの先頭から80h番目の情報を読み取り、そこに記述さ
+れているアドレスへジャンプします。
+　IDTの80h番目の情報を確認するプログラムを以下に示します。
 
 -----  printidt.c
 
@@ -342,7 +342,7 @@ static moduledata_t printidt_mod =
 DECLARE_MODULE(printidt, printidt_mod, SI_SUB_KLD, SI_ORDER_ANY);
 -----
 
-�@�ȉ���Makefile��p�ӂ��܂��B
+　以下のMakefileを用意します。
 
 -----  Makefile
 SRCS=printidt.c
@@ -351,7 +351,7 @@ KMOD=printidt
 .include <bsd.kmod.mk>
 -----
 
-�@�R���p�C�����A���s���܂��B
+　コンパイルし、実行します。
 
 -----  terminal
 # make
@@ -386,19 +386,19 @@ call mod_unload
 #
 -----
 
-�@IDT�̏ꏊ�Ɓuint 80h�v�����s���ꂽ���ɏ��������R�[�h�͕�����܂����B
-���̕�����C�ӂ̃A�h���X�ɕύX���邱�ƂŁuint 80h�v�̃t�b�N���ł��܂��B
-�@�V�X�e���R�[���t�b�N�Ɋւ���S�ʓI�Șb�͈ȉ��̕������Q�l�ɂȂ�܂��B
+　IDTの場所と「int 80h」が実行された時に処理されるコードは分かりました。
+この部分を任意のアドレスに変更することで「int 80h」のフックができます。
+　システムコールフックに関する全般的な話は以下の文献が参考になります。
 
-�@�V�X�e���R�[���t�b�N���g�p�����U�����o
-�@http://www.fourteenforty.jp/research/research_papers/SystemCall.pdf
+　システムコールフックを使用した攻撃検出
+　http://www.fourteenforty.jp/research/research_papers/SystemCall.pdf
 
 
-��0x06.) int80h�t�b�N
+■0x06.) int80hフック
 
-�@IDT��ύX���邱�ƂŁuint 80h�v���t�b�N�ł��܂��B����āA���̓T���v���v
-���O�����Ƃ��āA�uint 80h�v���߂��A���b����Ăяo����Ă���̂��𒲂ׂ�v
-���O�������쐬���܂��B
+　IDTを変更することで「int 80h」をフックできます。よって、次はサンプルプ
+ログラムとして、「int 80h」命令が、毎秒何回呼び出されているのかを調べるプ
+ログラムを作成します。
 
 -----  int80hook.c
 
@@ -581,8 +581,8 @@ KMOD=int80hook
 .include <bsd.kmod.mk>
 -----
 
-�@���W���[�������[�h���A�K���Ȏ��ԑ҂�����A�A�����[�h����ƁA���b������
-�́uint 80h�v�̌Ăяo���񐔂�������܂��B
+　モジュールをロードし、適当な時間待った後、アンロードすると、毎秒あたり
+の「int 80h」の呼び出し回数が分かります。
 
 -----  terminal
 # kldload ./int80hook.ko
@@ -590,35 +590,35 @@ KMOD=int80hook
 counter = 74/s
 -----
 
-�@����Ɂuint 80h�v���t�b�N����Ă��܂��B
+　正常に「int 80h」がフックされています。
 
-�@�Ȃ��A����̃\�[�X�R�[�h�͈ȉ��̃T�C�g�̋L�����Q�l�ɂ��Ă��܂��B
+　なお、今回のソースコードは以下のサイトの記事を参考にしています。
 
-�@hiding processes (understanding the linux scheduler)
-�@http://phrack.org/issues.html?issue=63&id=18
+　hiding processes (understanding the linux scheduler)
+　http://phrack.org/issues.html?issue=63&id=18
 
-�@��L�̋L����Linux���ł̃R�[�h�ł����AFreeBSD����{�͓����T�O�ł��B
+　上記の記事はLinux環境でのコードですが、FreeBSDも基本は同じ概念です。
 
 
-��0x07.) ��������
+■0x07.) さいごに
 
-�@Windows�n���ƁAXP�ȍ~�Asysenter���g���Ă���킯�ł����AFreeBSD�́uint 
-80h�v���g���Ă���悤�������̂ŁA������̃t�b�N���s���܂����B�܂��A�uDEF
-CON CTF 2008�v�̖��ɂ��AFreeBSD���ł́uint 80h�v�t�b�N���s���v���O��
-�������o�[�X�G���W�j�A�����O�ɂ���͂����肪���������߁A������֘A��
-�č��񂱂̋L���������܂����B
+　Windows系だと、XP以降、sysenterを使っているわけですが、FreeBSDは「int 
+80h」を使っているようだったので、こちらのフックを行いました。また、「DEF
+CON CTF 2008」の問題にも、FreeBSD環境での「int 80h」フックを行うプログラ
+ムをリバースエンジニアリングにより解析する問題があったため、それも関連し
+て今回この記事を書きました。
 
-�@Binary Leetness 400
-�@http://nopsr.us/ctf2008qual/reversing400-b05c8059389c8ade8e1a10314f458be5
-�@http://nopsr.us/ctf2008qual/walk-binary.html#400
+　Binary Leetness 400
+　http://nopsr.us/ctf2008qual/reversing400-b05c8059389c8ade8e1a10314f458be5
+　http://nopsr.us/ctf2008qual/walk-binary.html#400
 
-�@FreeBSD�͂܂��g���n�߂ē����󂢂ł����A���\�ǂ���ۂ������Ă����ԂȂ�
-�ŁA���̂܂܏������ł����A�g���Ă��������ȂƎv���Ă��܂��B
-�@�����̃q�b�g���Ȃǂ����Ă��ALinux�Ɣ�ׂ��FreeBSD�͂܂��܂����[�U�[��
-�����Ȃ��̂��ȁA�Ƃ��v���܂����A�Ȃ��Ȃ��������ꂽOS�Ȃ̂ŁA�����������
-���Ўg���Ă݂Ă��������B
+　FreeBSDはまだ使い始めて日が浅いですが、結構良い印象を持っている状態なの
+で、このまま少しずつですが、使っていこうかなと思っています。
+　検索のヒット数などを見ても、Linuxと比べるとFreeBSDはまだまだユーザー数
+が少ないのかな、とも思えますが、なかなか洗練されたOSなので、興味があれば
+ぜひ使ってみてください。
 
-�@�ł́A�܂����񂨉���܂��傤�B
+　では、また次回お会いしましょう。
 
 
 

@@ -1,28 +1,28 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- �恛��: 64�r�b�g���ł̃��o�[�X�G���W�j�A�����O ---
+--- 第○章: 64ビット環境でのリバースエンジニアリング ---
 
-���ҁFKenji Aiko
+著者：Kenji Aiko
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@64�r�b�g���ł́A32�r�b�g���ɔ�ׁA�}�V����ɑ����̈Ⴂ������B����
-�Ⴂ�ɂ���āA���o�[�X�G���W�j�A�����O�s�ׂɁA�ǂ̒��x�̉e�����o��̂���
-���ׂ��B����́A���̉ߒ����e�L�X�g�ɂ܂Ƃ߂����̂ł���B
-�@�Ȃ��AOS��Windows XP�ix64�j�A�f�o�b�K��WinDbg�ix64�j�A�R���p�C����Visu
-al Stdio 2005���g�p�����B
+　64ビット環境では、32ビット環境に比べ、マシン語に多少の違いがある。その
+違いによって、リバースエンジニアリング行為に、どの程度の影響が出るのかを
+調べた。今回は、その過程をテキストにまとめたものである。
+　なお、OSはWindows XP（x64）、デバッガはWinDbg（x64）、コンパイラはVisu
+al Stdio 2005を使用した。
 
 
-��0x02.) �֐��Ăяo��
+■0x02.) 関数呼び出し
 
-�@�Ƃ肠�����A�ǂ̒��x�̈Ⴂ������̂��A�}�V�����ǂ�ł݂�B
+　とりあえず、どの程度の違いがあるのか、マシン語を読んでみる。
 
------  prog1.cpp�ihttp://07c00.com/text/x64rev1/prog1.cpp�j
+-----  prog1.cpp（http://07c00.com/text/x64rev1/prog1.cpp）
 #include <windows.h>
 
 int WINAPI WinMain(HINSTANCE hInstance,
@@ -36,10 +36,10 @@ int WINAPI WinMain(HINSTANCE hInstance,
 }
 -----
 
-�@�����64�r�b�g�p�ɃR���p�C�����āAWinDbg�ɓǂݍ��܂���B
-�@�����āA�u���C�N�|�C���g��ݒu���Ď��s����ƁAWinMain�Ŏ~�܂�B
+　これを64ビット用にコンパイルして、WinDbgに読み込ませる。
+　そして、ブレイクポイントを設置して実行すると、WinMainで止まる。
 
------  WinDbg�ihttp://07c00.com/text/x64rev1/prog1.exe�j
+-----  WinDbg（http://07c00.com/text/x64rev1/prog1.exe）
 0:000> bp WinMain
 0:000> bl
  0 e 00000000`00401000     0001 (0001)  0:**** prog1!WinMain
@@ -54,7 +54,7 @@ prog1!WinMain:
 00000000`00401000 4883ec28        sub     rsp,28h
 -----
 
-�@�����ŁA�A�Z���u���R�[�h���o�͂���B
+　ここで、アセンブルコードを出力する。
 
 -----  WinDbg
 00000000`00401000 4883ec28        sub     rsp,28h
@@ -69,26 +69,26 @@ prog1!WinMain:
 00000000`0040102a c3              ret
 -----
 
-�@�悭������Ȃ����W�X�^�������g���Ă��邪�A���܂�C�ɂ��Ȃ��Ă悢�B��
-���A���������B64�r�b�g���ł́A���W�X�^�̃T�C�Y��64�r�b�g�ɂȂ��āA��
-�W�X�^�̎�ނ���2�{�ɂȂ����ȊO�͂��܂�ς��Ȃ��̂ŁA�Ƃ肠�����A64�r�b
-�g�ł̔ėp���W�X�^rax�Arcx�Ardx�Arbx�Arsp�Arbp�Arsi�Ardi�ӂ�ƁAr8�`r15��
-����o���Ă����΂悢���낤�B
-�@�܂����W�X�^�̘b�͒u���Ă����āA�֐��Ăяo�������Ă݂�ƁA�X�^�b�N���g
-��ꂸ�A�ς��Ƀ��W�X�^���g���Ă���B
-�@MessageBoxW�̈����ƏƂ炵���킹�Ă݂�ƁA�ǂ̃��W�X�^�����Ԗڂ̈�������
-���邾�낤�B�܂��AGetActiveWindow�̖߂�l��rax�Ɋi�[����Ă���͂�������A
-00401018���Arcx���������ƕ�����B�܂��AMessageBoxW�̍Ō�̈���MB_OK�́A
-���l�ɂ����0�Ȃ̂ŁA0��������Ă��郌�W�X�^��T���ƁA�ǂ����r9���Y��
-����ir9d��r9�̉���32�r�b�g�j�B�����܂ł���ƁA���Ƃ�rdx���������Ar8��
-��O�����ł���Ɛ����ł���B�܂�A���̂悤�ɂȂ�B
+　よく分からないレジスタが多く使われているが、あまり気にしなくてよい。多
+分、すぐ慣れる。64ビット環境では、レジスタのサイズが64ビットになって、レ
+ジスタの種類が約2倍になった以外はあまり変わらないので、とりあえず、64ビッ
+ト版の汎用レジスタrax、rcx、rdx、rbx、rsp、rbp、rsi、rdi辺りと、r8〜r15辺
+りを覚えておけばよいだろう。
+　まぁレジスタの話は置いておいて、関数呼び出しを見てみると、スタックが使
+われず、変わりにレジスタが使われている。
+　MessageBoxWの引数と照らし合わせてみると、どのレジスタが何番目の引数か分
+かるだろう。まず、GetActiveWindowの戻り値はraxに格納されているはずだから、
+00401018より、rcxが第一引数と分かる。また、MessageBoxWの最後の引数MB_OKは、
+数値にすると0なので、0が入れられているレジスタを探すと、どうやらr9が該当
+する（r9dはr9の下位32ビット）。ここまでくると、あとはrdxが第二引数、r8が
+第三引数であると推測できる。つまり、次のようになる。
 
------  MessageBoxW�iASM�Łj
+-----  MessageBoxW（ASM版）
 MessageBox(rcx, edx, r8, r9);
 -----
 
-�@�����Ɋւ��Ă�4�܂Ń��W�X�^�A�Ȍ�X�^�b�N�Ƃ������ꂾ���Acall���߂̃�
-�^�[���l�ɂ��ẮA�X�^�b�N�ɐς܂��B
+　引数に関しては4つまでレジスタ、以後スタックという流れだが、call命令のリ
+ターン値については、スタックに積まれる。
 
 -----  WinDbg
 0:000> bp WinMain
@@ -121,22 +121,22 @@ USER32!GetActiveWindow:
 0:000>
 -----
 
-�@GetActiveWindow�֐��Ăяo������00401004������A���̖��߂�0040100a�ƂȂ�B
-�����āArsp��000000000012fe98�ƂȂ��Ă��邽�߁A���̃A�h���X�i�X�^�b�N�j��
-�l������ƁA���̂悤�ɂȂ��Ă���B
+　GetActiveWindow関数呼び出し元は00401004だから、次の命令は0040100aとなる。
+そして、rspは000000000012fe98となっているため、このアドレス（スタック）の
+値を見ると、次のようになっている。
 
 -----  WinDbg
 00000000`0012fe98 0a 10 40 00 00 00 00 00 
 -----
 
-�@�X�^�b�N�ɂ́A���̖��߂̃A�h���X�i�߂�ꏊ�j���L�^����Ă���B�܂�A
-�֐��Ăяo���̍ۂɈ�����push���邱�Ƃ͂Ȃ����Acall���߂ɂ��߂�ꏊ�́A
-�X�^�b�N�ɐς܂�邱�Ƃ����������B
-�@�����āA�������ǂ��܂Ń��W�X�^�ɗ���̂��𒲂ׂ�B�X�^�b�N�i�������j��
-�g��Ȃ��Ƃ����Ă��A���W�X�^�ɂ͌��E������B����𒲂ׂ邽�߁A���̃v���O
-�������������B
+　スタックには、次の命令のアドレス（戻り場所）が記録されている。つまり、
+関数呼び出しの際に引数をpushすることはないが、call命令による戻り場所は、
+スタックに積まれることが分かった。
+　続いて、引数がどこまでレジスタに頼るのかを調べる。スタック（メモリ）を
+使わないといっても、レジスタには限界がある。それを調べるため、次のプログ
+ラムを書いた。
 
------  prog2.cpp�ihttp://07c00.com/text/x64rev1/prog2.cpp�j
+-----  prog2.cpp（http://07c00.com/text/x64rev1/prog2.cpp）
 #include <windows.h>
 
 int WINAPI WinMain(HINSTANCE hInstance,
@@ -149,10 +149,10 @@ int WINAPI WinMain(HINSTANCE hInstance,
 }
 -----
 
-�@���s����킯�ł͂Ȃ��A�}�V���ꂪ�����������Ȃ̂ŁA�����͓K�����B���̃R
-�[�h���R���p�C�����ă}�V����ɂ���Ǝ��̂悤�ɂȂ�B
+　実行するわけではなく、マシン語が見たいだけなので、引数は適当だ。このコ
+ードをコンパイルしてマシン語にすると次のようになる。
 
------  WinDbg�ihttp://07c00.com/text/x64rev1/prog2.exe�j
+-----  WinDbg（http://07c00.com/text/x64rev1/prog2.exe）
 00000000`00401000 4883ec68        sub     rsp,68h
 00000000`00401004 33c0            xor     eax,eax
 00000000`00401006 4533c9          xor     r9d,r9d
@@ -172,32 +172,32 @@ int WINAPI WinMain(HINSTANCE hInstance,
 00000000`0040103d c3              ret
 -----
 
-�@�ǂ����A���W�X�^�œn���͈̂���4�܂łŁA����ȏ�̓X�^�b�N�𗘗p����
-�悤���B�������Apush��pop�͎g�킸�A���[�J���ϐ��̂悤�Ȍ`�ŁA�g�p���郁��
-���̈���m�ۂ��Ă���B
+　どうやら、レジスタで渡すのは引数4つまでで、それ以上はスタックを利用する
+ようだ。しかし、pushやpopは使わず、ローカル変数のような形で、使用するメモ
+リ領域を確保している。
 
 
-��0x03.) �}�C�N���\�t�gx64�ďo�K��
+■0x03.) マイクロソフトx64呼出規約
 
-�@�}�C�N���\�t�g�ďo�K��ɂ��ƁA�urcx�Ardx�Ar8�Ar9�͐����^�ƃ|�C���^�^
-�̈����Ɏg�p���Axmm0�Axmm1�Axmm2�Axmm3�͕��������_�^�����ɗp������B��
-���āA���W�X�^������Ȃ��Ȃ�΁A�X�^�b�N���g���A�߂�l��rax�Ɋi�[�����v
-�Ƃ������Ƃ��B
-�@�Ƃɂ����A�v���g�R���Ɠ����悤�ɁA���W�X�^���g���ɂ����܂莖������̂�
-�낤�B�ڂ����m�肽�����́uCalling Convention for x64 64-Bit Environments
-�i��1�j�v���Q�Ƃ̂��ƁB�Ō�ɁA�u���O�ɂĂ���������Ă��ꂽiya���T���N�X�I�B
+　マイクロソフト呼出規約によると、「rcx、rdx、r8、r9は整数型とポインタ型
+の引数に使用し、xmm0、xmm1、xmm2、xmm3は浮動小数点型引数に用いられる。そ
+して、レジスタが足りなくなれば、スタックが使われ、戻り値はraxに格納される」
+ということだ。
+　とにかく、プロトコルと同じように、レジスタを使うにも決まり事があるのだ
+ろう。詳しく知りたい方は「Calling Convention for x64 64-Bit Environments
+（※1）」を参照のこと。最後に、ブログにてこれを教えてくれたiya氏サンクス！。
 
-�i��1�jCalling Convention for x64 64-Bit Environments
+（※1）Calling Convention for x64 64-Bit Environments
 http://msdn2.microsoft.com/en-us/library/ms794533.aspx
 
 
-��0x04.) �f�o�b�K�ŉ��
+■0x04.) デバッガで解析
 
-�@64�r�b�g���p��crackme���쐬����B����́A64�r�b�g�ł����o�[�X�G���W�j
-�A�����O���\���ǂ����𒲂ׂ�̂��ړI�Ȃ̂ŁA�����Ƃ��e�Ղ�crackme���쐬
-����B
+　64ビット環境用のcrackmeを作成する。今回は、64ビットでもリバースエンジニ
+アリングが可能かどうかを調べるのが目的なので、もっとも容易なcrackmeを作成
+する。
 
------  crackme1.cpp�ihttp://07c00.com/text/x64rev1/crackme1.cpp�j
+-----  crackme1.cpp（http://07c00.com/text/x64rev1/crackme1.cpp）
 #include <windows.h>
 
 int WINAPI WinMain(HINSTANCE hInstance,
@@ -210,9 +210,9 @@ int WINAPI WinMain(HINSTANCE hInstance,
     if(st.wYear != 1192 || st.wMonth != 5 || st.wDay != 15){
         TCHAR szErrorStr[2048];
         wsprintf(szErrorStr, 
-            L"���̃v���O������UTC�i���E�W�������j��"
-            L"�u1192�N05��15���v�ɂ����N���ł��܂���\r\n"
-            L"���݂̓��t�́u%04d�N%02d��%02d���v�ł�\r\n", 
+            L"このプログラムはUTC（世界標準時刻）で"
+            L"「1192年05月15日」にしか起動できません\r\n"
+            L"現在の日付は「%04d年%02d月%02d日」です\r\n", 
             st.wYear, st.wMonth, st.wDay);
         MessageBox(GetActiveWindow(), szErrorStr, L"Message", MB_OK);
         return 0;
@@ -222,12 +222,12 @@ int WINAPI WinMain(HINSTANCE hInstance,
 }
 -----
 
-���s��ʁFhttp://07c00.com/text/x64rev1/a.png
+実行画面：http://07c00.com/text/x64rev1/a.png
 
-�@���Ă̒ʂ�A���Ԏw��̐������BGetSystemTime�֐��̖߂�l�ŕ]�����Ă����
-�ŁA���̕�����ύX���Ă���OK�B�Ƃ����킯�ŁA���������f�o�b�K�ŊJ���B
+　見ての通り、時間指定の制限だ。GetSystemTime関数の戻り値で評価しているの
+で、この部分を変更してやればOK。というわけで、さっそくデバッガで開く。
 
------  WinDbg�ihttp://07c00.com/text/x64rev1/crackme1.exe�j
+-----  WinDbg（http://07c00.com/text/x64rev1/crackme1.exe）
 ntdll!DbgBreakPoint:
 00000000`78ed3320 cc              int     3
 0:000> bp WinMain
@@ -245,8 +245,8 @@ crackme1!WinMain:
 0:000>
 -----
 
-�@WinMain�Ńu���C�N�|�C���g��ݒu���Ď��s����B���RWinMain�Œ�~����B��
-���ŋt�A�Z���u������B
+　WinMainでブレイクポイントを設置して実行する。当然WinMainで停止する。こ
+こで逆アセンブルする。
 
 -----  WinDbg
 crackme1!WinMain:
@@ -291,11 +291,11 @@ crackme1!WinMain:
 00000000`004010b6 c3              ret
 -----
 
-�@���iOllyDbg���g���Ă��邹���Ȃ̂��A���W�X�^�����������Ȃ̂�������Ȃ���
-�A�����ǂ݂ɂ����B�������A�����΂���Ȃł��Ȃ����낤�B�d�v�ȕ����͈ȉ�
-���B
+　普段OllyDbgを使っているせいなのか、レジスタが多いせいなのか分からないが
+、少し読みにくい。しかし、慣れればそんなでもないだろう。重要な部分は以下
+だ。
 
------  ��������
+-----  条件分岐
 00000000`0040101f 488d4c2430      lea     rcx,[rsp+30h]
 00000000`00401024 ff15d60f0000    call    qword ptr [crackme1!_imp_GetSystemTime]
 00000000`0040102a 0fb7542430      movzx   edx,word ptr [rsp+30h]
@@ -309,57 +309,57 @@ crackme1!WinMain:
 00000000`0040104c 750f            jne     crackme1!WinMain+0x5d
 -----
 
-�@GetSystemTime�֐����Ăяo����Ă��邪�A���̊֐��̈����͂ЂƂŁA�\����
-�̃A�h���X���B����āA0040101f�ɂāArcx�ɍ\���̂̃A�h���X�������ꂽ�ƕ�
-����B����ɁA�Ăяo���ꂽ���ƁAdx���W�X�^�ɒl���]������Ă���B����āA
-�A�h���X00401035�ŁAdx���W�X�^��0x04A8����r����Ă���B���Ȃ݂�04A8h�͏\
-�i����1192�B�������A0040102f�ɂāAr11w�ցAGetSystemTime�֐��ɂĎ擾���ꂽ
-�l���]������Ă���B���Ȃ݂ɁAr11��64�r�b�g�T�C�Y�ŁAr11d��r11�̉���32�r
-�b�g�Ar11w��r11d�̉���16�r�b�g���B
-�@���̂悤�Ȋ����ŁA���W�X�^�ւ̓]���Ɣ�r���s���Ajne���߂ŃW�����v�悪
-������Ă���B�������A�W�����v���Ă��܂�����A�G���[���b�Z�[�W���\������
-�邽�߁A�����̓W�����v�����Ȃ��悤�Ƀo�C�i����ύX���Ȃ���΂Ȃ�Ȃ��B��
-���āA�����3��jne���߂��ׂĂ��t�]�����Ă��΁A�N���b�N�͊����ƂȂ�B
+　GetSystemTime関数が呼び出されているが、この関数の引数はひとつで、構造体
+のアドレスだ。よって、0040101fにて、rcxに構造体のアドレスが入れられたと分
+かる。さらに、呼び出されたあと、dxレジスタに値が転送されている。よって、
+アドレス00401035で、dxレジスタと0x04A8が比較されている。ちなみに04A8hは十
+進数で1192。同じく、0040102fにて、r11wへ、GetSystemTime関数にて取得された
+値が転送されている。ちなみに、r11は64ビットサイズで、r11dはr11の下位32ビ
+ット、r11wはr11dの下位16ビットだ。
+　このような感じで、レジスタへの転送と比較が行われ、jne命令でジャンプ先が
+示されている。しかし、ジャンプしてしまったら、エラーメッセージが表示され
+るため、ここはジャンプさせないようにバイナリを変更しなければならない。よ
+って、これら3つのjne命令すべてを逆転させてやれば、クラックは完了となる。
 
 
-��0x05.) �o�C�i���ύX
+■0x05.) バイナリ変更
 
-�@�����ăo�C�i����ύX����Bcrackme1.exe���o�C�i���G�f�B�^�ŊJ���ƁA�A�h
-���X00000400�ȉ�����A�R�[�h��������Ă���̂�������B������������PE�t�H
-�[�}�b�g���啝�ȕύX���������Ă��邩������Ȃ��A�Ǝv�������A�R�[�h�Z�N
-�V�����̃A�h���X�Ȃǂ͂������ĕ��ʂ������B64�r�b�g����EXE�t�@�C�����A��
-�X����������̂ŁA���Ă݂����C�����邪�A�Ƃ肠������jne���߂̕ύX���s����
-�Ƃɂ���B
+　続いてバイナリを変更する。crackme1.exeをバイナリエディタで開くと、アド
+レス00000400以下から、コードが書かれてあるのが分かる。もしかしたらPEフォ
+ーマットも大幅な変更が加えられているかもしれない、と思ったが、コードセク
+ションのアドレスなどはいたって普通だった。64ビット環境のEXEファイルも、少
+々興味があるので、見てみたい気もするが、とりあえずはjne命令の変更を行うこ
+とにする。
 
------  crackme1.exe�i�ύX�O�j�ihttp://07c00.com/text/x64rev1/crackme1.exe�j
+-----  crackme1.exe（変更前）（http://07c00.com/text/x64rev1/crackme1.exe）
 00000430  0F B7 5C 24 36 66 81 FA A8 04 0F B7 4C 24 32 75 
 00000440  1C 66 83 F9 05 75 16 66 41 83 FB 0F 75 0F FF 15 
 -----
 
-�@0000043F����u75�v��3��قǏo�����Ă���̂�������B����āA�����3��
-�u74�v�ɕύX����B
+　0000043Fから「75」が3回ほど出現しているのが分かる。よって、これら3つを
+「74」に変更する。
 
------  crackme1.exe�i�ύX��j�ihttp://07c00.com/text/x64rev1/crackme1c.exe�j
+-----  crackme1.exe（変更後）（http://07c00.com/text/x64rev1/crackme1c.exe）
 00000430  0F B7 5C 24 36 66 81 FA A8 04 0F B7 4C 24 32 74 
 00000440  1C 66 83 F9 05 74 16 66 41 83 FB 0F 74 0F FF 15 
 -----
 
-���s��ʁFhttp://07c00.com/text/x64rev1/b.png
+実行画面：http://07c00.com/text/x64rev1/b.png
 
 
-��0x06.) ��������
+■0x06.) さいごに
 
-�@����́A64�r�b�g���ł��A�}�V�����͂𒆐S�Ƃ������o�[�X�G���W�j�A��
-���O���s����̂��A���������B32�r�b�g���Ɣ�ׂ�ƁA���W�X�^�̃T�C�Y��64
-�r�b�g�ɂȂ��Ă�����A�A�h���X�i�|�C���^�j��64�r�b�g�ɂȂ��Ă�����ŁA��
-���܂ł͏��X��J���邩������Ȃ����A��낤�Ǝv���Ώ\���\�ł��邱�Ƃ�
-���������B
-�@32�r�b�g�����ƁA�ǂ����Ă����ڂ��郁�����́i��O�͂��邪��ʓI�ȍl��
-���Ƃ��Ắj4G�o�C�g�܂łȂ̂ŁA����R���s���[�^������ɍ����\�����Ă���
-���߂ɂ́A64�r�b�g���͕K�{�Ȃ̂�������Ȃ��B�������A���̏ꍇ�ɂ����Ă��A
-�}�V�����͂ɂ�郊�o�[�X�G���W�j�A�����O���\�Ȃ�΁A�܂��A�Z���u����
-���Ӗ�������̂ł͂Ȃ����Ǝv���B
-�@����������΁A���ЂƂ�x64�̃A�Z���u��������Ă݂Ăق����B
+　今回は、64ビット環境でも、マシン語解析を中心としたリバースエンジニアリ
+ングが行えるのか、を試した。32ビット環境と比べると、レジスタのサイズが64
+ビットになっていたり、アドレス（ポインタ）が64ビットになっていたりで、慣
+れるまでは少々苦労するかもしれないが、やろうと思えば十分可能であることが
+分かった。
+　32ビット環境だと、どうしても搭載するメモリは（例外はあるが一般的な考え
+方としては）4Gバイトまでなので、今後コンピュータをさらに高性能化していく
+ためには、64ビット化は必須なのかもしれない。しかし、その場合においても、
+マシン語解析によるリバースエンジニアリングが可能ならば、まだアセンブラを
+やる意味もあるのではないかと思う。
+　興味があれば、ぜひともx64のアセンブラもやってみてほしい。
 
 
 

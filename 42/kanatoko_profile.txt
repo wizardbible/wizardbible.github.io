@@ -1,21 +1,21 @@
-������
-��Job: �v���O���}�[
-��Web: http://guardian.jumperz.net/, http://www.jumperz.net/
-��Mail: anvil@jumperz.net
-��Comment:
-�@�����̉�Ђłͳ��ޱ��؍�肪�D������۸��ϰ/�ݼ�Ʊ�n�̐l���W���悤����
-�v���Ă���Ƃ���i�Ȃ񂾂����j�ł��B�����͂��܂�o�܂��񂪔�r�I���R��
-�����̐E��Ƃ����ܻ�ł��B�����������Ұق��������B�������Ȃ���ق͈ȉ��ɂ�
-��܂��B
-�EWindows���ް�Ǘ��n���
-�E�iMicrosoft�́jASP�AC#�Ƃ�VB
-�E�ėp���߭���̒m���@JCL�Ƃ���
-�ECOBOL������
-�����̉�
-�@���̉Ă͉��{�ꉫ�̗v�ǁA�����ɂ����Ă��܂����I
-�@�^�d�Ԏ��̎��ƎI�ǌn�b��Ő���オ���Ă����Ƃ���A�u���ް����Ǘ��͊y
-�����ł���ˁB�����Ď����̔閧��n����Ă�݂����Ȃ��񂶂�Ȃ��ł����I�v
-�ƈꌾ�B�������Ȃ�قǁB���ފǗ����Ėʓ|�ő�ςŋ��ɂȂ�Ȃ��̂ɂȂ�ł�
-��ȂɊy�����̂��A�Ƃ������N�̋^�₪�X�򂵂܂����B
+■金床
+●Job: プログラマー
+●Web: http://guardian.jumperz.net/, http://www.jumperz.net/
+●Mail: anvil@jumperz.net
+●Comment:
+　ワタクシの会社ではウェブアプリ作りが好きなプログラマー/エンジニア系の人を募集しようかと
+思っているところ（なんだそりゃ）です。お金はあまり出ませんが比較的自由な
+感じの職場というウワサです。興味ある方はメールくだちい。活かせないスキルは以下にな
+ります。
+・Windowsサーバー管理系スキル
+・（Microsoftの）ASP、C#とかVB
+・汎用コンピュータの知識　JCLとかｗ
+・COBOLｗｗｗ
+●この夏
+　この夏は横須賀沖の要塞、猿島にいってきますた！
+　某電車事故氏と鯖管系話題で盛り上がっていたところ、「サーバー作りや管理は楽
+しいですよね。だって自分の秘密基地作ってるみたいなもんじゃないですか！」
+と一言。おおっなるほど。サーバ管理って面倒で大変で金にならないのになんでこ
+んなに楽しいのか、という長年の疑問が氷塊しますた。
 
 

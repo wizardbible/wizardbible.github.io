@@ -1,33 +1,33 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- ��0��: DNS�g��EDNS0�̉��  ---
+--- 第0章: DNS拡張EDNS0の解析  ---
 
-���ҁFKenji Aiko
+著者：Kenji Aiko
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@�u512�o�C�g�̕ǁv�Ƃ������t�������m���낤���H
-�@TCP/IP�l�b�g���[�N�ɂ����āA�M�����Ƒ��x�̓g���[�h�I�t�̊֌W�ɂ���B��
-���������z�I�ȋ�Ԃ��\�z���Ă��邩�̂悤�Ɍ�����C���^�[�l�b�g�ɂ����Ă��A
-���A�����E�̕����I�����𖳎����Ă���킯�ł͂Ȃ��B���{�̃R���s���[�^����
-���M���ꂽ�f�[�^���A�u���W���̃R���s���[�^�ɕK�������͂��Ƃ͌���Ȃ��B��
-���炱���A�M������ۏႷ�邽�߂�TCP�ł���B
-�@�������A�C���^�[�l�b�g�̍������x���Ă���Z�p�̂ЂƂł���DNS�iDomain
- Name System�j�l�b�g���[�N�́A�M�������������Ƃƈ��������ɑ��x���d������
-UDP�ɂ���������Ă���B���O�����̓C���^�[�l�b�g�̍����̂ЂƂł���ƌ�
-���邾�낤�B�������A���̊��ɂ͂��܂蒍�ړx�������Ȃ��B
-�@����͂���ȁA���̉��̗͎����̘b�ł���B
+　「512バイトの壁」という言葉をご存知だろうか？
+　TCP/IPネットワークにおいて、信頼性と速度はトレードオフの関係にある。あ
+たかも仮想的な空間を構築しているかのように見えるインターネットにおいても、
+リアル世界の物理的距離を無視しているわけではない。日本のコンピュータから
+送信されたデータが、ブラジルのコンピュータに必ずしも届くとは限らない。だ
+からこそ、信頼性を保障するためのTCPである。
+　しかし、インターネットの根幹を支えている技術のひとつであるDNS（Domain
+ Name System）ネットワークは、信頼性を失うことと引き換えに速度を重視した
+UDPにより実現されている。名前解決はインターネットの根幹のひとつであると言
+えるだろう。しかし、その割にはあまり注目度が高くない。
+　今回はそんな、縁の下の力持ちの話である。
 
 
-��0x02.) 512�o�C�g�̕�
+■0x02.) 512バイトの壁
 
-�@�u512�o�C�g�̕ǁv�Ƃ́A���O�����Ɏg�p�ł���p�P�b�g�T�C�Y�̌��E�l���w���B
-�Ⴆ��dig�R�}���h�Ŗ��O�������s���ƁA�󂯎�����p�P�b�g�T�C�Y���\�������B
+　「512バイトの壁」とは、名前解決に使用できるパケットサイズの限界値を指す。
+例えばdigコマンドで名前解決を行うと、受け取ったパケットサイズが表示される。
 
 -----  terminal
 # dig @localhost www.example.jp
@@ -51,17 +51,17 @@ example.jp.             86400   IN      NS      dns.example.jp.example.jp.
 ;; Query time: 0 msec
 ;; SERVER: 127.0.0.1#53(127.0.0.1)
 ;; WHEN: Sat Apr 19 03:33:15 2008
-;; MSG SIZE  rcvd: 77�i���|�C���g�j
+;; MSG SIZE  rcvd: 77（←ポイント）
 
 #
 -----
 
-�@���O�����ɂ��󂯎�����p�P�b�g�T�C�Y�́A0x77�o�C�g�ł��邱�Ƃ�������B
-512�o�C�g�Ɏ��܂��Ă��邽�߁A����ɖ��O�������o����B�ł́A����512�o�C�g
-���傫�����O�����������K�v�ɂȂ�����ǂ����낤�B�ȉ��̃t�@�C����p�ӂ�
-��B
+　名前解決により受け取ったパケットサイズは、0x77バイトであることが分かる。
+512バイトに収まっているため、正常に名前解決が出来る。では、もし512バイト
+より大きい名前解決応答が必要になったらどうだろう。以下のファイルを用意す
+る。
 
------  example.zone�iBIND9�p�ݒ�t�@�C���j
+-----  example.zone（BIND9用設定ファイル）
 $TTL 86400
 @       IN      SOA     dns.example.jp. root.example.jp. (
                         2006120101
@@ -77,17 +77,17 @@ www     IN      A       192.168.10.101
 www     IN      A       192.168.10.102
 www     IN      A       192.168.10.103
 www     IN      A       192.168.10.104
-�i�ȗ��j
+（省略）
 www     IN      A       192.168.10.163
 -----
 
-�@www.example.jp�ɑ�����IP�A�h���X�����蓖�Ă��B100����163�܂�64��IP�A
-�h���X�����蓖�Ă��Ă��邽�߁A���O���������͕K��512�o�C�g�𒴂��邾�낤�B
-�ł́Adig�ŗv���𑗂�A�������m�F����B
+　www.example.jpに多くのIPアドレスを割り当てた。100から163まで64個のIPア
+ドレスが割り当てられているため、名前解決応答は必ず512バイトを超えるだろう。
+では、digで要求を送り、応答を確認する。
 
 -----  terminal
 # dig @localhost www.example.jp
-;; Truncated, retrying in TCP mode.�i���|�C���g�j
+;; Truncated, retrying in TCP mode.（←ポイント）
 
 ; <<>> DiG 9.4.0 <<>> @localhost www.example.jp
 ; (1 server found)
@@ -103,7 +103,7 @@ www     IN      A       192.168.10.163
 www.example.jp.         86400   IN      A       192.168.10.100
 www.example.jp.         86400   IN      A       192.168.10.101
 www.example.jp.         86400   IN      A       192.168.10.102
-�i�ȗ��j
+（省略）
 www.example.jp.         86400   IN      A       192.168.10.163
 
 ;; AUTHORITY SECTION:
@@ -112,37 +112,37 @@ example.jp.             86400   IN      NS      dns.example.jp.example.jp.
 ;; Query time: 2 msec
 ;; SERVER: 127.0.0.1#53(127.0.0.1)
 ;; WHEN: Sat Apr 19 03:43:26 2008
-;; MSG SIZE  rcvd: 1085�i���|�C���g�j
+;; MSG SIZE  rcvd: 1085（←ポイント）
 
 #
 -----
 
-�@512�o�C�g�̕ǂ��z�������߁A�ʐM��TCP���[�h�ɂȂ����B
-�@���̐ݒ�t�@�C���͈Ӑ}����512�o�C�g�𒴂���悤�ɂ��Ă��邪�A����IPv6��
-���y���n�߂�ƁA�ۉ��Ȃ����̖��ɂԂ��邱�ƂɂȂ�B�����āA���̉�����
-�@��TCP�B�m���Ɉꗝ���邪�A���x���K�v�����炱��UDP���g���Ă���DNS�B�����āA
-������u���x���K�v�ł���v�Ƃ��������͕ς��Ȃ��B
-�@��������A���ݍL���g���n�߂Ă���uEDNS0�v�ւƘb���i�ށB
+　512バイトの壁を越えたため、通信がTCPモードになった。
+　この設定ファイルは意図して512バイトを超えるようにしているが、今後IPv6が
+普及し始めると、否応なくこの問題にぶつかることになる。そして、その解決方
+法がTCP。確かに一理あるが、速度が必要だからこそUDPを使っていたDNS。そして、
+今後も「速度が必要である」という事実は変わらない。
+　ここから、現在広く使われ始めている「EDNS0」へと話が進む。
 
 
-��0x03.) EDNS0
+■0x03.) EDNS0
 
-�@DNS��512�o�C�g�𒴂��Ȃ����܂�ł��邪�A�l�b�g���[�N�Ƃ���512�o�C�g�ȏ�
-�̃p�P�b�g�͈����Ȃ����H�@�Ƃ����ƁA�����ł��Ȃ��BMTU�iMaximum Transmiss
-ion Unit�j��1500���炢����Ȃ�A�ʂ�DNS�ł�1500�o�C�g�̃p�P�b�g��������B
-���́A�T�[�o���ƃN���C�A���g���̗����ɁA512�o�C�g�ȏ��MTU�������邩��
-�����ł���B�����āA�������������̂��AEDNS0�ł���B
-�@�ڂ������Ƃ́ARFC2671�ɏ�����Ă���B
+　DNSは512バイトを超えない決まりであるが、ネットワークとして512バイト以上
+のパケットは扱えないか？　というと、そうでもない。MTU（Maximum Transmiss
+ion Unit）が1500くらいあるなら、別にDNSでも1500バイトのパケットを扱える。
+問題は、サーバ側とクライアント側の両方に、512バイト以上のMTUが扱えるかど
+うかである。そして、それを解決するのが、EDNS0である。
+　詳しいことは、RFC2671に書かれてある。
 
-RFC2671�@DNS�p�g�����J�j�Y�� (EDNS0)
+RFC2671　DNS用拡張メカニズム (EDNS0)
 http://www.nic.ad.jp/ja/translation/rfc/2671.html
 
-�@����Ȃ�ɒ����̂œǂނ̂���ς����A�v�񂷂�ƁuDNS�̗v���Ɖ����Ɂw�]��
-�\�o�C�g�x���i�[����v�Ƃ������Ƃ��B�N���C�A���g����̗v���ɓ����Ă���
-�u�]���\�o�C�g�v�ƁA�T�[�o���g�́u�]���\�o�C�g�v���r���ď���������
-���킹��B���݂̃l�b�g���[�N�ɂ����āu�]���\�o�C�g�v��512�Ȃ�Ă��Ƃ͂�
-�ڂȂ����߁A����ň��S����512�o�C�g�ȏ�̃f�[�^��������B
-�@dig�R�}���h�ł́Abufsize�I�v�V�������w�肷�邱�ƂŁAEDNS0��������B
+　それなりに長いので読むのが大変だが、要約すると「DNSの要求と応答に『転送
+可能バイト』を格納する」ということだ。クライアントからの要求に入っている
+「転送可能バイト」と、サーバ自身の「転送可能バイト」を比較して小さい方に
+合わせる。現在のネットワークにおいて「転送可能バイト」が512なんてことはほ
+ぼないため、これで安心して512バイト以上のデータを扱える。
+　digコマンドでは、bufsizeオプションを指定することで、EDNS0を扱える。
 
 -----  terminal
 # dig +bufsize=2048 @localhost www.example.jp
@@ -155,7 +155,7 @@ http://www.nic.ad.jp/ja/translation/rfc/2671.html
 ;; flags: qr aa rd ra; QUERY: 1, ANSWER: 64, AUTHORITY: 1, ADDITIONAL: 1
 
 ;; OPT PSEUDOSECTION:
-; EDNS: version: 0, flags:; udp: 4096�i���|�C���g�j
+; EDNS: version: 0, flags:; udp: 4096（←ポイント）
 ;; QUESTION SECTION:
 ;www.example.jp.                        IN      A
 
@@ -163,7 +163,7 @@ http://www.nic.ad.jp/ja/translation/rfc/2671.html
 www.example.jp.         86400   IN      A       192.168.10.100
 www.example.jp.         86400   IN      A       192.168.10.101
 www.example.jp.         86400   IN      A       192.168.10.102
-�i�ȗ��j
+（省略）
 www.example.jp.         86400   IN      A       192.168.10.163
 
 ;; AUTHORITY SECTION:
@@ -172,17 +172,17 @@ example.jp.             86400   IN      NS      dns.example.jp.example.jp.
 ;; Query time: 2 msec
 ;; SERVER: 127.0.0.1#53(127.0.0.1)
 ;; WHEN: Sat Apr 19 03:59:13 2008
-;; MSG SIZE  rcvd: 1096�i���|�C���g�j
+;; MSG SIZE  rcvd: 1096（←ポイント）
 
 #
 -----
 
-�@���x��1096�o�C�g��DNS�p�P�b�g��UDP�ŏ��������B
+　今度は1096バイトのDNSパケットをUDPで処理した。
 
 
-��0x04.) �p�P�b�g���
+■0x04.) パケット解析
 
-�@512�o�C�g�𒴂��Ȃ����O�����̏ꍇ�͕��ʂ�DNS�p�P�b�g�ƂȂ�B
+　512バイトを超えない名前解決の場合は普通のDNSパケットとなる。
 
 -----  terminal
 # dig @55.55.55.56 dns.example.jp
@@ -209,7 +209,7 @@ listening on eth0, link-type EN10MB (Ethernet), capture size 400 bytes
         0x0070:  6c65 026a 70c0 10                        le.jp..
 -----
 
-�@���ɁAEDNS0���g�p�����p�P�b�g���m�F����B
+　次に、EDNS0を使用したパケットを確認する。
 
 -----  terminal
 # dig +bufsize=2048 @55.55.55.56 dns.example.jp
@@ -238,92 +238,92 @@ listening on eth0, link-type EN10MB (Ethernet), capture size 400 bytes
         0x0080:  0000                                     ..
 -----
 
-�@�ʏ�̃p�P�b�g�ƌ���ׂ�ƁA�v���Ɖ����̗����ɁA11�o�C�g�̃f�[�^���t��
-����Ă��邱�Ƃ��m�F�ł���B
+　通常のパケットと見比べると、要求と応答の両方に、11バイトのデータが付加
+されていることが確認できる。
 
------  �ǉ������i�v���j
+-----  追加部分（要求）
         0x0040:  xxxx xxxx xxxx xxxx xxxx 0000 2908 0000
         0x0050:  0000 0000 00 
 -----
 
------  �ǉ������i�����j
+-----  追加部分（応答）
         0x0070:  xxxx xxxx xxxx xx00 0029 1000 0000 0000
         0x0080:  0000
 -----
 
-�@���̃f�[�^��́ADNS��OPT-RR�t�H�[�}�b�g�ɏ]�������ɂȂ��Ă��邽�߁A��
-�{�I��OPT-RR��ǂݏo�����@�œǂ߂�B�������A�֋X�I�Ƀt�H�[�}�b�g�ɏ]����
-�����ł��邽�߁ARFC�ł́uOPT�^��RR�v�ƒ�`����A�uDNS�p�P�b�g�ɂЂƂ���
-�ǉ��ł���v�Ƃ���Ă���B
-�@OPT-RR�̌Œ蕔���̍\�����ȉ��Ɏ����B
+　このデータ列は、DNSのOPT-RRフォーマットに従った作りになっているため、基
+本的にOPT-RRを読み出す方法で読める。ただし、便宜的にフォーマットに従った
+だけであるため、RFCでは「OPT疑似RR」と定義され、「DNSパケットにひとつだけ
+追加できる」とされている。
+　OPT-RRの固定部分の構造を以下に示す。
 
- �t�B�[���h�� | �t�B�[���h�^�C�v     | ����
+ フィールド名 | フィールドタイプ     | 説明
 --------------+----------------------+-----------------------------------
- NAME         | �h���C����           | �h���C�����i�I�['\0'�j
- TYPE         | u_int16_t            | �^�C�v�i'A', 'PTR', 'NS', etc...�j
- CLASS        | u_int16_t            | �N���X�i'IN', etc...�j
- TTL          | u_int32_t            | TTL�iTime To Live�j
- RDLEN        | u_int16_t            | RDATA�̃T�C�Y
- RDATA        | �I�N�e�b�g�X�g���[�� | �f�[�^
---------------+----------------------+-----------------------------------
-
-�@����炪�AOPT�^��RR�ꍇ�A�ȉ��̂悤�ɐݒ肳���B
-
- �t�B�[���h�� | �t�B�[���h�^�C�v     | ����
---------------+----------------------+-----------------------------------
- NAME         | �h���C����           | '\0'�Œ�
- TYPE         | u_int16_t            | 0��0029�iEDNS0���ʔԍ��j
- CLASS        | u_int16_t            | �]���\�o�C�g�i2048, 4096, etc...�j
- TTL          | u_int32_t            | 0x00000000�Œ�iDNSSEC����flag�����j
- RDLEN        | u_int16_t            | 0x0000�Œ�
- RDATA        | �I�N�e�b�g�X�g���[�� | RDLEN��0x0000�Œ�ł��邽�ߎ����Ȃ�
+ NAME         | ドメイン名           | ドメイン名（終端'\0'）
+ TYPE         | u_int16_t            | タイプ（'A', 'PTR', 'NS', etc...）
+ CLASS        | u_int16_t            | クラス（'IN', etc...）
+ TTL          | u_int32_t            | TTL（Time To Live）
+ RDLEN        | u_int16_t            | RDATAのサイズ
+ RDATA        | オクテットストリーム | データ
 --------------+----------------------+-----------------------------------
 
-�@TTL�̕�����1�o�C�g���Ƃɕʂ̃X�e�[�^�X�����蓖�Ă��Ă��邪�A����EDNS
-0���g���ꍇ�͂��ׂ�0�Œ�ł���BDNSSEC���g�p����ꍇ�̂݃t���O�����B��
-�ׂ�RFC�ɂāB
-�@�ł́A���̃t�H�[�}�b�g��v���Ɖ����̂��ꂼ��Ŏ󂯎����OPT�^��RR�œ���
-�͂߂�B
+　これらが、OPT疑似RR場合、以下のように設定される。
 
- �t�B�[���h�� | �v��                 | ����
+ フィールド名 | フィールドタイプ     | 説明
 --------------+----------------------+-----------------------------------
- NAME         | 0x00                 | '\0'�Œ�
- TYPE         | 0x0029               | 0��0029�iEDNS0���ʔԍ��j
- CLASS        | 0x1000               | �]���\�o�C�g�i2048, 4096, etc...�j
- TTL          | 0x00000000           | 0x00000000�Œ�iDNSSEC����flag�����j
- RDLEN        | 0x0000               | 0x0000�Œ�
- RDATA        | �Ȃ�                 | RDLEN��0x0000�Œ�ł��邽�ߎ����Ȃ�
+ NAME         | ドメイン名           | '\0'固定
+ TYPE         | u_int16_t            | 0ｘ0029（EDNS0識別番号）
+ CLASS        | u_int16_t            | 転送可能バイト（2048, 4096, etc...）
+ TTL          | u_int32_t            | 0x00000000固定（DNSSEC時にflagが立つ）
+ RDLEN        | u_int16_t            | 0x0000固定
+ RDATA        | オクテットストリーム | RDLENが0x0000固定であるため実質なし
 --------------+----------------------+-----------------------------------
 
- �t�B�[���h�� | ����                 | ����
+　TTLの部分は1バイトごとに別のステータスが割り当てられているが、現状EDNS
+0を使う場合はすべて0固定である。DNSSECを使用する場合のみフラグが立つ。詳
+細はRFCにて。
+　では、このフォーマットを要求と応答のそれぞれで受け取ったOPT疑似RRで当て
+はめる。
+
+ フィールド名 | 要求                 | 説明
 --------------+----------------------+-----------------------------------
- NAME         | 0x00                 | '\0'�Œ�
- TYPE         | 0x0029               | 0��0029�iEDNS0���ʔԍ��j
- CLASS        | 0x0800               | �]���\�o�C�g�i2048, 4096, etc...�j
- TTL          | 0x00000000           | 0x00000000�Œ�iDNSSEC����flag�����j
- RDLEN        | 0x0000               | 0x0000�Œ�
- RDATA        | �Ȃ�                 | RDLEN��0x0000�Œ�ł��邽�ߎ����Ȃ�
+ NAME         | 0x00                 | '\0'固定
+ TYPE         | 0x0029               | 0ｘ0029（EDNS0識別番号）
+ CLASS        | 0x1000               | 転送可能バイト（2048, 4096, etc...）
+ TTL          | 0x00000000           | 0x00000000固定（DNSSEC時にflagが立つ）
+ RDLEN        | 0x0000               | 0x0000固定
+ RDATA        | なし                 | RDLENが0x0000固定であるため実質なし
 --------------+----------------------+-----------------------------------
 
-�@�ړI�ƂȂ�]���\�o�C�g�ȊO���قǃf�[�^�𑗂��Ă��Ȃ����Ƃ��킩��B
-�@���̂悤�ɂ��āADNS��512�o�C�g�̕ǂ�TCP�Ȃ��ō�������B
+ フィールド名 | 応答                 | 説明
+--------------+----------------------+-----------------------------------
+ NAME         | 0x00                 | '\0'固定
+ TYPE         | 0x0029               | 0ｘ0029（EDNS0識別番号）
+ CLASS        | 0x0800               | 転送可能バイト（2048, 4096, etc...）
+ TTL          | 0x00000000           | 0x00000000固定（DNSSEC時にflagが立つ）
+ RDLEN        | 0x0000               | 0x0000固定
+ RDATA        | なし                 | RDLENが0x0000固定であるため実質なし
+--------------+----------------------+-----------------------------------
+
+　目的となる転送可能バイト以外さほどデータを送っていないことがわかる。
+　このようにして、DNSは512バイトの壁をTCPなしで克服する。
 
 
-��0x05.�j ��������
+■0x05.） さいごに
 
-�@BIND9�ł́A�v�����A�܂��ŏ���EDNS0�̃N�G�����o���B�܂�ABIND9�͂��ł�
-512�o�C�g�̕ǂ̍����ɓ����Ă���킯�����A�K���������̂悤�Ȏ������悢����
-�킩��Ȃ��B�Ȃ��Ȃ�AEDNS0�ɑΉ����Ă��Ȃ��T�[�o�����݂��邩�炾�B����E
-DNS0�ɃT�[�o�����Ή����Ă��Ȃ������ꍇ�A�T�[�o�̓G���[�����Ƃ��āiNOTIMP
-L, FORMERR, or SERVFAIL�j��Ԃ��B�����Ȃ�ƁA�ēx�A���x�͒ʏ��DNS�v����
-�o���K�v���łĂ���B
-�@�v���g�R���̍��{�I���́A�v���g�R���𗘗p���邷�ׂẴ\�t�g�E�F�A����
-�����Ȃ���ΈӖ����Ȃ��BBIND9������EDNS0�ɑΉ������Ƃ��Ă��A���̃\�t�g��
-�Ή����Ă���Ȃ���΁A���ǉ����ɂ͂Ȃ�Ȃ��B�������ABIND9�͂����Ƃ����y��
-�Ă���DNS�T�[�o�̂ЂƂ��B����BIND9���AEDNS0�̗��p�ɓ��ݏo�����Ƃ�������
-�́A����Ȃ�Ɏx���𓾂��g���ł���̂ł͂Ȃ����Ǝv���B
-�@�C���^�[�l�b�g�̍������x����DNS�B���܂ɂ͂��̋Z�p�ɖڂ������Ă݂�̂���
-���̂ł͂Ȃ����낤���B
+　BIND9では、要求時、まず最初にEDNS0のクエリを出す。つまり、BIND9はすでに
+512バイトの壁の克服に動いているわけだが、必ずしもこのような実装がよいかは
+わからない。なぜなら、EDNS0に対応していないサーバも存在するからだ。もしE
+DNS0にサーバ側が対応していなかった場合、サーバはエラー応答として（NOTIMP
+L, FORMERR, or SERVFAIL）を返す。こうなると、再度、今度は通常のDNS要求を
+出す必要がでてくる。
+　プロトコルの根本的問題は、プロトコルを利用するすべてのソフトウェアが対
+応しなければ意味がない。BIND9だけがEDNS0に対応したとしても、他のソフトが
+対応してくれなければ、結局解決にはならない。しかし、BIND9はもっとも普及し
+ているDNSサーバのひとつだ。そのBIND9が、EDNS0の利用に踏み出したということ
+は、それなりに支持を得た拡張であるのではないかと思う。
+　インターネットの根幹を支えるDNS。たまにはその技術に目を向けてみるのもよ
+いのではないだろうか。
 
 
 

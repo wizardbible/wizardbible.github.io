@@ -1,74 +1,74 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- ��5��: Linux�A�N�Z�X�R���g���[���N�C�b�N���t�F�����X ---
+--- 第5章: Linuxアクセスコントロールクイックリフェレンス ---
 
-���ҁFTaka John Brunkhorst
+著者：Taka John Brunkhorst
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@�����Linux�A�N�Z�X�R���g���[���ɂ��ď����Ă݂܂����B
-�@�n�߂̓`���[�g���A���Ƃ��ď����n�߂܂������ǂ��������������Ƃ����܂��Ă���̂Ɍ��t���o�Ă��Ȃ��悤�Ȃ̂ŃN�C�b�N���t�F�����X�Ƃ������Ƃɂ��Ă݂܂����B
-�@�Ȃ��A+6777�Ȃ�UNIX�ƈႤ�Ƃ����������悤�ȋL��������̂�UNIX�͊܂߂܂���ł������A�قƂ�ǂ̏ꍇ�͋��ʂ���͂��ł��B
-
-
-��0x02.) UNIX���C�N�p�[�~�b�V�����@���V���{����
-
-�@Linux�A�N�Z�X�R���g���[���iUNIX���C�N�p�[�~�b�V�����j��4�ʂ�̕\�����@
-������܂��B
-
-�@�܂��ЂƂ̓V���{���ł��B���̃V���{���ł̃p�[�~�b�V�����\���͔��ɂ�
-����₷���d�g�݂ɂȂ��Ă��܂��B�Ⴆ�΁A�us-trwxrw-r--�v�Ȃ�A�us-t�v�iS
-pecial bits�j�A�urwx�v�iUser�j�A�urw-�v�iGroup�j�A�ur--�v�iOther�j�ƕ���
-�邱�Ƃ��ł��܂��B�܂�A�V���{����4�̃Z�N�V�����ɕ�����Ă���̂ł��B
+　今回はLinuxアクセスコントロールについて書いてみました。
+　始めはチュートリアルとして書き始めましたがどうも書きたいことが決まっているのに言葉が出てこないようなのでクイックリフェレンスということにしてみました。
+　なお、+6777などUNIXと違うとこがあったような記憶がするのでUNIXは含めませんでしたが、ほとんどの場合は共通するはずです。
 
 
-��0x03.) �X�y�V�������[�h
+■0x02.) UNIXライクパーミッション　＜シンボル＞
 
-�@�X�y�V�������[�h�iSpecial bits�̕����j�̓t�@�C���A�f�B���N�g���ɑ΂���
-���ʂȑ����K�v�Ƃ���ꍇ�Ɏg�p���܂��B�����珇�ɁASUID�ASGID�ASticky�V
-���{���ƂȂ��Ă��܂��B
+　Linuxアクセスコントロール（UNIXライクパーミッション）は4通りの表示方法
+があります。
 
-�ESUID�iSet User ID�j
-�@SUID�̓t�@�C���̃I�[�i�[�̌����Ńv���O���������s����ꍇ�Ɏg���܂��B
-�Ⴆ�΃v���O�����̃I�[�i�[��root�Ŏ��s�҂�foo�ł���Ƃ��܂��B�ʏ�ł���f
-oo�̌����Ŏ��s����܂���SUID���Z�b�g����Ă����root�̌����Ŏ��s�ł��܂��B
-SUID���g�p����ƃI�[�i�[�̃p�X���[�h��n�����ɃI�[�i�[�̌����Ŏ��s�ł���
-�̂�lpr�ƂȂǂŎg�p����Ă��܂��B
-�@�V���{���́us�v�ł��B
-
-�ESGID�iSet Group ID�j
-�@SGID��SUID�Ǝ��Ă��܂��BSGID���Z�b�g����Ă���t�@�C���ɑ΂��Ă͂��̃t
-�@�C���̃O���[�v�����Ŏ��s�ł��܂��B�܂�SGID�̓f�B���N�g���ɂ��g�p�ł���
-���B���̏ꍇ���̃f�B���N�g�����ɍ쐬���ꂽ�t�@�C�����ׂĂɂ��̃f�B���N�g
-���̃O���[�v�������^�����܂��B�Ⴆ��/var/user/foo�̃f�B���N�g����SGID 
-moin�Ƃ�touch /var/user/foo/omg�����ꍇomg��moin�̃O���[�v�ɏ������܂��B
-�@�V���{���́us�v�ł��B
-
-�ESticky
-�@Sticky�͌��X�v���O�����̋N����Z�k���邽�߂Ɏ��s�\�v���O�����ɓK�p��
-��v���O�����I����A�v���O�����̃C���[�W���������[�ɕۑ����邽�߂Ɏg�p��
-��Ă��܂����B���݂���̓o�[�`�����������[�̔��W�ɂ��s�K�v�ɂȂ�܂����B
-Sticky���L�����ꂽ�t�@�C���A�f�B���N�g���͕ҏW�̂݋�����A�����폜�̓t
-�@�C���I�[�i�[�A�f�B���N�g���I�[�i�[����root�ȊO�ł��܂���B
-�@�V���{���́ut�v�ł��B
+　まずひとつはシンボルです。このシンボルでのパーミッション表示は非常にわ
+かりやすい仕組みになっています。例えば、「s-trwxrw-r--」なら、「s-t」（S
+pecial bits）、「rwx」（User）、「rw-」（Group）、「r--」（Other）と分け
+ることができます。つまり、シンボルは4つのセクションに分かれているのです。
 
 
-��0x04.) �g�p���@
+■0x03.) スペシャルモード
 
-�@SUID,SGID,Sticky�͕��iUser,Group,Other��Executable�ix�j�̈ʒu�ɒu�����
-���B
-�@�Ⴆ�΂��̑��̃��[�U�[�iother[o]�j��Sticky�iT�j��K�p����ꍇ�́u$ chm
-od o+T file1�v�Ɠ��͂��A�V���{���Łurwxrw-rwt�v�Ƃ������ɂȂ�܂��B
+　スペシャルモード（Special bitsの部分）はファイル、ディレクトリに対して
+特別な操作を必要とする場合に使用します。左から順に、SUID、SGID、Stickyシ
+ンボルとなっています。
 
-�@���ɂ���������������Ă݂܂��B
+・SUID（Set User ID）
+　SUIDはファイルのオーナーの権限でプログラムを実行する場合に使われます。
+例えばプログラムのオーナーがrootで実行者がfooであるとします。通常ですとf
+ooの権限で実行されますがSUIDがセットされているとrootの権限で実行できます。
+SUIDを使用するとオーナーのパスワードを渡さずにオーナーの権限で実行できる
+のでlprとなどで使用されています。
+　シンボルは「s」です。
 
-��Group��SGID
-�@dir1�ɍ쐬���ꂽ�t�@�C���͒N���쐬���悤���֌W�Ȃ�grp�ɏ�������B
+・SGID（Set Group ID）
+　SGIDはSUIDと似ています。SGIDがセットされているファイルに対してはそのフ
+ァイルのグループ権限で実行できます。またSGIDはディレクトリにも使用できま
+す。この場合そのディレクトリ下に作成されたファイルすべてにそのディレクト
+リのグループ権限が与えられます。例えば/var/user/fooのディレクトリがSGID 
+moinとしtouch /var/user/foo/omgした場合omgはmoinのグループに所属します。
+　シンボルは「s」です。
+
+・Sticky
+　Stickyは元々プログラムの起動を短縮するために実行可能プログラムに適用さ
+れプログラム終了後、プログラムのイメージをメモリーに保存するために使用さ
+れていました。現在これはバーチャルメモリーの発展により不必要になりました。
+Stickyが有効されたファイル、ディレクトリは編集のみ許可され、改名削除はフ
+ァイルオーナー、ディレクトリオーナー又はroot以外できません。
+　シンボルは「t」です。
+
+
+■0x04.) 使用方法
+
+　SUID,SGID,Stickyは普段User,Group,OtherのExecutable（x）の位置に置かれま
+す。
+　例えばその他のユーザー（other[o]）にSticky（T）を適用する場合は「$ chm
+od o+T file1」と入力し、シンボルで「rwxrw-rwt」という風になります。
+
+　他にもいくつか例を示してみます。
+
+○GroupにSGID
+　dir1に作成されたファイルは誰が作成しようが関係なくgrpに所属する。
 
 -----
 $ chmod g+s dir1
@@ -76,8 +76,8 @@ $ ls -l dir1
 drwxrwsr--  0 usr grp 0 dir1
 -----
 
-��Other��SUID
-�@exec1��usr�̌����Ŏ��s�����B
+○OtherにSUID
+　exec1がusrの権限で実行される。
 
 -----
 $ whoami
@@ -87,9 +87,9 @@ $ ls -l exec1
 rwxrwxr-s  0 usr grp 0 exec1
 -----
 
-��Group��Sticky
+○GroupにSticky
 
-�@grp�ɏ������Ă��郆�[�U�[��file1��ҏW�ł��邪�폜������͂ł��Ȃ��B
+　grpに所属しているユーザーはfile1を編集できるが削除や改名はできない。
 
 -----
 $ chmod g+t file1
@@ -98,49 +98,49 @@ rwxrwTr--  0 usr grp 0 file1
 -----
 
 
-��0x05.) User,Group,Other
+■0x05.) User,Group,Other
 
-�EUser�F�t�@�C���̏��L�ҁA�쐬��
-�EGroup�F�t�@�C�������L���Ă���O���[�v
-�EOther�F���̑��̃��[�U�[
+・User：ファイルの所有者、作成者
+・Group：ファイルを所有しているグループ
+・Other：その他のユーザー
 
 
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-| �p�[�~�b�V���� | �V���{��  |  �t�@�C���ւ̌���   | �f�B���N�g���ւ̌���
+| パーミッション | シンボル  |  ファイルへの権限   | ディレクトリへの権限
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|    Read        |    r      |  �t�@�C����ǂތ��� | �f�B���N�g���̓��e��\��
+|    Read        |    r      |  ファイルを読む権限 | ディレクトリの内容を表示
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|    Write       |    w      |  �t�@�C����ҏW     | �t�@�C�����쐬�폜
+|    Write       |    w      |  ファイルを編集     | ファイルを作成削除
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   Exucute      |    x      |  �t�@�C�������s     | �t�@�C���̓ǂݏ���
+|   Exucute      |    x      |  ファイルを実行     | ファイルの読み書き
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
 
-��0x06.) �o�C�i��
+■0x06.) バイナリ
 
-�@Special,User,Group,Other�p�[�~�b�V�����̓o�C�i���ŕ\�����邱�Ƃ��ł���
-���B
-�@�u001�v�u111�v�u110�v�u100�v�Ƃ����o�C�i���̏ꍇ�ASpecial,User,Group,O
-ther�ƂȂ�܂��B1���L���Ƃ����킯�ł�����A�V���{���ł́us-T rwx rw- r--�v
-�ƂȂ�A�urwx rw- r-T�v�ƂȂ�܂��B
-
-
-��0x07.) Octal�i8�i���j
-
-�@�Ⴆ�΃o�C�i�����u111�v�̏ꍇ�A�擪����u4�v�u2�v�u1�v�ƂȂ�܂��B
-
-�@�u000 111 101 100�v�̃o�C�i���̏ꍇ�A
-
-�E000 = 0+0+0 = 0
-�E111 = 4+2+1 = 7
-�E101 = 4+0+1 = 5
-�E100 = 4+0+0 = 4
-
-�@�܂�Octal�Łu0754�v�ɂȂ�܂��B0�͗����āA�u754�v�ƕ\�L�ł��܂��B
+　Special,User,Group,Otherパーミッションはバイナリで表示することができま
+す。
+　「001」「111」「110」「100」というバイナリの場合、Special,User,Group,O
+therとなります。1が有効というわけですから、シンボルでは「s-T rwx rw- r--」
+となり、「rwx rw- r-T」となります。
 
 
-��0x08.) �o�C�i��,�V���{��,Octal�ϊ���
+■0x07.) Octal（8進数）
+
+　例えばバイナリが「111」の場合、先頭から「4」「2」「1」となります。
+
+　「000 111 101 100」のバイナリの場合、
+
+・000 = 0+0+0 = 0
+・111 = 4+2+1 = 7
+・101 = 4+0+1 = 5
+・100 = 4+0+0 = 4
+
+　つまりOctalで「0754」になります。0は略して、「754」と表記できます。
+
+
+■0x08.) バイナリ,シンボル,Octal変換例
 
 -----------
 Symbol: --- rwx rwx rwx
@@ -156,38 +156,38 @@ binary: 110 111 101 101
 Octal: 6(4+2) 7(4+2+1) 5(4+1) 5(4+1) = 6755
 
 
-��0x09.) Umask
+■0x09.) Umask
 
-�@umask�̓V�X�e���̃f�t�H���g�p�[�~�b�V�����ݒ��\���A�ύX����Ƃ��Ɏg��
-�܂��B
+　umaskはシステムのデフォルトパーミッション設定を表示、変更するときに使い
+ます。
 
-�@���݂�umask�ݒ��\������ɂ�umask�R�}���h���g���܂��B
+　現在のumask設定を表示するにはumaskコマンドを使います。
 
 -----
 $ umask
 0022
 -----
 
-�@���̏ꍇ�A�V�����쐬���ꂽ���ׂẴt�@�C���̃p�[�~�b�V������644�i��666
--22�j�A�f�B���N�g���̃p�[�~�b�V������755�i��777-22�j�ɂȂ�܂��B
+　この場合、新しく作成されたすべてのファイルのパーミッションは644（＝666
+-22）、ディレクトリのパーミッションは755（＝777-22）になります。
 
-�@�����ЂƂ���o���Ă����܂��B�Ⴆ�΁Aumask��0027�̂Ƃ��́A
+　もうひとつ例を出しておきます。例えば、umaskが0027のときは、
 
-���t�@�C���̏ꍇ
-�E640�i��666-27�j�@�}�C�i�X��0�Ƃ���B
-�E�V���{���Frw- r-- ---
+○ファイルの場合
+・640（＝666-27）　マイナスは0とする。
+・シンボル：rw- r-- ---
 
-���f�B���N�g���̏ꍇ
-�E�p�[�~�b�V�����F750�i��777-27�j
-�E�V���{���Frwx r-x ---
+○ディレクトリの場合
+・パーミッション：750（＝777-27）
+・シンボル：rwx r-x ---
 
 
-��0x02.) ���Ƃ���
+■0x02.) あとがき
 
-�@�ǂ��ł������H
-�@�N�C�b�N���t�F�����X�ǂ��납�����̕\�ɂȂ��Ă��܂����悤�ȋC�����܂��B
-�Ƃ���ǂ��딲���Ă�Ƃ��������ł��傤�������Ă��������B����͂�������
-����man�y�[�W�̏������A������������gdb�iGNU DeBugger�j���g����BoF�A�܂���
-���M�����[�G�N�X�v���V�����`���[�g���A����������������܂���B	
+　どうでしたか？
+　クイックリフェレンスどころかただの表になってしまったような気がします。
+ところどころ抜けてるところもあるでしょうが許してください。次回はもしかし
+たらmanページの書き方、もしかしたらgdb（GNU DeBugger）を使ったBoF、または
+レギュラーエクスプレションチュートリアルを書くかもしれません。	
 
 

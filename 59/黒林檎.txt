@@ -1,85 +1,85 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- �恛��: LINE�̃A�J�E���g�Ȃ肷�܂��ɂ��� ---
+--- 第○章: LINEのアカウントなりすましについて ---
 
-���ҁF���ь�
+著者：黒林檎
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �ŏ���
+■0x01.) 最初に
 
-�@���Ԉ�ʂŌ����Ă���LINE�̏������@�Ɩl�̐���ς܂���@������Ƃ������M�͖����ł������Ȃ莗�����ʂȂ̂ł͖������Ǝv���܂��B
-�@�l�I�ɂ���ɋC�Â��O��ID��PASS������(�������s����)�ł���̂Ƀo�J�݂����ɏ�������A�������A�J�E���g�̎�����ɃA�J�E���g���߂��Ă���?
-�@����ȋ^�₪�悤�₭�����������������܂��B
-
-
-��0x02.) Test��
-
-�Eubuntu 13.10
-�ELINE   4.4.1
-��LINE�̑S�o�[�W�����ōs����Ǝv���܂��B
+　世間一般で言われているLINEの乗っ取り手法と僕の成り済まし手法が同一という自信は無いですがかなり似た結果なのでは無いかと思います。
+　個人的にこれに気づく前はIDとPASSがいる(しかも不特定)であるのにバカみたいに乗っ取られる、しかもアカウントの持ち主にアカウントが戻ってくる?
+　そんな疑問がようやく解決した感じがします。
 
 
-��0x03.) �����������
+■0x02.) Test環境
 
-�EiOS�[��2��
-�E1��ڂ�LINE�A�J�E���gA(����ς܂����A�J�E���g)
-�E2��ڂ�LINE�A�J�E���gB(����ς܂��A�J�E���g)
-������ς܂����A�J�E���g�ɂ͎��o�I�ɂȂ肷�܂����s���Ă���̂�������悤�ɂ��邽�߂ɂ�����x�̃t�����h���g�[�N����������Ɨǂ��ł��傤�B
-�ELinux��(�M�Ҋ�Ubuntu 13.10)
-�@��L��+a��iPad��̃h�L�������g�ɃA�N�Z�X�ł��鎖������
+・ubuntu 13.10
+・LINE   4.4.1
+※LINEの全バージョンで行えると思われます。
 
 
-��0x04.) ���s
+■0x03.) 準備するもの
+
+・iOS端末2台
+・1代目にLINEアカウントA(成り済まされるアカウント)
+・2代目にLINEアカウントB(成り済ますアカウント)
+※成り済まされるアカウントには視覚的になりすましが行われているのが見えるようにするためにある程度のフレンド又トーク履歴があると良いでしょう。
+・Linux環境(筆者環境Ubuntu 13.10)
+　上記環境+aでiPad上のドキュメントにアクセスできる事が条件
+
+
+■0x04.) 実行
 
 cd '/run/user/1000/gvfs/sfc:host=498d2f5e5210116d....,porT=35=3'
 cd jp.naver.line
 
-�@�Ƃ������ʓ|�ȕ��@�͂��Ȃ��ėǂ��ł��B
+　とかいう面倒な方法はしなくて良いです。
 
-�@Ubuntu�̏ꍇ�̓f�o�C�X����"iPad��̃h�L�������g�ɃA�N�Z�X���Ă������B"
+　Ubuntuの場合はデバイスから"iPad上のドキュメントにアクセスしてくだい。"
 
-�@LINE�̃A�C�R�����������Ǝv���̂ŁA
+　LINEのアイコンが見えたと思うので、
 
-�E�擾�f�[�^:talk.sqli
-�E�t�@�C���ꏊ:LINE>Douments>talk.sqli
+・取得データ:talk.sqli
+・ファイル場所:LINE>Douments>talk.sqli
 
 /*
-�֘A����
-LINE�ɂ���:http://www.slideshare.net/murashimamasahiro/line-38283011?ref=http://ameblo.jp/r00tapple/entry-11915243606.html
+関連資料
+LINEについて:http://www.slideshare.net/murashimamasahiro/line-38283011?ref=http://ameblo.jp/r00tapple/entry-11915243606.html
 */
 
-�@�ł́A����Ő���ς܂��A�J�E���g�̊�{�f�[�^(�A�J�E���gA)�͎�ɓ���܂����B
+　では、これで成り済ますアカウントの基本データ(アカウントA)は手に入れました。
 
-�@���ɁA���̃f�[�^���A�J�E���gB�Ƀ}�[�W(�㏑��)���܂��B
-�@�}�[�W��Ƃ���������΃A�J�E���gB��LINE�A�J�E���g���ċN�����Ă��������B
-�@�ȉ��̗l�ȉ�ʂɂȂ�΍�Ƃ�90%�͂قڊ����ł��B
+　次に、このデータをアカウントBにマージ(上書き)します。
+　マージ作業が完了すればアカウントBのLINEアカウントを再起動してください。
+　以下の様な画面になれば作業の90%はほぼ完成です。
 
-�摜1:https://twitter.com/r00tapple/status/507914563409297408/photo/1
+画像1:https://twitter.com/r00tapple/status/507914563409297408/photo/1
 
-�@���@��Ƃ����������account A��account B�̍������Ă��������B
+　動機作業が完了すればaccount Aとaccount Bの差を見てください。
 
 Account A:https://pbs.twimg.com/media/BwyDIhwCEAA4-w9.jpg:large
 Account B:https://pbs.twimg.com/media/BwyDIdoCUAEzH9z.jpg:large
 
-�@���Ă̒ʂ�t�����h�����o�^�O���[�v�Ȃǂ��ׂē����ɂȂ��Ă��܂��B
+　見ての通りフレンド数も登録グループなどすべて同じになっています。
 
-�@���Atalk.sqli�ɏ������܂�Ă���g�[�N�����܂ł̃g�[�N�͂��ׂ�account B�ɂ������p����܂��B
+　又、talk.sqliに書き込まれているトーク履歴までのトークはすべてaccount Bにも引き継がれます。
 
-�@����āAAccount A�Ɠ���̃A�J�E���g���쐬������ł��B
-�@�����Ėʔ������ɁAAccount B���猩��΃O���[�v�ɎQ�����Ă�̂�Account B�ł�(���ۃO���[�v�ɎQ�����Ă���̂�Account A)�B
-�@Account B���O���[�v�Ƀ��b�Z�[�W�𑗐M����Α��M�G���[�ƂȂ著�M���鎖�͏o���܂���B
-�@�������t�����h(��ʓI�ȃt�����h�ɑ΂��Ẵg�[�N)�ɂ������Ă̓��b�Z�[�W�𑗐M���鎖���\�ł��B
-�@����ς܂��ɂ���ĒP�ꃆ�[�U�[�̔�Q���������R�͂���ɂ���ƌ����܂��B
+　よって、Account Aと同一のアカウントが作成される訳です。
+　そして面白い事に、Account Bから見ればグループに参加してるのはAccount Bです(実際グループに参加しているのはAccount A)。
+　Account Bがグループにメッセージを送信すれば送信エラーとなり送信する事は出来ません。
+　しかしフレンド(一般的なフレンドに対してのトーク)にたいしてはメッセージを送信する事が可能です。
+　成り済ましによって単一ユーザーの被害が多い理由はこれにあると言えます。
 
 
-��0x04.) �Ō��
+■0x04.) 最後に
 
-�@talk.sqli�ւ̃A�N�Z�X�����������͓���Ȃ��f�[�^�Ƃ��Ă��d�v�x��������ϋ����[�����̂ł����B
-�@����F������V��ł݂Ă��������B
+　talk.sqliへのアクセス又書き換えは難しくなくデータとしても重要度が高く大変興味深いものでした。
+　是非皆さんも遊んでみてください。
 
 
 

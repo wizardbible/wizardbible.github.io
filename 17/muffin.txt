@@ -1,71 +1,71 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- ��1��: �E�C���X�v���O���~���O�ւ̏���
-           �`�C���|�[�g�Z�N�V��������������API���g�����@�` ---
+--- 第1章: ウイルスプログラミングへの招待
+           〜インポートセクションを持たずにAPIを使う方法〜 ---
 
-���ҁF�܂Ђ�
+著者：まひん
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@Windows�A�v����PE�t�@�C���Ƃ����\�������Ă��܂��B�����Ƃ���{�I�ȃE�C��
-�X�͊�������Ƃ��Ɏ�����PE�w�b�_�Ȃǂ͈�؃R�s�[�����ɃR�[�h�Z�N�V������
-�݂��h��t�@�C���ɃR�s�[���܂��BPE�t�@�C���̍\������WindowsAPI���g������
-�̃C���|�[�g�Z�N�V���������邱�Ƃ��l����ƁA�R�[�h�Z�N�V�����݂̂��h��t
-�@�C���ɃR�s�[���Ă�API���g���Ȃ����ƂɂȂ�܂��B
-�@�������A�C���|�[�g�Z�N�V�������܂�������������API���g�����@������܂��B
-�@�E�C���X�v���O���~���O�̊�{���̊�{�ł����A�������G�ŁADOS�E�C���X�̍�
-�҂̑��������܂��������ł�����܂��B���̎�@�́A���݁A�A�v�����N���b�N��
-��ی삷��悤�ȃv���e�N�^�[�Ȃǂɂ����p����Ă���Z�p�ł��B�E�C���X�̋Z
-�p�I�������낳�̈ꕔ���_�Ԍ��邱�Ƃ��ł���̂ł͂Ȃ����Ǝv���܂��B
-�@���̋L���ł̓A�Z���u����NASM���g�p���Ă��܂��B���������āA�\�[�X�R�[�h
-�̏�����NASM���ł��B�����ӂ��������B
-
-
-��0x02.) �K�v��API���g���ɂ�
-
-�@�����̎g������API���Ȃ�ł��g����悤�ɂ���ɂ́ALoadLibrary()��GetPro
-cAddress()������Α��v�ł��BLoadLibrary()��DLL�����[�h���ꂽ�x�[�X�A�h
-���X�̒l��Ԃ��֐��ł��B�܂��AWindows�A�v���̓v���O�����̏I���ɕK��Exi
-tProcess()���g�p���ďI������K�v������܂��B����3��API�͂��ׂ�kernel32
-.dll����G�N�X�|�[�g����Ă���֐��ł��B�܂�Kernel32�̃x�[�X�A�h���X��
-GetProcAddress()�̃A�h���X���擾�ł���΂����킯�ł��B
+　WindowsアプリはPEファイルという構造をしています。もっとも基本的なウイル
+スは感染するときに自分のPEヘッダなどは一切コピーせずにコードセクションの
+みを宿主ファイルにコピーします。PEファイルの構造中にWindowsAPIを使うため
+のインポートセクションがあることを考えると、コードセクションのみを宿主フ
+ァイルにコピーしてはAPIが使えないことになります。
+　しかし、インポートセクションをまったく持たずにAPIを使う方法があります。
+　ウイルスプログラミングの基本中の基本ですが、少し複雑で、DOSウイルスの作
+者の多くが挫折した部分でもあります。この手法は、現在、アプリをクラックか
+ら保護するようなプロテクターなどにも応用されている技術です。ウイルスの技
+術的おもしろさの一部を垣間見ることができるのではないかと思います。
+　この記事ではアセンブラにNASMを使用しています。したがって、ソースコード
+の書式はNASM式です。ご注意ください。
 
 
-��0x03.) �J�[�l���̃x�[�X�A�h���X�̎擾
+■0x02.) 必要なAPIを使うには
 
-�@Windows�ł̓v���O���������s������Kernel������call���߂ɂ���ČĂяo��
-��܂��iCreateThread()����j�B���������āA�X�^�b�N�ɂ͖߂��̃A�h���X�i
-Kernel���̃A�h���X�j�������Ă��邱�ƂɂȂ�܂��B
-�@DLL�����[�h���郁������̈ʒu�͕K���y�[�W�P�ʂɂȂ��Ă��܂��B�܂��ADLL
-��PE�t�@�C���Ȃ̂�MZ�V�O�l�`���APE�V�O�l�`���Ƃ���������������܂��B����
-��̏������ɃJ�[�l���̃x�[�X�A�h���X��m����@���ȉ��Ɏ����܂��B
+　自分の使いたいAPIがなんでも使えるようにするには、LoadLibrary()とGetPro
+cAddress()があれば大丈夫です。LoadLibrary()はDLLがロードされたベースアド
+レスの値を返す関数です。また、Windowsアプリはプログラムの終わりに必ずExi
+tProcess()を使用して終了する必要があります。この3つのAPIはすべてkernel32
+.dllからエクスポートされている関数です。つまりKernel32のベースアドレスと
+GetProcAddress()のアドレスが取得できればいいわけです。
+
+
+■0x03.) カーネルのベースアドレスの取得
+
+　Windowsではプログラムが実行されるとKernel内からcall命令によって呼び出さ
+れます（CreateThread()から）。したがって、スタックには戻り先のアドレス（
+Kernel内のアドレス）が入っていることになります。
+　DLLをロードするメモリ上の位置は必ずページ単位になっています。また、DLL
+もPEファイルなのでMZシグネチャ、PEシグネチャといった署名があります。これ
+らの情報を元にカーネルのベースアドレスを知る方法を以下に示します。
 
 -----
-	;;  ���~�b�^�[�B50�y�[�W�ɐ�������
+	;;  リミッター。50ページに制限する
 	mov	ecx,5
-	;;  Kernel���ւ̃��^�[���A�h���X���擾����
+	;;  Kernel内へのリターンアドレスを取得する
 	mov	eax,[esp]
-	;;  ��4����0�Ń}�X�N����
+	;;  下4桁を0でマスクする
 	and	eax,0FFFF0000h
     .check1:
-	;;  ���~�b�^�[�̃`�F�b�N
+	;;  リミッターのチェック
 	cmp	ecx,0
 	je	.not_found
-	;;  MZ�w�b�_�̃`�F�b�N
+	;;  MZヘッダのチェック
 	cmp	word [eax],'MZ'
 	je	.check_PE
     .check2:
-	;;  ����10�y�[�W��
+	;;  次の10ページへ
 	sub	eax,10000h
 	dec	ecx
 	jmp	.check1
     .check_PE:
-	;;  PE�w�b�_�̃`�F�b�N
+	;;  PEヘッダのチェック
 	mov	edi,[eax+3ch]
 	add	edi,eax
 	cmp	word [edi],'PE'
@@ -73,15 +73,15 @@ Kernel���̃A�h���X�j�������Ă��邱�ƂɂȂ�܂��B
 	jmp	.check2
 -----
 
-�@�v���O�����̃X�^�[�g����ɂ�esp�Ƀ��^�[���A�h���X�������Ă��܂��B�����
-�umov eax,[esp]�v�Ŏ��o���܂��BDLL�����[�h�����ʒu��xxxx0000h�Ƃ����A
-�h���X�Ȃ̂�AND���߂��g���ă}�X�L���O���܂��B���Ƃ́A10000h���Ƃ�MZ�V�O�l
-�`����T���A����ɑΉ�����PE�V�O�l�`�������邩�𒲂ׂ邱�Ƃ�Kernel�̃x�[
-�X�A�h���X���擾�ł��܂��B
-�@���̎�@�Ō�����Ȃ����Ƃ͂���܂��񂪁A�eOS��Kernel�̃��[�h�A�h���X
-���n�[�h�R�[�h���Ă������ł��傤�B
+　プログラムのスタート直後にはespにリターンアドレスが入っています。これを
+「mov eax,[esp]」で取り出します。DLLがロードされる位置はxxxx0000hというア
+ドレスなのでAND命令を使ってマスキングします。あとは、10000hごとにMZシグネ
+チャを探し、さらに対応するPEシグネチャがあるかを調べることでKernelのベー
+スアドレスが取得できます。
+　この手法で見つからないことはありませんが、各OSのKernelのロードアドレス
+をハードコードしてもいいでしょう。
 
-=====�\
+=====表
 Win95/98 0bff70000h
 WinME    0bff60000h
 WinNT    077f00000h
@@ -105,46 +105,46 @@ WinXP    07c800000h
 	mov	eax,07c80000h		;  WinXP
 ------
 
-��0x04.) Kernel32�̃G�N�X�|�[�g�f�B���N�g����T��
+■0x04.) Kernel32のエクスポートディレクトリを探索
 
-�@Kernel32.dll���񋟂���API�́A�G�N�X�|�[�g�f�B���N�g���ɂ��ׂĊi�[�����
-���܂��B�G�N�X�|�[�g�f�B���N�g����API���Ƃ��̃A�h���X��������܂��B�܂�A
-�G�N�X�|�[�g�f�B���N�g���𒲂׏グ�邱�ƂŔC�ӂ�API�̃A�h���X���擾�ł���
-�̂ł��B
-�@�܂�NumberOfNames���͂��߂Ƃ���G�N�X�|�[�g�f�B���N�g���̊�{�����擾
-���܂��B
+　Kernel32.dllが提供するAPIは、エクスポートディレクトリにすべて格納されて
+います。エクスポートディレクトリでAPI名とそのアドレスが分かります。つまり、
+エクスポートディレクトリを調べ上げることで任意のAPIのアドレスを取得できる
+のです。
+　まずNumberOfNamesをはじめとするエクスポートディレクトリの基本情報を取得
+します。
 
 -----
-	;;  �G�N�X�|�[�g�f�B���N�g������T��
-	mov	esi,[edi+78h]		;  �G�N�X�|�[�g�f�B���N�g��
+	;;  エクスポートディレクトリ内を探索
+	mov	esi,[edi+78h]		;  エクスポートディレクトリ
 	add	esi,ecx
 	add	esi,18h			
 	lodsd
-	;;  NumberOfNames��ۑ�
+	;;  NumberOfNamesを保存
 	mov	dword [NumberOfNames],eax
 	lodsd
-	add	eax,ecx			;  �x�[�X�A�h���X���l��
-	;;  AddressOfFunctions��ۑ�
+	add	eax,ecx			;  ベースアドレスを考慮
+	;;  AddressOfFunctionsを保存
 	mov	dword [AddressOfFunctions],eax
 	lodsd
-	add	eax,ecx			;  �x�[�X�A�h���X���l��
-	;;  AddressOfNames��ۑ�
+	add	eax,ecx			;  ベースアドレスを考慮
+	;;  AddressOfNamesを保存
 	mov	dword [AddressOfNames],eax
 	lodsd
-	add	eax,ecx			;  �x�[�X�A�h���X���l��
-	;;  AddressOfNameOrdinals��ۑ�
+	add	eax,ecx			;  ベースアドレスを考慮
+	;;  AddressOfNameOrdinalsを保存
 	mov	dword [AddressOfNameOrdinals],eax
 -----
 
 
-��0x05.) GetProcAddressA()�̃A�h���X���擾
+■0x05.) GetProcAddressA()のアドレスを取得
 
-�@����"GetProcAddressA"�Ƃ�������������ɁA�Ή�����A�h���X��T�����Ƃɂ�
-��܂��BAddressOfNames�ŒT������API���̍ő�l��ݒ肵�܂��B���Ƃ͒P���ȕ�
-�����r�����āA��v����ӏ����m�肵�܂��B
+　次に"GetProcAddressA"という文字列を元に、対応するアドレスを探すことにな
+ります。AddressOfNamesで探索するAPI名の最大値を設定します。あとは単純な文
+字列比較をして、一致する箇所を確定します。
 
 -----
-	;; GetProcAddressA��T������
+	;; GetProcAddressAを探す準備
 	mov	esi,[AddressOfNames]
 	mov	dword [nIndex],esi
 	mov	edi,[esi]
@@ -157,17 +157,17 @@ search_GPA:
 	mov	esi,ebx
 
     .check:
-	;;  API������v���Ă��邩�H
+	;;  API名が一致しているか？
 	cmpsb
 	jne	.nextAPI
 
-	cmp	byte [edi],0		;  ������̏I�[���H
+	cmp	byte [edi],0		;  文字列の終端か？
 	je	.got
 	jmp	.check
 
     .nextAPI:
-	;;  ��v���Ă��Ȃ��̂Ŏ���API����
-	;;  �C���f�b�N�X�ƃJ�E���^�����炷
+	;;  一致していないので次のAPI名へ
+	;;  インデックスとカウンタをずらす
 	inc	ecx
 	cmp	ecx,dword [NumberOfNames]
 	jge	exit
@@ -179,8 +179,8 @@ search_GPA:
 	jmp	.next
 -----
 
-�@'GetProcAddressA'�̕����񂪌�����΁A���Ƃ�AddressOfFunctions�̑Ή���
-��ʒu����API�A�h���X���擾���邱�Ƃ��ł��܂��B
+　'GetProcAddressA'の文字列が見つかれば、あとはAddressOfFunctionsの対応す
+る位置からAPIアドレスを取得することができます。
 
 -----
     .got:
@@ -197,30 +197,30 @@ search_GPA:
 	mov	edi,dword [esi]
 	add	edi,[kernel]
 
-	mov	dword [aGetProcAddress],edi;  GetProcAddressA�̃A�h���X��ۑ�
+	mov	dword [aGetProcAddress],edi;  GetProcAddressAのアドレスを保存
 -----
 
 
-��0x06.) �擾����API�����ۂɎg��
+■0x06.) 取得したAPIを実際に使う
 
-�@�擾����GetProcAddressA()������Beep()�̃A�h���X�𒲂ׂ܂��BAPI�̌Ăяo
-���̓A�Z���u������ł́A��n�����A��n-1�����A�c�A��2�����A��1�����̏���PU
-SH���āAAPI��CALL����΂��������ł��B
+　取得したGetProcAddressA()を元にBeep()のアドレスを調べます。APIの呼び出
+しはアセンブリ言語では、第n引数、第n-1引数、…、第2引数、第1引数の順にPU
+SHして、APIをCALLすればいいだけです。
 
 -----
 GetkAPIAddress:
 	mov	esi,nBeep		;  'Beep',0
-	mov	edi,aBeep		;  Beep()�̃A�h���X���i�[����ꏊ
+	mov	edi,aBeep		;  Beep()のアドレスを格納する場所
 
-	;;  GetProcAddressA()���Ăяo����Beep()�̃A�h���X���擾����
+	;;  GetProcAddressA()を呼び出してBeep()のアドレスを取得する
 	push	esi			;  'Beep',0
-	;;  LoadLibraryA()�œ�����l�̓x�[�X�A�h���X���̂���!
+	;;  LoadLibraryA()で得られる値はベースアドレスそのもの!
 	push	dword [kernel]
 	call	dword [aGetProcAddress]
 	test	eax,eax
 	je	exit
 
-	stosd				;  aBeep��Beep()�̃A�h���X��ۑ�
+	stosd				;  aBeepにBeep()のアドレスを保存
 
 	;;  Beep(0x1000,0x1000)
 	push	1000h
@@ -229,17 +229,17 @@ GetkAPIAddress:
 -----
 
 
-��0x07.) �\�[�X�R�[�h
+■0x07.) ソースコード
 
-�@NASM��GOLINK���g�p���Ĉȉ��̂悤�ɂ���Ύ��s�t�@�C�����������܂��B�Ȃ��A
-�E�C���X�ŗp�������{�p�^�[�������ɂ����v���O�����Ȃ̂ŁA�R���p�C����
-���Ƃ��ɃA���`�E�C���X�ɂ�茟�o����邱�Ƃ����邩������܂���B��������
-��ł��g�����������B
+　NASMとGOLINKを使用して以下のようにすれば実行ファイルが完成します。なお、
+ウイルスで用いられる基本パターンを元にしたプログラムなので、コンパイルし
+たときにアンチウイルスにより検出されることがあるかもしれません。理解した
+上でお使いください。
 
-��NASM
+○NASM
 http://nasm.sourceforge.net/
 
-��GOLINK
+○GOLINK
 http://www.jorgon.freeserve.co.uk/
 
 -----
@@ -247,25 +247,25 @@ nasm -fwin32 -O3 getapi.s
 golink -entry start getapi.obj
 -----
 
------  �\�[�X�R�[�h
+-----  ソースコード
 section .date
 nGetProcAddress	db	'GetProcAddressA',0
 nBeep	db	'Beep',0
 nExitProcess	db	'ExitProcess',0
 
 section .bss
-kernel	resd	1			;  Kernel32�̃x�[�X�A�h���X
+kernel	resd	1			;  Kernel32のベースアドレス
 
-;;;  Kernel32�̃G�N�X�|�[�g�f�B���N�g���̗v�f
+;;;  Kernel32のエクスポートディレクトリの要素
 NumberOfNames	resd	1
 AddressOfFunctions	resd	1
 AddressOfNames	resd	1
 AddressOfNameOrdinals	resd	1
 
-;;;  GetProcAddressA��T���Ƃ��Ɏg���C���f�b�N�X
+;;;  GetProcAddressAを探すときに使うインデックス
 nIndex	resd	1
 
-;;;  �擾����API�̃A�h���X
+;;;  取得したAPIのアドレス
 aGetProcAddress	resd	1		;  GetProcAddressA()
 aBeep	resd	1			;  Beep()
 
@@ -273,26 +273,26 @@ aBeep	resd	1			;  Beep()
 section	.text
 	global	start
 start:
-	;;  ���~�b�^�[�B50�y�[�W�ɐ�������
+	;;  リミッター。50ページに制限する
 	mov	ecx,5
-	;;  Kernel���ւ̃��^�[���A�h���X���擾����
+	;;  Kernel内へのリターンアドレスを取得する
 	mov	eax,[esp]
-	;;  ��4����0�Ń}�X�N����
+	;;  下4桁を0でマスクする
 	and	eax,0FFFF0000h
     .check1:
-	;;  ���~�b�^�[�̃`�F�b�N
+	;;  リミッターのチェック
 	cmp	ecx,0
 	je	.not_found
-	;;  MZ�w�b�_�̃`�F�b�N
+	;;  MZヘッダのチェック
 	cmp	word [eax],'MZ'
 	je	.check_PE
     .check2:
-	;;  ����10�y�[�W��
+	;;  次の10ページへ
 	sub	eax,10000h
 	dec	ecx
 	jmp	.check1
     .check_PE:
-	;;  PE�w�b�_�̃`�F�b�N
+	;;  PEヘッダのチェック
 	mov	edi,[eax+3ch]
 	add	edi,eax
 	cmp	word [edi],'PE'
@@ -300,8 +300,8 @@ start:
 	jmp	.check2
 
     .not_found:
-	;;  ���ׂĂ����Č�����Ȃ����
-	;;  �eOS�̃f�t�H���g�l�������Ă݂�
+	;;  調べていって見つからなければ
+	;;  各OSのデフォルト値を試してみる
 	mov	eax,0bff70000h		;  win95/98
 	cmp	word [eax],'MZ'
 	je	got_k
@@ -320,33 +320,33 @@ start:
 	cmp	word [edi],'PE'
 	jne	exit
 got_k:
-	;;  �擾����Kernel�̃x�[�X�A�h���X��ۑ�
+	;;  取得したKernelのベースアドレスを保存
 	mov	dword [kernel],eax
 
 	mov	ecx,eax
 
-	;;  �G�N�X�|�[�g�f�B���N�g������T��
-	mov	esi,[edi+78h]		;  �G�N�X�|�[�g�f�B���N�g��
+	;;  エクスポートディレクトリ内を探索
+	mov	esi,[edi+78h]		;  エクスポートディレクトリ
 	add	esi,ecx
 	add	esi,18h			
 	lodsd
-	;;  NumberOfNames��ۑ�
+	;;  NumberOfNamesを保存
 	mov	dword [NumberOfNames],eax
 	lodsd
-	add	eax,ecx			;  �x�[�X�A�h���X���l��
-	;;  AddressOfFunctions��ۑ�
+	add	eax,ecx			;  ベースアドレスを考慮
+	;;  AddressOfFunctionsを保存
 	mov	dword [AddressOfFunctions],eax
 	lodsd
-	add	eax,ecx			;  �x�[�X�A�h���X���l��
-	;;  AddressOfNames��ۑ�
+	add	eax,ecx			;  ベースアドレスを考慮
+	;;  AddressOfNamesを保存
 	mov	dword [AddressOfNames],eax
 	lodsd
-	add	eax,ecx			;  �x�[�X�A�h���X���l��
-	;;  AddressOfNameOrdinals��ۑ�
+	add	eax,ecx			;  ベースアドレスを考慮
+	;;  AddressOfNameOrdinalsを保存
 	mov	dword [AddressOfNameOrdinals],eax
 
 
-	;; GetProcAddressA��T������
+	;; GetProcAddressAを探す準備
 	mov	esi,[AddressOfNames]
 	mov	dword [nIndex],esi
 	mov	edi,[esi]
@@ -359,17 +359,17 @@ search_GPA:
 	mov	esi,ebx
 
     .check:
-	;;  API������v���Ă��邩�H
+	;;  API名が一致しているか？
 	cmpsb
 	jne	.nextAPI
 
-	cmp	byte [edi],0		;  ������̏I�[���H
+	cmp	byte [edi],0		;  文字列の終端か？
 	je	.got
 	jmp	.check
 
     .nextAPI:
-	;;  ��v���Ă��Ȃ��̂Ŏ���API����
-	;;  �C���f�b�N�X�ƃJ�E���^�����炷
+	;;  一致していないので次のAPI名へ
+	;;  インデックスとカウンタをずらす
 	inc	ecx
 	cmp	ecx,dword [NumberOfNames]
 	jge	exit
@@ -394,21 +394,21 @@ search_GPA:
 	mov	edi,dword [esi]
 	add	edi,[kernel]
 
-	mov	dword [aGetProcAddress],edi;  GetProcAddressA�̃A�h���X��ۑ�
+	mov	dword [aGetProcAddress],edi;  GetProcAddressAのアドレスを保存
 	
 GetkAPIAddress:
 	mov	esi,nBeep		;  'Beep',0
-	mov	edi,aBeep		;  Beep()�̃A�h���X���i�[����ꏊ
+	mov	edi,aBeep		;  Beep()のアドレスを格納する場所
 
-	;;  GetProcAddressA()���Ăяo����Beep()�̃A�h���X���擾����
+	;;  GetProcAddressA()を呼び出してBeep()のアドレスを取得する
 	push	esi			;  'Beep',0
-	;;  LoadLibraryA()�œ�����l�̓x�[�X�A�h���X���̂���!
+	;;  LoadLibraryA()で得られる値はベースアドレスそのもの!
 	push	dword [kernel]
 	call	dword [aGetProcAddress]
 	test	eax,eax
 	je	exit
 
-	stosd				;  aBeep��Beep()�̃A�h���X��ۑ�
+	stosd				;  aBeepにBeep()のアドレスを保存
 
 	;;  Beep(0x1000,0x1000)
 	push	1000h
@@ -427,14 +427,14 @@ exit:
 -----
 
 
-��0x08.) ������
+■0x08.) おわりに
 
-�@�E�C���X�ł́A���̎�@�����ɁA�E�C���X�p�ɃJ�X�^�}�C�Y���Ďg�p���邱��
-�ɂȂ�܂��i�E�C���X�̓R�[�h�Z�N�V�����݂̂��g�p����Ȃǂ̐������o�Ă���
-����ł��j�B
-�@PE�t�@�C���t�H�[�}�b�g�𗝉����Ă��邱�Ƃ�O��ɏ����Ă݂܂������APE�t
-�@�C���t�H�[�}�b�g��������������ƃL�����Ȃ��̂ŁA�u�N���b�J�[�v���O����
-��S�v��߁X�����\��̑��҂��Q�Ƃ��Ă���������΍K���ł��B����ɁA������
-����̘b�ɂȂ�܂����A���܂ł̂�����Ȃ����[���X�N���v�g�쐬�}�j���A����
-�����Ȃ��̂ł͂Ȃ��A�{�i�I�ȃE�C���X�Z�p�̌n������̋L����100�{���炢�킩
-��₷���A�ڂ�����������ďo�ł���\��ł��܂��B�����҉������B
+　ウイルスでは、この手法を元に、ウイルス用にカスタマイズして使用すること
+になります（ウイルスはコードセクションのみを使用するなどの制限が出てくる
+からです）。
+　PEファイルフォーマットを理解していることを前提に書いてみましたが、PEフ
+ァイルフォーマットから説明しだすとキリがないので、「クラッカープログラム
+大全」や近々発売予定の続編を参照していただければ幸いです。さらに、もう少
+し先の話になりますが、今までのくだらないワームスクリプト作成マニュアルみ
+たいなものではなく、本格的なウイルス技術体系を今回の記事の100倍ぐらいわか
+りやすく、詳しい解説をつけて出版する予定でいます。ご期待下さい。

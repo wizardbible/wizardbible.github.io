@@ -8,94 +8,94 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
----- ��0�́F�ڎ� ---
+---- 第0章：目次 ---
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-����1��: BSD���ɂ�����IPv6�p�P�b�g���M�菇                       unya ��
+○第1章: BSD環境におけるIPv6パケット送信手順                       unya 著
 
-����2��: ��b�Í��w�u���E��25�� �`�����l��]�藝�̉��p�`       IPUSIRON ��
+○第2章: 基礎暗号学講座・第25回 〜中国人剰余定理の応用〜       IPUSIRON 著
 
-����3��: ���m�点
+○第3章: お知らせ
 
-����4��: ���҃v���t�B�[��
+○第4章: 著者プロフィール
 
 
-
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-
---- ��1��: BSD���ɂ�����IPv6�p�P�b�g���M�菇 ---
-
-���ҁFunya
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
+--- 第1章: BSD環境におけるIPv6パケット送信手順 ---
 
-��0x01.) �͂��߂�
+著者：unya
 
-�@�C�[�T�l�b�g�Őڑ����ꂽ�l�b�g���[�N�ɂ����āA�\�P�b�gAPI�ɂ���炸��
-�S��IPv6�p�P�b�g���\�z���đ��M������@�ɂ��ĉ�����܂��B���S��IPv6�p�P
-�b�g�Ƃ́AIPv6�g���w�b�_�[���܂ރp�P�b�g���w���܂��B���̕��@�ɂ��AAPI
-�̐������󂯂邱�ƂȂ��A������`���̃p�P�b�g���\�z���đ��M���邱�Ƃ���
-����悤�ɂȂ�܂��B�Ȃ��A�����IPv6�g���w�b�_�[�ɂ��ĐG�ꂸ�A�p�P�b�g
-�̑��M�݂̂ɏœ_�����Ă܂��B�����āA�ʓr�\�L���Ȃ�������A���ׂ�BSD�n�V
-�X�e����ΏۂƂ��Ă��܂��BGNU/Linux�Ȃǔ�BSD�n�V�X�e���ɂ͓��Ă͂܂�Ȃ�
-�ꍇ������܂��B
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x02.) �ΏۃI�y���[�e�B���O�V�X�e��
+■0x01.) はじめに
 
-�@���L�̃I�y���[�e�B���O�V�X�e�����g�p���āA�w�b�_�[�t�@�C���̎Q�Ƃ����
-�T���v���R�[�h�̃R���p�C���E���s�������Ȃ��܂����B
+　イーサネットで接続されたネットワークにおいて、ソケットAPIにたよらず完
+全なIPv6パケットを構築して送信する方法について解説します。完全なIPv6パケ
+ットとは、IPv6拡張ヘッダーを含むパケットを指します。この方法により、API
+の制限を受けることなく、あらゆる形式のパケットを構築して送信することがで
+きるようになります。なお、今回はIPv6拡張ヘッダーについて触れず、パケット
+の送信のみに焦点をあてます。併せて、別途表記がないかぎり、すべてBSD系シ
+ステムを対象としています。GNU/Linuxなど非BSD系システムには当てはまらない
+場合があります。
 
-�EMac OS X 10.6.8(Snow Leopard)
-�EMac OS X 10.7(Lion)
-�EFreeBSD 8.2 amd64
-�EOpenBSD 4.9 amd64
-�ENetBSD 5.1 amd64
+
+■0x02.) 対象オペレーティングシステム
+
+　下記のオペレーティングシステムを使用して、ヘッダーファイルの参照および
+サンプルコードのコンパイル・実行をおこないました。
+
+・Mac OS X 10.6.8(Snow Leopard)
+・Mac OS X 10.7(Lion)
+・FreeBSD 8.2 amd64
+・OpenBSD 4.9 amd64
+・NetBSD 5.1 amd64
 
 
-��0x03.) �p�P�b�g���M�ɂ�����IPv6��IPv4�̂�����
+■0x03.) パケット送信におけるIPv6とIPv4のちがい
 
-��3.1 socket(2)�̃v���g�R���w��
+○3.1 socket(2)のプロトコル指定
 
-�@IPv4�ł́Asocket(2)�̑�3������IPPROTO_RAW���w�肷�邱�Ƃ�IPv4�w�b�_��
-�܂ފ��S�ȃp�P�b�g�𑗐M���邱�Ƃ��ł��܂��B
+　IPv4では、socket(2)の第3引数にIPPROTO_RAWを指定することでIPv4ヘッダを
+含む完全なパケットを送信することができます。
 
 -----
 socket(PF_INET, SOCK_RAW, IPPROTO_RAW);
 -----
 
-�@IPv6�ł�IPPROTO_RAW�����ʂȈӖ��������Ƃ͂���܂���BIPv6�g���w�b�_
-�[���܂ފ��S�ȃp�P�b�g�𑗐M���邽�߂ɂ́A�����N���C���Ńp�P�b�g�𑗐M��
-��K�v������܂��B������������邽�߂ɂ́A��q����BPF�f�o�C�X���g�p����
-���Bsocket(2)���g�p���Ċg���w�b�_�[���܂�IPv6�p�P�b�g�𑗐M����ꍇ�́A
-�\�P�b�g�I�v�V�������g�p���ăp�P�b�g���\�z����K�v������܂��B�������A��
-�̕��@��API�̐������󂯂邽�߁A�J�X�^���p�P�b�g�𑗐M����ꍇ�ɂ͓K����
-����B
+　IPv6ではIPPROTO_RAWが特別な意味をもつことはありません。IPv6拡張ヘッダ
+ーを含む完全なパケットを送信するためには、リンクレイヤでパケットを送信す
+る必要があります。これを実現するためには、後述するBPFデバイスを使用しま
+す。socket(2)を使用して拡張ヘッダーを含むIPv6パケットを送信する場合は、
+ソケットオプションを使用してパケットを構築する必要があります。しかし、こ
+の方法はAPIの制限を受けるため、カスタムパケットを送信する場合には適しま
+せん。
 
-��3.2 �o�C�g�I�[�_�[
+○3.2 バイトオーダー
 
-�@IPv4�ł́AIP�w�b�_�[�̊e�t�B�[���h�̃o�C�g�I�[�_�[�ɂ��Ė����������
-���܂���ł����B���̂��߁A�I�y���[�e�B���O�V�X�e���̎d�l�ɍ��킹�ăo�C�g
-�I�[�_�[���l�������ݒ�������Ȃ��K�v������܂����B����ɑ΂��āAIPv6�ł�
-���ׂăl�b�g���[�N�o�C�g�I�[�_�[��IPv6�w�b�_�[�̊e�t�B�[���h��ݒ肵�܂��B
+　IPv4では、IPヘッダーの各フィールドのバイトオーダーについて明文化されて
+いませんでした。そのため、オペレーティングシステムの仕様に合わせてバイト
+オーダーを考慮した設定をおこなう必要がありました。これに対して、IPv6では
+すべてネットワークバイトオーダーでIPv6ヘッダーの各フィールドを設定します。
 
 
-��0x04.) �C�[�T�l�b�g�w�b�_�[
+■0x04.) イーサネットヘッダー
 
-�@�����N���C���́AOSI�Q�ƃ��f���̃f�[�^�����N�w���w���܂��B����̓C�[�T
-�l�b�g�Őڑ�����Ă���l�b�g���[�N��z�肵�Ă��邽�߁A�f�[�^�����N�w�ł�
-����������Ȃ��ۂɎQ�Ƃ����C�[�T�l�b�g�w�b�_�[�̍\����m���Ă���K�v
-������܂��B
+　リンクレイヤは、OSI参照モデルのデータリンク層を指します。今回はイーサ
+ネットで接続されているネットワークを想定しているため、データリンク層でや
+り取りをおこなう際に参照されるイーサネットヘッダーの構造を知っている必要
+があります。
 
-��4.1 �C�[�T�l�b�g�w�b�_�[�̍\��
+○4.1 イーサネットヘッダーの構造
 
-�@�C�[�T�l�b�g�w�b�_�[�́A48�r�b�g�̑��M��MAC�A�h���X�A48�r�b�g�̑��M��M
-AC�A�h���X�����16�r�b�g�̃C�[�T�l�b�g�^�C�v����\������܂��B
+　イーサネットヘッダーは、48ビットの送信先MACアドレス、48ビットの送信元M
+ACアドレスおよび16ビットのイーサネットタイプから構成されます。
 
 -----
  0                   1                   2                   3
@@ -112,14 +112,14 @@ AC�A�h���X�����16�r�b�g�̃C�[�T�l�b�g�^�C�v����\������܂��B
 -----
 
 Destination MAC Address
-	48�r�b�g�̑��M��MAC�A�h���X�ł��B
+	48ビットの送信先MACアドレスです。
 Source MAC Address
-	48�r�b�g�̑��M��MAC�A�h���X�ł��B
+	48ビットの送信元MACアドレスです。
 Type
-	�y�C���[�h�̃^�C�v�������܂��BIPv6�ł���΁A������0x86dd�ɂȂ��
-���B
-	���̒l��FreeBSD��Mac OS�ł�net/ethernet.h�AOpenBSD��NetBSD�ł�ne
-t/ethertypes.h�Œ�`����Ă��܂��B
+	ペイロードのタイプを示します。IPv6であれば、ここは0x86ddになりま
+す。
+	この値はFreeBSDとMac OSではnet/ethernet.h、OpenBSDとNetBSDではne
+t/ethertypes.hで定義されています。
 
 -----
 #define ETHERTYPE_PUP           0x0200  /* PUP protocol */
@@ -133,8 +133,8 @@ t/ethertypes.h�Œ�`����Ă��܂��B
 #define ETHERTYPE_LOOPBACK      0x9000  /* used to test interfaces */
 -----
 
-�@�C�[�T�l�b�g�w�b�_�[�̍\���̂́AFreeBSD��Mac OS�ł�net/ethernet.h�AOpe
-nBSD�ł�netinet/if_ether.h�ANetBSD�ł�net/if_ether.h�Œ�`����Ă��܂��B
+　イーサネットヘッダーの構造体は、FreeBSDとMac OSではnet/ethernet.h、Ope
+nBSDではnetinet/if_ether.h、NetBSDではnet/if_ether.hで定義されています。
 
 -----
 /*
@@ -148,9 +148,9 @@ struct  ether_header {
 -----
 
 
-��0x05.) IPv6�w�b�_�[
+■0x05.) IPv6ヘッダー
 
-��5.1 IPv6�w�b�_�[�̍\��
+○5.1 IPv6ヘッダーの構造
 
 -----
  0                   1                   2                   3
@@ -179,28 +179,28 @@ struct  ether_header {
 -----
 
 Version
-	IPv6�̃o�[�W�����ł��B������6������܂��B
+	IPv6のバージョンです。ここは6が入ります。
 Priority
-	�D��x�BIPv4�ł����Ƃ����TOS�ɂ�����܂��B
+	優先度。IPv4でいうところのTOSにあたります。
 Flow Label
-	�t���[���x���B�p�P�b�g�̎��ʗp�ɗp�����܂����A���̂Ƃ��떾�m��
-�K��͂���܂���B
+	フローラベル。パケットの識別用に用いられますが、今のところ明確な
+規定はありません。
 Payload Length
-	IPv6�w�b�_�[�ɑ����y�C���[�h�T�C�Y�ł��B�g���w�b�_�[���y�C���[�h
-�T�C�Y�Ɋ܂܂�܂��B
-	IPv6�w�b�_�[�̃T�C�Y�͊܂܂Ȃ��̂Œ��ӂ��K�v�ł��B
+	IPv6ヘッダーに続くペイロードサイズです。拡張ヘッダーもペイロード
+サイズに含まれます。
+	IPv6ヘッダーのサイズは含まないので注意が必要です。
 Next Header
-	IPv6�͐���Ȃ��̂悤�ɂ��ăw�b�_�[���g�������邱�Ƃ��ł��܂��B
-	�����ɂ́A�㑱�̃w�b�_�[��ʂ�����܂��B
+	IPv6は数珠つなぎのようにしてヘッダーを拡張させることができます。
+	ここには、後続のヘッダー種別が入ります。
 Hop Limit
-	IPv4�ł����Ƃ����TTL�ł��B
+	IPv4でいうところのTTLです。
 Source Address
-	���M��IP�A�h���X�B128�r�b�g�ł��B
+	送信元IPアドレス。128ビットです。
 Destination Address
-	���M��IP�A�h���X�B128�r�b�g�ł��B
+	送信先IPアドレス。128ビットです。
 
-�@IPv6�w�b�_�[�ɂ̓`�F�b�N�T���͂Ȃ��A���ׂď�ʃ��C���[�ɔC���܂��B
-�@IPv6�w�b�_�[��netinet/ip6.h�Œ�`����Ă��܂��B
+　IPv6ヘッダーにはチェックサムはなく、すべて上位レイヤーに任せます。
+　IPv6ヘッダーはnetinet/ip6.hで定義されています。
 
 -----
 /*
@@ -224,26 +224,26 @@ struct ip6_hdr {
 -----
 
 
-��0x06.)  IPv6�p�P�b�g�̑��M
+■0x06.)  IPv6パケットの送信
 
-��6.1 �����N���x���ł̃p�P�b�g���M�菇
+○6.1 リンクレベルでのパケット送信手順
 
-�@�����N���C���Ńp�P�b�g�𑗐M���邽�߂ɂ́A�p�P�b�g�𑗐M���邽�߂�BPF
-�f�o�C�X���J���A�o�̓C���^�t�F�[�X�Ɗ֘A�Â���K�v������܂��B���̌�A�p
-�P�b�g�̍\�z����ё��M�����������Ȃ��܂��B
+　リンクレイヤでパケットを送信するためには、パケットを送信するためのBPF
+デバイスを開き、出力インタフェースと関連づける必要があります。その後、パ
+ケットの構築および送信処理をおこないます。
 
-��6.2 BPF�f�o�C�X���J��
+○6.2 BPFデバイスを開く
 
-�@BPF(4)�̓����N���x���Ńp�P�b�g�̓ǂݏ����������Ȃ����߂̃f�o�C�X�ł��B
-/dev/bpfN�����̃f�o�C�X�ŁAN�̕�����BPF�f�o�C�X�̔ԍ��ƂȂ�܂��i/dev/bp
-f0�̂悤�Ɂj�BBPF�f�o�C�X��open(2)�ŊJ���܂��B
+　BPF(4)はリンクレベルでパケットの読み書きをおこなうためのデバイスです。
+/dev/bpfNがそのデバイスで、Nの部分はBPFデバイスの番号となります（/dev/bp
+f0のように）。BPFデバイスはopen(2)で開きます。
 
 -----
 bpfd = open("/dev/bpf0", O_RDWR, 0);
 -----
 
-�@���M��MAC�A�h���X���X�v�[�t����ꍇ�́A�I�y���[�e�B���O�V�X�e���ɂ��
-�đ��M��MAC�A�h���X���㏑������Ȃ��悤�ɂ���K�v������܂��B
+　送信元MACアドレスをスプーフする場合は、オペレーティングシステムによっ
+て送信元MACアドレスが上書きされないようにする必要があります。
 
 -----
 int spoof = 1;
@@ -256,11 +256,11 @@ if (ioctl(bpfd, BIOCSHDRCMPLT, &spoof) < 0) {
 #endif
 -----
 
-��6.3 �o�̓C���^�t�F�[�X��BPF�f�o�C�X���֘A�Â���
+○6.3 出力インタフェースとBPFデバイスを関連づける
 
-�@�p�P�b�g���o�͂���C���^�t�F�[�X�����肵�ABPF�Ɗ֘A�Â���K�v�������
-���Bem0���o�̓C���^�t�F�[�X�Ƃ���̂ł���΁A�ȉ��̂悤�ȃR�[�h�ɂȂ��
-���B
+　パケットを出力するインタフェースを決定し、BPFと関連づける必要がありま
+す。em0を出力インタフェースとするのであれば、以下のようなコードになりま
+す。
 
 -----
 struct ifreq ifr;
@@ -276,26 +276,26 @@ if (ioctl(bpfd, BIOCSETIF, &ifr) < 0) {
 }
 -----
 
-��6.4 �p�P�b�g���M
+○6.4 パケット送信
 
-�@���M��write(2)���g�p����BPF�f�o�C�X�֏������݂܂��B�\�z�����p�P�b�g��
-�o�b�t�@��outpack�A�T�C�Y��packetsize�Ƃ���ƈȉ��̂悤�ȃR�[�h�ɂȂ��
-���B
+　送信はwrite(2)を使用してBPFデバイスへ書き込みます。構築したパケットの
+バッファをoutpack、サイズをpacketsizeとすると以下のようなコードになりま
+す。
 
 -----
 write(bpfd, outpack, packetsize);
 -----
 
 
-��0x07.)  �T���v���R�[�h
+■0x07.)  サンプルコード
 
-�@�ȉ��A�T���v���R�[�h���f�ڂ��܂��B�G���[�����͑啝�ɏȗ����Ă��܂��B
+　以下、サンプルコードを掲載します。エラー処理は大幅に省略しています。
 
 -----
 /*
- * IPv6 UDP�p�P�b�g���M�T���v���R�[�h
+ * IPv6 UDPパケット送信サンプルコード
  *
- * �ȉ���OS�ɂăR���p�C���E������m�F�ς�
+ * 以下のOSにてコンパイル・動作を確認済み
  * Mac OS X 10.6.8
  * Mac OS X 10.7
  * FreeBSD 8.2 amd64
@@ -487,7 +487,7 @@ main(int argc, char *argv[])
 	}
 	memset(udppayload, 'A', plen);
 
-	/* ���M�p�f�o�C�X�ݒ� */
+	/* 送信用デバイス設定 */
 	for (i = 0; i < BPFMAX; i++) {
 		sprintf(bpfname, "/dev/bpf%d", i);
 		if ((snddev = open(bpfname, O_RDWR, 0)) > 0)
@@ -505,7 +505,7 @@ main(int argc, char *argv[])
 	}
 #endif
 
-	/* bpf�Ƒ��M�C���^�t�F�[�X���֘A�Â��� */
+	/* bpfと送信インタフェースを関連づける */
 	memset(&ifr, 0, sizeof(ifr));
 	strlcpy(ifr.ifr_name, sourceif, sizeof(ifr.ifr_name));
 	if (ioctl(snddev, BIOCSETIF, &ifr) < 0) {
@@ -513,7 +513,7 @@ main(int argc, char *argv[])
 		exit(1);
 	}
 
-	/* ���M��A�h���X */
+	/* 送信先アドレス */
 	memset(&hints, 0, sizeof(hints));
 	hints.ai_family = PF_INET6;
 	hints.ai_socktype = SOCK_RAW;
@@ -528,7 +528,7 @@ main(int argc, char *argv[])
 	memcpy(&dst, res->ai_addr, res->ai_addrlen);
 	freeaddrinfo(res);
 
-	/* ���M���A�h���X */
+	/* 送信元アドレス */
 	memset(&hints, 0, sizeof(hints));
 	hints.ai_family = PF_INET6;
 	hints.ai_socktype = SOCK_RAW;
@@ -543,13 +543,13 @@ main(int argc, char *argv[])
 	memcpy(&src, res->ai_addr, res->ai_addrlen);
 	freeaddrinfo(res);
 
-	/* �t���[���\�z */
+	/* フレーム構築 */
 	memset(outpack, 0, sizeof(outpack));
 	ether_build(outpack, ETHERTYPE_IPV6, &eh);
 	packetsiz = ip6udp_build(outpack, udppayload, plen,
 						&src, &dst, sport, dport);
 
-	/* IPv6�p�P�b�g���M */
+	/* IPv6パケット送信 */
 	fprintf(stderr, "Sending %lu bytes ... ", packetsiz);
 	if ((r = write(snddev, outpack, packetsiz)) != packetsiz) {
 		perror("write");
@@ -575,7 +575,7 @@ main(int argc, char *argv[])
 -----
 
 
-��0x08.)  �Q�l����
+■0x08.)  参考文献
 
 [1] RFC 2460 - Internet Protocol, Version 6 (IPv6) Specification
 [2] RFC 3542 - Advanced Sockets Application Program Interface (API) for IPv6
@@ -585,641 +585,641 @@ main(int argc, char *argv[])
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- ��2��: ��b�Í��w�u���E��25�� �`�����l��]�藝�̉��p�` ---
+--- 第2章: 基礎暗号学講座・第25回 〜中国人剰余定理の応用〜 ---
 
-���ҁFIPUSIRON
+著者：IPUSIRON
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@�A���������������������߂̃A���S���Y���Ƃ��āA�����l��]�藝�����݂���
-���Ƃ�WB35�ŏЉ���B�������A���̃A���S���Y���ɂ��Ă܂���̓I�ɐ�����
-�Ă��Ȃ������̂ŁA����͒����l��]�藝�̒�`�Ƃ��̃A���S���Y���A�����ĉ�
-�p�ɂ��ďЉ�����B
+　連立合同方程式を解くためのアルゴリズムとして、中国人剰余定理が存在する
+ことをWB35で紹介した。しかし、このアルゴリズムについてまだ具体的に説明し
+ていなかったので、今回は中国人剰余定理の定義とそのアルゴリズム、そして応
+用について紹介したい。
 
 
-��0x02.) �ȒP�ȘA������������������
+■0x02.) 簡単な連立合同方程式を解く
 
-�@x��a (mod 5)����x��b (mod 7)�𖞂���x���v�Z�������Ƃ���B�����A5�Ŋ���
-���]�肪a�ŁA7�Ŋ������]�肪b�ƂȂ�x�����߂�΂悢�B
+　x≡a (mod 5)かつx≡b (mod 7)を満たすxを計算したいとする。即ち、5で割っ
+た余りがaで、7で割った余りがbとなるxを求めればよい。
 
-�@(5,7)=1���A��p,q��Z s.t. 5p+7q=1
+　(5,7)=1より、∃p,q∈Z s.t. 5p+7q=1
 
-�@����𖞂���(p,q)��(p,q)=(-4,3),(3,-2),�c�ł���B
+　これを満たす(p,q)は(p,q)=(-4,3),(3,-2),…である。
 
-�@�����ŁA(p,q)=(-4,3)���\���čl����B
+　ここで、(p,q)=(-4,3)を代表して考える。
 
-�@���̂Ƃ��A
+　このとき、
 
 5(-4)+7(3)=1
 -20+21=1
-mp+nq=1�@�i������m=5,n=7,p=-4,q=3�Ƃ������j
+mp+nq=1　（ここでm=5,n=7,p=-4,q=3とおいた）
 
-x=21a-20b(=nqa+mpb)�Ƃ����ix=mpa+nqb�ł͂Ȃ����Ƃɒ��Ӂj�B
+x=21a-20b(=nqa+mpb)とおく（x=mpa+nqbではないことに注意）。
 
-[1]x=21a-20b��1�Ea+0�Eb (mod 5)��a (mod 5)
-[2]x=21a-20b��0�Ea+1�Eb (mod 7)��b (mod 7)
+[1]x=21a-20b≡1・a+0・b (mod 5)≡a (mod 5)
+[2]x=21a-20b≡0・a+1・b (mod 7)≡b (mod 7)
 
-�@����āA����x�͓����ɂȂ��Ă���B
+　よって、このxは答えになっている。
 
 
-��0x03.) �����l��]�藝
+■0x03.) 中国人剰余定理
 
-�@��L�ł�2��1�������������ɂ����Ė@����̓I�Ɏw�肳��Ă����B���́A�@
-��m,n�̂悤�ɕϐ������Ă��A���l�ɂ��ĉ�x�����߂邱�Ƃ��ł���B
+　上記では2つの1次合同方程式において法が具体的に指定されていた。実は、法
+をm,nのように変数化しても、同様にして解xを求めることができる。
 
-�@�܂��͖@��mn�̉�������1�������݂��邱�Ƃ��ؖ�����B
+　まずは法がmnの解がただ1つだけ存在することを証明する。
 
-[�藝]
-(m,n)=1�Am,n��N�Ƃ���B
-���̂Ƃ��Ax��a (mod m)����x��b (mod n)�𖞂�������x��mn��@�Ƃ��āA����1
-���݂���B
+[定理]
+(m,n)=1、m,n∈Nとする。
+このとき、x≡a (mod m)かつx≡b (mod n)を満たす整数xはmnを法として、ただ1
+つ存在する。
 
-[�ؖ��̕��j]
+[証明の方針]
 
-�@�����Ȃ�ؖ�������O�ɁA�����̈�ʐ�����������Ԃ𒭂߂Ă݂�B
-�@a,b,m,n��4�̕ϐ��im,n�͐�������j������̂ŁA�����ł͎��R�x�̍���a,b
-�ɋ�̓I�Ȓl�����Ă����B�ǂ����l��ݒ肷��Ȃ�A�ɒ[�Ȑݒ�ɂ���������
-������Ɍq����₷���B�Ⴆ�΁Aa,b�ɂ��āA0,1��ݒ肵�Ă݂�B
+　いきなり証明をする前に、少しの一般性を下げた状態を眺めてみる。
+　a,b,m,nの4つの変数（m,nは制限あり）があるので、ここでは自由度の高いa,b
+に具体的な値を入れておく。どうせ値を設定するなら、極端な設定にした方が問
+題解決に繋がりやすい。例えば、a,bについて、0,1を設定してみる。
 
-�@�����ŁAa=1,b=0�̏ꍇ���l����B
+　ここで、a=1,b=0の場合を考える。
 
-�Ex��1 mod m
-�Ex��0 mod n
+・x≡1 mod m
+・x≡0 mod n
 
-�����A
+即ち、
 
-�Ex=1+sm
-�Ex=rn
+・x=1+sm
+・x=rn
 
-�@�����ŁAr,s��Z�Ƃ����B
+　ここで、r,s∈Zとした。
 
-�@����āA1+sm=rn�Ȃ̂ŁA-sm+rn=1�����藧�B
-�@�����m,n�ɑ΂��āA�g�����[�N���b�h�ݏ��@��K�p���ē����鎮�Ɠ����ł�
-��B
+　よって、1+sm=rnなので、-sm+rn=1が成り立つ。
+　これはm,nに対して、拡張ユークリッド互除法を適用して得られる式と同じであ
+る。
 
-�@�t�ɂ����ƁAm,n�Ɋg�����[�N���b�h�ݏ��@��K�p���āApm+qn=1�ƂȂ�p,q����
-�߂�ƁAx=1-pm=qn�����ƂȂ�B
+　逆にいうと、m,nに拡張ユークリッド互除法を適用して、pm+qn=1となるp,qを求
+めると、x=1-pm=qnが解となる。
 
-�@���l�ɂ��āAa=0,b=1�̏ꍇ�̉��́Ax=pm=1-qn�ł���B
+　同様にして、a=0,b=1の場合の解は、x=pm=1-qnである。
 
-�@����2�̓���ȏꍇ�̉������܂�΁A��ʂ�a,b�ɂ��Ă͂��ꂼ���a,b�{��
-��΂悢�B����āAx=a(qn)+b(pm)�����i��1�j�ł���B
+　この2つの特殊な場合の解が決まれば、一般のa,bについてはそれぞれをa,b倍す
+ればよい。よって、x=a(qn)+b(pm)が解（の1つ）である。
 
-[�ؖ�]
-[1]���̑��ݐ��������B
+[証明]
+[1]解の存在性を示す。
 
-�@A=nq�Ƃ����ƁAmp+nq=1���A�������藧�B
+　A=nqとおくと、mp+nq=1より、次が成り立つ。
 
-�EA=1-mp(=nq)��1-mp mod m��1 mod m
-�EA=nq��0 mod n
+・A=1-mp(=nq)≡1-mp mod m≡1 mod m
+・A=nq≡0 mod n
 
-�@����AB=mp�Ƃ����ƁA���l�Ɏ������藧�B
+　一方、B=mpとおくと、同様に次が成り立つ。
 
-�EB=mp mod m��0 mod m
-�EB=1-nq��1 mod m
+・B=mp mod m≡0 mod m
+・B=1-nq≡1 mod m
 
-�@����āA
+　よって、
 
-x=aA+bB�@��(**)
+x=aA+bB　←(**)
 
-�Ƃ����΁A�������藧�B
+とおけば、次が成り立つ。
 
-�Ex��a mod m�@�i��A=1��B=0�j
-�Ex��b mod n�@�i��A=0��B=1�j
+・x≡a mod m　（∵A=1∧B=0）
+・x≡b mod n　（∵A=0∧B=1）
 
-�@����͉��Ƃ��āAx�����݂���B
+　これは解として、xが存在する。
 
-[2]���̈�Ӑ��������B
+[2]解の一意性を示す。
 
-�@(**)��x�Ƃ͈قȂ�y�ŁA
+　(**)のxとは異なるyで、
 
-�Ey��a mod m�@��(***)
-�Ey��b mod n
+・y≡a mod m　←(***)
+・y≡b mod n
 
-�ƂȂ���̂��������Ƃ��Ay��x mod mn�ƂȂ邱�Ƃ����������B
+となるものがあったとし、y≡x mod mnとなることを示したい。
 
-�@�ux��a mod m��x��b mod n�v��(***)�𖞂���y������΁A�������藧�B
+　「x≡a mod m∧x≡b mod n」と(***)を満たすyがあれば、次が成り立つ。
 
-�Ey-x��0 mod m
-�Ey-x��0 mod n
+・y-x≡0 mod m
+・y-x≡0 mod n
 
-�@�����Ay-x��m�̔{����n�̔{��
+　即ち、y-xはmの倍数∧nの倍数
 
-�@�����ŁA(m,n)=1���Ay-x��m,n�̍ŏ����{����mn�̔{���ƂȂ�B
+　ここで、(m,n)=1より、y-xはm,nの最小公倍数のmnの倍数となる。
 
-�@����āAy-x��0 mod mn�Ȃ̂ŁAy��x mod mn�ƂȂ�B�@��
+　よって、y-x≡0 mod mnなので、y≡x mod mnとなる。　□
 
-�@���̏ؖ��̉ߒ�����A
+　この証明の過程から、
 
-�Ex��a mod m
-�Ex��b mod n
+・x≡a mod m
+・x≡b mod n
 
-�𖞂���x�̋��ߕ����킩��B
+を満たすxの求め方がわかる。
 
-�@pm+qn=1����p,a��Z�ƂȂ�p,q��p���āA
+　pm+qn=1かつp,a∈Zとなるp,qを用いて、
 
 x=b(pm)+a(qn)
 
-�ƕ\�����l�݂̂��@mn�Ƃ������ƂȂ�B
+と表される値のみが法mnとした解となる。
 
-�@�ȏ��藝�Ƃ��Ă܂Ƃ߂Ă����B
+　以上を定理としてまとめておく。
 
-[�藝]
-(m,n)=1�Am,n��N�Ƃ���B
-���̂Ƃ��Ax��a (mod m)����x��b (mod n)�𖞂�������x��mn��@�Ƃ��āA����1
-���݂���B
-���̉���x=anq+bmp�ł���B
+[定理]
+(m,n)=1、m,n∈Nとする。
+このとき、x≡a (mod m)かつx≡b (mod n)を満たす整数xはmnを法として、ただ1
+つ存在する。
+その解はx=anq+bmpである。
 
-�@����𒆍��l��]�藝�iCRT)�ƌĂԁB�Ȍ�ACRT�Ɨ�����B
-�@�����ŋI����5���I���ɏ����ꂽ�w���q�Z�o�x�Ƃ��������s���̐��w���ɍڂ�
-�Ă����̂��A19���I�����ɐ鋳�t��A.Wylie���������ă��[���b�p�ɏЉ����
-�Ƃ���A���̒藝�����t�����Ƃ����B
+　これを中国人剰余定理（CRT)と呼ぶ。以後、CRTと略する。
+　中国で紀元後5世紀頃に書かれた『孫子算経』という著書不明の数学書に載っ
+ていたのを、19世紀中頃に宣教師のA.Wylieが発見してヨーロッパに紹介したこ
+とから、この定理名が付いたという。
 
-�@pm+nq=1�ł���̂ŁAx�͎��̂悤�ɕό`�ł���B
+　pm+nq=1であるので、xは次のように変形できる。
 
 x=anq+bmp
 =a+(b-a)pm
 =b+(a-b)qn
 
-�@����3�̕\���̂����A�󋵂ɉ����čD���Ȃ��̂��g���΂悢�B�Ⴆ�΁Ap,q��
-����������߂Ȃ��Ƃ��͌�҂�2���K���Ă��邾�낤�B
+　この3つの表現のうち、状況に応じて好きなものを使えばよい。例えば、p,qの
+一方しか求めないときは後者の2つが適しているだろう。
 
 
-��0x04.) CRT�̗��K���
+■0x04.) CRTの練習問題
 
-����1
-�@���̘A�������������������B
+○問1
+　次の連立合同方程式を解け。
 
-�Ex��3 mod 5
-�Ex��5 mod 7
+・x≡3 mod 5
+・x≡5 mod 7
 
-[���j]�܂��f�p�Ȍ`�̘A���������̖��ł���B�|�C���g�͖@���݂��ɑf���ǂ�
-���𒲂ׁA�f�ł����CRT���g����Ƃ������Ƃł���B
+[方針]まず素朴な形の連立合同式の問題である。ポイントは法が互いに素かどう
+かを調べ、素であればCRTを使えるということである。
 
-�@���̂悤�ȊȒP�Ȗ����������������CRT�Ɋ���Ă����ƁA����̘b���킩
-��₷���Ǝv���B
+　このような簡単な問題をたくさん解いてCRTに慣れておくと、今後の話がわか
+りやすいと思う。
 
-[��](5,7)=1���ACRT���g����B
-�@5p+7q=1�𖞂���(p,q)�̑�\�Ƃ��āA(p,q)=(3,-2)�����B����͊g�����[�N
-���b�h�ݏ��@���g���܂ł��Ȃ��A�����Ɍv�Z�ł���B
+[解答](5,7)=1より、CRTが使える。
+　5p+7q=1を満たす(p,q)の代表として、(p,q)=(3,-2)を取る。これは拡張ユーク
+リッド互除法を使うまでもなく、すぐに計算できる。
 
-�@CRT���Ax=anq+bmp=3�E7�E(-2)+5�E5�E3=-42+75��33 mod 35�@��
+　CRTより、x=anq+bmp=3・7・(-2)+5・5・3=-42+75≡33 mod 35　□
 
-����2
-�@3�Ŋ����1�]��A5�Ŋ����3�]��A7�Ŋ����4�]�鐳�̐����̂����ŏ��̂���
-�����߂�B
+○問2
+　3で割ると1余り、5で割ると3余り、7で割ると4余る正の整数のうち最小のもの
+を求めよ。
 
-[���j]�w���q�Z�o�x�ɍڂ��Ă���������㕗�ɂ����o�[�W�����ł���B
+[方針]『孫子算経』に載っている問題を現代風にしたバージョンである。
 
-�@�f�p�ɉ������@�ACRT��ϋɓI�Ɏg�����@�A�G���K���g�ȕ��@�ȂǁA��@�͐F�X
-����B�����ł͂��������Љ��B
+　素朴に解く方法、CRTを積極的に使う方法、エレガントな方法など、解法は色々
+ある。ここではいくつかを紹介する。
 
-[��]�i�f�p�ɉ������@�j
+[解答]（素朴に解く方法）
 
-�@���߂鐔��N�Ƃ���ƁA�������藧�B
+　求める数がNとすると、次が成り立つ。
 
-N=3x+1=5y+3=7z+4 (x,y,z��Z)
+N=3x+1=5y+3=7z+4 (x,y,z∈Z)
 
-�@�����A�������藧�B
+　即ち、次が成り立つ。
 
-�E3x+1=5y+3
-�E5y+3=7z+4
+・3x+1=5y+3
+・5y+3=7z+4
 
-�E3x-5y=2�@���@
-�E5y-7z=1�@���A
+・3x-5y=2　←①
+・5y-7z=1　←②
 
-�@�@�𖞂���(x,y)��1��(x,y)=(4,2)�ł���B
-�@��ʉ���(x,y)=(5m+4,3m+2) (m��Z)
+　①を満たす(x,y)の1つは(x,y)=(4,2)である。
+　一般解は(x,y)=(5m+4,3m+2) (m∈Z)
 
-�@y=3m+2���A�ɑ������ƁA
+　y=3m+2を②に代入すると、
 
 5(3m+2)-7z=1
 -7z=-15m-9
 z=(15m+9)/7
 z=(1+2m)+(m+2)/7
 
-�@z��Z���Am+2=7n (n��Z)
-�@����āAm=7n-2
+　z∈Zより、m+2=7n (n∈Z)
+　よって、m=7n-2
 
-�@����m��x,y,z�ɑ������ƁA���̂悤�ɂȂ�B
+　このmをx,y,zに代入すると、次のようになる。
 
-�Ex=5m+4=5(7n-2)+4=35n-6
-�Ey=3m+2=3(7n-2)+2=21n-4
-�Ez=(2m+1)+(m+2)/7=2(7n-2)+1=15n-3
+・x=5m+4=5(7n-2)+4=35n-6
+・y=3m+2=3(7n-2)+2=21n-4
+・z=(2m+1)+(m+2)/7=2(7n-2)+1=15n-3
 
-�@����āAN=3(35n-6)+1=105n-17
+　よって、N=3(35n-6)+1=105n-17
 
-�@n=1�̂Ƃ��AN�͐��̐����ōŏ��ł���B
+　n=1のとき、Nは正の整数で最小である。
 
-�@���������āAN=105�E1-17=88�@��
+　したがって、N=105・1-17=88　□
 
-[�ʉ�]�i�G���K���g�ȕ��@�j
+[別解]（エレガントな方法）
 
-�EN=3x+1
-�EN=5y+3
-�EN=7z+4
+・N=3x+1
+・N=5y+3
+・N=7z+4
 
-�@���ӂ�17�𑫂��Ǝ��̂悤�ɂȂ�B
+　両辺に17を足すと次のようになる。
 
-�EN+17=3x+18=3(x+6)
-�EN+17=5y+20=5(y+4)
-�EN+17=7z+21=7(z+3)
+・N+17=3x+18=3(x+6)
+・N+17=5y+20=5(y+4)
+・N+17=7z+21=7(z+3)
 
-�@������AN+17��3�E5�E7�̔{���ł���B
-�@�����AN+17=3�E5�E7m (m��Z)�ł���B
+　これより、N+17は3・5・7の倍数である。
+　即ち、N+17=3・5・7m (m∈Z)である。
 
-�@m=1�̂Ƃ��AN�͍ŏ��ł���B
-�@����āAN+17=105�Ȃ̂ŁAN=88�ł���B�@��
+　m=1のとき、Nは最小である。
+　よって、N+17=105なので、N=88である。　□
 
-[�ʉ�]�i�w���q�Z�o�x�̉𓚂̌��㕗�o�[�W�����j
+[別解]（『孫子算経』の解答の現代風バージョン）
 
-�@���߂鐔��N�Ƃ��AN��3,5,7�Ŋ������Ƃ��̏������ꂼ��x,y,z�A�]������ꂼ
-��a,b,c�Ƃ���B
+　求める数をNとし、Nを3,5,7で割ったときの商をそれぞれx,y,z、余りをそれぞ
+れa,b,cとする。
 
-�EN=3x+a�@���@
-�EN=5y+b�@���A
-�EN=7z+c�@���B
+・N=3x+a　←①
+・N=5y+b　←②
+・N=7z+c　←③
 
-�@�@�~70+�A�~21+�B�~15���l���āA�e�X�̗��ӂ𑫂����킹��B
+　①×70+②×21+③×15を考えて、各々の両辺を足し合わせる。
 
 70N+21N+15N=210x+105y+105z+70a+21b+15c
 106N=105(2x+y+z)+(70a+21b+15c)
 N=(70a+21b+15c)+105(2x+y+z-N)
 
-�@��ӂ��Aa=1,b=3,c=4�ł��邽�߁A����������B
+　題意より、a=1,b=3,c=4であるため、次が得られる。
 
 N
 =(70a+21b+15c)+105(2x+y+z-N)
-=(70�E1+21�E3+15�E4)+105(2x+y+z-N)
+=(70・1+21・3+15・4)+105(2x+y+z-N)
 =(70+63+60)+105(2x+y+z-N)
 =193+105(2x+y+z-N)
 
-�@2x+y+z-N��Z�ł���AN���ŏ��̐����ɂ��邽�߂̂�2x+y+z-N=-1�̂Ƃ��ł���B
+　2x+y+z-N∈Zであり、Nを最小の正数にするためのは2x+y+z-N=-1のときである。
 
-�@����āAN=193-105=88�ł���B�@��
+　よって、N=193-105=88である。　□
 
-[�ʉ�]�iCRT��p������@�j
+[別解]（CRTを用いる方法）
 
-�Ex��1 mod 3�@���@
-�Ex��3 mod 5�@���A
-�Ex��4 mod 7�@���B
+・x≡1 mod 3　←①
+・x≡3 mod 5　←②
+・x≡4 mod 7　←③
 
-�@(3,5)=1���A�@�A�ɑ΂���CRT���g����B
-�@3p+5q=1�𖞂���(p,q)�̑�\�Ƃ��āA(p,q)=(-3,2)�����B
-�@CRT���Ax=anq+bmp=1�E5�E2+3�E3�E(-3)=10-27=-17��13 mod 15
+　(3,5)=1より、①②に対してCRTが使える。
+　3p+5q=1を満たす(p,q)の代表として、(p,q)=(-3,2)を取る。
+　CRTより、x=anq+bmp=1・5・2+3・3・(-3)=10-27=-17≡13 mod 15
 
-�Ex��13 mod 15�@���C
+・x≡13 mod 15　←④
 
-�@(7,15)=1���A�B�C�ɑ΂���CRT���g����B
-�@7r+15s=1�𖞂���(r,s)�̑�\�Ƃ��āA(r,s)=(-2,1)�����B
-�@CRT���Ax=ans+bmr=13�E7�E(-2)+1�E15�E4=-182+60=-122��88 mod 105
+　(7,15)=1より、③④に対してCRTが使える。
+　7r+15s=1を満たす(r,s)の代表として、(r,s)=(-2,1)を取る。
+　CRTより、x=ans+bmr=13・7・(-2)+1・15・4=-182+60=-122≡88 mod 105
 
-�@�䂦�ɁA���̐����ȍŏ��̒l��88�ł���B�@��
+　ゆえに、正の整数∧最小の値は88である。　□
 
-����3
-�@����{��ǂނ̂�1��5�y�[�W���ǂނ�4�y�[�W�c��A7�y�[�W���ǂނ�5�y
-�[�W�c��A9�y�[�W���ǂނ�6�y�[�W�c��Ƃ����B���̖{�͉��y�[�W���邩�H��
-�����A���̖{��200�y�[�W�ȉ��Ƃ���B
+○問3
+　ある本を読むのに1日5ページずつ読むと4ページ残り、7ページずつ読むと5ペ
+ージ残り、9ページずつ読むと6ページ残るという。この本は何ページあるか？た
+だし、この本は200ページ以下とする。
 
-[���j]����͒��w�������ł���B
+[方針]これは中学入試問題である。
 
-�@��ӂ͎��̘A�����������������߂���Ɠ����ł���B
+　題意は次の連立合同方程式を求める問題と同じである。
 
-�Ex��4 mod 5�@���@
-�Ex��5 mod 7�@���A
-�Ex��6 mod 9�@���B
+・x≡4 mod 5　←①
+・x≡5 mod 7　←②
+・x≡6 mod 9　←③
 
-�@�������A1��x��200�Ƃ���B
+　ただし、1≦x≦200とする。
 
-�@���ł�CRT��m���Ă���̂ŁAx�ɐ������t���Ȃ��ƁA�����ƂȂ�y�[�W������
-�ɑ��݂��邱�Ƃ��킩��B5�E7�E9=315�Ȃ̂ŁA���̐�����314(=315-1)�ł�����
-���A����1�̓������o��͂��Ƃ������Ƃ��킩��B
+　すでにCRTを知っているので、xに制限が付かないと、答えとなるページが無限
+に存在することがわかる。5・7・9=315なので、この制限が314(=315-1)であって
+も、ただ1つの答えが出るはずということもわかる。
 
-�@���̘A��������������3�̍����������������A�@�`�B�̂��ꂼ��̖@�͌�
-���ɑf�Ȃ̂�CRT��2��J��Ԃ��΂悢�B�ȏ�̂��Ƃ𓥂܂��ĉ𓚂��l���Ă݂�B
+　この連立合同方程式は3つの合同方程式を持つが、①〜③のそれぞれの法は互
+いに素なのでCRTを2回繰り返せばよい。以上のことを踏まえて解答を考えてみる。
 
-[��]�܂��@�A�̘A�������������������B
-�@�@�ƇA�݂͌��ɑf�Ȃ̂ŁA5p+7q=1�𖞂���(p,q)�̑�\�Ƃ���(p,q)=(3,-2)��
-���B
-�@����āACRT���Ax=anq+bmp=4�E7�E(-2)+5�E5�E3��19 mod 35
-�@���������āA�u�@�ȇA�v�́ux��19 mod 35�v
+[解答]まず①②の連立合同方程式を解く。
+　①と②は互いに素なので、5p+7q=1を満たす(p,q)の代表として(p,q)=(3,-2)を
+取る。
+　よって、CRTより、x=anq+bmp=4・7・(-2)+5・5・3≡19 mod 35
+　したがって、「①∧②」⇔「x≡19 mod 35」
 
-�@���ɁA���̍������������l����B
+　次に、次の合同方程式を考える。
 
-�Ex��19 mod 35�@���C
-�Ex��6 mod 9�@���B
+・x≡19 mod 35　←④
+・x≡6 mod 9　←③
 
-�@�C�ƇB�݂͌��ɑf�Ȃ̂ŁA35r+9s=1�𖞂���(r,s)�̑�\�Ƃ���(r,s)=(-1,4)��
-���B
-�@����āACRT���Ax=ans+bmr=19�E9�E4+6�E35�E(-1)=684-210=474��159 mod 315
-�@���������āA�u�@�ȇA�ȇB�v�́ux��159 mod 315�v
+　④と③は互いに素なので、35r+9s=1を満たす(r,s)の代表として(r,s)=(-1,4)を
+取る。
+　よって、CRTより、x=ans+bmr=19・9・4+6・35・(-1)=684-210=474≡159 mod 315
+　したがって、「①∧②∧③」⇔「x≡159 mod 315」
 
-�@�䂦�ɁA�{��159�y�[�W�ł���B�@��
+　ゆえに、本は159ページである。　□
 
-����4
-�@11�Ŋ���Ə�����2�ʂ�3�ɂȂ�A13�Ŋ���Ə�����1�ʂ�6�ɂȂ鐮�����l����B
-�@���̂����A�ł����������R���͂������H
-�@�܂��A2�Ԗڂɏ��������R���Ƃ̍��͂������H
+○問4
+　11で割ると小数第2位が3になり、13で割ると小数第1位が6になる整数を考える。
+　このうち、最も小さい自然数はいくつか？
+　また、2番目に小さい自然数との差はいくつか？
 
-[���j]��������w��������1�ł���B
+[方針]これも中学入試問題の1つである。
 
-�@���R����11�Ŋ��������ʂɂ�����A�]��͑����Ă�11�p�^�[������B�����A
-�u�i�]��j/�i���鐔�j�v�̒l���ő�11�p�^�[������B
+　自然数を11で割った結果における、余りは多くても11パターンある。即ち、
+「（余り）/（割る数）」の値も最大11パターンある。
 
-�@11�p�^�[���ł���΁A���ׂė񋓂��Ă�����قǎ�Ԃł͂Ȃ��B���ׂė񋓂�
-�����Ƃŉ�����|���肪���邱�Ƃ����҂��Ă݂�B
+　11パターンであれば、すべて列挙してもそれほど手間ではない。すべて列挙し
+たことで何か手掛かりがあることを期待してみる。
 
-[��]
+[解答]
 
-[1]���R����11�Ŋ���ƁA���̂悤�ɂȂ�B
+[1]自然数を11で割ると、次のようになる。
 
-�E 1��11=0.0909�c
-�E 2��11=0.1818�c
-�E 3��11=0.2727�c
-�E 4��11=0.3636�c
-�E 5��11=0.4545�c
-�E 6��11=0.5454�c
-�E 7��11=0.6363�c�@��11�Ŋ���Ə�����2�ʂ�3�ɂȂ����
-�E 8��11=0.7272�c
-�E 9��11=0.8181�c
-�E10��11=0.9090�c
-�E11��11=1.0000�c
-�E12��11=(11+1)��11=1.0909�c�@�������������ɒ��ڂ����1��11�Ɠ����B���ꂪ
-�u�i�]��j/�i���鐔�j�v�ɑΉ�����B
+・ 1÷11=0.0909…
+・ 2÷11=0.1818…
+・ 3÷11=0.2727…
+・ 4÷11=0.3636…
+・ 5÷11=0.4545…
+・ 6÷11=0.5454…
+・ 7÷11=0.6363…　←11で割ると小数第2位が3になるもの
+・ 8÷11=0.7272…
+・ 9÷11=0.8181…
+・10÷11=0.9090…
+・11÷11=1.0000…
+・12÷11=(11+1)÷11=1.0909…　←小数部だけに注目すると1÷11と同じ。これが
+「（余り）/（割る数）」に対応する。
 
-�@����āA11�Ŋ���Ə�����2�ʂ�3�ɂȂ���̂́u11�Ŋ�����7�]�鐔�v�ł���B
-�@�����A7 mod 11�@��(*)
+　よって、11で割ると小数第2位が3になるものは「11で割って7余る数」である。
+　即ち、7 mod 11　←(*)
 
-[2]���l�Ɏ��R����13�Ŋ���ƁA���̂悤�ɂȂ�B
+[2]同様に自然数を13で割ると、次のようになる。
 
-�E 1��13 =0.0769�c
-�E 2��13 =0.1538�c
-�E 3��13 =0.2307�c
-�E 4��13 =0.3076�c
-�E 5��13 =0.3846�c
-�E 6��13 =0.4615�c
-�E 7��13 =0.5384�c
-�E 8��13 =0.6153�c�@��13�Ŋ���Ə�����1�ʂ�6�ɂȂ����
-�E 9��13 =0.6923�c�@��13�Ŋ���Ə�����1�ʂ�6�ɂȂ����
-�E10��13 =0.7692�c
-�E11��13 =0.8461�c
-�E12��13 =0.8461�c
-�E13��13 =1.0000�c
+・ 1÷13 =0.0769…
+・ 2÷13 =0.1538…
+・ 3÷13 =0.2307…
+・ 4÷13 =0.3076…
+・ 5÷13 =0.3846…
+・ 6÷13 =0.4615…
+・ 7÷13 =0.5384…
+・ 8÷13 =0.6153…　←13で割ると小数第1位が6になるもの
+・ 9÷13 =0.6923…　←13で割ると小数第1位が6になるもの
+・10÷13 =0.7692…
+・11÷13 =0.8461…
+・12÷13 =0.8461…
+・13÷13 =1.0000…
 
-�@����āA13�Ŋ���Ə�����1�ʂ�6�ɂȂ���̂́u13�Ŋ�����8,9�]�鐔�v�ł�
-��B
-�@�����A8,9 mod 13�@��(**)
+　よって、13で割ると小数第1位が6になるものは「13で割って8,9余る数」であ
+る。
+　即ち、8,9 mod 13　←(**)
 
-�@�ȏ���A����2�̘A�������������������΂悢�B
+　以上より、次の2つの連立合同方程式を解けばよい。
 
-�Ex��7 mod 11�@�@�Ex��7 mod 11
-�Ex��8 mod 13�@�@�Ex��9 mod 13
+・x≡7 mod 11　　・x≡7 mod 11
+・x≡8 mod 13　　・x≡9 mod 13
 
-�@CRT�ŋ��߂Ă��悢���A�����ł�143�ȉ��Ȃ̂ł��ׂė񋓂��Ē��ׂĂ݂�B
+　CRTで求めてもよいが、ここでは143以下なのですべて列挙して調べてみる。
 
-�@11�Ŋ�����7�]�鐔��143�ȉ��̂��͎̂��̒ʂ�ł���B
+　11で割って7余る数で143以下のものは次の通りである。
 
 7,18,29,40,51,62,73,84,95,106,117,128,139
 
-�@���̂����ŁA13�Ŋ�����8�]��̂�73�A9�]��̂�139�ł���B
-�@�䂦�ɁA��ӂ𖞂����ł����������̂�73�ł���B
+　このうちで、13で割って8余るのは73、9余るのは139である。
+　ゆえに、題意を満たす最も小さいものは73である。
 
-�@2�Ԗڂɏ�����139�Ƃ̍���139-73=66�ł���B�@��
+　2番目に小さい139との差は139-73=66である。　□
 
 
-��0x05.) ��ʂ̒����l��]�藝
+■0x05.) 一般の中国人剰余定理
 
-�@3�ȏ�̍����������ł����Ă��ACRT���J��Ԃ��΂悢���Ƃ͂��łɌ��y�ς�
-�ł���B�����ł͍����������̌��ɑ΂��Ĉ�ʉ����{����CRT���l����B
+　3個以上の合同方程式であっても、CRTを繰り返せばよいことはすでに言及済み
+である。ここでは合同方程式の個数に対して一般化を施したCRTを考える。
 
-[�藝]
-m1,m2,�c,m_r��N�ŁA�ǂ�2���݂��ɑf�Ƃ���B
-�C�ӂ̐���a1,a2,�c,a_r�ɑ΂��āA�A��������
+[定理]
+m1,m2,…,m_r∈Nで、どの2つも互いに素とする。
+任意の整数a1,a2,…,a_rに対して、連立方程式
 
-�Ex=a1 mod m1
-�Ex=a2 mod m2
-�c
-�Ex=a_r mod m_r
+・x=a1 mod m1
+・x=a2 mod m2
+…
+・x=a_r mod m_r
 
-�𖞂�������x��m1m2�cm_r��@�Ƃ��Ă���1���݂���B
+を満たす整数xはm1m2…m_rを法としてただ1つ存在する。
 
 M_i=M/m_i
 y_i=(M_i)^(-1) (mod m_i)
-i=1,�c,r
-�Ƃ���ƁA
-���̉���x�߃�[i=1:r]a_i(M_i�Ey_i) (mod M)�ł���B
+i=1,…,r
+とすると、
+その解はx≡Σ[i=1:r]a_i(M_i・y_i) (mod M)である。
 
-[���j]�����ŁAM_i��y_i��������ƁA�@�ɂ����0�܂���1�ƈ�v����B
+[方針]ここで、M_iとy_iをかけると、法によって0または1と一致する。
 
-�@�@��m_i�̂Ƃ�����1�ɂȂ�A����ȊO�̂Ƃ�����0�ɂȂ�B
-�@�����A�������藧�B
+　法がm_iのときだけ1になり、それ以外のときだけ0になる。
+　即ち、次が成り立つ。
 
-�EM_i�Ey_i��1 (mod m_i)
-�EM_i�Ey_i��0 (mod m_j),j��i
+・M_i・y_i≡1 (mod m_i)
+・M_i・y_i≡0 (mod m_j),j≠i
 
-�@����𗘗p����ƁAaM_i�Ey_i�͎��̂悤�ɂȂ�i�������̗��ӂ�a���|������
-���j�B
+　これを利用すると、aM_i・y_iは次のようになる（合同式の両辺にaを掛けただ
+け）。
 
-�EaM_i�Ey_i��a (mod m_i)
-�EaM_i�Ey_i��0 (mod m_j),j��i
+・aM_i・y_i≡a (mod m_i)
+・aM_i・y_i≡0 (mod m_j),j≠i
 
-[�ؖ�][1]���̑��݂������B
+[証明][1]解の存在を示す。
 
-x:=M1y1a1+�c+M_r�Ey_r�Ea_r�Ƃ����ƁA
+x:=M1y1a1+…+M_r・y_r・a_rとおくと、
 
 x
-=M1y1a1+�c+M_r�Ey_r�Ea_r
-��0�Ea_1+�c+0�Ea_(i-1)+1�Ea_i+0�Ea_(i+1)+�c+0�Ea_r (mod m_i)�@�i��l�@�̌��ʁj
-��1�Ea_i (mod m_i)
-��a_i (mod m_i)
+=M1y1a1+…+M_r・y_r・a_r
+≡0・a_1+…+0・a_(i-1)+1・a_i+0・a_(i+1)+…+0・a_r (mod m_i)　（∵考察の結果）
+≡1・a_i (mod m_i)
+≡a_i (mod m_i)
 
-[2]���̈�Ӑ��������B
+[2]解の一意性を示す。
 
-x,x'�F2�̉�
+x,x'：2つの解
 
-�Ex��x' (mod m_1)
-�E�c
-�Ex��x' (mod m_r)
+・x≡x' (mod m_1)
+・…
+・x≡x' (mod m_r)
 
-x-x'��m_1,�c,m_r�̔{���ł���B
-����āAx-x'��LCM(m1,�c,m_r)�̔{���ł���B
-(m_1,�c,m_r)=1�im_1,�c,m_r�݂͌��ɑf�j���Ax-x'��m_1�E�c�Em_r(=M)�̔{��
-�ł���B
+x-x'はm_1,…,m_rの倍数である。
+よって、x-x'はLCM(m1,…,m_r)の倍数である。
+(m_1,…,m_r)=1（m_1,…,m_rは互いに素）より、x-x'はm_1・…・m_r(=M)の倍数
+である。
 
-x-x'��0 (mod M)
-��x��x' (mod M)�@��
+x-x'≡0 (mod M)
+∴x≡x' (mod M)　□
 
-�@��ʂ�CRT�̉��������d�v�����A�umod m1m2�cm_r�Ō��܂鐔a��mod n_i(i=1,�c
-,r)�Ō��܂�k�̐�a_i�̑g��1��1�Ή�����v���Ƃ��d�v�ł���B
+　一般のCRTの解き方も重要だが、「mod m1m2…m_rで決まる数aとmod n_i(i=1,…
+,r)で決まるk個の数a_iの組が1対1対応する」ことも重要である。
 
-�@�����A
+　即ち、
 
-�ua mod m1m2�cm_r�v
+「a mod m1m2…m_r」
 
-��
+⇔
 
-�u�A������������
-�Ea1 mod m1
-�Ea2 mod m2
-�c
-�Ea_r mod m_r�v
+「連立合同方程式
+・a1 mod m1
+・a2 mod m2
+…
+・a_r mod m_r」
 
-�@�ォ�牺�ւ̎ʑ��͒P��a��mod m_i�ɑΉ������邾���ł���B
-�@�t�ɉ������ւ̎ʑ��͈�ʂ�CRT���̂��̂ł���B
-�@���̑Ή��͉�����Z�ɂ��֌W�����̂܂ܑΉ��t���B�����A�̓��^�ʑ��ł�
-��B
+　上から下への写像は単にaとmod m_iに対応させるだけである。
+　逆に下から上への写像は一般のCRTそのものである。
+　この対応は加減乗算による関係もそのまま対応付く。即ち、環の同型写像であ
+る。
 
 
-��0x06.) CRT��x�̌W����1�łȂ��ꍇ
+■0x06.) CRTのxの係数が1でない場合
 
-�@���̘A�����������������������Ƃ���B
+　次の連立合同方程式を解きたいとする。
 
-�Ea1x��b1 mod m1
-�Ea2x��b2 mod m2
-�c
-�Ea_r�Ex��b_r mod m_r
+・a1x≡b1 mod m1
+・a2x≡b2 mod m2
+…
+・a_r・x≡b_r mod m_r
 
-�@�@�ƌW�����݂��ɑf�ł��邩�ǂ����ŏꍇ������������B
+　法と係数が互いに素であるかどうかで場合分けが生じる。
 
-[1](a_i,m_i)=1�ł���΁A����1�̉�������B�t��(a_i)^(-1)���v�Z���āA����
-�ɂ�����ΌW����������B
+[1](a_i,m_i)=1であれば、ただ1つの解がある。逆元(a_i)^(-1)を計算して、両辺
+にかければ係数が消える。
 
-[2](a_i,m_i)=d_i(��1)�ł���΁Am_i��@�Ƃ���d�̉�������B�����ł͍���
-��������P��������̂�ړI�Ƃ���̂ŁA�@���܂߂ė��ӂ�d_i�Ŋ���΂悢�B
+[2](a_i,m_i)=d_i(＞1)であれば、m_iを法としてd個の解がある。ここでは合同
+方程式を単純化するのを目的とするので、法を含めて両辺をd_iで割ればよい。
 
-�@��͂��ꂼ��̍����������̖@���݂��ɑf�ł����CRT���g����B
+　後はそれぞれの合同方程式の法が互いに素であればCRTが使える。
 
-��F���̘A���������������B
+例：次の連立方程式を解く。
 
-�E5x��7 mod 11
-�E6x��10 mod 19
+・5x≡7 mod 11
+・6x≡10 mod 19
 
-�@(5,11)=1,(6,19)=1���A[1]�̏ꍇ���g���΂悢�B
+　(5,11)=1,(6,19)=1より、[1]の場合を使えばよい。
 
-�Ex��5^(-1)�E7 mod 11
-�Ex��6^(-1)�E10 mod 19
+・x≡5^(-1)・7 mod 11
+・x≡6^(-1)・10 mod 19
 
-�Ex��63 mod 11�@�i��5^(-1)=9�j
-�Ex��-3�E10 mod 19�@�i��6^(-1)=-3�j
+・x≡63 mod 11　（∵5^(-1)=9）
+・x≡-3・10 mod 19　（∵6^(-1)=-3）
 
-�Ex��8 mod 11
-�Ex��8 mod 19
+・x≡8 mod 11
+・x≡8 mod 19
 
-�@(11,19)=1���ACRT���g����B
+　(11,19)=1より、CRTを使える。
 
-�@11p+19q=1�𖞂���(p,q)�̑�\�Ƃ��āA(p,q)=(7,-4)�����B
+　11p+19q=1を満たす(p,q)の代表として、(p,q)=(7,-4)を取る。
 
-�@x=anq+bmp=8�E19�E(-4)+8�E11�E7=-608+616��8 mod 209�@��
+　x=anq+bmp=8・19・(-4)+8・11・7=-608+616≡8 mod 209　□
 
 
-��0x07.) ��ʂ�CRT�̗��K���
+■0x07.) 一般のCRTの練習問題
 
-����1
-�@���̘A�����������������߂�B
+○問1
+　次の連立合同方程式を求めよ。
 
-�Ex��1 mod 3
-�Ex��2 mod 5
-�Ex��3 mod 7
+・x≡1 mod 3
+・x≡2 mod 5
+・x≡3 mod 7
 
-[���j]CRT��2��g���Ă����߂邱�Ƃ��ł��邪�A�����ł͈�ʂ�CRT���g������
-�ɂ���B
+[方針]CRTを2回使っても求めることができるが、ここでは一般のCRTを使うこと
+にする。
 
-[��]m1=3,m2=5,m3=7�݂͌��ɑf�Ȃ̂ň�ʂ�CRT���g����B
+[解答]m1=3,m2=5,m3=7は互いに素なので一般のCRTが使える。
 
-�EM=m1m2m3=105
-�EM1=M/m1=m2m3=35
-�EM2=M/m2=m1m3=21
-�EN3=M/m3=m1m2=15
+・M=m1m2m3=105
+・M1=M/m1=m2m3=35
+・M2=M/m2=m1m3=21
+・N3=M/m3=m1m2=15
 
-[1] y1=M1^(-1) mod m1��35^(-1) mod 3��2^(-1) mod 3��2 mod 3
+[1] y1=M1^(-1) mod m1≡35^(-1) mod 3≡2^(-1) mod 3≡2 mod 3
 
-M1y1=35�E2=70
+M1y1=35・2=70
 
-[2] y2=M2^(-1) mod m2��21^(-1) mod 5��1 mod 5
+[2] y2=M2^(-1) mod m2≡21^(-1) mod 5≡1 mod 5
 
-M2y2=21�E1=21
+M2y2=21・1=21
 
-[3] y3=M3^(-1) mod m3��15^(-1) mod 7��1 mod 7
+[3] y3=M3^(-1) mod m3≡15^(-1) mod 7≡1 mod 7
 
-M3y3=15�E1=15
+M3y3=15・1=15
 
-�@���������āA��x�͎��̒ʂ�ł���B
+　したがって、解xは次の通りである。
 
-x=1�E70+2�E21+3�E15=70+42+45 mod 105��52 mod 105�@��
+x=1・70+2・21+3・15=70+42+45 mod 105≡52 mod 105　□
 
-�@��������������o�ꂵ�Ă킩��ɂ�����������Ȃ����AM_i�Ey_i�ɒ��ڂ����
-�킩��₷���B
-�@����M_i�Ey_i (i=1,2,3)�ɂ͎��̊֌W�����藧���Ă���B
+　文字がたくさん登場してわかりにくいかもしれないが、M_i・y_iに注目すると
+わかりやすい。
+　このM_i・y_i (i=1,2,3)には次の関係が成り立っている。
 
-�EM1y1��1 mod 3
-�EM1y1��0 mod 5
-�EM1y1��0 mod 7
+・M1y1≡1 mod 3
+・M1y1≡0 mod 5
+・M1y1≡0 mod 7
 
-����
+かつ
 
-�EM2y2��0 mod 3
-�EM2y2��1 mod 5
-�EM2y2��0 mod 7
+・M2y2≡0 mod 3
+・M2y2≡1 mod 5
+・M2y2≡0 mod 7
 
-����
+かつ
 
-�EM3y3��0 mod 3
-�EM3y3��0 mod 5
-�EM3y3��1 mod 7
+・M3y3≡0 mod 3
+・M3y3≡0 mod 5
+・M3y3≡1 mod 7
 
-�@�����藧���߁A��x���������藧�B
+　が成り立つため、解xも次が成り立つ。
 
-�Ex=1�E1+2�E0+3�E0 mod 3
-�Ex=1�E0+2�E1+3�E0 mod 5
-�Ex=1�E0+2�E0+3�E1 mod 7
+・x=1・1+2・0+3・0 mod 3
+・x=1・0+2・1+3・0 mod 5
+・x=1・0+2・0+3・1 mod 7
 
 
-��0x08.) CRT�ɂ��1�������������̉�@
+■0x08.) CRTによる1次合同方程式の解法
 
-�@1������������
+　1次合同方程式
 
-13x��17 (mod 105)�@��(*)
+13x≡17 (mod 105)　←(*)
 
-���������߂ɂ́A13c��1 (mod 105)�𖞂���c�������āA(*)�̗��ӂ�c���|��
-��΂悢�B
-�܂��A1���s�������13x+105y=17�������΂悢�B
+を解くためには、13c≡1 (mod 105)を満たすcを見つけて、(*)の両辺にcを掛け
+ればよい。
+また、1次不定方程式13x+105y=17を解けばよい。
 
-�@�����ł�(*)���ȒP��1�������������̘A���������ɕϊ����āA����炩�����
-���߂邱�Ƃ��ł���B
+　ここでは(*)を簡単な1次合同方程式の連立方程式に変換して、それらから解を
+求めることができる。
 
-�@105=3�E5�E7���A���̘A���������𓾂�B
+　105=3・5・7より、次の連立方程式を得る。
 
-�E13x��17 (mod 3)
-�E13x��17 (mod 5)
-�E13x��17 (mod 7)
+・13x≡17 (mod 3)
+・13x≡17 (mod 5)
+・13x≡17 (mod 7)
 
-�@CRT�𗘗p���邽�߂ɁA�@���݂��ɑf�ł��邱�Ƃ̑��ɁAx�̌W����1�ɂȂ��
-���ɕϊ�����B
+　CRTを利用するために、法が互いに素であることの他に、xの係数が1になるよ
+うに変換する。
 
-�Ex��2 (mod 3)
-�E3x��2 (mod 5)
-�E-x��3 (mod 7)
+・x≡2 (mod 3)
+・3x≡2 (mod 5)
+・-x≡3 (mod 7)
 
-�Ex��2 (mod 3)
-�Ex��4 (mod 5)
-�Ex��-3 (mod 7)
+・x≡2 (mod 3)
+・x≡4 (mod 5)
+・x≡-3 (mod 7)
 
-�Ex��2 (mod 3)
-�Ex��4 (mod 5)
-�Ex��4 (mod 7)
+・x≡2 (mod 3)
+・x≡4 (mod 5)
+・x≡4 (mod 7)
 
-�@�����CRT���g����B
+　これでCRTが使える。
 
 m1=3,m2=5,m3=7
 a1=2,a2=4,a3=5
-M=M1�EM2�EM3=105
-M1=M/m1=m2�Em3=35,M2=M/m2=m1�Em3=21,M3=M/m3=m1�Em2=15
+M=M1・M2・M3=105
+M1=M/m1=m2・m3=35,M2=M/m2=m1・m3=21,M3=M/m3=m1・m2=15
 
-�@���ɁAy_i,i=1,2,3�����߂�B
+　次に、y_i,i=1,2,3を求める。
 
 y1
 =M1^(-1) (mod m1)
@@ -1237,265 +1237,265 @@ y3
 =15^(-1) (mod 7)
 =1 (mod 7)
 
-�@M_i,y_i���v�Z�ł����̂ŁAM_i�Ey_i�����߂�B
+　M_i,y_iが計算できたので、M_i・y_iを求める。
 
-M1�Ey1=35�E2=70�@��mod 3�̂Ƃ���1�Amod 5���邢��7�̂Ƃ���0�ł��邱�Ƃɒ��ځB
-M2�Ey2=21�E1=21�@��mod 5�̂Ƃ���1�Amod 3���邢��7�̂Ƃ���0�ł��邱�Ƃɒ��ځB
-M3�Ey3=15�E1=15�@��mod 7�̂Ƃ���1�Amod 3���邢��5�̂Ƃ���0�ł��邱�Ƃɒ��ځB
+M1・y1=35・2=70　←mod 3のときに1、mod 5あるいは7のときに0であることに注目。
+M2・y2=21・1=21　←mod 5のときに1、mod 3あるいは7のときに0であることに注目。
+M3・y3=15・1=15　←mod 7のときに1、mod 3あるいは5のときに0であることに注目。
 
-�@����āAx�͎��̂悤�Ɍv�Z�ł���B
+　よって、xは次のように計算できる。
 
 x
-��a1M1y1+a2M2y2+a3M3y3 (mod M)
-��2�E70+4�E21+4�E15 (mod 105)�@��mod 3�Ȃ�2�E70�Amod 5�Ȃ�4�E21�Amod 7��
-��4�E15�̂Ƃ��낾�����c�邱�Ƃɒ��ځB
-��140+84+60 (mod 105)
-��35-21+60 (mod 105)
-��74 (mod 105)�@��
+≡a1M1y1+a2M2y2+a3M3y3 (mod M)
+≡2・70+4・21+4・15 (mod 105)　←mod 3なら2・70、mod 5なら4・21、mod 7な
+ら4・15のところだけが残ることに注目。
+≡140+84+60 (mod 105)
+≡35-21+60 (mod 105)
+≡74 (mod 105)　◇
 
 
-��0x09.) CRT��p����RSA�Í��̕��������̍�����
+■0x09.) CRTを用いたRSA暗号の復号処理の高速化
 
-�@RSA�̕����A���S���Y���͎��̂悤�Ɍv�Z���邱�Ƃ́A���ł�WB34�ŉ���ς�
-�ł���B
+　RSAの復号アルゴリズムは次のように計算することは、すでにWB34で解説済み
+である。
 
-1�F�Í���c�A�閧��sk=d�A���J��pk=(N,e)����͂Ƃ���B
+1：暗号文c、秘密鍵sk=d、公開鍵pk=(N,e)を入力とする。
 
-2�F���̌v�Z���s���A���̌v�Z���ʂ𕽕��Ƃ��ďo�͂���B
+2：次の計算を行い、その計算結果を平文として出力する。
 
-c^d (mod N)�@��(*)
+c^d (mod N)　←(*)
 
-�@�����ł�CRT�𗘗p���āA���̕����̌v�Z�̌���������������Quisquater��Cou
-vreur�ɂ���Ē�Ă���Ă���[QC84]�B
-�@���̌��������{���ꂽ�����A���S���Y���͎��̒ʂ�ł���BCRT�̃A���S���Y
-���̈Ⴂ�ɂ��A�����A���S���Y���̏����ɏ����Ⴂ���o�Ă���i�{���I�ɂ͂�
-�Ƃ�Ǖς��Ȃ��j�B
+　ここではCRTを利用して、この復号の計算の効率化した方式がQuisquaterとCou
+vreurによって提案されている[QC84]。
+　この効率化が施された復号アルゴリズムは次の通りである。CRTのアルゴリズ
+ムの違いにより、復号アルゴリズムの処理に少し違いが出てくる（本質的にはほ
+とんど変わらない）。
 
-���o�[�W����1
+○バージョン1
 
-1�F�Í���c�A�閧��sk=d�A���J��pk=(N,e)����͂Ƃ���B
+1：暗号文c、秘密鍵sk=d、公開鍵pk=(N,e)を入力とする。
 
-2�F����C_p,C_q���v�Z����B
+2：次のC_p,C_qを計算する。
 
-�EC_p=C mod p
-�EC_q=C mod q
+・C_p=C mod p
+・C_q=C mod q
 
-3�F����M_p,M_q���v�Z����B
+3：次のM_p,M_qを計算する。
 
-�EM_p=(C_p)^(d_p) mod p
-�EM_q=(C_q)^(d_q) mod q
+・M_p=(C_p)^(d_p) mod p
+・M_q=(C_q)^(d_q) mod q
 
-�@�������Ad_p=d mod (p-1)�Ad_q=d mod (q-1)�Ƃ���B
+　ただし、d_p=d mod (p-1)、d_q=d mod (q-1)とする。
 
-4�F����V���v�Z����B
+4：次のVを計算する。
 
 V=v(M_q-M_p) mod q
 
-�@�������Av=p^(-1) mod q�ł���B
+　ただし、v=p^(-1) mod qである。
 
-�@�����A�l�����̐��ł����q�̔{���������āA0��V��q�ƂȂ�悤�ɂ���B
+　もし、値が負の数であればqの倍数を加えて、0≦V＜qとなるようにする。
 
-5�FVp+M_p���v�Z���āA�o�͂���B
+5：Vp+M_pを計算して、出力する。
 
-���o�[�W����2
+○バージョン2
 
-�@����̋L���ł͂������CRT�̃A���S���Y�������グ�Ă���̂ŁA�������
-�����킩��₷����������Ȃ��B
+　今回の記事ではこちらのCRTのアルゴリズムを取り上げているので、こちらの
+方がわかりやすいかもしれない。
 
-1�F�Í���c�A�閧��sk=d�A���J��pk=(N,e)����͂Ƃ���B
+1：暗号文c、秘密鍵sk=d、公開鍵pk=(N,e)を入力とする。
 
-2�F�����v�Z����B
+2：次を計算する。
 
-�Ed_p=d mod (p-1)
-�Ed_q=d mod (q-1)
-�EP=qq' mod N�@�������Aqq'��1 (mod p)
-�EQ=pp' mod N�@�������App'��1 (mod q)
+・d_p=d mod (p-1)
+・d_q=d mod (q-1)
+・P=qq' mod N　ただし、qq'≡1 (mod p)
+・Q=pp' mod N　ただし、pp'≡1 (mod q)
 
-3�F�Í���c�ɑ΂��āA����C_p,C_q���v�Z����B
+3：暗号文cに対して、次のC_p,C_qを計算する。
 
-�EC_p=C mod p
-�EC_q=C mod q
+・C_p=C mod p
+・C_q=C mod q
 
-4�F����M_p,M_q���v�Z����B�@��(**)
+4：次のM_p,M_qを計算する。　←(**)
 
-�EM_p=(C_p)^(d_p) mod p
-�EM_q=(C_q)^(d_q) mod q
+・M_p=(C_p)^(d_p) mod p
+・M_q=(C_q)^(d_q) mod q
 
-5�FP�EM_p�{Q�EM_q mod N���v�Z���ďo�͂���B
+5：P・M_p＋Q・M_q mod Nを計算して出力する。
 
-���o�[�W����2�̃A���S���Y���̉��
+○バージョン2のアルゴリズムの解説
 
-�@�X�e�b�v2�`3��c���Ȃ��Ă��v�Z�ł���̂ŁA���O�v�Z���\�ł���B
+　ステップ2〜3はcがなくても計算できるので、事前計算が可能である。
 
-�@�X�e�b�v4�ł́Ad_p��d_q�ɂ��ׂ����]���Z���s���Ă���B��������ԑ�
-�ςȌv�Z�ł���BWB35�ŏЉ���A���S���Y���i�o�C�i���@�Ƃ����j���g���΁A
-�P���Ɍv�Z������͌������悢�B
+　ステップ4では、d_pやd_qによるべき乗剰余演算を行っている。ここが一番大
+変な計算である。WB35で紹介したアルゴリズム（バイナリ法という）を使えば、
+単純に計算するよりは効率がよい。
 
-�@len(�E)�̓r�b�g�����Ӗ�������̂Ƃ���B
-�@(*)��d�悵�AN��@�Ƃ���ׂ����]���Z�ł���A���̌v�Z�ʂ�O(len(d)�E(len
-(N)^2))�ł���B
-�@�܂��Alen(p)�`len(q)�`len(N)/2�Alen(d_p)�`len(d_q)�`len(d)/2�����藧�B
-����āA(**)�̌v�Z�ʂ͎��̂悤�Ɍv�Z�ł���B
+　len(・)はビット長を意味するものとする。
+　(*)はd乗し、Nを法とするべき乗剰余演算であり、その計算量はO(len(d)・(len
+(N)^2))である。
+　また、len(p)〜len(q)〜len(N)/2、len(d_p)〜len(d_q)〜len(d)/2が成り立つ。
+よって、(**)の計算量は次のように計算できる。
 
-len(d_p)�Elen(p)^2+len(d_q)�Elen(q)^2
-=(len(d)/2)(len(N)/2)^2+(len(d)/2)�E(len(N)/2)^2
-=(len(d)�E(len(N)^2))/4
+len(d_p)・len(p)^2+len(d_q)・len(q)^2
+=(len(d)/2)(len(N)/2)^2+(len(d)/2)・(len(N)/2)^2
+=(len(d)・(len(N)^2))/4
 
-�@����āA(**)�̌v�Z�ʂ�(*)�̌v�Z�ʂ�4����1�ɂȂ����B�X�e�b�v5�̓X�e�b�v
-2���猩��΂قƂ�ǖ����ł��邪�A�������l�����Ă��A(**)�̌v�Z�ʂ�(*)��
-�v�Z�ʂ̖�4����1�ɂȂ�B
+　よって、(**)の計算量は(*)の計算量の4分の1になった。ステップ5はステップ
+2から見ればほとんど無視できるが、それらを考慮しても、(**)の計算量は(*)の
+計算量の約4分の1になる。
 
-�@����CRT��p����A�v���[�`��N�̑f�����ł���p,q���킩��ꍇ�ł����g����
-���B�܂�A�����A���S���Y���ł̂ݎg�p�ł���킯�ł���B
-
-
-��0x0A.) CRT�Ə�]�\��
-
-�@m1,m2,�c,m_r���݂��ɑf�Ȑ��̐����Ƃ��A(m_i)^2�̓R���s���[�^�̈����鐮��
-���Z�Ő��m�Ɍv�Z�ł�����̂Ƃ���B
-�@���̂Ƃ��A
-
-n��m1�Em2�E�c�Em_r
-
-�𖞂����C�ӂ̐��̐����́A���̏W���ɂ���Ċ��S�Ɍ��肳���B
-
-�Ea1=n mod m1
-�Ea2=n mod m2
-�E�c
-�Ea_r=n mod m_r
-
-�@���̂Ƃ��A�\��n=[a1,a2,�c,a_r]��n�́i��]�j���(m1,m2,�c,m_r)��p����
-��]�\���ƌĂԁB
-
-�@���ۂɂ́Am1,m2,�c,m_r�݂͌��ɈقȂ�f�����I�΂����̂Ƃ���΁ACRT��
-�����̕ʕ\���Ƃ��ď�]�\�������邱�Ƃ��������Ă��邱�Ƃ��킩��B
-
-����
-
-�@�f���̏W����p���āA(m1,m2,�c,m_r)=(191,193,197,199)�Ƃ���B
-
-�@���̂Ƃ��Am1�Em2�E�c�Em_r=191�E193�E197�E199=1445140189�ƂȂ�B����144
-5140189�����������C�ӂ̐���n�͊��(191,193,197,199)�Ɋւ����]�\����
-���B
-
-�@�����ŁAn=1000000000�̊��(191,193,197,199)��p������]�\���𒲂ׂ�B
-
-�E1000000000 mod 191=18
-�E1000000000 mod 193=29
-�E1000000000 mod 197=26
-�E1000000000 mod 190=125
-
-�@����āAn=1000000000�̊��(191,193,197,199)��p������]�\����[18,29,26
-,125]�ł���B
-
-����]�\����p���������̉��Z
-
-�@��]�\����p����ƁA�R���s���[�^�Ő����v�Z���s����ő�l�𒴂���悤��
-�傫�Ȑ����̉��Z���ȒP�ɂȂ�B���̍ہA���̒藝��p����B
-
-[�藝]��]���(m1,m2,�c,m_r)��p������]�\��k=[a1,a2,�c,a_r]�����n=[b1,
-b2,�c,b_r]���^����ꂽ�Ƃ��ɁAm=m1�Em2�E�c�Em_r�Ƃ����ƁA�������藧�B
-(1) k+n mod m=[a1+b1 mod m1,a2+b2 mod m2,�c,a_r+b_r mod m_r]
-(2) kn mod m=[a1�Eb1 mod m1,a2�Eb2 mod m2,�c,a_r�Eb_r mod m_r]
-(3) k^j mod m=[a1^j mod m1,a2^j mod m2,�c,(a_r)^j mod m_r]
-
-[�ؖ�]a_i=k mod m_i����b_i=n mod m_i�ł���Ƃ��A�������藧�B
-
-�Ea_i+b_i��k+n mod m_i
-�Ea_i�Eb_i��kn mod m_i
-�E(a_i)^j��k^j mod m_i
-
-�@����āA��ӂ����藧�B�@��
-
-[�n]��]���(m1,m2,�c,m_r)��p������]�\��k=[a1,a2,�c,a_r]�����n=[b1,b2
-,�c,b_r]���^����ꂽ�Ƃ��ɁAm=m1�Em2�E�c�Em_r�Ƃ����ƁA�������藧�B
-(1)k+n��m�̂Ƃ��A�������藧�B
-   k+n=[a1+b1 mod m1,a2+b2 mod m2,�c,a_r+b_r mod m_r]
-(2)kn��m�̂Ƃ��A�������藧�B
-   kn=[a1�Eb1 mod m1,a2�Eb2 mod m2,�c,a_r�Eb_r mod m_r]
-(3)k^j��m�̂Ƃ��A�������藧�B
-   k^j=[a1^j mod m1,a2^j mod m2,�c,(a_r)^j mod m_r]
-
-�@�R���s���[�^�Ő����v�Z���s����ő�l��65535�i��256�E256-1�j�Ƃ���ƁA
-�b=256�ɂ��\�������R�ł���B
-�@���̂Ƃ��Ak=��[i=0;20]a_i�Eb^i�An=��[i=0;20]c_i�Eb_i�Ƃ����Ƃ��̌v�Z��
-��Ԃ��l����B
-
-�@�f�p�Ɋb=256�Ƃ����Ƃ��A��kn�̌v�Z��k�̓W�J�̊e����n�̓W�J�̊e����
-�̐ςɂȂ�B�܂�A21^2=441��̏�Z�ƁA�����̉��Z�ƌJ��オ�肪�K�v�ɂ�
-��B
-�@����A��]���(m1,m2,�c,m_r)=(2,3,5,�c,251)�i256�ȉ��̂��ׂĂ̑f������
-�j��p������]�\����p����΁A54��̏�Z��K�v�Ƃ���B�����āA���Z�ƌJ��
-�オ����Ȃ��B
-�@���������āA�����ς��v�Z����ɂ��Ă��A��]�\����p����������Z�񐔂���
-�Ȃ菭�Ȃ����Ƃ��킩��B
+　このCRTを用いるアプローチはNの素因数であるp,qがわかる場合でしか使えな
+い。つまり、復号アルゴリズムでのみ使用できるわけである。
 
 
-��0x0B.) �Q�l����
+■0x0A.) CRTと剰余表現
 
-�E�w�K�E�X�ƃI�C���[�̐����_�x
-�E�w���p�㐔�w����x
-�E�w���������_�x
-�E�w���Z�E��w���̂��߂̐����̗��_�Ɖ��K�x
-�E�w�Í����_����@�Í��A���S���Y���A�����ƔF�؁A���̐��w�I��b�x
-�E[QC82]"Fast decipherment algorithm for RSA public-key cryptosystem"
+　m1,m2,…,m_rを互いに素な正の整数とし、(m_i)^2はコンピュータの扱える整数
+演算で正確に計算できるものとする。
+　このとき、
+
+n＜m1・m2・…・m_r
+
+を満たす任意の正の整数は、次の集合によって完全に決定される。
+
+・a1=n mod m1
+・a2=n mod m2
+・…
+・a_r=n mod m_r
+
+　このとき、表現n=[a1,a2,…,a_r]はnの（剰余）基底(m1,m2,…,m_r)を用いた
+剰余表現と呼ぶ。
+
+　実際には、m1,m2,…,m_rは互いに異なる素数が選ばれるものとすれば、CRTが
+整数の別表現として剰余表現があることを示唆していることがわかる。
+
+○例
+
+　素数の集合を用いて、(m1,m2,…,m_r)=(191,193,197,199)とする。
+
+　このとき、m1・m2・…・m_r=191・193・197・199=1445140189となる。この144
+5140189よりも小さい任意の整数nは基底(191,193,197,199)に関する剰余表現を
+持つ。
+
+　ここで、n=1000000000の基底(191,193,197,199)を用いた剰余表現を調べる。
+
+・1000000000 mod 191=18
+・1000000000 mod 193=29
+・1000000000 mod 197=26
+・1000000000 mod 190=125
+
+　よって、n=1000000000の基底(191,193,197,199)を用いた剰余表現は[18,29,26
+,125]である。
+
+○剰余表現を用いた整数の演算
+
+　剰余表現を用いると、コンピュータで整数計算が行える最大値を超えるような
+大きな整数の演算が簡単になる。その際、次の定理を用いる。
+
+[定理]剰余基底(m1,m2,…,m_r)を用いた剰余表現k=[a1,a2,…,a_r]およびn=[b1,
+b2,…,b_r]が与えられたときに、m=m1・m2・…・m_rとおくと、次が成り立つ。
+(1) k+n mod m=[a1+b1 mod m1,a2+b2 mod m2,…,a_r+b_r mod m_r]
+(2) kn mod m=[a1・b1 mod m1,a2・b2 mod m2,…,a_r・b_r mod m_r]
+(3) k^j mod m=[a1^j mod m1,a2^j mod m2,…,(a_r)^j mod m_r]
+
+[証明]a_i=k mod m_iかつb_i=n mod m_iであるとき、次が成り立つ。
+
+・a_i+b_i≡k+n mod m_i
+・a_i・b_i≡kn mod m_i
+・(a_i)^j≡k^j mod m_i
+
+　よって、題意が成り立つ。　□
+
+[系]剰余基底(m1,m2,…,m_r)を用いた剰余表現k=[a1,a2,…,a_r]およびn=[b1,b2
+,…,b_r]が与えられたときに、m=m1・m2・…・m_rとおくと、次が成り立つ。
+(1)k+n＜mのとき、次が成り立つ。
+   k+n=[a1+b1 mod m1,a2+b2 mod m2,…,a_r+b_r mod m_r]
+(2)kn＜mのとき、次が成り立つ。
+   kn=[a1・b1 mod m1,a2・b2 mod m2,…,a_r・b_r mod m_r]
+(3)k^j＜mのとき、次が成り立つ。
+   k^j=[a1^j mod m1,a2^j mod m2,…,(a_r)^j mod m_r]
+
+　コンピュータで整数計算が行える最大値を65535（＝256・256-1）とすると、
+基数b=256による表示が自然である。
+　このとき、k=Σ[i=0;20]a_i・b^i、n=Σ[i=0;20]c_i・b_iとしたときの計算の
+手間を考える。
+
+　素朴に基数b=256としたとき、積knの計算はkの展開の各項とnの展開の各項と
+の積になる。つまり、21^2=441回の乗算と、多くの加算と繰り上がりが必要にな
+る。
+　一方、剰余基底(m1,m2,…,m_r)=(2,3,5,…,251)（256以下のすべての素数たち
+）を用いた剰余表現を用いれば、54回の乗算を必要とする。そして、加算と繰り
+上がりもない。
+　したがって、同じ積を計算するにしても、剰余表現を用いた方が乗算回数がか
+なり少ないことがわかる。
 
 
+■0x0B.) 参考文献
 
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+・『ガウスとオイラーの整数論』
+・『応用代数学入門』
+・『初等整数論』
+・『高校・大学生のための整数の理論と演習』
+・『暗号理論入門　暗号アルゴリズム、署名と認証、その数学的基礎』
+・[QC82]"Fast decipherment algorithm for RSA public-key cryptosystem"
 
- --- ��3��: ���m�点 ---
+
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-��Wizard Bible�ihttp://wizardbible.org/�j�ł͐����A���M���C�^�[���W����
-���܂��B
-�@�������e�̃e�[�}�͍L�`�ł́uunder ground�v�ł��B�Ⴆ�΃n�b�L���O��Z�L
-�����e�B����s�b�L���O�Ȃǂƕ��L�����e���l���Ă��܂��B�܂�����ȐE�Ƃ��
-���̉���Ȃǂł��\���܂���B
-�@��񂫂�ł��\���܂���B�܂��K������A�ڂ���`��������܂���̂ŁA�ł�
-��͈͂ō\���܂���B�C�y�ɐ��������Ă��������B
+ --- 第3章: お知らせ ---
 
-��Kenji Aiko����Q&A������Ă���܂����B���߂ĎQ������l�ł��킩��₷��
-������Ă��܂��̂ŁA�Q�l�ɂ��Ă��������B
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+○Wizard Bible（http://wizardbible.org/）では随時、執筆ライターを募集して
+います。
+　扱う内容のテーマは広義での「under ground」です。例えばハッキングやセキ
+ュリティからピッキングなどと幅広い内容を考えています。また特殊な職業や趣
+味の解説などでも構いません。
+　一回きりでも構いません。また必ず毎回連載する義務もありませんので、でき
+る範囲で構いません。気軽に声をかけてください。
+
+○Kenji AikoさんがQ&Aを作ってくれました。初めて参加する人でもわかりやすく
+書かれていますので、参考にしてください。
 
 http://wizardbible.org/wbQandA.html
 
-��Wizard Bible�ɎQ����]�̕��͋C�y�Ƀ��[���iipusiron@gmail.com�j���������B
+○Wizard Bibleに参加希望の方は気軽にメール（ipusiron@gmail.com）ください。
 
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-  ---- ��4��: ���҃v���t�B�[�� ---
+  ---- 第4章: 著者プロフィール ---
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��unya
-��Job: �l�b�g���[�N�G���W�j�A
-��Web: http://routehack.org/
-��Mail: unya@routehack.org
-��Comment:
-�@8���A9���ƃv���C�x�[�g�ŐF�X�Ƃ����āA�悤�₭���������Ă����Ǝv������A
-���x�͋󂫑��ɑ��K���X�������܂����B�����肳��H���A��܍������̎�ł�
-�Ȃ����������Ȃ̂ŁA����ɔ����ăo�b�`���Ə؋����c����悤�ȃV�X�e����
-�����悤�Ǝv�Ē��ł��B�I�X�X���ȃV�X�e�����������狳���Ă��������B�ł́B
+■unya
+●Job: ネットワークエンジニア
+●Web: http://routehack.org/
+●Mail: unya@routehack.org
+●Comment:
+　8月、9月とプライベートで色々とあって、ようやく落ち着いてきたと思ったら、
+今度は空き巣に窓ガラスを割られました。お巡りさん曰く、手袋痕しか採取でき
+なかったそうなので、次回に備えてバッチリと証拠を残せるようなシステムを導
+入しようと思案中です。オススメなシステムがあったら教えてください。では。
 
 
-��IPUSIRON
-��Job: �v���O���}�[
-��Web: http://akademeia.info
-��Mail: ipusiron@gmail.com
-��Comment:
-�@�ɓ��Ƀf�[�^�n�E�X��Â̐V���������فE�܂ڂ낵������ł��܂����B��X
-�T�Ɏ����`���ɍs���Ă��܂����B
+■IPUSIRON
+●Job: プログラマー
+●Web: http://akademeia.info
+●Mail: ipusiron@gmail.com
+●Comment:
+　伊豆にデータハウス主催の新しい博物館・まぼろし博覧会ができました。先々
+週に私も覗きに行ってきました。
 
 http://maboroshi.pandora.nu/
 
-�@���������N���������ق�L�̔����ق��߂��ɂȂ�̂ŁA�܂Ƃ߂Č��w����̂�
-�\�ł��B
+　怪しい少年少女博物館や猫の博物館も近くになるので、まとめて見学するのも
+可能です。
 

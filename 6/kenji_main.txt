@@ -1,27 +1,27 @@
 
 
 
-HTTP����@�`�A�����e�̎d�g�݁`
+HTTP入門　〜連続投稿の仕組み〜
 
 
 
-0. �͂��߂�
+0. はじめに
 
-�f���ȂǂɘA�����e���s���v���O���������݂��邪�A���ۂɂ����̃v���O�����͂ǂ��������d�g�݂Ŏ�������Ă���̂��B��̓I��BBS�ɘA�����e���s�����@�ɂ��Ċw��ł݂悤����Ȃ����B�Ƃ������Ƃł��̋L���ł͎��ۂɂ������̌f���Ƀe�X�g�I�ɓ��e���Ă��܂����A����͂����܂ł��U���Ɏg���킯�ł͖����Ƃ������Ƃ����������������B�A�����e�̎d�g�݂��w�Ԃ̂ł����āA���ۂɍU������킯�ł͖����Ƃ������Ƃł��B�Ȃ��A���̋L���͑O��̋L���uSMTP����@�`���[���A�h���X�U���`�v�̑��҂Ƃ����ʒu�Â��ł��̂� Perl ���킩�����ΏۂƂ��Ă��܂��B
+掲示板などに連続投稿を行うプログラムが存在するが、実際にそれらのプログラムはどういった仕組みで実現されているのか。具体的にBBSに連続投稿を行う方法について学んでみようじゃないか。ということでこの記事では実際にいくつかの掲示板にテスト的に投稿していますが、これはあくまでも攻撃に使うわけでは無いということをご了承ください。連続投稿の仕組みを学ぶのであって、実際に攻撃するわけでは無いということです。なお、この記事は前回の記事「SMTP入門　〜メールアドレス偽装〜」の続編という位置づけですので Perl がわかる方を対象としています。
 
 
 
-1. HTTP�Ƃ�
+1. HTTPとは
 
-HTTP �Ƃ� Hyper-Text Transfer Protocol �̗��ł��BWWW(World Wide Web)�Ɏg�p����Ă���v���g�R���ň�ʓI�Ƀ|�[�g�ԍ� 80 �Ԃ��g�p���܂��BHTTP �ɂ��ďڂ����m�肽������ RFC1945,2068,2616 �Ȃǂ��Q�Ƃ��Ă��������B
+HTTP とは Hyper-Text Transfer Protocol の略です。WWW(World Wide Web)に使用されているプロトコルで一般的にポート番号 80 番を使用します。HTTP について詳しく知りたい方は RFC1945,2068,2616 などを参照してください。
 
 
 
 2. GET Method
 
-�ł͂����Ȃ�ł��� telnet �ňȉ��̂悤�ɑł��Ă��������BSMTP�̓|�[�g25�Ԃł�����HTTP�̓|�[�g80�Ԃł��B�Ȃ�Windows(�R�}���h�v�����v�g)�̏ꍇ�͓��͂����������\������܂��񂪁A�����Ɠ��͂���Ă�̂ŐS�z�����ɑł�����ł��������B(�X�y�[�X�Ȃǂ����m�ɑł�����ł�������)���Ȃ݂�'\r\n'�͉��s�ł��B
+ではいきなりですが telnet で以下のように打ってください。SMTPはポート25番でしたがHTTPはポート80番です。なおWindows(コマンドプロンプト)の場合は入力した文字が表示されませんが、ちゃんと入力されてるので心配せずに打ち込んでください。(スペースなども正確に打ち込んでください)ちなみに'\r\n'は改行です。
 
-<Windows>�i�R�}���h�v�����v�g�j
+<Windows>（コマンドプロンプト）
 C:\xxxx>telnet www.yahoo.co.jp 80
 GET / HTTP/1.0\r\n
 \r\n
@@ -34,11 +34,11 @@ Escape character is '^]'.
 GET / HTTP/1.0\r\n
 \r\n
 
-�����AYahoo��TOP�y�[�W�̃f�[�^���擾�ł����琬���ł��B(Yahoo��TOP�y�[�W�̃\�[�X�͌��\�����̂ŗ���Ă����Ǝv���܂�)���Ă܂�RFC1945�����Ă݂܂��B�����g�����T�C�g��(ftp://ftp.ring.gr.jp/pub/doc/RFC/rfc1945.txt)�ł����uRFC1945�v�Ō�������΂�������o�Ă��܂��B����̃|�C���g�� [Page 23] �� 5.1.1 Method �ȉ��ł��B�܂�HTTP/1.0�̏ꍇ Method �ɂ�"GET","HEAD","POST"�����݂���炵���BRFC2068�Ȃǂ������ Method �������Ă��肵�܂��� HTTP/1.0 �̎��_�ł͂��ꂾ���������������̂ł��傤�B�����Ď��̏͂� 5.1.2 Request-URI �����Ă݂�ƍŌ��An example Request-Line would be:�Ƃ������͂�����܂��̂Łu���N�G�X�g�̗�������v�Ɩ󂷂��Ƃ��ł���ł��傤�B���̗�Ƃ�
+無事、YahooのTOPページのデータが取得できたら成功です。(YahooのTOPページのソースは結構長いので流れていくと思われます)さてまずRFC1945を見てみます。私が使ったサイトは(ftp://ftp.ring.gr.jp/pub/doc/RFC/rfc1945.txt)ですが「RFC1945」で検索すればたくさん出てきます。今回のポイントは [Page 23] の 5.1.1 Method 以下です。まずHTTP/1.0の場合 Method には"GET","HEAD","POST"が存在するらしい。RFC2068などを見ると Method が増えてたりしますが HTTP/1.0 の時点ではこれだけしか無かったのでしょう。そして次の章の 5.1.2 Request-URI を見てみると最後にAn example Request-Line would be:という文章がありますので「リクエストの例を示す」と訳すことができるでしょう。その例とは
 
 GET http://www.w3.org/pub/WWW/TheProject.html HTTP/1.0
 
-�ƂȂ��Ă��܂��B(telnet�ł̎����ł͑��΃p�X�ł������ARFC�̂��̗�͐�΃p�X�ŋL�q����Ă��܂�)���Ă��āA���Ⴀ�v���O�����������Ă݂܂��B
+となっています。(telnetでの実演では相対パスでしたが、RFCのこの例は絶対パスで記述されています)さてさて、じゃあプログラムを書いてみます。
 
 http.pl
 ------------------------------------------------------------------------------
@@ -69,18 +69,18 @@ use Socket;
 C:\Perl>perl http.pl > test.txt
 C:\Perl>
 
-�o�͐�� test.txt �ɂ��܂��BYahoo��EUC�Ȃ̂Ń������ȂǂŊJ���ƕ����������܂�������Yahoo��TOP�y�[�W���擾�ł��Ă��܂��ˁB�O���SMTP�Ɣ�ׂ�Ƃ��Ȃ�V���v���ł��B�T�[�o�ɐڑ�����
+出力先を test.txt にします。YahooはEUCなのでメモ帳などで開くと文字化けしますが見事YahooのTOPページが取得できていますね。前回のSMTPと比べるとかなりシンプルです。サーバに接続して
 
 GET http://www.yahoo.co.jp/ HTTP/1.0\r\n
 \r\n
 
-�Ƃ���������𑗂��Ă��邾���ł��B(�����ł͐�΃p�X�ł���������񑊑΃p�X�ł�OK�ł��B���������΃p�X�łȂ���Ύ󂯕t���Ȃ��T�[�o������܂��̂Œ��ӂ��Ă�������)����ƃT�[�o����T�C�g�̏�񂪑����Ă���̂ł�����󂯎����print�ŏo�͂��Ă��܂��B�ȒP�ł��ˁB��ŁA�u���E�U�ƌĂ΂��\�t�g�����������������T�[�o�ƍs���Ă���̂ł́H�Ƃ����̂��z���ł��܂��B�܂莄������IE�̃A�h���X�L������ http://www.yahoo.co.jp/ �Ɠ��͂���ƃu���E�U�� www.yahoo.co.jp �� http(80) �ɐڑ��� GET http://www.yahoo.co.jp/ HTTP/1.0\r\n\r\n �Ƃ���������𑗂��Ă���킯�Ȃ̂ł��B(���܂̃u���E�U��HTTP/1.1��������܂��񂪂���Ă邱�Ƃ͓����ł�)���Ă��āA�Ƃ������Ƃ͂��̃v���O������while�ŉ񂹂΁A���ɂ���F5�U��(�u���E�U�̍X�V�{�^����A�ł��ăT�[�o�ɕ��ׂ�������U�����@)���v���O�����ōČ����邱�Ƃ��ł��邶���B�Ƃ������Ƃł��B�m���ɂł��܂������Ƃ��͎��ȐӔC�ł��肢���܂��B���͈�؊֌W���������ŁB
+という文字列を送っているだけです。(ここでは絶対パスですがもちろん相対パスでもOKです。ただし相対パスでなければ受け付けないサーバもありますので注意してください)するとサーバからサイトの情報が送られてくるのでそれを受け取ってprintで出力しています。簡単ですね。んで、ブラウザと呼ばれるソフトがこういうやり取りをサーバと行っているのでは？というのも想像できます。つまり私たちがIEのアドレス記入欄に http://www.yahoo.co.jp/ と入力するとブラウザは www.yahoo.co.jp の http(80) に接続し GET http://www.yahoo.co.jp/ HTTP/1.0\r\n\r\n という文字列を送っているわけなのです。(いまのブラウザはHTTP/1.1かもしれませんがやってることは同じです)さてさて、ということはこのプログラムをwhileで回せば、俗にいうF5攻撃(ブラウザの更新ボタンを連打してサーバに負荷をかける攻撃方法)をプログラムで再現することができるじゃん。ということです。確かにできますがやるときは自己責任でお願いします。私は一切関係無い方向で。
 
 
 
 3. POST METHOD
 
-�ł͎��͌f���Ȃǂɏ������ޏꍇ�͂ǂ��������N�G�X�g�𑗂�Ȃ���΂Ȃ�Ȃ��̂��𒲂ׂ܂��B�܂��͎����p�ɊȒP��CGI�v���O�����������܂��B
+では次は掲示板などに書き込む場合はどういうリクエストを送らなければならないのかを調べます。まずは実験用に簡単なCGIプログラムを書きます。
 
 postTest.cgi
 ------------------------------------------------------------------------------
@@ -105,7 +105,7 @@ print << "HTML";
 name:<input type="text" name="name" value="" size="20" maxlength="40"><br>
 sub:<input type="text" name="sub" value="" size="20" maxlength="40"><br>
 <textarea name="comment" rows="10" cols="70"></textarea><br>
-<input type="submit" value="���M"><br>
+<input type="submit" value="送信"><br>
 </form>
 </body>
 </html>
@@ -114,18 +114,18 @@ HTML
 exit;
 ------------------------------------------------------------------------------
 
-����̓u���E�U����POST���ꂽ�f�[�^�����̂܂܏o�͂�����̂ł��B�t�H�[���f�[�^�̗v�f���͂��ꂼ��name="name", name="sub", name="comment"�ƂȂ��Ă��܂��B����CGI�̃t�H�[���ɓK���ȃf�[�^����͂��đ��M�{�^���������ƁA
+これはブラウザからPOSTされたデータをそのまま出力するものです。フォームデータの要素名はそれぞれname="name", name="sub", name="comment"となっています。このCGIのフォームに適当なデータを入力して送信ボタンを押すと、
 
 name=ddd&sub=eeeee&comment=eeeeeeeeeeeeeeeeeeee
 
-�Ƃ����悤�ȕ����񂪕\�������͂��ł��B����͂܂�u���E�U�����M�����f�[�^�Ƃ������ƂɂȂ�܂���ˁB�Ă� RFC1945 �����Ă݂܂��B���A�ǂ���� POST Method �̗�͖��������ł��̂ŁA�K���ȕ�����ǂ�Ő������܂��B
+というような文字列が表示されるはずです。これはつまりブラウザが送信したデータということになりますよね。再び RFC1945 を見てみます。が、どうやら POST Method の例は無さそうですので、適当な部分を読んで推測します。
 
-[Page 31] (RFC1945 �ꕔ����)
+[Page 31] (RFC1945 一部抜粋)
 A valid Content-Length is required on all HTTP/1.0 POST requests. An HTTP/1.0 server should respond with a 400 (bad request) message if it cannot determine the length of the request message's content.
 
-���ׂĂ�POST���N�G�X�g�� Content-Length ���K�v���B�������ꂪ�����ꍇ�̓T�[�o�̓o�b�h���N�G�X�g�ł��� 400 �����X�|���X�Ƃ��ĕԂ��ׂ��ł���B
+すべてのPOSTリクエストは Content-Length が必要だ。もしこれが無い場合はサーバはバッドリクエストである 400 をレスポンスとして返すべきである。
 
-���Ȃ�K���Ȗ|��ł����A���ق��Ă��������B�ł������������̂͂�������������P����q�����킹�Ă����΂Ȃ�Ƃ��Ӗ��������ł���̂ŗǂ��̂ł�(^^; �܂�POST���N�G�X�g�𑗂�ꍇ�� Content-Length ���K�v�ł���Ɖ��߂ł��܂��BContent-Length �Ƃ͂܂� "name=ddd&sub=eeeee&comment=eeeeeeeeeeeeeeeeeeee" �̂悤�ȕ�����̒����ł��傤�B�܂�܂Ƃ߂�ƁAPOST Method ���g���ꍇ�́u�n���ׂ�������̒����v�Ɓu���̕�����v���T�[�o�ɓn���Ȃ���΂Ȃ�Ȃ��B�ƂȂ�܂��B�ł͎��ۂ� postTest.cgi ��POST����v���O�����������܂��B
+かなり適当な翻訳ですが、勘弁してください。でもこういうものはだいたい分かる単語を繋ぎ合わせていけばなんとか意味が理解できるので良いのです(^^; つまりPOSTリクエストを送る場合は Content-Length が必要であると解釈できます。Content-Length とはつまり "name=ddd&sub=eeeee&comment=eeeeeeeeeeeeeeeeeeee" のような文字列の長さでしょう。つまりまとめると、POST Method を使う場合は「渡すべき文字列の長さ」と「その文字列」をサーバに渡さなければならない。となります。では実際に postTest.cgi にPOSTするプログラムを書きます。
 
 http2.pl
 ------------------------------------------------------------------------------
@@ -157,67 +157,67 @@ use Socket;
 C:\Perl>perl http2.pl > test.txt
 C:\Perl>
 
-test.txt�𒲂ׂ�ƁA�����v���O������POST�����f�[�^"AAAAAA"���\������Ă�͂��ł��B������CGI�Ƀu���E�U���n�����f�[�^�� "name=ddd&sub=eeeee&comment=eeeeeeeeeeeeeeeeeeee" �Ƃ����悤�� "�v�f��=�f�[�^&�v�f��=�f�[�^&�v�f��=�f�[�^" �Ƃ����\���ɂȂ��Ă��܂��B�܂���ۂɌf���ɘA�����e���l����ꍇ�͂���"AAAAAA"�̕������u���E�U���n�����f�[�^�̂悤�ȕ�����ɂ��āA�A���I�ɃT�[�o�ɑ��M����v���O�����������Ηǂ��Ƃ������ƂɂȂ�܂��B
+test.txtを調べると、無事プログラムがPOSTしたデータ"AAAAAA"が表示されてるはずです。そしてCGIにブラウザが渡したデータは "name=ddd&sub=eeeee&comment=eeeeeeeeeeeeeeeeeeee" というように "要素名=データ&要素名=データ&要素名=データ" という構成になっています。つまり実際に掲示板に連続投稿を考える場合はこの"AAAAAA"の部分をブラウザが渡したデータのような文字列にして、連続的にサーバに送信するプログラムを書けば良いということになります。
 
 
 
-4. KENT WEB �� ( http://www.kent-web.com/ )
+4. KENT WEB 篇 ( http://www.kent-web.com/ )
 
-�ł͎��ۂɔz�z����Ă�f���Ŏ����Ă݂܂��B�����炭�����Ƃ������̐l�Ɏg�p����Ă���ł��낤�f���ł���KENT���̌f���Ŏ����܂��B�Ƃ����Ă�KENT����̌f���͂������񂠂�̂ł����ł� LIGHT BOARD �Ƃ����̂��g�����Ƃɂ��܂��B�܂��͓K���ȃT�[�o�ɐݒu���Ă��������B
+では実際に配布されてる掲示板で試してみます。おそらくもっとも多くの人に使用されているであろう掲示板であるKENT氏の掲示板で試します。といってもKENT氏作の掲示板はたくさんあるのでここでは LIGHT BOARD というのを使うことにします。まずは適当なサーバに設置してください。
 
-�����Ă��̌f���Ƀv���O�������瓊�e���Ă݂悤�Ǝv���܂��B(����:���������I�ɘA�����e����ꍇ�A������PC�ŃT�[�o�����ĂĎ�������ꍇ�͗ǂ��̂ł����ACGI�̖����X�y�[�X�ȂǂŎ������s���ꍇ�̓T�[�o�ɕ��ׂ�������̂ōT���߂ɂ����ق����ǂ��Ǝv���܂�)
+そしてこの掲示板にプログラムから投稿してみようと思います。(注意:もし実験的に連続投稿する場合、自分のPCでサーバをたてて実験する場合は良いのですが、CGI可の無料スペースなどで実験を行う場合はサーバに負荷がかかるので控えめにしたほうが良いと思われます)
 
-�܂��͂ǂ�ȃf�[�^�𑗂�Ȃ���΂Ȃ�Ȃ��̂���m�肽���̂Ńu���E�U�� light.cgi �ɐڑ����ăt�H�[�����𒲂ׂ܂��B
+まずはどんなデータを送らなければならないのかを知りたいのでブラウザで light.cgi に接続してフォーム情報を調べます。
 
-( light.cgi��HTML�o�͂�蔲�� )
+( light.cgiのHTML出力より抜粋 )
 <form method="POST" action="./light.cgi">
 <input type=hidden name=mode value="regist">
 <blockquote>
 <table cellpadding=1 cellspacing=1>
 <tr>
-  <td><b>���Ȃ܂�</b></td>
+  <td><b>おなまえ</b></td>
   <td><input type=text name=name size=28 value=""></td>
 </tr>
 <tr>
-  <td><b>�d���[��</b></td>
+  <td><b>Ｅメール</b></td>
   <td><input type=text name=email size=28 value=""></td>
 </tr>
 <tr>
-  <td><b>�^�C�g��</b></td>
+  <td><b>タイトル</b></td>
   <td><input type=text name=sub size=36 value="">
-	<input type=submit value="���e����"><input type=reset value="���Z�b�g"></td>
+	<input type=submit value="投稿する"><input type=reset value="リセット"></td>
 </tr>
 <tr>
-  <td colspan=2><b>�R�����g</b><br>
+  <td colspan=2><b>コメント</b><br>
   <textarea cols=56 rows=7 name=comment wrap="soft"></textarea></td>
 </tr>
 <tr>
-  <td><b>�Q�Ɛ�</b></td>
+  <td><b>参照先</b></td>
   <td><input type=text size=50 name=url value="http://"></td>
 </tr>
 <tr>
-  <td><b>�Ï؃L�[</b></td>
+  <td><b>暗証キー</b></td>
   <td><input type=password name=pwd size=8 maxlength=8 value="">
-  �i�L�������e�p�j</td>
+  （記事メンテ用）</td>
 </tr>
 </table>
 </form>
 
-(����:����� 2003/12/01 ���_�ł�light.cgi�ł�)
+(注意:これは 2003/12/01 時点でのlight.cgiです)
 
-form�^�O�ň͂܂�Ă�Ƃ���𔲐����܂����B�܂��^�[�Q�b�g�ƂȂ�CGI�� ./light.cgi �ł��B������ mode�̒l�� regist �Ȃ̂�CGI��POST����f�[�^�� mode=regist �ƂȂ�܂��B���O�� name=name �ƂȂ��Ă�̂� name=NAME �ƓK���Ȗ��O�ɂ��܂��B���[���́Aname=email �ƂȂ��Ă���̂� email=test@test.com �Ƃ��܂��B���̒��q�� name=sub �Ȃ̂� sub=TITLE ����� name=comment �Ȃ̂� comment=Hello �Ɛݒ肵�Ă����܂��B�����Ă������q����POST����f�[�^�����܂��B
+formタグで囲まれてるところを抜粋しました。まずターゲットとなるCGIは ./light.cgi です。そして modeの値が regist なのでCGIにPOSTするデータは mode=regist となります。名前は name=name となってるので name=NAME と適当な名前にします。メールは、name=email となっているので email=test@test.com とします。この調子で name=sub なので sub=TITLE さらに name=comment なので comment=Hello と設定していきます。そしてこれらを繋げてPOSTするデータを作ります。
 
 mode=regist&name=NAME&email=test@test.com&sub=TITLE&comment=Hello
 
-�ƂȂ�܂��B�|�C���g�́Amode=regist�͌Œ�Aname=���O�Aemail=���[���A�h���X�Asub=�^�C�g���Acomment=�{���A�Ƃ����悤�ɐݒ肷��Ƃ������Ƃł��B����𗝉�������ňȉ��̃v���O�������݂Ă��������B
+となります。ポイントは、mode=registは固定、name=名前、email=メールアドレス、sub=タイトル、comment=本文、というように設定するということです。これを理解した上で以下のプログラムをみてください。
 
 +--------------------------------------------------+
 | http://kenjinet.s26.xrea.com/http/KENT.txt (.pl) |
 +--------------------------------------------------+
 
-�o�[�W������HTTP/1.1�ɂȂ��Ă܂����w�b�_��Host���K�v�Ȃ��ƈȊO�� HTTP/1.0 �Ɠ����ł��B�����ݒ�̕������������o���܂��B
+バージョンがHTTP/1.1になってますがヘッダにHostが必要なこと以外は HTTP/1.0 と同じです。初期設定の部分だけ抜き出します。
 
-#-- �����ݒ�
+#-- 初期設定
 $server = 'www00.tok2.com';
 $path   = 'http://www00.tok2.com/home/********/bbs/light.cgi';
 $body   = 'mode=regist&name=NAME&email=test@yahoo.com&sub=title&comment=';
@@ -225,72 +225,72 @@ $body   = 'mode=regist&name=NAME&email=test@yahoo.com&sub=title&comment=';
 $body  .= rand(1000);
 $len    = length($body);
 
-���Ċg���q�� .pl �ɂ��ď����ݒ�����Ď��s���Ă݂Ă��������B�����炭�������܂��͂��ł��B����͎��� tok2 �̃T�[�o�X�y�[�X���؂�Ď��������̂ł��B�T�[�o�ƃp�X�͕����Ă��܂������Ƃ͂��̂܂܎����܂����B�v���O�����̏ڍׂȐ����͂��܂��񂪁A�ǂ߂Η����ł���Ǝv���܂��B���Ƃ��̃v���O�����͈�x�������e���܂��񂪁A�܂�comment�������_���Ȑ��l�ɂ��Ă�̂�(����ĕ�����ɂ���d���e�h�~�͖��Ӗ��ł���)���Ƃ� while �Ŗ����ɉ񂹂ΘA�����e���\�ł��傤�B���� while �����ꂽ�v���O�������A�b�v���Ȃ��̂��H�Ƃ����ƁAWB�̋L���͌����G���W���Ɉ���������܂���ˁB����������{��ꂻ������Ȃ��ł���(^^;
+さて拡張子を .pl にして初期設定をして実行してみてください。おそらく書き込まれるはずです。これは私が tok2 のサーバスペースを借りて試したものです。サーバとパスは伏せていますがあとはこのまま試しました。プログラムの詳細な説明はしませんが、読めば理解できると思います。あとこのプログラムは一度しか投稿しませんが、まぁcommentをランダムな数値にしてるので(よって文字列による二重投稿防止は無意味ですね)あとは while で無限に回せば連続投稿が可能でしょう。何故 while をいれたプログラムをアップしないのか？というと、WBの記事は検索エンジンに引っかかりますよね。見つかったら怒られそうじゃないですか(^^;
 
 
 
-5. THEBBS �� ( http://www.thebbs.jp/ )
+5. THEBBS 篇 ( http://www.thebbs.jp/ )
 
-�ł͎��͎��ۂɌ��݉^�c����Ă�f���ɓ��e���Ă݂܂��傤�B����������͌l�Őݒu�������̂ł͖����̂ŁA�A�����e������ƃA�N�Z�X���ۂ���鋰�ꂪ����܂��B����Ď�����1,2�񓊍e���Ă݂邾���ɂ��܂��傤�B���Ȃ݂Ɏ��ɍU������Ӑ}�͈�؂���܂���B�������Ȃ����{���ɍU���������Ȃ�Ύ��ȐӔC�ł��肢���܂��B���͈�؊֌W���������ŁB�Ƃ�����WB�͈�؊֌W���������ŁB
+では次は実際に現在運営されてる掲示板に投稿してみましょう。しかしこれは個人で設置したものでは無いので、連続投稿をするとアクセス拒否される恐れがあります。よって試しに1,2回投稿してみるだけにしましょう。ちなみに私に攻撃する意図は一切ありません。もしあなたが本当に攻撃したいならば自己責任でお願いします。私は一切関係無い方向で。というかWBは一切関係無い方向で。
 
-�����THEBBS��TEST�̂���X����HTML�̃t�H�[���̕����ł�( 2003/12/05 )�܂��̓t�H�[���̏��𒲂ׂ܂��B
+これはTHEBBSのTEST板のあるスレのHTMLのフォームの部分です( 2003/12/05 )まずはフォームの情報を調べます。
 
-<form action="http://xtest.dot.thebbs.jp/w.cgi" method=post utn><a href="http://thebbs.jp/common/hello.html" target=kiyaku>[���p�K��]</a><br>�����O����͂��Ă��������F<input type=text name=0 size=20 maxlength=16>&nbsp;&nbsp;�N���v�g�m���g�F<input type=password name=5 size=20 maxlength=40><br><script>setName('1068897594');</script><br>�R�����g����͂��Ă��������F<br><textarea name=1 rows=9 cols=70 wrap=off></textarea><br><input type=submit value="��������"><input type=hidden name=3 value="1068897594"><input type=checkbox name=2 value=1 checked>�C���f�b�N�X���グ��&nbsp;<small><a href="javascript:helper();">���e���ڂ̐���</a></small></form>
+<form action="http://xtest.dot.thebbs.jp/w.cgi" method=post utn><a href="http://thebbs.jp/common/hello.html" target=kiyaku>[利用規約]</a><br>お名前を入力してください：<input type=text name=0 size=20 maxlength=16>&nbsp;&nbsp;クリプトノモト：<input type=password name=5 size=20 maxlength=40><br><script>setName('1068897594');</script><br>コメントを入力してください：<br><textarea name=1 rows=9 cols=70 wrap=off></textarea><br><input type=submit value="書き込み"><input type=hidden name=3 value="1068897594"><input type=checkbox name=2 value=1 checked>インデックスを上げる&nbsp;<small><a href="javascript:helper();">※各項目の説明</a></small></form>
 
-���s�����������̂ł�����Ɠǂ݂ɂ����ł����A����΂��ēǂ�ŉ�����(^^;
+改行が無かったのでちょっと読みにくいですが、がんばって読んで下さい(^^;
 
-�܂��^�[�Q�b�g�ƂȂ�CGI�� http://xtest.dot.thebbs.jp/w.cgi �ł��B���ꂪ�������݂��s���v���O�����̂悤�ł��B���ɖ��O�ł��� name=0 �ƂȂ��Ă܂��̂� POST ����f�[�^�� 0=myName �Ƃ����悤�ɂ���Ηǂ��ł��ˁB�����N���v�g�m���g�ł� name=5 �Ȃ̂� 5=pass �Ƃ��������ł����ł��傤�B���̒��q�ŃR�����g�� name=1 �Ȃ̂� 1=comment �킯�̂킩��Ȃ�������(�����炭�X���b�h���Ǘ�����f�[�^)�� name=3 �Ȃ̂� 3=1068897594 �����ăX�����グ�邩�ǂ����̒l�ł��������TEST�Ȃ̂�sage�ōs�������̂� 2=0 �Ƃ��܂��B�ł͂����̕�������q���܂��B
+まずターゲットとなるCGIは http://xtest.dot.thebbs.jp/w.cgi です。これが書き込みを行うプログラムのようです。次に名前ですが name=0 となってますので POST するデータは 0=myName というようにすれば良いですね。次がクリプトノモトです name=5 なので 5=pass という感じでいいでしょう。この調子でコメントは name=1 なので 1=comment わけのわからない数字列(おそらくスレッドを管理するデータ)は name=3 なので 3=1068897594 そしてスレを上げるかどうかの値ですがこれはTESTなのでsageで行きたいので 2=0 とします。ではこれらの文字列を繋げます。
 
 0=myName&5=pass&1=Hello&3=1062995806&2=0
 
-�ƂȂ�܂��B�u���E�U�ŏ������݃{�^�����������Ƃ��A�����炭���̂悤�ȃf�[�^��POST����Ă���ƍl�����܂��ˁB���e���ׂ�CGI�� http://xtest.dot.thebbs.jp/w.cgi �ł��ˁB�ł̓v���O���������Ă��������B
+となります。ブラウザで書き込みボタンを押したとき、おそらくこのようなデータがPOSTされていると考えられますね。投稿すべきCGIは http://xtest.dot.thebbs.jp/w.cgi ですね。ではプログラムを見てください。
 
 +-------------------------------------------------+
 | http://kenjinet.s26.xrea.com/http/THE.txt (.pl) |
 +-------------------------------------------------+
 
-���Ă����ł�����Ƃ������Ȃ��Ƃ��B $path �� http://www.thebbs.jp/xtest/w.cgi �ƂȂ��Ă��܂��B$server ���Ⴂ�܂��ˁB���������A�A�h���X�Ⴄ�����Bhttp://xtest.dot.thebbs.jp/w.cgi ����Ȃ��̂��B�Ǝv���܂������͂���ŗǂ��̂ł��B���߂��� http://xtest.dot.thebbs.jp/w.cgi �Ƃ��ē��e���Ă݂�ƂȂ�Ɠ��e�o���܂���(���͂����Ńn�}��܂���) ���ʂ�b���ƃ^�[�Q�b�g��CGI��
+さてここでちょっとおかしなことが。 $path が http://www.thebbs.jp/xtest/w.cgi となっています。$server も違いますね。おいおい、アドレス違うじゃん。http://xtest.dot.thebbs.jp/w.cgi じゃないのか。と思われますが実はこれで良いのです。ためしに http://xtest.dot.thebbs.jp/w.cgi として投稿してみるとなんと投稿出来ません(私はここでハマりました) 結果を話すとターゲットのCGIは
 
-http://www.thebbs.jp/[�T�[�o���̍ŏ�����'.'�܂ł̕�����]/w.cgi
+http://www.thebbs.jp/[サーバ名の最初から'.'までの文字列]/w.cgi
 
-�ɃA�N�Z�X���Ȃ���΂Ȃ�Ȃ��B�Ƃ������Ƃł��B�܂� http://xtest.dot.thebbs.jp/w.cgi �Ȃ� www.thebbs.jp �ɐڑ��� xtest �Ƃ����f�B���N�g���ȉ���w.cgi�Ƀf�[�^��n���Ȃ���΂Ȃ�Ȃ��悤�ł��B���̂����Ȃ��Ă�̂��͕�����܂���B�Ƃ����� 2003/11/23 �Ƀe�X�g�������͂����͂Ȃ��ĂȂ������̂ł��B�ł� 2003/12/04 �Ɏ����Ă݂�ƂȂ񂩏o���Ȃ��B�����ł�܂����B��ŋ}篂��̏͂��������������Ƃ����킯�Ȃ�ł��B(�ȏ�l�^�΂�ł���^^;)
+にアクセスしなければならない。ということです。つまり http://xtest.dot.thebbs.jp/w.cgi なら www.thebbs.jp に接続し xtest というディレクトリ以下のw.cgiにデータを渡さなければならないようです。何故こうなってるのかは分かりません。というか 2003/11/23 にテストした時はこうはなってなかったのです。でも 2003/12/04 に試してみるとなんか出来ない。正直焦りました。んで急遽この章だけ書き直したというわけなんです。(以上ネタばれでした^^;)
 
 
 
-6. 2ch �� ( http://www.2ch.net/ )
+6. 2ch 篇 ( http://www.2ch.net/ )
 
-�Ō�Ɂu2�����˂�v�����܂��B���܂܂Œʂ�t�H�[�����𒲂ׂ܂��B�����2ch�̐~�[�̂���X���̃f�[�^�ł��B( 2003/12/01 )
+最後に「2ちゃんねる」をやります。いままで通りフォーム情報を調べます。これは2chの厨房板のあるスレのデータです。( 2003/12/01 )
 
-<form method=POST action="../../../bbs.cgi"><input type=submit value="��������" name=submit> ���O�F <input name=FROM size=19> E-mail<font size=1> (�ȗ���) </font>: <input name=mail size=19><br><textarea rows=5 cols=70 wrap=off name=MESSAGE></textarea><input type=hidden name=bbs value=kitchen><input type=hidden name=key value=1069576102><input type=hidden name=time value=1070108651></form>
+<form method=POST action="../../../bbs.cgi"><input type=submit value="書き込む" name=submit> 名前： <input name=FROM size=19> E-mail<font size=1> (省略可) </font>: <input name=mail size=19><br><textarea rows=5 cols=70 wrap=off name=MESSAGE></textarea><input type=hidden name=bbs value=kitchen><input type=hidden name=key value=1069576102><input type=hidden name=time value=1070108651></form>
 
-�����R�x�ڂȂ̂ŏڍׂȐ����͂��܂���B�܂��^�[�Q�b�g�ƂȂ�CGI�� ../../../bbs.cgi �ł��ˁB���ꂼ��K���ȃf�[�^�������Ă��Čq���܂��B
+もう３度目なので詳細な説明はしません。まずターゲットとなるCGIは ../../../bbs.cgi ですね。それぞれ適当なデータを持ってきて繋ぎます。
 
 FROM=nanashi&mail=sage&MESSAGE=sage&bbs=kitchen&key=1069576102&time=1070108651
 
-�ƂȂ�܂��B���ď�L�̃v���O�������g���Ď��ۂɑ��M���Ă݂Ă��������B�����炭�������܂�܂���B���̂Ȃ� 2ch �̓N�b�L�[���g���Ă邩��ł��B�������݂��s��PC��IP�A�h���X���N�b�L�[�Ƃ��ĕۑ������Ă���������Ă�Ȃ�Ώ������݂�������Ƃ������ȏ�����CGI�ɂ����Ă邩��ł��B�ł͂ǂ�����̂��B�����͊ȒP�B���N�G�X�g�w�b�_�� Cookie ��ǉ����܂��B�܂��u���E�U��2ch�ɏ������݂��s���Ă݂ăZ�b�g���ꂽ�N�b�L�[�����Ă݂܂��B�N�b�L�[�͂����瑤(�N���C�A���g)�ɕۑ�����Ă�̂Ō��邱�Ƃ��ł��܂��B�������N�b�L�[���ǂ��ɕۑ�����Ă邩��OS�ɂ���ĈႢ�܂��̂Ŋe�����ׂĂ��������B���ׂĂ݂�� PON �Ƃ������O�� myhost.co.jp �Ƃ����悤�ȃf�[�^���ۑ�����Ă�̂�������܂��B��������N�G�X�g�w�b�_�ɕt�����Ă��܂��B
+となります。さて上記のプログラムを使って実際に送信してみてください。おそらく書き込まれません。何故なら 2ch はクッキーを使ってるからです。書き込みを行うPCのIPアドレスをクッキーとして保存させてそれを持ってるならば書き込みを許可するという風な処理をCGIにさせてるからです。ではどうするのか。答えは簡単。リクエストヘッダに Cookie を追加します。まずブラウザで2chに書き込みを行ってみてセットされたクッキーを見てみます。クッキーはこちら側(クライアント)に保存されてるので見ることができます。しかしクッキーがどこに保存されてるかはOSによって違いますので各自調べてください。調べてみると PON という名前で myhost.co.jp というようなデータが保存されてるのが分かります。これをリクエストヘッダに付加してやります。
 
 Cookie:PON=myhost.co.jp
 
-����Ȋ����ł��B���Ă���ł�����x���M���Ă݂܂��傤�B�����炭�܂��������܂�܂���i�� ���X�|���X�����Ă݂�ƁAReferer �����������B�݂����Ȃ��Ƃ�������Ă���܂��B����ă��N�G�X�g�w�b�_�� Referer���t�������܂��傤�B
+こんな感じです。さてこれでもう一度送信してみましょう。おそらくまた書き込まれません（笑 レスポンスを見てみると、Referer をください。みたいなことが書かれてあります。よってリクエストヘッダに Refererも付け加えましょう。
 
 Referer:http://tmp2.2ch.net/test/read.cgi/kitchen/**********/l50
 
-����ł����炭�������݂ł���͂��ł��B
+これでおそらく書き込みできるはずです。
 
 +-------------------------------------------------+
 | http://kenjinet.s26.xrea.com/http/2CH.txt (.pl) |
 +-------------------------------------------------+
 
-���ꂪ(��)���ۂɏ������݂��s�����v���O�����ł��B�����ݒ��2ch�p�ɕύX�A���ƃf�[�^�����̕����� Cookie �� Referer ��t�����Ă܂��B
+これが(↑)実際に書き込みを行ったプログラムです。初期設定を2ch用に変更、あとデータ生成の部分に Cookie と Referer を付加してます。
 
 
-���̂悤��BBS�ɂ���Ăǂ��������f�[�^��~�������Ă�̂��B�ǂ��������d�g�݂Ŏ������Ă�̂��͔����ɈႢ�܂��B�f�����U������Ȃ��HTTP�̒m���͕s���ł��B���̂��߂ɂ͎��ۂɎ����Ōf��������Ă݂�Ƃ����̂��ǂ��ł��傤�B
+このようにBBSによってどういったデータを欲しがってるのか。どういった仕組みで実現してるのかは微妙に違います。掲示板を攻撃するならばHTTPの知識は不可欠です。そのためには実際に自分で掲示板を作ってみるというのも良いでしょう。
 
 
 
-7. �Ō��
+7. 最後に
 
-���āA�������������ł��傤���B�f���r�炵�͌��\�����[���悤�Ōf���̍쐬�҂ɂ���ẮA�������i���g���ĘA�����e��h�~����v���O������g�ݍ���ł����肷��悤�ł��B���ǍU��������@��������Ȃ���Ζh�䂷����@��������Ȃ��킯�ŁA�����͍U�����Ɩh�䑤�̃X�L���̋��������ƌ������Ƃ���ł��傤���B�ǂ���ɂ��Ă� HTTP �̒m�����K�v�ɂȂ��Ă��邱�Ƃ͊ԈႢ�Ȃ��ł��傤�B�Ō�ɂȂ�܂������A�����܂ŕt�������ēǂ�ł������������L���������܂����B
+さて、いかがだったでしょうか。掲示板荒らしは結構奥が深いようで掲示板の作成者によっては、あらゆる手段を使って連続投稿を防止するプログラムを組み込んでいたりするようです。結局攻撃する方法が分からなければ防御する方法も分からないわけで、そこは攻撃側と防御側のスキルの競い合いと言ったところでしょうか。どちらにしても HTTP の知識が必要になってくることは間違いないでしょう。最後になりましたが、ここまで付き合って読んでくださった方有り難うございました。
 
-�ł́A�܂�����܂�...
+では、また会う日まで...
 

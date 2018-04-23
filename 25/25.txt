@@ -8,460 +8,460 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-  ---- ��0�́F�ڎ� ---
+  ---- 第0章：目次 ---
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-����1�́F�s�b�L���O�c�[���쐬���@                             copyman ��
+○第1章：ピッキングツール作成方法                             copyman 著
 
-����2�́FLogoVista�v���N�V                                    Forging ��
+○第2章：LogoVistaプロクシ                                    Forging 著
 
-����3�́F�n�j�[�|�b�g����낤�i�A�ڑ�9��j                   Narusase ��
+○第3章：ハニーポットを作ろう（連載第9回）                   Narusase 著
 
-����4�́FHTML�ō��WEB�T�C�g  �` ��1�� �`                     Defolos ��
+○第4章：HTMLで作るWEBサイト  〜 第1回 〜                     Defolos 著
 
-����5�́F�n�b�J�[�̒B�l�Ŗi����                                   MaD ��
+○第5章：ハッカーの達人で吠える                                   MaD 著
 
-����6�́F�J���҂̂��߂̐�����CSRF�΍�                            ���� ��
+○第6章：開発者のための正しいCSRF対策                            金床 著
 
-����7�́F���m�点
+○第7章：お知らせ
 
-����8�́F���҃v���t�B�[��
+○第8章：著者プロフィール
 
 
-
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-
---- ��1��: �s�b�L���O�c�[���쐬���@ ---
-
-���ҁFcopyman
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
+--- 第1章: ピッキングツール作成方法 ---
 
-��0x01.) �͂��߂�
+著者：copyman
 
-�@�������̃s�b�L���O�l�^��WB�ɂ����e����Ă�킯�ł����A���ۂɂ���Ă݂�
-���Ǝv���Ă��s�b�L���O�c�[�����Ȃ����Ƃɂ͎n�܂�܂���B�������A�����Ƃ�
-��ƁA�قƂ�ǂ̏ꍇ�C�O�T�C�g�Œ������邱�ƂɂȂ��Ă��܂��܂��B�o���
-���Ƃ������̂悤�ȕn�R�w����A�C�O�̎���͕s���Ƃ������R�ȂǂŔ����a����
-��l������������Ǝv���܂��B�����ŁA�s�b�L���O�c�[���쐬���@���Љ����
-�Ǝv���܂��B
-�@�s�b�L���O�c�[���쐬���@�ɂ��ẮA�Z�L�����e�B�A�J�f���C�A�̓��ʍu��
-���s�b�L���O�ҁ��ł�������Ă���̂ŁA���킹�Č��Ă��������Ƃ킩��₷��
-�Ǝv���܂��B
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-�E���ʍu�����s�b�L���O�ҁ�
+
+■0x01.) はじめに
+
+　数多くのピッキングネタがWBにも投稿されてるわけですが、実際にやってみよ
+うと思ってもピッキングツールがないことには始まりません。しかし、買うとな
+ると、ほとんどの場合海外サイトで注文することになってしまいます。出費が痛
+いという私のような貧乏学生や、海外の取引は不安という理由などで買い渋って
+る人も数多くいると思います。そこで、ピッキングツール作成方法を紹介したい
+と思います。
+　ピッキングツール作成方法については、セキュリティアカデメイアの特別講座
+＜ピッキング編＞でも書かれているので、あわせて見ていただくとわかりやすい
+と思います。
+
+・特別講座＜ピッキング編＞
 http://www.akademeia.info/main/lecture3/tokubetu_picking.htm
 
 
-��0x02.) �K�v�ȕ�
+■0x02.) 必要な物
 
-�@�s�b�L���O�c�[�����쐬����ɂ������āA�K�v�ȍޗ��E�H����Љ�܂��B��
-���ƍ��΂ǂ�ł��s�b�L���O�͂ł���̂ŁA�g�߂ɂ��镨�ō���Ă݂Ă���
-�����B���ꂪ�g���ɂ���������s������������Ⴄ���Ŏ����Ă݂܂��傤�B
+　ピッキングツールを作成するにあたって、必要な材料・工具を紹介します。ち
+ゃんと作ればどれでもピッキングはできるので、身近にある物で作ってみてくだ
+さい。それが使いにくかったり不満があったら違う物で試してみましょう。
 
-�@�ޗ������̍��ڂ͎��̒ʂ�ł��B
-�@�E�ڍׁF�����g�������̏ڍ�
-�@�E�l�i�F�ޗ�1������̒l�i
-�@�E�{���F1�������s�b�N���̓e���V�����̖{��
-�@�E���x�F�f�ނ̋��x�ł͂Ȃ��A�o���オ�������̋��x
-�@�E���H�̂��₷���F��ԓ����܂މ��H�̓�Փx
-�@�E�g���₷���F�l�I�Ȏg���₷���̊��z
-�@�E�K�v�ȍH��F���H�ɕK�v�ȍH��
-�@�E���l�F���̑��̏��
+　材料説明の項目は次の通りです。
+　・詳細：私が使った物の詳細
+　・値段：材料1個あたりの値段
+　・本数：1個から作れるピック又はテンションの本数
+　・強度：素材の強度ではなく、出来上がった物の強度
+　・加工のしやすさ：手間等を含む加工の難易度
+　・使いやすさ：個人的な使いやすさの感想
+　・必要な工具：加工に必要な工具
+　・備考：その他の情報
 
-���s�b�N�p�ޗ�
+●ピック用材料
 
-�����S�s���A�N���b�v�A�w�A�s��
-�E�ڍׁF�ǂ��ɂł����镁�ʂ̕�
-�E�l�i�F10�~�ȉ�
-�E�{���F1�{
-�E���x�F��
-�E���H�̂��₷���F��
-�E�g���₷���F�~
-�E�K�v�ȍH��F�y���`�~2
-�E���l�F�y���`�ŋȂ��邾����OK
-�@�@�@�@�{�i�I�ȕ������҂��Ă͂����Ȃ�
-�@�@�@�@�ꉞ����Ă݂ĉ��p�͂����߂���x�̕�
+○安全ピン、クリップ、ヘアピン
+・詳細：どこにでもある普通の物
+・値段：10円以下
+・本数：1本
+・強度：△
+・加工のしやすさ：○
+・使いやすさ：×
+・必要な工具：ペンチ×2
+・備考：ペンチで曲げるだけでOK
+　　　　本格的な物を期待してはいけない
+　　　　一応作ってみて応用力を高める程度の物
 
-���s���Z�b�g
-�E�ڍׁF100�~�V���b�v�_�C�\�[�u�X�e�����X���s���Z�b�g�v�؎�p
-�E�l�i�F100�~
-�E�{���F2�{
-�E���x�F��
-�E���H�̂��₷���F��
-�E�g���₷���F��
-�E�K�v�ȍH��F���[�^�[
-�E���l�F�؎�p�s���Z�b�g�Ȃ�Ȃ���K�v���Ȃ�
-�@�@�@�@�w���Ȃ�w�Z����q�؂���΃^�_
+○ピンセット
+・詳細：100円ショップダイソー「ステンレス製ピンセット」切手用
+・値段：100円
+・本数：2本
+・強度：○
+・加工のしやすさ：△
+・使いやすさ：○
+・必要な工具：ルーター
+・備考：切手用ピンセットなら曲げる必要がない
+　　　　学生なら学校から拝借すればタダ
 
-�����m�R�̐n
-�E�ڍׁF100�~�V���b�v�_�C�\�[�u�t���[���p���֐n�v
-�E�l�i�F25�~
-�E�{���F2�`3�{
-�E���x�F��
-�E���H�̂��₷���F��
-�E�g���₷���F��
-�E�K�v�ȍH��F���[�^�[
-�E���l�F�s�b�N�Ȃ炱�ꂪ�I�X�X��
-�@�@�@�@���H�Ɏ�Ԃ�������̂���_
-�@�@�@�@�l�I�Ɉ�Ԏg���₷��
+○金ノコの刃
+・詳細：100円ショップダイソー「フレーム用鋸替刃」
+・値段：25円
+・本数：2〜3本
+・強度：○
+・加工のしやすさ：△
+・使いやすさ：○
+・必要な工具：ルーター
+・備考：ピックならこれがオススメ
+　　　　加工に手間がかかるのが難点
+　　　　個人的に一番使いやすい
 
-�����C�p�[�̐c
-�E�ڍׁFNWB�u���C�p�[�p�ւ��S���v525mm
-�E�l�i�F350�~
-�E�{���F4�`5�{
-�E���x�F��
-�E���H�̂��₷���F��
-�E�g���₷���F��
-�E�K�v�ȍH��F���[�^�[
-�E���l�F��������Ȃ�I�X�X��
-�@�@�@�@��ԉ��H���₷��
-�@�@�@�@�ׂ��̂Ŏg���Â炢�̂���_
-�@�@�@�@�p�Ԃ���q�؂��Ă���΃^�_
-�@�@�@�@�C�������Ă��̕ӂ̎Ԃ���q�؂��Ă���������
+○ワイパーの芯
+・詳細：NWB「ワイパー用替えゴム」525mm
+・値段：350円
+・本数：4〜5本
+・強度：○
+・加工のしやすさ：○
+・使いやすさ：△
+・必要な工具：ルーター
+・備考：これもかなりオススメ
+　　　　一番加工しやすい
+　　　　細いので使いづらいのが難点
+　　　　廃車から拝借してくればタダ
+　　　　気合を入れてその辺の車から拝借してくる手もある
 
-���o�[�x�L���[�̋�
-�E�ڍׁF100�~�V���b�v�_�C�\�[�u�X�e���o�[�x�L���[���v���̌`�F��
-�E�l�i�F25�~
-�E�{���F2�`3�{
-�E���x�F��
-�E���H�̂��₷���F��
-�E�g���₷���F��
-�E�K�v�ȍH��F���[�^�[
-�E���l�F�����̂ōׂ����Ȃ��ƌ����ɓ���Ȃ�
-�@�@�@�@����䂦���H�̍H���������Ȃ�ʓ|������
+○バーベキューの串
+・詳細：100円ショップダイソー「ステンバーベキュー串」串の形：平
+・値段：25円
+・本数：2〜3本
+・強度：○
+・加工のしやすさ：△
+・使いやすさ：△
+・必要な工具：ルーター
+・備考：太いので細くしないと鍵穴に入らない
+　　　　それゆえ加工の工程が長くなり面倒くさい
 
-���e���V�����p�ޗ�
+●テンション用材料
 
-�����S�s���A�N���b�v�A�w�A�s��
-�E�ڍׁF�ǂ��ɂł����镁�ʂ̕����g���܂����B
-�E�l�i�F�s���A�Ƃɂ��������B
-�E�{���F1�{
-�E���x�F�~
-�E���H�̂��₷���F��
-�E�g���₷���F�~
-�E�K�v�ȍH��F�y���`�~2
-�E���l�F�y���`�ŋȂ��邾����OK�B
-�@�@�@�@�������{�i�I�ȕ������҂��Ă͂����Ȃ�
-�@�@�@�@�ꉞ����Ă݂ĉ��p�͂����߂���x�̕�
+○安全ピン、クリップ、ヘアピン
+・詳細：どこにでもある普通の物を使いました。
+・値段：不明、とにかく安い。
+・本数：1本
+・強度：×
+・加工のしやすさ：○
+・使いやすさ：×
+・必要な工具：ペンチ×2
+・備考：ペンチで曲げるだけでOK。
+　　　　ただし本格的な物を期待してはいけない
+　　　　一応作ってみて応用力を高める程度の物
 
-���s���Z�b�g
-�E�ڍׁF100�~�V���b�v�_�C�\�[�u�X�e�����X���s���Z�b�g�v�؎�p
-�E�l�i�F100�~
-�E�{���F2�{
-�E���x�F��
-�E���H�̂��₷���F��
-�E�g���₷���F��
-�E�K�v�ȍH��F���[�^�[�A�y���`�~2
-�E���l�F�_�u���f�B�X�N�e���V�������쐬�ł���
-�@�@�@�@�w���Ȃ�w�Z����q�؂���΃^�_
+○ピンセット
+・詳細：100円ショップダイソー「ステンレス製ピンセット」切手用
+・値段：100円
+・本数：2本
+・強度：○
+・加工のしやすさ：△
+・使いやすさ：△
+・必要な工具：ルーター、ペンチ×2
+・備考：ダブルディスクテンションが作成できる
+　　　　学生なら学校から拝借すればタダ
 
-�����m�R�̐n�i�e���V�����j
-�E�ڍׁF100�~�V���b�v�_�C�\�[�u�t���[���p���֐n�v
-�E�l�i�F\25�~
-�E�{���F2�`3�{
-�E���x�F�~
-�E���H�̂��₷���F��
-�E�g���₷���F��
-�E�K�v�ȍH��F���[�^�[�A�y���`�~2
-�E���l�F���x�ɖ�肠��
-�@�@�@�@�M���Ă���Ȃ��Ȃ��Ɛ܂��
+○金ノコの刃（テンション）
+・詳細：100円ショップダイソー「フレーム用鋸替刃」
+・値段：\25円
+・本数：2〜3本
+・強度：×
+・加工のしやすさ：△
+・使いやすさ：○
+・必要な工具：ルーター、ペンチ×2
+・備考：強度に問題あり
+　　　　熱してから曲げないと折れる
 
-�����C�p�[�̐c
-�E�ڍׁFNWB�u���C�p�[�p�ւ��S���v525mm
-�E�l�i�F350�~
-�E�{���F4�`5�{
-�E���x�F��
-�E���H�̂��₷���F��
-�E�g���₷���F��
-�E�K�v�ȍH��F���[�^�[�A�y���`�~2
-�E���l�F�e���V�����Ȃ炱�ꂪ�I�X�X��
-�@�@�@�@�y���`�ŋȂ��邾���Ŋ���
-�@�@�@�@���ɋȂ��₷���A���x���y��_
-�@�@�@�@�p�Ԃ���q�؂��Ă���΃^�_
-�@�@�@�@�C�������Ă��̕ӂ̎Ԃ���q�؂��Ă���������
+○ワイパーの芯
+・詳細：NWB「ワイパー用替えゴム」525mm
+・値段：350円
+・本数：4〜5本
+・強度：○
+・加工のしやすさ：○
+・使いやすさ：○
+・必要な工具：ルーター、ペンチ×2
+・備考：テンションならこれがオススメ
+　　　　ペンチで曲げるだけで完成
+　　　　非常に曲げやすく、強度も及第点
+　　　　廃車から拝借してくればタダ
+　　　　気合を入れてその辺の車から拝借してくる手もある
 
-���o�[�x�L���[�̋��i�e���V�����j
-�E�ڍׁF100�~�V���b�v�_�C�\�[�u�X�e���o�[�x�L���[���v���̌`�F��
-�E�l�i�F25�~
-�E�{���F2�`3�{
-�E���x�F��
-�E���H�̂��₷���F��
-�E�g���₷���F��
-�E�K�v�ȍH��F���[�^�[�A�y���`�~2
-�E���l�F���Ȃ�̋��x
-�@�@�@�@�Ȃ���̂ɂ͑����͂��K�v
-�@�@�@�@�K�X�o�[�i�[������Ίy�ɋȂ��邱�Ƃ��ł���
-�@�@�@�@��[�ɉ��H���K�v
+○バーベキューの串（テンション）
+・詳細：100円ショップダイソー「ステンバーベキュー串」串の形：平
+・値段：25円
+・本数：2〜3本
+・強度：○
+・加工のしやすさ：△
+・使いやすさ：○
+・必要な工具：ルーター、ペンチ×2
+・備考：かなりの強度
+　　　　曲げるのには相当力が必要
+　　　　ガスバーナーがあれば楽に曲げることができる
+　　　　先端に加工が必要
 
-���Z�p�����`�i�e���V�����j
-�E�ڍׁF�s���i�Ƃɂ������̂��g���܂����j
-�E�l�i�F100�~���x����Ȃ��ł��傤���H
-�E�{���F1�{
-�E���x�F��
-�E���H�̂��₷���F�~
-�E�g���₷���F��
-�E�K�v�ȍH��F�p���[�̂��郋�[�^�[
-�E���l�F���Ȃ�̋��x
-�@�@�@�@����䂦���H�ɂ̓p���[�̂��郋�[�^�[���K�v
-�@�@�@�@��[��3mm���x�̕��𔃂��Ύ�Ԃ��Ȃ���
+○六角レンチ（テンション）
+・詳細：不明（家にあったのを使いました）
+・値段：100円程度じゃないでしょうか？
+・本数：1本
+・強度：○
+・加工のしやすさ：×
+・使いやすさ：○
+・必要な工具：パワーのあるルーター
+・備考：かなりの強度
+　　　　それゆえ加工にはパワーのあるルーターが必要
+　　　　先端が3mm程度の物を買えば手間が省ける
 
-���}�C�i�X�h���C�o�[�i�e���V�����j
-�E�ڍׁF100�~�V���b�v�_�C�\�[�u�N���A�O���b�v�h���C�o�[�v3mm
-�E�l�i�F100�~
-�E�{���F1�{
-�E���x�F��
-�E���H�̂��₷���F�~
-�E�g���₷���F��
-�E�K�v�ȍH��F���͂ȃK�X�o�[�i�[
-�E���l�F�M���Ă���Ȃ��Ȃ��Ɛ܂��
-�@�@�@�@�M����ɂ͋��͂ȃK�X�o�[�i�[���K�v
-�@�@�@�@��[��3mm���x�̕��𔃂��Ύ�Ԃ��Ȃ���
+○マイナスドライバー（テンション）
+・詳細：100円ショップダイソー「クリアグリップドライバー」3mm
+・値段：100円
+・本数：1本
+・強度：○
+・加工のしやすさ：×
+・使いやすさ：△
+・必要な工具：強力なガスバーナー
+・備考：熱してから曲げないと折れる
+　　　　熱するには強力なガスバーナーが必要
+　　　　先端が3mm程度の物を買えば手間が省ける
 
-���H��
+●工具
 
-�����[�^�[
+○ルーター
 
-�@�s�b�L���O�c�[�������Ȃ�A���������H��K�v�ł��B����̓��[�^�[��
-�b���i���Ă��܂��܂����A����������̂ł���΃O���C���_�[�ł��Ȃ�ł���
-�p�ł��܂��B
-�@���������������Ȃ��ꍇ��100�~�V���b�v�u�_�C�\�[�v�Ŕ����Ă���600�~�̃�
-�[�^�[�������߂ł��B�������A�p���[���Ȃ��̂ō��̂ɍ��C���K�v��������A
-���Ȃ������肵�܂��B�܂��A�����Ȃ̂ŉ���\��������܂��B
-�@�����������o���Ă��ǂ��̂Ȃ�SHINKO���́uSHR-300�v�Ƃ������[�^�[��������
-�ł��i�����g���Ă܂��j�B�������Yahoo�I�[�N�V������4000�~�O��ŁA��������
-��5000�~�O��ōw���ł��܂��B��{�I�ɉ��ł���ꂻ���ŕ֗��ł��B
+　ピッキングツールを作るなら、金属を削る工具が必要です。今回はルーターに
+話を絞ってしまいますが、金属が削れるのであればグラインダーでもなんでも代
+用できます。
+　お金をかけたくない場合は100円ショップ「ダイソー」で売っている600円のル
+ーターがお勧めです。ただし、パワーがないので削るのに根気が必要だったり、
+削れなかったりします。また、安物なので壊れる可能性もあります。
+　多少お金を出しても良いのならSHINKO製の「SHR-300」というルーターがお勧め
+です（私も使ってます）。こちらはYahooオークションで4000円前後で、送料込み
+で5000円前後で購入できます。基本的に何でも削れそうで便利です。
 
-�����[�^�[�̐n
+○ルーターの刃
 
-�@�_�C�������h�J�b�^�[�������͐ؒf�p�u�΂��g���܂��B���ɂ�����Ε֗��Ȑn
-�͑�������܂����A�Ȃ��Ă��Ȃ�Ƃ��Ȃ�܂��B��{�I�Ƀ��[�^�[�ƃZ�b�g�Őn
-�͂��Ă���Ǝv���܂��B�w������K�v������Ȃ�100�~�V���b�v�_�C�\�[�ɂ�1
-00�~�Ŕ����Ă܂��A��ނ������u���Ă���̂ł����߂ł��B
+　ダイヤモンドカッターもしくは切断用砥石を使います。他にもあれば便利な刃
+は多数ありますが、なくてもなんとかなります。基本的にルーターとセットで刃
+はついてくると思います。購入する必要があるなら100円ショップダイソーにて1
+00円で売ってます、種類も多数置いてあるのでお勧めです。
 
-���K�X�o�[�i�[
-�@�d���������Ȃ���̂ɕK�v�ł��B�킴�킴�����K�v�͂���܂���B
+○ガスバーナー
+　硬い金属を曲げるのに必要です。わざわざ買う必要はありません。
 
-�����₷��
+○紙やすり
 
-�@���[�^�[�ō�����������p�����Ď�Ȃǂ�؂�\���������ŁA���₷���
-�p�𗎂Ƃ��Ă����܂��傤�B200�Ԃ��炢�����傤�ǂ悢��������Ȃ��ł��B����
-240�Ԃ��w�����܂������A����������Ƒe�������悳�����Ȋ����ł����B
-
-
-��0x03.) ��Ƃ̑O�̒��ӓ_
-
-�@���[�^�[�g���Ƃ��̒��ӓ_�ł��B�܂��C�����ė~�����̂��ΉԂł��A��ɂ�
-�����Ă��ʒi���������܂��񂪁A�ڂɓ���Ɗ댯�ł��B�������[�^�[�Ƃ͂�����
-�Ȃ��炸�ΉԂ͔�юU��̂ŁA�ڂ���镨�𑕒����܂��傤�B��Ɨp�S�[�O����
-�]�܂����ł����A�����ł̏o����Ȃ����߂Ɋዾ�ł������ዾ�ł���p�ł����
-�̂ǂ�ǂ�g���Ă����܂��傤�B
-�@�ΉԈȊO�̒��ӓ_�Ƃ��āA�S������юU�邱�Ƃɂ����ӂ��K�v�ł��B�R������
-�ɓ���̂͊댯�ł��̂ŁA�ڂ���镨�͕K���������܂��傤�B�������A�S���͖�
-�����ł͂Ȃ��A����@����������Ă��܂��B���炭���͖����Ǝv���܂����A��
-���}�X�N�����č�Ƃ����܂��傤�B
-�@�����Ԃɂ킽���Đؒf�⌤����Ƃ����Ă���ƁA�f�ނ��M���Ȃ�܂��B����I
-�ɐ��ŗ�₷��Ƃ��K�v�ł��̂ŁA�R�b�v�Ȃǂɐ���p�ӂ��Ă����܂��傤�B
-�@�Ō�ɁA�L�͈͂ɓS������юU��܂��A�o����Ή��O���̉����Ă��ǂ��ꏊ��
-��Ƃ��邱�Ƃ��]�܂����ł��B����Ƒ����Ȃǂ̖�������܂��̂ŁA�ł����
-�����ɍ�Ƃ������Ƃ���ł��B
+　ルーターで削った部分が角張って手などを切る可能性があるんで、紙やすりで
+角を落としておきましょう。200番くらいがちょうどよいかもしれないです。私は
+240番を購入しましたが、もうちょっと粗い方がよさそうな感じでした。
 
 
-��0x04.) �s�b�N�̍쐬
+■0x03.) 作業の前の注意点
 
-�@��{�I�ɂ̓��[�^�[�ō���āA�Ō�Ɏ��₷��������Ċ����ł��B�Ƃ͂�����
-�{���Ȃ��ƍ��Ȃ��ł���ˁB�����ŁAXero-ops���񂪍쐬���Ă����������e��
-�v���[�g�W���g���܂��B
+　ルーター使うときの注意点です。まず気をつけて欲しいのが火花です、手にか
+かっても別段何も感じませんが、目に入ると危険です。安物ルーターとはいえ少
+なからず火花は飛び散るので、目を守る物を装着しましょう。作業用ゴーグルが
+望ましいですが、ここでの出費を省くために眼鏡でも水中眼鏡でも代用できるも
+のどんどん使っていきましょう。
+　火花以外の注意点として、鉄粉が飛び散ることにも注意が必要です。コレも目
+に入るのは危険ですので、目を守る物は必ず装着しましょう。しかし、鉄粉は目
+だけではなく、口や鼻からも入ってきます。恐らく問題は無いと思いますが、一
+応マスクをして作業をしましょう。
+　長時間にわたって切断や研磨作業をしていると、素材が熱くなります。定期的
+に水で冷やす作業が必要ですので、コップなどに水を用意しておきましょう。
+　最後に、広範囲に鉄粉が飛び散ります、出来れば屋外等の汚しても良い場所で
+作業することが望ましいです。それと騒音などの問題もありますので、できれば
+日中に作業したいところです。
 
-�E�e���v���[�g�W
+
+■0x04.) ピックの作成
+
+　基本的にはルーターで削って、最後に紙やすりをかけて完成です。とはいえ見
+本がないと作れないですよね。そこで、Xero-opsさんが作成してくださったテン
+プレート集を使います。
+
+・テンプレート集
 http://www.akademeia.info/main/sample/046.zip
 
-�@���̃e���v���[�g��������āA�ޗ��ɓ\��t���Đ؂蔲���܂��傤�B���̃e��
-�v���[�g�͖ڈ��ł��̂ŁA��������Ɏ����Ȃ�ɃA�����W���邱�Ƃ��ł��܂��B
-���̏ꍇ��[�������������ق����g���₷�������ł��B
+　このテンプレートを印刷して、材料に貼り付けて切り抜きましょう。このテン
+プレートは目安ですので、これを元に自分なりにアレンジすることもできます。
+私の場合先端を小さくしたほうが使いやすかったです。
 
 
-��0x05.) �e���V�����̍쐬
+■0x05.) テンションの作成
 
-�@��{�I�ɂ̓y���`��90���ɋȂ��āA��[��3mm���x�̔�ɂ��āA�Ō�Ɏ���
-����������Ċ����ł��B4�͂ŏЉ��Xero-ops���񂪍쐬���Ă����������e���v
-���[�g�W�ɁA�e���V�����̃e���v���[�g������܂��̂ŁA��������{�ɍ��܂��B
-�Ȃ���Ƃ��̒��ӂł����A�M���Ă���Ȃ��Ȃ��Ɛ܂����̂�����܂��B2�͂̍�
-���̏��̏Љ�ŁA�K�v�ȍH��̂Ƃ���ɃK�X�o�[�i�[�Ƃ��镨�͓��ɔM����K�v
-������܂��B����ȊO�̍ޗ��̓y���`2�{�ŋ���ŗ͔C���ɋȂ��Ă����炭���C��
-���B�������A�����g�������ƈႤ���̏ꍇ�A�͔C���ɋȂ��Đ܂�Ă��܂�������
-��܂���B
+　基本的にはペンチで90℃に曲げて、先端を幅3mm程度の板状にして、最後に紙や
+すりをかけて完成です。4章で紹介したXero-opsさんが作成してくださったテンプ
+レート集に、テンションのテンプレートもありますので、それを見本に作ります。
+曲げるときの注意ですが、熱してから曲げないと折れるものがあります。2章の材
+料の所の紹介で、必要な工具のところにガスバーナーとある物は特に熱する必要
+があります。それ以外の材料はペンチ2本で挟んで力任せに曲げても恐らく平気で
+す。ただし、私が使った物と違う物の場合、力任せに曲げて折れてしまうかもし
+れません。
 
 
-��0x06.) �s�b�L���O�c�[���쐬����
+■0x06.) ピッキングツール作成動画
 
-�@4�͂�5�͂̐����͂��Ȃ�ȗ������Ă��܂��B���ɂ���ĉ��H�̎d�����ς���
-�ŏڍׂɏ������Ƃ��ł��Ȃ�����ł��B�������A����ł͂���܂�Ȃ̂ŁA����
-���Љ�����Ǝv���܂��B�����͊��ɃZ�L�����e�B�A�J�f���C�A�ɂďЉ��
-�Ă��铮��ł����A�s�b�L���O�c�[�������Ȃ�Έ�x�͌����ق����ǂ������
-���B
+　4章と5章の説明はかなり簡略化しています。物によって加工の仕方が変わるの
+で詳細に書くことができないからです。しかし、それではあんまりなので、動画
+を紹介したいと思います。これらは既にセキュリティアカデメイアにて紹介され
+ている動画ですが、ピッキングツールを作るならば一度は見たほうが良い動画で
+す。
 
-�E�s�b�N�ƃe���V�����쐬
+・ピックとテンション作成
 http://www.abeclan.com/makingpicks.wmv
-�E�s�b�N�쐬
+・ピック作成
 http://www.akademeia.info/main/douga/sprinfe.mpg
-�E�e���V�����쐬
+・テンション作成
 http://www.akademeia.info/main/douga/springt.mpg
-�E�e���V�����쐬
+・テンション作成
 http://www.akademeia.info/main/douga/aliedt.mpg
 
 
-��0x07.) �S���`���[�u�̗��p
+■0x07.) ゴムチューブの利用
 
-�@����������ɃZ�L�����e�B�A�J�f���C�A�ɂďЉ��Ă��邱�Ƃł����A����
-�̃s�b�L���O�c�[���́A���X��Ɏ����Ďg���悤�ȕ����ޗ��Ƃ��Ďg���Ă��Ȃ�
-�̂ŁA�����ԃs�b�L���O���s���Ă���Ǝ肪�ɂ��Ȃ����肵�܂��B�����ŕK�v��
-�̂��S���`���[�u�ł��B���͂܂����p�������Ƃ��Ȃ��̂ŏڂ����͏����܂��񂪁A
-�Z�L�����e�B�A�J�f���C�A�ɏڍׂ�������Ă��܂��B
-
-
-��0x08.) �Ō��
-
-�@����̓s�b�L���O�c�[���쐬���@�ɂ��ď������Ă��炢�܂������A��������
-�����ł��傤���B����͊ȒP�Ȑ����������Ă��܂��񂪁A���ۂ�1�{����Ă݂��
-�ӊO�ȂقǊȒP�ɍ��邱�Ƃ��킩��܂��B���܂����l�����ɂ܂�1�{�����
-�݂Ă��������B���̃e�L�X�g�����ꂩ��s�b�L���O���n�߂悤�ƌ����l�̖��ɗ�
-�Ă�΍K���ł��B
-�@����ł́A�Ō�܂ŌĂ�ł������������A���肪�Ƃ��������܂����B
+　こちらも既にセキュリティアカデメイアにて紹介されていることですが、自作
+のピッキングツールは、元々手に持って使うような物を材料として使っていない
+ので、長時間ピッキングを行っていると手が痛くなったりします。そこで必要な
+のがゴムチューブです。私はまだ利用したことがないので詳しくは書けませんが、
+セキュリティアカデメイアに詳細が書かれています。
 
 
+■0x08.) 最後に
 
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-
---- ��2��: LogoVista�v���N�V ---
-
-���ҁFForging
-
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-
-
-��0x01.) LogoVista�v���N�V�ɂ���
-
-�@LogoVista�v���N�V�iLogoVista���A�|����Ƃ��Ăԁj�Ƃ́A�u�R�����p�a�v��
-�uEtoJ�v�A�uX PRO�v��Web�|��@�\�ł��郍�[�J���v���N�V���O�����痘�p�ł�
-���ԂɂȂ��Ă�����̂ł��B�����̑����͂����炭�p�\�R���Ƀo���h������
-���u�R�����p�a�v�����̂܂܎g�p�\�ȏ�ԂɂȂ��Ă���̂ł͂Ȃ����Ǝv���
-�܂��B�������A���p�ł���̂̓v���N�V�@�\�����ŁA�c�O�Ȃ���|��@�\�͗��p
-�ł��Ȃ��悤�ł��B
-�@���������́A�uhttp://�z�X�g��:�|�[�g�ԍ�/�v�̂悤��HTTP�ڑ�����ƁA�uL
-ogoVista Web Translator Error�v�ƕ\������܂��B
-
-�@�ʏ��Web�v���N�V�Ƃ��ė��p�\�Ȃ͓̂��R�Ƃ��āA�J�X�P�[�h�ڑ��ł����
-��������Ƃ��������������܂��B����āALogoVista�v���N�V�𕡐��p�ӂ�����A
-���̃v���N�V�𕹗p���đ��i�v���N�V���\�ł��B�܂��A���x����������������
-�̂����X����܂��B�@���������̎�̃v���N�V�̃����b�g�́A�����v���N�V��
-����A�ʏ�̃z�X�g�[���ł����Ȃ����߁A�v���N�V�K��������ł���\�����i
-�i�ɍ����Ƃ������Ƃł��B�������̓_�ɂ��ẮA�R��Ȃ���ɓ��Y�p�\�R����
-���O���c��킯�ł͂Ȃ��̂ňꌩ���G�Ȃ悤�ł����AISP�̃T�[�o�[�̃��O�ɑ���
-���c��̂ŁA���S�ȓ����Ƃ����킯�ɂ͂����܂���B
-
-
-��0x02.) LogoVista�v���N�V�����̃A�v���[�`
-
-�@���̂悤�ȕ֗��ȃv���N�V���������Ȃ���Α��݂��Ȃ������R�ł��B
-�@�ł́A�ǂ�����Č�������悢�̂ł��傤���H�@�O�q�̒ʂ�LogoVista���i��
-���A�u�R�����p�a�v�͈�ʃ��[�U�[�����Ő��������̂ŁA���Ȃ�T���₷������
-�v���܂��B���ɐ��i����ʂł���킯�ł͂���܂��񂪁c�B��ʃ��[�U�[�͕��ʁA
-ISP�̃h���C���ɂԂ牺�����Ă��܂��̂ŁA�������^�[�Q�b�g�ɂ���΂悢����
-�͗e�Ղɑz���ł��܂��B������ISP��IP�A�h���X�ɑ΂��ăv���N�V�̃|�[�g�ԍ�
-���J���Ă���z�X�g�����݂��Ă��邩�ǂ������u���[�g�t�H�[�X�I�ɒ��ׂ�΂�
-���ł��傤�B���̍�Ƃɂ̓|�[�g�X�L���i�[���g���΂悢�̂ł����A�����ł�Pr
-oxyHunter�Ƃ����c�[����p���邱�Ƃɂ��܂��B
-
-������:�u���q�l�̃V�X�e���ƃl�b�g���[�N���\�[�X��ی삷�邽�߁AProxyHunt
-er�̂悤�Ȗ����ʃ|�[�g�E�X�L�����j���O�E�v���O�����܂��͂��̑��̈�@�s��
-���\��IP�A�h���X�u���b�N����̑S�Ă̑���M�����ۂ��邱�Ƃ�����܂��v��
-�錾���Ă���ISP������܂��B�e���m�F�̏���s���Ă��������B�A�J�E���g�����
-������Ă������͐ӔC�𕉂��܂���B
-
-
-��0x03.) ProxyHunter�̊�{
-
-�@ProxyHunter�͌����z�z�ꏊ��������Ȃ��̂ł����A�uproxyht�v�Ƃ����P��
-�Ō�������ƁA�������]�ڔz�z����Ă���t�@�C����������܂��B�o�[�W��
-����2.8��3.1b1��ǂ��������܂����A�g�p��̑傫�ȈႢ�͂Ȃ��Ǝv���܂��B
-�@ProxyHunter�̓��[�U�[���w�肵���T�C�g�ɑ΂����[�U�[���w�肵��IP�A�h���X
-�ƃ|�[�g��ʂ���HTTP�ڑ�����GET���AHTTP�ڑ��ł������AGET���ʂɏ���̕���
-�񂪂��邩�ǂ��������|�[�g����@�\���������\�t�g�E�F�A�ł��B
-�@�ڑ���ƕ�����̓f�t�H���g�Őݒ肳�ꂽ���̂�����܂����A���{�̃T�C�g��
-�̐ڑ��Ŏg�p����v���N�V��T���Ȃ�A���t�[�W���p���̃g�b�v�y�[�W���w�肷
-��̂��悢�ł��傤�B��r�p������͗Ⴆ��html�w�b�_���́u<title>Yahoo! JA
-PAN</title>�v���w�肵�܂��B�����āA�X�^�[�g�ƃG���h��IP�A�h���X�ƁA�g���C
-����|�[�g�ԍ����w�肵�Ă��΁A���Ƀg���C���Ă���܂��B�|�[�g�ԍ��͈��
-�I�ȁu8080�v�����w�肷��Ώ\���ł��傤�B���̑��ׂ̍����g�����͊e��������
-�Ă��������B
-
-��0x03.) LogoVista�v���N�V�����̕��@
-
-�@IP�A�h���X�͈͈͂ŉ_�Ɍ��߂Ă��΂悢�Ƃ����킯�ɂ͂����܂���B�Ԉ��
-�Đ��{�@�ւ�IP�A�h���X�ɐڑ�����͔̂��������Ƃ���ł��B�ł́A��ʃ��[�U
-�[��IP�A�h���X�͈̔͂��ǂ�����Ē��B���Ă���΂悢�̂ł��傤���H�@������
-�E�F�u�T�C�g�������Ă�����̓A�N�Z�X���O���璊�o����΂����ł��ˁB���T�C
-�g�͎����Ă��Ȃ��Ƃ������ɂ����Ă��̏ꏊ��teacup�̌f���ł��Bteacup��
-�ɂ́u�݂�Ȃ̌f���v�Ƃ���������A�\�[�X�ɂ͓��e�҂̃����[�g�z�X�g��
-�L�^����Ă��܂��B�K���ɍD�݂�ISP�̃����z������Ă��āAJPNIC��APNIC��WHO
-IS�T�[�r�X�ɐH�킹��΁A����ISP��IP�A�h���X�͈͂������ǂ���ɖ߂��Ă��܂��B
-���̓���ꂽ���ʂ�ProxyHunter�ɃZ�b�g���ĐQ��O�Ɏd�|���Ă����΁A���ڊo��
-���Ƃ��ɂ͕����̎g����v���N�V�������������Ă��邱�Ƃł��傤�B
-�@���ʂ�GOOD�̂��̂����łȂ��Atimeout�̂��̂��ۑ����Ă����悤�����߂��܂��B
-����̃x���t�@�C�Ŏg����悤�ɂȂ��Ă邱�Ƃ����邩��ł��B
-�@�����āA���܂ɘR���������������̂Œ��ӂ��K�v�ł��B
-
-�@�菇���܂Ƃ߂�Ǝ��̂悤�ɂȂ�܂��B
-
-1�Fteacup���Ń����z�����U���Ă���B
-
-2�FWHOIS�T�[�r�X��ISP��IP�͈͂𒲍����Ă���B
-�@����ISP�ł���ΐٍ�́uIP�����W�Q�b�^�[�v�ł܂Ƃ߂ď����\����B
-
-3�F����ꂽIP�͈͂�ProxyHunter�ɃZ�b�g���Ď��s����B
-�@ProxyHunter2.8�ł���ΐٍ�ProxyHunterSupport�ł܂Ƃ߂ăZ�b�g�\�AProxy
-Hunter3.*�ł����ProxyHunter3Support�Ń^�X�N�����\�B
-
-4.���n���A�ٍ�́u�����ǍD�v�ŘR�����r������B
-
-�@�Ȃ��AIP�����W�Q�b�^�[�AProxyHunterSupport�AProxyHunter3Support�A������
-�D�́u���̒b�艮�v�ihttp://www.geocities.jp/kajiya_forging/�j�ɂĔz�z����
-���܂��B
+　今回はピッキングツール作成方法について書かせてもらいましたが、いかがだ
+ったでしょうか。今回は簡単な説明しかしていませんが、実際に1本作ってみれば
+意外なほど簡単に作れることがわかります。あまり難しく考えずにまず1本作って
+みてください。このテキストがこれからピッキングを始めようと言う人の役に立
+てれば幸いです。
+　それでは、最後まで呼んでくださった方、ありがとうございました。
 
 
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- ��3��: �n�j�[�|�b�g����낤�i�A�ڑ�9��j ---
+--- 第2章: LogoVistaプロクシ ---
 
-���ҁFNarusase
+著者：Forging
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) LogoVistaプロクシについて
 
-�@�O���honeyd�̃l�b�g���[�N����̋@�\�ɂ��Đ������܂����B
-�@�����honeyd�̌X�̉��zPC�̐ݒ�Ɋւ��Đ����������Ǝv���܂��B
+　LogoVistaプロクシ（LogoVista串、翻訳串とも呼ぶ）とは、「コリャ英和」や
+「EtoJ」、「X PRO」のWeb翻訳機能であるローカルプロクシが外部から利用でき
+る状態になっているものです。これらの多くはおそらくパソコンにバンドルされ
+た「コリャ英和」がそのまま使用可能な状態になっているのではないかと思われ
+ます。ただし、利用できるのはプロクシ機能だけで、残念ながら翻訳機能は利用
+できないようです。
+　見分け方は、「http://ホスト名:ポート番号/」のようにHTTP接続すると、「L
+ogoVista Web Translator Error」と表示されます。
+
+　通常のWebプロクシとして利用可能なのは当然として、カスケード接続できる場
+合があるという特徴を持ちます。よって、LogoVistaプロクシを複数用意したり、
+他のプロクシを併用して多段プロクシが可能です。また、速度もそこそこ早いも
+のが多々あります。　何よりもこの手のプロクシのメリットは、国内プロクシで
+あり、通常のホスト端末でしかないため、プロクシ規制を回避できる可能性が格
+段に高いということです。匿名性の点については、漏れない上に当該パソコンに
+ログが残るわけではないので一見無敵なようですが、ISPのサーバーのログに足跡
+が残るので、完全な匿名というわけにはいきません。
 
 
-��0x02.) �ݒ�t�@�C�����̏���
+■0x02.) LogoVistaプロクシ発見のアプローチ
 
-�@�����honeyd�̐ݒ�t�@�C���itest.config�j�Aperl�̃X�N���v�g�itest.pl�j�A
-bash�̃X�N���v�g�itest.sh�j���g�p���܂��B
+　そのような便利なプロクシも見つけられなければ存在しないも同然です。
+　では、どうやって見つけたらよいのでしょうか？　前述の通りLogoVista製品の
+内、「コリャ英和」は一般ユーザー向けで数も多いので、かなり探しやすいかと
+思います。特に製品を区別できるわけではありませんが…。一般ユーザーは普通、
+ISPのドメインにぶら下がっていますので、これらをターゲットにすればよいこと
+は容易に想像できます。そこでISPのIPアドレスに対してプロクシのポート番号
+が開いているホストが存在しているかどうかをブルートフォース的に調べればよ
+いでしょう。その作業にはポートスキャナーを使えばよいのですが、ここではPr
+oxyHunterというツールを用いることにします。
 
------�@/usr/local/share/honeyd/test.config
+●注意:「お客様のシステムとネットワークリソースを保護するため、ProxyHunt
+erのような無差別ポート・スキャンニング・プログラムまたはその他の違法行為
+が可能なIPアドレスブロックからの全ての送受信を拒否することがあります」と
+宣言しているISPもあります。各自確認の上実行してください。アカウントを取り
+消されても当方は責任を負いません。
+
+
+■0x03.) ProxyHunterの基本
+
+　ProxyHunterは公式配布場所が見つからないのですが、「proxyht」という単語
+で検索すると、いくつも転載配布されているファイルが見つかります。バージョ
+ンは2.8と3.1b1を良く見かけますが、使用上の大きな違いはないと思います。
+　ProxyHunterはユーザーが指定したサイトに対しユーザーが指定したIPアドレス
+とポートを通してHTTP接続してGETし、HTTP接続できたか、GET結果に所定の文字
+列があるかどうかをレポートする機能を持ったソフトウェアです。
+　接続先と文字列はデフォルトで設定されたものがありますが、日本のサイトへ
+の接続で使用するプロクシを探すなら、ヤフージャパンのトップページを指定す
+るのがよいでしょう。比較用文字列は例えばhtmlヘッダ部の「<title>Yahoo! JA
+PAN</title>」を指定します。そして、スタートとエンドのIPアドレスと、トライ
+するポート番号を指定してやれば、順にトライしてくれます。ポート番号は一般
+的な「8080」だけ指定すれば十分でしょう。その他の細かい使い方は各自研究し
+てください。
+
+■0x03.) LogoVistaプロクシ発見の方法
+
+　IPアドレス範囲は闇雲に決めてやればよいというわけにはいきません。間違っ
+て政府機関のIPアドレスに接続するのは避けたいところです。では、一般ユーザ
+ーのIPアドレスの範囲をどうやって調達してくればよいのでしょうか？　自分の
+ウェブサイトを持っている方はアクセスログから抽出すればいいですね。自サイ
+トは持っていないという方にうってつけの場所はteacupの掲示板です。teacup内
+には「みんなの掲示板」という板があり、ソースには投稿者のリモートホストが
+記録されています。適当に好みのISPのリモホを取ってきて、JPNICやAPNICのWHO
+ISサービスに食わせれば、そのISPのIPアドレス範囲がたちどころに戻ってきます。
+この得られた結果をProxyHunterにセットして寝る前に仕掛けておけば、朝目覚め
+たときには複数の使えるプロクシが引っかかってくることでしょう。
+　結果がGOODのものだけでなく、timeoutのものも保存しておくようお勧めします。
+後日のベリファイで使えるようになってることがあるからです。
+　そして、たまに漏れ串も引っかかるので注意が必要です。
+
+　手順をまとめると次のようになります。
+
+1：teacup等でリモホを見繕ってくる。
+
+2：WHOISサービスでISPのIP範囲を調査してくる。
+　国内ISPであれば拙作の「IPレンジゲッター」でまとめて処理可能する。
+
+3：得られたIP範囲をProxyHunterにセットして実行する。
+　ProxyHunter2.8であれば拙作ProxyHunterSupportでまとめてセット可能、Proxy
+Hunter3.*であればProxyHunter3Supportでタスク生成可能。
+
+4.収穫し、拙作の「串検良好」で漏れ串を排除する。
+
+　なお、IPレンジゲッター、ProxyHunterSupport、ProxyHunter3Support、串検良
+好は「村の鍛冶屋」（http://www.geocities.jp/kajiya_forging/）にて配布して
+います。
+
+
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+--- 第3章: ハニーポットを作ろう（連載第9回） ---
+
+著者：Narusase
+
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+
+
+■0x01.) はじめに
+
+　前回はhoneydのネットワーク周りの機能について説明しました。
+　今回はhoneydの個々の仮想PCの設定に関して説明したいと思います。
+
+
+■0x02.) 設定ファイル等の準備
+
+　今回はhoneydの設定ファイル（test.config）、perlのスクリプト（test.pl）、
+bashのスクリプト（test.sh）を使用します。
+
+-----　/usr/local/share/honeyd/test.config
 create template
 set template default tcp action reset
 set template default udp action block
@@ -477,7 +477,7 @@ add template tcp port 2000 "./test.sh $ipsrc $sport $ipdst $dport"
 bind 192.168.1.125 template
 -----
 
------�@/usr/local/share/honeyd/test.pl
+-----　/usr/local/share/honeyd/test.pl
 #! /usr/bin/perl
 print "<html><head><title>Hoge</title></head>\n";
 print "<body>\n";
@@ -488,12 +488,12 @@ print "</body>\n";
 print "</html>\n";  
 -----
 
------�@/usr/local/share/honeyd/test.sh
+-----　/usr/local/share/honeyd/test.sh
 #! /bin/bash
 echo "SRC=${1},${2} DST=${3},${4}" >> test.log
 -----
 
-�@�Ȃ��A���̂悤�ɓ��͂��āA�e�t�@�C���Ɋւ��Ăɍ쐬�ƌ�����t�����܂��B
+　なお、次のように入力して、各ファイルに関してに作成と権限を付加します。
 
 -----
 # echo "Log" > /usr/local/share/honeyd/test.log
@@ -502,23 +502,23 @@ echo "SRC=${1},${2} DST=${3},${4}" >> test.log
 # chmod 755 /usr/local/share/honeyd/test.sh
 -----
 
-�@�܂��APerl��SSH����������Ă����ԂŁASSH�T�[�r�X�����삵�Ă��邱�Ƃ�
-�O��Ƃ��܂��B
+　また、PerlとSSHが導入されている状態で、SSHサービスが動作していることを
+前提とします。
 
 
-��0x03.) �v���g�R�����Ƃ̃f�t�H���g����̐ݒ�
+■0x03.) プロトコルごとのデフォルト動作の設定
 
-�@���āA����ł͂����̐ݒ�t�@�C�����g���āA����honeyd�𓮂����Ă݂܂�
-�傤�B�N���̂��߂̃R�}���h�ł́Ahoneyd���̂�����Web�T�[�o�[�̋@�\�𖳌���
-����--disable-webserver�I�v�V�������g���܂��B
+　さて、それではこれらの設定ファイルを使って、早速honeydを動かしてみまし
+ょう。起動のためのコマンドでは、honeyd自体が持つWebサーバーの機能を無効に
+する--disable-webserverオプションを使います。
 
 -----
 # cd /usr/local/share/honeyd/
 # honeyd -d -f test.config -i eth1 -u 1000 -g 32767 192.168.1.125-192.168.1.126 --disable-webserver
 -----
 
-�@�ݒ�t�@�C���̎��̂悤�ȕ����ł̓v���g�R�����Ƃ̃f�t�H���g�̓�����w��
-���Ă��܂��B
+　設定ファイルの次のような部分ではプロトコルごとのデフォルトの動作を指定
+しています。
 
 -----
 set template default tcp action reset
@@ -526,33 +526,33 @@ set template default udp action block
 set template default icmp action open
 -----
 
-�@�����̐ݒ�ł�TCP�AUDP�AICMP�̊e�v���g�R���ւ̃A�N�Z�X�ɑ΂��ăf�t�H��
-�g�ł͂ǂ̂悤�ɑΉ����邩��ݒ�ł��܂��B�Ή��̎�ނ̓A�N�Z�X���󂯕t��
-��open�ƁA�A�N�Z�X���󂯓��ꂽ��ɑ����ɐڑ���ؒf����reset�A�A�N�Z�X��
-������block������܂��B
-�@�ł͎��ۂ̓�����݂Ă����܂��傤�B
-�@�܂��Ahoneyd���N��������Ԃ�192.168.1.125��TCP�̃|�[�g20�`30�������[�g
-����|�[�g�X�L�������Ă݂Ă��������B
-�@����ƁA�����Ɋ�������22�ԃ|�[�g���J���Ă���悤�Ɍ�����͂��ł��B
+　ここの設定ではTCP、UDP、ICMPの各プロトコルへのアクセスに対してデフォル
+トではどのように対応するかを設定できます。対応の種類はアクセスを受け付け
+るopenと、アクセスを受け入れた後に即座に接続を切断するreset、アクセスを無
+視するblockがあります。
+　では実際の動作をみていきましょう。
+　まず、honeydを起動した状態で192.168.1.125のTCPのポート20〜30をリモート
+からポートスキャンしてみてください。
+　すると、すぐに完了して22番ポートが開いているように見えるはずです。
 
-�@���́Areset�ƂȂ��Ă��镔����block�ɕύX���Ahoneyd���ċN�����Ă��瓯�l
-�Ƀ|�[�g�X�L�������Ă݂Ă��������B
+　次は、resetとなっている部分をblockに変更し、honeydを再起動してから同様
+にポートスキャンしてみてください。
 
 -----
 set template default tcp action reset
 -----
-��
+↓
 -----
 set template default tcp action block
 -----
 
-�@���x�́A��قǂƂ͈Ⴂ�����]�v�Ɏ��Ԃ�������22�ԃ|�[�g���J���Ă���悤
-�Ɍ�����͂��ł��B���̍���reset�̏ꍇ�����ɐڑ���؂�̂ɑ΂��āAblock��
-�ꍇ�̓c�[���Ȃǂ��^�C���A�E�g����������܂ő҂��Ă��邱�ƂɋN�����܂��B
+　今度は、先ほどとは違い少し余計に時間がかかり22番ポートが開いているよう
+に見えるはずです。この差はresetの場合即座に接続を切るのに対して、blockの
+場合はツールなどがタイムアウトが発生するまで待っていることに起因します。
 
 
-�ł́A����ICMP�ɑ΂���ݒ�̊m�F���s���܂��B
-192.168.1.125�ɑ΂���ping�����s���Ă݂Ă��������B
+では、次にICMPに対する設定の確認を行います。
+192.168.1.125に対してpingを実行してみてください。
 
 -----
 C:\>ping 192.168.1.125
@@ -570,20 +570,20 @@ Approximate round trip times in milli-seconds:
     Minimum = 0ms, Maximum =  0ms, Average =  0ms
 -----
 
-�@���̂悤�ɂ������Ping�ɉ������Ԃ��Ă��܂��B
+　このようにきちんとPingに応答が返ってきます。
 
-�@���ɉ��L�̂悤��ICMP�̐ݒ��open����block�ɕύX����honeyd���ċN�����܂��B
-�����āA�ēxPing�����s���܂��B
+　次に下記のようにICMPの設定をopenからblockに変更してhoneydを再起動します。
+そして、再度Pingを実行します。
 
 -----
 set default default icmp action open
 -----
-��
+↓
 -----
 set default default icmp action block
 -----
 
-�@���ʂ͎��̂悤�Ƀ^�C���A�E�g���Ă��܂��܂��B
+　結果は次のようにタイムアウトしてしまいます。
 
 -----
 C:\>ping 192.168.1.125
@@ -601,318 +601,318 @@ Approximate round trip times in milli-seconds:
     Minimum = 0ms, Maximum =  0ms, Average =  0ms
 -----
 
-�@���̂悤�ɁAhoneyd�ł�TCP�AUDP�AICMP�ɑ΂���f�t�H���g�̓����ݒ肷��
-���Ƃ��ł��܂��B
+　このように、honeydではTCP、UDP、ICMPに対するデフォルトの動作を設定する
+ことができます。
 
 
-��0x04.) �v���g�R�����Ƃ̌ʓ���̐ݒ�
+■0x04.) プロトコルごとの個別動作の設定
 
-�@��������̓v���g�R���̃|�[�g���Ƃ̓����ύX����@�\�ɂ��Đ������܂��B
+　ここからはプロトコルのポートごとの動作を変更する機能について説明します。
 
-���R�}���h���s�@�\
+●コマンド実行機能
 
-�@���ɁA���L�̕����̐ݒ�ɂ��Đ������܂��B
+　次に、下記の部分の設定について説明します。
 
 -----
 # add template tcp port 80 "./test.pl"
 -----
 
-�@�܂��A������Web�u���E�U��192.168.1.125�ɃA�N�Z�X���Ă݂Ă��������B����
-�ƁAtest.pl�ɏ������悤��Web�y�[�W���\������܂��B����́A�|�[�g80�Ԃɑ�
-����A�N�Z�X�ɑ΂��Ă�test.pl�̎��s���ʂ�Ԃ��悤�ɐݒ肪����Ă��邽�߂�
-���B�܂�A�����Ƃ��Ďw�肳�ꂽ�R�}���h�����s���A���̌��ʂ�Ԃ��Ă����
-�ł��B���̂��߁A�����̕��������Ƃ��΁uls / -al�v�ȂǂƂ���ƁA���[�g�f�B
-���N�g���̓��e���\������܂��B
+　まず、試しにWebブラウザで192.168.1.125にアクセスしてみてください。する
+と、test.plに書いたようなWebページが表示されます。これは、ポート80番に対
+するアクセスに対してはtest.plの実行結果を返すように設定がされているためで
+す。つまり、引数として指定されたコマンドを実行し、その結果を返しているの
+です。このため、引数の部分をたとえば「ls / -al」などとすると、ルートディ
+レクトリの内容が表示されます。
 
-���v���L�V�@�\
+●プロキシ機能
 
-�@���ɁA���L�̕����̐ݒ�ɂ��Đ������܂��B
+　次に、下記の部分の設定について説明します。
 
 -----
 # add template tcp port 22 proxy 192.168.1.1:22
 -----
 
-�@�ł́A����SSH�̃N���C�A���g��192.168.1.125��22�ԃ|�[�g�ɃA�N�Z�X���Ă�
-�Ă��������B����ƁASSH�ŕ��ʂɃA�N�Z�X�ł��Ă��܂��܂��B����́A192.168
-.1.125�̃|�[�g22�Ԃɑ΂���A�N�Z�X��192.168.1.1�Ƀ��_�C���N�g���Ă��邽�߁A
-�{������IP�A�h���X�ł͋N�����Ă��Ȃ��͂��̃T�[�r�X�𗘗p�ł���̂ł��B��
-�܂�A���̗�ł�honey���v���L�V�T�[�o�̂悤�ȋ@�\��S���Ă���̂ł��B
+　では、次にSSHのクライアントで192.168.1.125の22番ポートにアクセスしてみ
+てください。すると、SSHで普通にアクセスできてしまいます。これは、192.168
+.1.125のポート22番に対するアクセスを192.168.1.1にリダイレクトしているため、
+本来そのIPアドレスでは起動していないはずのサービスを利用できるのです。つ
+まり、この例ではhoneyがプロキシサーバのような機能を担っているのです。
 
-���W�J�\�ȕϐ�
+●展開可能な変数
 
-�@���ɁA���L�̕����̐ݒ�ɂ��Đ������܂��B
+　次に、下記の部分の設定について説明します。
 
 -----
 # add template tcp port 1000 "nmap $ipsrc"
 # add template tcp port 2000 "./test.sh $ipsrc $sport $ipdst $dport"
 -----
 
-�@honeyd�̃R�}���h���s�@�\�ł́A$ipsrc�A$sport�A$ipdst�A$dport��4��ނ̓W
-�J�\�ȕϐ�������܂��B���ꂼ��A�p�P�b�g�̑��M��IP�A���M���|�[�g�A���M
-��IP�A���M��|�[�g���Ӗ����Ă��܂��B���������܂��g�����ƂŁA�l�X�ȏ���
-�������ł��܂��B
-�@����͖{���̎g�����ł͂Ȃ��̂ł��������[�g�����nmap�̌��ʂ�m�肽����
-��������܂��B���̏ꍇ�A��i�̐ݒ�ŏ[���ł��܂��B�u���E�U����192.168.1.
-125:1000�ɃA�N�Z�X���Ă݂Ă��������B���X����ł���nmap�̌��ʂ��Ԃ����
-�̂��킩�邩�Ǝv���܂��B
+　honeydのコマンド実行機能では、$ipsrc、$sport、$ipdst、$dportの4種類の展
+開可能な変数があります。それぞれ、パケットの送信元IP、送信元ポート、送信
+先IP、送信先ポートを意味しています。これらをうまく使うことで、様々な処理
+を実現できます。
+　これは本来の使い方ではないのですがリモートからのnmapの結果を知りたい場
+合があります。この場合、上段の設定で充足できます。ブラウザから192.168.1.
+125:1000にアクセスしてみてください。少々見難いですがnmapの結果が返される
+のがわかるかと思います。
 
-�@�܂��A���i�̐ݒ�ł͂�������V�F���X�N���v�g�����܂��Ă�邱�ƂŁA�e��
-�����t�@�C���ɋL�^���Ă��܂��B�u���E�U����192.168.1.125:2000�ɃA�N�Z�X��
-�Ă���Atest.log�t�@�C���Ɋe�ϐ��̒l���������܂�Ă��邱�Ƃ��m�F���Ă݂�
-���������B
+　また、下段の設定ではいったんシェルスクリプトをかませてやることで、各変
+数をファイルに記録しています。ブラウザから192.168.1.125:2000にアクセスし
+てから、test.logファイルに各変数の値が書き込まれていることを確認してみて
+ください。
 
-�@�����A�����̃R�}���h���s�@�\�𗘗p�������@�̓Z�L�����e�B�I�͐F�X�Ɩ�
-�肪���邽�߂��̎g�p�ɓ������Ă͏\���Ȓ��ӂ𕥂��Ă��������B
-
-
-��0x05.) ������
-
-�@�����honeyd�̌X�̉��zPC�̐ݒ�Ɋւ��Đ������܂����B�����honeyd�Ŋ�
-�P�ȃn�j�[�|�b�g�����̂ɕK�v�ȋ@�\�ɂ��Ă͐������I�����܂����B���ɂ�
-honeyd�ɂׂ͍��ȋ@�\�����낢��Ƃ���̂ł����A�����Ɋւ��Ă͎���ȍ~��
-�K�v�ɂȂ����ꍇ�ɏ����������Ă��������Ǝv���܂��B
-�@����́A�ǂ����邩�Y��ł��܂��c�B
+　ただ、これらのコマンド実行機能を利用した方法はセキュリティ的は色々と問
+題があるためその使用に当たっては十分な注意を払ってください。
 
 
+■0x05.) おわりに
 
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+　今回はhoneydの個々の仮想PCの設定に関して説明しました。これでhoneydで簡
+単なハニーポットを作るのに必要な機能については説明が終了しました。他にも
+honeydには細かな機能がいろいろとあるのですが、これらに関しては次回以降で
+必要になった場合に順次説明していきたいと思います。
+　次回は、どうするか悩んでいます…。
 
---- ��4��: HTML�ō��WEB�T�C�g  �` ��1�� �`  ---
 
-���ҁFDefolos
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
+--- 第4章: HTMLで作るWEBサイト  〜 第1回 〜  ---
 
-��0x01.) �͂��߂�
+著者：Defolos
 
-�@����ɂ��́ADefolos�ł��B�����HTML�iHyper Text Markup Language�j�ɂ�
-�Ď��M�������܂��B
-�@HTML�͂������̕��������Ǝv���܂����AWeb�T�C�g�i���ɂ����z�[���y�[�W�j��
-�\����������Ƃ����W���[�ȃ}�[�N�A�b�v�����Q�[�W�ł��BHTML�ȊO�ɂ�XML��XH
-TML�Ȃǂ̃}�[�N�A�b�v�����Q�[�W�����݂��܂����A�����HTML�̃o�[�W����4.01
-�ɂ��Ă̂݌��y�������܂��B
-
-�@�悭�n�b�J�[�̕K�{�X�L���̂ЂƂƂ��Ď��グ����HTML�ł����A�����
-�ǌ�p�������y�񂶂���Z�p�͏��Ȃ��Ǝv���܂��B���̂悤�Ȃ킯�ŁA���̃�
-�|�[�g�ł͐�����HTML�̗p�@�ɏd�_��u���A���̊ȒP�ȗ��j�A��b�T�O�A���ۂ�
-�R�[�f�B���O����WEB�T�C�g�����グ����@���܂Ƃ߂����Ǝv���܂��B
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x02.) HTML�̊ȒP�ȗ��j
+■0x01.) はじめに
 
-�@HTML��1989�N3����SGML�iStandard Generalsed Markup Language - ISO8879:1
-986�j���x�[�X�Ƃ���Tim Berners-Lee�����Ă����}�[�N�A�b�v�����Q�[�W�ŁA��
-��1994�N��HTML�̎d�l�����肷��W3C���������Ă��܂��B���̏͂ł�HTML���ĈȑO
-��WWW�iWorld Wide Web�j�Ɋւ�����j��HTML�ɑ傫���֌W������̂����グ��
-���B
+　こんにちは、Defolosです。今回はHTML（Hyper Text Markup Language）につい
+て執筆いたします。
+　HTMLはご存じの方も多いと思いますが、Webサイト（俗にいうホームページ）を
+構成するもっともメジャーなマークアップランゲージです。HTML以外にもXMLやXH
+TMLなどのマークアップランゲージも存在しますが、今回はHTMLのバージョン4.01
+についてのみ言及いたします。
 
-��Memex
+　よくハッカーの必須スキルのひとつとして取り上げられるHTMLですが、これほ
+ど誤用が多く軽んじられる技術は少ないと思います。そのようなわけで、このレ
+ポートでは正しいHTMLの用法に重点を置き、その簡単な歴史、基礎概念、実際の
+コーディングからWEBサイトを作り上げる方法をまとめたいと思います。
 
-�@�n�C�p�[�e�L�X�g�̊T�O�̑匳�ƂȂ����T�O��1945�N��Vannevar Bush�����\��
-���u��X���l����悤�Ɂv�Ƃ����^�C�g���̘_���ɏo�Ă���Memex�ł��BMemex��
-1945�N�A�A�����J�R�̌��q���e�J���v��u�}���n�b�^���v��v�̎w�����΂߂�Va
-nnevar Bush���l�Ă����V�X�e���ŁA��ʂ̎��������ł��ȒP�Ɏ��o����悤
-�ɂ���V�X�e����ړI�Ƃ��āA�֘A��������e�Ղɉ{���ł��A�e�ՂɐV���ȏ�
-��������邱�Ƃ��ł���V�X�e���ł����B�������B�e���邽�߂̃J�����ƁA�B�e
-�����t�B������ۑ����Ă����}�C�N���t�B�����A����ƃ}�C�N���t�B�����𓊉e
-����X�N���[�����������@�B�������悤�ł��B
-�@�ނ����߂ăn�C�p�[�e�L�X�g�V�X�e���ɂ��Ă̘_���𔭕\�����̂ł����A�u
-�n�C�p�[�e�L�X�g�v�Ƃ������O�����߂Ďg�����̂͌�q����Ted Nelson�ł��B��
-�̂悤�ɔނ̎v�z�͐��I�ł���AVannevar Bush�̔��\�����T�O�����ݎ��B����
-�p���Ă���WWW�̉��n�ɂȂ��Ă��܂��B
 
-��Xanadu
+■0x02.) HTMLの簡単な歴史
 
-�@Xanadu��Ted Nelson�����\�����O���[�o���n�C�p�[�e�L�X�g�V�X�e���̊T�O�ŁA
-���݂�WWW�����̊T�O�ɂ����Ƃ��߂��V�X�e���Ƃ���Ă��܂��BWWW�̗��j�����
-��łȂ��Ă͂Ȃ�Ȃ��T�O�ł���A���݂�WWW��Xanadu�̃T�u�Z�b�g�Ƃ��Ă��̋@
-�\�̈ꕔ������������̂ł��B
-�@Ted Nelson��1965�N��ACM�iAssociation for Computin Machinery�j�ɒ�o����
-�_���ŁA���߂āuHyperText�v�i�n�C�p�[�e�L�X�g�j�Ƃ������t�𔭕\���܂����B
-Ted Nelson�͌�ɁA���̍l������Samuel Taylor Coleridge����̏����ɓo�ꂷ��
-�ˋ�s�s���疼�O���Ƃ�AXanadu�Ɩ��t���܂����B����Xanadu�̊T�O�͔��ɋ�
-��Ȃ��̂ŁA���݂ł����̋@�\�̂��ׂĂ𖞂����V�X�e���͔��\����Ă��܂���B
-Xanadu�̊T�O�̈ꕔ���G�c�ɗ񋓂���Ǝ��̂悤�Ȃ��̂�����܂��B
+　HTMLは1989年3月にSGML（Standard Generalsed Markup Language - ISO8879:1
+986）をベースとしてTim Berners-Leeが発案したマークアップランゲージで、後
+の1994年にHTMLの仕様を策定するW3Cが発足しています。この章ではHTML発案以前
+のWWW（World Wide Web）に関する歴史でHTMLに大きく関係するものを取り上げま
+す。
 
-�E���̃����N
-�E���̔��i�v�I�ۑ�����ѕ����̃o�[�W������
-�E���p���ɂ�钘�쌠���̉���
-�E�d�q�o��
-�E�l�b�g���[�N���p�ɂ�镪�U����
+●Memex
 
-�@�ڍׂ͂����ł͈��������Ă��������܂����A�����N�A�d�q�o�ŁA�l�b�g���[�N
-�̗��p�Ƃ��������͌��݂�WWW�ł���������Ă��镔���ł��B
-�@Xanadu�͂��܂�ɂ�����ȊT�O�ł��������߁A�ߔN�ł̓T�u�Z�b�g�ł���WWW��
-����Ȃ�������₤�`�Ŏ�������������Ă���悤�ł��B�ނ̔��\����Xanadu��
-�܂���̋Z�p�ɑ傫�ȉe����^���܂����B
+　ハイパーテキストの概念の大元となった概念は1945年にVannevar Bushが発表し
+た「我々が考えるように」というタイトルの論文に出てくるMemexです。Memexは
+1945年、アメリカ軍の原子爆弾開発計画「マンハッタン計画」の指揮を勤めるVa
+nnevar Bushが考案したシステムで、大量の資料をいつでも簡単に取り出せるよう
+にするシステムを目的として、関連した情報を容易に閲覧でき、容易に新たな情
+報を加えることができるシステムでした。資料を撮影するためのカメラと、撮影
+したフィルムを保存しておくマイクロフィルム、それとマイクロフィルムを投影
+するスクリーンを持った機械だったようです。
+　彼が初めてハイパーテキストシステムについての論説を発表したのですが、「
+ハイパーテキスト」という名前を初めて使ったのは後述するTed Nelsonです。こ
+のように彼の思想は先駆的であり、Vannevar Bushの発表した概念が現在私達が利
+用しているWWWの下地になっています。
 
-��WWW
+●Xanadu
 
-�@WWW��1989�N�ɃW���l�[�u�x�O�ɂ���CERN�iConseil europeen pour la Recher
-che Nucleaire�F���[���b�p�f���q�����w�������j�ɋ΂߂Ă���Tim Berners-Lee
-��Robert Caillau�ɂ���Ĕ��Ă���܂����B
-�@Tim Berners-Lee��CERN�ɂ���قȂ����R���s���[�^�̂ǂꂩ��ł����ɃA�N
-�Z�X�ł���悤�ȃ����N���ꂽ���f�[�^�x�[�X���L�V�X�e���ŁA�_���[���i��1
-�j����O���t�B�J����X Window���[�N�X�e�[�V�����܂ŕ��L����ނ̒[���ŕ���
-�����L�ł���悤�ɐ݌v���ꂽ�V�X�e���AWWW���l�Ă��܂����B�����ASGML���g��
-�l�͉��l�������悤�ł����A�����̐l��TeX��PostScript���g���ĕ������쐬����
-���܂����B�����f�[�^�x�[�X�̗��p�Ƀn�C�p�[�e�L�X�g���g�p����Ƃ����l����
-�l�Ă���A���ɏK�����������SGML�̈ꕔ�̋@�\�Ƃ��ēƗ������邱�ƂŊ�
-�P�ɂ��ASGML�̃T�u�Z�b�g�Ƃ���HTML���l�Ă���܂����B���Ȃ݂�WWW�͐��m�Ɍ�
-���܂���Ted Nelson�̒񏥂����n�C�p�[�e�L�X�g�Ƃ͎��Ĕ�Ȃ���̂ł͂����
-���B
-�@���̂悤��HTML�͊��Ɉˑ������ɏ������L���邽�߂ɔ��Ă���A����HTML
-�𑗐M���邽�߂̃v���g�R���Ƃ���HTTP�iHyper Text Transfer Protocol�j����
-���܂����B
+　XanaduはTed Nelsonが発表したグローバルハイパーテキストシステムの概念で、
+現在のWWWがこの概念にもっとも近いシステムとされています。WWWの歴史を語る
+上でなくてはならない概念であり、現在のWWWはXanaduのサブセットとしてその機
+能の一部を実現するものです。
+　Ted Nelsonは1965年にACM（Association for Computin Machinery）に提出した
+論文で、初めて「HyperText」（ハイパーテキスト）という言葉を発表しました。
+Ted Nelsonは後に、この考え方をSamuel Taylor Coleridge著作の小説に登場する
+架空都市から名前をとり、Xanaduと名付けました。このXanaduの概念は非常に巨
+大なもので、現在でもこの機能のすべてを満たすシステムは発表されていません。
+Xanaduの概念の一部を大雑把に列挙すると次のようなものがあります。
 
-������
+・情報のリンク
+・情報の半永久的保存および文書のバージョン化
+・引用窓による著作権問題の解決
+・電子出版
+・ネットワーク利用による分散処理
 
-�i��1�j�_���[���idumb terminal�j
-�@�z�X�g�R���s���[�^���\�����镶������A�P���ɃX�N���[�������Ȃ���\����
-��[���B�J�[�\���ړ��Ȃǂ̉�ʐ��䂪�\�Ȓ[���i������̓C���e���W�F���g
-�[���ȂǂƌĂ΂��j�ƑΔ䂵�ėp�����邱�Ƃ������B
+　詳細はここでは愛割させていただきますが、リンク、電子出版、ネットワーク
+の利用という部分は現在のWWWでも実現されている部分です。
+　Xanaduはあまりにも巨大な概念であったため、近年ではサブセットであるWWWに
+足りない部分を補う形で実現が検討されているようです。彼の発表したXanaduも
+また後の技術に大きな影響を与えました。
 
-�E�u@nifty�F�f�W�^���p�ꎫ�T�F�_���[���v�����p�B
+●WWW
+
+　WWWは1989年にジュネーブ郊外にあるCERN（Conseil europeen pour la Recher
+che Nucleaire：ヨーロッパ素粒子物理学研究所）に勤めていたTim Berners-Lee
+とRobert Caillauによって発案されました。
+　Tim Berners-LeeはCERNにある異なったコンピュータのどれからでも情報にアク
+セスできるようなリンクされた情報データベース共有システムで、ダム端末（※1
+）からグラフィカルなX Windowワークステーションまで幅広い種類の端末で文書
+を共有できるように設計されたシステム、WWWを考案しました。当時、SGMLを使う
+人は何人かいたようですが、多くの人はTeXやPostScriptを使って文書を作成して
+いました。文書データベースの利用にハイパーテキストを使用するという考えが
+考案され、非常に習得が困難だったSGMLの一部の機能として独立させることで簡
+単にし、SGMLのサブセットとしてHTMLが考案されました。ちなみにWWWは正確に言
+いますとTed Nelsonの提唱したハイパーテキストとは似て非なるものではありま
+す。
+　このようにHTMLは環境に依存せずに情報を共有するために発案され、そのHTML
+を送信するためのプロトコルとしてHTTP（Hyper Text Transfer Protocol）が作
+られました。
+
+●注釈
+
+（※1）ダム端末（dumb terminal）
+　ホストコンピュータが表示する文字列を、単純にスクロールさせながら表示す
+る端末。カーソル移動などの画面制御が可能な端末（こちらはインテリジェント
+端末などと呼ばれる）と対比して用いられることが多い。
+
+・「@nifty：デジタル用語辞典：ダム端末」を引用。
 http://www.nifty.com/webapp/digitalword/word/010/01015.htm
 
 
-��0x03.) HTML�̓���
+■0x03.) HTMLの特徴
 
-�@HTML��SGML�̃T�u�Z�b�g�Ƃ��Ē�`����܂����BSGML�Œ�`���ꂽ�}�[�N�A�b
-�v�����Q�[�W��SGML�A�v���P�[�V�����ƌĂ΂�AHTML��SGML�A�v���P�[�V������
-�ЂƂ��Ƃ������ƂɂȂ�܂��BSGML�����ɂ�SGML Declaration�ƌ�q����DTD��
-���Document Instance���܂܂�܂��B
+　HTMLはSGMLのサブセットとして定義されました。SGMLで定義されたマークアッ
+プランゲージはSGMLアプリケーションと呼ばれ、HTMLもSGMLアプリケーションの
+ひとつだということになります。SGML文書にはSGML Declarationと後述するDTDお
+よびDocument Instanceが含まれます。
 
-�ESGML Declaration�FSGML�A�v���P�[�V�����ɂǂ̂悤�ȕ������؂�q���o��
-���邩���`����
-�EDocument Type Definition�F�����Q�Ƃ��܂ރ}�[�N�A�b�v�̕��@���`����
-�EDocument Instance�F�}�[�N�A�b�v���ꂽ�����̖{��
+・SGML Declaration：SGMLアプリケーションにどのような文字や区切り子が出て
+くるかを定義する
+・Document Type Definition：文字参照を含むマークアップの文法を定義する
+・Document Instance：マークアップされた文書の本文
 
-�@HTML��SGML Declaration��Document Type Definition�͗p�ӂ���Ă��܂��̂ŁA
-�����̖{�����}�[�N�A�b�v���邾���ŕ�������邱�Ƃ��ł��܂��B
+　HTMLはSGML DeclarationとDocument Type Definitionは用意されていますので、
+文書の本文をマークアップするだけで文書を作ることができます。
 
-�@HTML�͕��͍\����_���I�Ƀ}�[�N�A�b�v�i�Ӗ��t���j���邽�߂̌���ŁA����
-���͂����o���Ȃ̂��i���Ȃ̂������Ȃ̂��Ƃ������\���E�Ӗ����`���܂��B��
-�܂�AHTML�͕����̑傫����F�Ȃǂ�Web�T�C�g�̌��h�����f�U�C�����邽�߂̌�
-��ł͂Ȃ��Ƃ������Ƃł��B���̂��Ƃ��܂��O���ɒu���Ă��������B
+　HTMLは文章構造を論理的にマークアップ（意味付け）するための言語で、その
+文章が見出しなのか段落なのか強調なのかといった構造・意味を定義します。つ
+まり、HTMLは文字の大きさや色などのWebサイトの見栄えをデザインするための言
+語ではないということです。このことをまず念頭に置いてください。
 
-�@�������AInternet Exproler�Ȃǂ̃u���E�U��Web�T�C�g���{������Ɨl�X�ȑ�
-�����̕�����J���t���ȕ������g���Ă�����A�w�i�ɐF���t���Ă����肵�܂��B
-���̂悤�Ɍ����ڂ���������ς���Ă���̂ɂǂ�����HTML�Ō��h�����f�U�C��
-���Ă͂����Ȃ��̂��Ƌ^��Ɏv�����������Ǝv���܂��B�Ȃ�HTML�Ō��h���̃f�U
-�C�������Ă͂����Ȃ��i�ނ��댩�h�����f�U�C���ł��Ȃ��j���Ɛ\���܂��ƁA��
-���Ɉˑ����Ȃ����߂ł��B�Ⴆ�΁A�u���E�U��Internet Exproler��Netscape Na
-vigator�̂悤�ȃO���t�B�J���ȃu���E�U�����ł͂���܂���B�u���E�U�ɂ����
-��1�F�̂ЂƂ̑傫���̕��������\���ł��Ȃ��u���E�U�≹���œǂݏグ�邾��
-�̃u���E�U�A�����HTML�����߂���v���O�����ɂ͌����G���W���̃N���[����v
-���N�V�Ȃǂ��܂܂�܂��B����������HTML���������̂̑��̂����[�U�G�[�W�F��
-�g�ƌĂт܂��B���̍l���ł�HTML�����߂���Ƃ����_�Ől�Ԃ������̃��[�U����
-�łȂ����[�U�[�G�[�W�F���g�ɂ����ނ����̂ł͂Ȃ����ƍl���Ă���܂��B
-�@���������ꂽWeb�T�C�g�͂��ׂẴ��[�U�[�G�[�W�F���g�ɐ��������߂����
-���B�Ⴆ�Ό��o���́A����Ƃ킩��悤�ɑ傫�ȕ����ŕ\�����ꂽ��A�����ɕ\
-�����ꂽ��A���o�������j���̐��œǂݏグ��ꂽ�肵�܂��B���������ŁAInte
-rnet Exproler���ƌ��o�����傫���\������邩��Ƃ����ĕ�����傫�����邽��
-�Ɍ��o�����g���Ă��܂��Ƒ��̃��[�U�[�G�[�W�F���g�ł͉��߂ł��Ȃ��Ȃ��Ă�
-�܂��܂��B�܂��A�u������傫������v�Ƃ����������I�Ȍ��h�������Ӗ�������
-�Ȃ��悤�Ȃ��̂́A�����œǂݏグ�邱�Ƃ����ł��Ȃ�������A�ЂƂ̑傫��
-�̕��������\���ł��Ȃ��悤�ȃ��[�U�[�G�[�W�F���g�ł͉��߂ł��܂���B
-�@�l�X�Ȋ��A�����l�X�ȃ��[�U�[�G�[�W�F���g��HTML�ɃA�N�Z�X���Ă��郆�[
-�U�[������Ƃ������Ƃ�Y��Ȃ��悤�ɂ��Ă��������B
+　しかし、Internet ExprolerなどのブラウザでWebサイトを閲覧すると様々な大
+きさの文字やカラフルな文字が使われていたり、背景に色が付いていたりします。
+このように見た目もしっかり変わっているのにどうしてHTMLで見栄えをデザイン
+してはいけないのかと疑問に思う方も多いと思います。なぜHTMLで見栄えのデザ
+インをしてはいけない（むしろ見栄えをデザインできない）かと申しますと、環
+境に依存しないためです。例えば、ブラウザはInternet ExprolerやNetscape Na
+vigatorのようなグラフィカルなブラウザだけではありません。ブラウザによって
+は1色のひとつの大きさの文字しか表示できないブラウザや音声で読み上げるだけ
+のブラウザ、さらにHTMLを解釈するプログラムには検索エンジンのクローワやプ
+ロクシなども含まれます。こういったHTMLを扱うものの総称をユーザエージェン
+トと呼びます。私の考えではHTMLを解釈するという点で人間もただのユーザだけ
+でなくユーザーエージェントにも分類されるのではないかと考えております。
+　正しく作られたWebサイトはすべてのユーザーエージェントに正しく解釈されま
+す。例えば見出しは、それとわかるように大きな文字で表示されたり、中央に表
+示されたり、見出しだけ男性の声で読み上げられたりします。もしここで、Inte
+rnet Exprolerだと見出しが大きく表示されるからといって文字を大きくするため
+に見出しを使ってしまうと他のユーザーエージェントでは解釈できなくなってし
+まいます。また、「文字を大きくする」といった物理的な見栄えしか意味を持た
+ないようなものは、音声で読み上げることしかできなかったり、ひとつの大きさ
+の文字しか表示できないようなユーザーエージェントでは解釈できません。
+　様々な環境、即ち様々なユーザーエージェントでHTMLにアクセスしているユー
+ザーがいるということを忘れないようにしてください。
 
-�@��L�ŁAHTML�Ō��h�����f�U�C������ׂ��ł͂Ȃ��ƌ����Ă��܂������A���
-��f�U�C�����Ƃ������̂͂����ȒP�Ɏ̂ċ��邱�Ƃ��ł�����̂ł͂���܂���B
-������HTML�ɂ̓f�U�C�����w�肷��CSS�iCascading Style Sheet�j�Ƃ������̂�
-���肳��Ă��܂��B�f�U�C���ɂ�����肽������CSS���g����HTML�̌��h�����f�U
-�C�����邱�Ƃ��ł��܂��B����CSS�̖ړI�͌��h���ƕ��͍\���𕪗����邱�Ƃɂ�
-��܂��BCSS�̓��[�U�[�G�[�W�F���g���\�����錩�h���𓝈ꂷ�邽�߂̋Z�p�ł�
-�Ȃ����߁ACSS�ł̌��h�������ꂼ��̃��[�U�[�G�[�W�F���g�Ɉˑ����邱�Ƃɂ�
-��܂��B�����HTML�̖{���I�Ȃ��̂ł���A�J�ł悭������悤�ɂ��ꂼ���
-�u���E�U�Ō����ڂ𓝈ꂷ��Ƃ��������Ƃ͖{����HTML�̎v�z�T�O����O��Ă�
-��悤�Ɏv���܂��B
+　上記で、HTMLで見栄えをデザインするべきではないと言ってきましたが、やは
+りデザイン性というものはそう簡単に捨て去ることができるものではありません。
+そこでHTMLにはデザインを指定するCSS（Cascading Style Sheet）というものが
+策定されています。デザインにこだわりたい方はCSSを使ってHTMLの見栄えをデザ
+インすることができます。このCSSの目的は見栄えと文章構造を分離することにあ
+ります。CSSはユーザーエージェントが表示する見栄えを統一するための技術では
+ないため、CSSでの見栄えもそれぞれのユーザーエージェントに依存することにな
+ります。これはHTMLの本質的なものであり、巷でよく見られるようにそれぞれの
+ブラウザで見た目を統一するといったことは本来のHTMLの思想概念から外れてい
+るように思われます。
 
-�@HTML�̎d�l�́A���݂ł�W3C�iWorld Wide Web Consortium�j�Ƃ�����c���c��
-�����肵�Ă��܂��B�u���E�U�̊J���x���_�[�Ȃǂ��Ǝ��g�������d�l�����݂���
-�����A��{�I�ɂ����̓Ǝ��g���͎g�p������W3C�̍��肵���d�l�ɏ]����HTML��
-�L�q����ׂ��ł��BW3C�̍��肵���d�l�͐݌v�i�K����A�N�Z�V�r���e�B�A���[�U
-�[�V�r���e�B�A����݊��Ȃǂ��[����������Ă���AW3C�̎d�l�ɏ]�������Ŕ��
-�ɗD�G��HTML��������邱�Ƃ��ł��܂��B�����ǂ����Ă�W3C�̎d�l�ɏ]���Ȃ���
-�R������ꍇ��W3C�̎d�l���͂����܂Ŋ����i���̂Ƃ���W���ł͂���܂��񂪁A
-���݂���Ɍ��i�ȕ��@�ŕW���Ƃ��铮��������悤�ł��j�ł��̂Ŗ����ɏ]���K
-�v���͂Ȃ��Ǝv���܂����A�ł������W3C�̎d�l�ɏ]���ׂ����Ƃ����̂����̍l��
-�ł��B
+　HTMLの仕様は、現在ではW3C（World Wide Web Consortium）という非営利団体
+が策定しています。ブラウザの開発ベンダーなどが独自拡張した仕様も存在しま
+すが、基本的にそれらの独自拡張は使用せずにW3Cの策定した仕様に従ってHTMLを
+記述するべきです。W3Cの策定した仕様は設計段階からアクセシビリティ、ユーザ
+ーシビリティ、後方互換などが深く検討されており、W3Cの仕様に従うだけで非常
+に優秀なHTML文書を作ることができます。もしどうしてもW3Cの仕様に従えない理
+由がある場合はW3Cの仕様書はあくまで勧告（今のところ標準ではありませんが、
+現在さらに厳格な文法で標準とする動きもあるようです）ですので無理に従う必
+要性はないと思いますが、できる限りW3Cの仕様に従うべきだというのが私の考え
+です。
 
 
-��0x04.) URI�ɂ���
+■0x04.) URIについて
 
-�@WWW�̎v�z�̂ЂƂɂ͏��̃����N�Ƃ������̂�����܂��BHTML�ł̓����N��
-�ǂŃ��\�[�X�̏ꏊ���w�������̂�URI�iUniform Resource Identifier�j�𗘗p
-���܂��BURI�ɂ͕������Ȃ����̂����邩������܂��񂪁AURL�iUniform Reso
-urce Locator�j�Ƃ����̂͊F�l�������ł͂Ȃ����Ǝv���܂��BURL��URI�̃T�u�Z
-�b�g�ł����AURL��URI��u�������ĉ��߂��Ă������ԈႦ�͂���܂���BURI�͎�
-�̂悤�ɋL�q����܂��B
+　WWWの思想のひとつには情報のリンクというものがあります。HTMLではリンクな
+どでリソースの場所を指し示すのにURI（Uniform Resource Identifier）を利用
+します。URIには聞き馴れないものがあるかもしれませんが、URL（Uniform Reso
+urce Locator）というのは皆様ご存じではないかと思います。URLはURIのサブセ
+ットですが、URLとURIを置き換えて解釈してもそう間違えはありません。URIは次
+のように記述されます。
 
 http://ruffnex.oc.to/defolos/
 
-��URI�̍\��
+●URIの構成
 
-�@URI�̍\���͂������̕����ɕ������܂��B
+　URIの構成はいくつかの部分に分けられます。
 
-��http
+○http
 
-�@��ԍ��ɋL�q�����http�Ȃǂ̕����́u�X�L�[���v�iScheme�j�ł��B���{���
-�́u���ߊT�O�v�Ɩ󂷂��Ƃ��ł��A���̃��\�[�X�ɃA�N�Z�X���邽�߂ɗp���郁
-�J�j�Y���̊T�O�̖��O�ł��B
-�@�悭�v���g�R���ƊԈ���邱�Ƃ�����܂����A�X�L�[�����ƃv���g�R������
-�͕K��������v����킯�ł͂���܂���B�Ⴆ��mailto�Ƃ����X�L�[����������
-�܂����A���̏ꍇ�u���[���𑗐M����v�Ƃ������߂̊T�O��\���ɂ����܂���B
-���ۂɂ��̖��߂����s����̂�SMTP�Ȃǂ̃v���g�R���ł��Bhttp�̏ꍇ�X�L�[��
-���ƃv���g�R�����͈�v���܂����A�����̏ꍇ�͈�v���܂���B
+　一番左に記述されるhttpなどの部分は「スキーム」（Scheme）です。日本語で
+は「命令概念」と訳すことができ、そのリソースにアクセスするために用いるメ
+カニズムの概念の名前です。
+　よくプロトコルと間違われることがありますが、スキーム名とプロトコル名と
+は必ずしも一致するわけではありません。例えばmailtoというスキーム名があり
+ますが、この場合「メールを送信する」という命令の概念を表すにすぎません。
+実際にこの命令を実行するのはSMTPなどのプロトコルです。httpの場合スキーム
+名とプロトコル名は一致しますが、多くの場合は一致しません。
 
-��:
+○:
 
-�@�����炭�u:�v����؂�Ƃ��ėp�����܂��BRFC�̃X�L�[�����X�g�ɂ́u:�v��
-�X�L�[���Ɋ܂߂Ă��Ȃ������̂ł����AW3C��Note�ł́u:�v���X�L�[���Ɋ܂߂�
-�Ⴊ����A���ɍ������镔���ł��B�ł��̂ł��̕����͕s�m���ȏ��Ƃ��Ď�
-�舵�����������B
+　おそらく「:」が区切りとして用いられます。RFCのスキームリストには「:」を
+スキームに含めていなかったのですが、W3CのNoteでは「:」もスキームに含める
+例があり、非常に混乱する部分です。ですのでこの部分は不確かな情報として取
+り扱いください。
 
-��//
+○//
 
-�@�u//�v�����Ă���̂̓��\�[�X���l�b�g���[�N��ɂ��邱�Ƃ�\���܂��B��
-�[�J�����̃��\�[�X�̏ꍇ�z�X�g���͏ȗ�����邽�߁A�u///�v�ɂȂ�܂��B
+　「//」がついているのはリソースがネットワーク上にあることを表します。ロ
+ーカル内のリソースの場合ホスト名は省略されるため、「///」になります。
 
-��ruffnex.oc.to
+○ruffnex.oc.to
 
-�@�z�X�g���ł��B���\�[�X�����݂���T�[�o�Ɋ���U���Ă���h���C���l�[��
-�ł��B
+　ホスト名です。リソースが存在するサーバに割り振られているドメインネーム
+です。
 
-��/defolos/
+○/defolos/
 
-�@�T�[�o�[�̒���defolos�Ƃ����f�B���N�g���̃t�@�C�����w�肵�܂��B�t�@�C��
-���͏ȗ����邱�Ƃ��ł��A���̏ꍇ�T�[�o�Ō��߂�ꂽ�t�@�C���i�����̏ꍇin
-dex.html��home.html�j��f�B���N�g���ɂ���t�@�C�����X�g�A�G���[�R�[�h�Ȃ�
-���Ԃ���܂��B�����Œ��ӂ��Ă������������̂́A�t�@�C�����͏ȗ��ł��܂����A
-�f�B���N�g���͏ȗ��ł��Ȃ��Ƃ������Ƃł��B�܂�u/�v���ȗ����邱�Ƃ͂ł�
-�܂��񂪁A�����̃u���E�U�ł̓u���E�U���Łu/�v�����Ă����悤�ł��B
+　サーバーの中のdefolosというディレクトリのファイルを指定します。ファイル
+名は省略することができ、その場合サーバで決められたファイル（多くの場合in
+dex.htmlやhome.html）やディレクトリにあるファイルリスト、エラーコードなど
+が返されます。ここで注意していただきたいのは、ファイル名は省略できますが、
+ディレクトリは省略できないということです。つまり「/」を省略することはでき
+ませんが、多くのブラウザではブラウザ側で「/」を補ってくれるようです。
 
-���t���O�����gURI
+●フラグメントURI
 
-�@���̕������̂���ꕔ�����w������URI���t���O�����gURI�Ƃ����A���̂悤��
-�L�q����܂��B
+　その文書内のある一部分を指し示すURIをフラグメントURIといい、次のように
+記述されます。
 
 http://ruffnex.oc.to/defolos/test.html#section3
 
-�@�����test.thml���ɂ���Aname��id�A�g���r���[�g��section3�Ƃ������O���t
-����ꂽ�������w���������ƂɂȂ�܂��B
+　これはtest.thml内にある、nameやidアトリビュートでsection3という名前が付
+けられた部分を指し示すことになります。
 
-���t��URI�Ƒ���URI
+●フルURIと相対URI
 
-�@�t��URI�Ƃ͑O�q�̗�̂悤�ɃX�L�[��������t�@�C�����i�t�@�C�����͏ȗ���
-�\�j�܂ł����ׂċL�q��������ł��B����URI�͂��̕������猩�����\�[�X�̈ʒu
-�ł��B�����UNIX�Ȃǂ̃f�B���N�g���ړ��Ȃǂ��l���Ă��炦��Ƃ킩��₷��
-�Ǝv���܂��B�Ⴆ�Ύ��̃A�X�L�[�A�[�g���������������B
+　フルURIとは前述の例のようにスキーム名からファイル名（ファイル名は省略可
+能）までをすべて記述する方式です。相対URIはその文書から見たリソースの位置
+です。これはUNIXなどのディレクトリ移動などを考えてもらえるとわかりやすい
+と思います。例えば次のアスキーアートをご覧ください。
 
 +==[defolos]================================================+
 |                                                           |
@@ -928,465 +928,465 @@ http://ruffnex.oc.to/defolos/test.html#section3
 |                                                           |
 +===========================================================+
 
-�@defolos�f�B���N�g������index.html�Aabout.html�Ahack.html�Asource.html��
-����4��HTML�t�@�C����figure�Asource�Ƃ���2�̃f�B���N�g�������邱�Ƃ�
-�\���Ă��܂��B���̏ꍇindex.html����about.html�𑊑�URI�Ŏw�������ɂ́u.
-/about.html�v�ƋL�q���܂��Bindex.html����hello.html���w�������ɂ́u./sou
-rce/hello.html�v�̂悤�ɋL�q���܂��B����hello.html����index.html���w����
-���ɂ́u../index.html�v�̂悤�ɋL�q���܂��B�u.�v�̓J�����g�f�B���N�g����
-�\���A�u..�v��1�K�w���̃f�B���N�g����\���܂��B
-�@����̉���ł́A���̃f�B���N�g���\����p���ĉ�����s���܂��B
+　defolosディレクトリ内にindex.html、about.html、hack.html、source.htmlと
+いう4つのHTMLファイルとfigure、sourceという2つのディレクトリがあることを
+表しています。この場合index.htmlからabout.htmlを相対URIで指し示すには「.
+/about.html」と記述します。index.htmlからhello.htmlを指し示すには「./sou
+rce/hello.html」のように記述します。もしhello.htmlからindex.htmlを指し示
+すには「../index.html」のように記述します。「.」はカレントディレクトリを
+表し、「..」は1階層下のディレクトリを表します。
+　今後の解説では、このディレクトリ構造を用いて解説を行います。
 
 
-��0x05.) �͂��߂Ă�HTML
+■0x05.) はじめてのHTML
 
-�@����ł́A�͂��߂Ă�HTML�������Č��܂��傤�B�T���v���Ƃ��ăn�b�L���O�Z
-�p���ӂ��Љ��悤�ȃT�C�g��z�肵��Web�T�C�g�����ۂɏ����Ȃ�������i
-�߂Ă��������Ǝv���܂��B�T�C�g���́u�n�b�L���O���{���g���v�ɂ��܂��傤(*'��')
+　それでは、はじめてのHTMLを書いて見ましょう。サンプルとしてハッキング技
+術周辺を紹介するようなサイトを想定してWebサイトを実際に書きながら解説を進
+めていきたいと思います。サイト名は「ハッキングラボラトリ」にしましょう(*'ω')
 
 -----
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
  "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="ja">
-<head><title>�n�b�L���O���{���g�� - �g�b�v�y�[�W</title></head>
+<head><title>ハッキングラボラトリ - トップページ</title></head>
 <body>
-<p>����͎��̂͂��߂Ă�WEB�T�C�g�ł��B</p>
+<p>これは私のはじめてのWEBサイトです。</p>
 </body>
 </html>
 -----
 
-�@�\�[�X���̉��s��HTML�ł͖�������܂��̂ŁA���s���Ă��u���E�U�ł̕\����
-�͉e�����܂���B�����̏ꍇ�u���E�U�͓K�؂Ȉʒu�Ŏ����I�ɉ��s���܂����A�P
-��̓r���Ȃǂł͏o���������s�����A�u�B�v�̌��Ȃǂŉ��s����悤�ɂ���
-��������ł��B
-�@HTML�́u�^�O�v��p���ĕ��͍\�����`���܂��B�^�O��<html>�̂悤�ȊJ�n�^
-�O��</html>�̂悤�ȏI���^�O�𑍏̂��āu�^�O�v�ƌĂт܂��B<��>�Ɉ͂܂ꂽh
-tml�̂悤�ȕ������u�G�������g�v�i�v�f�j�ƌĂсAlang�Ȃǂ̗v�f�̌�ɑ�����
-�̂��u�A�g���r���[�g�v�i�����j�ƌĂсA���̗�ł͌�����w�肵�Ă��܂��B��
-���Alang="ja"��ja�̂悤�Ȃ��̂��u�o�����[�v�i�l�j�ƌĂсA���̗�ł͓��{��
-��\���Ă��܂��B�J�n�^�O�ƏI���^�O�̊Ԃɋ��܂ꂽ�������u�R���e���g�v�i��
-�e�j�ƌĂт܂��B�^�O�̒��ɂ͏I���^�O���ȗ��ł�����̂�A�I���^�O��������
-�͂Ȃ�Ȃ����̂�����܂��B
-�@���Ȃ݂ɁA�G�������g����A�g���r���[�g���͑啶���A�������Ŏ��ʂ͂����
-����B���̃��|�[�g���ł͌��₷���̂��߁A���ׂď������ŏ����Ă���܂��BHT
-ML�̎d�l���̒��ł̓G�������g���͑啶���ŁA�A�g���r���[�g���͏������ŋL�q
-����Ă��܂����A����ɏK���K�v���͂���܂���B
-�@�܂��A�o�����[��"�i�_�u���N�H�[�e�[�V�����j�ň͂ނ悤�ɂ��Ă��������B�o
-�����[�Ɏg�p�ł�����̂�""�ň͂܂ꂽ������name token�����ł��Bname tok
-en�͉p�����Ɓu.�v�A�u-�v�A�u:�v�A�u_�v�ō\�����ꂽ������ŁA�悭�킩���
-���Ȃ炷�ׂ�""�ň͂񂾂ق�������ł��B
-�@HTML�����͑�܂��ɂ킯�āA����3�̕����ɕ������܂��B
+　ソース中の改行はHTMLでは無視されますので、改行してもブラウザでの表示に
+は影響しません。多くの場合ブラウザは適切な位置で自動的に改行しますが、単
+語の途中などでは出来る限り改行せず、「。」の後ろなどで改行するようにした
+方が無難です。
+　HTMLは「タグ」を用いて文章構造を定義します。タグは<html>のような開始タ
+グと</html>のような終了タグを総称して「タグ」と呼びます。<と>に囲まれたh
+tmlのような文字を「エレメント」（要素）と呼び、langなどの要素の後に続くも
+のを「アトリビュート」（属性）と呼び、この例では言語を指定しています。ま
+た、lang="ja"のjaのようなものを「バリュー」（値）と呼び、この例では日本語
+を表しています。開始タグと終了タグの間に挟まれた部分を「コンテント」（内
+容）と呼びます。タグの中には終了タグを省略できるものや、終了タグを書いて
+はならないものもあります。
+　ちなみに、エレメント名やアトリビュート名は大文字、小文字で識別はされま
+せん。このレポート内では見やすさのため、すべて小文字で書いてあります。HT
+MLの仕様書の中ではエレメント名は大文字で、アトリビュート名は小文字で記述
+されていますが、これに習う必要性はありません。
+　また、バリューは"（ダブルクォーテーション）で囲むようにしてください。バ
+リューに使用できるものは""で囲まれた文字列かname tokenだけです。name tok
+enは英数字と「.」、「-」、「:」、「_」で構成された文字列で、よくわからな
+いならすべて""で囲んだほうが無難です。
+　HTML文書は大まかにわけて、次の3つの部分に分けられます。
 
-��DOCTYPE�錾
+●DOCTYPE宣言
 
-�@DOCTYPE�錾�i�����^�錾�j�͂���HTML�������ǂ�DTD�iDocument Type Defini
-tion�F���͌^��`���j�ɂ̂��Ƃ��ď����ꂽ���̂Ȃ̂��𖾎����܂��B�O�q�̗�
-�ł�<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org
-/TR/html4/strict.dtd">�̕����ŁA�󔒕����ƒ��ߐ錾�A�������߂�������HTML
-�����̍ŏ��ɋL�q���܂��B�����HTML�ɂ����Ă͕K�{�ŁADOCTYPE�錾���ȗ�����
-���Ƃ͂ł��܂���B
+　DOCTYPE宣言（文書型宣言）はそのHTML文書がどのDTD（Document Type Defini
+tion：文章型定義書）にのっとって書かれたものなのかを明示します。前述の例
+では<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org
+/TR/html4/strict.dtd">の部分で、空白文字と注釈宣言、処理命令を除いてHTML
+文書の最初に記述します。これはHTMLにおいては必須で、DOCTYPE宣言を省略する
+ことはできません。
 
-��DOCTYPE�錾�̏ڍ�
+○DOCTYPE宣言の詳細
 
-�@HTML�ɂ��o�[�W����������A�o�[�W�����ɂ���Ďg����G�������g��A�g���r
-���[�g�A�L�����N�^�Z�b�g�Ȃǂ��قȂ�܂��B�������������͂��ׂ�DTD�ɖ��L
-����Ă��܂��B�܂�DOCTYPE�錾��HTML�������ǂ̃o�[�W������DTD�ɉ����ď�
-���ꂽ���̂Ȃ̂������[�U�G�[�W�F���g�ɒm�点������������܂��BDOCTYPE�錾
-���������̕����ɕ����邱�Ƃ��ł��܂��B
+　HTMLにもバージョンがあり、バージョンによって使えるエレメントやアトリビ
+ュート、キャラクタセットなどが異なります。こういった情報はすべてDTDに明記
+されています。つまりDOCTYPE宣言はHTML文書がどのバージョンやDTDに沿って書
+かれたものなのかをユーザエージェントに知らせる役割を持ちます。DOCTYPE宣言
+もいくつかの部分に分けることができます。
 
-�E<!
-�@�}�[�N�錾�J�n��؂�q�ł��BDOCTYPE�錾�̓}�[�N�錾�ł���A��������}�[
-�N�錾���n�܂�Ƃ������Ƃ��������̂ł��B�}�[�N�錾�̒��ɂ̓R�����g�Ȃǂ�
-�܂܂�܂��B
+・<!
+　マーク宣言開始区切り子です。DOCTYPE宣言はマーク宣言であり、ここからマー
+ク宣言が始まるということを示すものです。マーク宣言の中にはコメントなども
+含まれます。
 
-�EDOCTYPE
-�@�}�[�N�錾�̐錾�̎�ނ�\���܂��BDOCTYPE�͕����^�錾�ł��邱�Ƃ�\����
-���܂��B�X�y�[�X�Ȃǂ����邱�Ƃ͋�����Ă��܂���̂ŁA�҂����肭���t��
-�ċL�q����悤�ɂ��Ă��������B
+・DOCTYPE
+　マーク宣言の宣言の種類を表します。DOCTYPEは文書型宣言であることを表して
+います。スペースなどを入れることは許されていませんので、ぴったりくっ付け
+て記述するようにしてください。
 
-�EHTML
-�@�����^���ł���A���[�g�G�������g���w�������܂��B������HTML���w�肵�Ă�
-��̂�HTML�����͑S�̂�html�G�������g�ň͂܂�Ă��܂��B���m�ɂ�html�G����
-���g���ȗ��\�ł����A�ȗ�����ׂ��ł͂���܂���B
+・HTML
+　文書型名であり、ルートエレメントを指し示します。ここでHTMLを指定してい
+るのでHTML文書は全体がhtmlエレメントで囲まれています。正確にはhtmlエレメ
+ントも省略可能ですが、省略するべきではありません。
 
-�EPUBLIC
-�@�O�����ʎq�ł��B�O���Ɍ��J����Ă��镶�����Q�Ƃ��āAPUBLIC�Ə�����Ă�
-��ꏊ�ɎQ�Ƃ����O�����������̂܂܃R�s�[���邱�Ƃ�\���Ă��܂��B���̕���
-�ɕ������ŗ��p����DTD�����̂܂܏����Ă������̂ł����A���܂�ɂ������Ȃ邽
-�ߊO���t�@�C�����Q�Ƃ���悤�ɂȂ��Ă��܂��B
+・PUBLIC
+　外部識別子です。外部に公開されている文書を参照して、PUBLICと書かれてい
+る場所に参照した外部文書をそのままコピーすることを表しています。この部分
+に文書中で利用するDTDをそのまま書いてもいいのですが、あまりにも長くなるた
+め外部ファイルを参照するようになっています。
 
-�E"-//W3C//DTD HTML 4.01//EN"
-�@���J���ʎq�ł��BHTML�̏ꍇ��SGML�錾�ŁuFORMAL YES�v�Ɛ錾����Ă��܂�
-�̂Łu���I���J���ʎq�v�ɂȂ�܂��B���I���J���ʎq�́u���L�Ҏ��ʎq�v�i-//W
-3C�j �A�u��؂�q�v�i//�j �A�u�����ʎq�v�iDTD HTML 4.0//EN�j�̂悤�ɋL�q
-����܂��B���L�Ҏ��ʎq�͊O�������̏��L�҂�\���܂��B��L�̗�ł͏��L�҂�
-W3C�Ƃ������ƂɂȂ�܂��B�܂��A�u-//�v�ł͂��܂鏊�L�Ҏ��ʎq�͖��o�^���L
-�Ҏ��ʂ��ɂȂ�A���̕����̐����o�^���ꂽ���L�҂����Ȃ����Ƃ��Ӗ����Ă���
-���B�����o�^���ꂽ���L�҂�����ꍇ�́u+//�v�ɂȂ�܂��B���̕����ʎq�̍\��
-�́u���J����ʁv�iDTD�j�A�u���J���L�q�v�iHTML 4.0�j�A�u��؂�q�v�i//�j�A
-�u���J������v�iEN�j�ƂȂ�܂��B���J������͎Q�Ƃ���DTD�̌���ł��B������
-DTD�͉p��ł�������܂��񂩂�A�����͏��EN�ɂȂ�܂��B�����͂��ׂđ啶
-���ŋL�q���܂��B
+・"-//W3C//DTD HTML 4.01//EN"
+　公開識別子です。HTMLの場合はSGML宣言で「FORMAL YES」と宣言されています
+ので「公的公開識別子」になります。公的公開識別子は「所有者識別子」（-//W
+3C） 、「区切り子」（//） 、「文識別子」（DTD HTML 4.0//EN）のように記述
+されます。所有者識別子は外部文書の所有者を表します。上記の例では所有者は
+W3Cということになります。また、「-//」ではじまる所有者識別子は未登録所有
+者識別しになり、その文書の正式登録された所有者がいないことを意味していま
+す。正式登録された所有者がいる場合は「+//」になります。次の文識別子の構成
+は「公開文種別」（DTD）、「公開文記述」（HTML 4.0）、「区切り子」（//）、
+「公開文言語」（EN）となります。公開文言語は参照するDTDの言語です。正式な
+DTDは英語版しかありませんから、ここは常にENになります。これらはすべて大文
+字で記述します。
 
-�E"http://www.w3.org/TR/html4/strict.dtd"
-�@�V�X�e�����ʎq�ł��BDTD��URI���L�q���܂��B����͌��J���ʎq��⑫�����
-�̂ł���A���J���ʎq�݂̂�DTD�����ʂł���Ȃ�ȗ��ł��܂��B�V�X�e�����ʎq
-��HTML�̏ꍇ�A�����Ă������Ȃ��Ă����͂���܂��񂪁A���[�U�[�G�[�W�F��
-�g�̒��ɂ̓V�X�e�����ʎq�̗L���ŕ\���`����ς�����̂�����܂��B
+・"http://www.w3.org/TR/html4/strict.dtd"
+　システム識別子です。DTDのURIを記述します。これは公開識別子を補足するも
+のであり、公開識別子のみでDTDを識別できるなら省略できます。システム識別子
+はHTMLの場合、書いても書かなくても問題はありませんが、ユーザーエージェン
+トの中にはシステム識別子の有無で表示形式を変えるものもあります。
 
-�E>
-�@�}�[�N�錾�I����؂�q�ł��B����ɂ��}�[�N�錾���I���ł��邱�Ƃ�\
-���܂��B
+・>
+　マーク宣言終了区切り子です。これによりマーク宣言が終わりであることを表
+します。
 
-��HTML4.0�ŎQ�Ƃ����DTD
+○HTML4.0で参照されるDTD
 
-�@���̃��|�[�g�����M���Ă���2006�N2��20�����݂ōŐV�o�[�W������HTML4.0��
-�́A�����3�̋K�i������A���ꂼ��Q�Ƃ���DTD�ȂǂɈႢ������܂��B
+　このレポートを執筆している2006年2月20日現在で最新バージョンのHTML4.0に
+は、さらに3つの規格があり、それぞれ参照するDTDなどに違いがあります。
 
-�EStrict
-�@�ʏ�HTML4.0�Ƃ����΂��̋K�i�������܂��B���i�Ȍ��܂肪����A�񐄏��̃G��
-�����g��A�g���r���[�g�A�o�����[�Ȃǂ���؎g��Ȃ������łȂ��A���ꂼ���
-�G�������g�̔z�u�ʒu�Ȃǂ����i�ɋK�肳��Ă��܂��B�܂��AStrict�̓t���[��
-���ɏo�����邱�Ƃ͂ł��܂���BStrict�̏ꍇ��DOCTYPE�錾�͎��̂悤�ɂȂ��
-���B
+・Strict
+　通常HTML4.0といえばこの規格をさします。厳格な決まりがあり、非推奨のエレ
+メントやアトリビュート、バリューなどを一切使わないだけでなく、それぞれの
+エレメントの配置位置なども厳格に規定されています。また、Strictはフレーム
+内に出現することはできません。Strictの場合のDOCTYPE宣言は次のようになりま
+す。
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
  "http://www.w3.org/TR/html4/strict.dtd">
 
-�ETransitional
-�@Strict�������[�Y�ȋK�i�ł��B�񐄏��̃G�������g��A�g���r���[�g�̎g�p
-���ł��܂����Aframeset�G�������g���g�p���邱�Ƃ͂ł��܂���BTransitional
-�̏ꍇ��DOCTYPE�錾�͎��̂悤�ɂȂ�܂��B
+・Transitional
+　Strictよりもルーズな規格です。非推奨のエレメントやアトリビュートの使用
+ができますが、framesetエレメントを使用することはできません。Transitional
+の場合のDOCTYPE宣言は次のようになります。
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
  "http://www.w3.org/TR/html4/loose.dtd">
 
-�EFrameset
-�@Trasitioal�ŋK�肳�ꂽ�G�������g��A�g���r���[�g�����frameset�G������
-�g���g�p���邱�Ƃ��ł��܂��B�t���[����WEB�T�C�g���\������ꍇ�Ɏg�p���܂��B
-Frameset�̏ꍇ��DOCTYPE�錾�͎��̂悤�ɂȂ�܂��B
+・Frameset
+　Trasitioalで規定されたエレメントやアトリビュートおよびframesetエレメン
+トを使用することができます。フレームでWEBサイトを構成する場合に使用します。
+Framesetの場合のDOCTYPE宣言は次のようになります。
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN"
  "http://www.w3.org/TR/html4/frameset.dtd">
 
-���w�b�h����
+●ヘッド部分
 
-�@�w�b�h������HTML�ł�head�^�O�ɂ���ĕ������܂��i<head>�`</head>�̕����j�B
-�w�b�h�����ɂ͂���HTML�����̃^�C�g���⃁�^���i�����̒��g�ȊO�̏��j�A
-�X�^�C���V�[�g��X�N���v�g�Ȃǂ��L�q���܂��B���̒���title�^�O�͏ȗ����邱
-�Ƃ��ł��܂���Btitle�G�������g�͂���HTML�����̊T�v���ȒP�ɏq�ׂ邽�߂̂�
-�̂ŁA�u���E�U�̏㕔�ɕ\�����ꂽ��A���C�ɓ���̖��O�ɂȂ����肵�܂��B��
-���ɂ�head�G�������g�͏ȗ��\�ł����A�ʏ�ȗ�����ׂ��ł͂���܂���B
-�@�܂��A�w�b�h�����̃��^����meta�G�������g�Ŏw�肷�邱�Ƃ��ł��܂��Bme
-ta�G�������g�͕����̃v���p�e�B�i���ҁA�L�[���[�h�Ȃǁj��ݒ肵����A����
-��̃v���p�e�B�̃o�����[��ݒ肷��̂ɗp���邱�Ƃ��ł��܂��B�Ⴆ�΃��^��
-��͎��̂悤�ɋL�q����܂��B
+　ヘッド部分はHTMLではheadタグによって分けられます（<head>〜</head>の部分）。
+ヘッド部分にはそのHTML文書のタイトルやメタ情報（文書の中身以外の情報）、
+スタイルシートやスクリプトなどを記述します。この中でtitleタグは省略するこ
+とができません。titleエレメントはそのHTML文書の概要を簡単に述べるためのも
+ので、ブラウザの上部に表示されたり、お気に入りの名前になったりします。厳
+密にはheadエレメントは省略可能ですが、通常省略するべきではありません。
+　また、ヘッド部分のメタ情報はmetaエレメントで指定することができます。me
+taエレメントは文書のプロパティ（著者、キーワードなど）を設定したり、それ
+らのプロパティのバリューを設定するのに用いることができます。例えばメタ情
+報は次のように記述されます。
 
 -----
 <meta name="Author" content="Defolos">
 -----
 
-�@����͒��҂�Defolos�ł��邱�Ƃ�\�����^���ł��Bname�̃o�����[�̓v���p
-�e�B���ƂȂ�܂��Bcontent�̃o�����[�̓v���p�e�B�ɐݒ肳���l�ƂȂ�܂��B
-�v���p�e�B�₻�̃o�����[�͎����Œ�`���邱�Ƃ��ł��A���̏ꍇ�v���p�e�B��
-�v���p�e�B�ɐݒ肳�ꂽ�o�����[���ǂ��������Ӗ��Ɗ֘A�t�����Ă���̂���
-head�G�������g��plofile�A�g���r���[�g�Ŏw�肳�ꂽ���t�@�����X�iURI�Ŏw��j
-�ɋL�ڂ���邱�ƂɂȂ�܂��Bmeta�G�������g�͕K���v���p�e�B�ƃo�����[�̃y
-�A�ŗp�����Aname��http-equiv�A�g���r���[�g�Ńv���p�e�B���w�肵�Aconten
-t�A�g���r���[�g�Ńo�����[���w�肵�܂��B
+　これは著者がDefolosであることを表すメタ情報です。nameのバリューはプロパ
+ティ名となります。contentのバリューはプロパティに設定される値となります。
+プロパティやそのバリューは自分で定義することもでき、その場合プロパティと
+プロパティに設定されたバリューがどういった意味と関連付けられているのかは
+headエレメントのplofileアトリビュートで指定されたリファレンス（URIで指定）
+に記載されることになります。metaエレメントは必ずプロパティとバリューのペ
+アで用いられ、nameやhttp-equivアトリビュートでプロパティを指定し、conten
+tアトリビュートでバリューを指定します。
 
-�@mete�G�������g�̃A�g���r���[�g�͎��̂��̂�����܂��B
+　meteエレメントのアトリビュートは次のものがあります。
 
-�Ename
-�@�v���p�e�B�������ʂ�����̂ƂȂ�܂��Bname="keywords"�ł���Web�T�C�g��
-�܂܂��L�[���[�h��\������Aname="description"��Web�T�C�g�̊ȒP�Ȑ�����
-�\������ł��܂��B
+・name
+　プロパティ名を識別するものとなります。name="keywords"でそのWebサイトに
+含まれるキーワードを表したり、name="description"でWebサイトの簡単な説明を
+表したりできます。
 
-�Econtet
-�@�v���p�e�B�̃o�����[�ƂȂ�A�v���p�e�B�ɐݒ肳���l���w�肵�܂��B
+・contet
+　プロパティのバリューとなり、プロパティに設定される値を指定します。
 
-�Escheme
-�@�v���p�e�B�̃o�����[��|�󂷂邽�߂ɗ��p����X�L�[���̖��O���w�肵�܂��B
-���^���̖|���̕�������葽�����[�U�G�[�W�F���g�ɒ񋟂��܂��B�Ⴆ�Γ�
-�t�f�[�^�Ɂu10-12-05�v�Ƃ����t�H�[�}�b�g�ŏ���ݒ肵���ꍇ�A����́u20
-05�N10��12���v��\�����̂Ȃ̂��u2010�N12��5���v��\���̂��s�N���ł��B����
-��scheme="Month-Day-Year"���w�肷�邱�ƂŁu2005�N10��12���v��\�����̂���
-�������Ƃ����[�U�G�[�W�F���g�ɖ������邱�Ƃ��ł��܂��B
-�@���̗��content��ISBN���Ƃ������Ƃ�scheme���g���Ė���������ł��B
+・scheme
+　プロパティのバリューを翻訳するために利用するスキームの名前を指定します。
+メタ情報の翻訳上の文脈をより多くユーザエージェントに提供します。例えば日
+付データに「10-12-05」というフォーマットで情報を設定した場合、これは「20
+05年10月12日」を表すものなのか「2010年12月5日」を表すのか不鮮明です。そこ
+でscheme="Month-Day-Year"を指定することで「2005年10月12日」を表すものだと
+いうことをユーザエージェントに明示することができます。
+　次の例はcontentがISBNだということをschemeを使って明示した例です。
 
 -----
 <meta scheme="ISBN" name="identifire" content="4-88718-862-5">
 -----
 
-�@scheme�A�g���r���[�g�̃o�����[��name�Ŏw�肳�ꂽ�v���p�e�B��profile�Ńv
-���p�e�B�Ɋ֘A�t����ꂽ�Ӗ��Ɉˑ����܂��B
+　schemeアトリビュートのバリューはnameで指定されたプロパティやprofileでプ
+ロパティに関連付けられた意味に依存します。
 
-�Ehttp-equiv
-�@name�A�g���r���[�g�̑���ɗp�����܂��BHTTP�T�[�o�[��HTTP���X�|���X
-�̃��b�Z�[�W�w�b�_�[�̏�񌹂Ƃ��Ă��̃A�g���r���[�g���Q�Ƃ��܂��B�Ⴆ��
-���̂悤�ȃ��^�����������������B
+・http-equiv
+　nameアトリビュートの代わりに用いられます。HTTPサーバーはHTTPレスポンス
+のメッセージヘッダーの情報源としてこのアトリビュートを参照します。例えば
+次のようなメタ情報をご覧ください。
 
 -----
 <meta http-equiv="Content-Type" content="text/html; charset=SHIFT_JIS">
 -----
 
-�@���̃��^���̏ꍇ�AHTTP���X�|���X�̃��b�Z�[�W�w�b�_�[���̃G���e�B�e�B
-�w�b�_�[�ɁuContent-Type: text/html: charset=SHIFT_JIS�v�Ƃ����w�b�_�[��
-�t������邱�ƂɂȂ�܂��BHTTP�̃w�b�_�[�ɂ��Ă�RFC�Ȃǂ��Q�Ƃ��Ă�����
-���B
+　このメタ情報の場合、HTTPレスポンスのメッセージヘッダー中のエンティティ
+ヘッダーに「Content-Type: text/html: charset=SHIFT_JIS」というヘッダーが
+付加されることになります。HTTPのヘッダーについてはRFCなどを参照してくださ
+い。
 
-�@meta�G�������g�͊J�n�^�O�͕K�{�ŁA�I���^�O���������Ƃ͋֎~����Ă��܂��B
+　metaエレメントは開始タグは必須で、終了タグを書くことは禁止されています。
 
-���{��
+●本文
 
-�@�{����HTML�ł�body�^�O�ɂ���ĕ������܂��i<body>�`</body>�̕����j�B�{
-���ɂ͂���HTML�����̖{�����L�q���܂��B�O�q�̗�ł�<p>����͎��̂͂��߂Ă�
-Web�T�C�g�ł��B</p>�̕������{���Ƃ������ƂɂȂ�܂��B����HTML�����́u����
-�͎��̂͂��߂Ă�Web�T�C�g�ł��B�v�Ƃ������e���i����\��p�G�������g�Ń}�[
-�N�A�b�v����Ă���A�ЂƂ̒i������Ȃ镶���ł��邱�Ƃ��킩��܂��Bbody
-�G�������g�������Ɍ����Ώȗ��͉\�ł����A�ȗ�����ׂ��ł͂���܂���B
+　本文はHTMLではbodyタグによって分けられます（<body>〜</body>の部分）。本
+文にはそのHTML文書の本文を記述します。前述の例では<p>これは私のはじめての
+Webサイトです。</p>の部分が本文ということになります。このHTML文書は「これ
+は私のはじめてのWebサイトです。」という内容が段落を表すpエレメントでマー
+クアップされており、ひとつの段落からなる文書であることがわかります。body
+エレメントも厳密に言えば省略は可能ですが、省略するべきではありません。
 
 
-��0x06.) �G�������g
+■0x06.) エレメント
 
-�@�G�������g�̓^�O���ǂ̂悤�ȈӖ��������̂����`���܂��B�G�������g��
-�u���b�N���x���G�������g�ƃC�����C���i�e�L�X�g���x���j�G�������g�ɑ�ʂ�
-��܂��B
+　エレメントはタグがどのような意味を持つものかを定義します。エレメントは
+ブロックレベルエレメントとインライン（テキストレベル）エレメントに大別さ
+れます。
 
-���u���b�N���x���ƃC�����C��
+●ブロックレベルとインライン
 
-�@�ʏ�u���b�N���x���G�������g�̃R���e���g�̓C�����C���G�������g�Ƒ��̃u
-���b�N���x���G�������g�ɂȂ�܂��B�܂��A�ʏ�C�����C���G�������g�̃R���e
-���g�̓f�[�^�����̃C�����C���G�������g�݂̂ɂȂ�܂��B����̓u���b�N���x
-���G�������g�̓C�����C���G�������g�����u�傫�ȁv�\����n��o���Ƃ����\
-����̓����ɂ����̂ł��B�Ⴆ�΁A�i����\��p�G�������g�̓u���b�N���x���G
-�������g�ŁA������\��em�G�������g�̓C�����C���G�������g�ł��̂Ŏ��̂悤
-�ȋL�q�͕��@�G���[�ƂȂ�܂��B
-
------
-<em><p>�����ł�</p><em>
------
-
-�@�u���b�N���x���G�������g�̓C�����C���G�������g�Ɣ�ׂē��ِ�������܂��B
-�ʏ�u���b�N���x���G�������g�͓Ɨ������s�ɔz�u����܂��B�C�����C���G����
-���g�͒ʏ킻�̑O��ŉ��s���ꂽ�肹���A���̑����ɑ��̃f�[�^�������܂��B
-�@�u���b�N���x���G�������g�͌��o����i���Ȃǂ̑��̃f�[�^�ƓƗ�������K�v
-���̂�����̂ł���A�C�����C���G�������g�͋����⃊���N�Ȃǂ̕��͒��̑���
-�̂悤�Ȃ��̂ł��B���̗�����Č��܂��傤�B
+　通常ブロックレベルエレメントのコンテントはインラインエレメントと他のブ
+ロックレベルエレメントになります。また、通常インラインエレメントのコンテ
+ントはデータか他のインラインエレメントのみになります。これはブロックレベ
+ルエレメントはインラインエレメントよりも「大きな」構造を創り出すという構
+造上の特徴によるものです。例えば、段落を表すpエレメントはブロックレベルエ
+レメントで、強調を表すemエレメントはインラインエレメントですので次のよう
+な記述は文法エラーとなります。
 
 -----
-<h1>��������</h1>
+<em><p>強調です</p><em>
+-----
+
+　ブロックレベルエレメントはインラインエレメントと比べて特異性があります。
+通常ブロックレベルエレメントは独立した行に配置されます。インラインエレメ
+ントは通常その前後で改行されたりせず、その続きに他のデータが続きます。
+　ブロックレベルエレメントは見出しや段落などの他のデータと独立させる必要
+性のあるものであり、インラインエレメントは強調やリンクなどの文章中の装飾
+のようなものです。次の例を見て見ましょう。
+
+-----
+<h1>あいさつ</h1>
 <p>
-�悤������������Ⴂ�܂����B����͎���<em>�͂��߂Ă�</em>WEB�T�C�g�ł��B
-�܂��n�߂�<a herf="about.html">���̃T�C�g�ɂ���</a>�����ǂ݂��������B
+ようこそいらっしゃいました。これは私の<em>はじめての</em>WEBサイトです。
+まず始めに<a herf="about.html">このサイトについて</a>をお読みください。
 </p>
 -----
 
-�@h1�G�������g�͍ł��d�v�Ȍ��o����\���u���b�N���x���G�������g�ŁAem�G��
-�����g�ƃ����N��\��a�G�������g�̓C�����C���G�������g�ł��Bh1�G�������g��
-�u���b�N���x���G�������g�ł��̂œƗ������s�ɔz�u����Ap�G�������g���u���b
-�N���x���G�������g�ł��̂ŕ����s�ɂ܂�����܂����Ɨ������s�ɔz�u����܂��B
-���em�G�������g��a�G�������g�Ȃǂ̓C�����C���G�������g�ł��̂őO��ŉ��s
-�Ȃǂ͍s���܂���B
+　h1エレメントは最も重要な見出しを表すブロックレベルエレメントで、emエレ
+メントとリンクを表すaエレメントはインラインエレメントです。h1エレメントは
+ブロックレベルエレメントですので独立した行に配置され、pエレメントもブロッ
+クレベルエレメントですので複数行にまたがりますが独立した行に配置されます。
+一方emエレメントやaエレメントなどはインラインエレメントですので前後で改行
+などは行われません。
 
-���ėp�G�������g
+●汎用エレメント
 
-�@HTML�ł͔ėp�G�������g��div��span������܂��Bdiv�̓u���b�N���x���G����
-���g�̔ėp�G�������g�ŁAspan�̓C�����C���G�������g�̔ėp�G�������g�ł��B
-���Ȃ݂�div��Division�̗��ŁA��؂�̂��Ƃł��B
-�@�ėp�G�������g�Ƃ͓��ɈӖ��������Ȃ��G�������g�ł��B����܂ŏo�Ă����G
-�������g�̓^�C�g���⋭����\���G�������g�ȂǁA�Ȃ�炩�̈Ӗ��������Ă���
-�����B�������ėp�G�������g�͂����������Ӗ��������܂���B�ł͔ėp�G������
-�g�͉��̂��߂ɑ��݂��Ă���̂ł��傤���B
-�@�����̔ėp�G�������g�͌�q����id�A�g���r���[�g��class�A�g���r���[�g��
-�ꏏ�ɗp���邱�ƂňӖ����Ȃ��܂��B�Ⴆ��HTML�ɂ́u�d�b�ԍ��v��\���G����
-���g�͑��݂��܂��񂪁Aspan�G�������g��class(id)��ݒ肷�邱�ƂŁu�d�b�ԍ��v
-��\�����Ƃ��ł��܂��B�܂��A�����悤�Ɂu�x���v��\���悤�ȃG�������g�͑�
-�݂��܂���i������\���G�������g�͑��݂��܂��j���Adiv�G�������g��p���邱
-�ƂŁu�x���v��\�����Ƃ��ł��܂��B���̗���������������B
+　HTMLでは汎用エレメントはdivとspanがあります。divはブロックレベルエレメ
+ントの汎用エレメントで、spanはインラインエレメントの汎用エレメントです。
+ちなみにdivはDivisionの略で、区切りのことです。
+　汎用エレメントとは特に意味を持たないエレメントです。これまで出てきたエ
+レメントはタイトルや強調を表すエレメントなど、なんらかの意味を持っていま
+した。しかし汎用エレメントはそういった意味を持ちません。では汎用エレメン
+トは何のために存在しているのでしょうか。
+　これらの汎用エレメントは後述するidアトリビュートやclassアトリビュートを
+一緒に用いることで意味をなします。例えばHTMLには「電話番号」を表すエレメ
+ントは存在しませんが、spanエレメントにclass(id)を設定することで「電話番号」
+を表すことができます。また、同じように「警告」を表すようなエレメントは存
+在しません（強調を表すエレメントは存在します）が、divエレメントを用いるこ
+とで「警告」を表すことができます。次の例をご覧ください。
 
 -----
-<p>�d�b�ԍ��F<span class="tel">0120-00-0000</span></p>
+<p>電話番号：<span class="tel">0120-00-0000</span></p>
 <div class="worning">
-���̓d�b�ԍ��͉ˋ�̂��̂ł��B
-��������d�b���Ȃ��悤�ɂ��܂��傤�B
+この電話番号は架空のものです。
+いたずら電話しないようにしましょう。
 </div>
 -----
 
-�@���̂悤��class�A�g���r���[�g��p���邱�Ƃ�div��span���ǂ��������Ӗ���
-���̂��Ƃ������Ƃ𖾎����邱�Ƃ��ł��܂��B����ɃX�^�C���V�[�g��p����
-�ꍇ�Aclass��worning�ł���G�������g�̃R���e���g�̕�����ԐF�ɂ���Ȃǂ�
-�Ǘ����e�ՂɂȂ�܂��B�܂��A���̂悤�Ɍ�����w�肷��ꍇ�ɗ��p���邱�Ƃ�
-�ł��܂��B
+　このようにclassアトリビュートを用いることでdivやspanがどういった意味を
+持つのかということを明示することができます。さらにスタイルシートを用いる
+場合、classがworningであるエレメントのコンテントの文字を赤色にするなどの
+管理も容易になります。また、次のように言語を指定する場合に利用することも
+できます。
 
 -----
 <p lang="ja">
-�P���B��=�~�g�j�b�N�̓G�t�E�r�[�E�A�C���N���b�N����
-<span lang="en">end up in prison</span>�ɂȂ����B
+ケヴィン=ミトニックはエフ・ビー・アイをクラックして
+<span lang="en">end up in prison</span>になった。
 </p>
 -----
 
-�@���X�ނ���̂����ł������A���̂悤�ɓ��{��Ƃ��Ďw�肵���̒i���̒���
-�p�ꂪ�����Ă���悤�ȏꍇ�Ɂuend up in prison�v�̕������p��ł��邱�Ƃ�
-��������̂�span�G�������g��p���Č���w������邱�Ƃ��ł��܂��B
-�@div�G�������g�͊J�n�^�O�A�I���^�O�Ƃ��ɕK�{�ŁA�R���e���g�̓u���b�N���x
-���G�������g�ƃC�����C���ɂȂ�܂��Bspan�G�������g���J�n�^�O�A�I���^�O��
-���ɕK�{�ŁA�R���e���g�̓C�����C���ł��B
+　少々むちゃのある例でしたが、このように日本語として指定したの段落の中に
+英語が入ってくるような場合に「end up in prison」の部分が英語であることを
+明示するのにspanエレメントを用いて言語指定をすることができます。
+　divエレメントは開始タグ、終了タグともに必須で、コンテントはブロックレベ
+ルエレメントとインラインになります。spanエレメントも開始タグ、終了タグと
+もに必須で、コンテントはインラインです。
 
 
-��0x07.) �A�g���r���[�g
+■0x07.) アトリビュート
 
-�@�A�g���r���[�g�Ƃ͑O�q�̂悤�ɑ����Ɩ󂹁A<html lang="ja">��lang="ja"��
-�悤�ȕ����ł��B���̃G�������g�̕t�����̂悤�Ȃ��̂ł��B�G�������g�ɂ�
-���ď������Ƃ̂ł���A�g���r���[�g�͌��܂��Ă���A�G�������g�ɂ���Ă͕K
-�������Ȃ���΂Ȃ�Ȃ��A�g���r���[�g������܂��B������DTD�ɖ��L����Ă�
-�܂��B
-�@�A�g���r���[�g�̒��ɂ́A�قڂ��ׂẴG�������g�ɏ������Ƃ��ł��鋤�ʃA
-�g���r���[�g�ƌĂ΂����̂����݂��Ă��܂��B
+　アトリビュートとは前述のように属性と訳せ、<html lang="ja">のlang="ja"の
+ような部分です。そのエレメントの付加情報のようなものです。エレメントによ
+って書くことのできるアトリビュートは決まっており、エレメントによっては必
+ず書かなければならないアトリビュートもあります。これらはDTDに明記されてい
+ます。
+　アトリビュートの中には、ほぼすべてのエレメントに書くことができる共通ア
+トリビュートと呼ばれるものも存在しています。
 
-�@lang�Adir�Astyle�Atitle�Aid�Aclass�A�g���r���[�g�Ȃǂ͔��ɑ����̃G��
-�����g�ɋ��ʂ��Ďw�肷�邱�Ƃ��ł��邽�߁A���ʃA�g���r���[�g�ƌĂ΂�Ă�
-�܂��B���ʃA�g���r���[�g�̎�ނ̓C���^�[�i�V���i���[�[�V�����A�R�A�A�g��
-�r���[�g�A�C�x���g�A�g���r���[�g��3��ނɕ�����܂��B
+　lang、dir、style、title、id、classアトリビュートなどは非常に多くのエレ
+メントに共通して指定することができるため、共通アトリビュートと呼ばれてい
+ます。共通アトリビュートの種類はインターナショナリゼーション、コアアトリ
+ビュート、イベントアトリビュートの3種類に分かれます。
 
-���C���^�[�i�V���i���[�[�V����
+●インターナショナリゼーション
 
-�@�C���^�[�i�V���i���[�[�V�����͍��ۉ��̂��ƂŁAinternationalization�ƒ�
-��܂��B���܂�ɒ����̂�i18n�ii��n�̊Ԃ�18��������Ƃ����Ӗ��j�Əȗ�����
-�܂��BHTML4�ł�RFC2070�𓝍�����HTML�����ۉ����Ă��邽�߁A�����̃A�g��
-�r���[�g���w�肷�邱�Ƃ��ł��܂��Bi18n�̃A�g���r���[�g�ɂ�lang��dir������
-�܂��B
+　インターナショナリゼーションは国際化のことで、internationalizationと綴
+ります。あまりに長いのでi18n（iとnの間に18文字あるという意味）と省略され
+ます。HTML4ではRFC2070を統合してHTMLを国際化しているため、これらのアトリ
+ビュートを指定することができます。i18nのアトリビュートにはlangとdirがあり
+ます。
 
-��lang
+○lang
 
-�@lang�A�g���r���[�g��lang="ja"�̂悤�Ɍ���R�[�h���o�����[�ɂƂ�A�G����
-���g�̃R���e���g���ǂ�����������ŏ����ꂽ���̂Ȃ̂��Ƃ������Ƃ����[�U�[
-�G�[�W�F���g�ɓ`���܂��B�����G�������g��lang���w�肳��Ă��Ȃ��ꍇ�͐e�v
-�f���猾������p�����܂��B
+　langアトリビュートはlang="ja"のように言語コードをバリューにとり、エレメ
+ントのコンテントがどういった言語で書かれたものなのかということをユーザー
+エージェントに伝えます。もしエレメントにlangが指定されていない場合は親要
+素から言語情報を継承します。
 
-��dir
+○dir
 
-�@dir�A�g���r���[�g��ltr��rtl���o�����[�Ƃ��ĂƂ�A������������n�܂�il
-tr�j�̂��A�E����n�܂�irtl�j�̂������[�U�[�G�[�W�F���g�ɓ`���܂��B���m��
-�������{��Ȃǂ͕����͍�����n�܂�܂����A�A���r�A��Ȃǂ͉E���珑����
-���̂ŁA���{��̒i���̒��ɃA���r�A����܂߂�ꍇ�ȂǂɎw�肷�邱�ƂɂȂ�
-�܂��B
+　dirアトリビュートはltrかrtlをバリューとしてとり、文字が左から始まる（l
+tr）のか、右から始まる（rtl）のかをユーザーエージェントに伝えます。西洋諸
+国語や日本語などは文字は左から始まりますが、アラビア語などは右から書きま
+すので、日本語の段落の中にアラビア語を含める場合などに指定することになり
+ます。
 
-���R�A�A�g���r���[�g
+●コアアトリビュート
 
-�@id�Aclass�Astyle�Atitle���R�A�A�g���r���[�g�Ɋ܂܂�܂��B������HTML4
-�ł͂قƂ�ǂ��ׂẴG�������g�Ɏw�肷�邱�Ƃ��ł��܂��B
+　id、class、style、titleがコアアトリビュートに含まれます。これらはHTML4
+ではほとんどすべてのエレメントに指定することができます。
 
-��id
+○id
 
-�@�G�������g�ɌŗL��ID�����܂��B�X�^�C���V�[�g��X�N���v�g�̑ΏۂɂȂ�
-����A�����N�̃A���J�[�ɂȂ����肵�܂��BID�͂ЂƂ̕������ɏd�����Ă�
-�邱�Ƃ͂ł��܂���Bid�̃o�����[�ɂ̓A���t�@�x�b�g����n�܂�A����ɑ���
-�����A"-"�A"_"�A":"�A"."���w��ł��܂��B�����͑啶���������Ŏ��ʂ����
-���B
+　エレメントに固有のIDをつけます。スタイルシートやスクリプトの対象になっ
+たり、リンクのアンカーになったりします。IDはひとつの文書中に重複してつけ
+ることはできません。idのバリューにはアルファベットから始まり、それに続く
+数字、"-"、"_"、":"、"."が指定できます。これらは大文字小文字で識別されま
+す。
 
-��class
+○class
 
-�@�G�������g�ɃN���X�������܂��B��ɃX�^�C���V�[�g�̑ΏۂƂ��ėp�����
-�邱�Ƃ��قƂ�ǂł��B�������ɉ��x�ł��o���\�ł���A�ЂƂ̃G�������g
-�ɃX�y�[�X�ŋ�؂��ĕ����̃N���X�������邱�Ƃ��\�ł��Bclass�̃o�����[
-�ɂ�HTML2.x�ł͉p������ "."�A"-"�݂̂��g���܂������AHTML4�ł͐������Ȃ���
-���Ă��܂��B
+　エレメントにクラス名をつけます。主にスタイルシートの対象として用いられ
+ることがほとんどです。文書中に何度でも出現可能であり、ひとつのエレメント
+にスペースで区切って複数のクラス名をつけることも可能です。classのバリュー
+にはHTML2.xでは英数字と "."、"-"のみが使えましたが、HTML4では制限がなくな
+っています。
 
-��style
+○style
 
-�@�X�^�C���V�[�g�𒼐ڃG�������g�Ɏw�肷�邽�߂̃A�g���r���[�g�ł��B�ڂ�
-����CSS�̐����ŏq�ׂ܂����A�J�X�P�[�f�B���O�̍ŉ��w�ɂȂ�܂��BCSS�̗��_
-��������ƂɂȂ肩�˂Ȃ��̂ŁA�ł�����肱�̃A�g���r���[�g�͎g��Ȃ��ق�
-�������ł��傤�B���Ȃ݂ɂ��̃A�g���r���[�g���g���Ƃ��̓w�b�h������<META 
-http-equiv="Content-Style-Type" content="text/css">���w�肷��K�v�������
-���B
+　スタイルシートを直接エレメントに指定するためのアトリビュートです。詳し
+くはCSSの説明で述べますが、カスケーディングの最下層になります。CSSの利点
+を崩すことになりかねないので、できる限りこのアトリビュートは使わないほう
+がいいでしょう。ちなみにこのアトリビュートを使うときはヘッド部分で<META 
+http-equiv="Content-Style-Type" content="text/css">を指定する必要がありま
+す。
 
-��title
+○title
 
-�@�G�������g�Ƀ^�C�g�������܂��B�^�C�g���͓ǂݏグ��ꂽ��A�J�[�\����
-�����Ă������Ƃ��ɕ\�����ꂽ�肷�邱�Ƃ��\�z����܂��B�킩��ɂ����G����
-���g�ɂ͐ϋɓI�ɗ��p���čׂ�����t����悤�ɂ��܂��傤�B
+　エレメントにタイトルをつけます。タイトルは読み上げられたり、カーソルを
+持っていったときに表示されたりすることが予想されます。わかりにくいエレメ
+ントには積極的に利用して細く情報を付けるようにしましょう。
 
-���C�x���g�A�g���r���[�g
+●イベントアトリビュート
 
-�@�X�N���v�g�Ȃǂ��g�������I��Web�T�C�g�����ۂɁA�C�x���g�A�g���r���[�g
-�ɂ��鎖�ۂ����������Ƃ��ɃC�x���g�A�g���r���[�g�̃o�����[�̃X�N���v�g��
-���s����܂��B
-�@���҂ł���Defolso���X�N���v�g�͏��F�v���O�C���ł���Ȃǂ̗��R����X�N��
-�v�g�̎g�p�ɔے�I�ł��邽�߁A���I��WEB�T�C�g�ɂ��Ă͂����ł͌��y���܂�
-��B�ł��̂ō���͏ȗ������Ă��������܂��B
+　スクリプトなどを使った動的なWebサイトを作る際に、イベントアトリビュート
+にある事象が発生したときにイベントアトリビュートのバリューのスクリプトが
+実行されます。
+　著者であるDefolsoがスクリプトは所詮プラグインであるなどの理由からスクリ
+プトの使用に否定的であるため、動的なWEBサイトについてはここでは言及しませ
+ん。ですので今回は省略させていただきます。
 
 
-��0x08.) �񐄏��Ɣp�~
+■0x08.) 非推奨と廃止
 
-�@HTML�ɂ̓o�[�W����������A�o�[�W�����ɂ���Ďg�����Ƃ��ł���G�������g
-��A�g���r���[�g�A������z�u���Ă悢�ꏊ�Ȃǂ��قȂ�܂��B�O�̃o�[�W��
-���ō̗p����Ă����̂ɐV�����o�[�W�����ł͍̗p����Ȃ������G�������g��A
-�g���r���[�g�͔p�~���ꂽ���ƂɂȂ�A����̐V�����o�[�W�����ł��o�����邱
-�Ƃ͊�{�I�ɂȂ��Ȃ�܂��B
-�@����A�񐄏��͍���p�~�����\��������A�g���ׂ��ł͂Ȃ��Ƃ�������
-�ł��B�񐄏��ƂȂ�ɂ͂������̏���������܂��B
+　HTMLにはバージョンがあり、バージョンによって使うことができるエレメント
+やアトリビュート、それらを配置してよい場所などが異なります。前のバージョ
+ンで採用されていたのに新しいバージョンでは採用されなかったエレメントやア
+トリビュートは廃止されたことになり、今後の新しいバージョンでも出現するこ
+とは基本的になくなります。
+　一方、非推奨は今後廃止される可能性があり、使うべきではないとされるもの
+です。非推奨となるにはいくつかの条件があります。
 
-1�F�����I�Ɍ��h�����w�肷�邾���̗v�f�⑮���ł���
-2�F�X�^�C���V�[�g�ő�p�\�ł���
+1：物理的に見栄えを指定するだけの要素や属性である
+2：スタイルシートで代用可能である
 
-�@�����̏����ɍ��v������͔̂񐄏��ƂȂ�܂����AW3C�̎d�l���ł͌���݊�
-�̂��߂Ƀu���E�U�x���_�͔񐄏��ƂȂ����G�������g��A�g���r���[�g�ɂ��Ή�
-����ׂ����ƌ��y����Ă��܂��B����䂦�Ƀu���E�U�ł͔񐄏��̃G�������g��
-�ǂ��\���ł����肵�܂����A�����p�~���ꂽ�Ƃ�����������Ԃ���������A�O��
-�t�B�J���ȃu���E�U�ɂ�����񂪓`���Ȃ�������ƕs���v�������邱�Ƃ��ł�
-�܂���B�o�������񐄏��ƂȂ������͎̂g��Ȃ��悤�ɂ��܂��傤�B
+　これらの条件に合致するものは非推奨となりますが、W3Cの仕様書では後方互換
+のためにブラウザベンダは非推奨となったエレメントやアトリビュートにも対応
+するべきだと言及されています。それゆえにブラウザでは非推奨のエレメントな
+ども表示できたりしますが、将来廃止されたとき書き直す手間が増えたり、グラ
+フィカルなブラウザにしか情報が伝わらなかったりと不利益しか得ることができ
+ません。出来る限り非推奨となったものは使わないようにしましょう。
 
-�@��Ƃ��Ĕ񐄏��̑�\�i�Afont�G�������g���ɂƂ��ĉ�����܂��傤�Bfont
-�G�������g�̓l�b�g�X�P�[�v�u���E�U���Ǝ��g�������G�������g�ł������AHTML
-3.2�Ő����̗p����AHTML4.0�Ŕ񐄏��ƂȂ�܂����B<font color="red">�Ȃǂ�
-�悤�ɃA�g���r���[�g���w�肷�邱�Ƃŕ����̐F��ς�����A<font size="1">��
-�悤�ɕ����̑傫����ς����肷�邱�Ƃ��ł��܂��B�ꌩ�֗������Ɍ����܂����A
-���̃G�������g�ɂ͑����̕��Q������܂��B
-�@font�G�������g�͂��ꎩ�̂��_���I�ȈӖ��������Ȃ��G�������g�ł��B���̃\
-�[�X���������������B
+　例として非推奨の代表格、fontエレメントを例にとって解説しましょう。font
+エレメントはネットスケープブラウザが独自拡張したエレメントでしたが、HTML
+3.2で正式採用され、HTML4.0で非推奨となりました。<font color="red">などの
+ようにアトリビュートを指定することで文字の色を変えたり、<font size="1">の
+ように文字の大きさを変えたりすることができます。一見便利そうに見えますが、
+このエレメントには多くの弊害があります。
+　fontエレメントはそれ自体が論理的な意味を持たないエレメントです。次のソ
+ースをご覧ください。
 
 -----
 <p>
-�|�[�g�X�L������<font color="red">�s���A�N�Z�X�\���s��</font>
-�ƂȂ邱�Ƃ�����܂��B
+ポートスキャンは<font color="red">不正アクセス予備行為</font>
+となることがあります。
 </p>
 -----
 
-�@��L�̃\�[�X���O���t�B�J���u���E�U�ȊO�ŃA�N�Z�X�����ꍇ�A�Ԃ��F�Ƃ���
-�����̏��ł͋�����\���Ă���̂����p�Ȃ̂��C�܂���ŐԂ������̂����f��
-���Ȃ��Ȃ��Ă��܂��܂��B�������ɂ��ꂪ�������������߂ɐԂ������̂��Ƃ���
-�΁A���̂悤�ɏ������ƂŃO���t�B�J���u���E�U�ȊO�ł���񂪓`���܂��B
+　上記のソースをグラフィカルブラウザ以外でアクセスした場合、赤い色という
+だけの情報では強調を表しているのか引用なのか気まぐれで赤くしたのか判断で
+きなくなってしまいます。もし仮にこれが強調したいために赤くしたのだとすれ
+ば、次のように書くことでグラフィカルブラウザ以外でも情報が伝わります。
 
 -----
 <p>
-�|�[�g�X�L������<em style="color:red">�s���A�N�Z�X�\���s��</em>
-�ƂȂ邱�Ƃ�����܂��B
+ポートスキャンは<em style="color:red">不正アクセス予備行為</em>
+となることがあります。
 </p>
 -----
 
-�@��L�̗��font�G�������g�ŐF���w�肵���ꍇ�Ɠ����悤�ɕ\������܂����A
-�O���t�B�J���u���E�U�ȊO�ŃA�N�Z�X�����ꍇ�ł��u���E�U��������\���Ă���
-���Ƃ�ǂݎ��A�������ƕ�����悤�ɁA�傫�Ȑ��œǂݏグ���蕶�������ʂ�
-����������A������ׂ��o�͂��s���Ă���܂��B
-�@�񐄏��Ƃ������̂͂��̂悤�ɃX�^�C���V�[�g�ő�p���\�ł��B�o�����
-��_���v�f�{�X�^�C���V�[�g�Ń}�[�N�A�b�v����悤�ɂ��܂��傤�B
-�@���̃��|�[�g�̎��̏͂ł͎��ۂ̃\�[�X���Ƃ��ăG�������g��A�g���r���[
-�g�̎g������������Ă����܂����A�񐄏��ƂȂ����G�������g��A�g���r���[�g
-�͏Љ�܂���B����͔񐄏��ƂȂ������̂�m��Ȃ��Ă�������HTML���L�q��
-�邱�Ƃ��ł��邩��ł��B�{���A�񐄏��̂��̂��m���Ă������Ƃ͑�؂ł�����
-�ʂ̓s����A�����Ƃ����Ă��������܂��B
+　上記の例はfontエレメントで色を指定した場合と同じように表示されますが、
+グラフィカルブラウザ以外でアクセスした場合でもブラウザが強調を表している
+ことを読み取り、強調だと分かるように、大きな声で読み上げたり文字を括弧で
+くくったり、しかるべき出力を行ってくれます。
+　非推奨とされるものはこのようにスタイルシートで代用が可能です。出来る限
+り論理要素＋スタイルシートでマークアップするようにしましょう。
+　このレポートの次の章では実際のソースを例としてエレメントやアトリビュー
+トの使い方を解説していきますが、非推奨となったエレメントやアトリビュート
+は紹介しません。これは非推奨となったものを知らなくても正当なHTMLを記述す
+ることができるからです。本来、非推奨のものも知っておくことは大切ですが紙
+面の都合上、愛割とさせていただきます。
 
 
-��0x09.) ���ۂ̃R�[�f�B���O
+■0x09.) 実際のコーディング
 
-�@����ł͎��ۂ̃\�[�X�R�[�h�����ɃG�������g��A�g���r���[�g�Ȃǂ̉����
-�s���Ă����܂��傤�B���̃T���v���́u�n�b�L���O���{���g���v��Web�T�C�g�ł��B
-html�Ahead�Ameta�Atitle�Abody�Adiv�Aspan�G�������g�Ƌ��ʃA�g���r���[�g��
-���łɉ���ς݂Ȃ��ߏȗ����܂��B
+　それでは実際のソースコードを元にエレメントやアトリビュートなどの解説を
+行っていきましょう。次のサンプルは「ハッキングラボラトリ」のWebサイトです。
+html、head、meta、title、body、div、spanエレメントと共通アトリビュートは
+すでに解説済みなため省略します。
 
-��index.html
+●index.html
 
 -----
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
@@ -1395,125 +1395,125 @@ html�Ahead�Ameta�Atitle�Abody�Adiv�Aspan�G�������g�Ƌ��ʃA�g���r���[�g��
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=SHIFT_JIS">
 <meta http-equiv="Content-Language" content="ja">
-<meta name="keywords" content="�n�b�L���O,�v���O���~���O,hacking" lang="ja">
-<meta name="description" content="�n�b�L���O�Z�p�ɂ��Ẳ�����s��WEB�T�C�g">
-<title>�n�b�L���O���{���g�� - �g�b�v�y�[�W</title>
+<meta name="keywords" content="ハッキング,プログラミング,hacking" lang="ja">
+<meta name="description" content="ハッキング技術についての解説を行うWEBサイト">
+<title>ハッキングラボラトリ - トップページ</title>
 </head>
 <body>
-<h1>�n�b�L���O���{���g�� �g�b�v�y�[�W<h1>
+<h1>ハッキングラボラトリ トップページ<h1>
 
-<hr title="�������烁�j���[">
+<hr title="ここからメニュー">
 
-<h2>���j���[</h2>
+<h2>メニュー</h2>
 <ul>
-<li><a href="about.html">���̃T�C�g�ɂ���</a></li>
-<li><a href="hack.html">�n�b�L���O�Z�p</a></li>
-<li><a href="source.html">�\�[�X�R�[�h</a></li>
+<li><a href="about.html">このサイトについて</a></li>
+<li><a href="hack.html">ハッキング技術</a></li>
+<li><a href="source.html">ソースコード</a></li>
 </ul>
 
-<hr title="��������R���e���c">
+<hr title="ここからコンテンツ">
 
-<h2>��������</h2>
+<h2>あいさつ</h2>
 <p>
-�悤������������Ⴂ�܂����B����͎���<em>�͂��߂Ă�</em>WEB�T�C�g�ł��B
-�܂��n�߂�<a herf="about.html">���̃T�C�g�ɂ���</a>�����ǂ݂��������B
+ようこそいらっしゃいました。これは私の<em>はじめての</em>WEBサイトです。
+まず始めに<a herf="about.html">このサイトについて</a>をお読みください。
 </p>
 
 </body>
 </html>
 -----
 
-��h1, h2, h3, h4, h5, h6 (Headings level 1-6)
+○h1, h2, h3, h4, h5, h6 (Headings level 1-6)
 
-�@���o���Ƃ��̃��x����\���܂��Bh1���ł��d�v�Ȍ��o���Ő�����������ɂ���
-�����ďd�v�����Ⴂ���o���ɂȂ�܂��B�����ĕ����̑傫����\���G�������g��
-�͂���܂���B
-�@�u���b�N���x���G�������g�ŊJ�n�^�O�A�I���^�O�Ƃ��ɕK�{�ł��B�R���e���g
-�̓C�����C���݂̂ł��B
+　見出しとそのレベルを表します。h1が最も重要な見出しで数字が下がるにした
+がって重要さが低い見出しになります。決して文字の大きさを表すエレメントで
+はありません。
+　ブロックレベルエレメントで開始タグ、終了タグともに必須です。コンテント
+はインラインのみです。
 
-��hr (Horizontal Rule)
+○hr (Horizontal Rule)
 
-�@��������z�u���܂��B�������͂ǂ��������ړI�ň�����Ă��邩�킩��ɂ���
-���߁Atitle�A�g���r���[�g�ŕ⑫���邱�Ƃ����߂��܂��B
-�@�u���b�N���x���G�������g�ŊJ�n�^�O�͕K�{�A�I���^�O���������Ƃ͋֎~����
-�Ă��܂��B
+　水平線を配置します。水平線はどういった目的で引かれているかわかりにくい
+ため、titleアトリビュートで補足することが勧められます。
+　ブロックレベルエレメントで開始タグは必須、終了タグを書くことは禁止され
+ています。
 
-��ul (Unordered List)
+○ul (Unordered List)
 
-�@���s���̃��X�g���`���܂��B���������X�g���`����ꍇ��ol�G�������g
-���g���܂��Bul�̓��X�g��`�����ł��̂ŁA���ڂ͕ʂɒ�`����K�v������܂��B
-���ڂ��`����ɂ�li���g���܂��B
-�@�u���b�N���x���G�������g�ŊJ�n�^�O�A�I���^�O�Ƃ��ɕK�{�ł��B�R���e���g
-�͂ЂƂȏ��li�G�������g�����ł��B�Œ�ł��ЂƂ�li�G�������g���K�v�Ȃ�
-�߁Aul�G�������g�������o�����邱�Ƃ��ł��܂���B
+　順不同のリストを定義します。順序つきリストを定義する場合はolエレメント
+を使います。ulはリスト定義だけですので、項目は別に定義する必要があります。
+項目を定義するにはliを使います。
+　ブロックレベルエレメントで開始タグ、終了タグともに必須です。コンテント
+はひとつ以上のliエレメントだけです。最低でもひとつliエレメントが必要なた
+め、ulエレメントだけが出現することもできません。
 
-��li (List Item)
+○li (List Item)
 
-�@���X�g���ڂ�\���܂��B�P�̂ŗp���邱�Ƃ͂ł����Aul�Aol�G�������g�̃R��
-�e���g�Ƃ��Ă̂݌���܂��B
-�@�u���b�N���x���G�������g�ŊJ�n�^�O�͕K�{�A�I���^�O�͏ȗ��\�ł����ȗ�
-����ׂ��ł͂Ȃ��ł��傤�B�R���e���g�̓u���b�N���x���ƃC�����C���ł��B
+　リスト項目を表します。単体で用いることはできず、ul、olエレメントのコン
+テントとしてのみ現れます。
+　ブロックレベルエレメントで開始タグは必須、終了タグは省略可能ですが省略
+するべきではないでしょう。コンテントはブロックレベルとインラインです。
 
-��a (Anchor)
+○a (Anchor)
 
-�@�n�C�p�[�e�L�X�g�̍ő�̓����ł��郊���N����������G�������g�ŁA�A���J
-�[��\���܂��B�悭���p�����A�g���r���[�g�ɂ͎��̂悤�Ȃ��̂�����܂��B
+　ハイパーテキストの最大の特徴であるリンクを実現するエレメントで、アンカ
+ーを表します。よく利用されるアトリビュートには次のようなものがあります。
 
-�Ehref
-�@�����N���URI���w�肵�܂��B
+・href
+　リンク先のURIを指定します。
 
-�Ename
-�@�����N���ƂȂ�A���J�[�����w�肵�܂��Bid�A�g���r���[�g�������悤�Ɏg�p
-���邱�Ƃ��ł��܂��B
+・name
+　リンク元となるアンカー名を指定します。idアトリビュートも同じように使用
+することができます。
 
-�Ehreflang
-�@�����N��̌���𖾎����܂��B
+・hreflang
+　リンク先の言語を明示します。
 
-�Etype
-�@�����N���MIME�^�C�v�𖾎����܂��B�����N��HTML���������Ɍ��炸�A�摜��
-����Ȃǂɂ��ݒ�ł��邽�߁AMIME�^�C�v�𖾎�����A�g���r���[�g������܂��B
+・type
+　リンク先のMIMEタイプを明示します。リンクはHTML文書だけに限らず、画像や
+動画などにも設定できるため、MIMEタイプを明示するアトリビュートがあります。
 
-�Echarset
-�@�����N��̕����Z�b�g�𖾎����܂��B
+・charset
+　リンク先の文字セットを明示します。
 
-�Erel
-�@���̕������猩�������N��̕����̊֌W���w�肵�܂��B�Ⴆ�΃V���[�Y�ɂȂ�
-�Ă���Ȃ�A�ЂƂO�̕����Ȃǂł��B
+・rel
+　この文書から見たリンク先の文書の関係を指定します。例えばシリーズになっ
+ているなら、ひとつ前の文書などです。
 
-�Erev
-�@�����N��̕������猩�����̕����̊֌W���w�肵�܂��B�Ⴆ�ΗႦ�΃V���[�Y
-�ɂȂ��Ă���Ȃ�A�ЂƂ�̕����Ȃǂł��B
+・rev
+　リンク先の文書から見たこの文書の関係を指定します。例えば例えばシリーズ
+になっているなら、ひとつ先の文書などです。
 
-�Etabindex
-�@�^�u���������Ƃ��̃����N���t�H�[�J�X����鏇�Ԃ��w�肵�܂��B1���琔����
-���������Ƀt�H�[�J�X����܂��B�ڍׂ͂�����A�A�N�Z�V�r���e�B�ɂ��Ăŉ�
-�����܂��B
+・tabindex
+　タブを押したときのリンクがフォーカスされる順番を指定します。1から数字が
+小さい順にフォーカスされます。詳細はいずれ、アクセシビリティについてで解
+説します。
 
-�Eaccesskey
-�@�����N��[�A�N�Z�X�L�[]�{[�p���P����]�Ń����N���N���b�N�������Ɠ����悤
-�ɃA�N�Z�X���邱�Ƃ��ł���V���[�g�J�b�g���w�肵�܂��B�ڍׂ͂�����A�A�N
-�Z�V�r���e�B�ɂ��Ăŉ�����܂��B
+・accesskey
+　リンクに[アクセスキー]＋[英字１文字]でリンクをクリックした時と同じよう
+にアクセスすることができるショートカットを指定します。詳細はいずれ、アク
+セシビリティについてで解説します。
 
-�@�����N��WWW�̊�{�T�O�Ƃ��ď���ɂǂ��ɂł��͂���̂Ȃ̂ŁA�����āu����
-�N�͏���ɂ͂�Ȃ��ł��������v�ȂǂƏ����Ȃ��ł��������BWWW�̍l�Ď҂ł���
-Tim Berners-Lee�́uLinks and Law: Myths�v�̒��ŁA�u�����N�͒��쌠��N����
-�̂ł͂Ȃ��A���O�񍐂͕K�v�Ȃ��v�A�u�����N�ɂȂ�炩�̎x���������߂Ă͂�
-��Ȃ��v�A�u�����N�͑��l�̃v���C�o�V�[��N�Q���邱�Ƃ͂Ȃ��v�ƌ��_�t����
-���܂��B�ڂ�����Links and Law: Myths�ihttp://www.w3.org/DesignIssues/Lin
-kMyths.html�j���Q�Ƃ��Ă��������B
-�@�C�����C���G�������g�ŊJ�n�^�O�A�I���^�O�Ƃ��ɕK�{�ł��B�R���e���g��a�G
-�������g�������C�����C���ł��B
+　リンクはWWWの基本概念として勝手にどこにでもはるものなので、決して「リン
+クは勝手にはらないでください」などと書かないでください。WWWの考案者である
+Tim Berners-Leeは「Links and Law: Myths」の中で、「リンクは著作権を侵すも
+のではなく、事前報告は必要ない」、「リンクになんらかの支払いを求めてはな
+らない」、「リンクは他人のプライバシーを侵害することはない」と結論付けて
+います。詳しくはLinks and Law: Myths（http://www.w3.org/DesignIssues/Lin
+kMyths.html）を参照してください。
+　インラインエレメントで開始タグ、終了タグともに必須です。コンテントはaエ
+レメントを除くインラインです。
 
-��p (Paragraph)
+○p (Paragraph)
 
-�@�i����\���܂��Bp�G�������g�ň͂񂾃R���e���g���ЂƂ̒i���ɂȂ�܂��B
-�R���e���g�̓C�����C���݂̂Ȃ̂ŁA<p><hr></p>�悤�ȏ������͕��@�ᔽ�ł��B
-�@�u���b�N���x���G�������g�ŊJ�n�^�O�͕K�{�A�I���^�O�͏ȗ��\�ł����ȗ�
-����ׂ��ł͂Ȃ��ł��傤�B�R���e���g�͑O�q�̒ʂ�C�����C���݂̂ł��B
+　段落を表します。pエレメントで囲んだコンテントがひとつの段落になります。
+コンテントはインラインのみなので、<p><hr></p>ような書き方は文法違反です。
+　ブロックレベルエレメントで開始タグは必須、終了タグは省略可能ですが省略
+するべきではないでしょう。コンテントは前述の通りインラインのみです。
 
-��about.html
+●about.html
 
-�@����about.html�����Č��܂��傤�B
+　次にabout.htmlを見て見ましょう。
 
 -----
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
@@ -1522,74 +1522,74 @@ kMyths.html�j���Q�Ƃ��Ă��������B
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=SHIFT_JIS">
 <meta http-equiv="Content-Language" content="ja">
-<title>�n�b�L���O���{���g�� - ���̃T�C�g�ɂ���</title>
+<title>ハッキングラボラトリ - このサイトについて</title>
 </head>
 <body>
-<h1>�n�b�L���O���{���g�� ���̃T�C�g�ɂ���<h1>
+<h1>ハッキングラボラトリ このサイトについて<h1>
 
-<hr title="��������R���e���c">
+<hr title="ここからコンテンツ">
 
-<h2>�T�v</h2>
+<h2>概要</h2>
 <p>
-���̃T�C�g��HTML�̉���p�ɍ��ꂽ�T�C�g�ł��B��Ƀn�b�L���O�Z�p�ƃS�~�v���O�����̃\�[�X�����J���Ă��܂��B
+このサイトはHTMLの解説用に作られたサイトです。主にハッキング技術とゴミプログラムのソースを公開しています。
 </p>
 
-<h2>�����N�ƃo�i�[</h2>
+<h2>リンクとバナー</h2>
 <p>
-�����N��<abbr title="World Wide Web">WWW</abbr>�̔��Ď�
-Tim Berners-Lee�̎咣�ɏ]���āA�ǂ��ł�<em>�����R��</em>�ǂ����B
-�񍐂�<strong>�K�v����܂���</strong>�B
-�o�i�[�͎��̂��̂�p�ӂ��Ă���܂��B<br>
-<img src="banna.jpg" alt="�o�i�[" height=60 width=180>
+リンクは<abbr title="World Wide Web">WWW</abbr>の発案者
+Tim Berners-Leeの主張に従って、どこでも<em>ご自由に</em>どうぞ。
+報告も<strong>必要ありません</strong>。
+バナーは次のものを用意しております。<br>
+<img src="banna.jpg" alt="バナー" height=60 width=180>
 </p>
 
 </body>
 </html>
 -----
 
-��abbr (Abbreviation)
-�@�R���e���g���ȗ����ꂽ�����ł��邱�Ƃ𖾎����܂��Btitle�A�g���r���[�g��
-�t���X�y�����L�q���Ă����܂��傤�B�R���s���[�^�Z�p�ɂ͗��ꂪ�����̂ŁA��
-��ɂ悭�g����G�������g�ł��B
-�@�C�����C���G�������g�ŊJ�n�^�O�A�I���^�O�Ƃ��ɕK�{�ł��B�R���e���g�̓C
-�����C���݂̂ł��B
+○abbr (Abbreviation)
+　コンテントが省略された文字であることを明示します。titleアトリビュートで
+フルスペルを記述しておきましょう。コンピュータ技術には略語が多いので、非
+常によく使われるエレメントです。
+　インラインエレメントで開始タグ、終了タグともに必須です。コンテントはイ
+ンラインのみです。
 
-��em (Emphasis)
-�@������\���܂��B������Ƌ��߂ɓǂނ悤�Ȋ����ł��B
-�@�C�����C���G�������g�ŊJ�n�^�O�A�I���^�O�Ƃ��ɕK�{�ł��B�R���e���g�̓C
-�����C���ł��B
+○em (Emphasis)
+　強調を表します。ちょっと強めに読むような感じです。
+　インラインエレメントで開始タグ、終了タグともに必須です。コンテントはイ
+ンラインです。
 
-��strong (Strong Emphasis)
-�@�ƂĂ�����������\���܂��B���Ԃ悤�Ȋ����ł��B
-�@�C�����C���G�������g�ŊJ�n�^�O�A�I���^�O�Ƃ��ɕK�{�ł��B�R���e���g�̓C
-�����C���ł��B
+○strong (Strong Emphasis)
+　とても強い強調を表します。叫ぶような感じです。
+　インラインエレメントで開始タグ、終了タグともに必須です。コンテントはイ
+ンラインです。
 
-��br (Forced Line Break)
-�@�������s���s���܂��B�ʏ�u���E�U�͓K�؂Ȉʒu�Ŏ����I�ɉ��s���Ă���܂�
-���A����ȊO�ŉ��s�������ꍇ�ɗp���܂��B�Ⴆ�Γ����i�����ŉ��s�������ꍇ
-�⎍�������ꍇ�Ȃǂł��B�����Ĉ�s�󂯂邽�߂�br��A�����Ȃ��ł��������B
-�@�C�����C���G�������g�ŊJ�n�^�O�͕K�{�A�I���^�O���������Ƃ͋֎~����Ă�
-�܂��B
+○br (Forced Line Break)
+　強制改行を行います。通常ブラウザは適切な位置で自動的に改行してくれます
+が、それ以外で改行したい場合に用います。例えば同じ段落中で改行したい場合
+や詩を書く場合などです。決して一行空けるためにbrを連発しないでください。
+　インラインエレメントで開始タグは必須、終了タグを書くことは禁止されてい
+ます。
 
-��img (Embedded Image)
-�@�C�����C���̉摜�𖄂ߍ��݂܂��Bsrc��alt�͕K�{�A�g���r���[�g�ŁA���ꂼ
-��摜��URI�Ƒ�փe�L�X�g���w�肵�܂��B��փe�L�X�g�͕����u���E�U��摜��
-���G���[�Ȃǂŉ摜���\���ł��Ȃ��ꍇ�ɕ\�������e�L�X�g�ł��B����2�ȊO
-�ł͎��̂悤�ȃA�g���r���[�g����ɗp�����܂��B
+○img (Embedded Image)
+　インラインの画像を埋め込みます。srcとaltは必須アトリビュートで、それぞ
+れ画像のURIと代替テキストを指定します。代替テキストは文字ブラウザや画像取
+得エラーなどで画像が表示できない場合に表示されるテキストです。この2つ以外
+では次のようなアトリビュートが主に用いられます。
 
-�Elongdesc
-�@URI���o�����[�ɂƂ�A���ڂ��������ւ̃����N���w�肵�܂��B
+・longdesc
+　URIをバリューにとり、より詳しい説明へのリンクを指定します。
 
-�Eheight
-�@�摜�̍����𖾎����܂��B�����Ɖ����͎w�肷��ق����悢�Ƃ���Ă��܂��B
+・height
+　画像の高さを明示します。高さと横幅は指定するほうがよいとされています。
 
-�Ewidth
-�@�摜�̉����𖾎����܂��B�����Ɖ����͎w�肷��ق����悢�Ƃ���Ă��܂��B
+・width
+　画像の横幅を明示します。高さと横幅は指定するほうがよいとされています。
 
-�@�C�����C���G�������g�ŊJ�n�^�O�͕K�{�A�I���^�O���������Ƃ͋֎~����Ă�
-�܂��B
+　インラインエレメントで開始タグは必須、終了タグを書くことは禁止されてい
+ます。
 
-��hello.html
+●hello.html
 
 -----
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
@@ -1598,20 +1598,20 @@ Tim Berners-Lee�̎咣�ɏ]���āA�ǂ��ł�<em>�����R��</em>�ǂ����B
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=SHIFT_JIS">
 <meta http-equiv="Content-Language" content="ja">
-<title>�n�b�L���O���{���g�� - �\�[�X - ���A�v���O����</title>
+<title>ハッキングラボラトリ - ソース - 挨拶プログラム</title>
 </head>
 <body>
-<h1>�n�b�L���O���{���g�� ���A�v���O����<h1>
+<h1>ハッキングラボラトリ 挨拶プログラム<h1>
 
-<hr title="��������R���e���c">
+<hr title="ここからコンテンツ">
 
-<h2>�T�v</h2>
-<p>���A���܂��Bchar�^��string�z��ɕ�������i�[��
-<dnf><a href="#comment01">printf�֐�</a></dnf>�ŏo�͂��Ă��܂��B</p>
+<h2>概要</h2>
+<p>挨拶します。char型のstring配列に文字列を格納し
+<dnf><a href="#comment01">printf関数</a></dnf>で出力しています。</p>
 
-<h2>�\�[�X</h2>
+<h2>ソース</h2>
 <pre>
-<code title="���A�v���O�����̃\�[�X">
+<code title="挨拶プログラムのソース">
 #include &lt;stdio.h&gt;
 int main()
 {
@@ -1622,106 +1622,106 @@ int main()
 </code>
 </pre>
 
-<h2>���s</h2>
-<p>���̃v���O�����͎��̂悤�Ɏ��s���܂��B</p>
+<h2>実行</h2>
+<p>このプログラムは次のように実行します。</p>
 <p>$ <kbd>./hello.exe</kbd></p>
 
-<p>���s���ʂ͎��̂悤�ɂȂ�܂��B</p>
+<p>実行結果は次のようになります。</p>
 <p><samp>Hello, hackers!!</samp></p>
 
-<h2>����</h2>
-<h3 id="comment01">printf�֐�</h3>
+<h2>注釈</h2>
+<h3 id="comment01">printf関数</h3>
 <blockquote cite="http://ruffnex.oc.to/defolos/"><p>
-�W�����o�͊֐��̂ЂƂBstdio.h���C���N���[�h���Ă����K�v������B
+標準入出力関数のひとつ。stdio.hをインクルードしておく必要がある。
 </p></blockquote>
 
-<p>�Q�l����:<cite>http://ruffnex.oc.to/defolos/test.html</cite></p>
+<p>参考文献:<cite>http://ruffnex.oc.to/defolos/test.html</cite></p>
 
 </body>
 </html>
 -----
 
-��&lt;�A&gt;
-�@����͕����Q�Ƃ̂����̕������̎Q�Ƃł��B����ȕ����͂��̂܂܂ł̓\�[�X
-���ɏ������Ƃ��ł��Ȃ��̂ŁA���̂悤�ȕ����Q�Ƃ𗘗p���܂��B�����Q�Ƃ̓�
-�[�U�[�G�[�W�F���g�ŕ\�������Ƃ��ɂ͕����Q�Ƃ��w�����������ɒu��������
-��Ă��܂��B���̗�ł͂��ꂼ��<��>�ɒu���������܂��B�����Q�Ƃɂ͐��l��
-���Q�ƂƌĂ΂��&�����ԍ�;�̂悤�ɕ����ԍ��Ŏw�肷����@�ƕ������̎Q�Ƃ�
-�Ă΂��&��������;�̂悤�ɕ������̂Ŏw�肷����@��2�ʂ肠��܂��B�A���t�@
-�x�b�g�́ua�v���w�肷��ꍇ�A�����ԍ��Ŏw�肷���&#229;�̂悤�ɉ���\����
-���邩�ꌩ�킩��܂��񂪁A�������̂Ŏw�肷���&aring;�̂悤�ɂ킩��₷��
-�Ȃ�܂��B
-�@�ڍׂ�W3C��24 Character entity references in HTML 4�ihttp://www.w3.org
-/TR/html4/sgml/entities.html�j���Q�Ƃ��Ă��������B
+○&lt;、&gt;
+　これは文字参照のうちの文字実体参照です。特殊な文字はそのままではソース
+中に書くことができないので、このような文字参照を利用します。文字参照はユ
+ーザーエージェントで表示されるときには文字参照が指し示す文字に置き換えら
+れています。この例ではそれぞれ<と>に置き換えられます。文字参照には数値文
+字参照と呼ばれる&文字番号;のように文字番号で指定する方法と文字実体参照と
+呼ばれる&文字実体;のように文字実体で指定する方法の2通りあります。アルファ
+ベットの「a」を指定する場合、文字番号で指定すると&#229;のように何を表して
+いるか一見わかりませんが、文字実体で指定すると&aring;のようにわかりやすく
+なります。
+　詳細はW3Cの24 Character entity references in HTML 4（http://www.w3.org
+/TR/html4/sgml/entities.html）を参照してください。
 
-��dnf (Defining Term)
-�@���̏ꏊ�Œ�`����Ă���p��ł��邱�Ƃ�\���܂��B���߂Ȃǂɗp�����̂�
-�Ǝv���Ă��܂��B
-�@�C�����C���G�������g�ŊJ�n�^�O�A�I���^�O�Ƃ��ɕK�{�ł��B�R���e���g�̓C
-�����C���݂̂ł��B
+○dnf (Defining Term)
+　他の場所で定義されている用語であることを表します。注釈などに用いものだ
+と思っています。
+　インラインエレメントで開始タグ、終了タグともに必須です。コンテントはイ
+ンラインのみです。
 
-��pre (Preformatted Text)
-�@���`�ς݂̃e�L�X�g�ł��邱�Ƃ�\���A���s��X�y�[�X�����̂܂ܕ\�����܂��B
-pre�̒��ł��}�[�N�A�b�v�͗L���Ȃ��߁A���̂悤�Ƀ}�[�N�A�b�v���邱�Ƃ��ł�
-�܂��B
+○pre (Preformatted Text)
+　整形済みのテキストであることを表し、改行やスペースをそのまま表示します。
+preの中でもマークアップは有効なため、次のようにマークアップすることができ
+ます。
 
 -----
 <pre>
-�N���b�J�[�̓n�b�J�[�ƈႢ�A<em>�j�󊈓�</em>��
-<strong>�񐶎Y�I</strong>�Ȃ��ƂɋZ�p���g���B
+クラッカーはハッカーと違い、<em>破壊活動</em>や
+<strong>非生産的</strong>なことに技術を使う。
 <pre>
 -----
 
-�@�u���b�N���x���G�������g�ŊJ�n�^�O�A�I���^�O�Ƃ��ɕK�{�ł��B�R���e���g
-�̓C�����C���ł����Aimg��sub�i��t�������j�Ȃǂ̐��`�ς݂Ƃ����T�O�ɔ���
-��G�������g�͏����܂���B�܂��A�R���e���g�Ƀ^�u�������������Ƃ͔񐄏���
-���B
+　ブロックレベルエレメントで開始タグ、終了タグともに必須です。コンテント
+はインラインですが、imgやsub（上付き文字）などの整形済みという概念に反す
+るエレメントは書けません。また、コンテントにタブ文字を書くことは非推奨で
+す。
 
-��code (Computer Code)
-�@���̃G�������g�̓n�b�J�[�̕��ɐ��񊈗p���Ăق����G�������g�ł��B�R���s
-���[�^�v���O�����̃\�[�X�R�[�h��\���G�������g�ł��B
-�@�C�����C���G�������g�ŊJ�n�^�O�A�I���^�O�Ƃ��ɕK�{�ł��B�R���e���g�̓C
-�����C���݂̂ł��B
+○code (Computer Code)
+　このエレメントはハッカーの方に是非活用してほしいエレメントです。コンピ
+ュータプログラムのソースコードを表すエレメントです。
+　インラインエレメントで開始タグ、終了タグともに必須です。コンテントはイ
+ンラインのみです。
 
-��var (Variable)
-�@�v���O�����̕ϐ��̂悤�ɒl���ς�蓾����̂�\���܂��B�\�[�X�̉���Ȃ�
-�ŗp���܂��B
-�@�C�����C���G�������g�ŊJ�n�^�O�A�I���^�O�Ƃ��ɕK�{�ł��B�R���e���g�̓C
-�����C���݂̂ł��B
+○var (Variable)
+　プログラムの変数のように値が変わり得るものを表します。ソースの解説など
+で用います。
+　インラインエレメントで開始タグ、終了タグともに必須です。コンテントはイ
+ンラインのみです。
 
-��kbd (Keyboard)
-�@�L�[�{�[�h����̓��͂�\���܂��B�\�t�g�̎g��������ȂǂŃ��[�U�����͂�
-�镔���Ɏg���܂��B
-�@�C�����C���G�������g�ŊJ�n�^�O�A�I���^�O�Ƃ��ɕK�{�ł��B�R���e���g�̓C
-�����C���݂̂ł��B
+○kbd (Keyboard)
+　キーボードからの入力を表します。ソフトの使い方解説などでユーザが入力す
+る部分に使います。
+　インラインエレメントで開始タグ、終了タグともに必須です。コンテントはイ
+ンラインのみです。
 
-��samp (Sample)
-�@�v���O�����Ȃǂ̏o�̓T���v����\���܂��B�R�[�h�̃T���v����code�G������
-�g��p���܂��B������R���s���[�^�Z�p�̉���Ȃǂł͂悭�p������G������
-�g�ł��B
-�@�C�����C���G�������g�ŊJ�n�^�O�A�I���^�O�Ƃ��ɕK�{�ł��B�R���e���g�̓C
-�����C���݂̂ł��B
+○samp (Sample)
+　プログラムなどの出力サンプルを表します。コードのサンプルはcodeエレメン
+トを用います。これもコンピュータ技術の解説などではよく用いられるエレメン
+トです。
+　インラインエレメントで開始タグ、終了タグともに必須です。コンテントはイ
+ンラインのみです。
 
-��cite (Citation)
-�@���̌���������̈��p��Q�l�Ȃǂ̏o�T��\���܂��B��������URI�Ȃǂ��R���e
-���g�ɂȂ�A�_���⃌�|�[�g�ŗp����ׂ����̂ł��傤�B
-�@�C�����C���G�������g�ŊJ�n�^�O�A�I���^�O�Ƃ��ɕK�{�ł��B�R���e���g�̓C
-�����C���݂̂ł��B
+○cite (Citation)
+　他の権文献からの引用や参考などの出典を表します。文献名やURIなどがコンテ
+ントになり、論文やレポートで用いるべきものでしょう。
+　インラインエレメントで開始タグ、終了タグともに必須です。コンテントはイ
+ンラインのみです。
 
-��blockquote (Long Quotation)
-�@���p����\���܂��B��̈��p��\���ꍇ��q�G�������g���g���܂��B�u���E�U��
-���ɂ̓C���f���g�ŕ\��������̂�����܂����A�C���f���g�ړI�ł��̃G������
-�g���g���Ɗ��ɂ���Ắu���̕��͈͂��p�ł��v�ƕ\�������\���������
-���B�܂��A�R���e���g��body�G�������g�Ɠ����Ȃ̂Œ��ڕ��͂��������Ƃ͂ł�
-�܂���B�w��ł���A�g���r���[�g�ɂ͎��̂悤�Ȃ��̂�����܂��B
+○blockquote (Long Quotation)
+　引用文を表します。句の引用を表す場合はqエレメントを使います。ブラウザの
+中にはインデントで表示するものがありますが、インデント目的でこのエレメン
+トを使うと環境によっては「次の文章は引用です」と表示される可能性もありま
+す。また、コンテントはbodyエレメントと同じなので直接文章を書くことはでき
+ません。指定できるアトリビュートには次のようなものがあります。
 
-�Ecite
-�@���p�̏o�T���L�ڂ��܂��B��������URI���L�q���邱�ƂɂȂ�܂��B
+・cite
+　引用の出典を記載します。文献名やURIを記述することになります。
 
-�@�u���b�N�G�������g�ŊJ�n�^�O�A�I���^�O�Ƃ��ɕK�{�ł��B�R���e���g�̓u��
-�b�N���x���G�������g��SCRIPT�ł��B
+　ブロックエレメントで開始タグ、終了タグともに必須です。コンテントはブロ
+ックレベルエレメントとSCRIPTです。
 
-��hack.html
+●hack.html
 
 -----
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
@@ -1730,555 +1730,555 @@ pre�̒��ł��}�[�N�A�b�v�͗L���Ȃ��߁A���̂悤�Ƀ}�[�N�A�b�v���邱�Ƃ��ł�
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=SHIFT_JIS">
 <meta http-equiv="Content-Language" content="ja">
-<title>�n�b�L���O���{���g�� - �n�b�L���O�Z�p</title>
+<title>ハッキングラボラトリ - ハッキング技術</title>
 </head>
 <body>
-<h1>�n�b�L���O���{���g�� �n�b�L���O�Z�p<h1>
+<h1>ハッキングラボラトリ ハッキング技術<h1>
 
-<hr title="��������R���e���c">
+<hr title="ここからコンテンツ">
 
 <h2></h2>
 <dl>
-<dt>�|�[�g�X�L����</dt>
+<dt>ポートスキャン</dt>
 <dd><p>
-�z�X�g�̂ǂ̃|�[�g���J���Ă��邩�𒲂ׂ邱�ƂŁA���̃z�X�g���ǂ��������T�[�r�X��񋟂��Ă���̂���\�����܂��B�N���b�L���O�̗\�������Ƃ��Ă̈ʒu�t���Ŗ@���ɐG��鋰�������܂��B
+ホストのどのポートが開いているかを調べることで、そのホストがどういったサービスを提供しているのかを予測します。クラッキングの予備調査としての位置付けで法律に触れる恐れもあります。
 </p></dd>
 
-<dt>�X�j�b�t�B���O</dt>
+<dt>スニッフィング</dt>
 <dd><p>
-�l�b�g���[�N��𗬂��p�P�b�g�𓐒�����s�ׂł��BTELNET�ȂǕ����ŒʐM���s���v���g�R���ŃX�j�b�t�B���O�����Ńp�X���[�h�����܂��댯��������܂��B
+ネットワーク上を流れるパケットを盗聴する行為です。TELNETなど平文で通信を行うプロトコルでスニッフィングだけでパスワードが盗まれる危険性もあります。
 </p></dd>
 
-<dt>�\�[�V�����G���W�j�A�����O</dt>
+<dt>ソーシャルエンジニアリング</dt>
 <dd><p>
-�d�b�ȂǂōI���Ȑg���U�؂ƌ���̃e�N�j�b�N�ő�������܂��A�K�v�ȏ�����肷��s�ׂł��BGlazheim Lykeion�ł͎��̂悤�ɕ\�����Ă��܂��B<q cite="http://ruffnex.oc.to/defolos/social.html">�\�[�V�����G���W�j�A�����O�Ƃ͍I���ȍ��\�̂悤�Ȃ��̂ł���</q>����ɃS�~�����s�b�L���O�Ȃǂ�����ɕ��ނ���܂��B
+電話などで巧妙な身分偽証と口先のテクニックで相手をだまし、必要な情報を入手する行為です。Glazheim Lykeionでは次のように表現しています。<q cite="http://ruffnex.oc.to/defolos/social.html">ソーシャルエンジニアリングとは巧妙な詐欺のようなものである</q>さらにゴミ漁りやピッキングなどもこれに分類されます。
 </p></dd>
 </dl>
 </body>
 </html>
 -----
 
-��dl (Definition List)
-�@��`�^�̃��X�g���`���܂��B��`�^�Ƃ͗�̂悤�ɁA����p��ɂ��Ẳ�
-���Ȃǂ̂悤�ɁA�p��Ɖ�������݂ɏo�Ă���悤�ȃ��X�g�̂��Ƃł��B
-�@�u���b�N���x���G�������g�ŊJ�n�^�O�A�I���^�O�Ƃ��ɕK�{�ł��B�R���e���g
-�͂ЂƂȏ��dt���邢��dd�ł��B
+○dl (Definition List)
+　定義型のリストを定義します。定義型とは例のように、ある用語についての解
+説などのように、用語と解説が交互に出てくるようなリストのことです。
+　ブロックレベルエレメントで開始タグ、終了タグともに必須です。コンテント
+はひとつ以上のdtあるいはddです。
 
-��dt (Definition Term)
-�@��`�^���X�g�̗p��̕�����\���܂��Bdl�̃R���e���g�Ƃ��Ă̂ݏo�����܂��B
-�@�J�n�^�O�͕K�{�A�I���^�O�͏ȗ��\�ł����ȗ�����ׂ��ł͂Ȃ��ł��傤�B
-�R���e���g�̓C�����C���݂̂ł��B
+○dt (Definition Term)
+　定義型リストの用語の部分を表します。dlのコンテントとしてのみ出現します。
+　開始タグは必須、終了タグは省略可能ですが省略するべきではないでしょう。
+コンテントはインラインのみです。
 
-��dd (Definition Description)
-�@��`�^���X�g�̉���̕�����\���܂��Bdl�̃R���e���g�Ƃ��Ă̂ݏo�����܂��B
-�@�@�J�n�^�O�͕K�{�A�I���^�O�͏ȗ��\�ł����ȗ�����ׂ��ł͂Ȃ��ł��傤�B
-�R���e���g�̓u���b�N���x���G�������g�ƃC�����C���ł��B
+○dd (Definition Description)
+　定義型リストの解説の部分を表します。dlのコンテントとしてのみ出現します。
+　　開始タグは必須、終了タグは省略可能ですが省略するべきではないでしょう。
+コンテントはブロックレベルエレメントとインラインです。
 
-��q (Quotation)
-�@���p���\���܂��B�O���t�B�J���ȃ��[�U�G�[�W�F���g�ł̓R���e���g�̌���
-�ɉ��������p���ň͂܂�ĕ\�������͂��ł��B�Ⴆ�Γ��{��̏ꍇ���p���́u
-�v�ł��B�܂��A��d�Ɉ��p����邱�Ƃ�����A���̏ꍇ�����������p���̊֌W��
-�͂܂�邱�ƂɂȂ�܂��B
+○q (Quotation)
+　引用句を表します。グラフィカルなユーザエージェントではコンテントの言語
+に応じた引用符で囲まれて表示されるはずです。例えば日本語の場合引用符は「
+」です。また、二重に引用されることもあり、その場合も正しい引用符の関係で
+囲まれることになります。
 
-�E�f�J���g�̌��t�Ɂu��v���̂ɉ�͂���v�Ƃ������t������܂��B
-�E���̕����Łu�J�G�T���̓��r�R�����n��O�Ɂw�΂͓�����ꂽ�x�ƌ������v
-�Ƃ������͂������B
+・デカルトの言葉に「我思う故に我はあり」という言葉があります。
+・その文献で「カエサルはルビコン川を渡る前に『賽は投げられた』と言った」
+という文章を見た。
 
-�@���Ɍ��ꂪ�p��ł������ꍇ�͎��̂悤�ɂȂ�܂��B
+　仮に言語が英語であった場合は次のようになります。
 
-�EDescartes said "Cogito Ergo Sum".
-�EI saw "Caesar said 'Iacta alea est' before he across The Rubicon" in the book.
+・Descartes said "Cogito Ergo Sum".
+・I saw "Caesar said 'Iacta alea est' before he across The Rubicon" in the book.
 
-�@�w��ł���A�g���r���[�g�͎��̂悤�Ȃ��̂�����܂��B
+　指定できるアトリビュートは次のようなものがあります。
 
-�Ecite
-�@���p�̏o�T���L�ڂ��܂��B��������URI���L�q���邱�ƂɂȂ�܂��B
+・cite
+　引用の出典を記載します。文献名やURIを記述することになります。
 
-�@�C�����C���G�������g�ŊJ�n�^�O�A�I���^�O�Ƃ��ɕK�{�ł��B�R���e���g�̓C
-�����C���ł��B
+　インラインエレメントで開始タグ、終了タグともに必須です。コンテントはイ
+ンラインです。
 
 
-��0x0A.) �Q�l����
+■0x0A.) 参考文献
 
-�E�uHTML 4.01 Specification�v
+・「HTML 4.01 Specification」
 http://www.w3.org/TR/html4/
 
-�E�uSome early ideas for HTML�v
+・「Some early ideas for HTML」
 http://www.w3.org/MarkUp/historical
 
-�E�uHTML���ۋ�y���v
+・「HTML鳩丸倶楽部」
 http://www.ne.jp/asahi/minazuki/bakera/html/hatomaru
 
-�E�uProject Xanadu�v
+・「Project Xanadu」
 http://xanadu.com/
 
-�E�uURI�ƃt�@�C���f�B���N�g�� -- �����ȒP��HTML�̐����v
+・「URIとファイルディレクトリ -- ごく簡単なHTMLの説明」
 http://www.kanzaki.com/docs/html/htminfo-uri.html
 
-�E�u���s����w �C���^�[�l�b�g�u���@��12��f�W�^���Z�p����̃e�N�X�g(3) �n�C�p�[�e�N�X�g�ƃe�N�X�g�v
+・「大阪市立大学 インターネット講座　第12回デジタル技術時代のテクスト(3) ハイパーテクストとテクスト」
 http://www.tufs.ac.jp/ts/personal/yamaguci/inet_lec/lec12/98med12.html
 
-�E�uXaQ JP�v
+・「XaQ JP」
 http://web.sfc.keio.ac.jp/~yukihiko/XaS/XaQjp.html
 
 
-��0x0B.) ��������
+■0x0B.) さいごに
 
-�@�F�l�A�������ł����ł��傤���BHTML�͊w�p�I�ȗ��j�������A�d�l�������J��
-��Ă���ɂ�������炸�s�K�؂ȓ��e�̏��Ђ������A���m�ȕ��@��m�邱�Ƃ͓�
-�����ł��B�w�p�I�ȗ��j���d�񂶂�HTML�������쐬���邽�߂ɁA���̃��|�[�g��
-�𗧂ĂĂ���������ƍK���ł��B
-�@�����HTML�ɂ��Ċ�{�I�ȂƂ�������M���܂������A��̂̏ꍇ�����Ŏ��
-�グ���m�������Ő�����HTML�������쐬���邱�Ƃ��ł��܂��B�������A������
-�グ��������HTML�̎d�l���̂����ꕔ�ł��̂ŁA�ڂ�����W3C��HTML Specificat
-ion���Q�Ƃ��Ă��������B����͍���̃��|�[�g�ŐG��邱�Ƃ��ł��Ȃ������A��
-��ׂ����Z�p��A�N�Z�V�r���e�B�ɂ��Ď��M�������Ǝv���܂��B
-�@����ł͂܂�������܂��傤�B
+　皆様、いかがでしたでしょうか。HTMLは学術的な歴史を持ち、仕様書が公開さ
+れているにもかかわらず不適切な内容の書籍が多く、正確な文法を知ることは難
+しいです。学術的な歴史を重んじてHTML文書を作成するために、このレポートを
+役立てていただけると幸いです。
+　今回はHTMLについて基本的なところを執筆しましたが、大体の場合ここで取り
+上げた知識だけで正当なHTML文書を作成することができます。しかし、今回取り
+上げた部分はHTMLの仕様書のごく一部ですので、詳しくはW3CのHTML Specificat
+ionを参照してください。次回は今回のレポートで触れることができなかった、よ
+り細かい技術やアクセシビリティについて執筆したいと思います。
+　それではまたお会いしましょう。
 
 
-
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
-
---- ��5��: �n�b�J�[�̒B�l�Ŗi���� ---
-
-���ҁFMaD�i���񂱂͂��܂ǁj
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
+--- 第5章: ハッカーの達人で吠える ---
 
-��0x01.) �͂��߂�
+著者：MaD（うんこはげまど）
 
-�@�Ȃ��A���܂���I�@�܂ǂ��񂪃X�[�p�[�n�J�[�����Č�������A�X�[�p�[�n
-�J�[�Ȃ񂾂��āI
-�@�����Ō����ŒN�������Ă����񂶂�I
-�@���O��S���I�@���傤���I�@�r����100��I�@����100��I�@�킩�������I�@
-���̂��񂱂͂��I
-
-�@�Ƃ肠�����ADoS�A�^�b�N��PC��j�󂵂Ă���\��������Ă����I
-
-�@�c�c�Ƃ������ƂŁA�����ŋ߁A���@���̂����A���񂱂͂��܂ǂ���B
-�@���₟�A�v���U��̉�������B�Ƃ������A�����Ŋ��ł��邾���Ȃ񂾂��ǂ��B
-�@�n�b�J�[�̒B�l����A�n�b�J�[�̒B�l�I�@�S(*���փ�)Ɂ@ˬ�Ω
-
-�@�E�n�b�J�[�ɂȂ邽�߂̋����P�������FWindowsXP
-�@�@��http://www1.bbiq.jp/hackersroom/
-
-�@�܂��A�Ƃ����A�����̍l�������n���œ��X�Əq�ׂ鎩�M���Ȃ��n�J�[���ǂ���
-�吨�̒��A�B�l�̍s���͖ڂ��Ђ������̂��̂͂���B������ƃA�z�ŎႢ�������B
-���������A���ꂭ�炢�B
-�@�v�́g��邩�A���Ȃ����h�B���ꂾ���Ȃ񂾂��āB
-�@�A�J�f���C�A�ɂ��Ă������BIPUSIROM����ɂ͈������ǁA�T�C�g�̃X�^�[�g��
-�_�̃��x���Ȃ�đ卷�Ȃ����āB���낢��Ȃ��Ƃ��w�сA������p���ł��邩��
-�����͎��̖��Ƃ������ƂŁB
-�@�����A�Ȃ�ڊ撣���Ă��A�J�f���C�A�ɒǂ����͖̂��������Ȃ̂ŁA�܂ǂ�
-��̓A���`IPUSIROM�ƂȂ�A�n�b�J�[�̒B�l�𐶉������������āA�Ƃ��ɒ��v��
-�����Ǝv���Ă���B�Ղ���
-
-�@��҂�I�@�p��|���ȁI�@�O�֐i�߁I�@�\�ɏo��I�@�����Čp������I�@��
-��100��I
-
-�@����́A�̂̃A���O���Ȃ񂩂ɂ��ĐU��Ԃ�w�n�b�J�[�ɂȂ邽�߂̋�
-���P�������FWindowsXP�x�ŋN�������ʔ����l�^���Љ��B
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
+x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x02.) �A���O���ƃn�J�[
+■0x01.) はじめに
 
-�@�܂��A�A���O���ƃn�J�[�̗��j��U��Ԃ�Ȃ���`���ƂȂ������{�̃A���O��
-���n�J�[�ȃT�C�g���ȒP�ɏЉ�Ƃ��ˁB�ŋ߁A���܂���l�����Ȃ��Ȃ�����
-�ŁA�����@��ƁB
-�@���ł����u�A���O���v�Ɓu�n�J�[�v�͂��ꂼ��J�e�S���C�Y����Ă��邪�A��
-���͂܂����ׂƂ��Ă��B
+　なんや、おまえら！　まどさんがスーパーハカーだって言ったら、スーパーハ
+カーなんだって！
+　自分で言わんで誰が言ってくれるんじゃ！
+　お前ら全員！　きょうつけ！　腕立て100回！　腹筋100回！　わかったか！　
+このうんこはげ！
 
-�Ehttp://www.ugtop.com/
-�Ehttp://www.blackout.org/
-�Ehttp://www.infovlad.net/
+　とりあえず、DoSアタックでPCを破壊してから能書きたれてくれや！
 
-�@�܂��A����3���ˁB����3�̃T�C�g��URL�����͍��ł��^�C�v�ł��邭�炢�n
-�b�L���ƋL�����Ă���B
-�@������Ŋ��􂵂��l�����́A���̃R�~���j�e�B�Ŗ��O�������Ă������̂Ō���
-�����āB�^�n�J�[�̈����΂��菑���Ă��邩�����J�ɂ��Ă邯�ǁA�N�ł��Q��
-�ł���̂ŁB
+　……ということで、ここ最近、ご機嫌のいい、うんこはげまどさん。
+　いやぁ、久し振りの快挙だよ。というか、数名で喜んでいるだけなんだけどさ。
+　ハッカーの達人だよ、ハッカーの達人！　ヾ(*ΦωΦ)ノ　ヒャッホゥ
 
-�Emixi���n�b�J�[���D���ȃn�J�[�ƃN���J�[
+　・ハッカーになるための教室１推奨環境：WindowsXP
+　　→http://www1.bbiq.jp/hackersroom/
 
-�@�����āA����������䏊�T�C�g�ɑ΂��āA�V������������ڎw�����̂����B
+　まぁ、とかく、自分の考えを実ハンで堂々と述べる自信がないハカーもどきが
+大勢の中、達人の行動は目をひくだけのものはある。ちょっとアホで若いだけだ。
+いいじゃん、それくらい。
+　要は“やるか、やらないか”。それだけなんだって。
+　アカデメイアにしてもそう。IPUSIROMさんには悪いけど、サイトのスタート時
+点のレベルなんて大差ないって。いろいろなことを学び、それを継続できるかど
+うかは次の問題ということで。
+　ただ、なんぼ頑張ってもアカデメイアに追いつくのは無理そうなので、まどさ
+んはアンチIPUSIROMとなり、ハッカーの達人を生温かく応援して、ともに沈没し
+たいと思っている。ぷげら
 
-�Ehttp://www.backsection.net/
+　若者よ！　恥を怖れるな！　前へ進め！　表に出ろ！　そして継続せよ！　腹
+筋100回！
 
-�@�����������΁A����ς��ɋ�����3��T�C�g�Ƀ��X�y�N�g���ė����グ��ꂽ
-�j���[�^�C�v�̃l�b�g�����L�[�W�c�B
-
-�@���݂́A�ǂ��̃T�C�g���n���ɍč\�����Ă���悤�Ȃ̂Ń`�F�b�N���Ă����āB
-
-�@���Ƃ́ATeam404�����������ǁA�����͂����Ȃ��Ȃ��Ă��邩��URL�Ȃ��B
-
-�@����ȍ~�ɂł����T�C�g�Ɋւ��Ă͋L���Ɏc���Ă��Ȃ����ߊ�������B
-�@���������Ӗ��ł́A�A�J�f���C�A���R�~���j�e�B�ĕҐ��̒S����ɂȂ��ė~��
-�����ǁA�܂��܂��B
-
-�@���񂪂�I�@IPUSIROM�I�I�I�i�Ғ��j
-
-�y�Ғ��z�uM�v�͌�A�ł͂���܂���B�n�b�J�[�̒B�l�̋����ɋU����M�����ۂ�
-�o�ꂵ�����Ƃ��l�^�ɂȂ��Ă���悤�ł��B
+　今回は、昔のアングラなんかについて振り返りつつ『ハッカーになるための教
+室１推奨環境：WindowsXP』で起こった面白いネタを紹介しる。
 
 
-��0x03.) �n�b�J�[�ɂȂ邽�߂̋����P�������FWindowsXP
+■0x02.) アングラとハカー
 
-�@���āA�Y�ꂩ���Ă��{��B
-�@�u�A���O���ƃn�J�[�v���ӂ����̂ɂ͗��R�������āA���̋؂̐l������������
-���Ƃ���Q��ƂȂ����B
+　まず、アングラとハカーの歴史を振り返りながら伝説となった日本のアングラ
+＆ハカーなサイトを簡単に紹介しとくね。最近、あまり語る人がいなくなったし
+で、いい機会かと。
+　今でこそ「アングラ」と「ハカー」はそれぞれカテゴライズされているが、当
+時はまだ混沌としてた。
 
-�@����̃~�b�V�����̍���ɂ�����̂́A�����܂ł��Ȃ��u��l�̃M�X�M�X�v��
-����B�����āA���炸�A����炵������𗁂т��ĉ��܂��A�B�l�����X�y�N
-�g����Ƃ�����@���B�u���˃{�P���񂱁v�́A�`�������W���R�ł�������킯�ŁA
-���ꂶ��A�A�z�߂��B�A���O���ɂ�����^�̐���̓R���ł���A�R���B
+・http://www.ugtop.com/
+・http://www.blackout.org/
+・http://www.infovlad.net/
 
-�����ƈ����
+　まず、この3つだね。この3つのサイトのURLだけは今でもタイプできるくらいハ
+ッキリと記憶している。
+　ここらで活躍した人たちは、次のコミュニティで名前を挙げておいたので見て
+おいて。某ハカーの悪口ばかり書いているから非公開にしてるけど、誰でも参加
+できるので。
+
+・mixi＞ハッカー＞好きなハカーとクラカー
+
+　そして、こうした大御所サイトに対して、新しい方向性を目指したのが次。
+
+・http://www.backsection.net/
+
+　元をただせば、やっぱり先に挙げた3大サイトにリスペクトして立ち上げられた
+ニュータイプのネットヤンキー集団。
+
+　現在は、どこのサイトも地味に再構成しているようなのでチェックしておいて。
+
+　あとは、Team404があったけど、ここはもうなくなっているからURLなし。
+
+　それ以降にできたサイトに関しては記憶に残っていないため割愛する。
+　そうした意味では、アカデメイアがコミュニティ再編成の担い手になって欲し
+いけど、まだまだ。
+
+　がんがれ！　IPUSIROM！！！（編注）
+
+【編注】「M」は誤植ではありません。ハッカーの達人の教室に偽物のMが実際に
+登場したことがネタになっているようです。
+
+
+■0x03.) ハッカーになるための教室１推奨環境：WindowsXP
+
+　さて、忘れかけてた本題。
+　「アングラとハカー」をふったのには理由があって、その筋の人たちが初日の
+授業から参戦となった。
+
+　今回のミッションの根底にあるものは、いうまでもない「大人のギスギス」で
+ある。決して、煽らず、いやらしい質問を浴びせて凹ませつつ、達人をリスペク
+トするという戦法だ。「氏ねボケうんこ」は、チリメンジャコでも言えるわけで、
+それじゃ、アホ過ぎ。アングラにおける真の煽りはコレですよ、コレ。
+
+●授業一日目
 
 ----------
-�������F�hPUSIRON�@IPUSIROM�@�ԁ[��@�Ђ�䂫���Q�����Ǘ��l�@YUKA�@����
-�@kn0wledge�@�͂�@nad�@�܂Ђ�@mad�@�����@UNYUN�@�S�C�b�N�@hal�@�E
-�@��ad�@Will�@ROM�΂���`2nd��Team0721
+入室中：ＩPUSIRON　IPUSIROM　ぶーん　ひろゆき＠２ｃｈ管理人　YUKA　くも
+　kn0wledge　はる　nad　まひん　mad　匿名　UNYUN　ゴイック　hal　右
+　ｍad　Will　ROMばいや〜2nd＠Team0721
 ----------
 
-�@�Ȃ񂩁A�₽�瓯���悤�Ȗ��O�i�S�p�E���p�̈Ⴂ�j�����邯�ǋC�ɂ��Ȃ��B
-��t404�AKrackers�Abacksection�Ƃ��������B���Ȃ݂ɁuUNYUN�v�Ƃ����̂͐���
-�ς܂��B�{�l�ł͂Ȃ��̂ŔO�̂��߁B
-�@�܂��A�Z�I���[�ʂ�A�@���𑹂˂Ȃ��悤�W���W���ƍi�߂��Ƃ��������B
-�@�����A�B�l�͏�@���Ŏ��Ƃ�i�߂Ă����B�Ȃ��Ȃ��̑啨���B���ꂶ��Ȃ���
-�ˁB
+　なんか、やたら同じような名前（全角・半角の違い）があるけど気にしない。
+元t404、Krackers、backsectionという感じ。ちなみに「UNYUN」というのは成り
+済まし。本人ではないので念のため。
+　まぁ、セオリー通り、機嫌を損ねないようジワジワと絞めたという感じ。
+　だが、達人は上機嫌で授業を進めていた。なかなかの大物だ。これじゃないと
+ね。
 
-�@�ڍׂȓ��e�͏����Ȃ��B����ǂ����B�ڂ����̓R�`����
-�@��http://mixi.jp/view_diary.pl?id=107202087&owner_id=100281&full=1
+　詳細な内容は書かない。しんどいし。詳しくはコチラｗ
+　→http://mixi.jp/view_diary.pl?id=107202087&owner_id=100281&full=1
 
-��MVP�Ft404
+★MVP：t404
 
-�����Ɠ����
+●授業二日目
 
 ----------
-�������Fk00L,�ԁ`��O�O,entry yar name,HAC DRUG,BEAMZ,RHS,
-�n�b�J�[�̒B�l��rXO2VZp4eo,�܂ӂ���,��������������,�܂Ђ�,kaeru,����,
-�ƂƂ���y,�x�]�D��,�g�[���o�Y,hail,����,�A�N,ignorance,�I
+入室中：k00L,ぶ〜ん＾＾,entry yar name,HAC DRUG,BEAMZ,RHS,
+ハッカーの達人◆rXO2VZp4eo,まふぃあ,☆ｋｉｒｂｙ☆,まひん,kaeru,黒豆,
+ととりん先輩,堀江縫合,トールバズ,hail,くも,アク,ignorance,栗
 ----------
 
-�@���Ȃ݂Ɂuk00L�v�ƁuBEAMZ�v�͐���ς܂��B�{�l�ł͂Ȃ��̂ŔO�̂��߁Bk00
-L���uBEAMZ�v�ɉ����āAMAD���uk00L�v�ɉ����ĂƂ������ƂŁA�킯�킩�߁B
-�@IPUSIROM����2�l�ŉ�c���s���A�B�l�������̂��Łu�����v�œ�����IPUSIROM��
-���A���̂����������Ő��k�̎���ɓ����Ă����Ƃ����~�b�V�����𐋍s���邱��
-�ƂȂ����B
+　ちなみに「k00L」と「BEAMZ」は成り済まし。本人ではないので念のため。k00
+Lが「BEAMZ」に化けて、MADが「k00L」に化けてということで、わけわかめ。
+　IPUSIROM氏と2人で会議を行い、達人そっちのけで「黒豆」で入ったIPUSIROM氏
+が、ものすごい勢いで生徒の質問に答えていくというミッションを遂行すること
+となった。
 
 =====
-�n�b�J�[�̒B�l��rXO2VZp4eo
-��������̓n�b�J�[�ł����ˁH�H�����������玄�𒴂��Ă邩������Ȃ��X�[�p
-�[�n�b�J�[��������Ȃ��ł���
-=====
-
-=====
-�n�b�J�[�̒B�l��rXO2VZp4eo
-��������ց@�@����������Ȃ��ł����@���Ȃ�čŏ����玩���ŕ׋����܂����� 
-=====
-
-�@IPUSIROM����́A���łɁw�n�b�J�[�̒B�l�x�̃n���h�����p�N���ē������Ă�
-�����߁A�B�l����X�p�C�ƌ��Ȃ���A�N�Z�X�ł��Ȃ�����Ă����B���̂��߁A��
-�Ƃ����n�J�[���g���������Ă�������A���X�|���X���኱���������B�������A��
-��Ƃ��~�b�V�����͐��������B
-�@���̋����ł́u�`���n�b�L���O����v�Ƃ͌����Ă͂Ȃ�Ȃ��B�u�`���n�b�J�[
-����v�Ƃ����̂���{�ƂȂ��Ă���B
-
-�@���āA���̓��́A�����[����オ��Ŗ����o�V�o�V�Ƃ��������ŁA�܂������n
-�J�[���C���I
-�@�ł́A���̖������������Љ�Ă������B
-
-=====
-Mac�̓X�j�b�t�B���O�̒B�l�ł����܂����ł�
+ハッカーの達人◆rXO2VZp4eo
+黒豆さんはハッカーですかね？？もしかしたら私を超えてるかもしれないスーパ
+ーハッカーかもしれないですね
 =====
 
 =====
-OS�͍�����܂����@�@�����܂���
+ハッカーの達人◆rXO2VZp4eo
+黒豆さんへ　　すごいじゃないですか　私なんて最初から自分で勉強しましたよ 
 =====
 
-�@�Ӗ��𗝉����Ă��Ȃ��̂͂������ǁA���{������₵�����߈Ӗ��s���Ȕ�����
-�O���[�u����肾���Ă���B�������A��ɗh�邮���ƂȂ����M�̃I�[�����Y����
-����B�R������A�R���I
+　IPUSIROMさんは、すでに『ハッカーの達人』のハンドルをパクって入室してい
+たため、達人からスパイと見なされアクセスできなくされていた。そのため、串
+というハカーを使い入室していたから、レスポンスが若干悪かった。しかし、な
+んとかミッションは成功した。
+　この教室では「〜をハッキングする」とは言ってはならない。「〜をハッカー
+する」というのが基本となっている。
 
-�@�ڍׂȓ��e�͏����Ȃ��B����ǂ����B�ڂ����̓R�`����
-�@��http://mixi.jp/view_diary.pl?id=108213703&owner_id=100281&full=1
-
-��MVP�Fbacksection
-
-�����ƎO����
-�@�Ȃ�ƁAPON����܂œo��B�P�����ꂽ��A�p���`���ꂽ��A���܂��Ō������
-���肵�Ȃ����ƃq���q���B
-�@�ł��A�ƂĂ��悢���k�ň��S�����B
-�@���̎O���ԂŁA�����Ƃ��������A���������Ƃ������B
+　さて、この日は、すげー盛り上がりで名言バシバシという感じで、まさしくハ
+カーレイヴ！
+　では、その名言をいくつか紹介しておこう。
 
 =====
-�ʂɂǂ��OS�ł��A���`�E�C���X��������Α��v�ł� 
+Macはスニッフィングの達人でうらやましいです
 =====
 
 =====
-DELL�͂��܂�U���Ώۂł͂Ȃ��ł��i�Ȃ������Ǝv���܂��j
+OSは作ったませんよ　　買いました
+=====
+
+　意味を理解していないのはいいけど、日本語もあやしいため意味不明な発言が
+グルーブを作りだしている。しかも、常に揺るぐことない自信のオーラが漂って
+いる。コレだよ、コレ！
+
+　詳細な内容は書かない。しんどいし。詳しくはコチラｗ
+　→http://mixi.jp/view_diary.pl?id=108213703&owner_id=100281&full=1
+
+★MVP：backsection
+
+●授業三日目
+　なんと、PONさんまで登場。ケリ入れたり、パンチ入れたり、おまけで権限取っ
+たりしないかとヒヤヒヤ。
+　でも、とてもよい生徒で安心した。
+　この三日間で、もっとも名言が連発した授業だった。
+
+=====
+別にどんなOSでもアンチウイルスさえあれば大丈夫です 
 =====
 
 =====
-WindowsXP�͍U���ΏۊO�ł�
+DELLはあまり攻撃対象ではないです（なかったと思います）
 =====
 
 =====
-���E�łЂƂ����̃T�C�g�ł��@http://akademeia.info/main/tool/dos.htm 
+WindowsXPは攻撃対象外です
 =====
 
 =====
-�|�[�g�X�L���i�[�̓|�[�g���n�b�N���邽�߂̃c�[���ł�
+世界でひとつだけのサイトです　http://akademeia.info/main/tool/dos.htm 
 =====
 
 =====
-�d�b�ԍ��̂悤�Ȃ��̂ł��i�d�b�ԍ��ł͂���܂���j 
+ポートスキャナーはポートをハックするためのツールです
 =====
 
 =====
-root��PC�𑀍�ł��邱�Ƃ��ł��錠���ł��@���Ȃ��̂��Ƃł�
+電話番号のようなものです（電話番号ではありません） 
 =====
 
-�@�܂��A���̃��C���ɎQ�����Ă��Ȃ��l�ɂ͓`���ɂ����Ǝv�����A3����1���
-�t�L�����G���^�[�e�B�����g�ł��������Ƃ͊ԈႢ�Ȃ��B
-
-�@�����A�c�O�Ȃ̂́A�㔼�ɍr�炵���������ƁB
-
 =====
-hoshou2157 > ���傤���Ȃ����Ƃ΂����苳�����Ƃ��Ă���܂����H�H
+rootはPCを操作できることができる権限です　あなたのことです
 =====
 
-�@������A���O��ɂ͋����Ȃ�����RFC�ł��ǂ�ŁA�ƂŃl�g�Q�[�ł����Ƃ��I
+　まぁ、このレイヴに参加していない人には伝わりにくいと思うが、3分に1回は
+フキだすエンターティメントであったことは間違いない。
 
-�@�ڍׂȓ��e�͏����Ȃ��B����ǂ����B�ڂ����̓R�`����
-�@��http://mixi.jp/view_diary.pl?id=108710372&owner_id=100281&full=1
+　ただ、残念なのは、後半に荒らしがきたこと。
 
-��MVP�FUGTOP
+=====
+hoshou2157 > しょうもないことばっかり教えやんといてくれますか？？
+=====
+
+　だから、お前らには興味ないからRFCでも読んで、家でネトゲーでもしとけ！
+
+　詳細な内容は書かない。しんどいし。詳しくはコチラｗ
+　→http://mixi.jp/view_diary.pl?id=108710372&owner_id=100281&full=1
+
+★MVP：UGTOP
 
 
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- ��6��: �J���҂̂��߂̐�����CSRF�΍� ---
+--- 第6章: 開発者のための正しいCSRF対策 ---
 
-���ҁF����
+著者：金床
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@�E�F�u�A�v���P�[�V�����J���҂̗��ꂩ�猩��CSRF�΍�ɂ��āA���܂��܂�
-��񂪓��藐��Ă���B�M�҂�2006�N3���̎��_�ɂ����č����̃E�F�u�T�C�g��R
-���s���[�^���ЁE�G���Ȃǂ�CSRF�΍�ɂ��ď�����Ă���L���𒲂ׂ����ʁA
-���ǂ낭�ׂ����ƂɁA���̂قƂ�ǂ������܂�ł�����A�����I�ɂ͎g�p�ł�
-�Ȃ����@���Љ���肵�Ă����B�����Ŗ{�e�ł̓E�F�u�A�v���P�[�V�����J����
-�ɂƂ��Ă̖{���ɐ�����CSRF�΍�ɂ��Ă܂Ƃ߂邱�ƂƂ���B�܂��A�̗p����
-���łȂ�CSRF�΍�Ƃ��̗��R�����킹�ďЉ��B
-
-
-��0x02.) ������@�\���^�[�Q�b�g�ƂȂ肤��
-
-�@�E�F�u�A�v���P�[�V�����̎��S�Ă̋@�\��CSRF�U���̑ΏۂƂȂ肤��B�܂�
-���̂��Ƃ�F�����Ă����K�v������B
-
-�@Amazon�̂悤�ȃV���b�s���O�T�C�g��Google�̂悤�Ȍ����T�C�g�A�����Ă͂�
-�ȃ_�C�A���[��Mixi�̂悤�ȓ��L��u���O�������T�C�g�ȂǁA�E�F�u�A�v���P�[
-�V�����ɂ͂��܂��܂Ȃ��̂����݂���B�����Ă��ꂼ��̃A�v���P�[�V�����͍�
-�����u�@�\�v�̐ςݏd�˂ɂ���Đ��藧���Ă���B
-
-�@�Ⴆ�΃V���b�s���O�T�C�g�́A���̂悤�ȋ@�\�̏W�܂�ł���B
-
-�E���O�C������
-�E���i����������
-�E���i�̏���\������
-�E���i���J�[�g�ɓ����
-�E�����̏Z����N���W�b�g�J�[�h�̔ԍ��Ȃǂ���͂���
-�E�m�F�̂��ߒ������e��\������
-�E���Z�����肷��
-�E���O�A�E�g����
-
-�@�����̃P�[�X�Ƃ���CSRF�U���̑ΏۂɂȂ�̂́u���i���J�[�g�ɓ����v�Ȃ�
-�́u�U���҂ɂƂ��Ă��܂݂̂���@�\�v�ł��邱�Ƃ��������A���_�I�ɂ̓A�v��
-�P�[�V�����ɑ��݂���@�\�͑S��CSRF�U���̑ΏۂƂȂ肤��BCSRF�΍���l����
-��ł܂��s���ׂ����Ƃ́u�A�v���P�[�V�����̂����A�ǂ̋@�\�ɂ���CSRF�΍�
-���s�����v�����肷�邱�Ƃł���B���ׂĂ̋@�\�ɂ��đ΍���{���Ă��悢���A
-�d�v�Ǝv���邢�����̋@�\�����ɍi���đ΍���s���Ƃ����I���������邾��
-���B
-
-�@�u�f�[�^�x�[�X���X�V����@�\�̂�CSRF�΍������΂悢�v�̂悤�ȍl���͐�
-�����Ȃ��B�ǂ̋@�\�ɂ��đ΍���s�����́A�E�F�u�A�v���P�[�V�����̉^�c��
-��J���҂����߂�ׂ����Ƃł���B
+　ウェブアプリケーション開発者の立場から見たCSRF対策について、さまざまな
+情報が入り乱れている。筆者が2006年3月の時点において国内のウェブサイトやコ
+ンピュータ書籍・雑誌などでCSRF対策について書かれている記事を調べた結果、
+おどろくべきことに、そのほとんどが誤りを含んでいたり、現実的には使用でき
+ない方法を紹介したりしていた。そこで本稿ではウェブアプリケーション開発者
+にとっての本当に正しいCSRF対策についてまとめることとする。また、採用すべ
+きでないCSRF対策とその理由も合わせて紹介する。
 
 
-��0x03.) �ЂƂ̋@�\��2��ʂō\�������
+■0x02.) あらゆる機能がターゲットとなりうる
 
-�@���ꂪ�ǂ�ȋ@�\�ł���A�ЂƂ̋@�\�͊�{�I�ɂ�2��ʂō\�������BCSRF
-�΍���l�����ŁA���̂��Ƃ���������F�����Ă����K�v������B
+　ウェブアプリケーションの持つ全ての機能がCSRF攻撃の対象となりうる。まず
+このことを認識しておく必要がある。
 
-�@��Ƃ��Ă܂��u���O�C������v�Ƃ����@�\�ɂ��čl���Ă݂�B���[�U�[�̓�
-�O�C���������T�C�g�̃g�b�v�y�[�W�ȂǂɃA�N�Z�X����B����ƃu���E�U�ɂ̓�
-�[�U�[ID�ƃp�X���[�h�̓��͗�������ʂ��\�������B���ꂪ�u���1�v�ł���B
-���Ƀ��[�U�[�̓��[�U�[ID�ƃp�X���[�h����͂��A�u���O�C���v�̃{�^�����N��
-�b�N����B����ƃu���E�U�ɂ́u�悤������������B�v�̂悤�Ƀ��O�C���ɐ���
-�������Ƃ�������ʂ��\�������B���ꂪ�u���2�v�ł���B
+　AmazonのようなショッピングサイトやGoogleのような検索サイト、そしてはて
+なダイアリーやMixiのような日記やブログを書くサイトなど、ウェブアプリケー
+ションにはさまざまなものが存在する。そしてそれぞれのアプリケーションは細
+かい「機能」の積み重ねによって成り立っている。
 
-�@2�߂̗�Ƃ��āu���L�������v�Ƃ����@�\�ɂ��čl���Ă݂�B���[�U�͓��L
-���������߂̃y�[�W�փA�N�Z�X����B����ƃu���E�U�ɂ͓��L���L�����邽�߂�
-�e�L�X�g���͗�������ʂ��\�������B���ꂪ�u���1�v�ł���B���[�U�̓e�L
-�X�g���͗��ɓ��L�������A�u�������ށv�Ƃ����{�^�����N���b�N����B����ƃu
-���E�U�ɂ́u���L���������݂܂����v�Ȃǂ̉�ʂ��\�������B���ꂪ�u���2�v
-�ł���B
+　例えばショッピングサイトは、次のような機能の集まりである。
 
-�@3�߂̗�Ƃ��Č����G���W�����g�����u��������v�Ƃ����@�\�ɂ��čl����
-�݂�B���[�U�[��Google��Yahoo!�Ȃǂ̃T�C�g�̃g�b�v�y�[�W�ɃA�N�Z�X����B
-����ƃu���E�U�ɂ̓L�[���[�h���͗�������ʂ��\�������B���ꂪ�u���1�v
-�ł���B���Ƀ��[�U�͌����������L�[���[�h����͂��A�����{�^�����N���b�N��
-��B����ƃu���E�U�ɂ͌������ʂ��\�������B���ꂪ�u���2�v�ł���B
+・ログインする
+・商品を検索する
+・商品の情報を表示する
+・商品をカートに入れる
+・送り先の住所やクレジットカードの番号などを入力する
+・確認のため注文内容を表示する
+・精算を決定する
+・ログアウトする
 
-�@�Ō�̗�Ƃ��āu���O�A�E�g����v�Ƃ����@�\�ɂ��čl���Ă݂�B���[�U�[
-�͂��łɃE�F�u�A�v���P�[�V�����Ƀ��O�C���ς݂ł���B���̂��߁A�u���E�U��
-�\������Ă����ʂ̋��ɂ́u���O�A�E�g����v�Ƃ��������N��{�^��������B
-���̉�ʂ��u���1�v�ł���B���[�U���u���O�A�E�g����v���N���b�N����ƁA�u
-�����p���肪�Ƃ��������܂����v�Ȃǂ̉�ʂ��\�������B���ꂪ�u���2�v�ł�
-��B
+　現実のケースとしてCSRF攻撃の対象になるのは「商品をカートに入れる」など
+の「攻撃者にとってうまみのある機能」であることが多いが、理論的にはアプリ
+ケーションに存在する機能は全てCSRF攻撃の対象となりうる。CSRF対策を考える
+上でまず行うべきことは「アプリケーションのうち、どの機能についてCSRF対策
+を行うか」を決定することである。すべての機能について対策を施してもよいし、
+重要と思われるいくつかの機能だけに絞って対策を行うという選択肢もあるだろ
+う。
 
-�@HTTP���x���ōl����ƁA�܂����1��\������ۂɈ�x���N�G�X�g�ƃ��X�|���X
-�̂��Ƃ肪��������B�����ĉ��2��\������ۂɁA����Ɉ�x���N�G�X�g�ƃ�
-�X�|���X�����Ƃ肳���B���������ꂼ�ꎟ�̂悤�ɌĂԂ��Ƃɂ���B
-
-�E���N�G�X�g1
-�E���X�|���X1
-�E���N�G�X�g2
-�E���X�|���X2
-
-�@�T�[�o�[���ɑ��݂���v���O�����́A���N�G�X�g1����M����Ɖ�������̏���
-���s���A���X�|���X1�𑗐M����B�܂����l�ɁA���N�G�X�g2�ƃ��X�|���X2�̊Ԃ�
-���������s���B�����̏��������ꂼ�ꎟ�̂悤�ɌĂԂ��Ƃɂ���B
-
-�E����1
-�E����2
-
-�@�܂��A���X�|���X1�A���X�|���X2�ɂ���ău���E�U�ɕ\��������ʂ����ꂼ
-�ꎟ�̂悤�ɌĂԂ��Ƃɂ���B
-
-�E���1
-�E���2
+　「データベースを更新する機能のみCSRF対策をすればよい」のような考えは正
+しくない。どの機能について対策を行うかは、ウェブアプリケーションの運営者
+や開発者が決めるべきことである。
 
 
-��0x04.) �uCSRF�ȑO�̖��v�ɂ��Ă͍l���Ȃ�
+■0x03.) ひとつの機能は2画面で構成される
 
-�@CSRF�΍���l�����ŁA��펯�I�ȁuCSRF�ȑO�̖��v�����݂���ƍl���Ă�
-�Ă͘b����ɐi�܂Ȃ��B�uCSRF�ȑO�̖��v�Ƃ͎��̂悤�Ȃ��̂��B
+　それがどんな機能であれ、ひとつの機能は基本的には2画面で構成される。CSRF
+対策を考える上で、このことをしっかり認識しておく必要がある。
 
-�E�A�v���P�[�V������XSS�Ǝ㐫�����݂���
-�E�U���҂����K���[�U�̃g���t�B�b�N�𓐒��\�ȏ�Ԃł���
-�E���K���[�U�̃}�V���ɃX�p�C�E�F�A�����肱��ł���
-�E���K���[�U�����ӂ���v���L�V�T�[�o�[���o�R���ĒʐM���Ă���
-�E���K���[�U���Ö��p�ōU���҂ɑ����Ă���
+　例としてまず「ログインする」という機能について考えてみる。ユーザーはロ
+グインしたいサイトのトップページなどにアクセスする。するとブラウザにはユ
+ーザーIDとパスワードの入力欄を持つ画面が表示される。これが「画面1」である。
+次にユーザーはユーザーIDとパスワードを入力し、「ログイン」のボタンをクリ
+ックする。するとブラウザには「ようこそ金床さん。」のようにログインに成功
+したことを示す画面が表示される。これが「画面2」である。
 
-�@���̂悤�ȉ���̉��ł�CSRF�΍���c�_����Ӗ����Ȃ��B�ȉ��̐����ł̓E�F
-�u�A�v���P�[�V��������芪���󋵂͂����펯�I�Ȃ��̂ł���Ƃ���B
+　2つめの例として「日記を書く」という機能について考えてみる。ユーザは日記
+を書くためのページへアクセスする。するとブラウザには日記を記入するための
+テキスト入力欄を持つ画面が表示される。これが「画面1」である。ユーザはテキ
+スト入力欄に日記を書き、「書き込む」というボタンをクリックする。するとブ
+ラウザには「日記を書き込みました」などの画面が表示される。これが「画面2」
+である。
+
+　3つめの例として検索エンジンを使った「検索する」という機能について考えて
+みる。ユーザーはGoogleやYahoo!などのサイトのトップページにアクセスする。
+するとブラウザにはキーワード入力欄を持つ画面が表示される。これが「画面1」
+である。次にユーザは検索したいキーワードを入力し、検索ボタンをクリックす
+る。するとブラウザには検索結果が表示される。これが「画面2」である。
+
+　最後の例として「ログアウトする」という機能について考えてみる。ユーザー
+はすでにウェブアプリケーションにログイン済みである。そのため、ブラウザに
+表示されている画面の隅には「ログアウトする」というリンクやボタンがある。
+この画面が「画面1」である。ユーザが「ログアウトする」をクリックすると、「
+ご利用ありがとうございました」などの画面が表示される。これが「画面2」であ
+る。
+
+　HTTPレベルで考えると、まず画面1を表示する際に一度リクエストとレスポンス
+のやりとりが発生する。そして画面2を表示する際に、さらに一度リクエストとレ
+スポンスがやりとりされる。これらをそれぞれ次のように呼ぶことにする。
+
+・リクエスト1
+・レスポンス1
+・リクエスト2
+・レスポンス2
+
+　サーバー側に存在するプログラムは、リクエスト1を受信すると何かしらの処理
+を行い、レスポンス1を送信する。また同様に、リクエスト2とレスポンス2の間に
+も処理を行う。これらの処理をそれぞれ次のように呼ぶことにする。
+
+・処理1
+・処理2
+
+　また、レスポンス1、レスポンス2によってブラウザに表示される画面をそれぞ
+れ次のように呼ぶことにする。
+
+・画面1
+・画面2
 
 
-��0x05.) CSSXSS�Ǝ㐫�𖳎����Ȃ�
+■0x04.) 「CSRF以前の問題」については考えない
 
-�@CSSXSS�Ǝ㐫��IE�iInternet Explorer�j�ɑ��݂���o�O�ł���B��������p��
-��ƍU���҂��d�|����㩂̃y�[�W�Ƀ��X�|���X1�̃{�f�B�����̓��e���ǂݍ��܂�A
-hidden�t�B�[���h�Ɋi�[���ꂽ�����^�C���g�[�N���Ȃǂ̒l���U���҂̎�ɗ���
-�邱�Ƃ�����B����͐[���ȃo�O�ł���ɂ��ւ�炸�p�b�`�������[�X����Ă�
-�炸�A2006�N3���̎��_�Ŋ��ɐ��������̊ԐƎ�Ȃ܂܂̏�Ԃ������Ă���B
+　CSRF対策を考える上で、非常識的な「CSRF以前の問題」が存在すると考えてい
+ては話が先に進まない。「CSRF以前の問題」とは次のようなものだ。
 
-�@�u���������E�F�u�u���E�U�̃o�O���C�ɂ��Ă��Ă�CSRF�΍�ȂǍs�����Ƃ���
-���Ȃ��B����͂�����i��̍��Ő��������j�wCSRF�ȑO�̖��x�Ȃ̂ł͂Ȃ�
-���v�Ƃ����ӌ��͂����Ƃ����B������IE��9���߂��V�F�A�������Ă��邽�߁A����
-�o�O�𖳎�����CSRF�΍���s���Ă��A���ۂɂ�1���̗��p�҂����ی�ł��Ȃ��Ƃ�
-�����ƂɂȂ�B���Ȃ��̓E�F�u�T�C�g�̗��p�҂ɑ΂��āu�������̃T�C�g�ł�CS
-RF�΍���s���Ă��܂��B������IE�̃o�O�ɂ��Ă͊֒m���܂���B���̌��ʂƂ�
-��IE�̗��p�҂ɑ΂��Ă�CSRF�U�����\�ł��v�ȂǂƐ����ł��邾�낤���B
+・アプリケーションにXSS脆弱性が存在する
+・攻撃者が正規ユーザのトラフィックを盗聴可能な状態である
+・正規ユーザのマシンにスパイウェアが入りこんでいる
+・正規ユーザが悪意あるプロキシサーバーを経由して通信している
+・正規ユーザが催眠術で攻撃者に操られている
 
-�@��������CSRF�΍���s�����Ƃ��Ă���̂�����A���p�ґS�̂ɑ΂��Ĉ��S���
-���ł���悤�ȕ��@���̂�̂��悢���낤�B�{�e�ł͂��̂悤�ȍl���̌��A CSS
-XSS�Ǝ㐫���l���ɓ����CSRF�΍���s���B
+　このような仮定の下ではCSRF対策を議論する意味がない。以下の説明ではウェ
+ブアプリケーションを取り巻く状況はごく常識的なものであるとする。
 
 
-��0x06.) ������CSRF�΍�
+■0x05.) CSSXSS脆弱性を無視しない
 
-�@����ł́A�M�҂����S���ƍl�����̓I��CSRF�΍�ɂ��Đ�������B�����
-�̕��@�̂����A�ǂꂩ�ЂƂ������̗p����΂悢�B�����ł�Cookie�𗘗p����
-�Z�b�V�����Ǘ����s���A�v���P�[�V������ΏۂƂ���B�����Œ��ӂ��Ăق�����
-�́A���[�UID��p�X���[�h���g����������u���O�C���v�@�\�����邩�Ȃ����́A
-���܂�d�v�ł͂Ȃ��Ƃ������Ƃ��BCookie�ŃZ�b�V�����Ǘ����s���Ă��邩��
-��ACSRF�΍�́u���O�C���v�Ƃ����T�O�̑��݂ɍ��E����Ȃ��B
+　CSSXSS脆弱性はIE（Internet Explorer）に存在するバグである。これを悪用す
+ると攻撃者が仕掛けた罠のページにレスポンス1のボディ部分の内容が読み込まれ、
+hiddenフィールドに格納されたワンタイムトークンなどの値が攻撃者の手に落ち
+ることがある。これは深刻なバグであるにも関わらずパッチがリリースされてお
+らず、2006年3月の時点で既に数ヶ月もの間脆弱なままの状態が続いている。
 
-�@���Ȃ݂ɁAhidden�t�B�[���h�ɃZ�b�V����ID���i�[���S�Ẳ�ʑJ�ڂ�POST��
-�p����A�v���P�[�V�����ɂ́ACSRF�U���͒ʗp���Ȃ��B���N�G�X�g1��POST�ł�
-�邱�Ƃ���CSSXSS�Ǝ㐫�̉e�����󂯂Ȃ��B
+　「いちいちウェブブラウザのバグを気にしていてはCSRF対策など行うことがで
+きない。これはいわゆる（上の項で説明した）『CSRF以前の問題』なのではない
+か」という意見はもっともだ。しかしIEは9割近いシェアを持っているため、この
+バグを無視したCSRF対策を行っても、実際には1割の利用者しか保護できないとい
+うことになる。あなたはウェブサイトの利用者に対して「私たちのサイトではCS
+RF対策を行っています。しかしIEのバグについては関知しません。その結果とし
+てIEの利用者に対してはCSRF攻撃が可能です」などと説明できるだろうか。
+
+　せっかくCSRF対策を行おうとしているのだから、利用者全体に対して安全を提
+供できるような方法を採るのがよいだろう。本稿ではこのような考えの元、 CSS
+XSS脆弱性も考慮に入れてCSRF対策を行う。
 
 
-��0x07.) �������΍􂻂�1: �����^�C���g�[�N���𐳂����g�p������@
+■0x06.) 正しいCSRF対策
 
-�@�܂��ЂƂ߂̓����^�C���g�[�N�����g�����@�ł���B�����ő�Ɂu�������g
-�p������@�v�ƕt�����̂ɂ͗��R������B�ЂƂ����Ɂu�����^�C���g�[�N�����g
-���v�Ƃ����Ă��J���҂ɂ���Ď������@���܂��܂��ł���A�ꍇ�ɂ���Ă�CSRF
-�΍�ƂȂ�Ȃ������^�C���g�[�N���̎g���������Ă��܂����Ƃ�����̂��i���
-�ǎ����������j�B�����ł����ł͉�������ׂ��|�C���g�𖾊m�ɂ����A�����^
-�C���g�[�N���̐������g�p���@���Љ��B
+　それでは、筆者が安全だと考える具体的なCSRF対策について説明する。これら
+の方法のうち、どれかひとつだけを採用すればよい。ここではCookieを利用した
+セッション管理を行うアプリケーションを対象とする。ここで注意してほしいの
+は、ユーザIDやパスワードを使ったいわゆる「ログイン」機能があるかないかは、
+あまり重要ではないということだ。Cookieでセッション管理が行われているかぎ
+り、CSRF対策は「ログイン」という概念の存在に左右されない。
 
-�@�܂��A�A�v���P�[�V�����̍��Ƃ��āA���N�G�X�g1���K��POST��p����悤��
-�`�ɂ���B����ɂ����CSSXSS�Ǝ㐫�𗘗p����hidden�t�B�[���h�̏��̔���
-����h�����Ƃ��ł���B�܂��A�ʏ�POST���N�G�X�g�ɑ΂��郌�X�|���X�̓L��
-�b�V���Ɏc��Ȃ����߁Ahidden�t�B�[���h�̓��e���L���b�V���Ƃ��Ďc���Ă���
-���\���������邱�Ƃɂ��q����B����1�ɂ����ă��N�G�X�g1�̃��\�b�h�𔻕�
-���AGET�̏ꍇ�͏������s��Ȃ��悤�ɂ���B�܂��́A�ēxPOST��p���ăA�N�Z�X
-���Ȃ����悤�ȃ��X�|���X��Ԃ��悤�ɂ��Ă��悢���낤�B
+　ちなみに、hiddenフィールドにセッションIDを格納し全ての画面遷移にPOSTを
+用いるアプリケーションには、CSRF攻撃は通用しない。リクエスト1がPOSTであ
+ることからCSSXSS脆弱性の影響も受けない。
 
-�@���N�G�X�g1����M��A�T�[�o�[���̃v���O�����͏���1���J�n����B����1�ɂ�
-���āA�����܂��Z�b�V�������J�n����Ă��Ȃ���΁A�Z�b�V�������J�n����B
-�@�g�[�N���𐶐�����B�g�[�N���ɂ̓Z�b�V����ID�ȂǂƓ��l�ɏ[���Ȓ�������
-�\���s�\�ȕ�������g�p����B
-�@�g�[�N�����Z�b�V�����ƌ��т����`�ŃT�[�o�[���ŕۑ�����B������Z�b
-�V�����I�u�W�F�N�g�Ɋi�[����̂�������₷�����@���B�Z�b�V�����I�u�W�F�N
-�g�ł͂Ȃ��f�[�^�x�[�X�𗘗p����ꍇ�ɂ́A�g�[�N���ƃZ�b�V����ID��1��1��
-�Ή��t�����ꂽ��ԂŊi�[����B
-�@hidden�t�B�[���h�Ƀg�[�N�����i�[�������X�|���X1���N���C�A���g�֑��M����B
-���̍ہA���X�|���X1���L���b�V���Ɏc��Ȃ��悤�ɂ��邽�߁A�K�؂ȃw�b�_�[�t
-�B�[���h��t����B
-�@����1�͈ȏ�ƂȂ�B
 
-�@�����ăN���C�A���g�̓g�[�N�����܂񂾃��N�G�X�g2�𑗐M���Ă���B���̃��N
-�G�X�g�̃��\�b�h��GET�ł�POST�ł��悢�B
-�@���N�G�X�g2����M��A�T�[�o�[���v���O�����͏���2���J�n����B�܂��A����
-��Ă����g�[�N���ƃZ�b�V�������������g�ݍ��킹�ł��邱�Ƃ��A����1�̍ۂɃT
-�[�o�[���ɕۑ����Ă���������p���Ċm�F����B���̑g�ݍ��킹���������Ȃ�
-�ꍇ�ɂ̓G���[�Ƃ��Ĉ����A�����������ŏI������B�g�ݍ��킹���������ꍇ��
-�͎��ɂ����ށB
-�@�T�[�o�[���ŕۑ����Ă����g�[�N���̏���j������B����ɂ���ăg�[�N��
-���u�����^�C���v�ł��邱�ƂɂȂ�B
+■0x07.) 正しい対策その1: ワンタイムトークンを正しく使用する方法
 
-�@�ȏ�Ń����^�C���g�[�N���̏������I������B�����āu���L���������ށv�Ȃ�
-�́A�A�v���P�[�V�����{���̋@�\�����s����B
+　まずひとつめはワンタイムトークンを使う方法である。ここで題に「正しく使
+用する方法」と付けたのには理由がある。ひとくちに「ワンタイムトークンを使
+う」といっても開発者によって実装方法がまちまちであり、場合によってはCSRF
+対策とならないワンタイムトークンの使い方をしてしまうことがあるのだ（後ほ
+ど実例を挙げる）。そこでここでは押さえるべきポイントを明確にした、ワンタ
+イムトークンの正しい使用方法を紹介する。
 
-�@�ȏオ�������΍􂻂�1�ł���B
+　まず、アプリケーションの作りとして、リクエスト1が必ずPOSTを用いるような
+形にする。これによってCSSXSS脆弱性を利用したhiddenフィールドの情報の抜き
+取りを防ぐことができる。また、通常POSTリクエストに対するレスポンスはキャ
+ッシュに残らないため、hiddenフィールドの内容がキャッシュとして残ってしま
+う可能性を下げることにも繋がる。処理1においてリクエスト1のメソッドを判別
+し、GETの場合は処理を行わないようにする。または、再度POSTを用いてアクセス
+しなおすようなレスポンスを返すようにしてもよいだろう。
 
-�@���N�G�X�g1��GET�ł����S�ɓ��삷��悤�ɂ������ꍇ�́A����1�ɂ����ăg�[
-�N����hidden�t�B�[���h�ɂ͊i�[�����ACookie�Ɋi�[���ăN���C�A���g�ɓn����
-���ɂ���B�����ă��X�|���X1����M�����u���E�U��JavaScript���g����Cookie��
-��g�[�N�������o���Ahidden �t�B�[���h�ɂ��̒l���i�[����悤�ɂ���B���
-�I�ɂ͎��̂悤�ȃ��X�|���X1��Ԃ��B
+　リクエスト1を受信後、サーバー側のプログラムは処理1を開始する。処理1にお
+いて、もしまだセッションが開始されていなければ、セッションを開始する。
+　トークンを生成する。トークンにはセッションIDなどと同様に充分な長さを持
+つ予測不可能な文字列を使用する。
+　トークンをセッションと結びつけた形でサーバー側で保存する。いわゆるセッ
+ションオブジェクトに格納するのが分かりやすい方法だ。セッションオブジェク
+トではなくデータベースを利用する場合には、トークンとセッションIDが1対1で
+対応付けされた状態で格納する。
+　hiddenフィールドにトークンを格納したレスポンス1をクライアントへ送信する。
+この際、レスポンス1がキャッシュに残らないようにするため、適切なヘッダーフ
+ィールドを付ける。
+　処理1は以上となる。
+
+　続いてクライアントはトークンを含んだリクエスト2を送信してくる。このリク
+エストのメソッドはGETでもPOSTでもよい。
+　リクエスト2を受信後、サーバー側プログラムは処理2を開始する。まず、送ら
+れてきたトークンとセッションが正しい組み合わせであることを、処理1の際にサ
+ーバー側に保存しておいた情報を用いて確認する。この組み合わせが正しくない
+場合にはエラーとして扱い、処理をそこで終了する。組み合わせが正しい場合に
+は次にすすむ。
+　サーバー側で保存していたトークンの情報を破棄する。これによってトークン
+が「ワンタイム」であることになる。
+
+　以上でワンタイムトークンの処理が終了する。続いて「日記を書き込む」など
+の、アプリケーション本来の機能を実行する。
+
+　以上が正しい対策その1である。
+
+　リクエスト1がGETでも安全に動作するようにしたい場合は、処理1においてトー
+クンをhiddenフィールドには格納せず、Cookieに格納してクライアントに渡すよ
+うにする。そしてレスポンス1を受信したブラウザがJavaScriptを使ってCookieか
+らトークンを取り出し、hidden フィールドにその値を格納するようにする。具体
+的には次のようなレスポンス1を返す。
 
 -----
 HTTP/1.0 200 OK
-...�i���j
+...（略）
 Set-Cookie: token=8a23f9d44351895a48e15d26a8897eec;Path=/
 
 <form action="..." method="...">
-...�i���j
+...（略）
 <input type="hidden" name="token" value="" >
 <input type="submit">
 </form>
@@ -2290,189 +2290,189 @@ document.forms[ 0 ].token.value = tokenInCookie;
 </script>
 -----
 
-�@�܂��A�g�[�N���������^�C���̂��̂Ƃ��邽�߁A����2�ɂ�����Cookie�̃g�[�N
-�����_�~�[�l�ɒu��������B
+　また、トークンをワンタイムのものとするため、処理2においてCookieのトーク
+ンをダミー値に置き換える。
 
-�@CSSXSS�Ǝ㐫�̓��X�|���X1�Ɋ܂܂��N�b�L�[�̒l���擾�ł��Ȃ��̂ŁA����
-�悤�ɂ��邱�ƂŃ��N�G�X�g1��GET���g�p�ł��邱�ƂɂȂ�B
+　CSSXSS脆弱性はレスポンス1に含まれるクッキーの値を取得できないので、この
+ようにすることでリクエスト1でGETを使用できることになる。
 
-�@�p��ŏ����ꂽ�E�F�u�T�C�g�╶���ł�CSRF�΍�̊�{�Ƃ��ă����^�C���g�[
-�N���������܂������ɋ������Ă��邱�Ƃ��������ACSSXSS�Ǝ㐫�̑��݂܂ł�
-�l���������̂͌����_�i2006�N3���j�ł͌�������Ȃ������B
-
-
-��0x08.) �������΍􂻂�2: �p�X���[�h�̍ē��͂����߂���@
-
-�@���̕��@�̓A�v���P�[�V���������[�UID��p�X���[�h��p����������u���O
-�C���v�@�\�����ꍇ�̂ݎg�p�ł���B
-
-�@�����^�C���g�[�N�����g�p����ꍇ�ƈقȂ�A���X�|���X1�ɂ̓g�[�N���̂悤
-�Ȕ閧��񂪊܂܂�Ȃ��B���̂��߁A���̕��@��CSSXSS�Ǝ㐫�̉e�����󂯂Ȃ��B
-�܂��A���X�|���X1���L���b�V���Ɏc���Ă���肪�����Ȃ��B���̂��߁A���N�G�X
-�g1��GET�ł�POST�ł��悢�B
-
-�@����1�͉����s��Ȃ��B
-
-�@���[�U�͉��1�ɂ����ăp�X���[�h����͂���B�����ăp�X���[�h���܂ރ��N�G
-�X�g2�����M�����B���2�̒��̃����N�Ȃǂ��烊�t�@���[��ʂ��ăp�X���[�h
-���R�k���Ă͂܂����̂ŁA���̃��N�G�X�g2��POST�łȂ���΂Ȃ�Ȃ��B
-
-�@����2�ɂ����āA�T�[�o�[���v���O�����͑��M����Ă����p�X���[�h����������
-�ǂ������T�[�o�[���̃f�[�^�x�[�X�Ȃǂ̏���p���ďƍ�����B�p�X���[�h��
-�Ԉ���Ă���΃G���[�Ƃ��Ĉ����A�������~����B
-
-�@�ȏ�Ńp�X���[�h�ē��͂ɂ��CSRF�΍�̏�������������B�����āu���L����
-�����ށv�Ȃǂ́A�A�v���P�[�V�����{���̋@�\�����s����B
-
-�@�ȏオ�������΍􂻂�2�ł���B
+　英語で書かれたウェブサイトや文献ではCSRF対策の基本としてワンタイムトー
+クン方式がまっさきに挙げられていることが多いが、CSSXSS脆弱性の存在までを
+考慮したものは現時点（2006年3月）では見あたらなかった。
 
 
-��0x09.) �������΍􂻂�3: CAPTCHA�𐳂����g�p������@
+■0x08.) 正しい対策その2: パスワードの再入力を求める方法
 
-�@CAPTCHA�̓g�[�N���̈��ł���B�g�[�N����hidden�t�B�[���h�Ɋi�[���ꂽ��
-����ł͂Ȃ��A�摜�f�[�^�Ƃ��ăN���C�A���g�֑�����Ƃ����_����Ő�����
-�������^�C���g�[�N�������Ƃ̈Ⴂ���BCAPTCHA�͖{���AHTTP�N���C�A���g�𑀍�
-���Ă���̂��l�ԂȂ̂��A���邢�͎��������ꂽ�v���O�����Ȃ̂��𔻕ʂ��邽
-�߂Ɏg����Z�p�ł���ACSRF�΍�Ƃ͖��֌W���B�����ACAPTCHA�̓g�[�N���̈�
-��ł���̂ŁA�����������^�C���g�[�N���Ƃ��Ďg����΁A���ʂƂ���CSRF�U
-����h�����Ƃ��ł���B
+　この方法はアプリケーションがユーザIDやパスワードを用いたいわゆる「ログ
+イン」機能を持つ場合のみ使用できる。
 
-�@CAPTCHA���g�p������@�͂܂�̓����^�C���g�[�N�������ł���B���̂��߁A
-��L�Ő�������hidden�t�B�[���h���g���������^�C���g�[�N�������ɔ�ׁACSRF
-�΍�Ƃ��Ă̗��_�͂Ȃ��B�܂��A���[�U�r���e�B������̕��G���ŗ�邽�߁A�i
-���CAPTCHA�������̗p���闝�R�͑��݂��Ȃ��B���ꂪ�����^�C���g�[�N���ł���
-���Ƃ�m�炸�ɁuCSRF�΍�ɂ�CAPTCHA���g�����B�摜��������S���B�v�ƍl����
-�͖̂��炩�Ɍ��Ȃ̂ł���B
+　ワンタイムトークンを使用する場合と異なり、レスポンス1にはトークンのよう
+な秘密情報が含まれない。そのため、この方法はCSSXSS脆弱性の影響を受けない。
+また、レスポンス1がキャッシュに残っても問題が生じない。そのため、リクエス
+ト1はGETでもPOSTでもよい。
 
-�@����ł�CAPTCHA�������̗p����ꍇ�ɂ́A���ꂪ�����������^�C���g�[�N����
-���ē��삷��悤�A���̂悤�Ɏ�������K�v������B
+　処理1は何も行わない。
 
-�@���X�|���X1�ɂ̓g�[�N���̂悤�Ȕ閧��񂪊܂܂�Ȃ��B���̂��߁A���N�G�X
-�g1��GET�ł�POST�ł��悢�B
+　ユーザは画面1においてパスワードを入力する。そしてパスワードを含むリクエ
+スト2が送信される。画面2の中のリンクなどからリファラーを通じてパスワード
+が漏洩してはまずいので、このリクエスト2はPOSTでなければならない。
 
-�@���X�|���X1�ɂ�CAPTCHA�摜�ւ̃����N���܂܂��B���̂��߁A�����I��CAPT
-CHA�摜�ւ�HTTP���N�G�X�g����������B���̃��N�G�X�g�����N�G�X�g1.5�Ƃ���B
+　処理2において、サーバー側プログラムは送信されてきたパスワードが正しいか
+どうかをサーバー側のデータベースなどの情報を用いて照合する。パスワードが
+間違っていればエラーとして扱い、処理を停止する。
 
-�@���N�G�X�g1.5��POST�łȂ���΂Ȃ�Ȃ��B���R�̓����^�C���g�[�N�������Ɠ�
-�l�ACSSXSS�΍�ƁA�L���b�V���΍�����˂�B���N�G�X�g1.5�͎d�g�ݏ�ŏ���G
-ET�ő�����̂ŁA�ēxPOST��p���ă��N�G�X�g�����Ȃ����悤�ȓ��e�̃��X�|
-���X��Ԃ��K�v������B
+　以上でパスワード再入力によるCSRF対策の処理が完了する。続いて「日記を書
+き込む」などの、アプリケーション本来の機能を実行する。
 
-�@CAPTCHA�摜���܂ރ��X�|���X�i���X�|���X1.5�Ƃ���j�̓L���b�V������Ȃ�
-�悤�K�؂ȃw�b�_�[�t�B�[���h�����K�v������B
-
-�@CAPTCHA�摜�Ɋ܂܂��g�[�N���̓Z�b�V�����ƌ��т����`�ŃT�[�o�[���ŕ�
-�����Ă����B
-
-�@�����^�C���g�[�N�������Ɠ��l�A���N�G�X�g2��GET�ł�POST�ł��悢�B
-
-�@����2�̓����^�C���g�[�N�������Ɠ����悤�ɍs���B
-
-�@�ȏオ�������΍􂻂�3�ł���B�����CSRF�΍�Ƃ��Đ������@�\���邪�A��q
-�̗��R�ɂ�萄�����Ȃ��B
+　以上が正しい対策その2である。
 
 
-��0x0A.) Basic�F�؂̏ꍇ
+■0x09.) 正しい対策その3: CAPTCHAを正しく使用する方法
 
-�@Basic�F�؂�p���āu���O�C���v�@�\��񋟂��Ă���A�v���P�[�V�����ł��A�K
-�v��CSRF�΍�͕ς��Ȃ��BCookie���g�����Z�b�V�����Ǘ����s���A��Ő�����
-���΍�̂����̂ЂƂ𐳂����������邱�Ƃ�CSRF�΍���s�����Ƃ��ł���B
+　CAPTCHAはトークンの一種である。トークンがhiddenフィールドに格納された文
+字列ではなく、画像データとしてクライアントへ送られるという点が上で説明し
+たワンタイムトークン方式との違いだ。CAPTCHAは本来、HTTPクライアントを操作
+しているのが人間なのか、あるいは自動化されたプログラムなのかを判別するた
+めに使われる技術であり、CSRF対策とは無関係だ。ただ、CAPTCHAはトークンの一
+種であるので、正しくワンタイムトークンとして使われれば、結果としてCSRF攻
+撃を防ぐことができる。
 
+　CAPTCHAを使用する方法はつまりはワンタイムトークン方式である。そのため、
+上記で説明したhiddenフィールドを使ったワンタイムトークン方式に比べ、CSRF
+対策としての利点はない。また、ユーザビリティや実装の複雑さで劣るため、進
+んでCAPTCHA方式を採用する理由は存在しない。それがワンタイムトークンである
+ことを知らずに「CSRF対策にはCAPTCHAを使おう。画像だから安全だ。」と考える
+のは明らかに誤りなのである。
 
-��0x0B.) ���t�@���[�ɂ���
+　それでもCAPTCHA方式を採用する場合には、それが正しくワンタイムトークンと
+して動作するよう、次のように実装する必要がある。
 
-�@���N�G�X�g2�̃��t�@���[���`�F�b�N���邱�Ƃ�CSRF�΍􂪍s����̂ł͂Ȃ����A
-�Ƃ�����������݂���B���������̃��t�@���[�����́A���K���[�U�̃E�F�u�u��
-�E�U��������ƃ��t�@���[�𑗂��Ă���ꍇ�̂݋@�\����B�A���`�E�C���X�\�t
-�g�E�F�A�⃆�[�U���g�̈ӌ��ɂ�胊�t�@���[�𑗏o���Ȃ��ݒ�Ŏg�p����Ă�
-��u���E�U���������݂��邽�߁A���̕����͌����I�ɂ͋@�\���Ȃ��P�[�X�������B
-���p�҂����肳��Ă���A���̑S���Ƀu���E�U�����t�@���[�𑗂�悤�Ȑݒ��
-�g�p����悤�ɋ��߂邱�Ƃ��ł���P�[�X�ł́A���t�@���[������CSRF�΍�Ƃ�
-�Đ������@�\����B
+　レスポンス1にはトークンのような秘密情報が含まれない。そのため、リクエス
+ト1はGETでもPOSTでもよい。
 
-�@���t�@���[�������̗p����ꍇ�ɂ͎��̂悤�Ɏ�������B
+　レスポンス1にはCAPTCHA画像へのリンクが含まれる。そのため、自動的にCAPT
+CHA画像へのHTTPリクエストが発生する。このリクエストをリクエスト1.5とする。
 
-�@����2�ɂ����ă��N�G�X�g2�̃��t�@���[�𒲂ׁA���ꂪ�O���T�C�g�̂��̂ł�
-��΃G���[�Ƃ��ď�������B�܂��A���t�@���[�����݂��Ȃ��ꍇ�����l�ɃG���[
-�Ƃ��ď�������B
+　リクエスト1.5はPOSTでなければならない。理由はワンタイムトークン方式と同
+様、CSSXSS対策と、キャッシュ対策を兼ねる。リクエスト1.5は仕組み上最初にG
+ETで送られるので、再度POSTを用いてリクエストをしなおすような内容のレスポ
+ンスを返す必要がある。
 
-�@�܂��A���t�@���[�𒲂ׂ邱�Ƃɂ��A�U���҂�CSRF�U���̂��߂Ɏd�|�����
-�y�[�W�𔭌��ł���\��������B���̂��߁A���ۂ�CSRF�U�����s���Ă����
-���ǂ�����c���������ꍇ�ɂ́A���N�G�X�g2�̃��t�@���[���i�O���T�C�g�����
-���̂Ɍ���j�L�^���Ă����Ƃ悢�B
+　CAPTCHA画像を含むレスポンス（レスポンス1.5とする）はキャッシュされない
+よう適切なヘッダーフィールドを持つ必要がある。
 
+　CAPTCHA画像に含まれるトークンはセッションと結びつけた形でサーバー側で保
+存しておく。
 
-��0x0C.) SSL�ɂ���
+　ワンタイムトークン方式と同様、リクエスト2はGETでもPOSTでもよい。
 
-�@SSL�̎g�p��CSRF�΍�ɂ͊�{�I�ɂ͊֌W���Ȃ��B������HTTPS�̒ʐM�̓L���b
-�V������Ȃ��A�܂���������ɂ����Ȃ�Ȃǂ̗��_�����邽�߁A�\�ȏꍇ�ɂ�
-��L�ŋ�����CSRF�΍�ƍ��킹�ė��p����̂��悢�B
+　処理2はワンタイムトークン方式と同じように行う。
 
-
-��0x0D.) �̗p���ׂ��łȂ�CSRF�΍�
-
-�@��������͕M�҂��E�F�u�T�C�g�⏑�ЂŌ������A�̗p���ׂ��łȂ�CSRF�΍�
-�ɂ��Đ�������B�����̑΍�͈Ӗ����Ȃ�������A�������ăV�X�e�����댯
-�ȏ�Ԃɂ��Ă��܂��̂ŁA���{���Ă͂����Ȃ��B
-
-
-��0x0E.) �̗p���ׂ��łȂ��΍􂻂�1: �Z�b�V����ID���g�[�N���Ƃ��Ďg��
-
-�@2006�N3���̎��_�ŁA�����̑����̃E�F�u�T�C�g�⏑�ЂȂǂŏЉ��Ă����
-�@�ł���B
-
-�@���̕��@�́u�u���E�U�ɐƎ㐫���Ȃ��v���Ƃ�O��Ƃ��čl�Ă��ꂽ���̂ł�
-��B�����������ɂ�IE��CSSXSS�Ǝ㐫�Ƃ����uCookie�ɂ̓A�N�Z�X�ł��Ȃ����A
-hidden�t�B�[���h�̒l�ɂ̓A�N�Z�X�ł���v�o�O�����݂��Ă���B���̂��߂���
-���@���̗p�����E�F�u�T�C�g�́A���N�G�X�g1��GET���g����ꍇ�ACSSXSS�Ǝ㐫
-�����p���邱�Ƃɂ��Z�b�V����ID�����܂�A���ʂƂ��ăZ�b�V�����n�C�W���b
-�N����Ă��܂��\�����łĂ���B�Z�b�V�����n�C�W���b�N�͖��炩��CSRF���
-���[���ȃZ�L�����e�B��̋��Ђł���B�܂肱�̕��@���̗p���邱�Ƃ́A�E�F
-�u�T�C�g���i�΍���s��Ȃ���Ԃɔ�ׂāj�댯�ȏ�Ԃɂ��炵�Ă��܂����Ƃ�
-�Ȃ�̂��BCSRF�΍���������肪���ʂƂ��ăZ�b�V�����n�C�W���b�N�\�ȃZ
-�L�����e�B�z�[������荞�ނ��ƂɂȂ��Ă��܂��Ƃ����A�Ȃ�Ƃ���肫��Ȃ�
-��ԂƂȂ�B���̂��߁A���̑΍�͍̗p���Ă͂Ȃ�Ȃ��B
-
-�@���ɃE�F�u�u���E�U�̐Ǝ㐫�����݂��Ȃ���΁A���̕��@��CSRF�΍�Ƃ��ċ@
-�\���邩������Ȃ��B���������̏ꍇ�ł��A���t�@������Z�b�V����ID���R�k��
-�Ȃ��悤�ɂ��邽�߁A���N�G�X�g2�͕K��POST�ł���K�v������B���̕������Љ�
-���Ă���E�F�u�T�C�g�⏑�Ђł͂��̂��Ƃ����L����Ă��Ȃ��ꍇ�������B
-
-�@�܂��A�u�킴�킴�@�����ł���iCookie�́j�Z�b�V����ID��hidden�t�B�[��
-�h�Ɋi�[����Ӗ�������̂��H�@�n�b�V���l�Ȃǂł悢�̂ł́H�v�Ǝv��������
-�G���W�j�A�ɂƂ��đ厖���ƍl����B���̕����ɂ����ăZ�b�V����ID���̂��̂�
-�g�[�N���Ƃ��Ďg�p����Ă���̂͏���2�ɂ����ăZ�b�V�����ƃg�[�N���̌��т�
-�����m�F����̂��ȒP�ł���Ƃ��������̗��R���������Ȃ��B�킸�����s�̃R�[
-�h���ȗ����邽�߂Ɋ댯���������Ӗ��͂Ȃ��B
-
-�@���̕����͓��{�ꌗ�Ǝ��̂��̂ł���A�p�ꌗ�ł͂��̕�����CSRF�΍�Ƃ���
-����L�q�͌�����Ȃ������B
-
-�@�Z�b�V����ID���̂��̂��g�[�N���Ƃ��Ďg�����Ƃɂ͗��_���Ȃ��΂��肩�댯
-�iCSSXSS�Ǝ㐫�Ō����ɂȂ����悤�ɁA�����̂��������ŃZ�b�V�����n�C�W���b
-�N�Ɍq���邨���ꂪ����j�Ȃ̂ŁA���̕����͍̗p���Ă͂Ȃ�Ȃ��B
+　以上が正しい対策その3である。これはCSRF対策として正しく機能するが、先述
+の理由により推奨しない。
 
 
-��0x0F.) �̗p���ׂ��łȂ��΍􂻂�2: ����������^�C���g�[�N������
+■0x0A.) Basic認証の場合
 
-�@�����^�C���g�[�N�������ł́A�g�[�N���͕K���Z�b�V�����ƌ��т��Ĉ����K
-�v������B�����łȂ��ꍇ�A�U���Ҏ��炪���1�ɃA�N�Z�X���Ď擾�����g�[�N��
-��㩂̃y�[�W�ɖ��ߍ��ށu�g�[�N���Œ�U���v���\�ƂȂ��Ă��܂����߂��B��
-�̂��߁A���̂悤�Ȏ��������Ă��܂���CSRF�΍�ɂȂ�Ȃ��B����������^�C��
-�g�[�N�������Ƃ́A���̂悤�ȁu�Z�b�V�����ƃg�[�N���̌��т��v�������Ȃ�
-�������w���B
+　Basic認証を用いて「ログイン」機能を提供しているアプリケーションでも、必
+要なCSRF対策は変わらない。Cookieを使ったセッション管理を行い、上で説明し
+た対策のうちのひとつを正しく実装することでCSRF対策を行うことができる。
 
 
-��0x10.) �̗p���ׂ��łȂ��΍􂻂�3: ���N�G�X�g2��POST�ɂ���
+■0x0B.) リファラーについて
 
-�@IMG�^�O�Ȃǂ𗘗p����CSRF�U���̗������ƁA�u�ł̓��N�G�X�g2��POST�ő�
-����悤�ɂ���΂悢�v�ƍl���Ă��܂����������A JavaScript�𗘗p���邱��
-�ōU���҂�㩂̃y�[�W����POST���N�G�X�g�𑗂点�邱�Ƃ��ł���̂ŁA���̕�
-�@�͑΍�ɂȂ�Ȃ��B��̓I�ɂ͎��̂悤�ȃR�[�h���g����B
+　リクエスト2のリファラーをチェックすることでCSRF対策が行えるのではないか、
+とする説明が存在する。しかしこのリファラー方式は、正規ユーザのウェブブラ
+ウザがきちんとリファラーを送ってくる場合のみ機能する。アンチウイルスソフ
+トウェアやユーザ自身の意向によりリファラーを送出しない設定で使用されてい
+るブラウザも多く存在するため、この方式は現実的には機能しないケースが多い。
+利用者が限定されており、その全員にブラウザをリファラーを送るような設定で
+使用するように求めることができるケースでは、リファラー方式はCSRF対策とし
+て正しく機能する。
+
+　リファラー方式を採用する場合には次のように実装する。
+
+　処理2においてリクエスト2のリファラーを調べ、それが外部サイトのものであ
+ればエラーとして処理する。また、リファラーが存在しない場合も同様にエラー
+として処理する。
+
+　また、リファラーを調べることにより、攻撃者がCSRF攻撃のために仕掛けた罠
+ページを発見できる可能性がある。そのため、実際にCSRF攻撃が行われているの
+かどうかを把握したい場合には、リクエスト2のリファラーを（外部サイトからの
+ものに限り）記録しておくとよい。
+
+
+■0x0C.) SSLについて
+
+　SSLの使用はCSRF対策には基本的には関係がない。しかしHTTPSの通信はキャッ
+シュされない、また盗聴されにくくなるなどの利点もあるため、可能な場合には
+上記で挙げたCSRF対策と合わせて利用するのがよい。
+
+
+■0x0D.) 採用すべきでないCSRF対策
+
+　ここからは筆者がウェブサイトや書籍で見つけた、採用すべきでないCSRF対策
+について説明する。これらの対策は意味がなかったり、かえってシステムを危険
+な状態にしてしまうので、実施してはいけない。
+
+
+■0x0E.) 採用すべきでない対策その1: セッションIDをトークンとして使う
+
+　2006年3月の時点で、国内の多くのウェブサイトや書籍などで紹介されている方
+法である。
+
+　この方法は「ブラウザに脆弱性がない」ことを前提として考案されたものであ
+る。しかし現実にはIEにCSSXSS脆弱性という「Cookieにはアクセスできないが、
+hiddenフィールドの値にはアクセスできる」バグが存在している。そのためこの
+方法を採用したウェブサイトは、リクエスト1でGETを使える場合、CSSXSS脆弱性
+を悪用することによりセッションIDが盗まれ、結果としてセッションハイジャッ
+クされてしまう可能性がでてくる。セッションハイジャックは明らかにCSRFより
+も深刻なセキュリティ上の脅威である。つまりこの方法を採用することは、ウェ
+ブサイトを（対策を行わない状態に比べて）危険な状態にさらしてしまうことに
+なるのだ。CSRF対策をしたつもりが結果としてセッションハイジャック可能なセ
+キュリティホールを作り込むことになってしまうという、なんともやりきれない
+状態となる。そのため、この対策は採用してはならない。
+
+　仮にウェブブラウザの脆弱性が存在しなければ、この方法はCSRF対策として機
+能するかもしれない。しかしその場合でも、リファラからセッションIDが漏洩し
+ないようにするため、リクエスト2は必ずPOSTである必要がある。この方式を紹介
+しているウェブサイトや書籍ではこのことが明記されていない場合が多い。
+
+　また、「わざわざ機密情報である（Cookieの）セッションIDをhiddenフィール
+ドに格納する意味があるのか？　ハッシュ値などでよいのでは？」と思う感性は
+エンジニアにとって大事だと考える。この方式においてセッションIDそのものが
+トークンとして使用されているのは処理2においてセッションとトークンの結びつ
+きを確認するのが簡単であるというだけの理由しか持たない。わずか数行のコー
+ドを省略するために危険をおかす意味はない。
+
+　この方式は日本語圏独自のものであり、英語圏ではこの方式をCSRF対策として
+いる記述は見つからなかった。
+
+　セッションIDそのものをトークンとして使うことには利点がないばかりか危険
+（CSSXSS脆弱性で現実になったように、何かのきっかけでセッションハイジャッ
+クに繋がるおそれがある）なので、この方式は採用してはならない。
+
+
+■0x0F.) 採用すべきでない対策その2: 誤ったワンタイムトークン方式
+
+　ワンタイムトークン方式では、トークンは必ずセッションと結びつけて扱う必
+要がある。そうでない場合、攻撃者自らが画面1にアクセスして取得したトークン
+を罠のページに埋め込む「トークン固定攻撃」が可能となってしまうためだ。そ
+のため、このような実装をしてしまうとCSRF対策にならない。誤ったワンタイム
+トークン方式とは、このような「セッションとトークンの結びつき」を持たない
+方式を指す。
+
+
+■0x10.) 採用すべきでない対策その3: リクエスト2をPOSTにする
+
+　IMGタグなどを利用したCSRF攻撃の例を見ると、「ではリクエスト2がPOSTで送
+られるようにすればよい」と考えてしまいがちだが、 JavaScriptを利用すること
+で攻撃者は罠のページからPOSTリクエストを送らせることができるので、この方
+法は対策にならない。具体的には次のようなコードが使われる。
 
 -----
 <form action="page2" method="POST">
-...�i���j
+...（略）
 </form>
 
 <script>
@@ -2481,102 +2481,102 @@ document.forms[ 0 ].submit();
 -----
 
 
-��0x11.) �̗p���ׂ��łȂ��΍􂻂�4: �m�F��ʂ�����
+■0x11.) 採用すべきでない対策その4: 確認画面を挟む
 
-�@�m�F��ʂ����ޕ��@�ɂ�2�ʂ�̎������l������B�ЂƂ͊m�F��ʂ�hidde
-n�����őS�Ắi�m�F��ʂɑ΂���submit���ꂽ�j�t�H�[���̒l�������A3��ʖ�
-�i���s��ʁA���邢�͌����ʁj�ɃW�����v����ۂɍēx�����submit����Ƃ�
-�����́B�����ЂƂ͊m�F��ʂ�\�����鎞�_�ŃT�[�o�[���̃Z�b�V�����I�u�W
-�F�N�g�ȂǂɃt�H�[���̒l��ۑ����Ă����A3��ʖڂ���������ۂɂ�������o
-���ăf�[�^�x�[�X�Ȃǂ��X�V������̂ł���B
+　確認画面を挟む方法には2通りの実装が考えられる。ひとつは確認画面がhidde
+n属性で全ての（確認画面に対してsubmitされた）フォームの値を持ち、3画面目
+（実行画面、あるいは決定画面）にジャンプする際に再度それをsubmitするとい
+うもの。もうひとつは確認画面を表示する時点でサーバー側のセッションオブジ
+ェクトなどにフォームの値を保存しておき、3画面目を処理する際にそれを取り出
+してデータベースなどを更新するものである。
 
-�@1�߂̕��@��㩂̃y�[�W���璼��3��ʖڂ�CSRF�U�����s�����Ƃŉ�������
-���܂��̂ŁA�΍�ɂ͂Ȃ�Ȃ��B
+　1つめの方法は罠のページから直接3画面目にCSRF攻撃を行うことで回避されて
+しまうので、対策にはならない。
 
-�@2�߂̕��@��㩂̃y�[�W���t���[���Ȃǂŕ������A���ꂼ��ɓǂݍ��܂���
-��㩂̃y�[�W����m�F��ʂ�3��ʖڂւ�CSRF�U�����i�K�v������Ύ��ԍ�������
-�āj���ꂼ��s�����Ƃŉ������Ă��܂��̂ŁA������΍�ɂȂ�Ȃ��B
+　2つめの方法は罠のページをフレームなどで分割し、それぞれに読み込まれる別
+の罠のページから確認画面と3画面目へのCSRF攻撃を（必要があれば時間差をおい
+て）それぞれ行うことで回避されてしまうので、これも対策にならない。
 
-�@����ł́A���X�̍��Ƃ��Ċm�F��ʂ��܂�3��ʂɂ���č\�������A�v��
-�P�[�V�����ł́A�ǂ̂悤��CSRF�΍���s���΂悢�̂��낤���B����͐�q�̒�
-��A�ЂƂ̋@�\��2��ʂō\�������Ƃ��������ɉ����čl����Ƃ悢�B1���
-�ڂ�2��ʖځi�m�F��ʁj�ɂ���āu���[�U�����͂������e��\������v�Ƃ�����
-�Ƃ̋@�\����������Ă���B�����2��ʖڂ�3��ʖڂŁu���[�U�����͂�����
-�e���f�[�^�x�[�X�ɓo�^����v�̂悤�ȕʂ̋@�\����������Ă���B�܂�A��
-���ł͂ЂƂł͂Ȃ��A2�̋@�\���A�����Ď��s����Ă���̂��B
+　それでは、元々の作りとして確認画面を含んだ3画面によって構成されるアプリ
+ケーションでは、どのようにCSRF対策を行えばよいのだろうか。これは先述の通
+り、ひとつの機能は2画面で構成されるという原則に沿って考えるとよい。1画面
+目と2画面目（確認画面）によって「ユーザが入力した内容を表示する」というひ
+とつの機能が実現されている。さらに2画面目と3画面目で「ユーザが入力した内
+容をデータベースに登録する」のような別の機能が実現されている。つまり、こ
+こではひとつではなく、2つの機能が連続して実行されているのだ。
 
-�@�]���āACSRF�΍�̊�{�ł��郏���^�C���g�[�N���������A���ꂼ��̋@�\��
-���ēK�p����΂悢�B
+　従って、CSRF対策の基本であるワンタイムトークン方式を、それぞれの機能に
+ついて適用すればよい。
 
-�@�܂��ЂƂ߂̋@�\�ɑ΂���CSRF�΍�Ƃ��āA1��ʖڂŃ����^�C���g�[�N����
-���s���A2��ʖڂ�\������ۂ̏����ł��̃g�[�N�������������ǂ����m�F����B
-����ɂ���āA�ЂƂ߂̋@�\�ɑ΂���CSRF�΍􂪎�������B�����Ă���2��ʖ�
-�𐶐����鏈���̍ۂɂ���ɈقȂ郏���^�C���g�[�N���𔭍s���A 3��ʖڂł�
-��2�߂̃g�[�N���������������Ă��邱�Ƃ��m�F����B����ɂ����2�߂�
-�@�\�ɑ΂���CSRF�΍􂪎������A���ʂƂ��Ă���3��ʂɂ���Ď��������i�Ђ�
-�Ɍ����邪����2����Ȃ�j�@�\�S�̂�CSRF�΍􂪎�������邱�ƂɂȂ�B
-
-
-��0x12.) �̗p���ׂ��łȂ��΍􂻂�5: �Z�b�V����ID���ׂ����ύX����
-
-�@����1�ŃZ�b�V����ID��؂�ւ��A���̃Z�b�V����ID�������Ȃ��ꍇ�ɂ͏���2
-���s��Ȃ��悤�ɂ���A�Ƃ��������ł���B�u�m�F��ʂ����ށv�����Ɠ��l�ɁA
-㩂̃y�[�W���t���[���Ȃǂŕ������A���1�Ɖ��2�ɘA������CSRF�U�����s����
-�Ƃŉ������Ă��܂��̂ŁA���̕����͑΍�ɂȂ�Ȃ��B
+　まずひとつめの機能に対するCSRF対策として、1画面目でワンタイムトークンを
+発行し、2画面目を表示する際の処理でこのトークンが正しいかどうか確認する。
+これによって、ひとつめの機能に対するCSRF対策が実現する。そしてこの2画面目
+を生成する処理の際にさらに異なるワンタイムトークンを発行し、 3画面目でこ
+の2つめのトークンが正しく送られてくることを確認する。これによって2つめの
+機能に対するCSRF対策が実現し、結果としてこの3画面によって実現される（ひと
+つに見えるが実は2つからなる）機能全体のCSRF対策が実現されることになる。
 
 
-��0x13.) CSRF�p���[�����O���X�g
+■0x12.) 採用すべきでない対策その5: セッションIDを細かく変更する
 
-�@�M�҂��{�e���������ړI�́A�{���ɐ�����CSRF�΍�Ƃ͉��Ȃ̂��Ƃ����^���
-�����𓾂邱�Ƃł���B�܂��ACSRF�ɂ܂����̍����������������Ƃ����v
-��������B�����_�ł͖{�e�ɋL�����΍����@�����������̂ł���ƍl���Ă��邪�A
-����Ă���\����������񂠂�B���e�Ɍ�肪����΁A���̓s�x�C�����Ă���
-�����B�C������ꍇ�A�{�e�͐V�������͂Ƃ��ď��������Ă��܂��A�Â����̂͌�
-���o�[�W�����Ƃ��ĕʖ��ŕۑ����c���Ă����`���Ƃ���肾�B
+　処理1でセッションIDを切り替え、このセッションIDを持たない場合には処理2
+を行わないようにする、という方式である。「確認画面を挟む」方式と同様に、
+罠のページをフレームなどで分割し、画面1と画面2に連続してCSRF攻撃を行うこ
+とで回避されてしまうので、この方式は対策にならない。
 
-�@�{�e�̓��e�ɂ��Ă̈ӌ���w�E�Ȃǂ͑劽�}�ł���BCSRF�𒆐S�ɃE�F�u�A
-�v���P�[�V�����Z�L�����e�B�ɂ��Ęb���������߂̏ꏊ�Ƃ��āA���[�����O��
-�X�g���쐬�����B�{�e�ɑ΂��郌�X�|���X������ꍇ�ɂ͂��̃��[�����O���X�g
-���g�p���Ē�����΂��肪�����BCSRF�Ɋւ��Ă͍L���A���e�i�𒣂��Ă����
-��Ȃ̂ŁA�u���O�ȂǂŌ��y���Ă�������ꍇ�ɂ�����������肾�B
+
+■0x13.) CSRF用メーリングリスト
+
+　筆者が本稿を書いた目的は、本当に正しいCSRF対策とは何なのかという疑問の
+答えを得ることである。また、CSRFにまつわる情報の混乱を解決したいという思
+いもある。現時点では本稿に記した対策方法が正しいものであると考えているが、
+誤っている可能性ももちろんある。内容に誤りがあれば、その都度修正していき
+たい。修正する場合、本稿は新しい文章として書き換えてしまい、古いものは古
+いバージョンとして別名で保存し残していく形をとるつもりだ。
+
+　本稿の内容についての意見や指摘などは大歓迎である。CSRFを中心にウェブア
+プリケーションセキュリティについて話し合うための場所として、メーリングリ
+ストを作成した。本稿に対するレスポンスがある場合にはこのメーリングリスト
+を使用して頂ければありがたい。CSRFに関しては広くアンテナを張っているつも
+りなので、ブログなどで言及してもらった場合にも反応するつもりだ。
 
 Sea Surfers ML
 
-ML�ւ̎Q���͂����炩��:
+MLへの参加はこちらから:
 http://www.freeml.com/ctrl/html/JoinForm/seasurfers@freeml.com/
 
-ML�̃g�b�v�y�[�W
+MLのトップページ
 http://www.freeml.com/ctrl/html/MLInfoForm/seasurfers@freeml.com
 
-�@�܂��A�{�e�Ŏ��グ�Ă��Ȃ��A�E�F�u�T�C�g�⏑�Ђ̒��ׂ̍����C�ɂȂ�_
-�ɂ��Ă��A���̃��[�����O���X�g�̒��ŐG�ꂽ���ƍl���Ă���B
+　また、本稿で取り上げていない、ウェブサイトや書籍の中の細かい気になる点
+についても、このメーリングリストの中で触れたいと考えている。
 
 
-��0x14.) �֘A�����N
+■0x14.) 関連リンク
 
-�������ȃ��{
+おさかなラボ
 http://kaede.to/~canada/doc/
 
-PHP�T�C�o�[�e���̋Z�@�i���Ёj
+PHPサイバーテロの技法（書籍）
 http://www.amazon.co.jp/exec/obidos/ASIN/4883374718/
 
 PEAK XOOPS Support&Experiment
 http://www.peak.ne.jp/xoops/md/news/
 
-����pmxxi :: �ڂ��͂܂������I
+俺専用mxxi :: ぼくはまちちゃん！
 http://mxxi.hamachiya.com/
 
-hoshikuzu | star_dust �̏���
+hoshikuzu | star_dust の書斎
 http://d.hatena.ne.jp/hoshikuzu/
 
-�������e .456
+児童小銃 .456
 http://d.hatena.ne.jp/rna/
 
-INNOCENT CODE�i���Ёj
+INNOCENT CODE（書籍）
 http://www.amazon.co.jp/exec/obidos/ASIN/0470857447/
 
-2006�N4��4���@Version 1.2
-HTML��URL:
+2006年4月4日　Version 1.2
+HTML版URL:
 http://www.jumperz.net/texts/csrf.htm
 
 
@@ -2584,26 +2584,26 @@ http://www.jumperz.net/texts/csrf.htm
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
- --- ��7�́F���m�点 ---
+ --- 第7章：お知らせ ---
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-��Wizard Bible�ihttp://akademeia.info/wizardbible/�j�ł͐����A���M���C�^
-�[���W���Ă��܂��B
-�@�������e�̃e�[�}�͍L�`�ł́uunder ground�v�ł��B�Ⴆ�΁A�n�b�L���O����
-�T�����K�X�̍����@�Ȃǂƕ��L�����e���l���Ă��܂��B�܂��A�e��A����ȐE��
-�������������̃��N�`���[�Ȃǂ��܂܂�܂��B
-�@��񂫂�ł��\���܂���B�܂��A�K���A����A�ڂ���`��������܂���̂ł�
-����͈͂ō\���܂���B�C�y�ɐ��������Ă��������B��������񏑂������Ƃ�
-����l���C�y�ɐ��������Ă��������i�S���C�ɂ��Ă��Ȃ����i�Ȃ̂Łj�B
+○Wizard Bible（http://akademeia.info/wizardbible/）では随時、執筆ライタ
+ーを募集しています。
+　扱う内容のテーマは広義での「under ground」です。例えば、ハッキングから
+サリンガスの合成法などと幅広い内容を考えています。また、各種、特殊な職業
+や趣味を持った方のレクチャーなども含まれます。
+　一回きりでも構いません。また、必ず、毎回連載する義務もありませんのでで
+きる範囲で構いません。気軽に声をかけてください。もちろん一回書いたことが
+ある人も気軽に声をかけてください（全く気にしていない性格なので）。
 
-��Kenji Aiko����Q&A������Ă���܂����B���߂ĎQ������l�ł��킩��₷��
-������Ă��܂��̂ŁA�Q�l�ɂ��Ă��������B
+○Kenji AikoさんがQ&Aを作ってくれました。初めて参加する人でもわかりやすく
+書かれていますので、参考にしてください。
 
 http://akademeia.info/wizardbible/wbQandA.html
 
-���x���ҁA�Q����]�җp�̃X���b�h�𗧂Ă܂����B
+○支援者、参加希望者用のスレッドを立てました。
 
 http://ruffnex.oc.to/ipusiron/cgi/forum/patio.cgi?mode=view&no=17
 
@@ -2612,117 +2612,117 @@ http://ruffnex.oc.to/ipusiron/cgi/forum/patio.cgi?mode=view&no=17
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
-  ---- ��8�́F���҃v���t�B�[�� ---
+  ---- 第8章：著者プロフィール ---
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��copyman
-��Job:Student
-��Web:N/A
-��Mail:copyman@hotmail.co.jp
-��Team�iGroup):N/A
-��Comment:
-�@�ǂ����A���񏉎Q�������Ă������copyman�ł��B
-�@���O��Kaz99����̓��L����p�N���܂����A�����̃t�@���ł��A�������炸�B
-�@����s�b�L���O�c�[���쐬���@�ɂ��ď������Ă��炢�܂������A���̓s�b�L
-���O�Ɋւ��Ă͑f�l�ł��B���ꂩ��͍��������s�b�L���O�c�[�����g���āA�s
-�b�L���O�̘r���グ�Ă������Ǝv���܂��B
-��PC�ȊO�̎:
-�@�p�`�X���ł��B1�N�O����n�߂���ł����A�����p�`�X���ɍs���Ă܂����B�Ƃ�
-���̂��ꎞ���v����ڎw���āA�K���Ƀp�`�X���̕׋������āA�����f�[�^�����
-�ɍs���Ă܂����B���͉ɂȎ���A�V�����䂪�o���Ƃ��Ƀ`�������Ƒł��x�ł��B
-�@�ŋ߃n�}���Ă��́u�p���[�{���v�ł��B�̂�������̃��j���[�A���ł�����
-�ł����A�̂̑��m��Ȃ��Ă��y���߂܂��B�Ȃ�Ƃ����Ă��{�[�i�X����BGM����
-�܂�܂���B�v�X�ɑł��ĂĊy������ł��B
+■copyman
+●Job:Student
+●Web:N/A
+●Mail:copyman@hotmail.co.jp
+●Team（Group):N/A
+●Comment:
+　どうも、今回初参加させてもらったcopymanです。
+　名前はKaz99さんの日記からパクリました、ただのファンです、あしからず。
+　今回ピッキングツール作成方法について書かせてもらいましたが、実はピッキ
+ングに関しては素人です。これからは今回作ったピッキングツールを使って、ピ
+ッキングの腕を上げていこうと思います。
+●PC以外の趣味:
+　パチスロです。1年前から始めたんですが、毎日パチスロに行ってました。とい
+うのも一時期プロを目指して、必死にパチスロの勉強をして、毎日データを取り
+に行ってました。今は暇な時や、新しい台が出たときにチョロっと打つ程度です。
+　最近ハマってる台は「パワーボム」です。昔あった台のリニューアル版だそう
+ですが、昔の台を知らなくても楽しめます。なんといってもボーナス中のBGMがた
+まりません。久々に打ってて楽しい台です。
 
 
-��Forging
-��Job:�C���`�L�@�B�݌v��
-��Web:���̒b�艮�ihttp://www.geocities.jp/kajiya_forging/�j
-��Mail:kajiya_forging@yahoo.co.jp
-��Team�iGroup�j:N/A
-��PC�ȊO�̎:
-�@�I�[�g�o�C�ł��B�T���̓x�Ɍx�@��Â̍u�K��ɒʂ��A�u�K����Ɖ����Ă���
-���B�ł��Ƌ��͒��^����(��������t�Ƌ�)�B������^�ɏ�肽��!
-�@�I�t���[�h�Ԃɏ���Ă���̂ł����A�I�t���[�h�͂������育�������ɂȂ���
-���܂��A����̂͂ĂɃ^�C���܂ŃI�����[�h�p�ɂ��Ă��܂��܂����B
+■Forging
+●Job:インチキ機械設計屋
+●Web:村の鍛冶屋（http://www.geocities.jp/kajiya_forging/）
+●Mail:kajiya_forging@yahoo.co.jp
+●Team（Group）:N/A
+●PC以外の趣味:
+　オートバイです。週末の度に警察主催の講習会に通い、講習会ヲタと化していま
+す。でも免許は中型限定(いわゆる限付免許)。早く大型に乗りたい!
+　オフロード車に乗っているのですが、オフロードはすっかりご無沙汰になって
+しまい、挙句のはてにタイヤまでオンロード用にしてしまいました。
 
 
-��Narusase
-��Job: Student
-��Web: (��)�G�w�̔����فihttp://k-o-m.hp.infoseek.co.jp/�j
-��Mail: narusase@mcn.ne.jp
-��Team�iGroup): N/A
-��Comment:
-�@����ɂ���ANarusase�i�i���T�X�j�ł��B�����honeyd�̊�{�I�ȋ@�\�Ɋւ�
-�Ă͐������I�����܂����B���������̂��Ƃł����A���݁A���Ȃ�Z�����󋵂�
-����̗\�肪�ǂ��Ȃ邩�\������ł��Ȃ��󋵂ł��B�ꍇ�ɂ���Ă͘A�ڂ̒��f
-���l���Ȃ���΂Ȃ�Ȃ��󋵂ɂȂ邩���m��܂���B�����\�Ȍ���撣���Ă�
-���܂����A�����Ȃ����ۂ͐\���󂠂�܂���B����A�A�ڂ��\�ł���΁A����
-�̗\��ʂ�ق��̃\�t�g�̘b�����邩���ۂ̉^�p�̘b�ɃV�t�g���Ă������Ǝv��
-�܂��B
-�@�T�C�g�̕��͂܂��A�w�^���ȕ��͂ƁA���n�ȋZ�p�A�w�{���v���O�������Љ
-��T�C�g�Ƃ������ƂŁA�ɂ��������炠��T���ł����Ă݂Ă��������B��A�Ƃ�
-�~�X�Ƃ���BBS�ɂł������Ă�������΁A��������C�����Ƃ��܂��i��
-��PC�ȊO�̎:
-�@PC�ȊO�̎�ƌ�����Ƃ܂��v�����͓̂Ǐ��ł��B����͂��ꂱ��15�N��
-�炢�����Ă��Ȃ̂ł����炭�ꐶ�̎�ƌ�����̂ł͂Ȃ����Ɓc�B�Ȃ���
-���̎���ɂ�IPSIRON��������߂Ƃ��ēǏ��ƂȐl���������܂��̂ł��̐l������
-��ׂ�Ɓi���擙���܂߂��j�������͂��������ق��ł͂���܂��񂪂���ł�1,
-600���O��̑���������܂��B
-�@�܂��A���̎���̐l�Ԃ݂͂��PC��2�`3��͂����Ăĕ��ʂƂ��A�{�͖{�I�ɓ�
-�肫
-��Ȃ��̂���{�Ƃ������l�������ς��ł��B
-�@����Ȗ�Ő��Ԉ�ʂŌ�����ʐl�̕��Ɣ�r����Ƒ������͑������ނȂ̂ł�
-�傤���ǁA�ƂĂ��ƂĂ�����̘A���ɂ͏��ĂȂ������c(���B
+■Narusase
+●Job: Student
+●Web: (裏)雑学の博物館（http://k-o-m.hp.infoseek.co.jp/）
+●Mail: narusase@mcn.ne.jp
+●Team（Group): N/A
+●Comment:
+　こんにちわ、Narusase（ナルサス）です。今回でhoneydの基本的な機能に関し
+ては説明が終了しました。ここから先のことですが、現在、かなり忙しい状況で
+今後の予定がどうなるか予測すらできない状況です。場合によっては連載の中断
+も考えなければならない状況になるかも知れません。私も可能な限り頑張ってい
+きますが、そうなった際は申し訳ありません。今後、連載が可能であれば、当初
+の予定通りほかのソフトの話をするか実際の運用の話にシフトしていくかと思い
+ます。
+　サイトの方はまあ、ヘタレな文章と、未熟な技術、ヘボいプログラムを紹介す
+るサイトということで、暇があったらあら探しでもしてみてください。誤植とか
+ミスとかはBBSにでも書いてくだされば、こっそり修正しときます（笑
+●PC以外の趣味:
+　PC以外の趣味と言われるとまず思いつくのは読書です。これはかれこれ15年ぐ
+らい続いてる趣味なのでおそらく一生の趣味と言えるのではないかと…。なぜか
+私の周りにはIPSIRONさんを初めとして読書家な人が多くいますのでその人たちと
+比べると（漫画等を含めた）蔵書数はそう多いほうではありませんがそれでも1,
+600冊前後の蔵書があります。
+　まあ、私の周りの人間はみんなPCは2〜3台はもってて普通とか、本は本棚に入
+りき
+らないのが基本とか言う人がいっぱいです。
+　そんな訳で世間一般で言う一般人の方と比較すると蔵書数は多い部類なのでし
+ょうけど、とてもとても周りの連中には勝てないっす…(汗。
 
 
-��Defolos
-��Job:Student
-��Web:http://ruffnex.oc.to/defolos/
-��Mail:defolos@ruffnex.oc.to
-��Team�iGroup�j:none
-��Comment:
-�@����ɂ��́ADefolos�ł��B
-�@�ŋ߁AWizard Bible�ɏ����L���̕��삪�o���o���ɂȂ��Ă��Ă���悤�Ɋ���
-�܂��B���̂��������́u��啪��v���Ȃ��Ȃ��Ă��܂������ŋ����ł��B(^^;)
-�@�b�͕ς���āA����m�[�gPC��OS��Debian�ɂ��܂����B�{�i�I�Ƀf�X�N�g�b�v
-�p��Linux���g���̂͏��߂Ăł��B���ꂩ��́A����Ȃ��f�X�N�g�b�vLinux����
-�𖳗���G���W���C���Ă��������Ǝv���܂��B
-��PC�ȊO�̎�ɂ���:
-�@���Ƃ��ƁA���̂���邱�Ƃ��D������������ł��傤���A�i�C�t���⃌�U�[
-�N���t�g�ȂǁA��������邱�Ƃ���Ƃ��Ă��܂��B
-�@�����A�������������Ƃ��ɂ́u�������g�ł��̂�����v�Ƃ������Ƃ��d�v��
-�Ȃ��Ă���ƍl���Ă��܂��B�ł��̂ŁA�����̎菇�����L����Ă�����̂���
-��ꍇ�ł��A�ł������A���̌����𗝉����悤�Ƃ��Ȃ�����܂��B
-�@�Ȃ��Ȃ����Ԃ��Ƃ�܂��񂪁A���ꂩ����ϋɓI�Ɏ�𑱂��Ă����܂��B
+■Defolos
+●Job:Student
+●Web:http://ruffnex.oc.to/defolos/
+●Mail:defolos@ruffnex.oc.to
+●Team（Group）:none
+●Comment:
+　こんにちは、Defolosです。
+　最近、Wizard Bibleに書く記事の分野がバラバラになってきているように感じ
+ます。そのうち自分の「専門分野」がなくなってしまいそうで恐いです。(^^;)
+　話は変わって、先日ノートPCのOSをDebianにしました。本格的にデスクトップ
+用にLinuxを使うのは初めてです。これからは、慣れないデスクトップLinux生活
+を無理矢理エンジョイしていきたいと思います。
+●PC以外の趣味について:
+　もともと、ものを作ることが好きだったからでしょうか、ナイフ作りやレザー
+クラフトなど、何かを作ることを趣味としています。
+　もし、何かがあったときには「自分自身でものを作れる」ということが重要に
+なってくると考えています。ですので、作り方の手順が明記されているものを作
+る場合でも、できる限り、その原理を理解しようとしながら作ります。
+　なかなか時間がとれませんが、これからも積極的に趣味を続けていきます。
 
 
-��MaD�i���񂱂͂��܂ǁj
-��Job:DATA HOUSE
-��Web:http://www.data-house.co.jp/
-��Mail:mad@data-house.co.jp
-��Team�iGroup�j:h@cksection,ruffnex
-��PC�ȊO�̎:
-�@PC�Ȃ񂩎����Ȃ����[��BPC�Ȃ񂩉󂵂Ă܂��΂����˂�B�ق����A�ق�
-���I�@�]�݂����邾������āB�ق񂾂�A�X�[�p�[�n�J�[�̎�������Ă���I
-�@�������A�悭�����I
-�@�Q�邱�ƁB�C�����C�C�[�I
-�@���႟�A�܂��ˁI�@���[���[��I
+■MaD（うんこはげまど）
+●Job:DATA HOUSE
+●Web:http://www.data-house.co.jp/
+●Mail:mad@data-house.co.jp
+●Team（Group）:h@cksection,ruffnex
+●PC以外の趣味:
+　PCなんか趣味じゃないもーん。PCなんか壊してまえばええねん。ほかせ、ほか
+せ！　脳みそ腐るだけやって。ほんだら、スーパーハカーの趣味を教えてたる！
+　いいか、よくきけ！
+　寝ること。気持ちイイー！
+　じゃぁ、またね！　けーろよーん！
 
 
-������
-��Job: �v���O���}�[
-��Web: http://guardian.jumperz.net/�Ahttp://www.jumperz.net/
-��Mail: anvil@jumperz.net
-��Comment:
-�@����̌��e�͂��ɂ��܂��ċC���������Ă܂��BCSRF�͉����[���B�Ă������}
-�W�Ŕ�ꂽ�B�v���Ԃ�Ƀ��[�����O���X�g�ȂǗ����グ�Ă݂܂����B�E�F�u�A�v
-���n�n�b�N�l�^�ɋ���������̎Q�����҂����Ă܂��B
-��PC�ȊO�̎:
-�@PC�ȊO�̎�͉��y�Ɖf��ƒނ�ł��B���y��Third Eye Blind�Ƃ��B�f���
-�o�j���E�X�J�C�Ƃ�12�����L�[�Y�Ƃ��B�ނ�͉Ă���H�̉�V�������A�[�ő_��
-�܂��B
+■金床
+●Job: プログラマー
+●Web: http://guardian.jumperz.net/、http://www.jumperz.net/
+●Mail: anvil@jumperz.net
+●Comment:
+　今回の原稿はいつにもまして気合い入ってます。CSRFは奥が深い。ていうかマ
+ジで疲れた。久しぶりにメーリングリストなど立ち上げてみました。ウェブアプ
+リ系ハックネタに興味ある方の参加お待ちしてます。
+●PC以外の趣味:
+　PC以外の趣味は音楽と映画と釣りです。音楽はThird Eye Blindとか。映画は
+バニラ・スカイとか12モンキーズとか。釣りは夏から秋の回遊魚をルアーで狙い
+ます。
 

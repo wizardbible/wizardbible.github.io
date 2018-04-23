@@ -1,142 +1,142 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- �恛��: PS2�\�t�g�̉��y�����ւ� ---
+--- 第○章: PS2ソフトの音楽差し替え ---
 
-���ҁF�G�N�Z������
+著者：エクセル小林
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) ���ȏЉ�͂��߂�
+■0x01.) 自己紹介＆はじめに
 
-�@�ǂ������߂܂��Ă���΂��B
-�@���l�^��m���Ă�l�͒m���Ă�A�m��Ȃ��l�͔���Ȃ��|�l�݂����Ȗ��O����
-�Ǝv����G�N�Z�����тł��B
+　どうも初めましてこんばんわ。
+　元ネタを知ってる人は知ってる、知らない人は売れない芸人みたいな名前だな
+と思われるエクセル小林です。
 
-�@���Ă��̓x�͎���̊F�l���f�G�ȕ��͂��ڂ��Ă�̂��C�ɂ����ɁAPS2�\�t�g��
-���y�����ւ��ɂ��ď��������Ǝv���܂��B���̋L�����Q�l�ɂ���΁A�����̍D
-���ȉ��y�ɕς��邱�Ƃ��ł��܂��B���ɂ͉�����ς�����̂�����܂��B
+　さてこの度は周りの皆様が素敵な文章を載せてるのを気にせずに、PS2ソフトの
+音楽差し替えについて書きたいと思います。この記事を参考にすれば、自分の好
+きな音楽に変えることができます。中には音声を変えられるのもあります。
 
-�@�����A���Ȃ����\�\�\���E�łЂƂ����Ȃ��\�t�g������Ă݂܂��񂩁H
-
-
-��0x02.) �����ւ��\�\�t�g�ɂ���
-
-�@�薼�ɂ�PS2�\�t�g���y�����ւ��Ə����Ă���܂����A�S�����S�������ւ��\
-���ă��P�łȂ��A�\�t�g�N�����ɂ���Ȋ����̉�ʂ��o��Q�[���������ւ��\
-�ɂȂ�܂��i�}1�Q�Ɓj�B
-
-�i�}1�jhttp://sfx64.hp.infoseek.co.jp/ps2/20070219_85610.jpg
-
-�@�v�����CRI�Ђ�ADX���g�p���ăT�E���h�Đ����Ă邩�ۂ����Ă��Ƃł��ˁB��
-����ł��̉�ʂ��o��u.hack//G.U. Vol.1�`3�v�u�����X�^�[�n���^�[2�v������
-�Ă݂��Ƃ���A�ꉞ�s��Ȃ��N�����ėV�ׂ܂����B�������A��L�̉摜���o��
-����Ƃ����Ă��A���ׂĂ����܂��ł��郏�P�ł͂���܂���B�����ŐF�X�m�F��
-�Ă݂Ă��������B
-�@���������ƁAADX�t�@�C����CVM�t�@�C���ɉ��y���i�[����Ă���u�����e�B
-�u���b�h �A�N�g�J�f���c�@�v�́A�ȉ��ɏ����Ă�����@�ł͍����ւ��s�\�ɂ�
-��܂��B
+　さぁ、あなたも———世界でひとつしかないソフトを作ってみませんか？
 
 
-��0x03.) ����
+■0x02.) 差し替え可能ソフトについて
 
-�@�����p�ɍ����ւ����Ƃ���ŁA�o�b�N�A�b�v�f�B�X�N���N�������邱�Ƃ��ł�
-�Ȃ���΂܂������Ӗ�������܂���B�l�I�ɂ�SwapMagic����Ԃ���y�ł��B��
-�񂾂��m�荇���Ɏ؂�ă����J�u�[�g���y��GOOD�B�܂�������ӂ̉���͌�����
-��΂����킩��Ǝv���܂��̂ŁA�������܂��B
+　題名にはPS2ソフト音楽差し替えと書いてありますが、全部が全部差し替え可能
+ってワケでなく、ソフト起動時にこんな感じの画面が出るゲームが差し替え可能
+になります（図1参照）。
+
+（図1）http://sfx64.hp.infoseek.co.jp/ps2/20070219_85610.jpg
+
+　要するにCRI社のADXを使用してサウンド再生してるか否かってことですね。こ
+ちらでその画面が出る「.hack//G.U. Vol.1〜3」「モンスターハンター2」を試し
+てみたところ、一応不具合なく起動して遊べました。しかし、上記の画像が出る
+からといっても、すべてがうまくできるワケではありません。自分で色々確認し
+てみてください。
+　例をあげると、ADXファイルがCVMファイルに音楽が格納されている「メルティ
+ブラッド アクトカデンツァ」は、以下に書いてある方法では差し替え不可能にな
+ります。
 
 
-��0x04.) �����ւ��f�B�X�N�̂��肩��
+■0x03.) 注意
 
-��AFS�t�@�C���̃G�N�X�|�[�g
+　自分用に差し替えたところで、バックアップディスクを起動させることができ
+なければまったく意味がありません。個人的にはSwapMagicが一番お手軽です。一
+回だけ知り合いに借りてメモカブートも楽でGOOD。まあそこら辺の解説は検索す
+ればすぐわかると思いますので、割愛します。
 
-1�F�����ւ�����PS2�Q�[���f�B�X�N���h���C�u�ɓ���A���g��S�ēK���ȃt�H��
-�_�ɃR�s�[���܂��B
 
-2�F�uafsexplorer.zip�v���_�E�����[�h���ĉ𓀂��܂��B
+■0x04.) 差し替えディスクのつくりかた
+
+●AFSファイルのエクスポート
+
+1：差し替えたいPS2ゲームディスクをドライブに入れ、中身を全て適当なフォル
+ダにコピーします。
+
+2：「afsexplorer.zip」をダウンロードして解凍します。
 
 http://sfx64.hp.infoseek.co.jp/ps2/tool/afsexplorer.zip
 
-3�F�uafsexplorer.exe�v���N�����AFile��config��"Ignore descriptor's lengt
-h"���`�F�b�N���܂��B
+3：「afsexplorer.exe」を起動し、File→configで"Ignore descriptor's lengt
+h"をチェックします。
 
-4�FFile��Import AFS file����A�X�e�b�v1�ŃR�s�[�����u*.AFS�v��ǂݍ��܂�
-�܂��B
+4：File→Import AFS fileから、ステップ1でコピーした「*.AFS」を読み込ませ
+ます。
 
-5�FAction��Export folder�œK���ȃt�H���_�ɃG�N�X�|�[�g���܂��B
+5：Action→Export folderで適当なフォルダにエクスポートします。
 
-��ADX�I�[�f�B�I�t�@�C���̍쐬
+●ADXオーディオファイルの作成
 
-1�F�����ւ��p�̉��y�t�@�C����p�ӂ��܂��B
+1：差し替え用の音楽ファイルを用意します。
 
-2�F�t�H�[�}�b�g���u48,000 kHz,16�r�b�g,�X�e���I�v��WAV�t�@�C���ɕϊ�����
-���B
+2：フォーマットが「48,000 kHz,16ビット,ステレオ」のWAVファイルに変換しま
+す。
 
-3�F�uadxencd.zip�v���_�E�����[�h���ĉ𓀂��܂��B
+3：「adxencd.zip」をダウンロードして解凍します。
 
 http://sfx64.hp.infoseek.co.jp/ps2/tool/adxencd.zip
 
-4�F�R�}���h�v�����v�g���N�����A�uadxencd.exe�v�����s���܂��B
+4：コマンドプロンプトを起動し、「adxencd.exe」を実行します。
 
-5�F"adxencd [�t�@�C����]"�i��Fadxencd 1.wav�j�Ɠ��͂��A�G���^�L�[������
-�܂��B
+5："adxencd [ファイル名]"（例：adxencd 1.wav）と入力し、エンタキーを押し
+ます。
 
-6�F���y�����[�v���čĐ������邽�߂�"adxencd [�t�@�C����] -lps0 -lpe[���[
-�v�I���u���b�N]"�i��Fadxencd 1.wav -lps0 -lpe54568525�j�Ɠ��͂��ăG���^
-�L�[�������܂��B[���[�v�I���u���b�N]�͓��͉����T���v�����̉E�ɂ��鐔����
-���͂��܂��B
+6：音楽をループして再生させるために"adxencd [ファイル名] -lps0 -lpe[ルー
+プ終了ブロック]"（例：adxencd 1.wav -lps0 -lpe54568525）と入力してエンタ
+キーを押します。[ループ終了ブロック]は入力音声サンプル数の右にある数字を
+入力します。
 
-��AFS�t�@�C���̃C���|�[�g
+●AFSファイルのインポート
 
-1�F�쐬����ADX�t�@�C�����AAFS�t�@�C���̃G�N�X�|�[�g�������ɂ��鍷���ւ���
-�����y�̃t�@�C�����ɂ��A���t�@�C���ɏ㏑�����܂��B
+1：作成したADXファイルを、AFSファイルのエクスポートした中にある差し替えた
+い音楽のファイル名にし、元ファイルに上書きします。
 
-2�F�uafsexplorer.exe�v���N�����A�K����AFS�t�@�C����ǂݍ��܂��܂��B
+2：「afsexplorer.exe」を起動し、適当なAFSファイルを読み込ませます。
 
-3�FAction��Import folder��I�сAAFS�t�@�C���̃G�N�X�|�[�g�̃X�e�b�v�œǂ�
-���܂���AFS�t�@�C�����œK���ȏꏊ�ɃC���|�[�g���܂��B
+3：Action→Import folderを選び、AFSファイルのエクスポートのステップで読み
+込ませたAFSファイル名で適当な場所にインポートします。
 
-���o�b�N�A�b�v�f�B�X�N�̍쐬
+●バックアップディスクの作成
 
-1�F�C���|�[�g����AFS�t�@�C�����AAFS�t�@�C���̃G�N�X�|�[�g�ŕۑ������t�H��
-�_�Ɉړ����A���t�@�C���ɏ㏑�����܂��B
+1：インポートしたAFSファイルを、AFSファイルのエクスポートで保存したフォル
+ダに移動し、元ファイルに上書きします。
 
-2�F���DVD-R���h���C�u�ɃZ�b�g���܂��B
+2：空のDVD-Rをドライブにセットします。
 
-3�F�uNero�v���_�E�����[�h���A�C���X�g�[�����܂��B
+3：「Nero」をダウンロードし、インストールします。
 
-4�FNero Burning ROM���N�����܂��B
+4：Nero Burning ROMを起動します。
 
-5�F�v���_�E�����j���[����uDVD�v��I�сA�uDVD-ROM (UDF/ISO)�v��I�����ĐV
-�K�쐬�{�^���������܂��B
+5：プルダウンメニューから「DVD」を選び、「DVD-ROM (UDF/ISO)」を選択して新
+規作成ボタンを押します。
 
-6�FAFS�t�@�C���̃G�N�X�|�[�g�̃X�e�b�v1�ŕۑ������t�H���_�̒��g�����ׂăh
-���b�O�A���h�h���b�v���܂��B
+6：AFSファイルのエクスポートのステップ1で保存したフォルダの中身をすべてド
+ラッグアンドドロップします。
 
-7�F�������݃{�^���������A�K�x�ȏ������ݑ��x�ɐݒ肵�āA�������݂��J�n����
-���B
+7：書き込みボタンを押し、適度な書き込み速度に設定して、書き込みを開始しま
+す。
 
-8�F�ȏ�Ŋ����ł��B
+8：以上で完成です。
 
-�@AFSExplorer��3.7���ŐV�ł������ł����A������̊��ł������蓮���Ă���
-�Ȃ������̂�3.2���g�p���܂����B�o�b�N�A�b�v�f�B�X�N�쐬�҂Ŏg���̂�Nero��
-��Ȃ��Ă��\���܂���B�E���g��ISO�Ȃǂ��悢�񂶂�Ȃ��ł��傤���H�@�������A
-Nero�Ȃ�Ζʓ|��LBA�̐ݒ�����Ȃ��Ă����̂ŁA���Ɋy�ȍ�ƂɂȂ�܂��B
+　AFSExplorerは3.7が最新版だそうですが、こちらの環境でしっかり動いてくれ
+なかったので3.2を使用しました。バックアップディスク作成編で使うのはNeroじ
+ゃなくても構いません。ウルトラISOなどがよいんじゃないでしょうか？　しかし、
+Neroならば面倒なLBAの設定をしなくていいので、非常に楽な作業になります。
 
 
-��0x05.) ������
+■0x05.) おわりに
 
-�@�ǂ��������ł��傤���H�@������ƋN�����܂������H�@����ŗF�B�Ɏ����ł�
-�܂��ˁi��
+　どうだったでしょうか？　きちんと起動しましたか？　これで友達に自慢でき
+ますね（笑
 
-�@���āA�����肪���v���肻���ȉ����̍����ւ��ł����A��̂̃\�t�g��AHX��
-���p���Ă��邽�߁A������͂܂��܂��ł��Ȃ��\�t�g�������ł��B�\�ł�AHX�t�@
-�C���̒��g��mp2+ADX�w�b�_�炵���̂ŁA�\�[�X������������Ȃ�Ƃ��Ȃ邩����
-��Ȃ��炵���ł����c�B����̔��W�Ɋ��҂ł��B
+　さて、これよりが需要ありそうな音声の差し替えですが、大体のソフトがAHXが
+利用しているため、こちらはまだまだできないソフトが多いです。噂ではAHXファ
+イルの中身はmp2+ADXヘッダらしいので、ソース書き換えたらなんとかなるかもし
+れないらしいですが…。今後の発展に期待です。
 
-�@�ł́A�@���������܂���܂��傤�B
+　では、機会があったらまた会いましょう。
 
 
 

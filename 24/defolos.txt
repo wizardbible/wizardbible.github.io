@@ -1,78 +1,78 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- ��4��: ���荞�݃v���O���� [���] ---
+--- 第4章: 割り込みプログラム [後編] ---
 
-���ҁFDefolos
+著者：Defolos
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@����ɂ��́ADefolos�ł��B
-�@�O��Ɉ����������荞�݃v���O�����ɂ��Ă܂Ƃ߂Ă݂����Ǝv���܂��B���
-�ł͎��ۂ̃v���O�����̏��������d�_�I�ɉ���������Ǝv���܂��̂ŁA��Ɂu��
-�荞�݃v���O���� [�O��]�v�ihttp://wizardbible.org/22/22.txt�j�Ɉ�ʂ�ڂ�
-�ʂ��Ă������������Ǝv���܂��B
+　こんにちは、Defolosです。
+　前回に引き続き割り込みプログラムについてまとめてみたいと思います。後編
+では実際のプログラムの書き方を重点的に解説したいと思いますので、先に「割
+り込みプログラム [前編]」（http://wizardbible.org/22/22.txt）に一通り目を
+通していただきたいと思います。
 
-�@�܂��A��ʂ�ڂ�ʂ��Ă��������ɍۂ��A�O�҂ł̒��ߕs�������l�т�������
-���B�O�҂Œ��߂Ȃ��o�Ă����uSysV�V�O�i���v�Ƃ́A�uSystemV�V�O�i���v�̗���
-���B
-�@SystemV�Ƃ́A1969�N�ɕč�AT&T�x���������̃f�j�X�E���b�`�ƃP���E�g���v�\
-�����J������UNIX���o�[�W�����A�b�v���������̂ł��BSystemV�͍ŏI�I��Relea
-se 5�܂ŊJ������Ă��܂��B����1989�N�ɓo�ꂵ��SystemV Release 4�́uSVR4�v
-�ƋL����A������UNIX�̎�{�Ƃ��čL�����y�����悤�ł��B
-
-
-��0x02.) �O�҂̂����炢
-
-�@�O�҂ł́A���荞�݂̊T�v�Ɗ��荞�݂̓�����L�[�{�[�h���荞�݂̎������
-���ĉ�����܂����B�܂��AUNIX�ł͊��荞�݂��������邽�߂ɃV�O�i���Ƃ����d
-�g�݂𗘗p���Ă���A�V�O�i���̓���ɂ�SysV�ABSD�APOSIX��3�̏����̌n����
-�邱�Ƃ�������܂����B
-�@����͂����������ݓ������V�O�i���̉���ƁA���ꂼ��̃V�O�i�������̌n��
-������A���荞�݃v���O�����̎��ۂ̏�������������Ă��������Ǝv���܂��B
+　また、一通り目を通していただくに際し、前編での注釈不足をお詫びいたしま
+す。前編で注釈なく出てきた「SysVシグナル」とは、「SystemVシグナル」の略で
+す。
+　SystemVとは、1969年に米国AT&Tベル研究所のデニス・リッチとケン・トンプソ
+ンが開発したUNIXをバージョンアップさせたものです。SystemVは最終的にRelea
+se 5まで開発されています。特に1989年に登場したSystemV Release 4は「SVR4」
+と記され、多くのUNIXの手本として広く普及したようです。
 
 
-��0x03.) �T���v���v���O�����̎d�l
+■0x02.) 前編のおさらい
 
-�@���ɃT���v���v���O�����Ƃ��č쐬����v���O�����̎d�l���L�q���܂��B�Ȍ�
-�́A�����ŋL�q�����v���𖞂����悤�ȃv���O�������V�O�i�����g���č���Ă�
-�����ƂɂȂ�܂��B
+　前編では、割り込みの概要と割り込みの動作をキーボード割り込みの実例を挙
+げて解説しました。また、UNIXでは割り込みを実現するためにシグナルという仕
+組みを利用しており、シグナルの動作にもSysV、BSD、POSIXの3つの処理体系があ
+ることを説明しました。
+　今回はもう少し込み入ったシグナルの解説と、それぞれのシグナル処理体系に
+おける、割り込みプログラムの実際の書き方を解説していきたいと思います。
 
-���O�����
 
-1�F�v���O�����̃��C��������gets�֐��ŃL�[�{�[�h����̓��͂�҂��󂯂�
-2�F�L�[�{�[�h����̓��͂�ϐ��Ɋi�[����
-3�FCtrl+C���͂ɂ��SIGINT�V�O�i�������m�����ꍇ�A������V�O�i���n���h����
-�ڂ�
-4�F�V�O�i���n���h���ł̓X�e�b�v2�̕ϐ��̓��e�𕶎���Ƃ��ďo�͂���
-5�F���G���g�����g�e�X�g���s�����ߊ��荞�݃n���h������1�b�ԑҋ@����
-6�F���荞�݃n���h���̏������I����ƁA���C�������֐�����ڂ�
-7�F�ȏ�̏������J��Ԃ�
+■0x03.) サンプルプログラムの仕様
+
+　次にサンプルプログラムとして作成するプログラムの仕様を記述します。以後
+は、ここで記述した要求を満たすようなプログラムをシグナルを使って作ってい
+くことになります。
+
+●前提条件
+
+1：プログラムのメイン処理はgets関数でキーボードからの入力を待ち受ける
+2：キーボードからの入力を変数に格納する
+3：Ctrl+C入力によるSIGINTシグナルを感知した場合、制御をシグナルハンドラに
+移す
+4：シグナルハンドラではステップ2の変数の内容を文字列として出力する
+5：リエントラントテストを行うため割り込みハンドラ内で1秒間待機する
+6：割り込みハンドラの処理を終えると、メイン処理へ制御を移す
+7：以上の処理を繰り返す
 
 =============
  main start
 =============
-   ��
+   ↓
 ----------
- while(0) ��------.
+ while(0) ←------.
 ----------        |
-   ��             |
+   ↓             |
 ---------------   |
 printf(Message)   |
 ---------------   |
-   ��             |
+   ↓             |
 ----------        |
 gets(buff)        |
 ----------        |
-   ��             |
+   ↓             |
 --------          |
-pause() --------��^
+pause() --------→^
 --------
-   ��
+   ↓
 =============
  main stop
 =============
@@ -82,34 +82,34 @@ pause() --------��^
 ===============
  warikomi start
 ===============
-    ��
+    ↓
 ---------------
 printf(Message)
 ---------------
-    ��
+    ↓
 ------------
 printf(buff)
 ------------
-    ��
+    ↓
 ---------
 sleep(1)
 ---------
-    ��
+    ↓
 ===============
  warikomi stop
 ===============
 
 
-��0x04.) �V�O�i���ڍ�
+■0x04.) シグナル詳細
 
-��signal�֐�
+●signal関数
 
-�@�V�O�i���̓���ɂ́A���炩���ߌ��߂��Ă���f�t�H���g����Ƃ������̂�
-����܂��B���̃f�t�H���g�̓���ɕs����������΁A���ɂȂɂ������ɂ��̂܂�
-�g���΂悢�̂ł����A��������ɕs��������ꍇ�̓��[�U�[�v���O�����ŐV����
-����i�V�O�i���n���h���j��ݒ肷�邱�Ƃ��ł��܂��B���̓����ύX����֐�
-��signal�֐��ł��B
-�@signal�֐��̃v���g�^�C�v�͎��̂悤�ɂȂ��Ă��܂��B
+　シグナルの動作には、あらかじめ決められているデフォルト動作というものが
+あります。このデフォルトの動作に不満が無ければ、特になにもせずにそのまま
+使えばよいのですが、もし動作に不満がある場合はユーザープログラムで新しい
+動作（シグナルハンドラ）を設定することができます。この動作を変更する関数
+がsignal関数です。
+　signal関数のプロトタイプは次のようになっています。
 
 -----
 #include <signal.h>
@@ -118,105 +118,105 @@ typedef void (*sighandler_t)(int);
 void signal(int signum, void (*handler)(int) );
 -----
 
-�@signal�֐��͈�����2�Ƃ�܂��B��1�����ɂ͓����ύX�������V�O�i���̔�
-�����w�肵�܂����A�uSIGINT�v��uSIGARLM�v�Ȃǂ̂悤�ȕ�����萔��signal.h
-�iLinux�ł�asm/signal.h�j�ł��ꂼ��̃V�O�i���ԍ��Ɗ֘A�t������Ă��邽��
-�w��ł��܂��B
-�@��2�����ɂ́A��1�����œ����ύX�����V�O�i�����͂����Ƃ��ɐ�����ڂ��V
-�O�i���n���h���ւ̊֐��|�C���^���w�肵�܂��B���邢�͑������Ŏw�肳�ꂽ
-�V�O�i�����󂯎���Ă���������悤�ɂ���SIG_IGN���A��1�����Ŏw�肳�ꂽ�V
-�O�i���̓�����f�t�H���g����ɖ߂�SIG_DFL���w�肷�邱�Ƃ��ł��܂��B�܂��A
-��2�����ŃV�O�i���n���h���ւ̊֐��|�C���^���w�肵���ꍇ�Asignum�������Ƃ�
-�ĂƂ�����Ԃ�handler���Ăяo����܂��B
-�@���ӓ_�Ƃ��܂��ẮASIGKILL��SIGSTOP�ɃV�O�i���n���h����ݒ肷�邱�Ƃ�
-�ł��܂���B�܂��A�V�O�i���֐��͐�������ƃn���h�����[�`�����w���|�C���^
-��߂�l�ɕԂ��A�G���[�̏ꍇ��SIG_ERR��Ԃ��Aerrno�ɃG���[�̎�ނ������l
-���Z�b�g���܂��B
+　signal関数は引数を2つとります。第1引数には動作を変更したいシグナルの番
+号を指定しますが、「SIGINT」や「SIGARLM」などのような文字列定数もsignal.h
+（Linuxではasm/signal.h）でそれぞれのシグナル番号と関連付けされているため
+指定できます。
+　第2引数には、第1引数で動作を変更したシグナルが届いたときに制御を移すシ
+グナルハンドラへの関数ポインタを指定します。あるいは第一引数で指定された
+シグナルを受け取っても無視するようにするSIG_IGNか、第1引数で指定されたシ
+グナルの動作をデフォルト動作に戻すSIG_DFLを指定することもできます。また、
+第2引数でシグナルハンドラへの関数ポインタを指定した場合、signumを引数とし
+てとった状態でhandlerが呼び出されます。
+　注意点としましては、SIGKILLやSIGSTOPにシグナルハンドラを設定することは
+できません。また、シグナル関数は成功するとハンドラルーチンを指すポインタ
+を戻り値に返し、エラーの場合はSIG_ERRを返し、errnoにエラーの種類を示す値
+をセットします。
 
-�@�����܂ł̉����SysV�V�O�i�������̌n�ł�BSD�V�O�i�������̌n�ł������ł��B
-SysV�V�O�i����BSD�V�O�i���Ƃ̑傫�ȈႢ�́A��q���܂����V�O�i�����󂯎��
-���Ƃ��̓���Ɍ���܂��B
+　ここまでの解説はSysVシグナル処理体系でもBSDシグナル処理体系でも同じです。
+SysVシグナルとBSDシグナルとの大きな違いは、後述しますがシグナルを受け取っ
+たときの動作に現れます。
 
-�����G���g�����g���
+●リエントラント問題
 
-�@�V�O�i���̓����͊�{�I�ɔ񓯊��ł���A���ǂ̂悤�ȃ^�C�~���O�ŃV�O�i
-�������M����Ă��邩�͂킩��܂���B�u���b�L���O�֐����������u���b�N�i��1�j
-���Ă����Ԃ�A�V�X�e���R�[���i��2�j�������̏�ԂŃV�O�i�����󂯎��Ƃ�
-�����󋵂��l�����܂��B���̏ꍇ�u���b�L���O�֐��𒆒f���ăV�O�i���n���h
-���ɏ������ڂ��ׂ��Ȃ̂��A�u���b�L���O�֐���D�悵�ăV�O�i���𖳎������
-�����Ƃ�������肪�������܂��B
-�@�܂��A�V�O�i���n���h���̏��������s���Ă���ԂɁA����̃V�O�i���ԍ��̐V
-�����V�O�i�������������ꍇ�ɁA�ǂ̂悤�ɓ��삷��ׂ��Ȃ̂��Ƃ���������
-����܂��B�Ⴆ�΃T���v���v���O�����̎d�l�ɂ��������āA[Ctrl]�{[C]�ŃV�O�i
-���n���h���֐����؂�ւ��A���b�Z�[�W���o�͂��Ă���Ԃɂ�����x[Ctrl]�{
-[C]����͂����ꍇ�ɂǂ̂悤�ȓ�����s�����Ƃ������Ƃł��B
+　シグナルの到着は基本的に非同期であり、いつどのようなタイミングでシグナ
+ルが送信されてくるかはわかりません。ブロッキング関数が処理をブロック（※1）
+している状態や、システムコール（※2）処理中の状態でシグナルを受け取るとい
+った状況も考えられます。この場合ブロッキング関数を中断してシグナルハンド
+ラに処理を移すべきなのか、ブロッキング関数を優先してシグナルを無視するべ
+きかといった問題が発生します。
+　また、シグナルハンドラの処理を実行している間に、同一のシグナル番号の新
+しいシグナルが到着した場合に、どのように動作するべきなのかといった問題も
+あります。例えばサンプルプログラムの仕様にしたがって、[Ctrl]＋[C]でシグナ
+ルハンドラへ制御を切り替え、メッセージを出力している間にもう一度[Ctrl]＋
+[C]を入力した場合にどのような動作を行うかということです。
 
-�@���̃��G���g�����g���̏����ɂ����ẮASysV�V�O�i�������̌n�ABSD�V�O�i
-�������̌n�APOSIX�V�O�i�������̌n�̂��ꂼ��ňقȂ���������s���܂��B���G
-���g�����g�����̈Ⴂ�����ꂼ��3�̏����̌n�̑傫�ȈႢ�Ƃ����Ă��悢�ł�
-�傤�B
+　このリエントラント問題の処理においては、SysVシグナル処理体系、BSDシグナ
+ル処理体系、POSIXシグナル処理体系のそれぞれで異なった動作を行います。リエ
+ントラント処理の違いがそれぞれ3つの処理体系の大きな違いといってもよいでし
+ょう。
 
-������
+●注釈
 
-�i��1�jread�V�X�e���R�[���֐��̏ꍇ�Ȃ�A�ǂݍ��ނ��߂̃f�[�^�̓�����҂�
-�Ă����Ԃł��Bread�֐��Ȃǂ̂悤�ɁA���̊֐��ł̎d�����I���܂ŏ�����
-��̂��Ă��܂��悤�Ȋ֐��̂��Ƃ��u���b�L���O�֐��ƌĂсA�������̂��Ă�
-���Ԃ̂��Ƃ��u�u���b�N���Ă���v�ƕ\�����܂��B�u���b�L���O�֐��ɂ͑���
-send�֐���accpet�֐��Ȃǂ�����܂��B
+（※1）readシステムコール関数の場合なら、読み込むためのデータの到着を待っ
+ている状態です。read関数などのように、その関数での仕事が終わるまで処理を
+占領してしまうような関数のことをブロッキング関数と呼び、処理を占領してい
+る状態のことを「ブロックしている」と表現します。ブロッキング関数には他に
+send関数やaccpet関数などがあります。
 
-�i��2�jOS�̃J�[�l�����񋟂���@�\�̂����A�v���Z�X����Ăяo����悤�ɂȂ�
-�Ă���@�\�A�������͂��̌Ăяo���K��̂��ƁB�t�@�C���A�N�Z�X�⃁�����̊�
-�蓖�āA�q�v���Z�X�̐����Ȃǂ̋@�\���p�ӂ���Ă��邱�Ƃ������B
-�@�ŋ߂�OS�ł́A�V�X�e���R�[���ł͂Ȃ��AAPI�iApplication Program Interfa
-ce�j�Ƃ����p����g�����Ƃ������B����́AOS�̃o�[�W�����A�b�v�Ȃǂɂ���āA
-�]���̓J�[�l�����񋟂��Ă����@�\�����C�u������ʃv���Z�X�ɂ���Ē񋟂���
-��悤�ɂȂ�ȂǁA�������@�����l�����Ă��邱�ƂɑΉ��������̂ł���B
+（※2）OSのカーネルが提供する機能のうち、プロセスから呼び出せるようになっ
+ている機能、もしくはその呼び出し規約のこと。ファイルアクセスやメモリの割
+り当て、子プロセスの生成などの機能が用意されていることが多い。
+　最近のOSでは、システムコールではなく、API（Application Program Interfa
+ce）という用語を使うことが多い。これは、OSのバージョンアップなどによって、
+従来はカーネルが提供していた機能がライブラリや別プロセスによって提供され
+るようになるなど、実装方法が多様化していることに対応したものである。
 
-�E�u@nifty�F�f�W�^���p�ꎫ�T�F�V�X�e���R�[���v���Q�l�B
+・「@nifty：デジタル用語辞典：システムコール」を参考。
 http://www.nifty.com/webapp/digitalword/word/037/03749.htm
 
 
-��0x05.) SysV�V�O�i��
+■0x05.) SysVシグナル
 
-�@SysV�V�O�i���͌Â�����UNIX�Ɏ�������Ă����V�O�i���ł��邽�߁A���͂��
-���V�O�i�������̌n�ł���Ƃ����܂��B�������A���݂ł��܂����삷�鏈���̌n
-�ł��邱�ƂƁA�V�O�i���̓���̎������ǂ̂悤�ɕω����Ă������Ƃ������j��
-�m�邱�Ƃ́A����Ȍ�̋Z�p�𗝉�����菕���ɂȂ�Ǝv���܂��̂ŁA�����ł�
-�Â��Ƃ�����SysV�V�O�i���̉�����s���܂��B
+　SysVシグナルは古くからUNIXに実装されてきたシグナルであるため、もはや古
+いシグナル処理体系であるといえます。しかし、現在でもまだ動作する処理体系
+であることと、シグナルの動作の実装がどのように変化してきたかという歴史を
+知ることは、それ以後の技術を理解する手助けになると思いますので、ここでは
+古いといわれるSysVシグナルの解説も行います。
 
-��SysV�̃��G���g�����g����
+●SysVのリエントラント処理
 
-�@�O�q�̃��G���g�����g���ł��ӂꂽ�悤�ɁA���G���g�����g�����͂��ꂼ��
-�̃V�O�i�������̌n�œ��삪�قȂ��Ă��܂��BSysV�V�O�i�������̌n�ł́A����
-�悤�Ƀ��G���g�����g�������s���Ă��܂��B
+　前述のリエントラント問題でもふれたように、リエントラント処理はそれぞれ
+のシグナル処理体系で動作が異なっています。SysVシグナル処理体系では、次の
+ようにリエントラント処理を行っています。
 
-���u���b�N���̃V�O�i����M
+○ブロック中のシグナル受信
 
-�@�V�X�e���R�[����u���b�L���O�֐��Ȃǂ̏������ɃV�O�i�������������ꍇ�́A
-�V�X�e���R�[���E�u���b�L���O�֐����~�����܂��B�V�X�e���R�[���֐��̏ꍇ�A
-�G���[���ɂ�-1��Ԃ��̂ŁA�V�O�i���ɂ�銄�荞�݂����������ꍇ�G���[�i-1�j
-��f���Ē�~���܂��B
+　システムコールやブロッキング関数などの処理中にシグナルが到着した場合は、
+システムコール・ブロッキング関数を停止させます。システムコール関数の場合、
+エラー時には-1を返すので、シグナルによる割り込みが発生した場合エラー（-1）
+を吐いて停止します。
 
-������V�O�i���̓���
+○同一シグナルの到着
 
-�@SysV�V�O�i���ł́A���̂悤�ȏ󋵂��N����Ȃ��悤�ɂ��邱�ƂőΏ����Ă�
-�܂��B�v���O��������signal�֐���p���Ďw�肳�ꂽ�V�O�i�����󂯎��ƁAsi
-gnal�֐��Ŏw�肵���V�O�i���n���h���֏������ڂ��܂����A���̂Ƃ��V�O�i����
-������f�t�H���g�֖߂��Ă��܂��܂��B���̓�����Linux�J�[�l����libc4,5�ł�
-���l�Ȃ悤�ł��B
-�@�Ⴆ�΁A�T���v���v���O�����̏ꍇ�A[Ctrl]�{[C]�����͂��ꂽ�ꍇ�ɃV�O�i��
-�n���h���Ƃ��Ċ��荞�݂̔�����ʒm����悤�ȃ��b�Z�[�W���o�͂��A1�b�ԑҋ@
-���܂����A����1�b�Ԃ̊Ԃɂ�����x[Ctrl]�{[C]�������ꂽ�ꍇ�̏����ɂ���
-�ł��BSysV�V�O�i���ł͈�x�V�O�i���n���h�����Ăяo���ꂽ�Ƃ��ɃV�O�i����
-������f�t�H���g�ɖ߂��Ă��܂��܂��̂ŁA�T���v���v���O�����̃V�O�i���n��
-�h�����ɂ�����x[Ctrl]�{[C]���������ꍇ��SIGINT�̃f�t�H���g����ł���u�I
-���v�����s����܂��B
+　SysVシグナルでは、このような状況が起こらないようにすることで対処してい
+ます。プログラム内でsignal関数を用いて指定されたシグナルを受け取ると、si
+gnal関数で指定したシグナルハンドラへ処理を移しますが、そのときシグナルの
+動作をデフォルトへ戻してしまいます。この動きはLinuxカーネルとlibc4,5でも
+同様なようです。
+　例えば、サンプルプログラムの場合、[Ctrl]＋[C]が入力された場合にシグナル
+ハンドラとして割り込みの発生を通知するようなメッセージを出力し、1秒間待機
+しますが、この1秒間の間にもう一度[Ctrl]＋[C]が押された場合の処理について
+です。SysVシグナルでは一度シグナルハンドラが呼び出されたときにシグナルの
+動作をデフォルトに戻してしまいますので、サンプルプログラムのシグナルハン
+ドラ中にもう一度[Ctrl]＋[C]を押した場合はSIGINTのデフォルト動作である「終
+了」が実行されます。
 
-���v���O�����̏�����
+●プログラムの書き方
 
-�@��L�̓_�𓥂܂��ăT���v���̎d�l�𖞂����v���O�����������Ǝ��̂悤�ɂ�
-��܂��B�O���[�o���ϐ��𕶎���i�[�Ɏg���ȂǂƂ�������������Ă��܂����A
-�e�X�g�p�v���O�����Ƃ������Ƃŋ����Ă���Ă��������B
+　上記の点を踏まえてサンプルの仕様を満たすプログラムを書くと次のようにな
+ります。グローバル変数を文字列格納に使うなどという無茶をやっていますが、
+テスト用プログラムということで許してやってください。
 
 -----
 #include <stdio.h>
@@ -234,7 +234,7 @@ void warikomi(int signo){
 	puts(buff);
 	sleep(1);
 
-	/*�o�b�t�@�N���A*/
+	/*バッファクリア*/
 	while (buff[i] != '\0'){
 	buff[i] = '\0';
 	i++;
@@ -258,9 +258,9 @@ return 0;
 }
 -----
 
-�@�܂��Apause�֐��ɂ��Đ������܂��Bpause�֐��̓V�O�i�����󂯎��܂Ńv
-���Z�X�̎��s���u���b�N���A�V�O�i�����󂯎��ƃV�O�i���n���h�����s���pa
-use����߂�܂��B�v���g�^�C�v�͎��̂悤�ɂȂ��Ă��܂��B
+　まず、pause関数について説明します。pause関数はシグナルを受け取るまでプ
+ロセスの実行をブロックし、シグナルを受け取るとシグナルハンドラ実行後にpa
+useから戻ります。プロトタイプは次のようになっています。
 
 -----
 #include <unistd.h>
@@ -268,27 +268,27 @@ use����߂�܂��B�v���g�^�C�v�͎��̂悤�ɂȂ��Ă��܂��B
 int pause(void);
 -----
 
-�@pause�֐����߂�l��Ԃ��̂́A�V�O�i�����󂯎���ăV�O�i���ߊl�֐������
-�����ꍇ�����ł��B���̏ꍇ��-1��Ԃ��Aerrno��EINTR���ݒ肳��܂��B
+　pause関数が戻り値を返すのは、シグナルを受け取ってシグナル捕獲関数から返
+った場合だけです。この場合は-1を返し、errnoにEINTRが設定されます。
 
-�@���̃v���O�����ł́usignal(SIGINT, warikomi);�v�̕�����SIGINT�V�O�i����
-�����warikomi�֐����Ăяo���悤�ɐݒ肵�Ă��܂��B�ݒ肳�ꂽ��Ԃ�[Ctrl]
-�{[C]�iSIGINT�j����͂����warikomi�֐����Ăяo�����Ƃ��ł��܂��Bwarikom
-i�֐����ł́usignal(SIGINT, SIG_IGN);�v�̕�����[Ctrl]�{[C]�iSIGINT�j��
-������悤�ɐݒ肵�Ă��܂��B[Ctrl]�{[C]�iSIGINT�j�𖳎����邱�ƂŃV�O�i��
-�n���h���̏������ɓ����V�O�i�����������邱�Ƃ�h���ł��܂��B����ɁASysV
-�ł̓V�O�i���ɐݒ肳�ꂽ����͈�x�ł��Ăяo�����ƃf�t�H���g�̓���ɖ�
-��̂ŁA���Ƃ��usignal(SIGINT, SIG_IGN);�v�̐ݒ肪�G���[�ɂȂ��Ă�����V
-�O�i�����������邱�Ƃ͂���܂���B
-�@�������A��x�Ăяo�����ƃf�t�H���g�̓���ɖ߂��Ă��܂����̂�main�֐�
-���Őݒ肵�Ă���usignal(SIGINT, warikomi);�v���V�O�i���n���h�����ōĐݒ�
-����K�v������܂��B
+　このプログラムでは「signal(SIGINT, warikomi);」の部分でSIGINTシグナルの
+動作をwarikomi関数を呼び出すように設定しています。設定された状態で[Ctrl]
+＋[C]（SIGINT）を入力すればwarikomi関数を呼び出すことができます。warikom
+i関数内では「signal(SIGINT, SIG_IGN);」の部分で[Ctrl]＋[C]（SIGINT）を無
+視するように設定しています。[Ctrl]＋[C]（SIGINT）を無視することでシグナル
+ハンドラの処理中に同じシグナルが到着することを防いでいます。さらに、SysV
+ではシグナルに設定された動作は一度でも呼び出されるとデフォルトの動作に戻
+るので、たとえ「signal(SIGINT, SIG_IGN);」の設定がエラーになっても同一シ
+グナルが到着することはありません。
+　しかし、一度呼び出されるとデフォルトの動作に戻ってしまうが故にmain関数
+内で設定している「signal(SIGINT, warikomi);」をシグナルハンドラ内で再設定
+する必要があります。
 
-�@�܂��A�V�X�e���R�[���֐����g�p�����v���O�������쐻�����ꍇ�A�V�X�e���R
-�[���̃u���b�N����SIGINT�V�O�i�����󂯎��\��������܂��B���̂Ƃ��V�X
-�e���R�[����SysV�V�O�i�������̌n�ɂ��������āA�G���[�i-1�j��Ԃ��Ē�~��
-�Ă��܂��܂��B�������������������邽�߂�SysV�V�O�i�������̌n�ł͎��̂�
-���ɃR�[�f�B���O���邱�ƂɂȂ�܂��B
+　また、システムコール関数を使用したプログラムを作製した場合、システムコ
+ールのブロック中にSIGINTシグナルを受け取る可能性があります。このときシス
+テムコールはSysVシグナル処理体系にしたがって、エラー（-1）を返して停止し
+てしまいます。こういった動作を避けるためにSysVシグナル処理体系では次のよ
+うにコーディングすることになります。
 
 -----
 #include <stdio.h>
@@ -307,7 +307,7 @@ void warikomi(int signo){
 	puts(buff);
 	sleep(1);
 
-	/*�o�b�t�@�N���A*/
+	/*バッファクリア*/
 	while (buff[i] != '\0'){
 	buff[i] = '\0';
 	i++;
@@ -339,43 +339,43 @@ return 0;
 }
 -----
 
-�@warikomi�֐����̏����͓����ł����Amain�֐�����gets�֐��̖߂�l���擾��
-�āA-1���߂��Ă����ꍇ�i�V�O�i�������������ꍇ�j�����errno�̒l��EINTR�i
-�V�X�e���R�[�����V�O�i���Ɋ��荞�܂ꂽ�ꍇ�j���ǂ����𔻒f���AEINTR�ł͂�
-���G���[�̏ꍇ�ɂ͏I�����܂��B�܂�A�V�X�e���R�[�����V�O�i���̊��荞��
-�ɂ���ăG���[�ƂȂ����ꍇ�͖������ď����𑱍s����悤�ɃR�[�f�B���O����
-���܂��B
+　warikomi関数内の処理は同じですが、main関数内のgets関数の戻り値を取得し
+て、-1が戻っていた場合（シグナルが発生した場合）さらにerrnoの値がEINTR（
+システムコールがシグナルに割り込まれた場合）かどうかを判断し、EINTRではな
+いエラーの場合には終了します。つまり、システムコールがシグナルの割り込み
+によってエラーとなった場合は無視して処理を続行するようにコーディングして
+います。
 
 
-��0x06.) BSD�V�O�i��
+■0x06.) BSDシグナル
 
-�@�O�q��SysV�V�O�i�������̌n�̃��G���g�����g���̉������@�͏��X�����ȉ�
-�����@�ł����B������BSD�J���ҒB�͕ʂȕ��@�Ń��G���g�����g�����������悤
-�Ƃ��܂����B
+　前述のSysVシグナル処理体系のリエントラント問題の解決方法は少々強引な解
+決方法でした。そこでBSD開発者達は別な方法でリエントラント問題を解決しよう
+としました。
 
-��BSD�̃��G���g�����g����
+●BSDのリエントラント処理
 
-�@BSD�����̌n�ł͂��ꂼ�ꎟ�̂悤�Ƀ��G���g�����g�������s���Ă��܂��B
+　BSD処理体系ではそれぞれ次のようにリエントラント処理を行っています。
 
-���u���b�N���̃V�O�i����M
+○ブロック中のシグナル受信
 
-�@BSD�V�O�i�������̌n�ł́A�V�X�e���R�[����u���b�L���O�֐��Ȃǂ̏�������
-�V�O�i�������������ꍇ�́A�G���[�l�Ŗ߂�悤�Ȃ��Ƃ͂��܂���B�ꎞ�I�ɃV
-�O�i���n���h���ɏ������ڂ�܂����A�V�O�i���n���h���̏������I���΃V�X�e
-���R�[����u���b�L���O�֐��Ȃǂ̏����𑱍s���邱�ƂɂȂ�܂��B
+　BSDシグナル処理体系では、システムコールやブロッキング関数などの処理中に
+シグナルが到着した場合は、エラー値で戻るようなことはしません。一時的にシ
+グナルハンドラに処理が移りますが、シグナルハンドラの処理が終わればシステ
+ムコールやブロッキング関数などの処理を続行することになります。
 
-������V�O�i���̓���
+○同一シグナルの到着
 
-�@����V�O�i�����V�O�i���n���h���̎��s���ɓ��������ꍇ�A��ɓ��������V�O
-�i����OS�ɂ���ĕۗ��i�y���f�B���O�j����܂��B�V�O�i���n���h���̎��s����
-��ɕۗ�����Ă����V�O�i������������A��ɓ��������V�O�i���ɂ���ĐV����
-�V�O�i���n���h�����Ăяo����܂��BOS�ɂ���ĕۗ�����邽�߁A��x�V�O�i��
-�n���h�����Ăяo����Ă��f�t�H���g�̓���ɖ߂邱�Ƃ͂���܂���B���Ȃ݂ɁA
-glibc2���C�u�����ł�BSD�̓���ɏ]���Ă���悤�ł��B
+　同一シグナルがシグナルハンドラの実行中に到着した場合、後に到着したシグ
+ナルはOSによって保留（ペンディング）されます。シグナルハンドラの実行完了
+後に保留されていたシグナルが処理され、後に到着したシグナルによって新たに
+シグナルハンドラが呼び出されます。OSによって保留されるため、一度シグナル
+ハンドラが呼び出されてもデフォルトの動作に戻ることはありません。ちなみに、
+glibc2ライブラリではBSDの動作に従っているようです。
 
-���v���O�����̏�����
+●プログラムの書き方
 
-�@BSD�V�O�i�������̌n�ŃT���v���v���O�����������ƁA���̂悤�ɂȂ�܂��B
+　BSDシグナル処理体系でサンプルプログラムを書くと、次のようになります。
 
 -----
 #include <stdio.h>
@@ -392,7 +392,7 @@ void warikomi(int signo){
 	puts(buff);
 	sleep(1);
 
-	/*�o�b�t�@�N���A*/
+	/*バッファクリア*/
 	while (buff[i] != '\0'){
 	buff[i] = '\0';
 	i++;
@@ -414,46 +414,46 @@ return 0;
 }
 -----
 
-�@BSD�V�O�i���̓V�X�e���R�[�����̃V�O�i�����荞�݂��G���[�Ŗ߂炸�A����V
-�O�i�����������Ă��V�����V�O�i����ۗ�����̂ŁA���̂悤�ɔ��ɃX�g���[
-�g�ȏ��������ł��܂��B
-�@�܂��Alibc5�V�X�e���ɂ�����<signal.h>�̂�����<bsd/signal.h>���C���N��
-�[�h����ƁAsignal()��__bsd_signal�ɍĒ�`�����BSD�V�O�i�������̌n�ƂȂ�
-�܂��B�ǂ���̎�ނ�signal�֐���sigaction�֐���p���č��ꂽ���C�u������
-�[�`���ł���A��������܂���B
+　BSDシグナルはシステムコール中のシグナル割り込みをエラーで戻らず、同一シ
+グナルが到着しても新しいシグナルを保留するので、このように非常にストレー
+トな書き方ができます。
+　また、libc5システムにおいて<signal.h>のかわりに<bsd/signal.h>をインクル
+ードすると、signal()は__bsd_signalに再定義されてBSDシグナル処理体系となり
+ます。どちらの種類のsignal関数もsigaction関数を用いて作られたライブラリル
+ーチンであり、推奨されません。
 
 
-��0x07.) POSIX�V�O�i��
+■0x07.) POSIXシグナル
 
-�@���G���g�����g���Ɋւ��āA�ꌩ�D�ꂽ�����@�Ǝv��ꂽBSD�V�O�i���́A�O
-�҂ł��ӂꂽ�悤�ɂ��܂蕁�y���܂���ł����B���̂����A2�̏����̌n���ł�
-�����ƂŌ݊����̖�肪�\��܂����B
-�@���݂ł͂��̂悤�ȁA2�̏����̌n�����������A���ׂƂ����󋵂�ŊJ����
-����POSIX�����肵��POSIX�V�O�i�������荞�݂���������ׂ��Ƃ���Ă��܂��B
+　リエントラント問題に関して、一見優れた解決法と思われたBSDシグナルは、前
+編でもふれたようにあまり普及しませんでした。そのうえ、2つの処理体系ができ
+たことで互換性の問題が表れました。
+　現在ではこのような、2つの処理体系が入り交じり、混沌とした状況を打開する
+ためPOSIXが策定したPOSIXシグナル処割り込みを実装するべきとされています。
 
-��POSIX�̃��G���g�����g����
+●POSIXのリエントラント処理
 
-�@POSIX�V�O�i�������̌n�̃f�t�H���g�ł́A���̂悤�ɂȂ��Ă��܂��B�������A
-�����̓���͐ݒ�ɂ���ĕς��邱�Ƃ��ł��邽�߁ABSD�̓����SysV�̓����
-�͕킷�邱�Ƃ��ł��܂��B
+　POSIXシグナル処理体系のデフォルトでは、次のようになっています。しかし、
+これらの動作は設定によって変えることができるため、BSDの動作もSysVの動作も
+模倣することができます。
 
-���u���b�N���̃V�O�i����M
+○ブロック中のシグナル受信
 
-�@POSIX�̃f�t�H���g�ł́ASysV�̂悤�ɃV�X�e���R�[���Ȃǂ̃u���b�N���ɃV�O
-�i�������������ꍇ�A�G���[�i-1�j��f���Ē�~���܂��B
+　POSIXのデフォルトでは、SysVのようにシステムコールなどのブロック中にシグ
+ナルが到着した場合、エラー（-1）を吐いて停止します。
 
-������V�O�i���̓���
+○同一シグナルの到着
 
-�@�f�t�H���g�ł�BSD�̂悤�ɐV�������������V�O�i����ۗ����܂��B����䂦��
-�V�O�i���n���h�����Ăяo����邽�тɃV�O�i���̓�����f�t�H���g�ɖ߂�����
-�����܂���B
+　デフォルトではBSDのように新しく到着したシグナルを保留します。それゆえに
+シグナルハンドラが呼び出されるたびにシグナルの動作をデフォルトに戻すこと
+もしません。
 
-��sigaction�֐�
+●sigaction関数
 
-�@POSIX�V�O�i�������̌n�ł�BSD�̃V�O�i���ۗ̕��Ƃ����l����������A�V�O
-�i���}�X�N�ŃV�O�i���̓�����w�肵�܂��BPOSIX�ł�sigaction�V�X�e���R�[��
-�֐����g���ăV�O�i���̓����ݒ肵�܂��Bsigaction�̃v���g�^�C�v�͎��̂悤
-�ɂȂ��Ă��܂��B
+　POSIXシグナル処理体系ではBSDのシグナルの保留という考えを取り入れ、シグ
+ナルマスクでシグナルの動作を指定します。POSIXではsigactionシステムコール
+関数を使ってシグナルの動作を設定します。sigactionのプロトタイプは次のよう
+になっています。
 
 -----
 #include <signal.h>
@@ -461,16 +461,16 @@ return 0;
 int sigaction(int signum, const struct sigaction *newaction, struct sigaction *oldaction);
 -----
 
-�@��1������signum�ɂ�SIGKILL��SIGSTOP�ȊO�̃V�O�i�����Ȃ�ł��w��ł��܂��B
-��2������act��NULL�ȊO�ł���΁Asignum�̐V��������Ƃ���act���ݒ肳��܂��B
-��3������oldact��NULL�łȂ��Ȃ�΁A���܂ł̓��삪oldact�Ɋi�[����܂��B��
-�܂�A�V�O�i���̌Â����삪�i�[����Ă���sigaction�\���̂��R�s�[����܂��B
-�@sigaction�֐��̖߂�l�́A�������ɂ�0���Ԃ�A���s���ɂ�-1���Ԃ�܂��B
+　第1引数のsignumにはSIGKILLとSIGSTOP以外のシグナルをなんでも指定できます。
+第2引数のactがNULL以外であれば、signumの新しい動作としてactが設定されます。
+第3引数のoldactがNULLでないならば、今までの動作がoldactに格納されます。つ
+まり、シグナルの古い動作が格納されているsigaction構造体がコピーされます。
+　sigaction関数の戻り値は、成功時には0が返り、失敗時には-1が返ります。
 
-��sigaction�\����
+●sigaction構造体
 
-�@��2������act���i�[����sigaction�\���͎̂��̂悤�ɂȂ��Ă��܂��B����sig
-action�\���̂�p���ăV�O�i���̓����ݒ肵�܂��B
+　第2引数のactを格納するsigaction構造体は次のようになっています。このsig
+action構造体を用いてシグナルの動作を設定します。
 
 -----
 struct sigaction {
@@ -482,35 +482,35 @@ struct sigaction {
 }
 -----
 
-�Esa_handler
-�@sigaction�֐��̑������ŗ^����ꂽ�V�O�i���ւ̓����ݒ�
+・sa_handler
+　sigaction関数の第一引数で与えられたシグナルへの動作を設定
 
-�Esa_sigaction
-�@���ڍׂȏ��������Ɏ󂯎�邱�Ƃ̂ł���V�O�i���n���h����ݒ�
+・sa_sigaction
+　より詳細な情報を引数に受け取ることのできるシグナルハンドラを設定
 
-�Esa_mask
-�@�V�O�i���n���h�����s���Ƀu���b�N����V�O�i����ݒ�
+・sa_mask
+　シグナルハンドラ実行中にブロックするシグナルを設定
 
-�Esa_flags
-�@����̏ڍׂ�ݒ肷��t���O
+・sa_flags
+　動作の詳細を設定するフラグ
 
-�Esa_restorer
-�@�@�p�~�\��
+・sa_restorer
+　　廃止予定
 
-��sa_handler
+○sa_handler
 
-�@int�^�̈������ЂƂƂ���void��Ԃ��֐��ւ̃|�C���^�ł��B������sigacti
-on�֐��̑�1�����ŗ^����ꂽ�V�O�i���ւ̓����ݒ肵�܂��B�Ⴆ��SIG_IGN��
-�w�肷��΃V�O�i���𖳎����ASIG_DEL�Ǝw�肷��΃V�O�i���̓�����f�t�H���g
-�ɖ߂��A�֐��̃A�h���X���w�肷��Ƒ��M���ꂽ�V�O�i�������ʂ��邽�߂̃p��
-���[�^�i�V�O�i���ԍ��j���t�����Ă��̊֐����Ăяo����܂��B
+　int型の引数をひとつとってvoidを返す関数へのポインタです。ここでsigacti
+on関数の第1引数で与えられたシグナルへの動作を設定します。例えばSIG_IGNと
+指定すればシグナルを無視し、SIG_DELと指定すればシグナルの動作をデフォルト
+に戻し、関数のアドレスを指定すると送信されたシグナルを識別するためのパラ
+メータ（シグナル番号）が付けられてその関数が呼び出されます。
 
-��sa_sigaction
+○sa_sigaction
 
-�@���ڍׂȏ��������Ɏ󂯎�邱�Ƃ̂ł���V�O�i���n���h����ݒ肵�܂��B
-a_flags��SA_SIGINFO�������邱�Ƃ�sa_handler�̑���Ɏg�p�ł���悤�ɂȂ�
-�܂��B
-�@sa_sigaction�̃p�����[�^�ł���siginfo_t�͎��̗v�f�����\���̂ł��B
+　より詳細な情報を引数に受け取ることのできるシグナルハンドラを設定します。
+a_flagsにSA_SIGINFOを加えることでsa_handlerの代わりに使用できるようになり
+ます。
+　sa_sigactionのパラメータであるsiginfo_tは次の要素を持つ構造体です。
 
 -----
 siginfo_t {
@@ -531,164 +531,164 @@ siginfo_t {
 }
 -----
 
-�@si_signo�̓V�X�e���ɂ���Đ������ꂽ�V�O�i���ԍ����i�[����Ă���Asi_e
-rrno��0�ȊO�ł����errno.h�Ŋ֘A�t�����ꂽ�G���[�ԍ����i�[����Asi_code��
-�̓V�O�i���������������R��\���R�[�h���i�[����܂��B���̑��̕ϐ��ɂ���
-�̓V�O�i���ɂ���ĕς���Ă��܂��Bsi_pid�̓V�O�i���𑗐M�����v���Z�X��ID
-���i�[����Asi_uid�̓V�O�i�����M���v���Z�X�̎����[�UID���i�[����܂��Bsi
-_status�͏I���l��I���V�O�i�����i�[����Asi_value�ɂ̓V�O�i���l���Asi_ad
-dr�ɂ̓t�H���g���Ă��閽�߂̃A�h���X���i�[����܂��B
+　si_signoはシステムによって生成されたシグナル番号が格納されており、si_e
+rrnoが0以外であればerrno.hで関連付けされたエラー番号が格納され、si_codeに
+はシグナルが発生した理由を表すコードが格納されます。その他の変数について
+はシグナルによって変わってきます。si_pidはシグナルを送信したプロセスのID
+が格納され、si_uidはシグナル送信元プロセスの実ユーザIDが格納されます。si
+_statusは終了値や終了シグナルが格納され、si_valueにはシグナル値が、si_ad
+drにはフォルトしている命令のアドレスが格納されます。
 
-�@si_code�̓V�O�i���������������R��\�����R�[�h���i�[����܂��B���̒l���A
-si_code�Ɋi�[����邱�ƂɂȂ�܂��B
+　si_codeはシグナルが発生した理由を表したコードが格納されます。次の値が、
+si_codeに格納されることになります。
 
-�ESI_USER
-�@kill()�Araise()�Ȃǂ��瑗��ꂽ�V�O�i��
+・SI_USER
+　kill()、raise()などから送られたシグナル
 
-�ESI_QUEUE
-�@sigqueue()���瑗�M���ꂽ�V�O�i��
+・SI_QUEUE
+　sigqueue()から送信されたシグナル
 
-�ESI_TIMER
-�@timer_settime()�Őݒ肳�ꂽ�^�C�}�[���I���������ɐ������ꂽ�V�O�i��
+・SI_TIMER
+　timer_settime()で設定されたタイマーが終了した時に生成されたシグナル
 
-�ESI_ASYNCIO
-�@�񓯊�I/O�̗v���������������ɐ������ꂽ�V�O�i��
+・SI_ASYNCIO
+　非同期I/Oの要求が完了した時に生成されたシグナル
 
-�ESI_MESGQ
-�@��̃��b�Z�[�W�L���[�Ƀ��b�Z�[�W�������������ɐ������ꂽ�V�O�i��
+・SI_MESGQ
+　空のメッセージキューにメッセージが到着した時に生成されたシグナル
 
-�@��L�ŋ������C�x���g��֐��ȊO�ŃV�O�i�����������ꂽ�ꍇ�Asi_code�ɂ͏�
-�L�̒l�Ƃ͈قȂ�l�i�����n��`�̒l�j���i�[����邱�ƂɂȂ�܂��BSignal��
-��͂ǂ̃V�O�i���ɂ����Ă̗��R�Ȃ̂���\���Ă��܂��B�V�O�i���̎�ނɂ��
-�Ĕ������R�ɂ΂��������܂��B
+　上記で挙げたイベントや関数以外でシグナルが生成された場合、si_codeには上
+記の値とは異なる値（処理系定義の値）が格納されることになります。Signalの
+列はどのシグナルにおいての理由なのかを表しています。シグナルの種類によっ
+て発生理由にばらつきがあります。
 
   Signal    Code            Reason
   ________________________________________________________________
   SIGILL
-            ILL_ILLOPC      �s���ȃI�y�R�[�h
-            ILL_ILLOPN      �s���ȃI�y�����h
-            ILL_ILLADR      �s���ȃA�h���X���[�h
-            ILL_ILLTRP      �s���ȃg���b�v
-            ILL_PRVOPC      �����I�y�R�[�h
-            ILL_PRVREG      �������W�X�^
-            ILL_COPROC      �R�v���Z�b�T�G���[
-            ILL_BADSTK      �����X�^�b�N�G���[
+            ILL_ILLOPC      不当なオペコード
+            ILL_ILLOPN      不当なオペランド
+            ILL_ILLADR      不当なアドレスモード
+            ILL_ILLTRP      不当なトラップ
+            ILL_PRVOPC      特権オペコード
+            ILL_PRVREG      特権レジスタ
+            ILL_COPROC      コプロセッサエラー
+            ILL_BADSTK      内部スタックエラー
   ________________________________________________________________
   SIGFPE
-            FPE_INTDIV      0�ɂ�鐮�����Z
-            FPE_INTOVF      �����̃I�[�o�t���[
-            FPE_FLTDIV      0�ɂ�镂�������_���Z
-            FPE_FLTOVF      ���������_�̃I�[�o�t���[
-            FPE_FLTUND      ���������_�̃A���_�t���[
-            FPE_FLTRES      ���������_�̕s���m�Ȍ���
-            FPE_FLTINV      �����ȕ��������_���Z
-            FPE_FLTSUB      �Y�����͈̔͒���
+            FPE_INTDIV      0による整数除算
+            FPE_INTOVF      整数のオーバフロー
+            FPE_FLTDIV      0による浮動小数点除算
+            FPE_FLTOVF      浮動小数点のオーバフロー
+            FPE_FLTUND      浮動小数点のアンダフロー
+            FPE_FLTRES      浮動小数点の不正確な結果
+            FPE_FLTINV      無効な浮動小数点演算
+            FPE_FLTSUB      添え字の範囲超過
   ________________________________________________________________
-  SIGSEGV   SEGV_MAPERR     �A�h���X���I�u�W�F�N�g�Ƀ}�b�v���ĂȂ�
-            SEGV_ACCERR     �}�b�v�����I�u�W�F�N�g�̖����ȋ���
+  SIGSEGV   SEGV_MAPERR     アドレスがオブジェクトにマップしてない
+            SEGV_ACCERR     マップしたオブジェクトの無効な許可
   ________________________________________________________________
   SIGBUS
-            BUS_ADRALN      �����ȃA�h���X����
-            BUS_ADRERR      ���݂��Ȃ������A�h���X
-            BUS_OBJERR      �I�u�W�F�N�g���L�̃n�[�h�E�F�A�G���[
-            BUS_XMEM        I/O�A�h���X�ւ̗\��ςݖ���
+            BUS_ADRALN      無効なアドレス整列
+            BUS_ADRERR      存在しない物理アドレス
+            BUS_OBJERR      オブジェクト特有のハードウェアエラー
+            BUS_XMEM        I/Oアドレスへの予約済み命令
   ________________________________________________________________
   SIGTRAP
-            TRAP_BRKPT      �v���Z�X�̃u���[�N�|�C���g
-            TRAP_TRACE      �v���Z�X�̃g���[�X�g���b�v
+            TRAP_BRKPT      プロセスのブレークポイント
+            TRAP_TRACE      プロセスのトレーストラップ
   ________________________________________________________________
   SIGCHLD
-            CLD_EXITED      �q�v���Z�X�����݂��Ă�
-            CLD_KILLED      �q���I��������ꂽ
-            CLD_DUMPED      �q���I�����R�A�t�@�C�����쐬����
-            CLD_TRAPPED     �g���[�X�����q���g���b�v���Ă���
-            CLD_STOPPED     �q�v���Z�X�̒�~
-            CLD_CONTINUED   ��~�����q�v���Z�X�̍ĊJ
+            CLD_EXITED      子プロセスが存在してる
+            CLD_KILLED      子が終了させられた
+            CLD_DUMPED      子が終了しコアファイルを作成した
+            CLD_TRAPPED     トレースした子がトラップしている
+            CLD_STOPPED     子プロセスの停止
+            CLD_CONTINUED   停止した子プロセスの再開
   ________________________________________________________________
   SIGPOLL
-            POLL_IN         �f�[�^�����͉\
-            POLL_OUT        �o�̓o�b�t�@���g�p�\
-            POLL_MSG        ���̓��b�Z�[�W���g�p�\
-            POLL_ERR        I/O�G���[
-            POLL_PRI        �D��I���͂��g�p�\
-            POLL_HUP        �f�o�C�X����ڑ�
+            POLL_IN         データが入力可能
+            POLL_OUT        出力バッファが使用可能
+            POLL_MSG        入力メッセージが使用可能
+            POLL_ERR        I/Oエラー
+            POLL_PRI        優先的入力が使用可能
+            POLL_HUP        デバイスが非接続
 
-��sa_mask
+○sa_mask
 
-�@�V�O�i���̓V�O�i���n���h���̏������ɑ��̃V�O�i���̃V�O�i���n���h������
-�яo�����Ƃ��ł��A���ꂪ���ƂȂ邱�Ƃ�����܂��Bsa_mask�v�f�́Asigacti
-on�֐��̑�1�����ŗ^����ꂽ�V�O�i���̃V�O�i���n���h�����s���ɖ����iblock�j
-����V�O�i���̃}�X�N��\���܂��B���ꂪ�ݒ�ł���̂�SIG_IGN�ASIG_DEL�ȊO
-�̃V�O�i���n���h���ł��B
-�@����ɁASA_NODEFER�t���O���w�肳��Ă��Ȃ��ꍇ�́A�V�O�i���n���h������
-�яo�����V�O�i���ɂ�sa_mask���K�p����܂��B�Ⴆ��SIGINT�ŌĂяo���ꂽ�V�O
-�i���n���h���������ɁA�V����SIGINT�����������ꍇ�A�V������������SIGINT��
-�������܂��B����̓f�t�H���g�ƂȂ��Ă��܂��B
+　シグナルはシグナルハンドラの処理中に他のシグナルのシグナルハンドラを呼
+び出すことができ、これが問題となることがあります。sa_mask要素は、sigacti
+on関数の第1引数で与えられたシグナルのシグナルハンドラ実行中に無視（block）
+するシグナルのマスクを表します。これが設定できるのはSIG_IGN、SIG_DEL以外
+のシグナルハンドラです。
+　さらに、SA_NODEFERフラグが指定されていない場合は、シグナルハンドラを呼
+び出したシグナルにもsa_maskが適用されます。例えばSIGINTで呼び出されたシグ
+ナルハンドラ処理中に、新たにSIGINTが到着した場合、新しく到着したSIGINTを
+無視します。これはデフォルトとなっています。
 
-�@sa_mask�͂ЂƂ����ނ̃V�O�i��������boolen�^�̃t���O�̏W���Ƃ��Ď���
-����Ă���A���̃t���O�Z�b�g�̑���͎���4�̊֐���p���܂��B
+　sa_maskはひとつが一種類のシグナルを扱うboolen型のフラグの集合として実装
+されており、このフラグセットの操作は次の4つの関数を用います。
 
 -----
 int sigemptyset(sigset_t *set)
-    /* set�̑S�t���O���Z�b�g */
+    /* setの全フラグをセット */
 
 int sigfillset(sigset_t *set)
-     /* set�̑S�t���O�����Z�b�g */
+     /* setの全フラグをリセット */
 
 int sigaddset(sigset_t *set, int signum)
-     /* signum�Ŏw�肵���t���O���ʂɃZ�b�g */
+     /* signumで指定したフラグを個別にセット */
 
 int sigdelset(sigset_t *set, int signum)
-     /* signum�Ŏw�肵���t���O���ʂɃ��Z�b�g */
+     /* signumで指定したフラグを個別にリセット */
 -----
 
-��sa_flags
+○sa_flags
 
-�@sa_flags�̓V�O�i���n���h���̓����ύX���邽�߂̃t���O�̏W�����w�肵��
-���Bsa_flags�ɂ́A���̃t���O�̘_���a���Ƃ������̂��w�肵�܂��B
+　sa_flagsはシグナルハンドラの動作を変更するためのフラグの集合を指定しま
+す。sa_flagsには、次のフラグの論理和をとったものを指定します。
 
-�ESA_NOCLDSTOP
-�@signum��SIGCHLD�̏ꍇ�A�q�v���Z�X����~������ĊJ�����肵���Ƃ���SIGCH
-LD�̒ʒm���󂯂Ȃ��Ȃ�܂��B 
+・SA_NOCLDSTOP
+　signumがSIGCHLDの場合、子プロセスが停止したり再開したりしたときにSIGCH
+LDの通知を受けなくなります。 
 
-�ESA_NOCLDWAIT
-�@signum��SIGCHLD�̏ꍇ�A�q�v���Z�X���I�������Ƃ��Ɏq�v���Z�X���]���r�v��
-�Z�X�ɕω������܂���iLinux2.6�ȍ~�j�B
+・SA_NOCLDWAIT
+　signumがSIGCHLDの場合、子プロセスが終了したときに子プロセスをゾンビプロ
+セスに変化させません（Linux2.6以降）。
 
-�ESA_RESETHAND
-�@�V�O�i���n���h�����Ă΂�邲�ƂɃV�O�i���̓�����f�t�H���g�ɖ߂��܂��B
-SvsV�V�O�i�������̌n�̂悤�ȓ�������܂��B
+・SA_RESETHAND
+　シグナルハンドラが呼ばれるごとにシグナルの動作をデフォルトに戻します。
+SvsVシグナル処理体系のような動作をします。
 
-�ESA_ONSTACK
-�@sigaltstack�֐��Œ񋟂����A�ʂ̃V�O�i���X�^�b�N�ŃV�O�i���n���h������
-�яo���܂��B�ʂ̃V�O�i���X�^�b�N�����p�\�łȂ���΁A�f�t�H���g�̃X�^�b
-�N���g�p����܂��B
+・SA_ONSTACK
+　sigaltstack関数で提供される、別のシグナルスタックでシグナルハンドラを呼
+び出します。別のシグナルスタックが利用可能でなければ、デフォルトのスタッ
+クが使用されます。
 
-�ESA_RESTART
-�@�������̃V�X�e���R�[�����V�O�i���̓����̑O��ōĊJ�ł���悤�ɂ��āA
-BSD�V�O�i�������̌n�̃Z�}���e�B�b�N�X�ƌ݊����̂��铮���񋟂��܂��B
+・SA_RESTART
+　いくつかのシステムコールをシグナルの到着の前後で再開できるようにして、
+BSDシグナル処理体系のセマンティックスと互換性のある動作を提供します。
 
-�ESA_NODEFER
-�@���ꎩ�g�̃V�O�i���n���h�������ɂ��鎞�ł����̃V�O�i�����u���b�N���Ȃ�
-�悤�ɂ��܂��B�܂�ABSD�V�O�i�������̌n����ۗ��Ƃ����T�O����菜������
-���ȓ�������܂��B
+・SA_NODEFER
+　それ自身のシグナルハンドラ内部にいる時でもそのシグナルをブロックしない
+ようにします。つまり、BSDシグナル処理体系から保留という概念を取り除いたよ
+うな動作をします。
 
-�ESA_SIGINFO
-�@�V�O�i���n���h���͂ЂƂł͂Ȃ��A3�̈��������Ƃ�܂��B���̏ꍇ��sa_
-handler�̂�����sa_sigaction��ݒ肵�Ȃ���΂Ȃ�܂��� �B
+・SA_SIGINFO
+　シグナルハンドラはひとつではなく、3つの引き数をとります。この場合はsa_
+handlerのかわりにsa_sigactionを設定しなければなりません 。
 
-��sa_restorer
+○sa_restorer
 
-�@�p�~�\��ł��̂ŁA�g�p����ׂ��ł͂���܂���BPOSIX�ł�sa_restorer�v�f
-�Ɋւ���K��͂Ȃ��Ȃ��Ă��܂��B
+　廃止予定ですので、使用するべきではありません。POSIXではsa_restorer要素
+に関する規定はなくなっています。
 
-���v���O�����̏�����
+●プログラムの書き方
 
-�@sigaction�֐���p���ăT���v���̃v���O�����������ɂ́A���̂悤�ɂ��܂��B
-sigaction�́Asa_flags�̃����o�̐ݒ�ɂ����BSD���̓����SysV���̓������
-��ł��܂��̂�2�p�^�[���̋L�q���@��������܂��B
+　sigaction関数を用いてサンプルのプログラムを書くには、次のようにします。
+sigactionは、sa_flagsのメンバの設定によってBSD風の動作もSysV風の動作も模
+倣できますので2パターンの記述方法を説明します。
 
-��BSD���̓����������ꍇ
+○BSD風の動作をさせる場合
 
 -----
 #include <stdio.h>
@@ -705,7 +705,7 @@ void warikomi(int signo){
 	puts(buff);
 	sleep(1);
 
-	/*�o�b�t�@�N���A*/
+	/*バッファクリア*/
 	while (buff[i] != '\0'){
 	buff[i] = '\0';
 	i++;
@@ -736,13 +736,13 @@ return 0;
 }
 -----
 
-�@main�֐�����memset��sa�\���̂�0�ŃN���A���Ă��܂����A�����܂ňꉞ�ł���
-��΂ɕK�v�ȏ����ł͂Ȃ��ł��傤�Bsa.sa_handler��warikomi�֐����n���h����
-���Đݒ肵�Ă��܂��Bsa.sa_flags�ŃV�X�e���R�[���𒆎~���Ȃ��悤�ɐݒ肵��
-���Bsigaction�֐���SIG_INT�̃V�O�i����sa�\���̂̐ݒ��K�p���Ă��܂��B��
-��ŁABSD���̓����͕킷�邱�Ƃ��ł��܂��B
+　main関数内のmemsetでsa構造体を0でクリアしていますが、あくまで一応であり
+絶対に必要な処理ではないでしょう。sa.sa_handlerでwarikomi関数をハンドラと
+して設定しています。sa.sa_flagsでシステムコールを中止しないように設定しま
+す。sigaction関数でSIG_INTのシグナルにsa構造体の設定を適用しています。こ
+れで、BSD風の動作を模倣することができます。
 
-��SysV���̓����������ꍇ
+○SysV風の動作をさせる場合
 
 -----
 #include <stdio.h>
@@ -765,7 +765,7 @@ void warikomi(int signo){
 	puts(buff);
 	sleep(1);
 
-	/*�o�b�t�@�N���A*/
+	/*バッファクリア*/
 	while (buff[i] != '\0'){
 	buff[i] = '\0';
 	i++;
@@ -809,50 +809,50 @@ return 0;
 }
 -----
 
-�@SysV�V�O�i����͕킷��ɂ�sa�\���̂�ignore�\���̂��n���h������main�֐�
-���Ő؂�ւ��邱�ƂŎ������Ă��܂��B
-�@sa�\���̂̓n���h����warikomi�֐��ɐݒ肵�Ă���Asa_flags��SA_NODEFER��
-SA_RESETHAND��ݒ肷�邱�ƂŁA��d�ɋN������V�O�i�����u���b�N���Ȃ��悤
-�ɂ��A�V�O�i�����Ăяo����邽�тɃf�t�H���g�̓���ɂ���悤�ɂ��Ă��܂��B
-�@main�֐����ł�sa�\���̂�K�p���A�n���h�����Ăяo������ignore�\���̂�
-�K�p���邱�ƂŃn���h�����ŐV���ɓ�������V�O�i���𖳎����Ă��܂��B���̂�
-��main�֐��֖߂��Ă��܂��Ă͎���SIGINT���������Ă��f�t�H���g����֖߂���
-���܂����߁A�n���h���̍Ō��SvsV�Ɠ����悤��sa�\���̂�K�p���ăV�O�i����
-������҂��󂯂܂��B
+　SysVシグナルを模倣するにはsa構造体とignore構造体をハンドラ内とmain関数
+内で切り替えることで実現しています。
+　sa構造体はハンドラをwarikomi関数に設定しており、sa_flagsにSA_NODEFERと
+SA_RESETHANDを設定することで、二重に起動するシグナルをブロックしないよう
+にし、シグナルを呼び出されるたびにデフォルトの動作にするようにしています。
+　main関数内ではsa構造体を適用し、ハンドラが呼び出されるとignore構造体を
+適用することでハンドラ内で新たに到着するシグナルを無視しています。そのま
+まmain関数へ戻ってしまっては次にSIGINTが到着してもデフォルト動作へ戻って
+しまうため、ハンドラの最後でSvsVと同じようにsa構造体を適用してシグナルの
+到着を待ち受けます。
 
-�@���āAPOSIX�V�O�i�������̌n�̃f�t�H���g�ł̓V�O�i���n���h���������̓���
-�V�O�i���̓�����ۗ����܂��B�������A�V�O�i���̓L���[�ɓ���Ȃ��Ƃ�������
-������܂��̂ŃV�O�i���̏�Ԃ͕ۗ����������łȂ����̂ǂ��炩��������܂�
-��B�V�O�i���n���h���̏������ɁA�V�O�i���n���h�����Ăяo�����V�O�i���Ɠ�
-��̃V�O�i���������񓞒����Ă��A�ŏ��ɑ����Ă�������V�O�i����ۗ����āA
-�c���S�Ĕj�����܂��B�Ⴆ��SIGINT�Ńn���h�����Ăяo���A���̌�5��SIGINT��
-�����������Ƃ��Ă��ۗ������̂͂͂��߂�1��ŁA���4��͔j������Ă��܂�
-�܂��B�V�O�i���n���h���̏����I�����ɕۗ�����Ă����V�O�i�������s����܂��B
+　さて、POSIXシグナル処理体系のデフォルトではシグナルハンドラ処理中の同一
+シグナルの到着を保留します。しかし、シグナルはキューに入らないという性質
+がありますのでシグナルの状態は保留中かそうでないかのどちらかしかありませ
+ん。シグナルハンドラの処理中に、シグナルハンドラを呼び出したシグナルと同
+一のシグナルが複数回到着しても、最初に送られてきた同一シグナルを保留して、
+残りを全て破棄します。例えばSIGINTでハンドラを呼び出し、その後5回SIGINTを
+発生させたとしても保留されるのははじめの1回で、後の4回は破棄されてしまい
+ます。シグナルハンドラの処理終了時に保留されていたシグナルが実行されます。
 
 
-��0x08.) volatile�C���q
+■0x08.) volatile修飾子
 
-�@volatile�C���q�͕ϐ��ɏ����̍œK�������Ȃ��悤�ɃR���p�C���ɒm�点�邽
-�߂̂��̂ł��B�R���p�C���͍œK���Ƃ����H���ŕϐ��̒l��CPU�̃��W�X�^�Ɋ���
-���Ă���A�s�v�Ȗ��߂��폜����Ƃ������A�ꍇ�ɂ���Ă͏���Ȃ��Ƃ������
-����܂��B�V�O�i����p���ăv���O���������ꍇ�A���̍œK�������ɂȂ邱
-�Ƃ�����܂��B
-�@�Ⴆ�΁A���̃v���O�������������������B
+　volatile修飾子は変数に処理の最適化をしないようにコンパイラに知らせるた
+めのものです。コンパイラは最適化という工程で変数の値をCPUのレジスタに割り
+当てたり、不要な命令を削除するといった、場合によっては勝手なことをやって
+くれます。シグナルを用いてプログラムを作る場合、この最適化が問題になるこ
+とがあります。
+　例えば、次のプログラムをご覧ください。
 
 -----
 #include <stdio.h>
 #include <unistd.h>
 #include <signal.h>
 
-int warikomi_flag = 0; /*���荞�݃t���O�������l0�ɐݒ�*/
+int warikomi_flag = 0; /*割り込みフラグを初期値0に設定*/
 
 void warikomi(signo){
 
-	warikomi_flag = 1; /*���荞�݂�������������1�ɂ���*/
+	warikomi_flag = 1; /*割り込みが発生したため1にする*/
 
-	/* ....�Ȃ�炩�̏���..... */
+	/* ....なんらかの処理..... */
 
-	warikomi_flag = 0; /*���荞�ݏ������I���������0�ɖ߂�*/
+	warikomi_flag = 0; /*割り込み処理が終わったため0に戻す*/
 }
 
 int main(void){
@@ -860,65 +860,65 @@ int main(void){
 	printf("main start.\n");
 
      while(1){
-	while(warikomi_flag != 0;){ /*���荞�ݔ������ĂȂ���*/
-	   /* ....�Ȃ�炩�̏���..... */
+	while(warikomi_flag != 0;){ /*割り込み発生してない間*/
+	   /* ....なんらかの処理..... */
 	}
-	sleep(1); /*���荞�݂�����������1�b�Q�܂�*/
+	sleep(1); /*割り込みが発生した時1秒寝ます*/
      }
 return 0;
 }
 -----
 
-�@���̃v���O�����̓O���[�o���ϐ�warikomi_flag��p���Ċ��荞�݂̔�������m
-ain�֐����ł̏�����1�b�Â�������v���O�����ł��B���Ă̒ʂ�ϐ�warikomi
-_flag�̒l��0��1���ɂ���Ċ��荞�݂��������Ă���̂��ǂ����𔻒f���Ă��܂��B
-�@�������A�����R���p�C�����œK���̓r����warikomi_flag�̒l��CPU�����̃��W
-�X�^�̂ЂƂɊi�[���A����ȍ~��warikomi_flag���Q�Ƃ���镔���Ŏ�L�����u
-�ł͂Ȃ����W�X�^�ɕۑ������l���Q�Ƃ���悤�ɂȂ����ꍇ�A��Ɋ��荞�݂���
-�����Ă��Ȃ����ƂɂȂ��Ă��܂��܂��B�������������Ԃ́A�R���p�C�����x����
-�L�����u�ւ̃A�N�Z�X���������ȃ��W�X�^�ւ̃A�N�Z�X�֍œK�����邽�߂ɋN
-���蓾�܂��B
+　このプログラムはグローバル変数warikomi_flagを用いて割り込みの発生時はm
+ain関数内での処理を1秒づつ延期するプログラムです。見ての通り変数warikomi
+_flagの値が0か1かによって割り込みが発生しているのかどうかを判断しています。
+　しかし、もしコンパイラが最適化の途中でwarikomi_flagの値をCPU内部のレジ
+スタのひとつに格納し、これ以降のwarikomi_flagが参照される部分で主記憶装置
+ではなくレジスタに保存した値を参照するようになった場合、常に割り込みが発
+生していないことになってしまいます。こういった事態は、コンパイラが遅い主
+記憶装置へのアクセスよりも高速なレジスタへのアクセスへ最適化するために起
+こり得ます。
 
-�@���̂悤�ȏꍇ�A�R���p�C���ɑ΂���warikomi_flag�̒l�͕ύX�����\����
-���邱�Ƃ�m�点��K�v������܂��B���̒ʒm��volatile�C���q�ł��B��قǂ�
-�v���O�����̏ꍇ�ł��Ɓuint warikomi_flag = 0;�v�̕������uvolatile int w
-arikomi_flag = 0;�v�Ə����������ƂŒʒm���邱�Ƃ��ł��܂��B
-�@�������������R����A���荞�݂𗘗p����v���O�����̃t���O�ɂȂ�悤�ȕ�
-���ɂ�volatile�C���q�����Ă����̂�����ł��B
+　このような場合、コンパイラに対してwarikomi_flagの値は変更される可能性が
+あることを知らせる必要があります。この通知がvolatile修飾子です。先ほどの
+プログラムの場合ですと「int warikomi_flag = 0;」の部分を「volatile int w
+arikomi_flag = 0;」と書き直すことで通知することができます。
+　こういった理由から、割り込みを利用するプログラムのフラグになるような変
+数にはvolatile修飾子をつけておくのが無難です。
 
-�@�����̂��Ƃ𓪂̕Ћ��ɂ����ăV�O�i�������v���O���~���O�𖞋i���Ă�
-���������v���܂��B
+　これらのことを頭の片隅においてシグナル処理プログラミングを満喫してい
+だきたく思います。
 
 
-��0x09.) �Q�l����
+■0x09.) 参考文献
 
-�E�u���Y�N�m(�O�؏i��)�̃z�[���y�[�W�v
+・「杉浦康仁(三木淑生)のホームページ」
 http://www.nurs.or.jp/~sug/soft/super/signal.htm
 
-�E�uLinux Programmer's Manual (2)�@Manpage of SIGACTION�v
+・「Linux Programmer's Manual (2)　Manpage of SIGACTION」
 http://www.linux.or.jp/JM/html/LDP_man-pages/man2/sigaction.2.html
 
-�E�u�}�g��w�@�d�q�E���H�w�n�@�ǐ� �C��@�V�X�e���v���O�����i��5�T�j�v
+・「筑波大学　電子・情報工学系　追川 修一　システムプログラム（第5週）」
 http://www.coins.tsukuba.ac.jp/~syspro/2005/No5.html
 
-�E�u�R���J�����g���{������Ё@�e�N�j�J���h�L�������g�v
+・「コンカレント日本株式会社　テクニカルドキュメント」
 http://www.ccur.co.jp/external/TechSup/page3.html
 
-�E�wTCP/IP�\�P�b�g�v���O���~���OC����@Michael J.Donahoo/Kenneth L.Calvert�x
-�i�I�[���Ёj
+・『TCP/IPソケットプログラミングC言語　Michael J.Donahoo/Kenneth L.Calvert』
+（オーム社）
 
 
-��0x0A.) ��������
+■0x0A.) さいごに
 
-�@����͊��荞�݃v���O���~���O�̊�b�ɂ��Đ��������Ă��������܂������A
-�h�肳���Ȃ��ς��Ƃ��Ȃ��Ɗ�����ꂽ���������Ǝv���܂��B�������A���荞��
-��OS�̋@�\�̂ЂƂƂ��Ď�������Ă���_��Windows�̃C�x���g�h���u���Ƃ���
-�T�O�ɂ�������悤�ɔ��ɏd�v�ȋZ�p�ł��B���荞�݂̊T�O��m���Ă����
-�ƒm��Ȃ��̂Ƃł̓v���O�����̗����ɑ傫�ȍ����ł���\��������܂��B
-�@���荞�݂Ƃ����̂̓v���O���}�[�̊Ԃł͏펯�I�Ȃ��Ƃł�������������܂�
-�񂪁A�펯�I�Ȃ��Ƃł��邩�炱���Ċm�F�Ƃ������̂��d�v�ł͂Ȃ����Ǝv���A
-���|�[�g�����Ă��������܂����B
+　今回は割り込みプログラミングの基礎について説明させていただきましたが、
+派手さもなくぱっとしないと感じられた方も多いと思います。しかし、割り込み
+はOSの機能のひとつとして実装されている点やWindowsのイベントドリブンという
+概念にも見られるように非常に重要な技術です。割り込みの概念を知っているの
+と知らないのとではプログラムの理解に大きな差ができる可能性もあります。
+　割り込みというのはプログラマーの間では常識的なことであったかもしれませ
+んが、常識的なことであるからこそ再確認というものが重要ではないかと思い、
+レポートさせていただきました。
 
-�@�Ō�ɂȂ�܂������A�����܂œǂ�ł����������F�l�A�ǂ������肪�Ƃ�����
-���܂����B����ł͂܂�������܂��傤�B
+　最後になりましたが、ここまで読んでくださった皆様、どうもありがとうござ
+いました。それではまたお会いしましょう。
 

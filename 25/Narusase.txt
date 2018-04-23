@@ -1,26 +1,26 @@
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
---- �恛��: �n�j�[�|�b�g����낤�i�A�ڑ�9��j ---
+--- 第○章: ハニーポットを作ろう（連載第9回） ---
 
-���ҁFNarusase
+著者：Narusase
 
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 x0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0xx0xXx0x
 
 
-��0x01.) �͂��߂�
+■0x01.) はじめに
 
-�@�O���honeyd�̃l�b�g���[�N����̋@�\�ɂ��Đ������܂����B
-�@�����honeyd�̌X�̉��zPC�̐ݒ�Ɋւ��Đ����������Ǝv���܂��B
+　前回はhoneydのネットワーク周りの機能について説明しました。
+　今回はhoneydの個々の仮想PCの設定に関して説明したいと思います。
 
 
-��0x02.) �ݒ�t�@�C�����̏���
+■0x02.) 設定ファイル等の準備
 
-�@�����honeyd�̐ݒ�t�@�C���itest.config�j�Aperl�̃X�N���v�g�itest.pl�j�A
-bash�̃X�N���v�g�itest.sh�j���g�p���܂��B
+　今回はhoneydの設定ファイル（test.config）、perlのスクリプト（test.pl）、
+bashのスクリプト（test.sh）を使用します。
 
------�@/usr/local/share/honeyd/test.config
+-----　/usr/local/share/honeyd/test.config
 create template
 set template default tcp action reset
 set template default udp action block
@@ -36,7 +36,7 @@ add template tcp port 2000 "./test.sh $ipsrc $sport $ipdst $dport"
 bind 192.168.1.125 template
 -----
 
------�@/usr/local/share/honeyd/test.pl
+-----　/usr/local/share/honeyd/test.pl
 #! /usr/bin/perl
 print "<html><head><title>Hoge</title></head>\n";
 print "<body>\n";
@@ -47,12 +47,12 @@ print "</body>\n";
 print "</html>\n";  
 -----
 
------�@/usr/local/share/honeyd/test.sh
+-----　/usr/local/share/honeyd/test.sh
 #! /bin/bash
 echo "SRC=${1},${2} DST=${3},${4}" >> test.log
 -----
 
-�@�Ȃ��A���̂悤�ɓ��͂��āA�e�t�@�C���Ɋւ��Ăɍ쐬�ƌ�����t�����܂��B
+　なお、次のように入力して、各ファイルに関してに作成と権限を付加します。
 
 -----
 # echo "Log" > /usr/local/share/honeyd/test.log
@@ -61,23 +61,23 @@ echo "SRC=${1},${2} DST=${3},${4}" >> test.log
 # chmod 755 /usr/local/share/honeyd/test.sh
 -----
 
-�@�܂��APerl��SSH����������Ă����ԂŁASSH�T�[�r�X�����삵�Ă��邱�Ƃ�
-�O��Ƃ��܂��B
+　また、PerlとSSHが導入されている状態で、SSHサービスが動作していることを
+前提とします。
 
 
-��0x03.) �v���g�R�����Ƃ̃f�t�H���g����̐ݒ�
+■0x03.) プロトコルごとのデフォルト動作の設定
 
-�@���āA����ł͂����̐ݒ�t�@�C�����g���āA����honeyd�𓮂����Ă݂܂�
-�傤�B�N���̂��߂̃R�}���h�ł́Ahoneyd���̂�����Web�T�[�o�[�̋@�\�𖳌���
-����--disable-webserver�I�v�V�������g���܂��B
+　さて、それではこれらの設定ファイルを使って、早速honeydを動かしてみまし
+ょう。起動のためのコマンドでは、honeyd自体が持つWebサーバーの機能を無効に
+する--disable-webserverオプションを使います。
 
 -----
 # cd /usr/local/share/honeyd/
 # honeyd -d -f test.config -i eth1 -u 1000 -g 32767 192.168.1.125-192.168.1.126 --disable-webserver
 -----
 
-�@�ݒ�t�@�C���̎��̂悤�ȕ����ł̓v���g�R�����Ƃ̃f�t�H���g�̓�����w��
-���Ă��܂��B
+　設定ファイルの次のような部分ではプロトコルごとのデフォルトの動作を指定
+しています。
 
 -----
 set template default tcp action reset
@@ -85,33 +85,33 @@ set template default udp action block
 set template default icmp action open
 -----
 
-�@�����̐ݒ�ł�TCP�AUDP�AICMP�̊e�v���g�R���ւ̃A�N�Z�X�ɑ΂��ăf�t�H��
-�g�ł͂ǂ̂悤�ɑΉ����邩��ݒ�ł��܂��B�Ή��̎�ނ̓A�N�Z�X���󂯕t��
-��open�ƁA�A�N�Z�X���󂯓��ꂽ��ɑ����ɐڑ���ؒf����reset�A�A�N�Z�X��
-������block������܂��B
-�@�ł͎��ۂ̓�����݂Ă����܂��傤�B
-�@�܂��Ahoneyd���N��������Ԃ�192.168.1.125��TCP�̃|�[�g20�`30�������[�g
-����|�[�g�X�L�������Ă݂Ă��������B
-�@����ƁA�����Ɋ�������22�ԃ|�[�g���J���Ă���悤�Ɍ�����͂��ł��B
+　ここの設定ではTCP、UDP、ICMPの各プロトコルへのアクセスに対してデフォル
+トではどのように対応するかを設定できます。対応の種類はアクセスを受け付け
+るopenと、アクセスを受け入れた後に即座に接続を切断するreset、アクセスを無
+視するblockがあります。
+　では実際の動作をみていきましょう。
+　まず、honeydを起動した状態で192.168.1.125のTCPのポート20〜30をリモート
+からポートスキャンしてみてください。
+　すると、すぐに完了して22番ポートが開いているように見えるはずです。
 
-�@���́Areset�ƂȂ��Ă��镔����block�ɕύX���Ahoneyd���ċN�����Ă��瓯�l
-�Ƀ|�[�g�X�L�������Ă݂Ă��������B
+　次は、resetとなっている部分をblockに変更し、honeydを再起動してから同様
+にポートスキャンしてみてください。
 
 -----
 set template default tcp action reset
 -----
-��
+↓
 -----
 set template default tcp action block
 -----
 
-�@���x�́A��قǂƂ͈Ⴂ�����]�v�Ɏ��Ԃ�������22�ԃ|�[�g���J���Ă���悤
-�Ɍ�����͂��ł��B���̍���reset�̏ꍇ�����ɐڑ���؂�̂ɑ΂��āAblock��
-�ꍇ�̓c�[���Ȃǂ��^�C���A�E�g����������܂ő҂��Ă��邱�ƂɋN�����܂��B
+　今度は、先ほどとは違い少し余計に時間がかかり22番ポートが開いているよう
+に見えるはずです。この差はresetの場合即座に接続を切るのに対して、blockの
+場合はツールなどがタイムアウトが発生するまで待っていることに起因します。
 
 
-�ł́A����ICMP�ɑ΂���ݒ�̊m�F���s���܂��B
-192.168.1.125�ɑ΂���ping�����s���Ă݂Ă��������B
+では、次にICMPに対する設定の確認を行います。
+192.168.1.125に対してpingを実行してみてください。
 
 -----
 C:\>ping 192.168.1.125
@@ -129,19 +129,19 @@ Approximate round trip times in milli-seconds:
     Minimum = 0ms, Maximum =  0ms, Average =  0ms
 -----
 
-�@���̂悤�ɂ������Ping�ɉ������Ԃ��Ă��܂��B
+　このようにきちんとPingに応答が返ってきます。
 
-�@���ɉ��L�̂悤��ICMP�̐ݒ��open����block�ɕύX����honeyd���ċN�����܂��B�����āA�ēxPing�����s���܂��B
+　次に下記のようにICMPの設定をopenからblockに変更してhoneydを再起動します。そして、再度Pingを実行します。
 
 -----
 set default default icmp action open
 -----
-��
+↓
 -----
 set default default icmp action block
 -----
 
-�@���ʂ͎��̂悤�Ƀ^�C���A�E�g���Ă��܂��܂��B
+　結果は次のようにタイムアウトしてしまいます。
 
 -----
 C:\>ping 192.168.1.125
@@ -159,76 +159,76 @@ Approximate round trip times in milli-seconds:
     Minimum = 0ms, Maximum =  0ms, Average =  0ms
 -----
 
-�@���̂悤�ɁAhoneyd�ł�TCP�AUDP�AICMP�ɑ΂���f�t�H���g�̓����ݒ肷��
-���Ƃ��ł��܂��B
+　このように、honeydではTCP、UDP、ICMPに対するデフォルトの動作を設定する
+ことができます。
 
 
-��0x04.) �v���g�R�����Ƃ̌ʓ���̐ݒ�
+■0x04.) プロトコルごとの個別動作の設定
 
-�@��������̓v���g�R���̃|�[�g���Ƃ̓����ύX����@�\�ɂ��Đ������܂��B
+　ここからはプロトコルのポートごとの動作を変更する機能について説明します。
 
-���R�}���h���s�@�\
+●コマンド実行機能
 
-�@���ɁA���L�̕����̐ݒ�ɂ��Đ������܂��B
+　次に、下記の部分の設定について説明します。
 
 -----
 # add template tcp port 80 "./test.pl"
 -----
 
-�@�܂��A������Web�u���E�U��192.168.1.125�ɃA�N�Z�X���Ă݂Ă��������B����
-�ƁAtest.pl�ɏ������悤��Web�y�[�W���\������܂��B����́A�|�[�g80�Ԃɑ�
-����A�N�Z�X�ɑ΂��Ă�test.pl�̎��s���ʂ�Ԃ��悤�ɐݒ肪����Ă��邽�߂�
-���B�܂�A�����Ƃ��Ďw�肳�ꂽ�R�}���h�����s���A���̌��ʂ�Ԃ��Ă����
-�ł��B���̂��߁A�����̕��������Ƃ��΁uls / -al�v�ȂǂƂ���ƁA���[�g�f�B
-���N�g���̓��e���\������܂��B
+　まず、試しにWebブラウザで192.168.1.125にアクセスしてみてください。する
+と、test.plに書いたようなWebページが表示されます。これは、ポート80番に対
+するアクセスに対してはtest.plの実行結果を返すように設定がされているためで
+す。つまり、引数として指定されたコマンドを実行し、その結果を返しているの
+です。このため、引数の部分をたとえば「ls / -al」などとすると、ルートディ
+レクトリの内容が表示されます。
 
-���v���L�V�@�\
+●プロキシ機能
 
-�@���ɁA���L�̕����̐ݒ�ɂ��Đ������܂��B
+　次に、下記の部分の設定について説明します。
 
 -----
 # add template tcp port 22 proxy 192.168.1.1:22
 -----
 
-�@�ł́A����SSH�̃N���C�A���g��192.168.1.125��22�ԃ|�[�g�ɃA�N�Z�X���Ă�
-�Ă��������B����ƁASSH�ŕ��ʂɃA�N�Z�X�ł��Ă��܂��܂��B����́A192.168
-.1.125�̃|�[�g22�Ԃɑ΂���A�N�Z�X��192.168.1.1�Ƀ��_�C���N�g���Ă��邽�߁A
-�{������IP�A�h���X�ł͋N�����Ă��Ȃ��͂��̃T�[�r�X�𗘗p�ł���̂ł��B��
-�܂�A���̗�ł�honey���v���L�V�T�[�o�̂悤�ȋ@�\��S���Ă���̂ł��B
+　では、次にSSHのクライアントで192.168.1.125の22番ポートにアクセスしてみ
+てください。すると、SSHで普通にアクセスできてしまいます。これは、192.168
+.1.125のポート22番に対するアクセスを192.168.1.1にリダイレクトしているため、
+本来そのIPアドレスでは起動していないはずのサービスを利用できるのです。つ
+まり、この例ではhoneyがプロキシサーバのような機能を担っているのです。
 
-���W�J�\�ȕϐ�
+●展開可能な変数
 
-�@���ɁA���L�̕����̐ݒ�ɂ��Đ������܂��B
+　次に、下記の部分の設定について説明します。
 
 -----
 # add template tcp port 1000 "nmap $ipsrc"
 # add template tcp port 2000 "./test.sh $ipsrc $sport $ipdst $dport"
 -----
 
-�@honeyd�̃R�}���h���s�@�\�ł́A$ipsrc�A$sport�A$ipdst�A$dport��4��ނ̓W
-�J�\�ȕϐ�������܂��B���ꂼ��A�p�P�b�g�̑��M��IP�A���M���|�[�g�A���M
-��IP�A���M��|�[�g���Ӗ����Ă��܂��B���������܂��g�����ƂŁA�l�X�ȏ���
-�������ł��܂��B
-�@����͖{���̎g�����ł͂Ȃ��̂ł��������[�g�����nmap�̌��ʂ�m�肽����
-��������܂��B���̏ꍇ�A��i�̐ݒ�ŏ[���ł��܂��B�u���E�U����192.168.1.
-125:1000�ɃA�N�Z�X���Ă݂Ă��������B���X����ł���nmap�̌��ʂ��Ԃ����
-�̂��킩�邩�Ǝv���܂��B
+　honeydのコマンド実行機能では、$ipsrc、$sport、$ipdst、$dportの4種類の展
+開可能な変数があります。それぞれ、パケットの送信元IP、送信元ポート、送信
+先IP、送信先ポートを意味しています。これらをうまく使うことで、様々な処理
+を実現できます。
+　これは本来の使い方ではないのですがリモートからのnmapの結果を知りたい場
+合があります。この場合、上段の設定で充足できます。ブラウザから192.168.1.
+125:1000にアクセスしてみてください。少々見難いですがnmapの結果が返される
+のがわかるかと思います。
 
-�@�܂��A���i�̐ݒ�ł͂�������V�F���X�N���v�g�����܂��Ă�邱�ƂŁA�e��
-�����t�@�C���ɋL�^���Ă��܂��B�u���E�U����192.168.1.125:2000�ɃA�N�Z�X��
-�Ă���Atest.log�t�@�C���Ɋe�ϐ��̒l���������܂�Ă��邱�Ƃ��m�F���Ă݂�
-���������B
+　また、下段の設定ではいったんシェルスクリプトをかませてやることで、各変
+数をファイルに記録しています。ブラウザから192.168.1.125:2000にアクセスし
+てから、test.logファイルに各変数の値が書き込まれていることを確認してみて
+ください。
 
-�@�����A�����̃R�}���h���s�@�\�𗘗p�������@�̓Z�L�����e�B�I�͐F�X�Ɩ�
-�肪���邽�߂��̎g�p�ɓ������Ă͏\���Ȓ��ӂ𕥂��Ă��������B
+　ただ、これらのコマンド実行機能を利用した方法はセキュリティ的は色々と問
+題があるためその使用に当たっては十分な注意を払ってください。
 
 
-��0x05.) ������
+■0x05.) おわりに
 
-�@�����honeyd�̌X�̉��zPC�̐ݒ�Ɋւ��Đ������܂����B�����honeyd�Ŋ�
-�P�ȃn�j�[�|�b�g�����̂ɕK�v�ȋ@�\�ɂ��Ă͐������I�����܂����B���ɂ�
-honeyd�ɂׂ͍��ȋ@�\�����낢��Ƃ���̂ł����A�����Ɋւ��Ă͎���ȍ~��
-�K�v�ɂȂ����ꍇ�ɏ����������Ă��������Ǝv���܂��B
-�@����́A�ǂ����邩�Y��ł��܂��c�B
+　今回はhoneydの個々の仮想PCの設定に関して説明しました。これでhoneydで簡
+単なハニーポットを作るのに必要な機能については説明が終了しました。他にも
+honeydには細かな機能がいろいろとあるのですが、これらに関しては次回以降で
+必要になった場合に順次説明していきたいと思います。
+　次回は、どうするか悩んでいます…。
 
 

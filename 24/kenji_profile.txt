@@ -1,18 +1,18 @@
-��Kenji Aiko
-��Job: Student
-��Web: http://ruffnex.oc.to/kenji/
-��Mail: kenji@ruffnex.oc.to
-��Team�iGroup): N/A
-��Comment:
-�@�ŋ߁uNINTENDO DS�v�Ɓu�p��Ђ��v���Z�b�g�Ŕ����܂����B���ʂɖʔ����̂�
-�n�}���Ă����炢�̊Ԃɂ��������Ă܂����B�ꃖ�����炢�ŃN���A�ł���
-���Ȃ��B
-���G���ɑ΂���l����:
-�@���̓R���s���[�^�֘A�̎G���𔃂������Ƃ͂���܂łɐ���قǂ�������܂�
-��B����������L�����������Ƃ��͔������肵�܂����A����w�ǂ͂���܂ň�
-�x������܂���B����ς�A�Ȃ�ׂ���������̐l�ɓǂ�ł��炦��悤�ɍ��
-����𓾂Ȃ��G���Ƃ����}�̂́u�y��������v�����Ńv���O���~���O�i�R���s��
-�[�^�j���w��ł�悤�Ȑl�Ԃɂ́A���܂�K�v�Ȃ��̂�������Ȃ��ł��B
-�@���Ȃ݂ɏ��Ёi�R���s���[�^�{�j������܂蔃��Ȃ������肵�܂�(^^;�B��{
-�I�Ɂu�l�b�g��ɗ����Ă�\�[�X�R�[�h���v�����g�A�E�g�I�v���u�ǔj�I�I�v��
-�����w�K�X�^�C���ł��B
+■Kenji Aiko
+●Job: Student
+●Web: http://ruffnex.oc.to/kenji/
+●Mail: kenji@ruffnex.oc.to
+●Team（Group): N/A
+●Comment:
+　最近「NINTENDO DS」と「英語漬け」をセットで買いました。普通に面白いので
+ハマっていたらいつの間にやら日が暮れてました。一ヶ月くらいでクリアできる
+かなぁ。
+●雑誌に対する考え方:
+　実はコンピュータ関連の雑誌を買ったことはこれまでに数回ほどしかありませ
+ん。興味がある記事を見つけたときは買ったりしますが、定期購読はこれまで一
+度もありません。やっぱり、なるべくたくさんの人に読んでもらえるように作ら
+ざるを得ない雑誌という媒体は「楽しいから」だけでプログラミング（コンピュ
+ータ）を学んでるような人間には、あまり必要ないのかもしれないです。
+　ちなみに書籍（コンピュータ本）もあんまり買わなかったりします(^^;。基本
+的に「ネット上に落ちてるソースコードをプリントアウト！」→「読破！！」と
+いう学習スタイルです。
